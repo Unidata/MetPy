@@ -37,10 +37,12 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
+
 .. code-block:: default
 
 
     crs = ccrs.LambertConformal(central_longitude=-100.0, central_latitude=45.0)
+
 
 
 
@@ -60,6 +62,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
         ax.add_feature(cfeature.STATES, linewidth=0.5)
         ax.add_feature(cfeature.BORDERS, linewidth=0.5)
         return ax
+
 
 
 
@@ -106,11 +109,13 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
+
 .. code-block:: default
 
 
     # Combine 1D latitude and longitudes into a 2D grid of locations
     lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
+
 
 
 
@@ -135,6 +140,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
+
 .. code-block:: default
 
 
@@ -151,12 +157,14 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
+
 .. code-block:: default
 
 
     # Smooth the height data
     heights_300 = ndimage.gaussian_filter(ds['heights_300'][0], sigma=1.5, order=0)
     heights_500 = ndimage.gaussian_filter(ds['heights_500'][0], sigma=1.5, order=0)
+
 
 
 
@@ -213,7 +221,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
     fig.set_constrained_layout_pads(w_pad=0., h_pad=0.1, hspace=0., wspace=0.)
 
     # Set figure title
-    fig.suptitle(ds['time'][0].dt.strftime('%d %B %Y %H:%MZ'), fontsize=24)
+    fig.suptitle(ds['time'][0].dt.strftime('%d %B %Y %H:%MZ').values, fontsize=24)
 
     # Display the plot
     plt.show()
@@ -227,9 +235,10 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.768 seconds)
+   **Total running time of the script:** ( 0 minutes  7.111 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:

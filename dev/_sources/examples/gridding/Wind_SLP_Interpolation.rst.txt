@@ -37,6 +37,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 
 
 
+
 Read in data
 
 
@@ -47,6 +48,7 @@ Read in data
                            names=['latitude', 'longitude', 'slp', 'temperature', 'wind_dir',
                                   'wind_speed'],
                            na_values=-99999)
+
 
 
 
@@ -69,12 +71,14 @@ Project the lon/lat locations to our final projection
 
 
 
+
 Remove all missing data from pressure
 
 
 .. code-block:: default
 
     x_masked, y_masked, pres = remove_nan_observations(xp, yp, data['slp'].values)
+
 
 
 
@@ -97,6 +101,7 @@ Interpolate pressure using Cressman interpolation
 
 
 
+
 Get wind information and mask where either speed or direction is unavailable
 
 
@@ -111,6 +116,7 @@ Get wind information and mask where either speed or direction is unavailable
     y_masked = yp[good_indices]
     wind_speed = wind_speed[good_indices]
     wind_dir = wind_dir[good_indices]
+
 
 
 
@@ -140,6 +146,7 @@ Both will have the same underlying grid so throw away grid returned from v inter
 
 
 
+
 Get temperature information
 
 
@@ -150,6 +157,7 @@ Get temperature information
                                              minimum_neighbors=3, search_radius=400000, hres=35000)
 
     temp = np.ma.masked_where(np.isnan(temp), temp)
+
 
 
 
@@ -197,9 +205,10 @@ Set up the map and plot the interpolated grids appropriately.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.830 seconds)
+   **Total running time of the script:** ( 0 minutes  3.856 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py:

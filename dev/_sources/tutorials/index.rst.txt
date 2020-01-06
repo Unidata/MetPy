@@ -20,9 +20,9 @@ common meteorological tasks.
 
 .. only:: html
 
-    .. figure:: /tutorials/images/thumb/sphx_glr_unit_tutorial_thumb.png
+ .. figure:: /tutorials/images/thumb/sphx_glr_unit_tutorial_thumb.png
 
-        :ref:`sphx_glr_tutorials_unit_tutorial.py`
+     :ref:`sphx_glr_tutorials_unit_tutorial.py`
 
 .. raw:: html
 
@@ -40,9 +40,9 @@ common meteorological tasks.
 
 .. only:: html
 
-    .. figure:: /tutorials/images/thumb/sphx_glr_upperair_soundings_thumb.png
+ .. figure:: /tutorials/images/thumb/sphx_glr_upperair_soundings_thumb.png
 
-        :ref:`sphx_glr_tutorials_upperair_soundings.py`
+     :ref:`sphx_glr_tutorials_upperair_soundings.py`
 
 .. raw:: html
 
@@ -60,9 +60,9 @@ common meteorological tasks.
 
 .. only:: html
 
-    .. figure:: /tutorials/images/thumb/sphx_glr_xarray_tutorial_thumb.png
+ .. figure:: /tutorials/images/thumb/sphx_glr_xarray_tutorial_thumb.png
 
-        :ref:`sphx_glr_tutorials_xarray_tutorial.py`
+     :ref:`sphx_glr_tutorials_xarray_tutorial.py`
 
 .. raw:: html
 
@@ -75,7 +75,7 @@ common meteorological tasks.
    /tutorials/xarray_tutorial
 .. raw:: html
 
-    <div style='clear:both'></div>
+    <div class="sphx-glr-clear"></div>
 
 
 

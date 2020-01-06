@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.declarative &mdash; MetPy 0.11.0</title>
+  <title>metpy.plots.declarative &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -198,7 +198,7 @@
 <span class="c1">#  SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Declarative plotting tools.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
@@ -207,13 +207,15 @@
     <span class="n">DEFAULT_LAT_LON</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">traitlets</span> <span class="k">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span>
                        <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">ctables</span>
-<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ctables</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wx_symbols</span>
+<span class="kn">from</span> <span class="nn">.station_plot</span> <span class="kn">import</span> <span class="n">StationPlot</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">reduce_point_density</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -675,7 +677,7 @@
 <span class="k">def</span> <span class="nf">lookup_map_feature</span><span class="p">(</span><span class="n">feature_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get a Cartopy map feature based on a name.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
-    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">cartopy_utils</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">cartopy_utils</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="n">feature_name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
@@ -761,7 +763,7 @@
 <div class="viewcode-block" id="PanelContainer.show"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Show the constructed graphic on the screen.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="MapPanel"><a class="viewcode-back" href="../../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -858,7 +860,7 @@
 <span class="sd">        is set to ``&#39;data&#39;`` looks at the data for the projection.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
@@ -877,7 +879,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">feat</span> <span class="o">=</span> <span class="n">lookup_map_feature</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">feat</span> <span class="o">=</span> <span class="n">item</span>
@@ -937,7 +939,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Try to look up if we have a string</span>
-                <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="n">area</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">]</span>
                 <span class="c1"># Otherwise, assume we have a tuple to use as the extent</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -1458,6 +1460,247 @@
             <span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
             <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">barblength</span><span class="p">,</span>
             <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotObs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">class</span> <span class="nc">PlotObs</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The highest level class related to plotting observed surface and upperair data.</span>
+
+<span class="sd">    This class collects all common methods no matter whether plotting a upper-level or</span>
+<span class="sd">    surface data using station plots.</span>
+
+<span class="sd">    List of Traits:</span>
+<span class="sd">      * level</span>
+<span class="sd">      * time</span>
+<span class="sd">      * fields</span>
+<span class="sd">      * locations (optional)</span>
+<span class="sd">      * time_range (optional)</span>
+<span class="sd">      * formats (optional)</span>
+<span class="sd">      * colors (optional)</span>
+<span class="sd">      * vector_field (optional)</span>
+<span class="sd">      * vector_field_color (optional)</span>
+<span class="sd">      * reduce_points (optional)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
+    <span class="n">_need_redraw</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">level</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">level</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The level of the field to be plotted.</span>
+
+<span class="s2">    This is a value with units to choose the desired plot level. For example, selecting the</span>
+<span class="s2">    850-hPa level, set this parameter to ``850 * units.hPa``. For surface data, parameter</span>
+<span class="s2">    must be set to `None`.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">time</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Set the valid time to be plotted as a datetime object.</span>
+
+<span class="s2">    If a forecast hour is to be plotted the time should be set to the valid future time, which</span>
+<span class="s2">    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects</span>
+<span class="s2">    from the Python standard library.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">time_window</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">timedelta</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">time_window</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Set a range to look for data to plot as a timedelta object.</span>
+
+<span class="s2">    If this parameter is set, it will subset the data provided to be within the time and plus</span>
+<span class="s2">    or minus the range value given. If there is more than one observation from a given station</span>
+<span class="s2">    then it will keep only the most recent one for plotting purposes. Default value is to have</span>
+<span class="s2">    no range. (optional)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Unicode</span><span class="p">())</span>
+    <span class="n">fields</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Name of the scalar or symbol fields to be plotted.</span>
+
+<span class="s2">    List of parameters to be plotted around station plot (e.g., temperature, dewpoint, skyc).</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">locations</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">])</span>
+    <span class="n">locations</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;List of strings for scalar or symbol field plotting locations.</span>
+
+<span class="s2">    List of parameters locations for plotting parameters around the station plot (e.g.,</span>
+<span class="s2">    NW, NE, SW, SE, W, C). (optional)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">formats</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+    <span class="n">formats</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;List of the scalar and symbol field data formats. (optional)</span>
+
+<span class="s2">    List of scalar parameters formmaters or mapping values (if symbol) for plotting text and/or</span>
+<span class="s2">    symbols around the station plot (e.g., for pressure variable</span>
+<span class="s2">    ```lambda v: format(10 * v, &#39;.0f&#39;)[-3:]```).</span>
+
+<span class="s2">    For symbol mapping the following options are available to be put in as a string:</span>
+<span class="s2">    current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">])</span>
+    <span class="n">colors</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;List of the scalar and symbol field colors.</span>
+
+<span class="s2">    List of strings that represent the colors to be used for the variable being plotted.</span>
+<span class="s2">    (optional)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">vector_field</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vector_field</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;List of the vector field to be plotted.</span>
+
+<span class="s2">    List of vector components to combined and plotted from the center of the station plot</span>
+<span class="s2">    (e.g., wind components). (optional)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">vector_field_color</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vector_field_color</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;String color name to plot the vector. (optional)&quot;&quot;&quot;</span>
+
+    <span class="n">reduce_points</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">reduce_points</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Float to reduce number of points plotted. (optional)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PlotObs.clear"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear the plot.</span>
+
+<span class="sd">        Resets all internal state and sets need for redraw.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;parent&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_parent_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle setting the parent object for the plot.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="s1">&#39;level&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;vector_field&#39;</span><span class="p">,</span> <span class="s1">&#39;time_window&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_update_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle updating the internal cache of data.</span>
+
+<span class="sd">        Responds to changes in various subsetting parameters.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obsdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="c1"># Can&#39;t be a Traitlet because notifications don&#39;t work with arrays for traits</span>
+    <span class="c1"># notification never happens</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pandas dataframe that contains the fields to be plotted.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_data</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a name for the plot.&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39; and &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;@</span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">obsdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the internal cached data.&quot;&quot;&quot;</span>
+        <span class="n">time_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;valid_time&#39;</span><span class="p">,</span> <span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span>
+        <span class="n">stn_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;stn&#39;</span><span class="p">,</span> <span class="s1">&#39;station_id&#39;</span><span class="p">,</span> <span class="s1">&#39;stid&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_obsdata&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dim_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time_var</span> <span class="k">for</span> <span class="n">time_var</span> <span class="ow">in</span> <span class="n">time_vars</span> <span class="k">if</span> <span class="n">time_var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)]</span>
+            <span class="n">dim_stns</span> <span class="o">=</span> <span class="p">[</span><span class="n">stn_var</span> <span class="k">for</span> <span class="n">stn_var</span> <span class="ow">in</span> <span class="n">stn_vars</span> <span class="k">if</span> <span class="n">stn_var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dim_times</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Time variable not found. Valid variable names are:&#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{time_vars}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dim_time</span> <span class="o">=</span> <span class="n">dim_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dim_stns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Station variable not found. Valid variable names are: &#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{stn_vars}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dim_stn</span> <span class="o">=</span> <span class="n">dim_stns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">level_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pressure</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">m</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_obsdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">level_subset</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">time_slice</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dim_time</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span><span class="p">))</span>
+                                  <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">dim_time</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_window</span><span class="p">)))</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">time_slice</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">dim_stn</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">dim_stn</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_obsdata</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obsdata</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">plotdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the data for plotting.</span>
+
+<span class="sd">        The data arrays, x coordinates, and y coordinates.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plot_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">dim_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obsdata</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dim_name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">lat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obsdata</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">dim_name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obsdata</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">plot_data</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obsdata</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">plot_data</span>
+
+<div class="viewcode-block" id="PlotObs.draw"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the plot.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;formats&#39;</span><span class="p">,</span> <span class="s1">&#39;locations&#39;</span><span class="p">,</span> <span class="s1">&#39;reduce_points&#39;</span><span class="p">,</span> <span class="s1">&#39;vector_field_color&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
+        <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
+        <span class="c1"># to trigger a clear and re-call of contour()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the plot by calling needed plotting methods as necessary.&quot;&quot;&quot;</span>
+        <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+
+        <span class="c1"># Use the cartopy map projection to transform station locations to the map and</span>
+        <span class="c1"># then refine the number of stations plotted by setting a radius</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_proj_obj</span> <span class="o">==</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">():</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="mf">100000.</span>
+        <span class="n">point_locs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_proj_obj</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+        <span class="n">subset</span> <span class="o">=</span> <span class="n">reduce_point_density</span><span class="p">(</span><span class="n">point_locs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_points</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ob_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mapper</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wx_symbols</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_symbol</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
+                                            <span class="n">mapper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
+                                               <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">subset</span><span class="p">],</span>
+                                  <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">])</span></div>
 </pre></div>
 
            </div>
@@ -1473,7 +1716,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -1510,7 +1753,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

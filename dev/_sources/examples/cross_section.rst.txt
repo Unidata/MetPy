@@ -34,6 +34,7 @@ gridded data.
 
 
 
+
 **Getting the data**
 
 This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
@@ -95,6 +96,7 @@ dimension.
 
 
 
+
 Define start and end points:
 
 
@@ -103,6 +105,7 @@ Define start and end points:
 
     start = (37.0, -105.0)
     end = (35.5, -65.0)
+
 
 
 
@@ -162,6 +165,7 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
         location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
         _CoordinateModelRunDate:  1987-04-04T18:00:00Z
         History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+
 
 
 
@@ -246,6 +250,7 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
 
 
 
+
 Now, we can make the plot.
 
 
@@ -321,6 +326,7 @@ Now, we can make the plot.
 
 
 
+
 Note: The x-axis can display any variable that is the same length as the
 plotted variables, including latitude. Additionally, arguments can be provided
 to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL output.
@@ -328,7 +334,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.654 seconds)
+   **Total running time of the script:** ( 0 minutes  2.954 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:

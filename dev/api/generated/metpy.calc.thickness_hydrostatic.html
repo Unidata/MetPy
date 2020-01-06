@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>thickness_hydrostatic &mdash; MetPy 0.11.0</title>
+  <title>thickness_hydrostatic &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="dewpoint" href="metpy.calc.dewpoint.html"/>
         <link rel="prev" title="temperature_from_potential_temperature" href="metpy.calc.temperature_from_potential_temperature.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -159,7 +159,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -245,7 +244,7 @@
 <h1>thickness_hydrostatic<a class="headerlink" href="#thickness-hydrostatic" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.thickness_hydrostatic">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">thickness_hydrostatic</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#thickness_hydrostatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.thickness_hydrostatic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">thickness_hydrostatic</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">mixing=None</em>, <em class="sig-param">molecular_weight_ratio=&lt;Quantity(0.6219800858985514</em>, <em class="sig-param">'dimensionless')&gt;</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">depth=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#thickness_hydrostatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.thickness_hydrostatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the thickness of a layer via the hypsometric equation.</p>
 <p>This thickness calculation uses the pressure and temperature profiles (and optionally
 mixing ratio) via the hypsometric equation with virtual temperature adjustment</p>
@@ -304,7 +303,7 @@ and 100 hPa if bottom is given.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -341,7 +340,7 @@ and 100 hPa if bottom is given.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

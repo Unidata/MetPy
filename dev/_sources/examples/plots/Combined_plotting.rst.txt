@@ -33,6 +33,7 @@ Also shows how to control the maps that are plotted. Plots sample NARR data.
 
 
 
+
 Create a contour plot of temperature
 
 
@@ -51,6 +52,7 @@ Create a contour plot of temperature
 
 
 
+
 Create an image plot of Geopotential height
 
 
@@ -60,6 +62,7 @@ Create an image plot of Geopotential height
     img.data = narr
     img.field = 'Geopotential_height'
     img.level = 850 * units.hPa
+
 
 
 
@@ -104,9 +107,10 @@ Plot the data on a map
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.403 seconds)
+   **Total running time of the script:** ( 0 minutes  4.370 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:

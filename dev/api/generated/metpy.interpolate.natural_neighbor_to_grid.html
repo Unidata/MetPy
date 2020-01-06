@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>natural_neighbor_to_grid &mdash; MetPy 0.11.0</title>
+  <title>natural_neighbor_to_grid &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="natural_neighbor_to_points" href="metpy.interpolate.natural_neighbor_to_points.html"/>
-        <link rel="prev" title="natural_neighbor" href="metpy.interpolate.natural_neighbor.html"/> 
+        <link rel="prev" title="log_interpolate_1d" href="metpy.interpolate.log_interpolate_1d.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -134,18 +134,15 @@
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.interpolate.html">interpolate</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.cross_section.html">cross_section</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.geodesic.html">geodesic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate.html">interpolate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance.html">inverse_distance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">inverse_distance_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">inverse_distance_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">log_interpolate_1d</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor.html">natural_neighbor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">natural_neighbor_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">natural_neighbor_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">remove_nan_observations</a></li>
@@ -153,7 +150,6 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -279,7 +275,7 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
         <a href="metpy.interpolate.natural_neighbor_to_points.html" class="btn btn-neutral float-right" title="natural_neighbor_to_points" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.interpolate.natural_neighbor.html" class="btn btn-neutral" title="natural_neighbor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.interpolate.log_interpolate_1d.html" class="btn btn-neutral" title="log_interpolate_1d" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -289,7 +285,7 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -326,7 +322,7 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pkg_resources &mdash; MetPy 0.11.0</title>
+  <title>pkg_resources &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -210,7 +210,7 @@
 <span class="sd">method.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -236,7 +236,7 @@
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">ntpath</span>
 <span class="kn">import</span> <span class="nn">posixpath</span>
-<span class="kn">from</span> <span class="nn">pkgutil</span> <span class="k">import</span> <span class="n">get_importer</span>
+<span class="kn">from</span> <span class="nn">pkgutil</span> <span class="kn">import</span> <span class="n">get_importer</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">_imp</span>
@@ -249,20 +249,20 @@
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
     <span class="ne">FileExistsError</span> <span class="o">=</span> <span class="ne">OSError</span>
 
-<span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="k">import</span> <span class="n">six</span>
-<span class="kn">from</span> <span class="nn">pkg_resources.extern.six.moves</span> <span class="k">import</span> <span class="n">urllib</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="nb">filter</span>
+<span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="kn">import</span> <span class="n">six</span>
+<span class="kn">from</span> <span class="nn">pkg_resources.extern.six.moves</span> <span class="kn">import</span> <span class="n">urllib</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="nb">filter</span>
 
 <span class="c1"># capture these to bypass sandboxing</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">utime</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">utime</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">mkdir</span><span class="p">,</span> <span class="n">rename</span><span class="p">,</span> <span class="n">unlink</span>
+    <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">mkdir</span><span class="p">,</span> <span class="n">rename</span><span class="p">,</span> <span class="n">unlink</span>
     <span class="n">WRITE_SUPPORT</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="c1"># no write support, probably under GAE</span>
     <span class="n">WRITE_SUPPORT</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="nb">open</span> <span class="k">as</span> <span class="n">os_open</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isdir</span><span class="p">,</span> <span class="n">split</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="nb">open</span> <span class="k">as</span> <span class="n">os_open</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">isdir</span><span class="p">,</span> <span class="n">split</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">importlib.machinery</span> <span class="k">as</span> <span class="nn">importlib_machinery</span>
@@ -271,9 +271,9 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">importlib_machinery</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">py31compat</span>
-<span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="k">import</span> <span class="n">appdirs</span>
-<span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="k">import</span> <span class="n">packaging</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">py31compat</span>
+<span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="kn">import</span> <span class="n">appdirs</span>
+<span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="kn">import</span> <span class="n">packaging</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.version&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.specifiers&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.requirements&#39;</span><span class="p">)</span>
@@ -283,8 +283,8 @@
 <span class="n">__metaclass__</span> <span class="o">=</span> <span class="nb">type</span>
 
 
-<span class="k">if</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Python 3.4 or later is required&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Python 3.5 or later is required&quot;</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
     <span class="c1"># Those builtin exceptions are only defined in Python 3</span>
@@ -446,7 +446,7 @@
 <span class="k">class</span> <span class="nc">ResolutionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract base for dependency resolution errors&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
 
 
@@ -518,7 +518,7 @@
     <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">()</span>
 
 
@@ -528,7 +528,7 @@
 
 <span class="n">_provider_factories</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="n">PY_MAJOR</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">PY_MAJOR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
 <span class="n">EGG_DIST</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">BINARY_DIST</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">SOURCE_DIST</span> <span class="o">=</span> <span class="mi">1</span>
@@ -585,7 +585,7 @@
 <span class="sd">    XXX Currently this is the same as ``distutils.util.get_platform()``, but it</span>
 <span class="sd">    needs some hacks for Linux and Mac OS X.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">sysconfig</span> <span class="k">import</span> <span class="n">get_platform</span>
+    <span class="kn">from</span> <span class="nn">sysconfig</span> <span class="kn">import</span> <span class="n">get_platform</span>
 
     <span class="n">plat</span> <span class="o">=</span> <span class="n">get_platform</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">plat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;macosx-&#39;</span><span class="p">):</span>
@@ -748,7 +748,7 @@
 <span class="k">class</span> <span class="nc">WorkingSet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A collection of active distributions on sys.path (or a similar list)&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create working set from list of path entries (default=sys.path)&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entry_keys</span> <span class="o">=</span> <span class="p">{}</span>
@@ -768,7 +768,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ws</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">__main__</span> <span class="k">import</span> <span class="n">__requires__</span>
+            <span class="kn">from</span> <span class="nn">__main__</span> <span class="kn">import</span> <span class="n">__requires__</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="c1"># The main program does not list any requirements</span>
             <span class="k">return</span> <span class="n">ws</span>
@@ -818,7 +818,7 @@
         <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">find_distributions</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;True if `dist` is the active distribution for its project&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">dist</span>
 
@@ -860,7 +860,7 @@
         <span class="n">ns</span><span class="p">[</span><span class="s1">&#39;__name__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">requires</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">run_script</span><span class="p">(</span><span class="n">script_name</span><span class="p">,</span> <span class="n">ns</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield distributions for non-duplicate projects in the working set</span>
 
 <span class="sd">        The yield order is the order in which the items&#39; path entries were</span>
@@ -1154,7 +1154,7 @@
 <span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Searchable snapshot of distributions on a search path&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">search_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="n">get_supported_platform</span><span class="p">(),</span>
             <span class="n">python</span><span class="o">=</span><span class="n">PY_MAJOR</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Snapshot distributions available on a search path</span>
@@ -1211,7 +1211,7 @@
             <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">find_distributions</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a newest-to-oldest list of distributions for `project_name`</span>
 
 <span class="sd">        Uses case-insensitive `project_name` comparison, assuming all the</span>
@@ -1271,13 +1271,13 @@
         <span class="k">if</span> <span class="n">installer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">installer</span><span class="p">(</span><span class="n">requirement</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield the unique project names of the available distributions&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                 <span class="k">yield</span> <span class="n">key</span>
 
-    <span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;In-place addition of a distribution or environment&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Distribution</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
@@ -1289,7 +1289,7 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t add </span><span class="si">%r</span><span class="s2"> to environment&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">other</span><span class="p">,))</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add an environment or distribution to an environment&quot;&quot;&quot;</span>
         <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">([],</span> <span class="n">platform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span>
@@ -1321,7 +1321,7 @@
     <span class="sd">&quot;&quot;&quot;Manage resource extraction and packages&quot;&quot;&quot;</span>
     <span class="n">extraction_path</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cached_files</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">resource_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package_or_requirement</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">):</span>
@@ -1582,7 +1582,7 @@
     <span class="n">egg_info</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">loader</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;__loader__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">module_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;__file__&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
 
@@ -1656,7 +1656,7 @@
             <span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">script_filename</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">)</span>
             <span class="n">exec</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">linecache</span> <span class="k">import</span> <span class="n">cache</span>
+            <span class="kn">from</span> <span class="nn">linecache</span> <span class="kn">import</span> <span class="n">cache</span>
             <span class="n">cache</span><span class="p">[</span><span class="n">script_filename</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">script_text</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">script_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">script_filename</span>
             <span class="p">)</span>
@@ -1773,7 +1773,7 @@
 <span class="k">class</span> <span class="nc">EggProvider</span><span class="p">(</span><span class="n">NullProvider</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Provider based on a virtual filesystem&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
         <span class="n">NullProvider</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_prefix</span><span class="p">()</span>
 
@@ -1835,7 +1835,7 @@
     <span class="k">def</span> <span class="nf">_listdir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
 
@@ -1895,7 +1895,7 @@
     <span class="n">eagers</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_zip_manifests</span> <span class="o">=</span> <span class="n">MemoizedZipManifests</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
         <span class="n">EggProvider</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zip_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">archive</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span>
 
@@ -2076,7 +2076,7 @@
 <span class="sd">    the provided location.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
 
     <span class="k">def</span> <span class="nf">_get_metadata_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -2126,7 +2126,7 @@
 <span class="sd">        dist = Distribution.from_filename(egg_path, metadata=metadata)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">egg_info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">egg_info</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">module_path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">egg_info</span> <span class="o">=</span> <span class="n">egg_info</span>
 
@@ -2134,7 +2134,7 @@
 <span class="k">class</span> <span class="nc">EggMetadata</span><span class="p">(</span><span class="n">ZipProvider</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Metadata provider for .egg files&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">importer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">importer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a metadata provider from a zipimporter&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">zip_pre</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">archive</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span>
@@ -2286,12 +2286,12 @@
 <span class="sd">    &gt;&gt;&gt; list(NoDists()(&#39;anything&#39;))</span>
 <span class="sd">    []</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
         <span class="n">__nonzero__</span> <span class="o">=</span> <span class="fm">__bool__</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullpath</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullpath</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(())</span>
 
 
@@ -2602,7 +2602,7 @@
 <span class="k">class</span> <span class="nc">EntryPoint</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Object representing an advertised importable object&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">(),</span> <span class="n">extras</span><span class="o">=</span><span class="p">(),</span> <span class="n">dist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">(),</span> <span class="n">extras</span><span class="o">=</span><span class="p">(),</span> <span class="n">dist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MODULE</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid module name&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -2611,7 +2611,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">extras</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
@@ -2619,7 +2619,7 @@
             <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39; [</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">s</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;EntryPoint.parse(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">require</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -2757,7 +2757,7 @@
     <span class="sd">&quot;&quot;&quot;Wrap an actual or potential sys.path entry w/metadata&quot;&quot;&quot;</span>
     <span class="n">PKG_INFO</span> <span class="o">=</span> <span class="s1">&#39;PKG-INFO&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">py_version</span><span class="o">=</span><span class="n">PY_MAJOR</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">precedence</span><span class="o">=</span><span class="n">EGG_DIST</span><span class="p">):</span>
@@ -2801,28 +2801,28 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">platform</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hashcmp</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashcmp</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">hashcmp</span>
 
-    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashcmp</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">hashcmp</span>
 
-    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashcmp</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">hashcmp</span>
 
-    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashcmp</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">hashcmp</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="c1"># It&#39;s not a Distribution, so they are not equal</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashcmp</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">hashcmp</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
     <span class="c1"># These properties have to be lazy so that we don&#39;t have to load any</span>
@@ -2990,13 +2990,13 @@
             <span class="n">filename</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">platform</span>
         <span class="k">return</span> <span class="n">filename</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -3004,13 +3004,13 @@
         <span class="n">version</span> <span class="o">=</span> <span class="n">version</span> <span class="ow">or</span> <span class="s2">&quot;[unknown version]&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delegate all unrecognized public attributes to .metadata provider&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">set</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Distribution</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">())</span>
             <span class="o">|</span> <span class="nb">set</span><span class="p">(</span>
@@ -3263,7 +3263,7 @@
 
 
 <span class="k">class</span> <span class="nc">RequirementParseError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
 
 
@@ -3290,7 +3290,7 @@
 
 
 <span class="k">class</span> <span class="nc">Requirement</span><span class="p">(</span><span class="n">packaging</span><span class="o">.</span><span class="n">requirements</span><span class="o">.</span><span class="n">Requirement</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requirement_string</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requirement_string</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;DO NOT CALL THIS UNDOCUMENTED METHOD; use Requirement.parse()!&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">Requirement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">requirement_string</span><span class="p">)</span>
@@ -3304,22 +3304,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">safe_extra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hashCmp</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">specifier</span><span class="p">,</span>
             <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">),</span>
             <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">marker</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">marker</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hashCmp</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Requirement</span><span class="p">)</span> <span class="ow">and</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hashCmp</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">hashCmp</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Distribution</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">key</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -3331,10 +3332,10 @@
         <span class="c1"># more accurately.</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">specifier</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">prereleases</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;Requirement.parse(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -3503,7 +3504,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -3540,7 +3541,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

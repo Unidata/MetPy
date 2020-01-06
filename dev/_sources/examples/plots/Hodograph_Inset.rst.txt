@@ -31,6 +31,7 @@ Layout a Skew-T plot with a hodograph inset into the plot.
 
 
 
+
 Upper air data can be obtained using the siphon package, but for this example we will use
 some of MetPy's sample data.
 
@@ -53,6 +54,7 @@ some of MetPy's sample data.
 
 
 
+
 We will pull the data out of the example dataset into individual variables and
 assign units.
 
@@ -67,6 +69,7 @@ assign units.
     wind_speed = df['speed'].values * units.knots
     wind_dir = df['direction'].values * units.degrees
     u, v = mpcalc.wind_components(wind_speed, wind_dir)
+
 
 
 
@@ -118,9 +121,10 @@ assign units.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.774 seconds)
+   **Total running time of the script:** ( 0 minutes  0.553 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Hodograph_Inset.py:

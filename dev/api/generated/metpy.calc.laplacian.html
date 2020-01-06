@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>laplacian &mdash; MetPy 0.11.0</title>
+  <title>laplacian &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="lat_lon_grid_deltas" href="metpy.calc.lat_lon_grid_deltas.html"/>
         <link rel="prev" title="grid_deltas_from_dataarray" href="metpy.calc.grid_deltas_from_dataarray.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -156,7 +156,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -246,11 +245,11 @@
 <dd><p>Calculate the laplacian of a grid of values.</p>
 <p>Works for both regularly-spaced data, and grids with varying spacing.</p>
 <p>Either <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with  attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> are given, <em class="xref py py-obj">f</em> will be converted to a
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with  attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> are given, <em class="xref py py-obj">f</em> will be converted to a
 <em class="xref py py-obj">pint.Quantity</em> and the gradient returned as a tuple of <em class="xref py py-obj">pint.Quantity</em>, otherwise, if
 neither <em class="xref py py-obj">coordinates</em> nor <em class="xref py py-obj">deltas</em> are given, the attached coordinate information belonging
-to <em class="xref py py-obj">axis</em> will be used and the gradient will be returned as a tuple of <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+to <em class="xref py py-obj">axis</em> will be used and the gradient will be returned as a tuple of <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -258,7 +257,7 @@ to <em class="xref py py-obj">axis</em> will be used and the gradient will be re
 <li><p><strong>coordinates</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em></p></li>
 <li><p><strong>deltas</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Spacing between the grid points in <em class="xref py py-obj">f</em>. There should be one item less than the size
 of <em class="xref py py-obj">f</em> along the applicable axis.</p></li>
-<li><p><strong>axes</strong> (<em>sequence</em><em>, </em><em>optional</em>) – Sequence of strings (if <em class="xref py py-obj">f</em> is a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> and implicit conversion to
+<li><p><strong>axes</strong> (<em>sequence</em><em>, </em><em>optional</em>) – Sequence of strings (if <em class="xref py py-obj">f</em> is a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> and implicit conversion to
 <em class="xref py py-obj">pint.Quantity</em> is not used) or integers that specify the array axes along which to
 take the derivatives. Defaults to all axes of <em class="xref py py-obj">f</em>. If given, and used with
 <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em>, its length must be less than or equal to that of the
@@ -274,8 +273,6 @@ take the derivatives. Defaults to all axes of <em class="xref py py-obj">f</em>.
 <p><a class="reference internal" href="metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">gradient()</span></code></a>, <a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-func docutils literal notranslate"><span class="pre">second_derivative()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
-<p><a class="reference internal" href="#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian</span></code></a> previously accepted <em class="xref py py-obj">x</em> as a parameter for coordinate values. This has been
-deprecated in 0.9 in favor of <em class="xref py py-obj">coordinates</em>.</p>
 <p>If this function is used without the <em class="xref py py-obj">axes</em> parameter, the length of <em class="xref py py-obj">coordinates</em> or
 <em class="xref py py-obj">deltas</em> (as applicable) should match the number of dimensions of <em class="xref py py-obj">f</em>.</p>
 </dd></dl>
@@ -305,7 +302,7 @@ deprecated in 0.9 in favor of <em class="xref py py-obj">coordinates</em>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -342,7 +339,7 @@ deprecated in 0.9 in favor of <em class="xref py py-obj">coordinates</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

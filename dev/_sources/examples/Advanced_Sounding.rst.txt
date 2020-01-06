@@ -35,6 +35,7 @@ ambient profile and the parcel profile is colored as well.
 
 
 
+
 Upper air data can be obtained using the siphon package, but for this example we will use
 some of MetPy's sample data.
 
@@ -57,6 +58,7 @@ some of MetPy's sample data.
 
 
 
+
 We will pull the data out of the example dataset into individual variables and
 assign units.
 
@@ -70,6 +72,7 @@ assign units.
     wind_speed = df['speed'].values * units.knots
     wind_dir = df['direction'].values * units.degrees
     u, v = mpcalc.wind_components(wind_speed, wind_dir)
+
 
 
 
@@ -132,9 +135,10 @@ Create a new figure. The dimensions here give a good aspect ratio.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.833 seconds)
+   **Total running time of the script:** ( 0 minutes  0.610 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding.py:

@@ -12,8 +12,8 @@ Find Natural Neighbors Verification
 
 Finding natural neighbors in a triangulation
 
-A triangle is a natural neighbor of a point if that point is within a circumradius of the
-circumcenter of a circumscribed circle containing the triangle.
+A triangle is a natural neighbor of a point if that point is within a circumscribed
+circle ("circumcircle") containing the triangle.
 
 
 .. code-block:: default
@@ -22,7 +22,7 @@ circumcenter of a circumscribed circle containing the triangle.
     import numpy as np
     from scipy.spatial import Delaunay
 
-    from metpy.interpolate.geometry import find_natural_neighbors
+    from metpy.interpolate.geometry import circumcircle_radius, find_natural_neighbors
 
     # Create test observations, test points, and plot the triangulation and points.
     gx, gy = np.meshgrid(np.arange(0, 20, 4), np.arange(0, 20, 4))
@@ -51,7 +51,8 @@ circumcenter of a circumscribed circle containing the triangle.
 
 
 
-Since finding natural neighbors already calculates circumcenters and circumradii, return
+
+Since finding natural neighbors already calculates circumcenters, return
 that information for later use.
 
 The key of the neighbors dictionary refers to the test point index, and the list of integers
@@ -63,7 +64,7 @@ Point 3 is at the confluence of several triangles so it has many natural neighbo
 
 .. code-block:: default
 
-    neighbors, tri_info = find_natural_neighbors(tri, test_points)
+    neighbors, circumcenters = find_natural_neighbors(tri, test_points)
     print(neighbors)
 
 
@@ -76,15 +77,13 @@ Point 3 is at the confluence of several triangles so it has many natural neighbo
 
  .. code-block:: none
 
-    {0: [0, 1], 1: [24, 25], 2: [16, 17, 30, 31], 3: [18, 19, 20, 21, 22, 23, 26, 27], 4: []}
+    {0: [0, 1], 1: [18, 19], 2: [16, 17, 22, 23], 3: [24, 25, 26, 27, 28, 29, 30, 31], 4: []}
 
 
 
-We can then use the information in tri_info later.
 
-The dictionary key is the index of a particular triangle in the Delaunay triangulation data
-structure. 'cc' is that triangle's circumcenter, and 'r' is the radius of the circumcircle
-containing that triangle.
+We can plot all of the triangles as well as the circles representing the circumcircles
+
 
 
 .. code-block:: default
@@ -96,12 +95,11 @@ containing that triangle.
         ax.plot(x, y)
         ax.annotate(i, xy=(np.mean(x), np.mean(y)))
 
-    # Using circumcenter and radius information from tri_info, plot circumcircles and
-    # circumcenters for each triangle.
-    for _idx, item in tri_info.items():
-        ax.plot(item['cc'][0], item['cc'][1], 'k.', markersize=5)
-        circ = plt.Circle(item['cc'], item['r'], edgecolor='k', facecolor='none',
-                          transform=fig.axes[0].transData)
+    # Using circumcenters and calculated circumradii, plot the circumcircles
+    for idx, cc in enumerate(circumcenters):
+        ax.plot(cc[0], cc[1], 'k.', markersize=5)
+        circ = plt.Circle(cc, circumcircle_radius(*tri.points[tri.simplices[idx]]),
+                          edgecolor='k', facecolor='none', transform=fig.axes[0].transData)
         ax.add_artist(circ)
 
     ax.set_aspect('equal', 'datalim')
@@ -117,9 +115,10 @@ containing that triangle.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.907 seconds)
+   **Total running time of the script:** ( 0 minutes  0.657 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:

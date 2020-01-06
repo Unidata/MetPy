@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Unit Support &mdash; MetPy 0.11.0</title>
+  <title>Unit Support &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="index.html"/>
         <link rel="next" title="Examples" href="examples/index.html"/>
         <link rel="prev" title="Getting Started with MetPy" href="startingguide.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -213,7 +213,7 @@ for <a class="reference external" href="https://pint.readthedocs.io/en/latest/no
 <h2>Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h2>
 <p>To use units, the first step is to import the default MetPy units registry from the
 <a class="reference internal" href="api/generated/metpy.units.html#module-metpy.units" title="metpy.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">units</span></code></a> module:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
@@ -242,7 +242,7 @@ The easiest way to attach units to an array is to multiply by the units:</p>
 <h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
 <p>With units attached, it is possible to perform mathematical operations, resulting in the proper
 units:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span><span class="p">]</span> <span class="n">meter</span> <span class="o">/</span> <span class="n">second</span>
@@ -250,14 +250,14 @@ units:</p>
 </div>
 <p>For multiplication and division, units can combine and cancel. For addition and subtraction,
 instead the operands must have compatible units. For instance, this works:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">distance</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">distance</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">6</span> <span class="mi">8</span><span class="p">]</span> <span class="n">meter</span>
 </pre></div>
 </div>
 <p>But this does not:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DimensionalityError</span><span class="p">:</span> <span class="n">Cannot</span> <span class="n">convert</span> <span class="kn">from</span> <span class="s1">&#39;meter&#39;</span> <span class="p">([</span><span class="n">length</span><span class="p">])</span> <span class="n">to</span> <span class="s1">&#39;second&#39;</span> <span class="p">([</span><span class="n">time</span><span class="p">])</span>
@@ -265,7 +265,7 @@ instead the operands must have compatible units. For instance, this works:</p>
 </div>
 <p>Even if the units are not identical, as long as they are dimensionally equivalent, the
 operation can be performed:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">4.968503937007874</span> <span class="n">inch</span>
@@ -277,7 +277,7 @@ operation can be performed:</p>
 <p>Converting a <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code> between units can be accomplished by using the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code> method call, which constructs a new <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code> in the
 desired units:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">mm</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">mm</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">25.400000000000002</span> <span class="n">millimeter</span>
@@ -287,7 +287,7 @@ desired units:</p>
 To simplify units, there is also the <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code> method, which
 converts a quantity to SI units, performing any needed cancellation:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Lf</span> <span class="o">=</span> <span class="mf">3.34e6</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">Lf</span><span class="p">,</span> <span class="n">Lf</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Lf</span><span class="p">,</span> <span class="n">Lf</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">3340000.0</span> <span class="n">joule</span> <span class="o">/</span> <span class="n">kilogram</span>
@@ -322,7 +322,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -359,7 +359,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -25,6 +25,7 @@ StationPlot
    .. autosummary::
    
       ~StationPlot.__init__
+      ~StationPlot.plot_arrow
       ~StationPlot.plot_barb
       ~StationPlot.plot_parameter
       ~StationPlot.plot_symbol
@@ -51,6 +52,7 @@ StationPlot
 
    
    .. automethod:: __init__
+   .. automethod:: plot_arrow
    .. automethod:: plot_barb
    .. automethod:: plot_parameter
    .. automethod:: plot_symbol

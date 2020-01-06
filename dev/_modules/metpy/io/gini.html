@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io.gini &mdash; MetPy 0.11.0</title>
+  <title>metpy.io.gini &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -197,33 +197,25 @@
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Tools to process GINI-formatted products.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">enum34</span> <span class="k">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">repeat</span>  <span class="c1"># noqa: I202</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>  <span class="c1"># noqa: I202</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">xarray</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">xarray.backends.common</span> <span class="kn">import</span> <span class="n">AbstractDataStore</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">xarray</span> <span class="k">import</span> <span class="n">Variable</span>
-    <span class="kn">from</span> <span class="nn">xarray.backends.common</span> <span class="k">import</span> <span class="n">AbstractDataStore</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="k">import</span> <span class="n">FrozenDict</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="k">import</span> <span class="n">FrozenOrderedDict</span> <span class="k">as</span> <span class="n">FrozenDict</span>
+    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenDict</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="c1"># This way GiniFile is still usable without xarray</span>
-    <span class="n">AbstractDataStore</span> <span class="o">=</span> <span class="nb">object</span>
+    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenOrderedDict</span> <span class="k">as</span> <span class="n">FrozenDict</span>
 
-<span class="kn">from</span> <span class="nn">._tools</span> <span class="k">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -231,7 +223,6 @@
 
 <span class="k">def</span> <span class="nf">_make_datetime</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert 7 bytes from a GINI file to a `datetime` instance.&quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># For Python 2</span>
     <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">s</span>
     <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
         <span class="n">year</span> <span class="o">+=</span> <span class="mi">100</span>
@@ -240,8 +231,6 @@
 
 <span class="k">def</span> <span class="nf">_scaled_int</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a 3 byte string to a signed integer value.&quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># For Python 2</span>
-
     <span class="c1"># Get leftmost bit (sign) as 1 (if 0) or -1 (if 1)</span>
     <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x80</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">)</span>
 
@@ -339,7 +328,7 @@
                            <span class="p">(</span><span class="s1">&#39;sat_height&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ur_lat&#39;</span><span class="p">,</span> <span class="s1">&#39;3s&#39;</span><span class="p">,</span> <span class="n">_scaled_int</span><span class="p">),</span>
                            <span class="p">(</span><span class="s1">&#39;ur_lon&#39;</span><span class="p">,</span> <span class="s1">&#39;3s&#39;</span><span class="p">,</span> <span class="n">_scaled_int</span><span class="p">)],</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Navigation&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GiniFile.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="GiniFile.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create an instance of `GiniFile`.</span>
 
 <span class="sd">        Parameters</span>
@@ -427,7 +416,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">at_end</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">blob</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;No data read yet, trying to decompress remaining data as an image.&#39;</span><span class="p">)</span>
-                <span class="kn">from</span> <span class="nn">matplotlib.image</span> <span class="k">import</span> <span class="n">imread</span>
+                <span class="kn">from</span> <span class="nn">matplotlib.image</span> <span class="kn">import</span> <span class="n">imread</span>
                 <span class="n">blob</span> <span class="o">=</span> <span class="p">(</span><span class="n">imread</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Leftover unprocessed data beyond EOF marker: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
@@ -445,7 +434,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">siteID</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a string representation of the product.&quot;&quot;&quot;</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: </span><span class="si">{0.creating_entity}</span><span class="s1"> </span><span class="si">{0.sector_id}</span><span class="s1"> </span><span class="si">{0.channel}</span><span class="s1">&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;Time: </span><span class="si">{0.datetime}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Size: </span><span class="si">{0.ny}</span><span class="s1">x</span><span class="si">{0.nx}</span><span class="s1">&#39;</span><span class="p">,</span>
@@ -574,7 +563,7 @@
 <span class="sd">        This function will be called anytime variables or attributes</span>
 <span class="sd">        are requested, so care should be taken to make sure its fast.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GiniFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
@@ -634,7 +623,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -671,7 +660,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

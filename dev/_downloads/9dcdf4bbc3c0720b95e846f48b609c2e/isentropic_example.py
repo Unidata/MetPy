@@ -143,7 +143,8 @@ ax.barbs(lon.values, lat.values, isentu[level, :, :].m, isentv[level, :, :].m, l
 # Make some titles
 ax.set_title('{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (percent)'
              .format(isentlevs[level].m), loc='left')
-add_timestamp(ax, times[0].dt, y=0.02, high_contrast=True)
+add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
+              y=0.02, high_contrast=True)
 fig.tight_layout()
 
 ######################################
@@ -188,7 +189,8 @@ ax.barbs(lon.values, lat.values, isentu[level, :, :].m, isentv[level, :, :].m, l
 # Make some titles
 ax.set_title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m)
              + r'($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)', loc='left')
-add_timestamp(ax, times[0].dt, y=0.02, pretext='Valid: ', high_contrast=True)
+add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
+              y=0.02, pretext='Valid: ', high_contrast=True)
 
 fig.tight_layout()
 plt.show()

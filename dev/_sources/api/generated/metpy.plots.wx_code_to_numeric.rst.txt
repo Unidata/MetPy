@@ -1,0 +1,12 @@
+wx_code_to_numeric
+==============================
+
+.. currentmodule:: metpy.plots
+
+.. autofunction:: wx_code_to_numeric
+
+.. include:: metpy.plots.wx_code_to_numeric.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

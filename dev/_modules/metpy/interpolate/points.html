@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.interpolate.points &mdash; MetPy 0.11.0</title>
+  <title>metpy.interpolate.points &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -198,17 +198,14 @@
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Interpolate data valid at one set of points to another in multiple dimensions.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">griddata</span><span class="p">,</span> <span class="n">Rbf</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span><span class="p">,</span> <span class="n">ConvexHull</span><span class="p">,</span> <span class="n">Delaunay</span><span class="p">,</span> <span class="n">qhull</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">cdist</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">griddata</span><span class="p">,</span> <span class="n">Rbf</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span><span class="p">,</span> <span class="n">ConvexHull</span><span class="p">,</span> <span class="n">Delaunay</span><span class="p">,</span> <span class="n">qhull</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">tools</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">tools</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -243,9 +240,18 @@
 
 
 <span class="k">def</span> <span class="nf">barnes_point</span><span class="p">(</span><span class="n">sq_dist</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a single pass barnes interpolation value for a point.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a single pass Barnes interpolation value for a point.</span>
 
-<span class="sd">    The calculated value is based on the given distances, kappa and gamma values.</span>
+<span class="sd">    The calculated value is based on the given distances, kappa and gamma values. This</span>
+<span class="sd">    is calculated as an inverse distance-weighted average of the points in the neighborhood,</span>
+<span class="sd">    with weights given as:</span>
+
+<span class="sd">    .. math:: w = e ^ \frac{-r^2}{\kappa}</span>
+
+<span class="sd">    * :math:`\kappa` is a scaling parameter</span>
+<span class="sd">    * :math:`r` is the distance to a point.</span>
+
+<span class="sd">    For more information see [Barnes1964]_ or [Koch1983]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -272,7 +278,7 @@
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">total_weights</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">natural_neighbor_point</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_loc</span><span class="p">,</span> <span class="n">tri</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">triangle_info</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">natural_neighbor_point</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_loc</span><span class="p">,</span> <span class="n">tri</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">circumcenters</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a natural neighbor interpolation of the observations to the given point.</span>
 
 <span class="sd">    This uses the Liang and Hale approach [Liang2010]_. The interpolation will fail if</span>
@@ -290,15 +296,14 @@
 <span class="sd">    grid_loc: (float, float)</span>
 <span class="sd">        Coordinates of the grid point at which to calculate the</span>
 <span class="sd">        interpolation.</span>
-<span class="sd">    tri: object</span>
+<span class="sd">    tri: `scipy.spatial.Delaunay`</span>
 <span class="sd">        Delaunay triangulation of the observations.</span>
 <span class="sd">    neighbors: (N, ) ndarray</span>
 <span class="sd">        Simplex codes of the grid point&#39;s natural neighbors. The codes</span>
 <span class="sd">        will correspond to codes in the triangulation.</span>
-<span class="sd">    triangle_info: dictionary</span>
-<span class="sd">        Pre-calculated triangle attributes for quick look ups. Requires</span>
-<span class="sd">        items &#39;cc&#39; (circumcenters) and &#39;r&#39; (radii) to be associated with</span>
-<span class="sd">        each simplex code key from the delaunay triangulation.</span>
+<span class="sd">    circumcenters: list</span>
+<span class="sd">        Pre-calculated triangle circumcenters for quick look ups. Requires</span>
+<span class="sd">        indices for the list to match the simplices from the Delaunay triangulation.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -330,7 +335,7 @@
 
             <span class="k">for</span> <span class="n">check_tri</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">tri</span><span class="o">.</span><span class="n">simplices</span><span class="p">[</span><span class="n">check_tri</span><span class="p">]:</span>
-                    <span class="n">polygon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">triangle_info</span><span class="p">[</span><span class="n">check_tri</span><span class="p">][</span><span class="s1">&#39;cc&#39;</span><span class="p">])</span>
+                    <span class="n">polygon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">circumcenters</span><span class="p">[</span><span class="n">check_tri</span><span class="p">])</span>
 
             <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[(</span><span class="n">tri</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">p2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">xp</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tri</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">p2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">yp</span><span class="p">)]</span>
@@ -384,7 +389,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tri</span> <span class="o">=</span> <span class="n">Delaunay</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
-    <span class="n">members</span><span class="p">,</span> <span class="n">triangle_info</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">find_natural_neighbors</span><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+    <span class="n">members</span><span class="p">,</span> <span class="n">circumcenters</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">find_natural_neighbors</span><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
 
     <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">xi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
     <span class="n">img</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
@@ -395,7 +400,7 @@
 
             <span class="n">points_transposed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="n">img</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">natural_neighbor_point</span><span class="p">(</span><span class="n">points_transposed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points_transposed</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                              <span class="n">values</span><span class="p">,</span> <span class="n">xi</span><span class="p">[</span><span class="n">grid</span><span class="p">],</span> <span class="n">tri</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">triangle_info</span><span class="p">)</span>
+                                              <span class="n">values</span><span class="p">,</span> <span class="n">xi</span><span class="p">[</span><span class="n">grid</span><span class="p">],</span> <span class="n">tri</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">circumcenters</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">img</span></div>
 
@@ -542,10 +547,9 @@
     <span class="c1"># If this is Barnes/Cressman, determine search_radios and hand it along to</span>
     <span class="c1"># `inverse_distance`</span>
     <span class="k">elif</span> <span class="n">interp_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="s1">&#39;barnes&#39;</span><span class="p">]:</span>
-        <span class="n">ave_spacing</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
+        <span class="n">ave_spacing</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">average_spacing</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">search_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">search_radius</span> <span class="o">=</span> <span class="n">ave_spacing</span>
+            <span class="n">search_radius</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">ave_spacing</span>
 
         <span class="k">if</span> <span class="n">interp_type</span> <span class="o">==</span> <span class="s1">&#39;cressman&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">inverse_distance_to_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">,</span>
@@ -585,7 +589,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -622,7 +626,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

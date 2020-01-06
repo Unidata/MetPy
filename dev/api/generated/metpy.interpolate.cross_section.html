@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cross_section &mdash; MetPy 0.11.0</title>
+  <title>cross_section &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="geodesic" href="metpy.interpolate.geodesic.html"/>
         <link rel="prev" title="interpolate" href="metpy.interpolate.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -137,18 +137,15 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.geodesic.html">geodesic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate.html">interpolate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance.html">inverse_distance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">inverse_distance_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">inverse_distance_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">log_interpolate_1d</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor.html">natural_neighbor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">natural_neighbor_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">natural_neighbor_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">remove_nan_observations</a></li>
@@ -156,7 +153,6 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -246,12 +242,12 @@
 <dd><p>Obtain an interpolated cross-sectional slice through gridded data.</p>
 <p>Utilizing the interpolation functionality in <code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code>, this function takes a vertical
 cross-sectional slice along a geodesic through the given data on a regular grid, which is
-given as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> so that we can utilize its coordinate and projection
+given as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> so that we can utilize its coordinate and projection
 metadata.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
+<li><p><strong>data</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
 DataArray in the Dataset) must have been parsed by MetPy and include both an x and
 y coordinate dimension and the added <em class="xref py py-obj">crs</em> coordinate.</p></li>
 <li><p><strong>start</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the start point of the cross section (units are
@@ -265,7 +261,7 @@ degrees north and degrees east).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – The interpolated cross section, with new index dimension along the cross-section.</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – The interpolated cross section, with new index dimension along the cross-section.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -306,7 +302,7 @@ degrees north and degrees east).</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -343,7 +339,7 @@ degrees north and degrees east).</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

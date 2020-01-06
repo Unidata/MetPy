@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>thickness_hydrostatic_from_relative_humidity &mdash; MetPy 0.11.0</title>
+  <title>thickness_hydrostatic_from_relative_humidity &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="vapor_pressure" href="metpy.calc.vapor_pressure.html"/>
         <link rel="prev" title="specific_humidity_from_mixing_ratio" href="metpy.calc.specific_humidity_from_mixing_ratio.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,8 +132,8 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint.html">dewpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint_from_relative_humidity.html">dewpoint_from_relative_humidity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint_rh.html">dewpoint_rh</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
@@ -173,7 +173,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -259,7 +258,7 @@
 <h1>thickness_hydrostatic_from_relative_humidity<a class="headerlink" href="#thickness-hydrostatic-from-relative-humidity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.thickness_hydrostatic_from_relative_humidity">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">thickness_hydrostatic_from_relative_humidity</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">relative_humidity</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#thickness_hydrostatic_from_relative_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.thickness_hydrostatic_from_relative_humidity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">thickness_hydrostatic_from_relative_humidity</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">relative_humidity</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">depth=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#thickness_hydrostatic_from_relative_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.thickness_hydrostatic_from_relative_humidity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the thickness of a layer given pressure, temperature and relative humidity.</p>
 <p>Similar to <code class="docutils literal notranslate"><span class="pre">thickness_hydrostatic</span></code>, this thickness calculation uses the pressure,
 temperature, and relative humidity profiles via the hypsometric equation with virtual
@@ -318,7 +317,7 @@ and 100 hPa if bottom is given.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -355,7 +354,7 @@ and 100 hPa if bottom is given.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

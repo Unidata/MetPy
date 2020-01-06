@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>second_derivative &mdash; MetPy 0.11.0</title>
+  <title>second_derivative &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="tangential_component" href="metpy.calc.tangential_component.html"/>
         <link rel="prev" title="normal_component" href="metpy.calc.normal_component.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -156,7 +156,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -245,12 +244,12 @@
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">second_derivative</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#second_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.second_derivative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the second derivative of a grid of values.</p>
 <p>Works for both regularly-spaced data and grids with varying spacing.</p>
-<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
-attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
+<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
 <em class="xref py py-obj">delta</em> are given, <em class="xref py py-obj">f</em> will be converted to a <em class="xref py py-obj">pint.Quantity</em> and the derivative returned
 as a <em class="xref py py-obj">pint.Quantity</em>, otherwise, if neither <em class="xref py py-obj">x</em> nor <em class="xref py py-obj">delta</em> are given, the attached
 coordinate information belonging to <em class="xref py py-obj">axis</em> will be used and the derivative will be returned
-as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 <p>This uses 3 points to calculate the derivative, using forward or backward at the edges of
 the grid as appropriate, and centered elsewhere. The irregular spacing is handled
 explicitly, using the formulation as specified by <a class="reference internal" href="../../references.html#bowen2005" id="id1"><span>[Bowen2005]</span></a>.</p>
@@ -303,7 +302,7 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -340,7 +339,7 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

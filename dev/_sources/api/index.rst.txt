@@ -16,7 +16,6 @@ Reference Guide
    metpy.plots
    metpy.plots.ctables
    metpy.interpolate
-   metpy.gridding
    metpy.xarray
 
 * :ref:`modindex`

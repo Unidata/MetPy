@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.station_plot &mdash; MetPy 0.11.0</title>
+  <title>metpy.plots.station_plot &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -198,19 +198,14 @@
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Create Station-model plots.&quot;&quot;&quot;</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">enum34</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.wx_symbols</span> <span class="k">import</span> <span class="p">(</span><span class="n">current_weather</span><span class="p">,</span> <span class="n">high_clouds</span><span class="p">,</span> <span class="n">low_clouds</span><span class="p">,</span> <span class="n">mid_clouds</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.wx_symbols</span> <span class="kn">import</span> <span class="p">(</span><span class="n">current_weather</span><span class="p">,</span> <span class="n">high_clouds</span><span class="p">,</span> <span class="n">low_clouds</span><span class="p">,</span> <span class="n">mid_clouds</span><span class="p">,</span>
                          <span class="n">pressure_tendency</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">,</span> <span class="n">wx_symbol_font</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">atleast_1d</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -226,7 +221,7 @@
     <span class="n">location_names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;NE&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;SE&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
                       <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;SW&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;NW&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
 
-<div class="viewcode-block" id="StationPlot.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StationPlot.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the StationPlot with items that do not change.</span>
 
 <span class="sd">        This sets up the axes and station locations. The `fontsize` and `spacing`</span>
@@ -262,6 +257,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span></div>
 
 <div class="viewcode-block" id="StationPlot.plot_symbol"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">plot_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">codes</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -454,24 +450,14 @@
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-<span class="sd">        plot_parameter, plot_symbol, plot_text</span>
+<span class="sd">        plot_arrow, plot_parameter, plot_symbol, plot_text</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># If plot_units specified, convert the data to those units</span>
         <span class="n">plotting_units</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_units&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">plotting_units</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
-                <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">plotting_units</span><span class="p">)</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">plotting_units</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;To convert to plotting units, units must be attached to &#39;</span>
-                                 <span class="s1">&#39;u and v wind components.&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Strip units, CartoPy transform doesn&#39;t like</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotting_units</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">plotting_units</span><span class="p">)</span>
 
         <span class="c1"># Empirically determined</span>
         <span class="n">pivot</span> <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
@@ -484,20 +470,62 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 
-        <span class="c1"># Handle transforming our center points. CartoPy doesn&#39;t like 1D barbs</span>
-        <span class="c1"># TODO: This can be removed for cartopy &gt; 0.14.3</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;projection&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">trans</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">_as_mpl_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">transform_vectors</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
 
-            <span class="c1"># Since we&#39;ve re-implemented CartoPy&#39;s barbs, we need to skip calling it here</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
+<div class="viewcode-block" id="StationPlot.plot_arrow"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">plot_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;At the center of the station model plot wind arrows.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto matplotlib&#39;s</span>
+<span class="sd">        :meth:`~matplotlib.axes.Axes.quiver` function; this is useful for specifying things</span>
+<span class="sd">        like color or line width.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : array-like</span>
+<span class="sd">            The data to use for the u-component of the arrows.</span>
+<span class="sd">        v : array-like</span>
+<span class="sd">            The data to use for the v-component of the arrows.</span>
+<span class="sd">        plot_units: `pint.unit`</span>
+<span class="sd">            Units to plot in (performing conversion if necessary). Defaults to given units.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to pass to matplotlib&#39;s</span>
+<span class="sd">            :meth:`~matplotlib.axes.Axes.barbs` function.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        plot_barb, plot_parameter, plot_symbol, plot_text</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># If plot_units specified, convert the data to those units</span>
+        <span class="n">plotting_units</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_units&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotting_units</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">plotting_units</span><span class="p">)</span>
+
+        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pivot&#39;</span><span class="p">:</span> <span class="s1">&#39;tail&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;scale_units&#39;</span><span class="p">:</span> <span class="s1">&#39;inches&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">}</span>
+        <span class="n">defaults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Remove old arrows</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_plotting_units</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">plotting_units</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle conversion to plotting units for barbs and arrows.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">plotting_units</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">plotting_units</span><span class="p">)</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">plotting_units</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;To convert to plotting units, units must be attached to &#39;</span>
+                                 <span class="s1">&#39;u and v wind components.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Strip units, CartoPy transform doesn&#39;t like</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
 
     <span class="k">def</span> <span class="nf">_make_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Assemble kwargs as necessary.</span>
@@ -530,7 +558,7 @@
 
     <span class="k">def</span> <span class="nf">_handle_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Process locations to get a consistent set of tuples for location.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_names</span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
         <span class="n">xoff</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">=</span> <span class="n">location</span>
         <span class="k">return</span> <span class="n">xoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span></div>
@@ -763,7 +791,7 @@
                     <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
                         <span class="n">plotter</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return string representation of layout.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;{&#39;</span>
                 <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: (</span><span class="si">{1[0].name}</span><span class="s1">, </span><span class="si">{1[1]}</span><span class="s1">, ...)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
@@ -818,7 +846,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -855,7 +883,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

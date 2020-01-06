@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cape_cin &mdash; MetPy 0.11.0</title>
+  <title>cape_cin &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="critical_angle" href="metpy.calc.critical_angle.html"/>
         <link rel="prev" title="bunkers_storm_motion" href="metpy.calc.bunkers_storm_motion.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -140,6 +140,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer.html">mixed_layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
@@ -163,7 +164,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -249,12 +249,12 @@
 <h1>cape_cin<a class="headerlink" href="#cape-cin" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.cape_cin">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">cape_cin</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">parcel_profile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#cape_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.cape_cin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">cape_cin</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">parcel_profile</em>, <em class="sig-param">which_lfc='bottom'</em>, <em class="sig-param">which_el='top'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#cape_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.cape_cin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate CAPE and CIN.</p>
 <p>Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
 of a given upper air profile and parcel path. CIN is integrated between the surface and
-LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points of
-the measured temperature profile and parcel profile are linearly interpolated.</p>
+LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points
+of the measured temperature profile and parcel profile are logarithmically interpolated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -263,6 +263,10 @@ lowest pressure.</p></li>
 <li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature corresponding to pressure.</p></li>
 <li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dewpoint corresponding to pressure.</p></li>
 <li><p><strong>parcel_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature profile of the parcel.</p></li>
+<li><p><strong>which_lfc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Choose which LFC to integrate from. Valid options are ‘top’, ‘bottom’, ‘wide’,
+and ‘most_cape’. Default is ‘bottom’.</p></li>
+<li><p><strong>which_el</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Choose which EL to integrate to. Valid options are ‘top’, ‘bottom’, ‘wide’,
+and ‘most_cape’. Default is ‘top’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -322,7 +326,7 @@ lowest pressure.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -359,7 +363,7 @@ lowest pressure.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

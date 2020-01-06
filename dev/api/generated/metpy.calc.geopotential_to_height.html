@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>geopotential_to_height &mdash; MetPy 0.11.0</title>
+  <title>geopotential_to_height &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="height_to_geopotential" href="metpy.calc.height_to_geopotential.html"/>
         <link rel="prev" title="dry_static_energy" href="metpy.calc.dry_static_energy.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -159,7 +159,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -246,36 +245,49 @@
 <dl class="function">
 <dt id="metpy.calc.geopotential_to_height">
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">geopotential_to_height</code><span class="sig-paren">(</span><em class="sig-param">geopot</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#geopotential_to_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.geopotential_to_height" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute height from a given geopotential.</p>
-<p>Calculates the height from geopotential using the following formula, which is derived from
-the definition of geopotential as given in <a class="reference internal" href="../../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a> Pg. 69 Eq 3.21:</p>
+<dd><p>Compute height above sea level from a given geopotential.</p>
+<p>Calculates the height above mean sea level from geopotential using the following formula,
+which is derived from the definition of geopotential as given in <a class="reference internal" href="../../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a> Pg. 69 Eq
+3.21, along with an approximation for variation of gravity with altitude:</p>
 <div class="math notranslate nohighlight">
-\[z = \frac{1}{\frac{1}{R_e} - \frac{\Phi}{G m_e}} - R_e\]</div>
+\[z = \frac{\Phi R_e}{gR_e - \Phi}\]</div>
 <p>(where <span class="math notranslate nohighlight">\(\Phi\)</span> is geopotential, <span class="math notranslate nohighlight">\(z\)</span> is height, <span class="math notranslate nohighlight">\(R_e\)</span> is average Earth
-radius, <span class="math notranslate nohighlight">\(G\)</span> is the (universal) gravitational constant, and <span class="math notranslate nohighlight">\(m_e\)</span> is the
-approximate mass of Earth.)</p>
+radius, and <span class="math notranslate nohighlight">\(g\)</span> is standard gravity.)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>geopotential</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Geopotential</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding height value(s)</p>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding value(s) of height above sea level</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">metpy.calc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">metpy.calc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">geopot</span> <span class="o">=</span> <span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">height_to_geopotential</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">geopot</span>
-<span class="go">&lt;Quantity([     0.           9817.46806283  19631.85526579  29443.16305887</span>
-<span class="go">39251.39289118  49056.54621087  58858.62446524  68657.62910064</span>
-<span class="go">78453.56156252  88246.42329544  98036.21574305], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
+<span class="go">&lt;Quantity([     0.           9805.11102602  19607.14506998  29406.10358006</span>
+<span class="go">39201.98800351  48994.79978671  58784.54037509  68571.21121319</span>
+<span class="go">78354.81374467  88135.34941224  97912.81965774], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">height</span> <span class="o">=</span> <span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">geopotential_to_height</span><span class="p">(</span><span class="n">geopot</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">height</span>
 <span class="go">&lt;Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.</span>
 <span class="go">9000.  10000.], &#39;meter&#39;)&gt;</span>
 </pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>This calculation approximates <span class="math notranslate nohighlight">\(g(z)\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[g(z) = g_0 \left( \frac{R_e}{R_e + z} \right)^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(g_0\)</span> is standard gravity. It thereby accounts for the average effects of
+centrifugal force on apparent gravity, but neglects latitudinal variations due to
+centrifugal force and Earth’s eccentricity.</p>
+<p>(Prior to MetPy v0.11, this formula instead calculated <span class="math notranslate nohighlight">\(g(z)\)</span> from Newton’s Law of
+Gravitation assuming a spherical Earth and no centrifugal force effects.)</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.height_to_geopotential.html#metpy.calc.height_to_geopotential" title="metpy.calc.height_to_geopotential"><code class="xref py py-func docutils literal notranslate"><span class="pre">height_to_geopotential()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -304,7 +316,7 @@ approximate mass of Earth.)</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -341,7 +353,7 @@ approximate mass of Earth.)</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

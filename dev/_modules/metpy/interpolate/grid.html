@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.interpolate.grid &mdash; MetPy 0.11.0</title>
+  <title>metpy.interpolate.grid &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -193,22 +193,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for metpy.interpolate.grid</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) 2018 MetPy Developers.</span>
+<span></span><span class="c1"># Copyright (c) 2018,2019 MetPy Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Tools and calculations for interpolating specifically to a grid.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="c1"># Change when Python 2.7 no longer supported</span>
-<span class="kn">import</span> <span class="nn">metpy.calc</span>
-<span class="kn">from</span> <span class="nn">.points</span> <span class="k">import</span> <span class="p">(</span><span class="n">interpolate_to_points</span><span class="p">,</span> <span class="n">inverse_distance_to_points</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.points</span> <span class="kn">import</span> <span class="p">(</span><span class="n">interpolate_to_points</span><span class="p">,</span> <span class="n">inverse_distance_to_points</span><span class="p">,</span>
                      <span class="n">natural_neighbor_to_points</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">deprecated</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..pandas</span> <span class="k">import</span> <span class="n">preprocess_pandas</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..pandas</span> <span class="kn">import</span> <span class="n">preprocess_pandas</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -329,7 +324,7 @@
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;west&#39;</span><span class="p">:</span> <span class="n">west</span><span class="p">,</span> <span class="s1">&#39;south&#39;</span><span class="p">:</span> <span class="n">south</span><span class="p">,</span> <span class="s1">&#39;east&#39;</span><span class="p">:</span> <span class="n">east</span><span class="p">,</span> <span class="s1">&#39;north&#39;</span><span class="p">:</span> <span class="n">north</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="natural_neighbor_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.natural_neighbor_to_grid.html#metpy.gridding.natural_neighbor_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="natural_neighbor_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.natural_neighbor_to_grid.html#metpy.interpolate.natural_neighbor_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">def</span> <span class="nf">natural_neighbor_to_grid</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a natural neighbor interpolation of the given points to a regular grid.</span>
 
@@ -367,21 +362,7 @@
     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="natural_neighbor"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.natural_neighbor.html#metpy.gridding.natural_neighbor">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="s1">&#39; This function has been renamed natural_neighbor_to_grid.&#39;</span><span class="p">,</span>
-            <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">natural_neighbor</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap natural_neighbor_to_grid for deprecated natural_neighbor function.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">natural_neighbor_to_grid</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span></div>
-
-
-<span class="n">natural_neighbor</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">natural_neighbor_to_grid</span><span class="o">.</span><span class="vm">__doc__</span>
-                            <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
-                            <span class="s1">&#39;to `natural_neighbor_to_grid` and will be removed from MetPy in&#39;</span>
-                            <span class="s1">&#39; 0.12.0.&#39;</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="inverse_distance_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.inverse_distance_to_grid.html#metpy.gridding.inverse_distance_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="inverse_distance_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.inverse_distance_to_grid.html#metpy.interpolate.inverse_distance_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">def</span> <span class="nf">inverse_distance_to_grid</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">min_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate an inverse distance interpolation of the given points to a regular grid.</span>
@@ -434,23 +415,7 @@
     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="inverse_distance"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.inverse_distance.html#metpy.gridding.inverse_distance">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="s1">&#39; This function has been renamed inverse_distance_to_grid.&#39;</span><span class="p">,</span>
-            <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">inverse_distance</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">min_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap inverse_distance_to_grid for deprecated inverse_distance function.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">inverse_distance_to_grid</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
-                                    <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span> <span class="n">min_neighbors</span><span class="o">=</span><span class="n">min_neighbors</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span></div>
-
-
-<span class="n">inverse_distance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">inverse_distance_to_grid</span><span class="o">.</span><span class="vm">__doc__</span>
-                            <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
-                            <span class="s1">&#39;to `inverse_distance_to_grid` and will be removed from MetPy in&#39;</span>
-                            <span class="s1">&#39; 0.12.0.&#39;</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="interpolate_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.gridding.interpolate_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="interpolate_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_pandas</span>
 <span class="k">def</span> <span class="nf">interpolate_to_grid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
                         <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">kappa_star</span><span class="o">=</span><span class="mf">5.052</span><span class="p">,</span>
@@ -535,9 +500,9 @@
     <span class="k">return</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="interpolate_to_isosurface"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_to_isosurface.html#metpy.gridding.interpolate_to_isosurface">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="interpolate_to_isosurface"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_to_isosurface.html#metpy.interpolate.interpolate_to_isosurface">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_pandas</span>
-<span class="k">def</span> <span class="nf">interpolate_to_isosurface</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="n">interp_var</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">interpolate_to_isosurface</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="n">interp_var</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">bottom_up_search</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Linear interpolation of a variable to a given vertical level from given values.</span>
 
 <span class="sd">    This function assumes that highest vertical level (lowest pressure) is zeroth index.</span>
@@ -554,9 +519,6 @@
 <span class="sd">        given level (e.g., potential temperature on isobaric levels)</span>
 <span class="sd">    level: int or float</span>
 <span class="sd">        Desired interpolated level (e.g., 2 PVU surface)</span>
-
-<span class="sd">    Other Parameters</span>
-<span class="sd">    ----------------</span>
 <span class="sd">    bottom_up_search : bool, optional</span>
 <span class="sd">        Controls whether to search for levels bottom-up, or top-down. Defaults to</span>
 <span class="sd">        True, which is bottom-up search.</span>
@@ -574,13 +536,10 @@
 <span class="sd">    tropopause (e.g., 2 PVU surface)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Change when Python 2.7 no longer supported</span>
-    <span class="c1"># Pull out keyword arguments</span>
-    <span class="n">bottom_up_search</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom_up_search&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-
+    <span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">find_bounding_indices</span>
     <span class="c1"># Find index values above and below desired interpolated surface value</span>
-    <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span> <span class="o">=</span> <span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">find_bounding_indices</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="p">[</span><span class="n">level</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                          <span class="n">from_below</span><span class="o">=</span><span class="n">bottom_up_search</span><span class="p">)</span>
+    <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span> <span class="o">=</span> <span class="n">find_bounding_indices</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="p">[</span><span class="n">level</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                               <span class="n">from_below</span><span class="o">=</span><span class="n">bottom_up_search</span><span class="p">)</span>
 
     <span class="c1"># Linear interpolation of variable to interpolated surface value</span>
     <span class="n">interp_level</span> <span class="o">=</span> <span class="p">(((</span><span class="n">level</span> <span class="o">-</span> <span class="n">level_var</span><span class="p">[</span><span class="n">above</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">level_var</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">-</span> <span class="n">level_var</span><span class="p">[</span><span class="n">above</span><span class="p">]))</span>
@@ -593,26 +552,6 @@
     <span class="n">interp_level</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">minvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">interp_var</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">minvar</span><span class="p">]</span>
     <span class="n">interp_level</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">maxvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">interp_var</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">maxvar</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">interp_level</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="interpolate"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate.html#metpy.gridding.interpolate">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="s1">&#39; This function has been renamed interpolate_to_grid.&#39;</span><span class="p">,</span>
-            <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
-                <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">kappa_star</span><span class="o">=</span><span class="mf">5.052</span><span class="p">,</span>
-                <span class="n">search_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rbf_func</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">rbf_smooth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">boundary_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap interpolate_to_grid for deprecated interpolate function.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">interpolate_to_grid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="n">interp_type</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="n">hres</span><span class="p">,</span>
-                               <span class="n">minimum_neighbors</span><span class="o">=</span><span class="n">minimum_neighbors</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
-                               <span class="n">kappa_star</span><span class="o">=</span><span class="n">kappa_star</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="n">search_radius</span><span class="p">,</span>
-                               <span class="n">rbf_func</span><span class="o">=</span><span class="n">rbf_func</span><span class="p">,</span> <span class="n">rbf_smooth</span><span class="o">=</span><span class="n">rbf_smooth</span><span class="p">,</span>
-                               <span class="n">boundary_coords</span><span class="o">=</span><span class="n">boundary_coords</span><span class="p">)</span></div>
-
-
-<span class="n">interpolate</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">interpolate_to_grid</span><span class="o">.</span><span class="vm">__doc__</span>
-                       <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed to &#39;</span>
-                       <span class="s1">&#39;`interpolate_to_grid` and will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -628,7 +567,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -665,7 +604,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

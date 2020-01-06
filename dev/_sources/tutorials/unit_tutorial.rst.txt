@@ -39,6 +39,7 @@ you on your way to utilizing the computation functions in MetPy.
 
 
 
+
 Simple Calculation
 ------------------
 
@@ -67,6 +68,7 @@ attribute of the unit registry:
  .. code-block:: none
 
     10.4 inch 20 meter
+
 
 
 
@@ -101,6 +103,7 @@ attached, the units are tracked for you.
 
 
 
+
 That's great, now we have an area, but it is not in a very useful unit still.
 Units can be converted using the `to()` method. While you won't see square meters in
 the units list, we can parse complex/compound units as strings:
@@ -122,6 +125,7 @@ the units list, we can parse complex/compound units as strings:
  .. code-block:: none
 
     5.2832 meter ** 2
+
 
 
 
@@ -168,6 +172,7 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 
 
 
+
 We can add a delta to an offset unit as well since it is a relative change.
 
 
@@ -187,6 +192,7 @@ We can add a delta to an offset unit as well since it is a relative change.
  .. code-block:: none
 
     27.77777777777778 degC
+
 
 
 
@@ -215,6 +221,7 @@ delta version of the unit.
 
 
 
+
 .. code-block:: default
 
 
@@ -231,6 +238,7 @@ delta version of the unit.
  .. code-block:: none
 
     263 kelvin
+
 
 
 
@@ -264,6 +272,7 @@ units. Abbreviations or full unit names are acceptable.
 
 
 
+
 Common Mistakes
 ---------------
 There are a few common mistakes the new users often make. Be sure to check
@@ -279,7 +288,7 @@ these when you're having issues
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.083 seconds)
+   **Total running time of the script:** ( 0 minutes  0.006 seconds)
 
 
 .. _sphx_glr_download_tutorials_unit_tutorial.py:

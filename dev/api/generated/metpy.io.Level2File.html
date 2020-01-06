@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Level2File &mdash; MetPy 0.11.0</title>
+  <title>Level2File &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="io" href="metpy.io.html"/>
         <link rel="next" title="Level3File" href="metpy.io.Level3File.html"/>
         <link rel="prev" title="GiniFile" href="metpy.io.GiniFile.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -129,6 +129,8 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.io.html">io</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.parse_metar_file.html">parse_metar_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.GiniFile.html">GiniFile</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Level2File</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-io-level2file">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.io.Level2File</span></code></a></li>
@@ -141,7 +143,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -361,7 +362,7 @@ determined.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. Gzip-ed files are
 recognized with the extension ‘.gz’, as are bzip2-ed files with
-the extension <a class="reference external" href="https://docs.python.org/3/library/bz2.html#module-bz2" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bz2</span></code></a> If <em class="xref py py-obj">fname</em> is a file-like object,
+the extension <a class="reference external" href="https://docs.python.org/3/library/bz2.html#module-bz2" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bz2</span></code></a> If <em class="xref py py-obj">filename</em> is a file-like object,
 this will be read from directly.</p>
 </dd>
 </dl>
@@ -393,34 +394,37 @@ this will be read from directly.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg1_fmt" title="metpy.io.Level2File.msg1_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg1_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg2_fmt" title="metpy.io.Level2File.msg2_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg2_fmt</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg2_additional_fmt" title="metpy.io.Level2File.msg2_additional_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg2_additional_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg31_data_hdr_fmt" title="metpy.io.Level2File.msg31_data_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg31_data_hdr_fmt</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg2_fmt" title="metpy.io.Level2File.msg2_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg2_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg31_el_const_fmt" title="metpy.io.Level2File.msg31_el_const_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg31_el_const_fmt</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg31_data_hdr_fmt" title="metpy.io.Level2File.msg31_data_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg31_data_hdr_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg31_vol_const_fmt" title="metpy.io.Level2File.msg31_vol_const_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg31_vol_const_fmt</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg31_el_const_fmt" title="metpy.io.Level2File.msg31_el_const_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg31_el_const_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg_hdr_fmt" title="metpy.io.Level2File.msg_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg_hdr_fmt</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg31_vol_const_fmt" title="metpy.io.Level2File.msg31_vol_const_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg31_vol_const_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.rad_const_fmt_v1" title="metpy.io.Level2File.rad_const_fmt_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rad_const_fmt_v1</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.msg_hdr_fmt" title="metpy.io.Level2File.msg_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg_hdr_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.rad_const_fmt_v2" title="metpy.io.Level2File.rad_const_fmt_v2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rad_const_fmt_v2</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.rad_const_fmt_v1" title="metpy.io.Level2File.rad_const_fmt_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rad_const_fmt_v1</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.vcp_el_fmt" title="metpy.io.Level2File.vcp_el_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcp_el_fmt</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.rad_const_fmt_v2" title="metpy.io.Level2File.rad_const_fmt_v2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rad_const_fmt_v2</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.vcp_fmt" title="metpy.io.Level2File.vcp_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcp_fmt</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.vcp_el_fmt" title="metpy.io.Level2File.vcp_el_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcp_el_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.vol_hdr_fmt" title="metpy.io.Level2File.vol_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vol_hdr_fmt</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.vcp_fmt" title="metpy.io.Level2File.vcp_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcp_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level2File.vol_hdr_fmt" title="metpy.io.Level2File.vol_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vol_hdr_fmt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -471,6 +475,11 @@ this will be read from directly.</p>
 <dl class="attribute">
 <dt id="metpy.io.Level2File.msg1_fmt">
 <code class="sig-name descname">msg1_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.Level2File.msg1_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.Level2File.msg2_additional_fmt">
+<code class="sig-name descname">msg2_additional_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.Level2File.msg2_additional_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -532,7 +541,7 @@ this will be read from directly.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. Gzip-ed files are
 recognized with the extension ‘.gz’, as are bzip2-ed files with
-the extension <a class="reference external" href="https://docs.python.org/3/library/bz2.html#module-bz2" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bz2</span></code></a> If <em class="xref py py-obj">fname</em> is a file-like object,
+the extension <a class="reference external" href="https://docs.python.org/3/library/bz2.html#module-bz2" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bz2</span></code></a> If <em class="xref py py-obj">filename</em> is a file-like object,
 this will be read from directly.</p>
 </dd>
 </dl>
@@ -572,7 +581,7 @@ this will be read from directly.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -609,7 +618,7 @@ this will be read from directly.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

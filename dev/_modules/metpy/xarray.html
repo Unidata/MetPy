@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.xarray &mdash; MetPy 0.11.0</title>
+  <title>metpy.xarray &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -210,21 +210,21 @@
 
 <span class="sd">See Also: :doc:`xarray with MetPy Tutorial &lt;/tutorials/xarray_tutorial&gt;`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-<span class="kn">from</span> <span class="nn">._vendor.xarray</span> <span class="k">import</span> <span class="n">either_dict_or_kwargs</span><span class="p">,</span> <span class="n">expanded_indexer</span><span class="p">,</span> <span class="n">is_dict_like</span>
-<span class="kn">from</span> <span class="nn">.units</span> <span class="k">import</span> <span class="n">DimensionalityError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">._vendor.xarray</span> <span class="kn">import</span> <span class="n">either_dict_or_kwargs</span><span class="p">,</span> <span class="n">expanded_indexer</span><span class="p">,</span> <span class="n">is_dict_like</span>
+<span class="kn">from</span> <span class="nn">.deprecation</span> <span class="kn">import</span> <span class="n">metpyDeprecation</span>
+<span class="kn">from</span> <span class="nn">.units</span> <span class="kn">import</span> <span class="n">DimensionalityError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">readable_to_cf_axes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;X&#39;</span><span class="p">}</span>
-<span class="n">cf_to_readable_axes</span> <span class="o">=</span> <span class="p">{</span><span class="n">readable_to_cf_axes</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">readable_to_cf_axes</span><span class="p">}</span>
+<span class="n">metpy_axes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">]</span>
+<span class="n">cf_to_metpy_axes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">:</span> <span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">}</span>  <span class="c1"># TODO: Remove in 1.0</span>
 
 <span class="c1"># Define the criteria for coordinate matches</span>
 <span class="n">coordinate_criteria</span> <span class="o">=</span> <span class="p">{</span>
@@ -238,19 +238,24 @@
                      <span class="s1">&#39;height_above_geopotential_datum&#39;</span><span class="p">,</span> <span class="s1">&#39;height_above_reference_ellipsoid&#39;</span><span class="p">,</span>
                      <span class="s1">&#39;height_above_mean_sea_level&#39;</span><span class="p">},</span>
         <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;projection_y_coordinate&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span>
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;projection_x_coordinate&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="s1">&#39;longitude&#39;</span>
+        <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="s1">&#39;longitude&#39;</span>
     <span class="p">},</span>
     <span class="s1">&#39;_CoordinateAxisType&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">,</span>
         <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;GeoZ&#39;</span><span class="p">,</span> <span class="s1">&#39;Height&#39;</span><span class="p">,</span> <span class="s1">&#39;Pressure&#39;</span><span class="p">},</span>
         <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;GeoY&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="s1">&#39;Lat&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="s1">&#39;Lat&#39;</span><span class="p">,</span>
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;GeoX&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="s1">&#39;Lon&#39;</span>
+        <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="s1">&#39;Lon&#39;</span>
     <span class="p">},</span>
-    <span class="s1">&#39;axis&#39;</span><span class="p">:</span> <span class="n">readable_to_cf_axes</span><span class="p">,</span>
+    <span class="s1">&#39;axis&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;X&#39;</span>
+    <span class="p">},</span>
     <span class="s1">&#39;positive&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="s1">&#39;down&#39;</span><span class="p">}</span>
     <span class="p">},</span>
@@ -259,12 +264,12 @@
             <span class="s1">&#39;match&#39;</span><span class="p">:</span> <span class="s1">&#39;dimensionality&#39;</span><span class="p">,</span>
             <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;Pa&#39;</span>
         <span class="p">},</span>
-        <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;match&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span>
             <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;degree_north&#39;</span><span class="p">,</span> <span class="s1">&#39;degree_N&#39;</span><span class="p">,</span> <span class="s1">&#39;degreeN&#39;</span><span class="p">,</span> <span class="s1">&#39;degrees_north&#39;</span><span class="p">,</span> <span class="s1">&#39;degrees_N&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;degreesN&#39;</span><span class="p">}</span>
         <span class="p">},</span>
-        <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;match&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span>
             <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;degree_east&#39;</span><span class="p">,</span> <span class="s1">&#39;degree_E&#39;</span><span class="p">,</span> <span class="s1">&#39;degreeE&#39;</span><span class="p">,</span> <span class="s1">&#39;degrees_east&#39;</span><span class="p">,</span> <span class="s1">&#39;degrees_E&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;degreesE&#39;</span><span class="p">}</span>
@@ -272,12 +277,12 @@
     <span class="p">},</span>
     <span class="s1">&#39;regular_expression&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;time[0-9]*&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|&#39;</span>
+        <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|&#39;</span>
                      <span class="sa">r</span><span class="s1">&#39;isotherm)[a-z_]*[0-9]*&#39;</span><span class="p">),</span>
         <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;y&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;x?lat[a-z0-9]*&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;x?lat[a-z0-9]*&#39;</span><span class="p">,</span>
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;x?lon[a-z0-9]*&#39;</span>
+        <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;x?lon[a-z0-9]*&#39;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -285,7 +290,7 @@
 
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor">[docs]</a><span class="nd">@xr</span><span class="o">.</span><span class="n">register_dataarray_accessor</span><span class="p">(</span><span class="s1">&#39;metpy&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">MetPyDataArrayAccessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MetPyDataArrayAccessor</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provide custom attributes and methods on xarray DataArrays for MetPy functionality.</span>
 
 <span class="sd">    This accessor provides several convenient attributes and methods through the `.metpy`</span>
@@ -302,11 +307,11 @@
 <span class="sd">        Coordinates:</span>
 <span class="sd">          * lon      (lon) int64 -105 -104</span>
 <span class="sd">        Attributes:</span>
-<span class="sd">            _metpy_axis:  X</span>
+<span class="sd">            _metpy_axis:  x,longitude</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_array</span><span class="p">):</span>  <span class="c1"># noqa: D107</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_array</span><span class="p">):</span>  <span class="c1"># noqa: D107</span>
         <span class="c1"># Initialize accessor with a DataArray. (Do not use directly).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span> <span class="o">=</span> <span class="n">data_array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
@@ -357,24 +362,41 @@
             <span class="k">if</span> <span class="n">coord_map</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coord_map</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
                 <span class="n">coord_map</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">[</span><span class="n">coord_map</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span>
 
+        <span class="c1"># Adapt to old CF axis dict keys</span>
+        <span class="c1"># TODO: Remove in v1.0</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">cf_axis</span> <span class="ow">in</span> <span class="n">coord_map</span> <span class="k">for</span> <span class="n">cf_axis</span> <span class="ow">in</span> <span class="n">cf_to_metpy_axes</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The use of CF axes types in the coordinate mapping has been &#39;</span>
+                          <span class="s1">&#39;deprecated and will be removed in v1.0.&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
+            <span class="n">coord_map</span> <span class="o">=</span> <span class="p">{(</span><span class="n">cf_to_metpy_axes</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+                          <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">cf_to_metpy_axes</span> <span class="k">else</span> <span class="n">axis</span><span class="p">):</span> <span class="n">coord</span>
+                         <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coord_map</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">return</span> <span class="n">coord_map</span>
+
 <div class="viewcode-block" id="MetPyDataArrayAccessor.assign_coordinates"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.assign_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">assign_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign the given coordinates to the given CF axis types.</span>
+        <span class="sd">&quot;&quot;&quot;Assign the given coordinates to the given MetPy axis types.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        coordinates : dict or None</span>
-<span class="sd">            Mapping from axis types (&#39;T&#39;, &#39;Z&#39;, &#39;Y&#39;, &#39;X&#39;) to coordinates of this DataArray.</span>
-<span class="sd">            Coordinates can either be specified directly or by their name. If ``None``, clears</span>
-<span class="sd">            the `_metpy_axis` attribute on all coordinates, which will trigger reparsing of</span>
-<span class="sd">            all coordinates on next access.</span>
+<span class="sd">            Mapping from axis types (&#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, &#39;latitude&#39;, &#39;x&#39;, &#39;longitude&#39;) to</span>
+<span class="sd">            coordinates of this DataArray. Coordinates can either be specified directly or by</span>
+<span class="sd">            their name. If ``None``, clears the `_metpy_axis` attribute on all coordinates,</span>
+<span class="sd">            which will trigger reparsing of all coordinates on next access.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Prior to v0.12, ``coordinates`` was taken as a mapping from CF axis types</span>
+<span class="sd">        (&#39;T&#39;, &#39;Z&#39;, &#39;Y&#39;, &#39;X&#39;) to coordinates. This behavior has been deprecated and will be</span>
+<span class="sd">        be removed in v1.0.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">coordinates</span><span class="p">:</span>
             <span class="c1"># Assign the _metpy_axis attributes according to supplied mapping</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_fixup_coordinate_map</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+            <span class="n">coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixup_coordinate_map</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">coordinates</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis</span>
+                    <span class="n">_assign_axis</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Clear _metpy_axis attribute on all coordinates</span>
             <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -383,42 +405,37 @@
     <span class="k">def</span> <span class="nf">_generate_coordinate_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a coordinate map via CF conventions and other methods.&quot;&quot;&quot;</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="c1"># Parse all the coordinates, attempting to identify x, y, vertical, time</span>
-        <span class="n">coord_lists</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Z&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="c1"># Parse all the coordinates, attempting to identify x, longitude, y, latitude,</span>
+        <span class="c1"># vertical, time</span>
+        <span class="n">coord_lists</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                       <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="p">[]}</span>
         <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">:</span>
-
             <span class="c1"># Identify the coordinate type using check_axis helper</span>
-            <span class="n">axes_to_check</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,),</span>
-                <span class="s1">&#39;Z&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;vertical&#39;</span><span class="p">,),</span>
-                <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span>
-            <span class="p">}</span>
-            <span class="k">for</span> <span class="n">axis_cf</span><span class="p">,</span> <span class="n">axes_readable</span> <span class="ow">in</span> <span class="n">axes_to_check</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="o">*</span><span class="n">axes_readable</span><span class="p">):</span>
-                    <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis_cf</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord_var</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">coord_lists</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+                    <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord_var</span><span class="p">)</span>
 
-        <span class="c1"># Resolve any coordinate conflicts</span>
-        <span class="n">axis_conflicts</span> <span class="o">=</span> <span class="p">[</span><span class="n">axis</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">coord_lists</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axis_conflicts</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_axis_conflict</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">coord_lists</span><span class="p">)</span>
+        <span class="c1"># Fill in x/y with longitude/latitude if x/y not otherwise present</span>
+        <span class="k">for</span> <span class="n">geometric</span><span class="p">,</span> <span class="n">graticule</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord_lists</span><span class="p">[</span><span class="n">geometric</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord_lists</span><span class="p">[</span><span class="n">graticule</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">coord_lists</span><span class="p">[</span><span class="n">geometric</span><span class="p">]</span> <span class="o">=</span> <span class="n">coord_lists</span><span class="p">[</span><span class="n">graticule</span><span class="p">]</span>
+
+        <span class="c1"># Filter out multidimensional coordinates where not allowed</span>
+        <span class="n">require_1d_coord</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">]</span>  <span class="c1"># TODO: Add &#39;y&#39;, &#39;x&#39; in v1.0</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">require_1d_coord</span><span class="p">:</span>
+            <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">if</span> <span class="n">coord</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Resolve any coordinate type duplication</span>
+        <span class="n">axis_duplicates</span> <span class="o">=</span> <span class="p">[</span><span class="n">axis</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">coord_lists</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axis_duplicates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_axis_duplicates</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">coord_lists</span><span class="p">)</span>
 
         <span class="c1"># Collapse the coord_lists to a coord_map</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">axis</span><span class="p">:</span> <span class="p">(</span><span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">coord_lists</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_resolve_axis_conflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">coord_lists</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Handle axis conflicts if they arise.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">):</span>
-            <span class="c1"># Horizontal coordinate, can be projection x/y or lon/lat. So, check for</span>
-            <span class="c1"># existence of unique projection x/y (preferred over lon/lat) and use that if</span>
-            <span class="c1"># it exists uniquely</span>
-            <span class="n">projection_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord_var</span> <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">if</span>
-                                 <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">projection_coords</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">projection_coords</span>
-                <span class="k">return</span>
-
+    <span class="k">def</span> <span class="nf">_resolve_axis_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">coord_lists</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle coordinate duplication for an axis type if it arises.&quot;&quot;&quot;</span>
         <span class="c1"># If one and only one of the possible axes is a dimension, use it</span>
         <span class="n">dimension_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord_var</span> <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">if</span>
                             <span class="n">coord_var</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">dims</span><span class="p">]</span>
@@ -427,32 +444,41 @@
             <span class="k">return</span>
 
         <span class="c1"># Ambiguous axis, raise warning and do not parse</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;More than one &#39;</span> <span class="o">+</span> <span class="n">cf_to_readable_axes</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; coordinate present &#39;</span>
-                      <span class="o">+</span> <span class="s1">&#39;for variable &quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;More than one &#39;</span> <span class="o">+</span> <span class="n">axis</span> <span class="o">+</span> <span class="s1">&#39; coordinate present for variable &quot;&#39;</span>
+                      <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span>
         <span class="n">coord_lists</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_metpy_axis_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cf_axis</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_metpy_axis_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metpy_axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Search for cached _metpy_axis attribute on the coordinates, otherwise parse.&quot;&quot;&quot;</span>
         <span class="c1"># Search for coord with proper _metpy_axis</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">cf_axis</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">metpy_axis</span> <span class="ow">in</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">coord_var</span>
 
         <span class="c1"># Opportunistically parse all coordinates, and assign if not already assigned</span>
         <span class="n">coord_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_coordinate_map</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">coord_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">coord_var</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">coord</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">axis</span>
-                                                 <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">):</span>
-                <span class="n">coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">coord_var</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">axis</span> <span class="ow">in</span> <span class="n">coord</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">)):</span>
+                <span class="c1"># Warn if assigning multidimensional coord to x/y</span>
+                <span class="c1"># TODO: Remove in v1.0</span>
+                <span class="k">if</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">):</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Multidimensional coordinate </span><span class="si">{coord_var.name}</span><span class="s1"> assigned for &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;axis &quot;</span><span class="si">{axis}</span><span class="s1">&quot;. This behavior has been deprecated and will &#39;</span>
+                                  <span class="s1">&#39;be removed in v1.0 (only one-dimensional coordinates will &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;be available for the &quot;</span><span class="si">{axis}</span><span class="s1">&quot; axis).&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
+
+                <span class="n">_assign_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
 
         <span class="c1"># Return parsed result (can be None if none found)</span>
-        <span class="k">return</span> <span class="n">coord_map</span><span class="p">[</span><span class="n">cf_axis</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">coord_map</span><span class="p">[</span><span class="n">metpy_axis</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinate variable corresponding to the given individual axis type.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">readable_to_cf_axes</span><span class="p">:</span>
-            <span class="n">coord_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metpy_axis_search</span><span class="p">(</span><span class="n">readable_to_cf_axes</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">metpy_axes</span><span class="p">:</span>
+            <span class="n">coord_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metpy_axis_search</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">coord_var</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">coord_var</span>
             <span class="k">else</span><span class="p">:</span>
@@ -467,7 +493,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        args : str</span>
 <span class="sd">            Strings describing the axes type(s) to obtain. Currently understood types are</span>
-<span class="sd">            &#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, and &#39;x&#39;.</span>
+<span class="sd">            &#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, &#39;latitude&#39;, &#39;x&#39;, and &#39;longitude&#39;.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -491,13 +517,39 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the y or latitude coordinate.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the y coordinate.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Prior to version v0.12, this attribute allowed multidimensional coordinates (including</span>
+<span class="sd">        latitude when another y coordinate was not available). This behavior has been</span>
+<span class="sd">        deprecated and will be removed in v1.0.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axis</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">latitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the latitude coordinate (if it exists).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axis</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the x or longitude coordinate.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the x coordinate.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Prior to version v0.12, this attribute allowed multidimensional coordinates (including</span>
+<span class="sd">        longitude when another x coordinate was not available). This behavior has been</span>
+<span class="sd">        deprecated and will be removed in v1.0.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axis</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">longitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the longitude coordinate (if it exists).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axis</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.coordinates_identical"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.coordinates_identical">[docs]</a>    <span class="k">def</span> <span class="nf">coordinates_identical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return whether or not the coordinates of other match this DataArray&#39;s.&quot;&quot;&quot;</span>
@@ -514,16 +566,31 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.as_timestamp"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.as_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">as_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the data as unix timestamp (for easier time derivatives).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the data as unix timestamp (for easier time derivatives).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function has been deprecated and will be removed in v1.0. For the purposes of</span>
+<span class="sd">        time derivatives, use ``time_deltas`` instead, which allows sub-second precision.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;This function has been deprecated and will be removed in v1.0. Use &#39;</span>
+                      <span class="s1">&#39;time_deltas instead.&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span>
                  <span class="p">{</span><span class="s1">&#39;standard_name&#39;</span><span class="p">,</span> <span class="s1">&#39;long_name&#39;</span><span class="p">,</span> <span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="s1">&#39;_metpy_axis&#39;</span><span class="p">}</span>
                  <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">attrs</span><span class="p">)}</span>
         <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;seconds&#39;</span>
-        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[s]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">),</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[s]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">),</span>
                             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                             <span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
                             <span class="n">dims</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
                             <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">time_deltas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the time difference of the data in seconds (to microsecond precision).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;timedelta64[us]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+                <span class="o">/</span> <span class="mf">1e6</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.find_axis_name"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.find_axis_name">[docs]</a>    <span class="k">def</span> <span class="nf">find_axis_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the name of the axis corresponding to the given identifier.</span>
@@ -538,7 +605,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="c1"># If an integer, use the corresponding dimension</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">axis</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">readable_to_cf_axes</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">axis</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">metpy_axes</span><span class="p">:</span>
             <span class="c1"># If not a dimension name itself, but a valid axis type, get the name of the</span>
             <span class="c1"># coordinate corresponding to that axis type</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
@@ -550,10 +617,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given axis is not valid. Must be an axis number, a dimension &#39;</span>
                              <span class="s1">&#39;coordinate name, or a standard axis type.&#39;</span><span class="p">)</span></div>
 
-    <span class="k">class</span> <span class="nc">_LocIndexer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">_LocIndexer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Provide the unit-wrapped .loc indexer for data arrays.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_array</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_array</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_array</span> <span class="o">=</span> <span class="n">data_array</span>
 
         <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -563,11 +630,11 @@
                 <span class="n">key</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_array</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">key</span>
 
-        <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">_reassign_quantity_indexer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_array</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_array</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-        <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">_reassign_quantity_indexer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_array</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_array</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
@@ -584,7 +651,7 @@
 
 
 <div class="viewcode-block" id="MetPyDatasetAccessor"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDatasetAccessor">[docs]</a><span class="nd">@xr</span><span class="o">.</span><span class="n">register_dataset_accessor</span><span class="p">(</span><span class="s1">&#39;metpy&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">MetPyDatasetAccessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MetPyDatasetAccessor</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Provide custom attributes and methods on XArray Datasets for MetPy functionality.</span>
 
 <span class="sd">    This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.</span>
@@ -597,7 +664,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>  <span class="c1"># noqa: D107</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>  <span class="c1"># noqa: D107</span>
         <span class="c1"># Initialize accessor with a Dataset. (Do not use directly).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
 
@@ -619,14 +686,14 @@
 <span class="sd">            Parsed DataArray (if varname is a string) or Dataset</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">.cbook</span> <span class="k">import</span> <span class="n">is_string_like</span><span class="p">,</span> <span class="n">iterable</span>
-        <span class="kn">from</span> <span class="nn">.plots.mapping</span> <span class="k">import</span> <span class="n">CFProjection</span>
+        <span class="kn">from</span> <span class="nn">.cbook</span> <span class="kn">import</span> <span class="n">iterable</span>
+        <span class="kn">from</span> <span class="nn">.plots.mapping</span> <span class="kn">import</span> <span class="n">CFProjection</span>
 
         <span class="k">if</span> <span class="n">varname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># If no varname is given, parse all variables in the dataset</span>
             <span class="n">varname</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">iterable</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">iterable</span><span class="p">(</span><span class="n">varname</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="c1"># If non-string iterable is given, apply recursively across the varnames</span>
             <span class="n">subset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="n">single_varname</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">)</span>
                                <span class="k">for</span> <span class="n">single_varname</span> <span class="ow">in</span> <span class="n">varname</span><span class="p">])</span>
@@ -649,17 +716,17 @@
 
         <span class="c1"># Trying to guess whether we should be adding a crs to this variable&#39;s coordinates</span>
         <span class="c1"># First make sure it&#39;s missing CRS but isn&#39;t lat/lon itself</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;crs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;crs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
             <span class="c1"># Look for both lat/lon in the coordinates</span>
             <span class="n">has_lat</span> <span class="o">=</span> <span class="n">has_lon</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">has_lat</span> <span class="o">=</span> <span class="n">has_lat</span> <span class="ow">or</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)</span>
-                <span class="n">has_lon</span> <span class="o">=</span> <span class="n">has_lon</span> <span class="ow">or</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span>
+                <span class="n">has_lat</span> <span class="o">=</span> <span class="n">has_lat</span> <span class="ow">or</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">)</span>
+                <span class="n">has_lon</span> <span class="o">=</span> <span class="n">has_lon</span> <span class="ow">or</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">)</span>
 
             <span class="c1"># If we found them, create a lat/lon projection as the crs coord</span>
             <span class="k">if</span> <span class="n">has_lat</span> <span class="ow">and</span> <span class="n">has_lon</span><span class="p">:</span>
                 <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found lat/lon values, assuming latitude_longitude &#39;</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found latitude/longitude values, assuming latitude_longitude &#39;</span>
                             <span class="s1">&#39;for projection grid_mapping variable&#39;</span><span class="p">)</span>
 
         <span class="c1"># Assign coordinates if the coordinates argument is given</span>
@@ -671,7 +738,8 @@
     <span class="k">def</span> <span class="nf">_fixup_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clean up the units on the coordinate variables.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">coord_name</span><span class="p">,</span> <span class="n">data_array</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">check_axis</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">check_axis</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">)):</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">DimensionalityError</span><span class="p">:</span>  <span class="c1"># Radians!</span>
@@ -682,13 +750,13 @@
                         <span class="n">new_data_array</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span> <span class="o">=</span> <span class="n">scaled_vals</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">)</span>
                         <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_data_array</span>
 
-    <span class="k">class</span> <span class="nc">_LocIndexer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">_LocIndexer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Provide the unit-wrapped .loc indexer for datasets.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
 
-        <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
             <span class="n">parsed_key</span> <span class="o">=</span> <span class="n">_reassign_quantity_indexer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parsed_key</span><span class="p">]</span>
 
@@ -704,6 +772,23 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">indexers</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="n">drop</span><span class="p">)</span></div></div>
 
 
+<span class="k">def</span> <span class="nf">_assign_axis</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assign the given axis to the _metpy_axis attribute.&quot;&quot;&quot;</span>
+    <span class="n">existing_axes</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span> <span class="ow">and</span> <span class="s1">&#39;latitude&#39;</span> <span class="ow">in</span> <span class="n">existing_axes</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;latitude&#39;</span> <span class="ow">and</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">existing_axes</span><span class="p">)):</span>
+        <span class="c1"># Special case for combined y/latitude handling</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;y,latitude&#39;</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span> <span class="ow">and</span> <span class="s1">&#39;longitude&#39;</span> <span class="ow">in</span> <span class="n">existing_axes</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;longitude&#39;</span> <span class="ow">and</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">existing_axes</span><span class="p">)):</span>
+        <span class="c1"># Special case for combined x/longitude handling</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;x,longitude&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Simply add it/overwrite past value</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis</span>
+    <span class="k">return</span> <span class="n">attributes</span>
+
+
 <span class="k">def</span> <span class="nf">check_axis</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="o">*</span><span class="n">axes</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if the criteria for any of the given axes are satisfied.</span>
 
@@ -712,8 +797,8 @@
 <span class="sd">    var : `xarray.DataArray`</span>
 <span class="sd">        DataArray belonging to the coordinate to be checked</span>
 <span class="sd">    axes : str</span>
-<span class="sd">        Axis type(s) to check for. Currently can check for &#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, &#39;lat&#39;, &#39;x&#39;,</span>
-<span class="sd">        and &#39;lon&#39;.</span>
+<span class="sd">        Axis type(s) to check for. Currently can check for &#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, &#39;latitude&#39;,</span>
+<span class="sd">        &#39;x&#39;, and &#39;longitude&#39;.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
@@ -783,7 +868,7 @@
 
 <span class="c1"># If DatetimeAccessor does not have a strftime (xarray &lt;0.12.2), monkey patch one in</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">xarray.core.accessors</span> <span class="k">import</span> <span class="n">DatetimeAccessor</span>
+    <span class="kn">from</span> <span class="nn">xarray.core.accessors</span> <span class="kn">import</span> <span class="n">DatetimeAccessor</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">DatetimeAccessor</span><span class="p">,</span> <span class="s1">&#39;strftime&#39;</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">strftime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_format</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Format time as a string.&quot;&quot;&quot;</span>
@@ -806,27 +891,27 @@
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">val</span>
 
+    <span class="c1"># Update indexers keys for axis type -&gt; coord name replacement</span>
+    <span class="n">indexers</span> <span class="o">=</span> <span class="p">{(</span><span class="n">key</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">)</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">dims</span>
+                 <span class="ow">or</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metpy_axes</span> <span class="k">else</span>
+                 <span class="nb">next</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="o">.</span><span class="n">name</span><span class="p">):</span> <span class="n">indexers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">indexers</span><span class="p">}</span>
+
+    <span class="c1"># Update indexers to handle quantities and slices of quantities</span>
+    <span class="n">reassigned_indexers</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">coord_name</span> <span class="ow">in</span> <span class="n">indexers</span><span class="p">:</span>
-        <span class="c1"># Handle axis types for DataArrays</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">coord_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">dims</span>
-                <span class="ow">and</span> <span class="n">coord_name</span> <span class="ow">in</span> <span class="n">readable_to_cf_axes</span><span class="p">):</span>
-            <span class="n">axis</span> <span class="o">=</span> <span class="n">coord_name</span>
-            <span class="n">coord_name</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexers</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-            <span class="k">del</span> <span class="n">indexers</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
-
-        <span class="c1"># Handle slices of quantities</span>
+        <span class="n">coord_units</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">units</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">],</span> <span class="nb">slice</span><span class="p">):</span>
-            <span class="n">start</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-            <span class="n">stop</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-            <span class="n">step</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-            <span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+            <span class="c1"># Handle slices of quantities</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">coord_units</span><span class="p">)</span>
+            <span class="n">stop</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">coord_units</span><span class="p">)</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">coord_units</span><span class="p">)</span>
+            <span class="n">reassigned_indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Handle quantities</span>
+            <span class="n">reassigned_indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">],</span> <span class="n">coord_units</span><span class="p">)</span>
 
-        <span class="c1"># Handle quantities</span>
-        <span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_magnitude</span><span class="p">(</span><span class="n">indexers</span><span class="p">[</span><span class="n">coord_name</span><span class="p">],</span>
-                                             <span class="n">data</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">indexers</span>
+    <span class="k">return</span> <span class="n">reassigned_indexers</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;MetPyDataArrayAccessor&#39;</span><span class="p">,</span> <span class="s1">&#39;MetPyDatasetAccessor&#39;</span><span class="p">)</span>
@@ -845,7 +930,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -882,7 +967,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

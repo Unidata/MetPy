@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Upper Air Sounding Tutorial &mdash; MetPy 0.11.0</title>
+  <title>Upper Air Sounding Tutorial &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="xarray with MetPy Tutorial" href="xarray_tutorial.html"/>
         <link rel="prev" title="Units Tutorial" href="unit_tutorial.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -229,23 +229,23 @@ To learn more about the Skew-T diagram and its use in weather analysis and
 forecasting, checkout <a class="reference external" href="https://homes.comet.ucar.edu/~alanbol/aws-tr-79-006.pdf">this</a>
 air weather service guide.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="k">import</span> <span class="n">inset_axes</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">Hodograph</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">Hodograph</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
 <div class="section" id="getting-data">
 <h2>Getting Data<a class="headerlink" href="#getting-data" title="Permalink to this headline">¶</a></h2>
 <p>Upper air data can be obtained using the siphon package, but for this tutorial we will use
 some of MetPy’s sample data. This event is the Veterans Day tornado outbreak in 2002.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">col_names</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">]</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;nov11_sounding.txt&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-                 <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="n">col_names</span><span class="p">)</span>
+                 <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">col_names</span></a><span class="p">)</span>
 
 <span class="c1"># Drop any rows with all NaN values for T, Td, winds</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span>
@@ -309,14 +309,14 @@ the independent variable, is first even though it is plotted on the y-axis).</p>
 components.</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
 <span class="c1"># log scaling in Y, as dictated by the typical meteorological plot</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <span class="c1"># Show the plot</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
@@ -330,34 +330,34 @@ components.</p></li>
 useful when performing further analysis on the Skew-T diagram. Often the
 0C isotherm is emphasized and areas of CAPE and CIN are shaded.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
 <span class="c1"># log scaling in Y, as dictated by the typical meteorological plot</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
 
 <span class="c1"># Plot LCL temperature as black dot</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot the parcel profile as a black line</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Shade areas of CAPE and CIN</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">shade_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">shade_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
 
 <span class="c1"># Plot a zero degree isotherm</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Add the relevant special lines</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
 
 <span class="c1"># Show the plot</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
@@ -373,49 +373,49 @@ from the vertical axes representing the direction, and the length representing t
 The line plotted on the hodograph is a line connecting the tips of these vectors,
 which are not drawn.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
 <span class="c1"># log scaling in Y, as dictated by the typical meteorological plot</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
 
 <span class="c1"># Plot LCL as black dot</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot the parcel profile as a black line</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Shade areas of CAPE and CIN</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">shade_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">shade_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
 
 <span class="c1"># Plot a zero degree isotherm</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Add the relevant special lines</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+<a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
 
 <span class="c1"># Create a hodograph</span>
 <span class="c1"># Create an inset axes object that is 40% width and height of the</span>
 <span class="c1"># figure and put it in the upper right hand corner.</span>
-<span class="n">ax_hod</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span><span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;40%&#39;</span><span class="p">,</span> <span class="s1">&#39;40%&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">h</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">Hodograph</span></a><span class="p">(</span><span class="n">ax_hod</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">80.</span><span class="p">)</span>
-<span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">wind_speed</span><span class="p">)</span>  <span class="c1"># Plot a line colored by wind speed</span>
+<span class="n">ax_hod</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span><a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">skew</span></a><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;40%&#39;</span><span class="p">,</span> <span class="s1">&#39;40%&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">h</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">Hodograph</span></a><span class="p">(</span><span class="n">ax_hod</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">80.</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">h</span></a><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="View documentation for metpy.plots.Hodograph"><span class="n">h</span></a><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">wind_speed</span><span class="p">)</span>  <span class="c1"># Plot a line colored by wind speed</span>
 
 <span class="c1"># Show the plot</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.830 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.441 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-upperair-soundings-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cf626a06a2e16be83be26aa926cd5642/upperair_soundings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></p>
@@ -451,7 +451,7 @@ which are not drawn.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -488,7 +488,7 @@ which are not drawn.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

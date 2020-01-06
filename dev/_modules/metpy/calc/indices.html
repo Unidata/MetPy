@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.indices &mdash; MetPy 0.11.0</title>
+  <title>metpy.calc.indices &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -197,14 +197,14 @@
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Contains calculation of various derived indices.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.thermo</span> <span class="k">import</span> <span class="n">mixing_ratio</span><span class="p">,</span> <span class="n">saturation_vapor_pressure</span>
-<span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">_remove_nans</span><span class="p">,</span> <span class="n">get_layer</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">mpconsts</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">.tools</span> <span class="kn">import</span> <span class="n">get_layer</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_xarray</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -237,34 +237,24 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        The precipitable water in the layer</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; pressure = np.array([1000, 950, 900]) * units.hPa</span>
+<span class="sd">    &gt;&gt;&gt; dewpoint = np.array([20, 15, 10]) * units.degC</span>
+<span class="sd">    &gt;&gt;&gt; pw = precipitable_water(dewpoint, pressure)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Sort pressure and dewpoint to be in decreasing pressure order (increasing height)</span>
-    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
-    <span class="n">dewpt</span> <span class="o">=</span> <span class="n">dewpt</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
-
-    <span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
-
-    <span class="k">if</span> <span class="n">bottom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
-
-    <span class="n">pres_layer</span><span class="p">,</span> <span class="n">dewpt_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">)</span>
-
-    <span class="n">w</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dewpt_layer</span><span class="p">),</span> <span class="n">pres_layer</span><span class="p">)</span>
-
-    <span class="c1"># Since pressure is in decreasing order, pw will be the opposite sign of that expected.</span>
-    <span class="n">pw</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">pres_layer</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">pres_layer</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-                <span class="o">/</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">rho_l</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">pw</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;millimeters&#39;</span><span class="p">)</span></div>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Input variables will be reordered in 1.0 to be (pressure, dewpt, bottom,&#39;</span>
+                  <span class="s1">&#39;top). To update to new input format before 1.0 is released, use&#39;</span>
+                  <span class="s1">&#39;`from metpy.future import precipitable_water`.&#39;</span><span class="p">,</span> <span class="ne">FutureWarning</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">..future</span> <span class="kn">import</span> <span class="n">precipitable_water</span> <span class="k">as</span> <span class="n">_precipitable_water</span>
+    <span class="k">return</span> <span class="n">_precipitable_water</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mean_pressure_weighted"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mean_pressure_weighted.html#metpy.calc.mean_pressure_weighted">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">mean_pressure_weighted</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">mean_pressure_weighted</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate pressure-weighted mean of an arbitrary variable through a layer.</span>
 
 <span class="sd">    Layer top and bottom specified in height or pressure.</span>
@@ -294,9 +284,6 @@
 <span class="sd">        v_mean: v-component of layer mean wind.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">heights</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;heights&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">bottom</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Returned variable means in layer</span>
     <span class="n">layer_arg</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="n">heights</span><span class="p">,</span>
                           <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
@@ -586,7 +573,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -623,7 +610,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

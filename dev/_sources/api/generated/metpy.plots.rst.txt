@@ -18,6 +18,7 @@ plots
       add_unidata_logo
       convert_gempak_color
       read_colortable
+      wx_code_to_numeric
    
    
 
@@ -36,6 +37,7 @@ plots
       ImagePlot
       MapPanel
       PanelContainer
+      PlotObs
       PlotScalar
       PlotVector
       Plots2D

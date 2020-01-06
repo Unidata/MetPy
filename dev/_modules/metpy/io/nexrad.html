@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io.nexrad &mdash; MetPy 0.11.0</title>
+  <title>metpy.io.nexrad &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -198,25 +198,22 @@
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Support reading information from various NEXRAD formats.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-
 <span class="kn">import</span> <span class="nn">bz2</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">struct</span> <span class="k">import</span> <span class="n">Struct</span>
-<span class="kn">from</span> <span class="nn">xdrlib</span> <span class="k">import</span> <span class="n">Unpacker</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">Struct</span>
+<span class="kn">from</span> <span class="nn">xdrlib</span> <span class="kn">import</span> <span class="n">Unpacker</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">day</span><span class="p">,</span> <span class="n">milli</span>
+<span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">day</span><span class="p">,</span> <span class="n">milli</span>
 
-<span class="kn">from</span> <span class="nn">._tools</span> <span class="k">import</span> <span class="p">(</span><span class="n">Array</span><span class="p">,</span> <span class="n">BitField</span><span class="p">,</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">bits_to_code</span><span class="p">,</span> <span class="n">DictStruct</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Array</span><span class="p">,</span> <span class="n">BitField</span><span class="p">,</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">bits_to_code</span><span class="p">,</span> <span class="n">DictStruct</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span>
                      <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -357,7 +354,7 @@
     <span class="n">MISSING</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
     <span class="n">RANGE_FOLD</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>  <span class="c1"># TODO: Need to separate from missing</span>
 
-<div class="viewcode-block" id="Level2File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Level2File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level2File`.</span>
 
 <span class="sd">        Parameters</span>
@@ -365,7 +362,7 @@
 <span class="sd">        filename : str or file-like object</span>
 <span class="sd">            If str, the name of the file to be opened. Gzip-ed files are</span>
 <span class="sd">            recognized with the extension &#39;.gz&#39;, as are bzip2-ed files with</span>
-<span class="sd">            the extension `.bz2` If `fname` is a file-like object,</span>
+<span class="sd">            the extension `.bz2` If `filename` is a file-like object,</span>
 <span class="sd">            this will be read from directly.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -417,7 +414,7 @@
 
             <span class="c1"># Read the message header</span>
             <span class="n">msg_hdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg_hdr_fmt</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Got message: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Got message: </span><span class="si">%s</span><span class="s1"> (at offset </span><span class="si">%d</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
 
             <span class="c1"># The AR2_BLOCKSIZE accounts for the CTM header before the</span>
             <span class="c1"># data, as well as the Frame Check Sequence (4 bytes) after</span>
@@ -538,7 +535,7 @@
                                               <span class="s1">&#39;Generator On&#39;</span><span class="p">,</span>
                                               <span class="s1">&#39;Transfer Switch Manual&#39;</span><span class="p">,</span>
                                               <span class="s1">&#39;Commanded Switchover&#39;</span><span class="p">)),</span>
-        <span class="p">(</span><span class="s1">&#39;avg_tx_pwr&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ref_calib_cor&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;avg_tx_pwr&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ref_calib_cor&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">scaler</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
         <span class="p">(</span><span class="s1">&#39;data_transmission_enabled&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">BitField</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span>
                                                     <span class="s1">&#39;Reflectivity&#39;</span><span class="p">,</span> <span class="s1">&#39;Velocity&#39;</span><span class="p">,</span> <span class="s1">&#39;Width&#39;</span><span class="p">)),</span>
         <span class="p">(</span><span class="s1">&#39;vcp_num&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rda_control_auth&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">BitField</span><span class="p">(</span><span class="s1">&#39;No Action&#39;</span><span class="p">,</span>
@@ -560,22 +557,34 @@
         <span class="p">(</span><span class="s1">&#39;spot_blanking&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">BitField</span><span class="p">(</span><span class="s1">&#39;Enabled&#39;</span><span class="p">,</span> <span class="s1">&#39;Disabled&#39;</span><span class="p">)),</span>
         <span class="p">(</span><span class="s1">&#39;bypass_map_gen_date&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;bypass_map_gen_time&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span>
         <span class="p">(</span><span class="s1">&#39;clutter_filter_map_gen_date&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;clutter_filter_map_gen_time&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;2x&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;refv_calib_cor&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">scaler</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
         <span class="p">(</span><span class="s1">&#39;transition_pwr_src_state&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">BitField</span><span class="p">(</span><span class="s1">&#39;Off&#39;</span><span class="p">,</span> <span class="s1">&#39;OK&#39;</span><span class="p">)),</span>
         <span class="p">(</span><span class="s1">&#39;RMS_control_status&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">BitField</span><span class="p">(</span><span class="s1">&#39;RMS in control&#39;</span><span class="p">,</span> <span class="s1">&#39;RDA in control&#39;</span><span class="p">)),</span>
         <span class="c1"># See Table IV-A for definition of alarms</span>
         <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;2x&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;alarms&#39;</span><span class="p">,</span> <span class="s1">&#39;28s&#39;</span><span class="p">,</span> <span class="n">Array</span><span class="p">(</span><span class="s1">&#39;&gt;14H&#39;</span><span class="p">))],</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Msg2Fmt&#39;</span><span class="p">)</span>
 
+    <span class="n">msg2_additional_fmt</span> <span class="o">=</span> <span class="n">NamedStruct</span><span class="p">([</span>
+        <span class="p">(</span><span class="s1">&#39;sig_proc_options&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">BitField</span><span class="p">(</span><span class="s1">&#39;CMD RhoHV Test&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;36x&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;status_version&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">)],</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Msg2AdditionalFmt&#39;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_decode_msg2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
+        <span class="n">msg_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">set_mark</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rda_status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg2_fmt</span><span class="p">))</span>
 
-        <span class="c1"># RDA Build 18.0 expanded the size, but only with spares for now</span>
-        <span class="n">extra_size</span> <span class="o">=</span> <span class="mi">40</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rda_status</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rda_build</span> <span class="o">&gt;=</span> <span class="s1">&#39;18.0&#39;</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg_hdr_fmt</span><span class="o">.</span><span class="n">size</span>
+                     <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">msg_start</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_size</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg2_fmt</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">extra_size</span><span class="p">)</span>
+        <span class="c1"># RDA Build 18.0 expanded the size</span>
+        <span class="k">if</span> <span class="n">remaining</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg2_additional_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rda_status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg2_additional_fmt</span><span class="p">))</span>
+            <span class="n">remaining</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg2_additional_fmt</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">if</span> <span class="n">remaining</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Padding detected in message 2. Length encoded as </span><span class="si">%d</span><span class="s1"> but offset when &#39;</span>
+                     <span class="s1">&#39;done is </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">msg_start</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_decode_msg3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">._nexrad_msgs.msg3</span> <span class="k">import</span> <span class="n">descriptions</span><span class="p">,</span> <span class="n">fields</span>
+        <span class="kn">from</span> <span class="nn">._nexrad_msgs.msg3</span> <span class="kn">import</span> <span class="n">descriptions</span><span class="p">,</span> <span class="n">fields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maintenance_data_desc</span> <span class="o">=</span> <span class="n">descriptions</span>
         <span class="n">msg_fmt</span> <span class="o">=</span> <span class="n">DictStruct</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maintenance_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="n">msg_fmt</span><span class="p">)</span>
@@ -637,8 +646,9 @@
             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_el</span><span class="p">):</span>
                 <span class="n">seg_num</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
                 <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">assert</span> <span class="n">seg_num</span> <span class="o">==</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Message 13 segments out of sync --&#39;</span>
-                                            <span class="s1">&#39; read </span><span class="si">{}</span><span class="s1"> but on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seg_num</span><span class="p">,</span> <span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">seg_num</span> <span class="o">!=</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message 13 segments out of sync -- read </span><span class="si">{}</span><span class="s1"> but on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">seg_num</span><span class="p">,</span> <span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 
                 <span class="n">az_data</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
@@ -692,7 +702,7 @@
         <span class="c1"># will be returned concatenated when this is the case</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">._nexrad_msgs.msg18</span> <span class="k">import</span> <span class="n">descriptions</span><span class="p">,</span> <span class="n">fields</span>
+            <span class="kn">from</span> <span class="nn">._nexrad_msgs.msg18</span> <span class="kn">import</span> <span class="n">descriptions</span><span class="p">,</span> <span class="n">fields</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rda_adaptation_desc</span> <span class="o">=</span> <span class="n">descriptions</span>
 
             <span class="c1"># Can&#39;t use NamedStruct because we have more than 255 items--this</span>
@@ -766,11 +776,13 @@
         <span class="n">msg_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">set_mark</span><span class="p">()</span>
         <span class="n">data_hdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg31_data_hdr_fmt</span><span class="p">)</span>
 
-        <span class="c1"># Read all the data block pointers separately. This simplifies just</span>
-        <span class="c1"># iterating over them</span>
-        <span class="n">ptrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;&gt;L&#39;</span><span class="p">)</span>
+        <span class="c1"># Read all the data block pointers separately. This makes it easy to loop and to</span>
+        <span class="c1"># handle the arbitrary numbers. We subtract 3 for the VOL, ELV, and RAD blocks that</span>
+        <span class="c1"># are required to be present (and can&#39;t be read like the data)</span>
+        <span class="n">ptrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="n">data_hdr</span><span class="o">.</span><span class="n">num_data_blks</span> <span class="o">-</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;&gt;L&#39;</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">compression</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Compressed message 31 not supported!&#39;</span>
+        <span class="k">if</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">compression</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Compressed message 31 not supported!&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="n">msg_start</span><span class="p">,</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">vol_const_ptr</span><span class="p">)</span>
         <span class="n">vol_consts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg31_vol_const_fmt</span><span class="p">)</span>
@@ -779,11 +791,15 @@
         <span class="n">el_consts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg31_el_const_fmt</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="n">msg_start</span><span class="p">,</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">rad_const_ptr</span><span class="p">)</span>
-        <span class="c1"># Major version jumped with Build 14.0</span>
-        <span class="k">if</span> <span class="n">vol_consts</span><span class="o">.</span><span class="n">major</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">rad_consts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rad_const_fmt_v1</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># Look ahead to figure out how big the block is</span>
+        <span class="n">jmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">set_mark</span><span class="p">()</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;&gt;H&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="n">jmp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">rad_const_fmt_v2</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
             <span class="n">rad_consts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rad_const_fmt_v2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rad_consts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rad_const_fmt_v1</span><span class="p">)</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">block_count</span> <span class="o">=</span> <span class="mi">3</span>
@@ -805,8 +821,11 @@
 
         <span class="k">if</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">num_data_blks</span> <span class="o">!=</span> <span class="n">block_count</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Incorrect number of blocks detected -- Got </span><span class="si">%d</span><span class="s1">&#39;</span>
-                        <span class="s1">&#39;instead of </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">block_count</span><span class="p">,</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">num_data_blks</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">rad_length</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">msg_start</span><span class="p">)</span>
+                        <span class="s1">&#39; instead of </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">block_count</span><span class="p">,</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">num_data_blks</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">rad_length</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">msg_start</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Padding detected in message. Length encoded as </span><span class="si">%d</span><span class="s1"> but offset when &#39;</span>
+                     <span class="s1">&#39;done is </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data_hdr</span><span class="o">.</span><span class="n">rad_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">msg_start</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_buffer_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="c1"># Add to the buffer</span>
@@ -940,7 +959,7 @@
     <span class="n">RANGE_FOLD</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
     <span class="n">MISSING</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">[</span><span class="n">data</span><span class="p">]</span>
 
@@ -954,7 +973,7 @@
     <span class="n">_max_data</span> <span class="o">=</span> <span class="mi">255</span>
     <span class="n">range_fold</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapper and the lookup table.&quot;&quot;&quot;</span>
         <span class="n">min_val</span> <span class="o">=</span> <span class="n">two_comp16</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_scale</span>
         <span class="n">inc</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inc_scale</span>
@@ -1010,7 +1029,7 @@
 <span class="k">class</span> <span class="nc">DigitalVILMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mapper for digital VIL products.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the VIL mapper.&quot;&quot;&quot;</span>
         <span class="n">lin_scale</span> <span class="o">=</span> <span class="n">float16</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">lin_offset</span> <span class="o">=</span> <span class="n">float16</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -1030,7 +1049,7 @@
 <span class="k">class</span> <span class="nc">DigitalEETMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mapper for digital echo tops products.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapper.&quot;&quot;&quot;</span>
         <span class="n">data_mask</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -1045,7 +1064,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topped_lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topped_lut</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_vals</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_vals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the data values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">[</span><span class="n">data_vals</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">topped_lut</span><span class="p">[</span><span class="n">data_vals</span><span class="p">]</span>
 
@@ -1056,7 +1075,7 @@
 <span class="sd">    Also handles special data flags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapper by pulling out all the information from the product.&quot;&quot;&quot;</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">float32</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">float32</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
@@ -1086,7 +1105,7 @@
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ND&#39;</span><span class="p">,</span> <span class="s1">&#39;BI&#39;</span><span class="p">,</span> <span class="s1">&#39;GC&#39;</span><span class="p">,</span> <span class="s1">&#39;IC&#39;</span><span class="p">,</span> <span class="s1">&#39;DS&#39;</span><span class="p">,</span> <span class="s1">&#39;WS&#39;</span><span class="p">,</span> <span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span>
               <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;HA&#39;</span><span class="p">,</span> <span class="s1">&#39;UK&#39;</span><span class="p">,</span> <span class="s1">&#39;RF&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapper.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">MISSING</span><span class="p">]</span> <span class="o">*</span> <span class="mi">256</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
@@ -1099,7 +1118,7 @@
 <span class="k">class</span> <span class="nc">EDRMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mapper for eddy dissipation rate products.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapper based on the product.&quot;&quot;&quot;</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span>
@@ -1117,7 +1136,7 @@
     <span class="n">lut_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Blank&#39;</span><span class="p">,</span> <span class="s1">&#39;TH&#39;</span><span class="p">,</span> <span class="s1">&#39;ND&#39;</span><span class="p">,</span> <span class="s1">&#39;RF&#39;</span><span class="p">,</span> <span class="s1">&#39;BI&#39;</span><span class="p">,</span> <span class="s1">&#39;GC&#39;</span><span class="p">,</span> <span class="s1">&#39;IC&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;WS&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;DS&#39;</span><span class="p">,</span> <span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;HA&#39;</span><span class="p">,</span> <span class="s1">&#39;UK&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the values and labels from the product.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1723,7 +1742,7 @@
                            <span class="p">((</span><span class="s1">&#39;el_angle&#39;</span><span class="p">,</span> <span class="n">scaled_elem</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)),</span>
                             <span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))}</span>
 
-<div class="viewcode-block" id="Level3File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Level3File.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create instance of `Level3File`.</span>
 
 <span class="sd">        Parameters</span>
@@ -1734,7 +1753,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fobj</span> <span class="o">=</span> <span class="n">open_as_needed</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;No File&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;No File&#39;</span>
 
         <span class="c1"># Just read in the entire set of data at once</span>
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">fobj</span><span class="p">):</span>
@@ -1747,7 +1766,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_process_end_bytes</span><span class="p">()</span>
 
         <span class="c1"># Set up places to store data and metadata</span>
-<span class="c1">#        self.data = []</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># Handle free text message products that are pure text</span>
@@ -2009,7 +2027,7 @@
         <span class="k">if</span> <span class="n">have_header</span><span class="p">:</span>
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">offset_from</span><span class="p">(</span><span class="n">block_start</span><span class="p">)</span> <span class="o">==</span> <span class="n">header</span><span class="o">.</span><span class="n">block_len</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the string representation of the product.&quot;&quot;&quot;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">product_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresholds</span><span class="p">,</span>
                  <span class="bp">self</span><span class="o">.</span><span class="n">depVals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">siteID</span><span class="p">]</span>
@@ -2369,7 +2387,7 @@
 <span class="k">class</span> <span class="nc">Level3XDRParser</span><span class="p">(</span><span class="n">Unpacker</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Handle XDR-formatted Level 3 NEXRAD products.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform the actual unpacking.&quot;&quot;&quot;</span>
         <span class="n">xdr</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
@@ -2523,7 +2541,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -2560,7 +2578,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

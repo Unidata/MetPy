@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>get_layer_heights &mdash; MetPy 0.11.0</title>
+  <title>get_layer_heights &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="get_perturbation" href="metpy.calc.get_perturbation.html"/>
         <link rel="prev" title="get_layer" href="metpy.calc.get_layer.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -159,7 +159,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -245,7 +244,7 @@
 <h1>get_layer_heights<a class="headerlink" href="#get-layer-heights" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.get_layer_heights">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">get_layer_heights</code><span class="sig-paren">(</span><em class="sig-param">heights</em>, <em class="sig-param">depth</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#get_layer_heights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.get_layer_heights" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">get_layer_heights</code><span class="sig-paren">(</span><em class="sig-param">heights</em>, <em class="sig-param">depth</em>, <em class="sig-param">*args</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">interpolate=True</em>, <em class="sig-param">with_agl=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#get_layer_heights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.get_layer_heights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an atmospheric layer from upper air data with the requested bottom and depth.</p>
 <p>This function will subset an upper air dataset to contain only the specified layer using
 the heights only.</p>
@@ -293,7 +292,7 @@ provided heights. Defaults to False.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -330,7 +329,7 @@ provided heights. Defaults to False.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

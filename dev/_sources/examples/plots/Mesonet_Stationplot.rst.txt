@@ -34,6 +34,7 @@ data-wrangling.
 
 
 
+
 Read in the data and wrangle it
 -------------------------------
 
@@ -58,6 +59,7 @@ in variables that we want to plot
 
 
 
+
 The mesonet has so many stations that it would clutter the plot if we used them all.
 The number of stations plotted will be reduced using `reduce_point_density`.
 
@@ -69,6 +71,7 @@ The number of stations plotted will be reduced using `reduce_point_density`.
     proj = ccrs.LambertConformal(central_longitude=-98)
     point_locs = proj.transform_points(ccrs.PlateCarree(), data['LON'].values, data['LAT'].values)
     data = data[mpcalc.reduce_point_density(point_locs, 50 * units.km)]
+
 
 
 
@@ -99,6 +102,7 @@ Now that we have the data we want, we need to perform some conversions:
     # Take cardinal direction and convert to degrees, then convert to components
     wind_direction = mpcalc.parse_angle(list(wind_direction))
     u, v = mpcalc.wind_components(wind_speed.to('knots'), wind_direction)
+
 
 
 
@@ -159,9 +163,10 @@ Create the figure
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.648 seconds)
+   **Total running time of the script:** ( 0 minutes  0.447 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Mesonet_Stationplot.py:

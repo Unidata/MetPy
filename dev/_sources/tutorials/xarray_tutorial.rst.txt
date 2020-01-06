@@ -38,6 +38,7 @@ versions.
 
 
 
+
 Getting Data
 ------------
 
@@ -101,6 +102,7 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
 
 
 
+
 Preparing Data
 --------------
 
@@ -143,6 +145,7 @@ Additionally, we rename our data variables for easier reference.
 
 
 
+
 Units
 -----
 
@@ -163,6 +166,7 @@ just use ``convert_units`` to convert our temperature to ``degC``.
 
 
 
+
 Coordinates
 -----------
 
@@ -172,17 +176,26 @@ worry about that since MetPy is able to parse the coordinates and so obtain a pa
 coordinate type directly. There are two ways to do this:
 
 1. Use the ``data_var.metpy.coordinates`` method
-2. Use the ``data_var.metpy.x``, ``data_var.metpy.y``, ``data_var.metpy.vertical``,
-   ``data_var.metpy.time`` properties
+2. Use the ``data_var.metpy.x``, ``data_var.metpy.y``, ``data_var.metpy.longitude``,
+   ``data_var.metpy.latitude``, ``data_var.metpy.vertical``,  ``data_var.metpy.time``
+   properties
 
 The valid coordinate types are:
 
 - x
 - y
+- longitude
+- latitude
 - vertical
 - time
 
-(Both approaches and all four types are shown below)
+(Both approaches are shown below)
+
+The ``x``, ``y``, ``vertical``, and ``time`` coordinates cannot be multidimensional,
+however, the ``longitude`` and ``latitude`` coordinates can (which is often the case for
+gridded weather data in its native projection). Note that for gridded data on an
+equirectangular projection, such as the GFS data in this example, ``x`` and ``longitude``
+will be identical (as will ``y`` and ``latitude``).
 
 
 .. code-block:: default
@@ -212,6 +225,7 @@ The valid coordinate types are:
  .. code-block:: none
 
     ['longitude', 'latitude', 'isobaric3', 'time1']
+
 
 
 
@@ -287,6 +301,7 @@ we would take:
 
 
 
+
 For full details on xarray indexing/selection, see
 `xarray's documentation <http://xarray.pydata.org/en/stable/indexing.html>`_.
 
@@ -313,7 +328,8 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x7f8342647d00>
+    <cartopy.crs.PlateCarree object at 0x7f954094cfc0>
+
 
 
 
@@ -337,7 +353,8 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x7f834287a7f0>
+    <cartopy._crs.Globe object at 0x7f95609c72b0>
+
 
 
 
@@ -378,6 +395,7 @@ As an example, we calculate geostropic wind at 500 hPa below:
 
     [[ 2.27255554  6.25140312  3.28255416 ... 33.11408008 32.73451717  32.57653661] [ 3.81629673  4.38877614  4.32523476 ... 31.00803157 30.75375118  30.53090851] [ 5.12733416  4.83910466  5.80060347 ... 29.1938277  29.03383493  28.58473536] ... [-1.91178314 -1.14643259 -1.91181665 ... -7.0079228  -7.39214953  -6.88190745] [-2.801646   -2.66973201 -2.40253719 ... -6.40453277 -7.20430366  -6.93719275] [-7.13845126 -8.40509536 -3.63934311 ... -5.60696811 -7.55739378  -8.39839852]] meter / second
     [[-14.79152481 -14.39816817 -16.89520568 ...   5.58291437   6.513699    7.39606131] [ -8.30101213 -13.77064356 -17.09080998 ...   5.27352106   6.10386071    7.17918929] [-11.98245151 -13.54015832 -14.85469639 ...   4.91926188   5.74746248    6.7213265 ] ... [  4.25739862   3.4827536    2.96632359 ...   3.2245386    3.2245386    1.93346357] [  6.60970778   3.10076929   2.02109591 ...   2.42597342   3.63896014    3.37233348] [  4.79936391   4.23716749   2.54368012 ...   1.55552506   2.96791422    3.81293338]] meter / second
+
 
 
 
@@ -429,6 +447,7 @@ rewrite the above geostrophic wind example using this helper function as follows
 
 
 
+
 Plotting
 --------
 
@@ -458,6 +477,7 @@ the data.
 
 
 
+
 .. code-block:: default
 
 
@@ -473,6 +493,7 @@ the data.
 
 .. image:: /tutorials/images/sphx_glr_xarray_tutorial_002.png
     :class: sphx-glr-single-img
+
 
 
 
@@ -530,6 +551,7 @@ the data.
 
 
 
+
 What Could Go Wrong?
 --------------------
 
@@ -560,13 +582,13 @@ Fix:
 
 Manually assign the coordinates using the ``assign_coordinates()`` method on your DataArray,
 or by specifying the ``coordinates`` argument to the ``parse_cf()`` method on your Dataset,
-to map the ``T`` (time), ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your
-data) to the corresponding coordinates.
+to map the ``time``, ``vertical``, ``y``, ``latitude``, ``x``, and ``longitude`` axes (as
+applicable to your data) to the corresponding coordinates.
 
 ::
 
-    data['Temperature'].assign_coordinates({'T': 'time', 'Z': 'isobaric',
-                                            'Y': 'y', 'X': 'x'})
+    data['Temperature'].assign_coordinates({'time': 'time', 'vertical': 'isobaric',
+                                            'y': 'y', 'x': 'x'})
     x = data['Temperature'].metpy.x
 
 or
@@ -574,8 +596,8 @@ or
 ::
 
     temperature = data.metpy.parse_cf('Temperature',
-                                      coordinates={'T': 'time', 'Z': 'isobaric',
-                                                   'Y': 'y', 'X': 'x'})
+                                      coordinates={'time': 'time', 'vertical': 'isobaric',
+                                                   'y': 'y', 'x': 'x'})
     x = temperature.metpy.x
 
 **Axis Unavailable**
@@ -655,7 +677,7 @@ Fix 2 (unit array broadcasting):
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.096 seconds)
+   **Total running time of the script:** ( 0 minutes  2.351 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:

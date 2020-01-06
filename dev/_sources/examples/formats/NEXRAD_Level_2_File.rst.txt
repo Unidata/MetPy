@@ -29,6 +29,7 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 
 
+
 .. code-block:: default
 
 
@@ -55,6 +56,7 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 
 
+
 .. code-block:: default
 
 
@@ -73,6 +75,7 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
     rho_hdr = f.sweeps[sweep][0][4][b'RHO'][0]
     rho_range = (np.arange(rho_hdr.num_gates + 1) - 0.5) * rho_hdr.gate_width + rho_hdr.first_gate
     rho = np.array([ray[4][b'RHO'][1] for ray in f.sweeps[sweep]])
+
 
 
 
@@ -112,9 +115,10 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.569 seconds)
+   **Total running time of the script:** ( 0 minutes  3.629 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_2_File.py:

@@ -29,6 +29,7 @@ temperature to degrees Fahrenheit.
 
 
 
+
 Create a test value of mixing ratio in grams per kilogram
 
 
@@ -48,6 +49,7 @@ Create a test value of mixing ratio in grams per kilogram
  .. code-block:: none
 
     10.0 gram / kilogram
+
 
 
 
@@ -74,6 +76,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
 
 
+
 Take the odd units and force them to millibars
 
 
@@ -92,6 +95,7 @@ Take the odd units and force them to millibars
  .. code-block:: none
 
     15.823283396314565 millibar
+
 
 
 
@@ -117,6 +121,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
 
 
+
 Which can of course be converted to Fahrenheit
 
 
@@ -135,6 +140,7 @@ Which can of course be converted to Fahrenheit
  .. code-block:: none
 
     56.937444036717935 degF
+
 
 
 
@@ -160,6 +166,7 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
 
 
+
 And print the corresponding dewpoint
 
 
@@ -182,9 +189,10 @@ And print the corresponding dewpoint
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.079 seconds)
+   **Total running time of the script:** ( 0 minutes  0.005 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py:

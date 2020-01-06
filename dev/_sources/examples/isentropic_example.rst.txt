@@ -34,6 +34,7 @@ analysis data in isobaric coordinates.
 
 
 
+
 **Getting the data**
 
 In this example, NARR reanalysis data for 18 UTC 04 April 1987 from the National Centers
@@ -45,6 +46,7 @@ will be used.
 
 
     data = xr.open_dataset(get_test_data('narr_example.nc', False))
+
 
 
 
@@ -68,6 +70,7 @@ will be used.
  .. code-block:: none
 
     ['Temperature', 'time', 'isobaric', 'y', 'x', 'Lambert_Conformal', 'lat', 'lon', 'u_wind', 'v_wind', 'Geopotential_height', 'Specific_humidity']
+
 
 
 
@@ -99,6 +102,7 @@ dimension.
 
 
 
+
 To properly interpolate to isentropic coordinates, the function must know the desired output
 isentropic levels. An array with these levels will be created below.
 
@@ -107,6 +111,7 @@ isentropic levels. An array with these levels will be created below.
 
 
     isentlevs = [296.] * units.kelvin
+
 
 
 
@@ -145,10 +150,11 @@ and v wind components) will be linearly interpolated to isentropic space.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/calc/thermo.py:1643: MetpyDeprecationWarning: The use of "tmpk_out" has been deprecated in favor of"temperature_out",
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/calc/thermo.py:1727: MetpyDeprecationWarning: The use of "tmpk_out" has been deprecated in favor of"temperature_out",
       '"temperature_out",', metpyDeprecation)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:154: UserWarning: Interpolation point out of data bounds encountered
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
+
 
 
 
@@ -162,6 +168,7 @@ plotting.
     isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal
     isentu.ito('kt')
     isentv.ito('kt')
+
 
 
 
@@ -202,6 +209,7 @@ coordinates, with the number of vertical levels as specified above.
 
 
 
+
 **Converting to Relative Humidity**
 
 The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
@@ -212,6 +220,7 @@ have to be calculated after the interpolation to isentropic space.
 
 
     isentrh = 100 * mpcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
+
 
 
 
@@ -261,7 +270,8 @@ have to be calculated after the interpolation to isentropic space.
     # Make some titles
     ax.set_title('{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (percent)'
                  .format(isentlevs[level].m), loc='left')
-    add_timestamp(ax, times[0].dt, y=0.02, high_contrast=True)
+    add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
+                  y=0.02, high_contrast=True)
     fig.tight_layout()
 
 
@@ -281,8 +291,9 @@ have to be calculated after the interpolation to isentropic space.
       u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
     /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
       u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
-    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:147: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:148: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       fig.tight_layout()
+
 
 
 
@@ -331,7 +342,8 @@ calculated with `mpcalc.montgomery_streamfunction`.
     # Make some titles
     ax.set_title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m)
                  + r'($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)', loc='left')
-    add_timestamp(ax, times[0].dt, y=0.02, pretext='Valid: ', high_contrast=True)
+    add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
+                  y=0.02, pretext='Valid: ', high_contrast=True)
 
     fig.tight_layout()
     plt.show()
@@ -348,19 +360,16 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
-      u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
-      u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
-    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:193: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:195: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       fig.tight_layout()
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.064 seconds)
+   **Total running time of the script:** ( 0 minutes  11.829 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:

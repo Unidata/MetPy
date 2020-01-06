@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pint.registry &mdash; MetPy 0.11.0</title>
+  <title>pint.registry &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -225,7 +225,7 @@
 <span class="sd">    :license: BSD, see LICENSE for more details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -233,29 +233,29 @@
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
-<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
-<span class="kn">from</span> <span class="nn">fractions</span> <span class="k">import</span> <span class="n">Fraction</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span><span class="p">,</span> <span class="n">closing</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="nb">open</span><span class="p">,</span> <span class="n">StringIO</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">tokenize</span> <span class="k">import</span> <span class="n">NUMBER</span><span class="p">,</span> <span class="n">NAME</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span><span class="p">,</span> <span class="n">closing</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="nb">open</span><span class="p">,</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">tokenize</span> <span class="kn">import</span> <span class="n">NUMBER</span><span class="p">,</span> <span class="n">NAME</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">registry_helpers</span>
-<span class="kn">from</span> <span class="nn">.context</span> <span class="k">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">ContextChain</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">pi_theorem</span><span class="p">,</span> <span class="n">solve_dependencies</span><span class="p">,</span> <span class="n">ParserHelper</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">registry_helpers</span>
+<span class="kn">from</span> <span class="nn">.context</span> <span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">ContextChain</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">pi_theorem</span><span class="p">,</span> <span class="n">solve_dependencies</span><span class="p">,</span> <span class="n">ParserHelper</span><span class="p">,</span>
                    <span class="n">string_preprocessor</span><span class="p">,</span> <span class="n">find_connected_nodes</span><span class="p">,</span>
                    <span class="n">find_shortest_path</span><span class="p">,</span> <span class="n">UnitsContainer</span><span class="p">,</span> <span class="n">_is_dim</span><span class="p">,</span>
                    <span class="n">to_units_container</span><span class="p">,</span> <span class="n">SourceIterator</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.compat</span> <span class="k">import</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">string_types</span><span class="p">,</span> <span class="n">meta</span>
-<span class="kn">from</span> <span class="nn">.definitions</span> <span class="k">import</span> <span class="p">(</span><span class="n">Definition</span><span class="p">,</span> <span class="n">UnitDefinition</span><span class="p">,</span> <span class="n">PrefixDefinition</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">string_types</span><span class="p">,</span> <span class="n">meta</span>
+<span class="kn">from</span> <span class="nn">.definitions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Definition</span><span class="p">,</span> <span class="n">UnitDefinition</span><span class="p">,</span> <span class="n">PrefixDefinition</span><span class="p">,</span>
                           <span class="n">DimensionDefinition</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.converters</span> <span class="k">import</span> <span class="n">ScaleConverter</span>
-<span class="kn">from</span> <span class="nn">.errors</span> <span class="k">import</span> <span class="p">(</span><span class="n">DimensionalityError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.converters</span> <span class="kn">import</span> <span class="n">ScaleConverter</span>
+<span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DimensionalityError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">,</span>
                      <span class="n">DefinitionSyntaxError</span><span class="p">,</span> <span class="n">RedefinitionError</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.pint_eval</span> <span class="k">import</span> <span class="n">build_eval_tree</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">systems</span>
+<span class="kn">from</span> <span class="nn">.pint_eval</span> <span class="kn">import</span> <span class="n">build_eval_tree</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">systems</span>
 
 <span class="n">_BLOCK_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39; |\(&#39;</span><span class="p">)</span>
 
@@ -265,7 +265,7 @@
 <span class="sd">    instead of asking the developer to do it when subclassing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">_Meta</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_after_init</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">obj</span>
@@ -307,17 +307,17 @@
             <span class="s1">&#39;parse_unit_name&#39;</span><span class="p">,</span> <span class="s1">&#39;parse_units&#39;</span><span class="p">,</span> <span class="s1">&#39;parse_expression&#39;</span><span class="p">,</span>
             <span class="s1">&#39;convert&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">force_ndarray</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">on_redefinition</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">force_ndarray</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">on_redefinition</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_register_parsers</span><span class="p">()</span>
 
-        <span class="kn">from</span> <span class="nn">.unit</span> <span class="k">import</span> <span class="n">build_unit_class</span>
+        <span class="kn">from</span> <span class="nn">.unit</span> <span class="kn">import</span> <span class="n">build_unit_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Unit</span> <span class="o">=</span> <span class="n">build_unit_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="kn">from</span> <span class="nn">.quantity</span> <span class="k">import</span> <span class="n">build_quantity_class</span>
+        <span class="kn">from</span> <span class="nn">.quantity</span> <span class="kn">import</span> <span class="n">build_quantity_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="n">build_quantity_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_ndarray</span><span class="p">)</span>
 
-        <span class="kn">from</span> <span class="nn">.measurement</span> <span class="k">import</span> <span class="n">build_measurement_class</span>
+        <span class="kn">from</span> <span class="nn">.measurement</span> <span class="kn">import</span> <span class="n">build_measurement_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Measurement</span> <span class="o">=</span> <span class="n">build_measurement_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_ndarray</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filename</span>
@@ -392,17 +392,17 @@
     <span class="k">def</span> <span class="nf">__name__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;UnitRegistry&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseRegistry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Calling the getitem method from a UnitRegistry is deprecated. &#39;</span>
                        <span class="s1">&#39;use `parse_expression` method or use the registry as a callable.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_expression</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dir</span>
 
     <span class="nd">@property</span>
@@ -1077,7 +1077,7 @@
 <span class="sd">                                           converted to base units in multiplications.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_as_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_as_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NonMultiplicativeRegistry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1">#: When performing a multiplication of units, interpret</span>
@@ -1230,7 +1230,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ContextRegistry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1">#: Map context name (string) or abbreviation to context.</span>
@@ -1468,7 +1468,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SystemRegistry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1">#: Map system name to system.</span>
@@ -1669,7 +1669,7 @@
 <span class="sd">    :param auto_reduce_dimensions: If True, reduce dimensionality on appropriate operations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">force_ndarray</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_as_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">force_ndarray</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_as_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">on_redefinition</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1695,7 +1695,7 @@
 <span class="sd">        :type enable: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Delays importing matplotlib until it&#39;s actually requested</span>
-        <span class="kn">from</span> <span class="nn">.matplotlib</span> <span class="k">import</span> <span class="n">setup_matplotlib_handlers</span>
+        <span class="kn">from</span> <span class="nn">.matplotlib</span> <span class="kn">import</span> <span class="n">setup_matplotlib_handlers</span>
         <span class="n">setup_matplotlib_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="p">)</span>
 
     <span class="n">wraps</span> <span class="o">=</span> <span class="n">registry_helpers</span><span class="o">.</span><span class="n">wraps</span>
@@ -1705,7 +1705,7 @@
 
 <span class="k">class</span> <span class="nc">LazyRegistry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span> <span class="ow">or</span> <span class="p">(),</span> <span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">__init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1715,24 +1715,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_after_init</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s1">&#39;_on_redefinition&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;raise&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__init</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;__class__&#39;</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">LazyRegistry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__init</span><span class="p">()</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__init</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__init</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
@@ -1750,7 +1750,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -1787,7 +1787,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

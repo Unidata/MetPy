@@ -34,8 +34,8 @@ Moist Thermodynamics
       :toctree: ./
 
       dewpoint
+      dewpoint_from_relative_humidity
       dewpoint_from_specific_humidity
-      dewpoint_rh
       equivalent_potential_temperature
       mixing_ratio
       mixing_ratio_from_relative_humidity
@@ -76,6 +76,7 @@ Soundings
       lcl
       lfc
       mixed_layer
+      mixed_layer_cape_cin
       mixed_parcel
       most_unstable_cape_cin
       most_unstable_parcel
@@ -198,10 +199,5 @@ Do not use these functions in new code, please see their documentation for their
    .. autosummary::
       :toctree: ./
 
-      get_wind_components
-      get_wind_dir
-      get_wind_speed
-      interp
-      interpolate_nans
-      log_interp
+      dewpoint_rh
 

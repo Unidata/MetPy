@@ -30,6 +30,7 @@ can be utilized.
 
 
 
+
 Create some test data to use for our example
 
 
@@ -50,6 +51,7 @@ Create some test data to use for our example
                   [2, 2, 2],
                   [3, 3, 3],
                   [4, 4, 4]]) * units.kilometer
+
 
 
 
@@ -81,6 +83,7 @@ Calculate the gradient using the coordinates of the data
 
 
 
+
 It's also possible that we do not have the position of data points, but know
 that they are evenly spaced. We can then specify a scalar delta value for each
 axes.
@@ -106,6 +109,7 @@ axes.
 
     Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
     Gradient in x direction:  [[ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.]] kelvin / kilometer
+
 
 
 
@@ -140,9 +144,10 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.088 seconds)
+   **Total running time of the script:** ( 0 minutes  0.015 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Gradient.py:

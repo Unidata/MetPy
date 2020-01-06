@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GiniFile &mdash; MetPy 0.11.0</title>
+  <title>GiniFile &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="io" href="metpy.io.html"/>
         <link rel="next" title="Level2File" href="metpy.io.Level2File.html"/>
-        <link rel="prev" title="is_precip_mode" href="metpy.io.is_precip_mode.html"/> 
+        <link rel="prev" title="parse_metar_to_dataframe" href="metpy.io.parse_metar_to_dataframe.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -129,6 +129,8 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.io.html">io</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.parse_metar_file.html">parse_metar_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">GiniFile</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-io-ginifile">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.io.GiniFile</span></code></a></li>
 </ul>
@@ -141,7 +143,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -426,14 +427,14 @@ this will be read from directly.</p>
 <dt id="metpy.io.GiniFile.get_attrs">
 <code class="sig-name descname">get_attrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_attrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the global attributes.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.GiniFile.get_dimensions">
 <code class="sig-name descname">get_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_dimensions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the file’s dimensions.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -445,7 +446,7 @@ this will be read from directly.</p>
 <dt id="metpy.io.GiniFile.get_variables">
 <code class="sig-name descname">get_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all variables in the file.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -513,7 +514,7 @@ are requested, so care should be taken to make sure its fast.</p>
         <a href="metpy.io.Level2File.html" class="btn btn-neutral float-right" title="Level2File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.io.is_precip_mode.html" class="btn btn-neutral" title="is_precip_mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.io.parse_metar_to_dataframe.html" class="btn btn-neutral" title="parse_metar_to_dataframe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -523,7 +524,7 @@ are requested, so care should be taken to make sure its fast.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -560,7 +561,7 @@ are requested, so care should be taken to make sure its fast.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

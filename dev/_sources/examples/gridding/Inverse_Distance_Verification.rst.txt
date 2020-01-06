@@ -36,11 +36,10 @@ Algorithmically:
     import matplotlib.pyplot as plt
     import numpy as np
     from scipy.spatial import cKDTree
-    from scipy.spatial.distance import cdist
 
     from metpy.interpolate.geometry import dist_2
     from metpy.interpolate.points import barnes_point, cressman_point
-    from metpy.interpolate.tools import calc_kappa
+    from metpy.interpolate.tools import average_spacing, calc_kappa
 
 
     def draw_circle(ax, x, y, r, m, label):
@@ -48,6 +47,7 @@ Algorithmically:
         nx = x + r * np.cos(th)
         ny = y + r * np.sin(th)
         ax.plot(nx, ny, m, label=label)
+
 
 
 
@@ -79,6 +79,7 @@ Set up two test grid locations at (30, 30) and (60, 60).
 
 
 
+
 Set up a cKDTree object and query all of the observations within "radius" of each grid point.
 
 The variable ``indices`` represents the index of each matched coordinate within the
@@ -92,6 +93,7 @@ cKDTree's ``data`` list.
     radius = 40
     obs_tree = cKDTree(list(zip(xp, yp)))
     indices = obs_tree.query_ball_point(grid_points, r=radius)
+
 
 
 
@@ -116,6 +118,7 @@ For grid 0, we will use Cressman to interpolate its value.
 
 
 
+
 For grid 1, we will use barnes to interpolate its value.
 
 We need to calculate kappa--the average distance between observations over the domain.
@@ -127,10 +130,10 @@ We need to calculate kappa--the average distance between observations over the d
     barnes_dist = dist_2(sim_gridx[1], sim_gridy[1], x2, y2)
     barnes_obs = zp[indices[1]]
 
-    ave_spacing = np.mean((cdist(list(zip(xp, yp)), list(zip(xp, yp)))))
-    kappa = calc_kappa(ave_spacing)
+    kappa = calc_kappa(average_spacing(list(zip(xp, yp))))
 
     barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)
+
 
 
 
@@ -168,6 +171,15 @@ Plot all of the affiliated information and interpolation values.
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_001.png
     :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+
+    <matplotlib.legend.Legend object at 0x7f95607a7160>
 
 
 
@@ -211,6 +223,7 @@ their distances from the grid point.
 
 
 
+
 Step through the cressman calculations.
 
 
@@ -241,6 +254,7 @@ Step through the cressman calculations.
 
     Manual cressman value for grid 1:        1.0549944440419021
     Metpy cressman value for grid 1:         1.0549944440416752
+
 
 
 
@@ -281,6 +295,7 @@ Now repeat for grid 1, except use barnes interpolation.
 
 
 
+
 Step through barnes calculations.
 
 
@@ -307,15 +322,16 @@ Step through barnes calculations.
 
  .. code-block:: none
 
-    Manual barnes value:     4.087182410612323
-    Metpy barnes value:      4.087182410612151
+    Manual barnes value:     4.112066483189193
+    Metpy barnes value:      4.112066483188547
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.960 seconds)
+   **Total running time of the script:** ( 0 minutes  0.687 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:

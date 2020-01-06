@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.interpolate.slices &mdash; MetPy 0.11.0</title>
+  <title>metpy.interpolate.slices &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -201,8 +201,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">check_axis</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">check_axis</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -284,7 +284,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
+    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
 
     <span class="c1"># Geod.npts only gives points *in between* the start and end, and we want to include</span>
     <span class="c1"># the endpoints.</span>
@@ -361,7 +361,7 @@
         <span class="n">points_cross</span> <span class="o">=</span> <span class="n">geodesic</span><span class="p">(</span><span class="n">crs_data</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>
 
         <span class="c1"># Patch points_cross to match given longitude range, whether [0, 360) or (-180,  180]</span>
-        <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="n">points_cross</span><span class="p">[</span><span class="n">points_cross</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">360.</span>
 
         <span class="c1"># Return the interpolated data</span>
@@ -381,7 +381,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -418,7 +418,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

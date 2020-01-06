@@ -27,6 +27,7 @@ in handling various string formatting.
 
 
 
+
 Create a test value of a directional text
 
 
@@ -46,6 +47,7 @@ Create a test value of a directional text
  .. code-block:: none
 
     SOUTH SOUTH EAST
+
 
 
 
@@ -69,6 +71,7 @@ the corresponding angle
  .. code-block:: none
 
     157.5 degree
+
 
 
 
@@ -96,9 +99,10 @@ in many different abbrieviations and capitalizations
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.086 seconds)
+   **Total running time of the script:** ( 0 minutes  0.002 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Parse_Angles.py:

@@ -7,14 +7,14 @@ Find Natural Neighbors Verification
 
 Finding natural neighbors in a triangulation
 
-A triangle is a natural neighbor of a point if that point is within a circumradius of the
-circumcenter of a circumscribed circle containing the triangle.
+A triangle is a natural neighbor of a point if that point is within a circumscribed
+circle ("circumcircle") containing the triangle.
 """
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial import Delaunay
 
-from metpy.interpolate.geometry import find_natural_neighbors
+from metpy.interpolate.geometry import circumcircle_radius, find_natural_neighbors
 
 # Create test observations, test points, and plot the triangulation and points.
 gx, gy = np.meshgrid(np.arange(0, 20, 4), np.arange(0, 20, 4))
@@ -35,7 +35,7 @@ for i, (x, y) in enumerate(test_points):
     ax.annotate('test ' + str(i), xy=(x, y))
 
 ###########################################
-# Since finding natural neighbors already calculates circumcenters and circumradii, return
+# Since finding natural neighbors already calculates circumcenters, return
 # that information for later use.
 #
 # The key of the neighbors dictionary refers to the test point index, and the list of integers
@@ -43,15 +43,12 @@ for i, (x, y) in enumerate(test_points):
 #
 # Since point 4 is far away from the triangulation, it has no natural neighbors.
 # Point 3 is at the confluence of several triangles so it has many natural neighbors.
-neighbors, tri_info = find_natural_neighbors(tri, test_points)
+neighbors, circumcenters = find_natural_neighbors(tri, test_points)
 print(neighbors)
 
 ###########################################
-# We can then use the information in tri_info later.
+# We can plot all of the triangles as well as the circles representing the circumcircles
 #
-# The dictionary key is the index of a particular triangle in the Delaunay triangulation data
-# structure. 'cc' is that triangle's circumcenter, and 'r' is the radius of the circumcircle
-# containing that triangle.
 fig, ax = plt.subplots(figsize=(15, 10))
 for i, inds in enumerate(tri.simplices):
     pts = tri.points[inds]
@@ -59,12 +56,11 @@ for i, inds in enumerate(tri.simplices):
     ax.plot(x, y)
     ax.annotate(i, xy=(np.mean(x), np.mean(y)))
 
-# Using circumcenter and radius information from tri_info, plot circumcircles and
-# circumcenters for each triangle.
-for _idx, item in tri_info.items():
-    ax.plot(item['cc'][0], item['cc'][1], 'k.', markersize=5)
-    circ = plt.Circle(item['cc'], item['r'], edgecolor='k', facecolor='none',
-                      transform=fig.axes[0].transData)
+# Using circumcenters and calculated circumradii, plot the circumcircles
+for idx, cc in enumerate(circumcenters):
+    ax.plot(cc[0], cc[1], 'k.', markersize=5)
+    circ = plt.Circle(cc, circumcircle_radius(*tri.points[tri.simplices[idx]]),
+                      edgecolor='k', facecolor='none', transform=fig.axes[0].transData)
     ax.add_artist(circ)
 
 ax.set_aspect('equal', 'datalim')

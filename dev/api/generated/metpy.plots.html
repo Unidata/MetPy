@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>plots &mdash; MetPy 0.11.0</title>
+  <title>plots &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="Reference Guide" href="../index.html"/>
         <link rel="next" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html"/>
-        <link rel="prev" title="log_interp" href="metpy.calc.log_interp.html"/> 
+        <link rel="prev" title="dewpoint_rh" href="metpy.calc.dewpoint_rh.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -135,6 +135,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
@@ -142,6 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotObs.html">PlotObs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
@@ -152,7 +154,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -257,6 +258,9 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</p></td>
 <td><p>Read colortable information from a file.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html#metpy.plots.wx_code_to_numeric" title="metpy.plots.wx_code_to_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wx_code_to_numeric</span></code></a>(codes)</p></td>
+<td><p>Determine the numeric weather symbol value from METAR code text.</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Classes</p>
@@ -287,22 +291,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Collects panels and set complete figure related settings (e.g., figsize).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotScalar.html#metpy.plots.PlotScalar" title="metpy.plots.PlotScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotScalar</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotObs</span></code></a>(*args, **kwargs)</p></td>
+<td><p>The highest level class related to plotting observed surface and upperair data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotScalar.html#metpy.plots.PlotScalar" title="metpy.plots.PlotScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotScalar</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Defines the common elements of 2D scalar plots for single scalar value fields.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotVector.html#metpy.plots.PlotVector" title="metpy.plots.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotVector.html#metpy.plots.PlotVector" title="metpy.plots.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Defines common elements for 2D vector plots.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.Plots2D.html#metpy.plots.Plots2D" title="metpy.plots.Plots2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plots2D</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Plots2D.html#metpy.plots.Plots2D" title="metpy.plots.Plots2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plots2D</span></code></a>(*args, **kwargs)</p></td>
 <td><p>The highest level class related to plotting 2D data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
 <td><p>Make Skew-T log-P plots of data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax, x, y[, fontsize, spacing, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax, x, y[, fontsize, spacing, …])</p></td>
 <td><p>Make a standard meteorological station plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></p></td>
 <td><p>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -322,7 +329,7 @@
         <a href="metpy.plots.add_metpy_logo.html" class="btn btn-neutral float-right" title="add_metpy_logo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.log_interp.html" class="btn btn-neutral" title="log_interp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.dewpoint_rh.html" class="btn btn-neutral" title="dewpoint_rh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -332,7 +339,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -369,7 +376,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

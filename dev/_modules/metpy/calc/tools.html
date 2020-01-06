@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.tools &mdash; MetPy 0.11.0</title>
+  <title>metpy.calc.tools &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -197,30 +197,20 @@
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Contains a collection of generally useful calculation tools.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-
 <span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">itemgetter</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">numpy.core.numeric</span> <span class="k">import</span> <span class="n">normalize_axis_index</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Only available in numpy &gt;=1.13.0</span>
-    <span class="k">def</span> <span class="nf">normalize_axis_index</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;No op version of :func:`numpy.core.numeric.normalize_axis_index`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">a</span>
+<span class="kn">from</span> <span class="nn">numpy.core.numeric</span> <span class="kn">import</span> <span class="n">normalize_axis_index</span>
 <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">height_to_pressure_std</span><span class="p">,</span> <span class="n">pressure_to_height_std</span>
-<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">broadcast_indices</span><span class="p">,</span> <span class="n">result_type</span>
-<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">deprecated</span><span class="p">,</span> <span class="n">metpyDeprecation</span>
-<span class="kn">from</span> <span class="nn">..interpolate.one_dimension</span> <span class="k">import</span> <span class="n">interpolate_1d</span><span class="p">,</span> <span class="n">interpolate_nans_1d</span><span class="p">,</span> <span class="n">log_interpolate_1d</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">check_axis</span><span class="p">,</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="kn">import</span> <span class="n">broadcast_indices</span><span class="p">,</span> <span class="n">result_type</span>
+<span class="kn">from</span> <span class="nn">..interpolate</span> <span class="kn">import</span> <span class="n">interpolate_1d</span><span class="p">,</span> <span class="n">log_interpolate_1d</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">check_axis</span><span class="p">,</span> <span class="n">preprocess_xarray</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -297,7 +287,7 @@
 
 <div class="viewcode-block" id="find_intersections"><a class="viewcode-back" href="../../../api/generated/metpy.calc.find_intersections.html#metpy.calc.find_intersections">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
-<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">((</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">))</span>
+<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">((</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">find_intersections</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">log_x</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the best estimate of intersection.</span>
 
@@ -382,21 +372,6 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown option for direction: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">intersect_x</span><span class="p">[</span><span class="n">mask</span> <span class="o">&amp;</span> <span class="n">duplicate_mask</span><span class="p">],</span> <span class="n">intersect_y</span><span class="p">[</span><span class="n">mask</span> <span class="o">&amp;</span> <span class="n">duplicate_mask</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="interpolate_nans"><a class="viewcode-back" href="../../../api/generated/metpy.calc.interpolate_nans.html#metpy.calc.interpolate_nans">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39; This function has been moved to metpy.interpolate and renamed &#39;</span>
-                             <span class="s1">&#39;interpolate_nans_1d.&#39;</span><span class="p">),</span> <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap interpolate_nans_1d for deprecated interpolate_nans.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">interpolate_nans_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span></div>
-
-
-<span class="n">interpolate_nans</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">interpolate_nans_1d</span><span class="o">.</span><span class="vm">__doc__</span>
-                            <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
-                              <span class="s1">&#39;`interpolate_nans_1d` and moved to `metpy.interpolate`, and &#39;</span>
-                              <span class="s1">&#39;will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_next_non_masked_element</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
@@ -551,6 +526,8 @@
 <span class="sd">        The bound pressure and height.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># avoid circular import if basic.py ever imports something from tools.py</span>
+    <span class="kn">from</span> <span class="nn">.basic</span> <span class="kn">import</span> <span class="n">height_to_pressure_std</span><span class="p">,</span> <span class="n">pressure_to_height_std</span>
     <span class="c1"># Make sure pressure is monotonically decreasing</span>
     <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
@@ -636,7 +613,7 @@
 <div class="viewcode-block" id="get_layer_heights"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_layer_heights.html#metpy.calc.get_layer_heights">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_layer_heights</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_layer_heights</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_agl</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return an atmospheric layer from upper air data with the requested bottom and depth.</span>
 
 <span class="sd">    This function will subset an upper air dataset to contain only the specified layer using</span>
@@ -665,10 +642,6 @@
 <span class="sd">        The height and data variables of the layer</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">bottom</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">interpolate</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;interpolate&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="n">with_agl</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;with_agl&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
     <span class="c1"># Make sure pressure and datavars are the same length</span>
     <span class="k">for</span> <span class="n">datavar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datavar</span><span class="p">):</span>
@@ -704,9 +677,11 @@
     <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
         <span class="c1"># If we don&#39;t have the bottom or top requested, append them</span>
         <span class="k">if</span> <span class="n">top</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">heights_interp</span><span class="p">:</span>
-            <span class="n">heights_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heights_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">top</span><span class="o">.</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">heights</span><span class="o">.</span><span class="n">units</span>
+            <span class="n">heights_interp</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heights_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">top</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span>
+                                            <span class="n">heights</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bottom</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">heights_interp</span><span class="p">:</span>
-            <span class="n">heights_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heights_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">bottom</span><span class="o">.</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">heights</span><span class="o">.</span><span class="n">units</span>
+            <span class="n">heights_interp</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heights_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">bottom</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span>
+                                            <span class="n">heights</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
     <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heights_interp</span><span class="p">)</span>
 
@@ -728,7 +703,8 @@
 <div class="viewcode-block" id="get_layer"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_layer.html#metpy.calc.get_layer">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+              <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an atmospheric layer from upper air data with the requested bottom and depth.</span>
 
 <span class="sd">    This function will subset an upper air dataset to contain only the specified layer. The</span>
@@ -762,12 +738,6 @@
 <span class="sd">        The pressure and data variables of the layer</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Pop off keyword arguments</span>
-    <span class="n">heights</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;heights&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">bottom</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)</span>
-    <span class="n">interpolate</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;interpolate&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-
     <span class="c1"># If we get the depth kwarg, but it&#39;s None, set it to the default as well</span>
     <span class="k">if</span> <span class="n">depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">depth</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
@@ -830,21 +800,6 @@
 
         <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datavar</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">ret</span></div>
-
-
-<div class="viewcode-block" id="interp"><a class="viewcode-back" href="../../../api/generated/metpy.calc.interp.html#metpy.calc.interp">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39; This function has been moved to metpy.interpolate and renamed &#39;</span>
-                             <span class="s1">&#39;interpolate_1d.&#39;</span><span class="p">),</span> <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap interpolate_1d for deprecated interp.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<span class="n">interp</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">interpolate_1d</span><span class="o">.</span><span class="vm">__doc__</span>
-                  <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
-                    <span class="s1">&#39;`interpolate_1d` and moved to `metpy.interpolate`, and &#39;</span>
-                    <span class="s1">&#39;will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="find_bounding_indices"><a class="viewcode-back" href="../../../api/generated/metpy.calc.find_bounding_indices.html#metpy.calc.find_bounding_indices">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -936,21 +891,6 @@
     <span class="k">return</span> <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span></div>
 
 
-<div class="viewcode-block" id="log_interp"><a class="viewcode-back" href="../../../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39; This function has been moved to metpy.interpolate and renamed &#39;</span>
-                             <span class="s1">&#39;log_interpolate_1d.&#39;</span><span class="p">),</span> <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">log_interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap log_interpolate_1d for deprecated log_interp.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">log_interpolate_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<span class="n">log_interp</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">log_interpolate_1d</span><span class="o">.</span><span class="vm">__doc__</span>
-                      <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
-                        <span class="s1">&#39;`log_interpolate_1d` and moved to `metpy.interpolate`, and &#39;</span>
-                        <span class="s1">&#39;will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
-
-
 <span class="k">def</span> <span class="nf">_greater_or_close</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compare values for greater or close to boolean masks.</span>
 
@@ -1024,7 +964,7 @@
 <span class="sd">    Assumes [..., Y, X] for &gt;=2 dimensional arrays</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
+    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
 
     <span class="c1"># Inputs must be the same number of dimensions</span>
     <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="n">longitude</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
@@ -1033,6 +973,14 @@
     <span class="c1"># If we were given 1D arrays, make a mesh grid</span>
     <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+
+    <span class="c1"># pyproj requires ndarrays, not Quantities</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">longitude</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;degrees&#39;</span><span class="p">)</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">latitude</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;degrees&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
 
     <span class="n">geod_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ellps&#39;</span><span class="p">:</span> <span class="s1">&#39;sphere&#39;</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
@@ -1107,12 +1055,12 @@
             <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;axis&#39;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">get_axis_num</span><span class="p">(</span><span class="n">axis</span><span class="p">)}</span>
 
             <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;time&#39;</span><span class="p">):</span>
-                <span class="c1"># Time coordinate, need to convert to seconds from datetimes</span>
-                <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">as_timestamp</span><span class="p">()</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
-            <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">):</span>
+                <span class="c1"># Time coordinate, need to get time deltas</span>
+                <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time_deltas</span>
+            <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;longitude&#39;</span><span class="p">):</span>
                 <span class="c1"># Longitude coordinate, need to get grid deltas</span>
                 <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;latitude&#39;</span><span class="p">):</span>
                 <span class="c1"># Latitude coordinate, need to get grid deltas</span>
                 <span class="n">_</span><span class="p">,</span> <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1371,9 +1319,6 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    `gradient` previously accepted `x` as a parameter for coordinate values. This has been</span>
-<span class="sd">    deprecated in 0.9 in favor of `coordinates`.</span>
-
 <span class="sd">    If this function is used without the `axes` parameter, the length of `coordinates` or</span>
 <span class="sd">    `deltas` (as applicable) should match the number of dimensions of `f`.</span>
 
@@ -1423,9 +1368,6 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    `laplacian` previously accepted `x` as a parameter for coordinate values. This has been</span>
-<span class="sd">    deprecated in 0.9 in favor of `coordinates`.</span>
-
 <span class="sd">    If this function is used without the `axes` parameter, the length of `coordinates` or</span>
 <span class="sd">    `deltas` (as applicable) should match the number of dimensions of `f`.</span>
 
@@ -1472,11 +1414,6 @@
     <span class="k">elif</span> <span class="s1">&#39;coordinates&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">_check_length</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">])</span>
         <span class="k">return</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">],</span> <span class="n">axes</span>
-    <span class="k">elif</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The use of &quot;x&quot; as a parameter for coordinate values has been &#39;</span>
-                      <span class="s1">&#39;deprecated. Use &quot;coordinates&quot; instead.&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
-        <span class="n">_check_length</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">axes</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">axes</span>  <span class="c1"># only the axis argument matters</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1710,7 +1647,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -1747,7 +1684,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

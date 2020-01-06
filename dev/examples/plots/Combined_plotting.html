@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combined Plotting &mdash; MetPy 0.11.0</title>
+  <title>Combined Plotting &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
-        <link rel="next" title="Skew-T with Complex Layout" href="Skew-T_Layout.html"/>
+        <link rel="next" title="Upper Air Analysis using Declarative Syntax" href="upperair_declarative.html"/>
         <link rel="prev" title="US Counties" href="US_Counties.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -130,6 +130,8 @@
 <li class="toctree-l3"><a class="reference internal" href="Simplified_Image_Plot.html">Simple Plotting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Combined Plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple_Sounding.html">Simple Sounding</a></li>
@@ -232,41 +234,41 @@
 <p>Also shows how to control the maps that are plotted. Plots sample NARR data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 
 <span class="c1"># Use sample NARR data for plotting</span>
 <span class="n">narr</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Create a contour plot of temperature</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">contour</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">()</span>
-<span class="n">contour</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
-<span class="n">contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;Temperature&#39;</span>
-<span class="n">contour</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
-<span class="n">contour</span><span class="o">.</span><span class="n">linecolor</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span>
-<span class="n">contour</span><span class="o">.</span><span class="n">contours</span> <span class="o">=</span> <span class="mi">15</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
+<a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;Temperature&#39;</span>
+<a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a><span class="o">.</span><span class="n">linecolor</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span>
+<a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a><span class="o">.</span><span class="n">contours</span> <span class="o">=</span> <span class="mi">15</span>
 </pre></div>
 </div>
 <p>Create an image plot of Geopotential height</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">()</span>
-<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
-<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;Geopotential_height&#39;</span>
-<span class="n">img</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
+<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;Geopotential_height&#39;</span>
+<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
 </pre></div>
 </div>
 <p>Plot the data on a map</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">panel</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">()</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coastline&#39;</span><span class="p">,</span> <span class="s1">&#39;borders&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="s1">&#39;rivers&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">]</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;NARR Example&#39;</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">contour</span><span class="p">,</span> <span class="n">img</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coastline&#39;</span><span class="p">,</span> <span class="s1">&#39;borders&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="s1">&#39;rivers&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;NARR Example&#39;</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">contour</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="p">]</span>
 
-<span class="n">pc</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a><span class="p">()</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Combined_plotting_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Combined_plotting_001.png" />
@@ -277,7 +279,7 @@
   warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.403 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.370 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-combined-plotting-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d8409c987489fd47de4c8cdb9d76c01b/Combined_plotting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Combined_plotting.py</span></code></a></p>
@@ -299,7 +301,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Skew-T_Layout.html" class="btn btn-neutral float-right" title="Skew-T with Complex Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="upperair_declarative.html" class="btn btn-neutral float-right" title="Upper Air Analysis using Declarative Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="US_Counties.html" class="btn btn-neutral" title="US Counties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -312,7 +314,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -349,7 +351,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.ctables &mdash; MetPy 0.11.0</title>
+  <title>metpy.plots.ctables &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -233,8 +233,6 @@
 <span class="sd">   plt.show()</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-
 <span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">glob</span>
@@ -244,10 +242,10 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
-<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_listdir</span><span class="p">,</span> <span class="n">resource_stream</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_listdir</span><span class="p">,</span> <span class="n">resource_stream</span>
 
-<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">metpyDeprecation</span>
-<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="kn">import</span> <span class="n">metpyDeprecation</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -324,12 +322,12 @@
 <span class="sd">    matplotlib&#39;s Normalize instances to go with the colortable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle viridis deprecation.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;viridis&#39;</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Viridis has been deprecated in v0.11. Please use &#39;</span>
                           <span class="s2">&quot;matplotlib&#39;s &#39;viridis&#39;.&quot;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">ColortableRegistry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ColortableRegistry.scan_resource"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.scan_resource">[docs]</a>    <span class="k">def</span> <span class="nf">scan_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pkg</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scan a resource directory for colortable files and add them to the registry.</span>
@@ -406,7 +404,7 @@
 <span class="sd">            from the number of entries matching the color table, and the color table itself.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">arange</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span>
 
         <span class="c1"># Need one more boundary than color</span>
         <span class="n">num_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
@@ -435,7 +433,7 @@
 <span class="sd">            from the number of entries matching the color table, and the color table itself.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">linspace</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linspace</span>
 
         <span class="c1"># Need one more boundary than color</span>
         <span class="n">num_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
@@ -501,7 +499,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -538,7 +536,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

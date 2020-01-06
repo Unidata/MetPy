@@ -21,11 +21,12 @@ from metpy.plots import add_metpy_logo
 
 
 ###########################################
-def basic_map(proj):
+def basic_map(proj, title):
     """Make our basic default map for plotting"""
     fig = plt.figure(figsize=(15, 10))
     add_metpy_logo(fig, 0, 80, size='large')
     view = fig.add_axes([0, 0, 1, 1], projection=proj)
+    view.set_title(title)
     view.set_extent([-120, -70, 20, 50])
     view.add_feature(cfeature.STATES.with_scale('50m'))
     view.add_feature(cfeature.OCEAN)
@@ -84,7 +85,7 @@ x, y, temp = remove_repeat_coordinates(x, y, temp)
 # ------------------------
 gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='linear', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
-fig, view = basic_map(to_proj)
+fig, view = basic_map(to_proj, 'Linear')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
@@ -94,7 +95,7 @@ fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 # `Reference <https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf>`_
 gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='natural_neighbor', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
-fig, view = basic_map(to_proj)
+fig, view = basic_map(to_proj, 'Natural Neighbor')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
@@ -109,7 +110,7 @@ fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='cressman', minimum_neighbors=1,
                                   hres=75000, search_radius=100000)
 img = np.ma.masked_where(np.isnan(img), img)
-fig, view = basic_map(to_proj)
+fig, view = basic_map(to_proj, 'Cressman')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
@@ -122,7 +123,7 @@ fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 gx, gy, img1 = interpolate_to_grid(x, y, temp, interp_type='barnes', hres=75000,
                                    search_radius=100000)
 img1 = np.ma.masked_where(np.isnan(img1), img1)
-fig, view = basic_map(to_proj)
+fig, view = basic_map(to_proj, 'Barnes')
 mmb = view.pcolormesh(gx, gy, img1, cmap=cmap, norm=norm)
 fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
@@ -133,7 +134,7 @@ fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear',
                                   rbf_smooth=0)
 img = np.ma.masked_where(np.isnan(img), img)
-fig, view = basic_map(to_proj)
+fig, view = basic_map(to_proj, 'Radial Basis Function')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 

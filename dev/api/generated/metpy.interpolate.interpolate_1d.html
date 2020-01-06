@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>interpolate_1d &mdash; MetPy 0.11.0</title>
+  <title>interpolate_1d &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="interpolate_nans_1d" href="metpy.interpolate.interpolate_nans_1d.html"/>
-        <link rel="prev" title="interpolate" href="metpy.interpolate.interpolate.html"/> 
+        <link rel="prev" title="geodesic" href="metpy.interpolate.geodesic.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -134,18 +134,15 @@
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.interpolate.html">interpolate</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.cross_section.html">cross_section</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.geodesic.html">geodesic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate.html">interpolate</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">interpolate_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance.html">inverse_distance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">inverse_distance_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">inverse_distance_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">log_interpolate_1d</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor.html">natural_neighbor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">natural_neighbor_to_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">natural_neighbor_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">remove_nan_observations</a></li>
@@ -153,7 +150,6 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -239,7 +235,7 @@
 <h1>interpolate_1d<a class="headerlink" href="#interpolate-1d" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.interpolate_1d">
-<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">interpolate_1d</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">xp</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/one_dimension.html#interpolate_1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_1d" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">interpolate_1d</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">xp</em>, <em class="sig-param">*args</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">fill_value=nan</em>, <em class="sig-param">return_list_always=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/one_dimension.html#interpolate_1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_1d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolates data with any shape over a specified axis.</p>
 <p>Interpolation over a specified axis for arrays of any shape.</p>
 <dl class="field-list simple">
@@ -261,7 +257,7 @@ array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interpolate_1d</span><span class="p">(</span><span class="n">x_interp</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -287,7 +283,7 @@ array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class
         <a href="metpy.interpolate.interpolate_nans_1d.html" class="btn btn-neutral float-right" title="interpolate_nans_1d" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.interpolate.interpolate.html" class="btn btn-neutral" title="interpolate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.interpolate.geodesic.html" class="btn btn-neutral" title="geodesic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -297,7 +293,7 @@ array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -334,7 +330,7 @@ array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

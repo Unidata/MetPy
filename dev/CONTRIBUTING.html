@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributors Guide &mdash; MetPy 0.11.0</title>
+  <title>Contributors Guide &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="index.html"/>
         <link rel="next" title="Infrastructure Guide" href="infrastructureguide.html"/>
         <link rel="prev" title="Support" href="SUPPORT.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -151,7 +151,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#more-questions">More Questions?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#futher-reading">Futher Reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
@@ -266,7 +266,7 @@ be considerate and respectful of others by following our
 <li><p>Each pull request should consist of a logical collection of changes. You can
 include multiple bug fixes in a single pull request, but they should be related.
 For unrelated changes, please submit multiple pull requests.</p></li>
-<li><p>Do not commit changes to files that are irrelevant to your feature or bugfix
+<li><p>Do not commit changes to files that are irrelevant to your feature or bug fix
 (eg: .gitignore).</p></li>
 <li><p>Be willing to accept criticism and work on improving your code; we don’t want
 to break other users’ code, so care must be taken not to introduce bugs.</p></li>
@@ -379,11 +379,11 @@ you made our default <code class="docutils literal notranslate"><span class="pre
 <p>Running the tests can be done by running <code class="docutils literal notranslate"><span class="pre">pytest</span></code></p>
 <p>Running the whole test suite isn’t that slow, but can be a burden if you’re working on just
 one module or a specific test. It is easy to run tests on a single directory:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="n">tests</span><span class="o">/</span><span class="n">calc</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest tests/calc
 </pre></div>
 </div>
 <p>A specific test can be run as:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">-</span><span class="n">k</span> <span class="n">test_my_test_func_name</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest -k test_my_test_func_name
 </pre></div>
 </div>
 </div>
@@ -395,7 +395,7 @@ coverage has even helped find sections of dead code that could be removed!</p>
 <p>Let’s say we are adding a simple function to add two numbers and return the result as a float
 or as a string. (This would be a silly function, but go with us here for demonstration
 purposes.)</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">add_as_float_or_string</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="k">False</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_as_float_or_string</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
     <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
        <span class="k">return</span> <span class="n">string</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
@@ -405,14 +405,14 @@ purposes.)</p>
 <p>I can see two easy tests here: one for the results as a float and one for the results as a
 string. If I had added this to the <code class="docutils literal notranslate"><span class="pre">calc</span></code> module, I’d add those two tests in
 <code class="docutils literal notranslate"><span class="pre">tests/calc/test_calc.py</span></code>.</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">test_add_as_float_or_string_defaults</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_add_as_float_or_string_defaults</span><span class="p">():</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">add_as_float_or_string</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="n">assert</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 
 
-<span class="n">def</span> <span class="n">test_add_as_float_or_string_string_return</span><span class="p">():</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">add_as_float_or_string</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
-    <span class="n">assert</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_add_as_float_or_string_string_return</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">add_as_float_or_string</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>There are plenty of more advanced testing concepts, like dealing with floating point
@@ -423,11 +423,12 @@ at the existing tests to get an idea of some of the common patterns.</p>
 <h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this headline">¶</a></h3>
 <p>Some tests (for matplotlib plotting code) are done as an image comparison, using the
 pytest-mpl plugin. To run these tests, use:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="c1">--mpl</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest --mpl
+<span class="sb">`</span>
 </pre></div>
 </div>
 <p>When adding new image comparison tests, start by creating the baseline images for the tests:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="c1">--mpl-generate-path=baseline</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest --mpl-generate-path<span class="o">=</span>baseline
 </pre></div>
 </div>
 <p>That command runs the tests and saves the images in the <code class="docutils literal notranslate"><span class="pre">baseline</span></code> directory.
@@ -442,7 +443,9 @@ to run only the test you just created for this step.</p>
 supported by the pooch library. To add files to this, please ensure they are as small as
 possible. Put the files in the <code class="docutils literal notranslate"><span class="pre">staticdata</span></code> directory. Then run this command in the metpy
 directory (that contains the <code class="docutils literal notranslate"><span class="pre">static-data-manifest.txt</span></code> file)to recreate the data registry:</p>
-<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-c</span> <span class="pre">&quot;import</span> <span class="pre">pooch;</span> <span class="pre">pooch.make_registry('staticdata',</span> <span class="pre">'metpy/static-data-manifest.txt')&quot;</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python -c <span class="s2">&quot;import pooch; pooch.make_registry(&#39;staticdata&#39;, &#39;metpy/static-data-manifest.txt&#39;)&quot;</span>
+</pre></div>
+</div>
 <p>Make sure that no system files (like <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code>) are in the manifest and add it to your
 contribution.</p>
 </div>
@@ -487,8 +490,8 @@ couple of days. We may suggest some changes or improvements or alternatives.</p>
 <p>Some things that will increase the chance that your pull request is accepted quickly:</p>
 <ul class="simple">
 <li><p>Write tests.</p></li>
-<li><p>Follow [PEP8][<a class="reference external" href="https://pep8.org">https://pep8.org</a>] for style. (The <code class="docutils literal notranslate"><span class="pre">flake8</span></code> utility can help with this.)</p></li>
-<li><p>Write a [good commit message][<a class="reference external" href="https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html</a>].</p></li>
+<li><p>Follow <a class="reference external" href="https://pep8.org">PEP8</a> for style. (The <code class="docutils literal notranslate"><span class="pre">flake8</span></code> utility can help with this.)</p></li>
+<li><p>Write a <a class="reference external" href="https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">good commit message</a>.</p></li>
 </ul>
 <p>Pull requests will automatically have tests run by Travis. This includes
 running both the unit tests as well as the <code class="docutils literal notranslate"><span class="pre">flake8</span></code> code linter.</p>
@@ -498,7 +501,7 @@ running both the unit tests as well as the <code class="docutils literal notrans
 <p>Once we’re all happy with the pull request, it’s time for it to get merged in. Only the
 maintainers can merge pull requests and you should never merge a pull request you have commits
 on as it circumvents the code review. If this is your first or second pull request, we’ll
-likely help by rebasing and cleaning up the commit history for you. As your developement skills
+likely help by rebasing and cleaning up the commit history for you. As your development skills
 increase, we’ll help you learn how to do this.</p>
 </div>
 </div>
@@ -513,8 +516,8 @@ other ways, feel free to contact us:</p>
 <li><p><a class="reference external" href="https://www.unidata.ucar.edu/support/#mailinglists">python-users</a> mailing list</p></li>
 </ul>
 </div>
-<div class="section" id="futher-reading">
-<h2>Futher Reading<a class="headerlink" href="#futher-reading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <p>There are a ton of great resources out there on contributing to open source and on the
 importance of writing tested and maintainable software.</p>
 <ul class="simple">
@@ -547,7 +550,7 @@ importance of writing tested and maintainable software.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -584,7 +587,7 @@ importance of writing tested and maintainable software.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

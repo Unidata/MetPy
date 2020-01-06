@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>el &mdash; MetPy 0.11.0</title>
+  <title>el &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="lcl" href="metpy.calc.lcl.html"/>
         <link rel="prev" title="critical_angle" href="metpy.calc.critical_angle.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -140,6 +140,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer.html">mixed_layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
@@ -163,7 +164,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -262,8 +262,11 @@ no equilibrium level.</p>
 <li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The dewpoint at the levels given by <em class="xref py py-obj">pressure</em></p></li>
 <li><p><strong>parcel_temperature_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The parcel temperature profile from which to calculate the EL. Defaults to the
 surface parcel profile.</p></li>
-<li><p><strong>which</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Pick which EL to return. Options are ‘top’, ‘bottom’, and ‘all’.
-Default is the ‘top’ (lowest pressure) EL.</p></li>
+<li><p><strong>which</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Pick which LFC to return. Options are ‘top’, ‘bottom’, ‘wide’, ‘most_cape’, and ‘all’.
+‘top’ returns the lowest-pressure EL, default.
+‘bottom’ returns the highest-pressure EL.
+‘wide’ returns the EL whose corresponding LFC is farthest away.
+‘most_cape’ returns the EL that results in the most CAPE in the profile.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -305,7 +308,7 @@ Default is the ‘top’ (lowest pressure) EL.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -342,7 +345,7 @@ Default is the ‘top’ (lowest pressure) EL.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

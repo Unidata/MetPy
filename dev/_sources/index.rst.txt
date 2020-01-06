@@ -48,11 +48,7 @@ release new features, and `y` when we make a release with only bug fixes.
 For additional MetPy examples not included in this repository, please see the `Unidata Python
 Gallery <https://unidata.github.io/python-gallery/>`_.
 
-We support Python >= 3.6 and currently support Python 2.7.
-
-.. warning::
-  We are dropping support for Python 2.7 in the Fall of 2019. For more details and rationale
-  behind this decision, see :ref:`python27`.
+We support Python >= 3.6. Support for Python 2.7 was dropped with the release of 0.12.
 
 ----------
 Contact Us

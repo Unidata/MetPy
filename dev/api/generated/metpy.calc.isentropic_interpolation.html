@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>isentropic_interpolation &mdash; MetPy 0.11.0</title>
+  <title>isentropic_interpolation &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="nearest_intersection_idx" href="metpy.calc.nearest_intersection_idx.html"/>
         <link rel="prev" title="get_perturbation" href="metpy.calc.get_perturbation.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -159,7 +159,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -245,7 +244,7 @@
 <h1>isentropic_interpolation<a class="headerlink" href="#isentropic-interpolation" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.isentropic_interpolation">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">isentropic_interpolation</code><span class="sig-paren">(</span><em class="sig-param">theta_levels</em>, <em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">isentropic_interpolation</code><span class="sig-paren">(</span><em class="sig-param">theta_levels</em>, <em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">*args</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">temperature_out=False</em>, <em class="sig-param">max_iters=50</em>, <em class="sig-param">eps=1e-06</em>, <em class="sig-param">bottom_up_search=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data in isobaric coordinates to isentropic coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -253,23 +252,19 @@
 <li><p><strong>theta_levels</strong> (<em>array</em>) – One-dimensional array of desired theta surfaces</p></li>
 <li><p><strong>pressure</strong> (<em>array</em>) – One-dimensional array of pressure levels</p></li>
 <li><p><strong>temperature</strong> (<em>array</em>) – Array of temperature</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to the vertical in the temperature array, defaults to 0.</p></li>
+<li><p><strong>temperature_out</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – If true, will calculate temperature and output as the last item in the output list.
+Defaults to False.</p></li>
+<li><p><strong>max_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
+<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for theta levels bottom-up, or top-down. Defaults to
+True, which is bottom-up search.</p></li>
 <li><p><strong>args</strong> (<em>array</em><em>, </em><em>optional</em>) – Any additional variables will be interpolated to each isentropic level.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>list</em> – List with pressure at each isentropic level, followed by each additional
 argument interpolated to isentropic coordinates.</p>
-</dd>
-<dt class="field-odd">Other Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>axis</strong> (<em>int, optional</em>) – The axis corresponding to the vertical in the temperature array, defaults to 0.</p></li>
-<li><p><strong>temperature_out</strong> (<em>bool, optional</em>) – If true, will calculate temperature and output as the last item in the output list.
-Defaults to False.</p></li>
-<li><p><strong>max_iters</strong> (<em>int, optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
-<li><p><strong>eps</strong> (<em>float, optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
-<li><p><strong>bottom_up_search</strong> (<em>bool, optional</em>) – Controls whether to search for theta levels bottom-up, or top-down. Defaults to
-True, which is bottom-up search.</p></li>
-</ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -319,7 +314,7 @@ deprecated in 0.11 in favor of <em class="xref py py-obj">temperature_out</em> a
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -356,7 +351,7 @@ deprecated in 0.11 in favor of <em class="xref py py-obj">temperature_out</em> a
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -31,6 +31,7 @@ Combine a Skew-T and a hodograph using Matplotlib's `GridSpec` layout capability
 
 
 
+
 Upper air data can be obtained using the siphon package, but for this example we will use
 some of MetPy's sample data.
 
@@ -53,6 +54,7 @@ some of MetPy's sample data.
 
 
 
+
 We will pull the data out of the example dataset into individual variables and
 assign units.
 
@@ -66,6 +68,7 @@ assign units.
     wind_speed = df['speed'].values * units.knots
     wind_dir = df['direction'].values * units.degrees
     u, v = mpcalc.wind_components(wind_speed, wind_dir)
+
 
 
 
@@ -118,9 +121,10 @@ assign units.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.737 seconds)
+   **Total running time of the script:** ( 0 minutes  0.532 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Skew-T_Layout.py:

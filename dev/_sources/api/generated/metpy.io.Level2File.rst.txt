@@ -19,6 +19,7 @@ Level2File
       ~Level2File.data_block_fmt
       ~Level2File.msg15_code_map
       ~Level2File.msg1_fmt
+      ~Level2File.msg2_additional_fmt
       ~Level2File.msg2_fmt
       ~Level2File.msg31_data_hdr_fmt
       ~Level2File.msg31_el_const_fmt
@@ -58,6 +59,7 @@ Level2File
    .. autoattribute:: data_block_fmt
    .. autoattribute:: msg15_code_map
    .. autoattribute:: msg1_fmt
+   .. autoattribute:: msg2_additional_fmt
    .. autoattribute:: msg2_fmt
    .. autoattribute:: msg31_data_hdr_fmt
    .. autoattribute:: msg31_el_const_fmt

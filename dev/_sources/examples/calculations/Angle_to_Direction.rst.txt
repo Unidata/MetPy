@@ -27,6 +27,7 @@ It also  demonstrates the function's flexibility.
 
 
 
+
 Create a test value of an angle
 
 
@@ -46,6 +47,7 @@ Create a test value of an angle
  .. code-block:: none
 
     70 degree
+
 
 
 
@@ -69,6 +71,7 @@ get the corresponding direction
  .. code-block:: none
 
     ENE
+
 
 
 
@@ -97,6 +100,7 @@ and defaulting to degrees if no units are specified.
 
 
 
+
 If you want the unabbrieviated version, input full=True
 
 
@@ -119,9 +123,10 @@ If you want the unabbrieviated version, input full=True
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.074 seconds)
+   **Total running time of the script:** ( 0 minutes  0.003 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Angle_to_Direction.py:

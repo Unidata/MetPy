@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io._tools &mdash; MetPy 0.11.0</title>
+  <title>metpy.io._tools &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -193,33 +193,22 @@
            <div itemprop="articleBody">
             
   <h1>Source code for metpy.io._tools</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) 2009,2016 MetPy Developers.</span>
+<span></span><span class="c1"># Copyright (c) 2009,2016,2019 MetPy Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;A collection of general purpose tools for reading files.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-
 <span class="kn">import</span> <span class="nn">bz2</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">struct</span> <span class="k">import</span> <span class="n">Struct</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">Struct</span>
 <span class="kn">import</span> <span class="nn">zlib</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="c1"># This works around problems on early Python 2.7 where Struct.unpack_from() can&#39;t handle</span>
-<span class="c1"># being given a bytearray; use memoryview on Python 3, since calling bytearray again isn&#39;t</span>
-<span class="c1"># cheap.</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">bytearray_to_buff</span> <span class="o">=</span> <span class="n">buffer</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">bytearray_to_buff</span> <span class="o">=</span> <span class="nb">memoryview</span>
-
-
-<span class="k">def</span> <span class="nf">open_as_needed</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">open_as_needed</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a file-object given either a filename or an object.</span>
 
 <span class="sd">    Handles opening with the right class based on the file extension.</span>
@@ -229,17 +218,17 @@
         <span class="k">return</span> <span class="n">filename</span>
 
     <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.bz2&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">bz2</span><span class="o">.</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bz2</span><span class="o">.</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.gz&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">NamedStruct</span><span class="p">(</span><span class="n">Struct</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parse bytes using :class:`Struct` but provide named fields.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">prefmt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">tuple_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">prefmt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">tuple_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the NamedStruct.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">tuple_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">tuple_name</span> <span class="o">=</span> <span class="s1">&#39;NamedStruct&#39;</span>
@@ -252,7 +241,7 @@
             <span class="k">elif</span> <span class="ow">not</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># Skip items with no name</span>
                 <span class="n">conv_off</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tuple</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="n">tuple_name</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">n</span><span class="p">))</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">NamedStruct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">prefmt</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fmts</span> <span class="k">if</span> <span class="n">f</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">prefmt</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fmts</span> <span class="k">if</span> <span class="n">f</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">converters</span><span class="p">:</span>
@@ -269,11 +258,11 @@
 
     <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse bytes and return a namedtuple.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">NamedStruct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">unpack_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read bytes from a buffer and return as a namedtuple.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">NamedStruct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">unpack_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fobj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Unpack the next bytes from a file object.&quot;&quot;&quot;</span>
@@ -285,31 +274,31 @@
 <span class="k">class</span> <span class="nc">DictStruct</span><span class="p">(</span><span class="n">Struct</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parse bytes using :class:`Struct` but provide named fields using dictionary access.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">prefmt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">prefmt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the DictStruct.&quot;&quot;&quot;</span>
         <span class="n">names</span><span class="p">,</span> <span class="n">formats</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">)</span>
 
         <span class="c1"># Remove empty names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">n</span><span class="p">]</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">DictStruct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">prefmt</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">formats</span> <span class="k">if</span> <span class="n">f</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">prefmt</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">formats</span> <span class="k">if</span> <span class="n">f</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span> <span class="n">items</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse bytes and return a namedtuple.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">DictStruct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">unpack_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Unpack the next bytes from a file object.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">DictStruct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">Enum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Map values to specific strings.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapping.&quot;&quot;&quot;</span>
         <span class="c1"># Assign values for args in order starting at 0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">ind</span><span class="p">:</span> <span class="n">a</span> <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">)}</span>
@@ -317,7 +306,7 @@
         <span class="c1"># Invert the kwargs dict so that we can map from value to name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val_map</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Map an integer to the string representation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;Unknown (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 
@@ -325,11 +314,11 @@
 <span class="k">class</span> <span class="nc">Bits</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Breaks an integer into a specified number of True/False bits.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_bits</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_bits</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the number of bits.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bits</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bits</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the integer to the list of True/False values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="nb">bool</span><span class="p">((</span><span class="n">val</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bits</span><span class="p">]</span>
 
@@ -337,11 +326,11 @@
 <span class="k">class</span> <span class="nc">BitField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert an integer to a string for each bit.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the list of named bits.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="n">names</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a list with a string for each True bit in the integer.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -361,11 +350,11 @@
 <span class="k">class</span> <span class="nc">Array</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Use a Struct as a callable to unpack a bunch of bytes as a list.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the Struct unpacker.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_struct</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform the actual unpacking.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
 
@@ -373,7 +362,7 @@
 <span class="k">class</span> <span class="nc">IOBuffer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Holds bytes from a buffer to simplify parsing and random access.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the IOBuffer with the source data.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="mi">0</span>
@@ -408,7 +397,7 @@
 
     <span class="k">def</span> <span class="nf">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">struct_class</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse and return a structure from the current buffer offset.&quot;&quot;&quot;</span>
-        <span class="n">struct</span> <span class="o">=</span> <span class="n">struct_class</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="n">bytearray_to_buff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
+        <span class="n">struct</span> <span class="o">=</span> <span class="n">struct_class</span><span class="o">.</span><span class="n">unpack_from</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">struct_class</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">struct</span>
 
@@ -472,15 +461,15 @@
         <span class="sd">&quot;&quot;&quot;Return whether the buffer has reached the end of data.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the data at the specified location.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a string representation of the IOBuffer.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;Size: </span><span class="si">{}</span><span class="s1"> Offset: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the amount of data in the buffer.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 
@@ -539,7 +528,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -576,7 +565,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with MetPy &mdash; MetPy 0.11.0</title>
+  <title>Getting Started with MetPy &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="index.html"/>
         <link rel="next" title="Unit Support" href="units.html"/>
         <link rel="prev" title="Installation Guide" href="installguide.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -239,7 +239,7 @@ safer to always use units whenever applicable to make sure that your analyses ar
 correctly. Once you get used to the units syntax, it becomes very handy, as you never have
 to worry about unit conversion for any calculation. MetPy does it for you!</p>
 <p>To demonstrate the units syntax briefly here, we can do this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 
 <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
@@ -251,7 +251,7 @@ object:</p>
 </pre></div>
 </div>
 <p>Unit-aware calculations can then be done with these variables:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span><span class="p">]</span> <span class="n">meter</span> <span class="o">/</span> <span class="n">second</span>
@@ -292,11 +292,11 @@ With MetPy’s accessor to this package, we can quickly pull out common dimensio
 Climate and Forecasting (CF) metadata, and handle projection information. While the
 <a class="reference internal" href="tutorials/xarray_tutorial.html"><span class="doc">Xarray with MetPy</span></a> is the best place to see the full utility
 of the MetPy Xarray accessor, let’s demonstrate some of the functionality here:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="kn">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">metpy</span>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span> <span class="o">=</span> <span class="bp">False</span><span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
 
 <span class="c1"># Grab lat/lon values from file as unit arrays</span>
@@ -323,13 +323,13 @@ support for many of the common equations within the field. For the full list, pl
 you’re looking for, consider submitting a feature request to MetPy
 <a class="reference external" href="https://github.com/Unidata/MetPy/issues/new/choose">here</a>.</p>
 <p>To demonstrate some of the calculations MetPy can do, let’s show a simple example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
-<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mpcalc</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
 
 <span class="n">temperature</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
 <span class="n">rel_humidity</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span>
-<span class="k">print</span><span class="p">(</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rel_humidity</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rel_humidity</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([</span><span class="mf">9.27008599</span><span class="p">])</span> <span class="o">&lt;</span><span class="n">Unit</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span><span class="o">&gt;</span>
@@ -338,7 +338,7 @@ you’re looking for, consider submitting a feature request to MetPy
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knots</span>
 <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">270</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degrees</span>
 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span> <span class="o">-</span><span class="mi">10</span> <span class="mi">0</span> <span class="mi">20</span><span class="p">]</span> <span class="n">knot</span>
@@ -363,9 +363,9 @@ which will make plotting a simple task with straight-forward syntax, similar to 
 <h4>Skew-T<a class="headerlink" href="#skew-t" title="Permalink to this headline">¶</a></h4>
 <p>The Skew-T Log-P diagram is the canonical thermodynamic diagram within meteorology. Using
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code>, MetPy is able to readily create a Skew-T for you:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mpcalc</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">SkewT</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 
@@ -442,13 +442,13 @@ the simple plotting declarations in GEMPAK to make map creation straightforward,
 for those less familiar with Python, CartoPy, and matplotlib. To demonstrate the ease of
 creating a plot with this interface, let’s make a color-filled plot of temperature using
 NARR data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="kn">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">ImagePlot</span><span class="p">,</span> <span class="n">MapPanel</span><span class="p">,</span> <span class="n">PanelContainer</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 
 <span class="c1"># Use sample NARR data for plotting</span>
-<span class="n">narr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<span class="n">narr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
 <span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
 <span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
@@ -529,7 +529,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -566,7 +566,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

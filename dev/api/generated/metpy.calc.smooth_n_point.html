@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>smooth_n_point &mdash; MetPy 0.11.0</title>
+  <title>smooth_n_point &mdash; MetPy 0.11.1</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
-        <link rel="next" title="get_wind_components" href="metpy.calc.get_wind_components.html"/>
+        <link rel="next" title="dewpoint_rh" href="metpy.calc.dewpoint_rh.html"/>
         <link rel="prev" title="smooth_gaussian" href="metpy.calc.smooth_gaussian.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.0</option>
+                      <option value=''>0.11.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -159,7 +159,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
@@ -253,8 +252,7 @@
 <li><p><strong>scalar_grid</strong> (array-like or <em class="xref py py-obj">pint.Quantity</em>) – Some 2D scalar grid to be smoothed.</p></li>
 <li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to use in smoothing, only valid inputs
 are 5 and 9. Defaults to 5.</p></li>
-<li><p><strong>passes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of times to apply the filter to the grid. Defaults
-to 1.</p></li>
+<li><p><strong>passes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of times to apply the filter to the grid. Defaults to 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -270,7 +268,7 @@ points, leaving the end points with their original values. If a
 masked value or NaN values exists in the array, it will propagate
 to any point that uses that particular grid point in the smoothing
 calculation. Applying the smoothing function multiple times will
-propogate NaNs further throughout the domain.</p>
+propagate NaNs further throughout the domain.</p>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -285,7 +283,7 @@ propogate NaNs further throughout the domain.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.calc.get_wind_components.html" class="btn btn-neutral float-right" title="get_wind_components" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.calc.dewpoint_rh.html" class="btn btn-neutral float-right" title="dewpoint_rh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.calc.smooth_gaussian.html" class="btn btn-neutral" title="smooth_gaussian" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -298,7 +296,7 @@ propogate NaNs further throughout the domain.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 17, 2019 at 22:26:15.
+      Last updated on Jan 06, 2020 at 00:03:05.
 
     </p>
   </div>
@@ -335,7 +333,7 @@ propogate NaNs further throughout the domain.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0.post28+g8c1ca0a',
+            VERSION:'0.11.1.post152+ge56e12d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
