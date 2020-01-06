@@ -1358,7 +1358,6 @@ class PlotObs(HasTraits):
 
     vector_field_length = Int(default_value=None, allow_none=True)
     vector_field_length.__doc__ = """Integer value to set the length of the plotted vector.
-
     (optional)
     """
 
@@ -1514,10 +1513,7 @@ class PlotObs(HasTraits):
             else:
                 self.handle.plot_parameter(location, data[ob_type][subset], color=color)
         if self.vector_field[0] is not None:
-            if self.vector_field_length is not None:
-                self.handle.plot_barb(data[self.vector_field[0]][subset],
-                                      data[self.vector_field[1]][subset],
-                                      length=self.vector_field_length)
-            else:
-                self.handle.plot_barb(data[self.vector_field[0]][subset],
-                                      data[self.vector_field[1]][subset])
+            kwargs = ({'length': self.vector_field_length}
+                      if self.vector_field_length is not None else {})
+            self.handle.plot_barb(data[self.vector_field[0]][subset],
+                                  data[self.vector_field[1]][subset], **kwargs)
