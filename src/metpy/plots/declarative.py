@@ -1284,6 +1284,7 @@ class PlotObs(HasTraits):
       * colors (optional)
       * vector_field (optional)
       * vector_field_color (optional)
+      * vector_field_length (optional)
       * reduce_points (optional)
     """
 
