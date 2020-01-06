@@ -1,0 +1,51 @@
+Hodograph
+=====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: Hodograph
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Hodograph.__init__
+      ~Hodograph.add_grid
+      ~Hodograph.plot
+      ~Hodograph.plot_colormapped
+      ~Hodograph.wind_vectors
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_grid
+   .. automethod:: plot
+   .. automethod:: plot_colormapped
+   .. automethod:: wind_vectors
+
+   
+   
+
+.. include:: metpy.plots.Hodograph.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

@@ -1,0 +1,910 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.io.metar &mdash; MetPy 0.12</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/io/metar.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.12</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.io.metar</li>
+    
+    
+    <li class="source-link">
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.io.metar</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2019 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Parse METAR-formatted data.&quot;&quot;&quot;</span>
+<span class="c1"># Import the necessary libraries</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="n">open_as_needed</span>
+<span class="kn">from</span> <span class="nn">.metar_parser</span> <span class="kn">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">ParseError</span>
+<span class="kn">from</span> <span class="nn">.station_data</span> <span class="kn">import</span> <span class="n">station_info</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">altimeter_to_sea_level_pressure</span><span class="p">,</span> <span class="n">wind_components</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..plots.wx_symbols</span> <span class="kn">import</span> <span class="n">wx_code_map</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">,</span> <span class="n">units</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+<span class="c1"># Ignore the pandas warning</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="s2">&quot;Pandas doesn&#39;t allow columns to be created&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+<span class="c1"># Configure the named tuple used for storing METAR data</span>
+<span class="n">Metar</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;metar&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;station_id&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;elevation&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="s1">&#39;wind_direction&#39;</span><span class="p">,</span> <span class="s1">&#39;wind_speed&#39;</span><span class="p">,</span> <span class="s1">&#39;current_wx1&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;current_wx2&#39;</span><span class="p">,</span> <span class="s1">&#39;current_wx3&#39;</span><span class="p">,</span> <span class="s1">&#39;skyc1&#39;</span><span class="p">,</span> <span class="s1">&#39;skylev1&#39;</span><span class="p">,</span> <span class="s1">&#39;skyc2&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;skylev2&#39;</span><span class="p">,</span> <span class="s1">&#39;skyc3&#39;</span><span class="p">,</span> <span class="s1">&#39;skylev3&#39;</span><span class="p">,</span> <span class="s1">&#39;skyc4&#39;</span><span class="p">,</span> <span class="s1">&#39;skylev4&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;cloudcover&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;altimeter&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;current_wx1_symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;current_wx2_symbol&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;current_wx3_symbol&#39;</span><span class="p">])</span>
+
+<span class="c1"># Create a dictionary for attaching units to the different variables</span>
+<span class="n">col_units</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;station_id&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;elevation&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;date_time&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;wind_direction&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="s1">&#39;kts&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;eastward_wind&#39;</span><span class="p">:</span> <span class="s1">&#39;kts&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;northward_wind&#39;</span><span class="p">:</span> <span class="s1">&#39;kts&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;current_wx1&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;current_wx2&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;current_wx3&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;low_cloud_type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;low_cloud_level&#39;</span><span class="p">:</span> <span class="s1">&#39;feet&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;medium_cloud_type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;medium_cloud_level&#39;</span><span class="p">:</span> <span class="s1">&#39;feet&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;high_cloud_type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;high_cloud_level&#39;</span><span class="p">:</span> <span class="s1">&#39;feet&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;highest_cloud_type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;highest_cloud_level:&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;cloud_coverage&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;air_temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;degC&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;degC&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;altimeter&#39;</span><span class="p">:</span> <span class="s1">&#39;inHg&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">:</span> <span class="s1">&#39;hPa&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;present_weather&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;past_weather&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;past_weather2&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="parse_metar_to_dataframe"><a class="viewcode-back" href="../../../api/generated/metpy.io.parse_metar_to_dataframe.html#metpy.io.parse_metar_to_dataframe">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">parse_metar_to_dataframe</span><span class="p">(</span><span class="n">metar_text</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">month</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a single METAR report into a Pandas DataFrame.</span>
+
+<span class="sd">    Takes a METAR string in a text form, and creates a `pandas.DataFrame` including the</span>
+<span class="sd">    essential information (not including the remarks)</span>
+
+<span class="sd">    The parser follows the WMO format, allowing for missing data and assigning</span>
+<span class="sd">    nan values where necessary. The WMO code is also provided for current weather,</span>
+<span class="sd">    which can be utilized when plotting.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metar_text : str</span>
+<span class="sd">        The METAR report</span>
+<span class="sd">    year : int, optional</span>
+<span class="sd">        Year in which observation was taken, defaults to the current year</span>
+<span class="sd">    month : int, optional</span>
+<span class="sd">        Month in which observation was taken, defaults to the current month</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pandas.DataFrame`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The output has the following columns:</span>
+<span class="sd">    &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
+<span class="sd">    &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
+<span class="sd">    &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
+<span class="sd">    &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
+<span class="sd">    &#39;date_time&#39;: Date and time of the observation, datetime object</span>
+<span class="sd">    &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
+<span class="sd">    &#39;wind_spd&#39;: Wind speed, measured in knots</span>
+<span class="sd">    &#39;current_wx1&#39;: Current weather (1 of 3)</span>
+<span class="sd">    &#39;current_wx2&#39;: Current weather (2 of 3)</span>
+<span class="sd">    &#39;current_wx3&#39;: Current weather (3 of 3)</span>
+<span class="sd">    &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
+<span class="sd">    &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
+<span class="sd">    &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
+<span class="sd">    &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
+<span class="sd">    &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
+<span class="sd">    &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
+<span class="sd">    &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
+<span class="sd">    &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
+<span class="sd">    &#39;dewpoint&#39;: Dew point, measured in degrees Celsius</span>
+<span class="sd">    &#39;altimeter&#39;: Altimeter value, measured in inches of mercury, float</span>
+<span class="sd">    &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), integer</span>
+<span class="sd">    &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), integer</span>
+<span class="sd">    &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), integer</span>
+<span class="sd">    &#39;sea_level_pressure&#39;: Sea level pressure, derived from temperature, elevation</span>
+<span class="sd">    and altimeter value, float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Use the named tuple parsing function to separate metar</span>
+    <span class="c1"># Utilizes the station dictionary which contains elevation, latitude, and longitude</span>
+    <span class="n">metar_vars</span> <span class="o">=</span> <span class="n">parse_metar_to_named_tuple</span><span class="p">(</span><span class="n">metar_text</span><span class="p">,</span> <span class="n">station_info</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+
+    <span class="c1"># Use a pandas dataframe to store the data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;station_id&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">station_id</span><span class="p">,</span>
+                       <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                       <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                       <span class="s1">&#39;elevation&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span>
+                       <span class="s1">&#39;date_time&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">date_time</span><span class="p">,</span>
+                       <span class="s1">&#39;wind_direction&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">,</span>
+                       <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx1&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx1</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx2&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx2</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx3&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx3</span><span class="p">,</span>
+                       <span class="s1">&#39;low_cloud_type&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skyc1</span><span class="p">,</span>
+                       <span class="s1">&#39;low_cloud_level&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skylev1</span><span class="p">,</span>
+                       <span class="s1">&#39;medium_cloud_type&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skyc2</span><span class="p">,</span>
+                       <span class="s1">&#39;medium_cloud_level&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skylev2</span><span class="p">,</span>
+                       <span class="s1">&#39;high_cloud_type&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skyc3</span><span class="p">,</span>
+                       <span class="s1">&#39;high_cloud_level&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skylev3</span><span class="p">,</span>
+                       <span class="s1">&#39;highest_cloud_type&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skyc4</span><span class="p">,</span>
+                       <span class="s1">&#39;highest_cloud_level&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">skylev4</span><span class="p">,</span>
+                       <span class="s1">&#39;cloud_coverage&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">cloudcover</span><span class="p">,</span>
+                       <span class="s1">&#39;air_temperature&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+                       <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">dewpoint</span><span class="p">,</span>
+                       <span class="s1">&#39;altimeter&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">altimeter</span><span class="p">,</span>
+                       <span class="s1">&#39;present_weather&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx1_symbol</span><span class="p">,</span>
+                       <span class="s1">&#39;past_weather&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx2_symbol</span><span class="p">,</span>
+                       <span class="s1">&#39;past_weather2&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx3_symbol</span><span class="p">},</span>
+                      <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">metar_vars</span><span class="o">.</span><span class="n">station_id</span><span class="p">])</span>
+
+    <span class="c1"># Convert to sea level pressure using calculation in metpy.calc</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Create a field for sea-level pressure and make sure it is a float</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">altimeter_to_sea_level_pressure</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">altimeter</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;inHg&#39;</span><span class="p">),</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">elevation</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">),</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;hPa&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+
+    <span class="c1"># Use get wind components and assign them to u and v variables</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;eastward_wind&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;northward_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wind_components</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">wind_speed</span><span class="o">.</span><span class="n">values</span>
+                                                                 <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kts</span><span class="p">),</span>
+                                                                <span class="n">df</span><span class="o">.</span><span class="n">wind_direction</span><span class="o">.</span><span class="n">values</span>
+                                                                <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+
+    <span class="c1"># Round the altimeter and sea-level pressure values</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;altimeter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">altimeter</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">air_pressure_at_sea_level</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Set the units for the dataframe</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">col_units</span>
+
+    <span class="c1"># Add the array for units to the dataframe</span>
+    <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="c1"># Return the dataframe</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="k">def</span> <span class="nf">parse_metar_to_named_tuple</span><span class="p">(</span><span class="n">metar_text</span><span class="p">,</span> <span class="n">station_metadata</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                               <span class="n">month</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">month</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a METAR report in text form into a list of named tuples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metar_text : str</span>
+<span class="sd">        The METAR report</span>
+<span class="sd">    station_metadata : dict</span>
+<span class="sd">        Mapping of station identifiers to station metadata</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pandas.DataFrame`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Returned data has named tuples with the following attributes:</span>
+<span class="sd">    &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
+<span class="sd">    &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
+<span class="sd">    &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
+<span class="sd">    &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
+<span class="sd">    &#39;date_time&#39;: Date and time of the observation, datetime object</span>
+<span class="sd">    &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
+<span class="sd">    &#39;wind_spd&#39;: Wind speed, measured in knots</span>
+<span class="sd">    &#39;current_wx1&#39;: Current weather (1 of 3)</span>
+<span class="sd">    &#39;current_wx2&#39;: Current weather (2 of 3)</span>
+<span class="sd">    &#39;current_wx3&#39;: Current weather (3 of 3)</span>
+<span class="sd">    &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
+<span class="sd">    &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
+<span class="sd">    &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
+<span class="sd">    &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
+<span class="sd">    &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
+<span class="sd">    &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
+<span class="sd">    &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
+<span class="sd">    &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
+<span class="sd">    &#39;dewpoint&#39;: Dewpoint, measured in degrees Celsius</span>
+<span class="sd">    &#39;altimeter&#39;: Altimeter value, measured in inches of mercury, float</span>
+<span class="sd">    &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), integer</span>
+<span class="sd">    &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), integer</span>
+<span class="sd">    &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), integer</span>
+<span class="sd">    &#39;sea_level_pressure&#39;: Sea level pressure, derived from temperature, elevation</span>
+<span class="sd">    and altimeter value, float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Decode the data using the parser (built using Canopy) the parser utilizes a grammar</span>
+    <span class="c1"># file which follows the format structure dictated by the WMO Handbook, but has the</span>
+    <span class="c1"># flexibility to decode the METAR text when there are missing or incorrectly</span>
+    <span class="c1"># encoded values</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">metar_text</span><span class="p">)</span>
+
+    <span class="c1"># Station ID which is used to find the latitude, longitude, and elevation</span>
+    <span class="n">station_id</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">siteid</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="c1"># Extract the latitude and longitude values from &#39;master&#39; dictionary</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">station_metadata</span><span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">siteid</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">station_metadata</span><span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">siteid</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">elev</span> <span class="o">=</span> <span class="n">station_metadata</span><span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">siteid</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span><span class="o">.</span><span class="n">altitude</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">elev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Set the datetime, day, and time_utc</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">day_time_utc</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day_time_utc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day_time_utc</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day_time_utc</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+        <span class="n">date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="n">date_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Set the wind values</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># If there are missing wind values, set wind speed and wind direction to nan</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;KT&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">wind_dir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">wind_spd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="c1"># If the wind direction is variable, set wind direction to nan but keep the wind speed</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">wind_dir</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;VRB&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">wind_dir</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;VAR&#39;</span><span class="p">):</span>
+                <span class="n">wind_dir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">wind_spd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">wind_spd</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If the wind speed and direction is given, keep the values</span>
+                <span class="n">wind_dir</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">wind_dir</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">wind_spd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">wind_spd</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># If there are any errors, return nan</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">wind_dir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">wind_spd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Set the weather symbols</span>
+    <span class="c1"># If the weather symbol is missing, set values to nan</span>
+    <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">curwx</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">current_wx1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">current_wx2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">current_wx3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">current_wx1_symbol</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">current_wx2_symbol</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">current_wx3_symbol</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wx</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+        <span class="c1"># Loop through symbols and assign according WMO codes</span>
+        <span class="n">wx</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">((</span><span class="n">tree</span><span class="o">.</span><span class="n">curwx</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">())]</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">curwx</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">current_wx1</span> <span class="o">=</span> <span class="n">wx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">current_wx2</span> <span class="o">=</span> <span class="n">wx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">current_wx3</span> <span class="o">=</span> <span class="n">wx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">current_wx1_symbol</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wx_code_map</span><span class="p">[</span><span class="n">wx</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+            <span class="n">current_wx1_symbol</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">current_wx2_symbol</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wx_code_map</span><span class="p">[</span><span class="n">wx</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+            <span class="n">current_wx2_symbol</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">current_wx3_symbol</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wx_code_map</span><span class="p">[</span><span class="n">wx</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+            <span class="n">current_wx3_symbol</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Set the sky conditions</span>
+    <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VV&#39;</span><span class="p">:</span>
+        <span class="n">skyc1</span> <span class="o">=</span> <span class="s1">&#39;VV&#39;</span>
+        <span class="n">skylev1</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">skyc2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">skylev2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">skyc3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">skylev3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">skyc4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">skylev4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">skyc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">skyc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">((</span><span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">())]</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skyc1</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skyc1</span><span class="p">:</span>
+                <span class="n">skyc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skyc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skylev1</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skylev1</span><span class="p">:</span>
+                <span class="n">skylev1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">skylev1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">skylev1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skylev1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skyc2</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skyc2</span><span class="p">:</span>
+                <span class="n">skyc2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skyc2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skylev2</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skylev2</span><span class="p">:</span>
+                <span class="n">skylev2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">skylev2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">skylev2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skylev2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skyc3</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skyc3</span><span class="p">:</span>
+                <span class="n">skyc3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">skyc3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skylev3</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skylev3</span><span class="p">:</span>
+                <span class="n">skylev3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">skylev3</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">skylev3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skylev3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skyc4</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skyc4</span><span class="p">:</span>
+                <span class="n">skyc4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skyc4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">skylev4</span> <span class="o">=</span> <span class="n">skyc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">skylev4</span><span class="p">:</span>
+                <span class="n">skylev4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">skylev4</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">skylev4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">skylev4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Set the cloud cover variable (measured in oktas)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;OVC&#39;</span> <span class="ow">or</span> <span class="s1">&#39;VV&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">elif</span> <span class="s1">&#39;BKN&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="k">elif</span> <span class="s1">&#39;SCT&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">elif</span> <span class="s1">&#39;FEW&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;SKC&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;NCD&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> \
+            <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;NSC&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;CLR&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="c1"># Set the temperature and dewpoint</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39; MM/MM&#39;</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">dewp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">temp</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">temp</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">temp</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">dewp</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="n">dewp</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">dewp</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dewp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">temp_dewp</span><span class="o">.</span><span class="n">dewp</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">dewp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Set the altimeter value and sea level pressure</span>
+    <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">altim</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">altim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">altim</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">1100</span><span class="p">:</span>
+            <span class="n">altim</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">altim</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">altim</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">altim</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;inHg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+    <span class="c1"># Returns a named tuple with all the relevant variables</span>
+    <span class="k">return</span> <span class="n">Metar</span><span class="p">(</span><span class="n">station_id</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">elev</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">,</span> <span class="n">wind_spd</span><span class="p">,</span>
+                 <span class="n">current_wx1</span><span class="p">,</span> <span class="n">current_wx2</span><span class="p">,</span> <span class="n">current_wx3</span><span class="p">,</span> <span class="n">skyc1</span><span class="p">,</span> <span class="n">skylev1</span><span class="p">,</span> <span class="n">skyc2</span><span class="p">,</span>
+                 <span class="n">skylev2</span><span class="p">,</span> <span class="n">skyc3</span><span class="p">,</span> <span class="n">skylev3</span><span class="p">,</span> <span class="n">skyc4</span><span class="p">,</span> <span class="n">skylev4</span><span class="p">,</span> <span class="n">cloudcover</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">dewp</span><span class="p">,</span>
+                 <span class="n">altim</span><span class="p">,</span> <span class="n">current_wx1_symbol</span><span class="p">,</span> <span class="n">current_wx2_symbol</span><span class="p">,</span> <span class="n">current_wx3_symbol</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="parse_metar_file"><a class="viewcode-back" href="../../../api/generated/metpy.io.parse_metar_file.html#metpy.io.parse_metar_file">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">parse_metar_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">month</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a text file containing multiple METAR reports and/or text products.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str or file-like object</span>
+<span class="sd">        If str, the name of the file to be opened. If `filename` is a file-like object,</span>
+<span class="sd">        this will be read from directly.</span>
+<span class="sd">    year : int, optional</span>
+<span class="sd">        Year in which observation was taken, defaults to the current year</span>
+<span class="sd">    month : int, optional</span>
+<span class="sd">        Month in which observation was taken, defaults to the current month</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pandas.DataFrame`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The returned `pandas.DataFrame` has the following columns:</span>
+<span class="sd">    &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
+<span class="sd">    &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
+<span class="sd">    &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
+<span class="sd">    &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
+<span class="sd">    &#39;date_time&#39;: Date and time of the observation, datetime object</span>
+<span class="sd">    &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
+<span class="sd">    &#39;wind_spd&#39;: Wind speed, measured in knots</span>
+<span class="sd">    &#39;current_wx1&#39;: Current weather (1 of 3)</span>
+<span class="sd">    &#39;current_wx2&#39;: Current weather (2 of 3)</span>
+<span class="sd">    &#39;current_wx3&#39;: Current weather (3 of 3)</span>
+<span class="sd">    &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
+<span class="sd">    &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
+<span class="sd">    &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
+<span class="sd">    &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
+<span class="sd">    &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
+<span class="sd">    &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
+<span class="sd">    &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
+<span class="sd">    &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
+<span class="sd">    &#39;dewpoint&#39;: Dew point, measured in degrees Celsius</span>
+<span class="sd">    &#39;altimeter&#39;: Altimeter value, measured in inches of mercury, float</span>
+<span class="sd">    &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), integer</span>
+<span class="sd">    &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), integer</span>
+<span class="sd">    &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), integer</span>
+<span class="sd">    &#39;sea_level_pressure&#39;: Sea level pressure, derived from temperature, elevation</span>
+<span class="sd">    and altimeter value, float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Function to merge METARs</span>
+    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;     &#39;</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+            <span class="n">tmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+    <span class="c1"># Open the file</span>
+    <span class="n">myfile</span> <span class="o">=</span> <span class="n">open_as_needed</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Clean up the file and take out the next line (\n)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    <span class="n">list_values</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">list_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">list_values</span><span class="p">))</span>
+
+    <span class="c1"># Call the merge function and assign the result to the list of metars</span>
+    <span class="n">list_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">merge</span><span class="p">(</span><span class="n">list_values</span><span class="p">))</span>
+
+    <span class="c1"># Remove the short lines that do not contain METAR observations or contain</span>
+    <span class="c1"># METAR observations that lack a robust amount of data</span>
+    <span class="n">metars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">metar</span> <span class="ow">in</span> <span class="n">list_values</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metar</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
+            <span class="n">metars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="c1"># Create a dictionary with all the station name, locations, and elevations</span>
+    <span class="n">master</span> <span class="o">=</span> <span class="n">station_info</span>
+
+    <span class="c1"># Setup lists to append the data to</span>
+    <span class="n">station_id</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">elev</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">date_time</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">wind_dir</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">wind_spd</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_wx1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_wx2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_wx3</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skyc1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skylev1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skyc2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skylev2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skyc3</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skylev3</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skyc4</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skylev4</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cloudcover</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dewp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">altim</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_wx1_symbol</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_wx2_symbol</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_wx3_symbol</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop through the different metars within the text file</span>
+    <span class="k">for</span> <span class="n">metar</span> <span class="ow">in</span> <span class="n">metars</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Parse the string of text and assign to values within the named tuple</span>
+            <span class="n">metar</span> <span class="o">=</span> <span class="n">parse_metar_to_named_tuple</span><span class="p">(</span><span class="n">metar</span><span class="p">,</span> <span class="n">master</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">)</span>
+
+            <span class="c1"># Append the different variables to their respective lists</span>
+            <span class="n">station_id</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">station_id</span><span class="p">)</span>
+            <span class="n">lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+            <span class="n">lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+            <span class="n">elev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">elevation</span><span class="p">)</span>
+            <span class="n">date_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">date_time</span><span class="p">)</span>
+            <span class="n">wind_dir</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">)</span>
+            <span class="n">wind_spd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">)</span>
+            <span class="n">current_wx1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">current_wx1</span><span class="p">)</span>
+            <span class="n">current_wx2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">current_wx2</span><span class="p">)</span>
+            <span class="n">current_wx3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">current_wx3</span><span class="p">)</span>
+            <span class="n">skyc1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skyc1</span><span class="p">)</span>
+            <span class="n">skylev1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skylev1</span><span class="p">)</span>
+            <span class="n">skyc2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skyc2</span><span class="p">)</span>
+            <span class="n">skylev2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skylev2</span><span class="p">)</span>
+            <span class="n">skyc3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skyc3</span><span class="p">)</span>
+            <span class="n">skylev3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skylev3</span><span class="p">)</span>
+            <span class="n">skyc4</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skyc4</span><span class="p">)</span>
+            <span class="n">skylev4</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">skylev4</span><span class="p">)</span>
+            <span class="n">cloudcover</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">cloudcover</span><span class="p">)</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
+            <span class="n">dewp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">dewpoint</span><span class="p">)</span>
+            <span class="n">altim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">altimeter</span><span class="p">)</span>
+            <span class="n">current_wx1_symbol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">current_wx1_symbol</span><span class="p">)</span>
+            <span class="n">current_wx2_symbol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">current_wx2_symbol</span><span class="p">)</span>
+            <span class="n">current_wx3_symbol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metar</span><span class="o">.</span><span class="n">current_wx3_symbol</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="n">ParseError</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;station_id&#39;</span><span class="p">:</span> <span class="n">station_id</span><span class="p">,</span>
+                       <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                       <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                       <span class="s1">&#39;elevation&#39;</span><span class="p">:</span> <span class="n">elev</span><span class="p">,</span>
+                       <span class="s1">&#39;date_time&#39;</span><span class="p">:</span> <span class="n">date_time</span><span class="p">,</span>
+                       <span class="s1">&#39;wind_direction&#39;</span><span class="p">:</span> <span class="n">wind_dir</span><span class="p">,</span>
+                       <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="n">wind_spd</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx1&#39;</span><span class="p">:</span> <span class="n">current_wx1</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx2&#39;</span><span class="p">:</span> <span class="n">current_wx2</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx3&#39;</span><span class="p">:</span> <span class="n">current_wx3</span><span class="p">,</span>
+                       <span class="s1">&#39;low_cloud_type&#39;</span><span class="p">:</span> <span class="n">skyc1</span><span class="p">,</span>
+                       <span class="s1">&#39;low_cloud_level&#39;</span><span class="p">:</span> <span class="n">skylev1</span><span class="p">,</span>
+                       <span class="s1">&#39;medium_cloud_type&#39;</span><span class="p">:</span> <span class="n">skyc2</span><span class="p">,</span>
+                       <span class="s1">&#39;medium_cloud_level&#39;</span><span class="p">:</span> <span class="n">skylev2</span><span class="p">,</span>
+                       <span class="s1">&#39;high_cloud_type&#39;</span><span class="p">:</span> <span class="n">skyc3</span><span class="p">,</span>
+                       <span class="s1">&#39;high_cloud_level&#39;</span><span class="p">:</span> <span class="n">skylev3</span><span class="p">,</span>
+                       <span class="s1">&#39;highest_cloud_type&#39;</span><span class="p">:</span> <span class="n">skyc4</span><span class="p">,</span>
+                       <span class="s1">&#39;highest_cloud_level&#39;</span><span class="p">:</span> <span class="n">skylev4</span><span class="p">,</span>
+                       <span class="s1">&#39;cloud_coverage&#39;</span><span class="p">:</span> <span class="n">cloudcover</span><span class="p">,</span>
+                       <span class="s1">&#39;air_temperature&#39;</span><span class="p">:</span> <span class="n">temp</span><span class="p">,</span>
+                       <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">:</span> <span class="n">dewp</span><span class="p">,</span>
+                       <span class="s1">&#39;altimeter&#39;</span><span class="p">:</span> <span class="n">altim</span><span class="p">,</span>
+                       <span class="s1">&#39;present_weather&#39;</span><span class="p">:</span> <span class="n">current_wx1_symbol</span><span class="p">,</span>
+                       <span class="s1">&#39;past_weather&#39;</span><span class="p">:</span> <span class="n">current_wx2_symbol</span><span class="p">,</span>
+                       <span class="s1">&#39;past_weather2&#39;</span><span class="p">:</span> <span class="n">current_wx3_symbol</span><span class="p">},</span>
+                      <span class="n">index</span><span class="o">=</span><span class="n">station_id</span><span class="p">)</span>
+
+    <span class="c1"># Calculate sea-level pressure from function in metpy.calc</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">altimeter_to_sea_level_pressure</span><span class="p">(</span>
+        <span class="n">altim</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;inHg&#39;</span><span class="p">),</span>
+        <span class="n">elev</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">),</span>
+        <span class="n">temp</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;hPa&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+    <span class="c1"># Use get wind components and assign them to eastward and northward winds</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;eastward_wind&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;northward_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wind_components</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">wind_speed</span><span class="o">.</span><span class="n">values</span>
+                                                                 <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kts</span><span class="p">),</span>
+                                                                <span class="n">df</span><span class="o">.</span><span class="n">wind_direction</span><span class="o">.</span><span class="n">values</span>
+                                                                <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+
+    <span class="c1"># Drop duplicate values</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Round altimeter and sea-level pressure values</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;altimeter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">altimeter</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">air_pressure_at_sea_level</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Set the units for the dataframe</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">col_units</span>
+    <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Jan 06, 2020 at 04:43:38.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.12.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+brunt_vaisala_frequency_squared
+==========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: brunt_vaisala_frequency_squared
+
+.. include:: metpy.calc.brunt_vaisala_frequency_squared.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

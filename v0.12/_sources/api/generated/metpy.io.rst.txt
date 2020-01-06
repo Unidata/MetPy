@@ -1,0 +1,40 @@
+
+
+io
+========
+
+.. automodule:: metpy.io
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      is_precip_mode
+      parse_metar_file
+      parse_metar_to_dataframe
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      GiniFile
+      Level2File
+      Level3File
+
+   
+   
+
+   
+   
+   
+

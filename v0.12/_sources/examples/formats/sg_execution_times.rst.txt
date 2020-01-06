@@ -1,0 +1,16 @@
+
+:orphan:
+
+.. _sphx_glr_examples_formats_sg_execution_times:
+
+Computation times
+=================
+**00:05.093** total execution time for **examples_formats** files:
+
++--------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py` (``NEXRAD_Level_2_File.py``) | 00:03.614 | 0.0 MB |
++--------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py` (``GINI_Water_Vapor.py``)       | 00:00.928 | 0.0 MB |
++--------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py` (``NEXRAD_Level_3_File.py``) | 00:00.551 | 0.0 MB |
++--------------------------------------------------------------------------------------+-----------+--------+

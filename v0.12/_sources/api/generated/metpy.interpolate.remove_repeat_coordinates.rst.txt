@@ -1,0 +1,12 @@
+remove_repeat_coordinates
+===========================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: remove_repeat_coordinates
+
+.. include:: metpy.interpolate.remove_repeat_coordinates.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

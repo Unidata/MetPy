@@ -1,0 +1,12 @@
+interpolate_to_slice
+======================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: interpolate_to_slice
+
+.. include:: metpy.interpolate.interpolate_to_slice.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

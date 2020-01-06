@@ -1,0 +1,12 @@
+diff
+================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: diff
+
+.. include:: metpy.units.diff.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
