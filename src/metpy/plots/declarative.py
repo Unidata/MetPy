@@ -1356,6 +1356,12 @@ class PlotObs(HasTraits):
     vector_field_color = Unicode('black', allow_none=True)
     vector_field_color.__doc__ = """String color name to plot the vector. (optional)"""
 
+    vector_field_length = Int(default_value=None, allow_none=True)
+    vector_field_length.__doc__ = """Integer value to set the length of the plotted vector.
+
+    (optional)
+    """
+
     reduce_points = Float(default_value=0)
     reduce_points.__doc__ = """Float to reduce number of points plotted. (optional)"""
 
@@ -1493,8 +1499,12 @@ class PlotObs(HasTraits):
                 color = self.colors[i]
             else:
                 color = self.colors[0]
-            if self.formats[i] is not None:
-                mapper = getattr(wx_symbols, str(self.formats[i]), None)
+            if len(self.formats) > 1:
+                formats = self.formats[i]
+            else:
+                formats = self.formats[0]
+            if formats is not None:
+                mapper = getattr(wx_symbols, str(formats), None)
                 if mapper is not None:
                     self.handle.plot_symbol(location, data[ob_type][subset],
                                             mapper, color=color)
@@ -1504,5 +1514,10 @@ class PlotObs(HasTraits):
             else:
                 self.handle.plot_parameter(location, data[ob_type][subset], color=color)
         if self.vector_field[0] is not None:
-            self.handle.plot_barb(data[self.vector_field[0]][subset],
-                                  data[self.vector_field[1]][subset])
+            if self.vector_field_length is not None:
+                self.handle.plot_barb(data[self.vector_field[0]][subset],
+                                      data[self.vector_field[1]][subset],
+                                      length=self.vector_field_length)
+            else:
+                self.handle.plot_barb(data[self.vector_field[0]][subset],
+                                      data[self.vector_field[1]][subset])
