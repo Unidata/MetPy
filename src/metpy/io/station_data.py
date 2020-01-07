@@ -4,6 +4,7 @@
 """Pull out station metadata."""
 from collections import namedtuple
 
+import numpy as np
 import pandas as pd
 
 from ..cbook import get_test_data
@@ -138,3 +139,36 @@ class StationLookup:
 
 with exporter:
     station_info = StationLookup()
+
+
+@exporter.export
+def add_station_lat_lon(df, stn_var):
+    """Lookup station information to add the station latitude and longitude to the DataFrame.
+
+    This function will add two columns to the DataFrame ('latitude' and 'longitude') after
+    looking up all unique station identifiers available in the DataFrame.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        The DataFrame that contains the station observations
+    stn_var : str
+        The string of the variable name that represents the station in the DataFrame. Common
+        examples are 'station', 'stid', and 'station_id'
+
+    Returns
+    -------
+    `pandas.DataFrame` that contains original Dataframe now with the latitude and longitude
+    values for each location found in `station_info`.
+    """
+    df['latitude'] = None
+    df['longitude'] = None
+    for stn in df[stn_var].unique():
+        try:
+            info = station_info[stn]
+            df.loc[df[stn_var] == stn, 'latitude'] = info.latitude
+            df.loc[df[stn_var] == stn, 'longitude'] = info.longitude
+        except AttributeError:
+            df.loc[df[stn_var] == stn, 'latitude'] = np.nan
+            df.loc[df[stn_var] == stn, 'longitude'] = np.nan
+    return df
