@@ -4,15 +4,17 @@
 """Test the `basic` module."""
 
 import numpy as np
+import pandas as pd
 import pytest
+import xarray as xr
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
                         apparent_temperature, coriolis_parameter, geopotential_to_height,
                         heat_index, height_to_geopotential, height_to_pressure_std,
-                        pressure_to_height_std, sigma_to_pressure, smooth_gaussian,
-                        smooth_n_point, wind_components, wind_direction, wind_speed,
-                        windchill)
+                        pressure_to_height_std, sigma_to_pressure, smooth_circular,
+                        smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
+                        wind_components, wind_direction, wind_speed, windchill)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import units
 
@@ -608,6 +610,32 @@ def test_smooth_n_pt_wrong_number():
         smooth_n_point(hght, 7)
 
 
+def test_smooth_n_pt_3d_units():
+    """Test the smooth_n_point function with a 3D array with units."""
+    hght = [[[5640.0, 5640.0, 5640.0, 5640.0, 5640.0],
+             [5684.0, 5676.0, 5666.0, 5659.0, 5651.0],
+             [5728.0, 5712.0, 5692.0, 5678.0, 5662.0],
+             [5772.0, 5748.0, 5718.0, 5697.0, 5673.0],
+             [5816.0, 5784.0, 5744.0, 5716.0, 5684.0]],
+            [[6768.0, 6768.0, 6768.0, 6768.0, 6768.0],
+             [6820.8, 6811.2, 6799.2, 6790.8, 6781.2],
+             [6873.6, 6854.4, 6830.4, 6813.6, 6794.4],
+             [6926.4, 6897.6, 6861.6, 6836.4, 6807.6],
+             [6979.2, 6940.8, 6892.8, 6859.2, 6820.8]]] * units.m
+    shght = smooth_n_point(hght, 9, 2)
+    s_true = [[[5640., 5640., 5640., 5640., 5640.],
+               [5684., 5675.4375, 5666.9375, 5658.8125, 5651.],
+               [5728., 5710.875, 5693.875, 5677.625, 5662.],
+               [5772., 5746.375, 5720.625, 5696.375, 5673.],
+               [5816., 5784., 5744., 5716., 5684.]],
+              [[6768., 6768., 6768., 6768., 6768.],
+               [6820.8, 6810.525, 6800.325, 6790.575, 6781.2],
+               [6873.6, 6853.05, 6832.65, 6813.15, 6794.4],
+               [6926.4, 6895.65, 6864.75, 6835.65, 6807.6],
+               [6979.2, 6940.8, 6892.8, 6859.2, 6820.8]]] * units.m
+    assert_array_almost_equal(shght, s_true)
+
+
 def test_smooth_n_pt_temperature():
     """Test the smooth_n_pt function with temperature units."""
     t = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
@@ -640,6 +668,79 @@ def test_smooth_gaussian_temperature():
                               [3.4618, 4.6384, 6.886, 6.982, 6.6653],
                               [3.8115, 3.626, 7.1705, 8.8528, 8.9605]]) * units.degC
     assert_array_almost_equal(smooth_t, smooth_t_true, 4)
+
+
+def test_smooth_window():
+    """Test smooth_window with default configuration."""
+    hght = [[5640., 5640., 5640., 5640., 5640.],
+            [5684., 5676., 5666., 5659., 5651.],
+            [5728., 5712., 5692., 5678., 5662.],
+            [5772., 5748., 5718., 5697., 5673.],
+            [5816., 5784., 5744., 5716., 5684.]] * units.m
+    smoothed = smooth_window(hght, np.array([[1, 0, 1], [0, 0, 0], [1, 0, 1]]))
+    truth = [[5640., 5640., 5640., 5640., 5640.],
+             [5684., 5675., 5667.5, 5658.5, 5651.],
+             [5728., 5710., 5695., 5677., 5662.],
+             [5772., 5745., 5722.5, 5695.5, 5673.],
+             [5816., 5784., 5744., 5716., 5684.]] * units.m
+    assert_array_almost_equal(smoothed, truth)
+
+
+def test_smooth_window_1d_dataarray():
+    """Test smooth_window on 1D DataArray."""
+    temperature = xr.DataArray(
+        [37., 32., 34., 29., 28., 24., 26., 24., 27., 30.],
+        dims=('time',),
+        coords={'time': pd.date_range('2020-01-01', periods=10, freq='H')},
+        attrs={'units': 'degF'})
+    smoothed = smooth_window(temperature, window=np.ones(3) / 3, normalize_weights=False)
+    truth = xr.DataArray(
+        [37., 34.33333333, 31.66666667, 30.33333333, 27., 26., 24.66666667,
+         25.66666667, 27., 30.],
+        dims=('time',),
+        coords={'time': pd.date_range('2020-01-01', periods=10, freq='H')},
+        attrs={'units': 'degF'})
+    xr.testing.assert_allclose(smoothed, truth)
+
+
+def test_smooth_rectangular():
+    """Test smooth_rectangular with default configuration."""
+    hght = [[5640., 5640., 5640., 5640., 5640.],
+            [5684., 5676., 5666., 5659., 5651.],
+            [5728., 5712., 5692., 5678., 5662.],
+            [5772., 5748., 5718., 5697., 5673.],
+            [5816., 5784., 5744., 5716., 5684.]] * units.m
+    smoothed = smooth_rectangular(hght, (5, 3))
+    truth = [[5640., 5640., 5640., 5640., 5640.],
+             [5684., 5676., 5666., 5659., 5651.],
+             [5728., 5710.66667, 5694., 5677.33333, 5662.],
+             [5772., 5748., 5718., 5697., 5673.],
+             [5816., 5784., 5744., 5716., 5684.]] * units.m
+    assert_array_almost_equal(smoothed, truth, 4)
+
+
+def test_smooth_circular():
+    """Test smooth_circular with default configuration."""
+    hght = [[5640., 5640., 5640., 5640., 5640.],
+            [5684., 5676., 5666., 5659., 5651.],
+            [5728., 5712., 5692., 5678., 5662.],
+            [5772., 5748., 5718., 5697., 5673.],
+            [5816., 5784., 5744., 5716., 5684.]] * units.m
+    smoothed = smooth_circular(hght, 2, 2)
+    truth = [[5640., 5640., 5640., 5640., 5640.],
+             [5684., 5676., 5666., 5659., 5651.],
+             [5728., 5712., 5693.98817, 5678., 5662.],
+             [5772., 5748., 5718., 5697., 5673.],
+             [5816., 5784., 5744., 5716., 5684.]] * units.m
+    assert_array_almost_equal(smoothed, truth, 4)
+
+
+def test_smooth_window_with_bad_window():
+    """Test smooth_window with a bad window size."""
+    temperature = [37, 32, 34, 29, 28, 24, 26, 24, 27, 30] * units.degF
+    with pytest.raises(ValueError) as exc:
+        smooth_window(temperature, np.ones(4))
+        assert 'must be odd in all dimensions' in str(exc)
 
 
 def test_altimeter_to_station_pressure_inhg():
