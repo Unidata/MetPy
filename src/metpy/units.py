@@ -16,6 +16,7 @@ units : :class:`pint.UnitRegistry`
 import functools
 from inspect import Parameter, signature
 import logging
+import re
 import warnings
 
 import numpy as np
@@ -27,7 +28,17 @@ log = logging.getLogger(__name__)
 UndefinedUnitError = pint.UndefinedUnitError
 DimensionalityError = pint.DimensionalityError
 
-units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
+# Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs
+try:
+    units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True,
+                              preprocessors=[functools.partial(
+                                             re.sub,
+                                             (r'(?<=[A-Za-z])(?![A-Za-z])(?<![0-9\-][eE])'
+                                              r'(?<![0-9\-])(?=[0-9\-])'),
+                                             '**'),
+                                             lambda string: string.replace('%', 'percent')])
+except TypeError:
+    units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 
 # Capture v0.10 NEP 18 warning on first creation
 with warnings.catch_warnings():
