@@ -1494,7 +1494,7 @@ def wrap_output_like(**wrap_kwargs):
 
     This wrapping/conversion follows the following rules:
 
-    - If type of input and output match, do nothing
+    - If type of input and output match, do not covert type (but maybe convert unit)
     - If type of output is ndarray, use ``np.asarray`` with dtype
     - If type of output is pint.Quantity and input is...
         - ndarray, return Quantity
@@ -1531,7 +1531,8 @@ def wrap_output_like(**wrap_kwargs):
             if 'other' in wrap_kwargs:
                 other = wrap_kwargs['other']
             elif 'argument' in wrap_kwargs:
-                other = signature(func).bind(*args, **kwargs).arguments[wrap_kwargs['argument']]
+                other = signature(func).bind(*args, **kwargs).arguments[
+                    wrap_kwargs['argument']]
             else:
                 raise ValueError('Must specify keyword "other" or "argument".')
 
@@ -1547,6 +1548,11 @@ def wrap_output_like(**wrap_kwargs):
 
             # Proceed with wrapping rules
             if isinstance(result, type(other)):
+                if wrap_kwargs.get('match_unit', False) and hasattr(other, 'units'):
+                    if isinstance(result, xr.DataArray):
+                        result.metpy.convert_units(other.units)
+                    else:
+                        result = result.to(other.units)
                 return result
             elif isinstance(other, np.ndarray):
                 return np.asarray(result, dtype=other.dtype)
@@ -1562,7 +1568,7 @@ def wrap_output_like(**wrap_kwargs):
                     else:
                         return result.metpy.unit_array
             else:
-                if wrap_kwargs.get('match_unit', False) and hasattr(other.attrs, 'units'):
+                if wrap_kwargs.get('match_unit', False) and 'units' in other.attrs:
                     if isinstance(result, units.Quantity):
                         return xr.DataArray(result.m_as(other.attrs['units']), dims=other.dims,
                                             coords=other.coords,
