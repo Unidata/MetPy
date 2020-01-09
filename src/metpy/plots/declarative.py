@@ -989,10 +989,11 @@ class ColorfillTraits(HasTraits):
     """
 
     colorbar = Unicode(default_value=None, allow_none=True)
-    colorbar.__doc__ = """A boolean (True/False) on whether to add a colorbar to the plot.
+    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the plot.
 
-    To add a colorbar associated with the plot data set the trait to ``True``, the default
-    values is ``False``.
+    To add a colorbar associated with the plot, set the trait to ``horizontal`` or
+    ``vertical``,specifying the orientation of the produced colorbar. The default value is
+    ``None``.
     """
 
 
