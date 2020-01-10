@@ -10,7 +10,6 @@ import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
-from metpy.testing import check_and_silence_deprecation
 # Fixtures to make sure we have the right backend and consistent round
 from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
@@ -473,17 +472,3 @@ def test_united_hodograph_range():
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(1, 1, 1)
     Hodograph(ax, component_range=60. * units.knots)
-
-
-@check_and_silence_deprecation
-def test_plot_colormapped_bounds_deprecation():
-    """Test deprecation of bounds kwarg in `plot_colormapped`."""
-    u = np.zeros(6) * units.knots
-    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
-    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
-    intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m
-    colors = ['r', 'g', 'b', 'r']
-    fig = plt.figure(figsize=(7, 7))
-    ax1 = fig.add_subplot(1, 1, 1)
-    h = Hodograph(ax1)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=intervals)
