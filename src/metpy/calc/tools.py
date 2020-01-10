@@ -1503,15 +1503,20 @@ def wrap_output_like(**wrap_kwargs):
         attrs) of other object
         - If shapes do not match, this will error
         - If input is a Quantity, use magnitude and add unit as attribute (rather than xarray
-            wrapping Quantity, at least for now)
+        wrapping Quantity, at least for now)
 
-    The behavior of this decorator is flexible. Use the following keyword arguments to control
-    the mapping behavior:
+    The behavior of this decorator is flexible. Use the optional keyword arguments to control
+    the mapping behavior.
 
-    - `argument`: specify the name of a single argument from the function signature from which
+    Parameters
+    ----------
+    argument : str
+        specify the name of a single argument from the function signature from which
         to take the other data object
-    - `other`: specify the other data object directly
-    - `match_unit`: if True and other data object has units, convert output to those units
+    other : `numpy.ndarray` or `pint.Quantity` or `xarray.DataArray`
+        specify the other data object directly
+    match_unit : bool
+        if True and other data object has units, convert output to those units
         (defaults to False)
 
     Notes
