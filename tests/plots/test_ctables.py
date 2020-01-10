@@ -3,14 +3,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `ctables` module."""
 
+from io import StringIO
 import os.path
 import tempfile
-try:
-    buffer_args = {'bufsize': 0}
-    from StringIO import StringIO
-except ImportError:
-    buffer_args = {'buffering': 1}
-    from io import StringIO
 
 import numpy as np
 import pytest
@@ -33,8 +28,7 @@ def test_package_resource(registry):
 def test_scan_dir(registry):
     """Test registry scanning a directory and ignoring files it can't handle ."""
     try:
-        kwargs = {'mode': 'w', 'dir': '.', 'suffix': '.tbl', 'delete': False}
-        kwargs.update(**buffer_args)
+        kwargs = {'mode': 'w', 'dir': '.', 'suffix': '.tbl', 'delete': False, 'buffering': 1}
         with tempfile.NamedTemporaryFile(**kwargs) as fobj:
             fobj.write('"red"\n"lime"\n"blue"\n')
             fname = fobj.name
