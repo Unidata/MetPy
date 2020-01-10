@@ -192,6 +192,8 @@ class StationPlot(object):
         plot_barb, plot_symbol, plot_text
 
         """
+        if hasattr(parameter, 'units'):
+            parameter = parameter.magnitude
         text = self._to_string_list(parameter, formatter)
         return self.plot_text(location, text, **kwargs)
 
@@ -353,8 +355,6 @@ class StationPlot(object):
         if not callable(fmt):
             def formatter(s):
                 """Turn a format string into a callable."""
-                if hasattr(s, 'units'):
-                    s = s.item()
                 return format(s, fmt)
         else:
             formatter = fmt

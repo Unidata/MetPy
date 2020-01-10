@@ -83,7 +83,7 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00413, savefig_kwargs={'dpi': 300},
+@pytest.mark.mpl_image_compare(tolerance=0, savefig_kwargs={'dpi': 300},
                                remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
@@ -92,7 +92,7 @@ def test_stationlayout_api():
     # testing data
     x = np.array([1, 5])
     y = np.array([2, 4])
-    data = {'temp': np.array([32., 212.]) * units.degF, 'u': np.array([2, 0]) * units.knots,
+    data = {'temp': np.array([33., 212.]) * units.degF, 'u': np.array([2, 0]) * units.knots,
             'v': np.array([0, 5]) * units.knots, 'stid': ['KDEN', 'KSHV'], 'cover': [3, 8]}
 
     # Set up the layout
@@ -151,7 +151,7 @@ def test_station_layout_names():
     assert sorted(layout.names()) == ['cover', 'stid', 'temp', 'u', 'v']
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0072, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
     fig = plt.figure(figsize=(9, 9))
@@ -159,7 +159,7 @@ def test_simple_layout():
     # testing data
     x = np.array([1, 5])
     y = np.array([2, 4])
-    data = {'air_temperature': np.array([32., 212.]) * units.degF,
+    data = {'air_temperature': np.array([33., 212.]) * units.degF,
             'dew_point_temperature': np.array([28., 80.]) * units.degF,
             'air_pressure_at_sea_level': np.array([29.92, 28.00]) * units.inHg,
             'eastward_wind': np.array([2, 0]) * units.knots,
