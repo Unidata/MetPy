@@ -24,12 +24,10 @@ import numpy as np
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
-from .deprecation import metpyDeprecation
 from .units import DimensionalityError, UndefinedUnitError, units
 
 __all__ = []
 metpy_axes = ['time', 'vertical', 'y', 'latitude', 'x', 'longitude']
-cf_to_metpy_axes = {'T': 'time', 'Z': 'vertical', 'Y': 'y', 'X': 'x'}  # TODO: Remove in 1.0
 
 # Define the criteria for coordinate matches
 coordinate_criteria = {
@@ -167,15 +165,6 @@ class MetPyDataArrayAccessor:
             if coord_map[axis] is not None and not isinstance(coord_map[axis], xr.DataArray):
                 coord_map[axis] = self._data_array[coord_map[axis]]
 
-        # Adapt to old CF axis dict keys
-        # TODO: Remove in v1.0
-        if any(cf_axis in coord_map for cf_axis in cf_to_metpy_axes):
-            warnings.warn('The use of CF axes types in the coordinate mapping has been '
-                          'deprecated and will be removed in v1.0.', metpyDeprecation)
-            coord_map = {(cf_to_metpy_axes[axis]
-                          if axis in cf_to_metpy_axes else axis): coord
-                         for axis, coord in coord_map.items()}
-
         return coord_map
 
     def assign_coordinates(self, coordinates):
@@ -188,12 +177,6 @@ class MetPyDataArrayAccessor:
             coordinates of this DataArray. Coordinates can either be specified directly or by
             their name. If ``None``, clears the `_metpy_axis` attribute on all coordinates,
             which will trigger reparsing of all coordinates on next access.
-
-        Notes
-        -----
-        Prior to v0.12, ``coordinates`` was taken as a mapping from CF axis types
-        ('T', 'Z', 'Y', 'X') to coordinates. This behavior has been deprecated and will be
-        be removed in v1.0.
 
         """
         if coordinates:
@@ -226,7 +209,7 @@ class MetPyDataArrayAccessor:
                 coord_lists[geometric] = coord_lists[graticule]
 
         # Filter out multidimensional coordinates where not allowed
-        require_1d_coord = ['time', 'vertical']  # TODO: Add 'y', 'x' in v1.0
+        require_1d_coord = ['time', 'vertical', 'y', 'x']
         for axis in require_1d_coord:
             coord_lists[axis] = [coord for coord in coord_lists[axis] if coord.ndim <= 1]
 
@@ -267,13 +250,6 @@ class MetPyDataArrayAccessor:
             if (coord_var is not None
                 and not any(axis in coord.attrs.get('_metpy_axis', '').split(',')
                             for coord in coords)):
-                # Warn if assigning multidimensional coord to x/y
-                # TODO: Remove in v1.0
-                if coord_var.ndim > 1 and axis in ('y', 'x'):
-                    warnings.warn(f'Multidimensional coordinate {coord_var.name} assigned for '
-                                  f'axis "{axis}". This behavior has been deprecated and will '
-                                  'be removed in v1.0 (only one-dimensional coordinates will '
-                                  f'be available for the "{axis}" axis).', metpyDeprecation)
 
                 _assign_axis(coord_var.attrs, axis)
 
@@ -302,7 +278,7 @@ class MetPyDataArrayAccessor:
 
         Notes
         -----
-        This method is designed for use with mutliple coordinates; it returns a generator. To
+        This method is designed for use with multiple coordinates; it returns a generator. To
         access a single coordinate, use the appropriate attribute on the accessor, or use tuple
         unpacking.
 
@@ -322,15 +298,7 @@ class MetPyDataArrayAccessor:
 
     @property
     def y(self):
-        """Return the y coordinate.
-
-        Notes
-        -----
-        Prior to version v0.12, this attribute allowed multidimensional coordinates (including
-        latitude when another y coordinate was not available). This behavior has been
-        deprecated and will be removed in v1.0.
-
-        """
+        """Return the y coordinate."""
         return self._axis('y')
 
     @property
@@ -340,15 +308,7 @@ class MetPyDataArrayAccessor:
 
     @property
     def x(self):
-        """Return the x coordinate.
-
-        Notes
-        -----
-        Prior to version v0.12, this attribute allowed multidimensional coordinates (including
-        longitude when another x coordinate was not available). This behavior has been
-        deprecated and will be removed in v1.0.
-
-        """
+        """Return the x coordinate."""
         return self._axis('x')
 
     @property
@@ -369,27 +329,6 @@ class MetPyDataArrayAccessor:
 
         # Otherwise, they match.
         return True
-
-    def as_timestamp(self):
-        """Return the data as unix timestamp (for easier time derivatives).
-
-        Notes
-        -----
-        This function has been deprecated and will be removed in v1.0. For the purposes of
-        time derivatives, use ``time_deltas`` instead, which allows sub-second precision.
-
-        """
-        warnings.warn('This function has been deprecated and will be removed in v1.0. Use '
-                      'time_deltas instead.', metpyDeprecation)
-        attrs = {key: self._data_array.attrs[key] for key in
-                 {'standard_name', 'long_name', 'axis', '_metpy_axis'}
-                 & set(self._data_array.attrs)}
-        attrs['units'] = 'seconds'
-        return xr.DataArray(self._data_array.values.astype('datetime64[s]').astype('int64'),
-                            name=self._data_array.name,
-                            coords=self._data_array.coords,
-                            dims=self._data_array.dims,
-                            attrs=attrs)
 
     @property
     def time_deltas(self):
