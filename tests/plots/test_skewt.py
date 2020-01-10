@@ -191,6 +191,9 @@ def test_skewt_shade_cape_cin(test_profile):
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
 
+        # This works around the fact that newer pint versions default to degrees_Celsius
+        skew.ax.set_xlabel('degC')
+
     return fig
 
 
@@ -209,6 +212,9 @@ def test_skewt_shade_cape_cin_no_limit(test_profile):
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
 
+        # This works around the fact that newer pint versions default to degrees_Celsius
+        skew.ax.set_xlabel('degC')
+
     return fig
 
 
@@ -225,6 +231,9 @@ def test_skewt_shade_area(test_profile):
         skew.shade_area(p, t, tp)
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
+
+        # This works around the fact that newer pint versions default to degrees_Celsius
+        skew.ax.set_xlabel('degC')
 
     return fig
 
@@ -254,6 +263,9 @@ def test_skewt_shade_area_kwargs(test_profile):
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
 
+        # This works around the fact that newer pint versions default to degrees_Celsius
+        skew.ax.set_xlabel('degC')
+
     return fig
 
 
@@ -268,6 +280,9 @@ def test_skewt_wide_aspect_ratio(test_profile):
     skew.plot(p, tp, 'k')
     skew.ax.set_xlim(-30, 50)
     skew.ax.set_ylim(1050, 700)
+
+    # This works around the fact that newer pint versions default to degrees_Celsius
+    skew.ax.set_xlabel('degC')
     return fig
 
 
