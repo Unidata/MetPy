@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Tests the operation of MetPy's unit support code."""
 
+from distutils.version import LooseVersion
 import sys
 
 import matplotlib.pyplot as plt
@@ -217,3 +218,17 @@ def test_assert_nan_checks_units():
     """Test that assert_nan properly checks units."""
     with pytest.raises(AssertionError):
         assert_nan(np.nan * units.m, units.second)
+
+
+@pytest.mark.skipif(LooseVersion(pint.__version__) < LooseVersion('0.10'),
+                    reason='Custom preprocessors only available in Pint 0.10')
+def test_percent_units():
+    """Test that percent sign units are properly parsed and interpreted."""
+    assert str(units('%').units) == 'percent'
+
+
+@pytest.mark.skipif(LooseVersion(pint.__version__) < LooseVersion('0.10'),
+                    reason='Custom preprocessors only available in Pint 0.10')
+def test_udunits_power_syntax():
+    """Test that UDUNITS style powers are properly parsed and interpreted."""
+    assert units('m2 s-2').units == units.m ** 2 / units.s ** 2
