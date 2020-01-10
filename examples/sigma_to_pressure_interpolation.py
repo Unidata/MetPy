@@ -33,9 +33,9 @@ lat = data.variables['lat'][:]
 lon = data.variables['lon'][:]
 time = data.variables['time']
 vtimes = num2date(time[:], time.units)
-temperature = data.variables['temperature'][:] * units.celsius
-pres = data.variables['pressure'][:] * units.pascal
-hgt = data.variables['height'][:] * units.meter
+temperature = units.Quantity(data.variables['temperature'][:], 'degC')
+pres = units.Quantity(data.variables['pressure'][:], 'Pa')
+hgt = units.Quantity(data.variables['height'][:], 'meter')
 
 ####################################
 # Array of desired pressure levels
