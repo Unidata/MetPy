@@ -10,46 +10,40 @@ import numpy as np
 from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water,
                         significant_tornado, supercell_composite)
-from metpy.testing import (assert_almost_equal, assert_array_equal, check_and_silence_warning,
-                           get_upper_air_data)
+from metpy.testing import assert_almost_equal, assert_array_equal, get_upper_air_data
 from metpy.units import concatenate, units
 
 
-@check_and_silence_warning(FutureWarning)
 def test_precipitable_water():
     """Test precipitable water with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
-    pw = precipitable_water(data['dewpoint'], data['pressure'],
-                            top=400 * units.hPa)
+    pw = precipitable_water(data['pressure'], data['dewpoint'], top=400 * units.hPa)
     truth = (0.8899441949243486 * units('inches')).to('millimeters')
     assert_array_equal(pw, truth)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_precipitable_water_no_bounds():
     """Test precipitable water with observed sounding and no bounds given."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
     dewpoint = data['dewpoint']
     pressure = data['pressure']
     inds = pressure >= 400 * units.hPa
-    pw = precipitable_water(dewpoint[inds], pressure[inds])
+    pw = precipitable_water(pressure[inds], dewpoint[inds])
     truth = (0.8899441949243486 * units('inches')).to('millimeters')
     assert_array_equal(pw, truth)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_precipitable_water_bound_error():
     """Test with no top bound given and data that produced floating point issue #596."""
     pressure = np.array([993., 978., 960.5, 927.6, 925., 895.8, 892., 876., 45.9, 39.9, 36.,
                          36., 34.3]) * units.hPa
     dewpoint = np.array([25.5, 24.1, 23.1, 21.2, 21.1, 19.4, 19.2, 19.2, -87.1, -86.5, -86.5,
                          -86.5, -88.1]) * units.degC
-    pw = precipitable_water(dewpoint, pressure)
+    pw = precipitable_water(pressure, dewpoint)
     truth = 89.86955998646951 * units('millimeters')
     assert_almost_equal(pw, truth, 8)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_precipitable_water_nans():
     """Test that PW returns appropriate number if NaNs are present."""
     pressure = np.array([1001, 1000, 997, 977.9, 977, 957, 937.8, 925, 906, 899.3, 887, 862.5,
@@ -61,7 +55,7 @@ def test_precipitable_water_nans():
                         -16.6, np.nan, np.nan, -16.4, np.nan, -18.5, -21., -23.7, np.nan,
                         -28.3, np.nan, -32.6, np.nan, -33.8, -35., -35.1, -38.1, -40.,
                         -43.3, -44.6, -46.4, -47., -49.2, -50.7]) * units.degC
-    pw = precipitable_water(dewpoint, pressure)
+    pw = precipitable_water(pressure, dewpoint)
     truth = 4.003709214463873 * units.mm
     assert_almost_equal(pw, truth, 8)
 

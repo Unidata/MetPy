@@ -17,9 +17,8 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriol
                         static_stability, storm_relative_helicity, stretching_deformation,
                         total_deformation, vorticity, wind_components)
 from metpy.constants import g, omega, Re
-from metpy.future import ageostrophic_wind as ageostrophic_wind_future
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           check_and_silence_warning, get_test_data)
+                           get_test_data)
 from metpy.units import concatenate, units
 
 
@@ -313,51 +312,23 @@ def test_geostrophic_gempak():
 
 
 def test_no_ageostrophic_geopotential():
-    """Test ageostrophic wind calculation with geopotential and no ageostrophic wind."""
+    """Test the updated ageostrophic wind function."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = np.array([[-2, 0, 2]] * 3) * units('m/s')
     v = -u.T
-    with pytest.warns(FutureWarning):
-        uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
-                                     u, v, dim_order='xy')
+    uag, vag = ageostrophic_wind(z, u, v, 1 / units.sec, 100. * units.meter,
+                                 100. * units.meter, dim_order='xy')
     true = np.array([[0, 0, 0]] * 3) * units('m/s')
     assert_array_equal(uag, true)
     assert_array_equal(vag, true)
 
 
 def test_ageostrophic_geopotential():
-    """Test ageostrophic wind calculation with geopotential and ageostrophic wind."""
-    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
-    u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
-    with pytest.warns(FutureWarning):
-        uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
-                                     u, v, dim_order='xy')
-
-    u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
-    v_true = -u_true.T
-
-    assert_array_equal(uag, u_true)
-    assert_array_equal(vag, v_true)
-
-
-def test_no_ageostrophic_geopotential_future():
-    """Test the updated ageostrophic wind function."""
-    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
-    u = np.array([[-2, 0, 2]] * 3) * units('m/s')
-    v = -u.T
-    uag, vag = ageostrophic_wind_future(z, u, v, 1 / units.sec, 100. * units.meter,
-                                        100. * units.meter, dim_order='xy')
-    true = np.array([[0, 0, 0]] * 3) * units('m/s')
-    assert_array_equal(uag, true)
-    assert_array_equal(vag, true)
-
-
-def test_ageostrophic_geopotential_future():
     """Test ageostrophic wind calculation with future input variable order."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
-    uag, vag = ageostrophic_wind_future(z, u, v, 1 / units.sec, 100. * units.meter,
-                                        100. * units.meter, dim_order='xy')
+    uag, vag = ageostrophic_wind(z, u, v, 1 / units.sec, 100. * units.meter,
+                                 100. * units.meter, dim_order='xy')
     u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
     v_true = -u_true.T
     assert_array_equal(uag, u_true)
@@ -372,7 +343,6 @@ def test_streamfunc():
     assert_almost_equal(msf, 337468.2500 * units('m^2 s^-2'), 4)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_storm_relative_helicity_no_storm_motion():
     """Test storm relative helicity with no storm motion and differing input units."""
     u = np.array([0, 20, 10, 0]) * units('m/s')
@@ -380,7 +350,7 @@ def test_storm_relative_helicity_no_storm_motion():
     u = u.to('knots')
     heights = np.array([0, 250, 500, 750]) * units.m
 
-    positive_srh, negative_srh, total_srh = storm_relative_helicity(u, v, heights,
+    positive_srh, negative_srh, total_srh = storm_relative_helicity(heights, u, v,
                                                                     depth=750 * units.meters)
 
     assert_almost_equal(positive_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
@@ -388,7 +358,6 @@ def test_storm_relative_helicity_no_storm_motion():
     assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_storm_relative_helicity_storm_motion():
     """Test storm relative helicity with storm motion and differing input units."""
     u = np.array([5, 25, 15, 5]) * units('m/s')
@@ -396,7 +365,7 @@ def test_storm_relative_helicity_storm_motion():
     u = u.to('knots')
     heights = np.array([0, 250, 500, 750]) * units.m
 
-    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(heights, u, v,
                                                           depth=750 * units.meters,
                                                           storm_u=5 * units('m/s'),
                                                           storm_v=10 * units('m/s'))
@@ -406,7 +375,6 @@ def test_storm_relative_helicity_storm_motion():
     assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_storm_relative_helicity_with_interpolation():
     """Test storm relative helicity with interpolation."""
     u = np.array([-5, 15, 25, 15, -5]) * units('m/s')
@@ -414,7 +382,7 @@ def test_storm_relative_helicity_with_interpolation():
     u = u.to('knots')
     heights = np.array([0, 100, 200, 300, 400]) * units.m
 
-    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(heights, u, v,
                                                           bottom=50 * units.meters,
                                                           depth=300 * units.meters,
                                                           storm_u=5 * units('m/s'),
@@ -425,7 +393,6 @@ def test_storm_relative_helicity_with_interpolation():
     assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_storm_relative_helicity():
     """Test function for SRH calculations on an eigth-circle hodograph."""
     # Create larger arrays for everything except pressure to make a smoother graph
@@ -444,8 +411,8 @@ def test_storm_relative_helicity():
     # negative SRH will be zero.
     srh_true_t = srh_true_p
     srh_true_n = 0 * units('m^2/s^2')
-    p_srh, n_srh, t_srh = storm_relative_helicity(u_int, v_int,
-                                                  hgt_int, 1000 * units('meter'),
+    p_srh, n_srh, t_srh = storm_relative_helicity(hgt_int, u_int, v_int,
+                                                  1000 * units('meter'),
                                                   bottom=0 * units('meter'),
                                                   storm_u=0 * units.knot,
                                                   storm_v=0 * units.knot)
@@ -454,7 +421,6 @@ def test_storm_relative_helicity():
     assert_almost_equal(t_srh, srh_true_t, 2)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_storm_relative_helicity_agl():
     """Test storm relative helicity with heights above ground."""
     u = np.array([-5, 15, 25, 15, -5]) * units('m/s')
@@ -462,7 +428,7 @@ def test_storm_relative_helicity_agl():
     u = u.to('knots')
     heights = np.array([100, 200, 300, 400, 500]) * units.m
 
-    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(heights, u, v,
                                                           bottom=50 * units.meters,
                                                           depth=300 * units.meters,
                                                           storm_u=5 * units('m/s'),
@@ -475,13 +441,12 @@ def test_storm_relative_helicity_agl():
     assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
 
 
-@check_and_silence_warning(FutureWarning)
 def test_storm_relative_helicity_masked():
     """Test that srh does not return masked values."""
     h = units.Quantity(np.ma.array([20.72, 234.85, 456.69, 683.21]), units.meter)
     u = units.Quantity(np.ma.array(np.zeros((4,))), units.knot)
     v = units.Quantity(np.zeros_like(u), units.knot)
-    pos, neg, com = storm_relative_helicity(u, v, h, depth=500 * units.meter,
+    pos, neg, com = storm_relative_helicity(h, u, v, depth=500 * units.meter,
                                             storm_u=15.77463015050421 * units('m/s'),
                                             storm_v=21.179437759755647 * units('m/s'))
 
