@@ -168,7 +168,7 @@ def add_station_lat_lon(df, stn_var):
             info = station_info[stn]
             df.loc[df[stn_var] == stn, 'latitude'] = info.latitude
             df.loc[df[stn_var] == stn, 'longitude'] = info.longitude
-        except AttributeError:
+        except KeyError:
             df.loc[df[stn_var] == stn, 'latitude'] = np.nan
             df.loc[df[stn_var] == stn, 'longitude'] = np.nan
     return df
