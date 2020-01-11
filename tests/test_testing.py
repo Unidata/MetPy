@@ -2,11 +2,13 @@
 #  Distributed under the terms of the BSD 3-Clause License.
 #  SPDX-License-Identifier: BSD-3-Clause
 """Test MetPy's testing utilities."""
+import warnings
 
 import numpy as np
 import pytest
 
-from metpy.testing import assert_array_almost_equal
+from metpy.deprecation import MetpyDeprecationWarning
+from metpy.testing import assert_array_almost_equal, check_and_silence_deprecation
 
 
 # Test #1183: numpy.testing.assert_array* ignores any masked value, so work-around
@@ -22,3 +24,9 @@ def test_masked_and_no_mask():
     a = np.array([10, 20])
     b = np.ma.array([10, 20], mask=[False, False])
     assert_array_almost_equal(a, b)
+
+
+@check_and_silence_deprecation
+def test_deprecation_decorator():
+    """Make sure the deprecation checker works."""
+    warnings.warn('Testing warning.', MetpyDeprecationWarning)

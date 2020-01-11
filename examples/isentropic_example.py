@@ -68,20 +68,20 @@ isentlevs = [296.] * units.kelvin
 # levels, and temperature be input. Any additional inputs (in this case relative humidity, u,
 # and v wind components) will be linearly interpolated to isentropic space.
 
-isent_anal = mpcalc.isentropic_interpolation(isentlevs,
-                                             lev,
-                                             tmp,
-                                             spech,
-                                             uwnd,
-                                             vwnd,
-                                             hgt,
-                                             tmpk_out=True)
+isent_ana = mpcalc.isentropic_interpolation(isentlevs,
+                                            lev,
+                                            tmp,
+                                            spech,
+                                            uwnd,
+                                            vwnd,
+                                            hgt,
+                                            temperature_out=True)
 
 #####################################
 # The output is a list, so now we will separate the variables to different names before
 # plotting.
 
-isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal
+isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_ana
 isentu.ito('kt')
 isentv.ito('kt')
 

@@ -14,7 +14,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from metpy.calc import dewpoint_rh
+from metpy.calc import dewpoint_from_relative_humidity
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo
 from metpy.units import units
@@ -201,8 +201,8 @@ probe_id = '0102A'
 data = {'wind_speed': (np.array(ws) * units('m/s')).to(units('knots')),
         'wind_speed_max': (np.array(wsmax) * units('m/s')).to(units('knots')),
         'wind_direction': np.array(wd) * units('degrees'),
-        'dewpoint': dewpoint_rh((np.array(temp) * units('degC')).to(units('K')),
-                                np.array(rh) / 100.).to(units('degF')),
+        'dewpoint': dewpoint_from_relative_humidity((np.array(temp) * units.degC).to(units.K),
+                                                    np.array(rh) / 100.).to(units('degF')),
         'air_temperature': (np.array(temp) * units('degC')).to(units('degF')),
         'mean_slp': calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa'),
         'relative_humidity': np.array(rh), 'times': np.array(date)}

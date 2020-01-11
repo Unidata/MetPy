@@ -3,12 +3,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
 import functools
-import warnings
 
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import first_derivative, gradient
+from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..cbook import iterable
 from ..package_tools import Exporter
@@ -447,14 +446,20 @@ def geostrophic_wind(heights, f, dx, dy):
 
 
 @exporter.export
-@check_units(f='[frequency]', dx='[length]', dy='[length]', u='[speed]', v='[speed]')
-def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
+@preprocess_xarray
+@ensure_yx_order
+@check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
+def ageostrophic_wind(heights, u, v, f, dx, dy, dim_order='yx'):
     r"""Calculate the ageostrophic wind given from the heights or geopotential.
 
     Parameters
     ----------
     heights : (M, N) ndarray
         The height or geopotential field.
+    u : (M, N) `pint.Quantity`
+        The u wind field.
+    v : (M, N) `pint.Quantity`
+        The u wind field.
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
@@ -464,14 +469,10 @@ def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
-    u : (M, N) `pint.Quantity`
-        The u wind field.
-    v : (M, N) `pint.Quantity`
-        The u wind field.
 
     Returns
     -------
-    A 2-item tuple of arrays, `pint.Quantity`
+    A 2-item tuple of arrays
         A tuple of the u-component and v-component of the ageostrophic wind.
 
     Notes
@@ -479,15 +480,13 @@ def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     If inputs have more than two dimensions, they are assumed to have either leading dimensions
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
-    The order of the inputs will be changed in 1.0 to be (heights, u, v, f, dx, dy).
-    To updated to the new format, use `from metpy.future import ageostrophic_wind`.
+    This function contains an updated input variable order from the same function in the
+    kinematics module. This version will be fully implemented in 1.0 and moved from the
+    `future` module back to the `kinematics` module.
 
     """
-    warnings.warn('Input variables will be reordered in 1.0 to be (heights, u, v, f, dx, dy).'
-                  'To update to new input format before 1.0 is released, use'
-                  '`from metpy.future import ageostrophic_wind`.', FutureWarning)
-    from ..future import ageostrophic_wind as _ageostrophic_wind
-    return _ageostrophic_wind(heights, u, v, f, dx, dy, dim_order=dim_order)
+    u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
+    return u - u_geostrophic, v - v_geostrophic
 
 
 @exporter.export
@@ -534,9 +533,9 @@ def montgomery_streamfunction(height, temperature):
 
 @exporter.export
 @preprocess_xarray
-@check_units('[speed]', '[speed]', '[length]', '[length]', '[length]',
-             '[speed]', '[speed]')
-def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
+@check_units('[length]', '[speed]', '[speed]', '[length]',
+             bottom='[length]', storm_u='[speed]', storm_v='[speed]')
+def storm_relative_helicity(heights, u, v, depth, *, bottom=0 * units.m,
                             storm_u=0 * units('m/s'), storm_v=0 * units('m/s')):
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
@@ -577,13 +576,26 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
         total storm-relative helicity
 
     """
-    warnings.warn('Input variables will be reordered in 1.0 to be (heights, u, v, depth, '
-                  'bottom, storm_u, storm_v). To update to new input format before 1.0 is '
-                  'released, use `from metpy.future import storm_relative_helicity`.',
-                  FutureWarning)
-    from ..future import storm_relative_helicity as _storm_relative_helicity
-    return _storm_relative_helicity(heights, u, v, depth,
-                                    bottom=bottom, storm_u=storm_u, storm_v=storm_v)
+    _, u, v = get_layer_heights(heights, depth, u, v, with_agl=True, bottom=bottom)
+
+    storm_relative_u = u - storm_u
+    storm_relative_v = v - storm_v
+
+    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1]
+                  - storm_relative_u[:-1] * storm_relative_v[1:])
+
+    # Need to manually check for masked value because sum() on masked array with non-default
+    # mask will return a masked value rather than 0. See numpy/numpy#11736
+    positive_srh = int_layers[int_layers.magnitude > 0.].sum()
+    if np.ma.is_masked(positive_srh):
+        positive_srh = 0.0 * units('meter**2 / second**2')
+    negative_srh = int_layers[int_layers.magnitude < 0.].sum()
+    if np.ma.is_masked(negative_srh):
+        negative_srh = 0.0 * units('meter**2 / second**2')
+
+    return (positive_srh.to('meter ** 2 / second ** 2'),
+            negative_srh.to('meter ** 2 / second ** 2'),
+            (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
 
 
 @exporter.export

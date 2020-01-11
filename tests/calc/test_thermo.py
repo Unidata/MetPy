@@ -10,8 +10,7 @@ import xarray as xr
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
-                        dewpoint_rh, dry_lapse, dry_static_energy, el,
-                        equivalent_potential_temperature,
+                        dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
                         exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
                         mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_relative_humidity,
@@ -35,8 +34,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
-                           check_and_silence_deprecation)
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
 
 
@@ -197,16 +195,6 @@ def test_sat_vapor_pressure_fahrenheit():
     temp = np.array([50., 68.]) * units.degF
     real_es = np.array([12.2717, 23.3695]) * units.mbar
     assert_array_almost_equal(saturation_vapor_pressure(temp), real_es, 4)
-
-
-@check_and_silence_deprecation
-def test_deprecated_dewpoint_rh():
-    """Test deprecated dewpoint_rh function."""
-    temp = np.array([30., 25., 10., 20., 25.]) * units.degC
-    rh = np.array([30., 45., 55., 80., 85.]) / 100.
-
-    real_td = np.array([11, 12, 1, 16, 22]) * units.degC
-    assert_array_almost_equal(real_td, dewpoint_rh(temp, rh), 0)
 
 
 def test_basic_dewpoint_from_relative_humidity():
@@ -900,22 +888,6 @@ def test_isentropic_pressure_tmp_out():
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
     isentprs = isentropic_interpolation(isentlev, lev, tmpk, temperature_out=True)
-    truetmp = 296. * units.kelvin
-    assert_almost_equal(isentprs[1], truetmp, 3)
-
-
-@check_and_silence_deprecation
-def test_isentropic_pressure_tmpk_out_deprecation():
-    """Test deprecation warning of `tmpk_out`."""
-    lev = [100000., 95000., 90000., 85000.] * units.Pa
-    tmp = np.ones((4, 5, 5))
-    tmp[0, :] = 296.
-    tmp[1, :] = 292.
-    tmp[2, :] = 290.
-    tmp[3, :] = 288.
-    tmpk = tmp * units.kelvin
-    isentlev = [296.] * units.kelvin
-    isentprs = isentropic_interpolation(isentlev, lev, tmpk, tmpk_out=True)
     truetmp = 296. * units.kelvin
     assert_almost_equal(isentprs[1], truetmp, 3)
 

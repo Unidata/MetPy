@@ -153,7 +153,7 @@ To demonstrate some of the calculations MetPy can do, let's show a simple exampl
 
     temperature = [20] * units.degC
     rel_humidity  = [50] * units.percent
-    print(dewpoint_rh(temperature, rel_humidity))
+    print(mpcalc.dewpoint_from_relative_humidity(temperature, rel_humidity))
 
 .. parsed-literal::
 

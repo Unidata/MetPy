@@ -96,7 +96,7 @@ before_install:
         export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
       fi;
       if [[ $TASK == "coverage" ]]; then
-        export TEST_OPTS="$TEST_OPTS --cov=metpy";
+        export TEST_OPTS="$TEST_OPTS --cov=metpy --cov=tests";
         export EXTRA_PACKAGES="$EXTRA_PACKAGES pytest-cov";
       fi;
     fi;

@@ -187,14 +187,3 @@ Other
       resample_nn_1d
       smooth_gaussian
       smooth_n_point
-
-
-Deprecated
-----------
-
-Do not use these functions in new code, please see their documentation for their replacements.
-
-   .. autosummary::
-      :toctree: ./
-
-      dewpoint_rh

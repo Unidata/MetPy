@@ -12,7 +12,7 @@ import pytest
 import xarray as xr
 
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           check_and_silence_deprecation, get_test_data)
+                           get_test_data)
 from metpy.units import units
 from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
 
@@ -228,20 +228,6 @@ def test_coordinates_specified_by_dataarray_with_dataset(test_ds_generic):
     assert data['test']['b'].identical(y)
     assert data['test']['a'].identical(vertical)
     assert data['test']['d'].identical(time)
-
-
-@check_and_silence_deprecation
-def test_coordinates_specified_using_cf_axis(test_ds_generic):
-    """Test deprecated specification of coordinates using CF axis keys."""
-    data = test_ds_generic.metpy.parse_cf('test', coordinates={'Z': 'e'})
-    assert data['e'].identical(data.metpy.vertical)
-
-
-def test_bad_coordinate_type(test_var):
-    """Test that an AttributeError is raised when a bad axis/coordinate type is given."""
-    with pytest.raises(AttributeError) as exc:
-        next(test_var.metpy.coordinates('bad_axis_type'))
-    assert 'not an interpretable axis' in str(exc.value)
 
 
 def test_missing_coordinate_type(test_ds_generic):
@@ -477,19 +463,6 @@ def test_check_matching_coordinates(test_ds_generic):
         add(test_ds_generic['test'], other)
 
 
-@check_and_silence_deprecation
-def test_as_timestamp(test_var):
-    """Test the as_timestamp method for a time DataArray."""
-    time = test_var.metpy.time
-    truth = xr.DataArray(np.array([544557600]),
-                         name='time',
-                         coords=time.coords,
-                         dims='time',
-                         attrs={'long_name': 'forecast time', '_metpy_axis': 'time',
-                                'units': 'seconds'})
-    assert truth.identical(time.metpy.as_timestamp())
-
-
 def test_time_deltas():
     """Test the time_deltas attribute."""
     ds = xr.open_dataset(get_test_data('irma_gfs_example.nc', as_file_obj=False))
@@ -694,22 +667,16 @@ def test_auxilary_lat_lon_with_xy(test_var_multidim_full):
     assert test_var_multidim_full['lon'].identical(test_var_multidim_full.metpy.longitude)
 
 
-@check_and_silence_deprecation
 def test_auxilary_lat_lon_without_xy(test_var_multidim_no_xy):
-    """Test that multidimensional lat/lon are recognized in absence of x/y coords.
-
-    TODO (v1.0): Remove check_and_silence_deprecation that is needed for now since these
-    lat/lon coords are also assigned to y/x.
-    """
+    """Test that multidimensional lat/lon are recognized in absence of x/y coords."""
     assert test_var_multidim_no_xy['lat'].identical(test_var_multidim_no_xy.metpy.latitude)
     assert test_var_multidim_no_xy['lon'].identical(test_var_multidim_no_xy.metpy.longitude)
 
 
-@check_and_silence_deprecation
 def test_auxilary_lat_lon_without_xy_as_xy(test_var_multidim_no_xy):
-    """Test the pre-v1.0 behavior of multidimensional lat/lon being acceptable as x/y coords.
+    """Test that the pre-v1.0 behavior of multidimensional lat/lon errors."""
+    with pytest.raises(AttributeError):
+        test_var_multidim_no_xy.metpy.y
 
-    TODO (v1.0): Replace with test that y and x coords are not available in this case.
-    """
-    assert test_var_multidim_no_xy['lat'].identical(test_var_multidim_no_xy.metpy.y)
-    assert test_var_multidim_no_xy['lon'].identical(test_var_multidim_no_xy.metpy.x)
+    with pytest.raises(AttributeError):
+        test_var_multidim_no_xy.metpy.x

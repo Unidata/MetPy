@@ -8,7 +8,6 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 """
 
 from contextlib import ExitStack
-import warnings
 
 import matplotlib
 from matplotlib.axes import Axes
@@ -25,7 +24,6 @@ import numpy as np
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
-from ..deprecation import metpyDeprecation
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
 from ..units import concatenate, units
@@ -916,17 +914,7 @@ class Hodograph(object):
         --------
         :meth:`Hodograph.plot`
 
-        Notes
-        -----
-        `plot_colormapped` previously accepted `bounds` as a parameter for coordinate values.
-        This has been deprecated in 0.11 in favor of `intervals`.
-
         """
-        if 'bounds' in kwargs:
-            intervals = kwargs.pop('bounds')
-            warnings.warn('The use of "bounds" as a parameter has been deprecated in '
-                          'favor of "intervals",', metpyDeprecation)
-
         u, v, c = _delete_masked_points(u, v, c)
 
         # Plotting a color segmented hodograph

@@ -12,7 +12,6 @@ from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_boundi
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
 from ..cbook import broadcast_indices
-from ..deprecation import deprecated, metpyDeprecation
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -827,22 +826,6 @@ def dewpoint_from_relative_humidity(temperature, rh):
     if np.any(rh > 1.2):
         warnings.warn('Relative humidity >120%, ensure proper units.')
     return dewpoint(rh * saturation_vapor_pressure(temperature))
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.12', addendum=(' This function has been renamed '
-                              'dewpoint_from_relative_humidity.'),
-            pending=False)
-def dewpoint_rh(temperature, rh):
-    """Wrap dewpoint_from_relative_humidity for deprecated dewpoint_rh function."""
-    return dewpoint_from_relative_humidity(temperature, rh)
-
-
-dewpoint_rh.__doc__ = (dewpoint_from_relative_humidity.__doc__
-                       + '\n    .. deprecated:: 0.12.0\n        Function has been renamed to'
-                         ' `dewpoint_from_relative_humidity` and will be removed from MetPy '
-                         'in 1.0.0.')
 
 
 @exporter.export
@@ -1702,9 +1685,6 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
     [Ziv1994]_. Any additional arguments are assumed to vary linearly with temperature and will
     be linearly interpolated to the new isentropic levels.
 
-    `isentropic_interpolation` previously accepted `tmpk_out` as an argument. That has been
-    deprecated in 0.11 in favor of `temperature_out` and support will end in 1.0.
-
     See Also
     --------
     potential_temperature
@@ -1719,12 +1699,6 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
         f = isentlevs_nd - t * exner
         fp = exner * (ka * t - a)
         return iter_log_p - (f / fp)
-
-    # Remove block when tmpk_out is removed in 1.0
-    if 'tmpk_out' in kwargs:
-        temperature_out = kwargs.get('tmpk_out')
-        warnings.warn('The use of "tmpk_out" has been deprecated in favor of'
-                      '"temperature_out",', metpyDeprecation)
 
     # Get dimensions in temperature
     ndim = temperature.ndim

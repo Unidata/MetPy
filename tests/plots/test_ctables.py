@@ -3,19 +3,13 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `ctables` module."""
 
+from io import StringIO
 import os.path
 import tempfile
-try:
-    buffer_args = {'bufsize': 0}
-    from StringIO import StringIO
-except ImportError:
-    buffer_args = {'buffering': 1}
-    from io import StringIO
 
 import numpy as np
 import pytest
 
-from metpy.deprecation import MetpyDeprecationWarning
 from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
 
 
@@ -34,8 +28,7 @@ def test_package_resource(registry):
 def test_scan_dir(registry):
     """Test registry scanning a directory and ignoring files it can't handle ."""
     try:
-        kwargs = {'mode': 'w', 'dir': '.', 'suffix': '.tbl', 'delete': False}
-        kwargs.update(**buffer_args)
+        kwargs = {'mode': 'w', 'dir': '.', 'suffix': '.tbl', 'delete': False, 'buffering': 1}
         with tempfile.NamedTemporaryFile(**kwargs) as fobj:
             fobj.write('"red"\n"lime"\n"blue"\n')
             fname = fobj.name
@@ -137,10 +130,3 @@ def test_gempak():
     result = outfile.read()
 
     assert result == '(0.000000, 0.000000, 0.000000)\n(1.000000, 1.000000, 1.000000)\n'
-
-
-def test_viridis(registry):
-    """Test viridis deprecation warning."""
-    with pytest.warns(MetpyDeprecationWarning):
-        registry.scan_resource('metpy.plots', 'colortable_files')
-        registry.get_colortable('viridis')
