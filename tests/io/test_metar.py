@@ -118,6 +118,15 @@ def test_parse_file():
     assert test.air_pressure_at_sea_level.values == 1016.76
 
 
+def test_parse_file_bad_encoding():
+    """Test the parser on an entire file that has at least one bad utf-8 encoding."""
+    input_file = get_test_data('2020010600_sao.wmo', as_file_obj=False)
+    df = parse_metar_file(input_file)
+    test = df[df.station_id == 'KDEN']
+    assert test.air_temperature.values == 2
+    assert test.air_pressure_at_sea_level.values == 1024.71
+
+
 def test_parse_file_object():
     """Test the parser reading from a file-like object."""
     input_file = get_test_data('metar_20190701_1200.txt', mode='rt')

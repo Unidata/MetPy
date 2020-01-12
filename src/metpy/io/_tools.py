@@ -27,7 +27,8 @@ def open_as_needed(filename, mode='rb'):
     elif filename.endswith('.gz'):
         return gzip.GzipFile(filename, mode)
     else:
-        return open(filename, mode)
+        kwargs = {'errors': 'surrogateescape'} if mode != 'rb' else {}
+        return open(filename, mode, **kwargs)
 
 
 class NamedStruct(Struct):
