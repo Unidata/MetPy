@@ -17,8 +17,8 @@
    installguide
    startingguide
    units
-   Reference/API Examples <examples/index>
-   Topical Examples <https://unidata.github.io/python-gallery/examples/index.html>
+   examples/index
+   Python Gallery (separate site) <https://unidata.github.io/python-training/gallery/gallery-home>
    tutorials/index
    api/index
    roadmap
@@ -46,7 +46,7 @@ work through design issues). Also, for a version `0.x.y`, we change `x` when we
 release new features, and `y` when we make a release with only bug fixes.
 
 For additional MetPy examples not included in this repository, please see the `Unidata Python
-Gallery <https://unidata.github.io/python-gallery/>`_.
+Gallery`_.
 
 We support Python >= 3.6. Support for Python 2.7 was dropped with the release of 0.12.
 
@@ -134,5 +134,5 @@ Related Projects
 .. _netCDF4-python: https://unidata.github.io/netcdf4-python/
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
 .. _siphon: https://unidata.github.io/siphon/
-.. _Unidata Python Gallery: https://unidata.github.io/python-gallery/
+.. _Unidata Python Gallery: https://unidata.github.io/python-training/gallery/gallery-home
 __ https://www.unidata.ucar.edu/software/thredds/current/tds/
