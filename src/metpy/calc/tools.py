@@ -5,7 +5,6 @@
 import functools
 from inspect import signature
 from operator import itemgetter
-import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
@@ -1484,29 +1483,35 @@ def wrap_output_like(**wrap_kwargs):
     supports:
 
     - As input (output from wrapped function):
-        - ``numpy.ndarray``
         - ``pint.Quantity``
         - ``xarray.DataArray``
+        - any type wrappable by ``pint.Quantity``
     - As matched output (final returned value):
-        - ``numpy.ndarray``
         - ``pint.Quantity``
         - ``xarray.DataArray``
+
+    (if matched output is not one of these types, we instead treat the match as if it was a
+    dimenionless Quantity.)
 
     This wrapping/conversion follows the following rules:
 
-    - If type of input and output match, do not covert type (but maybe convert unit)
-    - If type of output is ndarray, use ``np.asarray`` with dtype
-    - If type of output is pint.Quantity and input is...
-        - ndarray, return Quantity
-        - DataArray, convert to Quantity using MetPy's accessor
-    - If type of output is DataArray, wrap input with DataArray matching dims/coords (but not
-        attrs) of other object
-        - If shapes do not match, this will error
-        - If input is a Quantity, use magnitude and add unit as attribute (rather than xarray
-        wrapping Quantity, at least for now)
+    - If match_unit is False, for output of Quantity or DataArary respectively,
+        - ndarray becomes dimensionless Quantity or unitless DataArray with matching coords
+        - Quantity is unchanged or becomes DataArray with input units and output coords
+        - DataArray is converted to Quantity by accessor or is unchanged
+    - If match_unit is True, for output of Quantity or DataArary respectively, with a given
+      unit,
+        - ndarray becomes Quantity or DataArray (with matching coords) with output unit
+        - Quantity is converted to output unit, then returned or converted to DataArray with
+          matching coords
+        - DataArray is has units converted via the accessor, then converted to Quantity via
+          the accessor or returned
 
-    The behavior of this decorator is flexible. Use the optional keyword arguments to control
-    the mapping behavior.
+    The output to match can be specified two ways:
+
+    - Using the `argument` keyword argument, the output is taken from argument of that name
+      from the wrapped function's signature
+    - Using the `other` keyword argument, the output is given directly
 
     Parameters
     ----------
@@ -1524,9 +1529,13 @@ def wrap_output_like(**wrap_kwargs):
     This can be extended in the future to support:
 
     - ``units.wraps``-like behavior
-    - scalars vs. numpy scalars (Issue #1209)
+    - Python scalars vs. NumPy scalars (Issue #1209)
     - dask (and other duck array) compatibility
     - dimensionality reduction (particularly with xarray)
+
+    See Also
+    --------
+    preprocess_xarray
 
     """
     def decorator(func):
@@ -1544,50 +1553,47 @@ def wrap_output_like(**wrap_kwargs):
             # Get result from wrapped function
             result = func(*args, **kwargs)
 
-            # If not a handled type, warn and exit early
-            for arg in (result, other):
-                if not isinstance(arg, (np.ndarray, units.Quantity, xr.DataArray)):
-                    warnings.warn(f'Cannot wrap output based on type {type(result)}, so use '
-                                  'caution with this result.')
-                    return result
-
             # Proceed with wrapping rules
-            if isinstance(result, type(other)):
-                if wrap_kwargs.get('match_unit', False) and hasattr(other, 'units'):
-                    if isinstance(result, xr.DataArray):
-                        result.metpy.convert_units(other.units)
-                    else:
-                        result = result.to(other.units)
-                return result
-            elif isinstance(other, np.ndarray):
-                return np.asarray(result, dtype=other.dtype)
-            elif isinstance(other, units.Quantity):
-                if wrap_kwargs.get('match_unit', False):
-                    if isinstance(result, np.ndarray):
-                        return units.Quantity(result, other.units)
-                    else:
-                        return result.metpy.unit_array.to(other.units)
-                else:
-                    if isinstance(result, np.ndarray):
-                        return units.Quantity(result)
-                    else:
-                        return result.metpy.unit_array
+            if wrap_kwargs.get('match_unit', False):
+                return _wrap_output_like_matching_units(result, other)
             else:
-                if wrap_kwargs.get('match_unit', False) and 'units' in other.attrs:
-                    if isinstance(result, units.Quantity):
-                        return xr.DataArray(result.m_as(other.attrs['units']), dims=other.dims,
-                                            coords=other.coords,
-                                            attrs={'units': other.attrs['units']})
-                    else:
-                        return xr.DataArray(result, dims=other.dims, coords=other.coords,
-                                            attrs={'units': other.attrs['units']})
-                else:
-                    if isinstance(result, units.Quantity):
-                        return xr.DataArray(result.magnitude, dims=other.dims,
-                                            coords=other.coords,
-                                            attrs={'units': str(result.units)})
-                    else:
-                        return xr.DataArray(result, dims=other.dims, coords=other.coords)
+                return _wrap_output_like_not_matching_units(result, other)
 
         return wrapper
     return decorator
+
+
+def _wrap_output_like_matching_units(result, match):
+    """Convert result to be like match with matching units for output wrapper."""
+    match_units = str(getattr(match, 'units', ''))
+    output_xarray = isinstance(match, xr.DataArray)
+    if isinstance(result, xr.DataArray):
+        result.metpy.convert_units(match_units)
+        return result if output_xarray else result.metpy.unit_array
+    else:
+        result = result.m_as(match_units) if isinstance(result, units.Quantity) else result
+        if output_xarray:
+            return xr.DataArray(result, dims=match.dims, coords=match.coords,
+                                attrs={'units': match_units})
+        else:
+            return units.Quantity(result, match_units)
+
+
+def _wrap_output_like_not_matching_units(result, match):
+    """Convert result to be like match without matching units for output wrapper."""
+    output_xarray = isinstance(match, xr.DataArray)
+    if isinstance(result, xr.DataArray):
+        return result if output_xarray else result.metpy.unit_array
+    else:
+        if isinstance(result, units.Quantity):
+            result_magnitude = result.magnitude
+            result_units = str(result.units)
+        else:
+            result_magnitude = result
+            result_units = ''
+
+        if output_xarray:
+            return xr.DataArray(result_magnitude, dims=match.dims, coords=match.coords,
+                                attrs={'units': result_units})
+        else:
+            return units.Quantity(result_magnitude, result_units)

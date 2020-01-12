@@ -1264,8 +1264,8 @@ def test_remove_nans():
 
 
 @pytest.mark.parametrize('test, other, match_unit, expected', [
-    (np.arange(4), np.ones(3), False, np.arange(4)),
-    (np.arange(4), np.ones(3), True, np.arange(4)),
+    (np.arange(4), np.arange(4), False, np.arange(4) * units('dimensionless')),
+    (np.arange(4), np.arange(4), True, np.arange(4) * units('dimensionless')),
     (np.arange(4), [0] * units.m, False, np.arange(4) * units('dimensionless')),
     (np.arange(4), [0] * units.m, True, np.arange(4) * units.m),
     (
@@ -1280,7 +1280,8 @@ def test_remove_nans():
         xr.DataArray(
             np.arange(4),
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 4)}
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'units': ''}
         )
     ),
     (
@@ -1299,8 +1300,6 @@ def test_remove_nans():
             attrs={'units': 'meter'}
         )
     ),
-    ([2, 4, 8] * units.kg, np.ones(3), False, np.array([2, 4, 8])),
-    ([2, 4, 8] * units.kg, np.ones(3), True, np.array([2, 4, 8])),
     ([2, 4, 8] * units.kg, [0] * units.m, False, [2, 4, 8] * units.kg),
     ([2, 4, 8] * units.kg, [0] * units.g, True, [2000, 4000, 8000] * units.g),
     (
@@ -1342,16 +1341,7 @@ def test_remove_nans():
         ),
         np.arange(4, dtype=np.float64),
         False,
-        np.linspace(0, 1, 5)
-    ),
-    (
-        xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
-        ),
-        np.arange(4, dtype=np.float64),
-        True,
-        np.linspace(0, 1, 5)
+        units.Quantity(np.linspace(0, 1, 5), 'meter')
     ),
     (
         xr.DataArray(
@@ -1451,6 +1441,13 @@ def test_wrap_output_like_with_other_kwarg(test, other, match_unit, expected):
             coords={'x': np.linspace(0, 1, 3)},
             attrs={'units': 'kilogram'}
         )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64)
     )
 ])
 def test_wrap_output_like_with_other_kwarg_raising_dimensionality_error(test, other):
