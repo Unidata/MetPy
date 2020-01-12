@@ -536,6 +536,7 @@ def test_declarative_upa_obs():
     obs.locations = ['NW', 'SW', 'NE']
     obs.formats = [None, None, lambda v: format(v, '.0f')[:3]]
     obs.vector_field = ('u_wind', 'v_wind')
+    obs.vector_field_length = 7
     obs.reduce_points = 0
 
     # Panel for plot with Map features
