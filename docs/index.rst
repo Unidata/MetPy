@@ -39,12 +39,6 @@ out our :doc:`Getting Started <startingguide>` guide. Development is
 supported by the National Science Foundation through grants AGS-1344155,
 OAC-1740315, AGS-1901712.
 
-MetPy follows `semantic versioning <https://semver.org>`_ in its version number. With our
-current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
-still evolving (we won't break things just for fun, but many things are still changing as we
-work through design issues). Also, for a version `0.x.y`, we change `x` when we
-release new features, and `y` when we make a release with only bug fixes.
-
 For additional MetPy examples not included in this repository, please see the `Unidata Python
 Gallery`_.
 
@@ -72,6 +66,18 @@ Contact Us
 .. _Twitter: https://twitter.com/MetPy
 .. _StackOverflow: https://stackoverflow.com/questions/tagged/metpy
 __ https://github.com/Unidata/MetPy/issues
+
+--------
+Versions
+--------
+MetPy follows `semantic versioning <https://semver.org>`_ in its version number. This means
+that any MetPy ``1.x`` release will be backwards compatible with an earlier ``1.y`` release. By
+"backward compatible", we mean that **correct** code that works on a ``1.y`` version will work
+on a future ``1.x`` version. It's always possible for bug fixes to change behavior or make
+incorrect code cease to work. Backwards-incompatible changes will only be allowed when changing
+to version ``2.0``. Such changes will be proceeded by `MetpyDeprecationWarning` or
+`FutureWarning` as appropriate. For a version ``1.x.y``, we change ``x`` when we
+release new features, and ``y`` when we make a release with only bug fixes.
 
 -----
 Media
