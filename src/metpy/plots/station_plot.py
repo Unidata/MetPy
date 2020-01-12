@@ -24,7 +24,10 @@ class StationPlot(object):
     """
 
     location_names = {'C': (0, 0), 'N': (0, 1), 'NE': (1, 1), 'E': (1, 0), 'SE': (1, -1),
-                      'S': (0, -1), 'SW': (-1, -1), 'W': (-1, 0), 'NW': (-1, 1)}
+                      'S': (0, -1), 'SW': (-1, -1), 'W': (-1, 0), 'NW': (-1, 1),
+                      'N2': (0, 2), 'NNE': (1, 2), 'ENE': (2, 1), 'E2': (2, 0),
+                      'ESE': (2, -1), 'SSE': (1, -2), 'S2': (0, -2), 'SSW': (-1, -2),
+                      'WSW': (-2, -1), 'W2': (-2, 0), 'WNW': (-2, 1), 'NNW': (-1, 2)}
 
     def __init__(self, ax, x, y, fontsize=10, spacing=None, transform=None, **kwargs):
         """Initialize the StationPlot with items that do not change.
