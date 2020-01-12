@@ -1514,7 +1514,8 @@ class PlotObs(HasTraits):
             else:
                 self.handle.plot_parameter(location, data[ob_type][subset], color=color)
         if self.vector_field[0] is not None:
-            kwargs = ({'length': self.vector_field_length}
-                      if self.vector_field_length is not None else {})
+            kwargs = {'color': self.vector_field_color}
+            if self.vector_field_length is not None:
+                kwargs['length'] = self.vector_field_length
             self.handle.plot_barb(data[self.vector_field[0]][subset],
                                   data[self.vector_field[1]][subset], **kwargs)

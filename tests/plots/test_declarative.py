@@ -451,7 +451,7 @@ def test_declarative_sfc_obs():
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
 def test_declarative_sfc_obs_changes():
-    """Test making a surface observation plot."""
+    """Test making a surface observation plot, changing the field."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
                        infer_datetime_format=True, parse_dates=['valid'])
 
@@ -481,6 +481,38 @@ def test_declarative_sfc_obs_changes():
 
     obs.fields = ['dwpf']
     obs.colors = ['green']
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+def test_declarative_colored_barbs():
+    """Test making a surface plot with a colored barb (gh-1274)."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 13)
+    obs.level = None
+    obs.vector_field = ('uwind', 'vwind')
+    obs.vector_field_color = 'red'
+    obs.reduce_points = .5
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'ne'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
 
     return pc.figure
 
