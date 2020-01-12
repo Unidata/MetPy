@@ -1483,12 +1483,15 @@ def wrap_output_like(**wrap_kwargs):
     supports:
 
     - As input (output from wrapped function):
-        - ``pint.Quantity``
-        - ``xarray.DataArray``
-        - any type wrappable by ``pint.Quantity``
+
+        * ``pint.Quantity``
+        * ``xarray.DataArray``
+        * any type wrappable by ``pint.Quantity``
+
     - As matched output (final returned value):
-        - ``pint.Quantity``
-        - ``xarray.DataArray``
+
+        * ``pint.Quantity``
+        * ``xarray.DataArray``
 
     (if matched output is not one of these types, we instead treat the match as if it was a
     dimenionless Quantity.)
@@ -1496,15 +1499,18 @@ def wrap_output_like(**wrap_kwargs):
     This wrapping/conversion follows the following rules:
 
     - If match_unit is False, for output of Quantity or DataArary respectively,
-        - ndarray becomes dimensionless Quantity or unitless DataArray with matching coords
-        - Quantity is unchanged or becomes DataArray with input units and output coords
-        - DataArray is converted to Quantity by accessor or is unchanged
+
+        * ndarray becomes dimensionless Quantity or unitless DataArray with matching coords
+        * Quantity is unchanged or becomes DataArray with input units and output coords
+        * DataArray is converted to Quantity by accessor or is unchanged
+
     - If match_unit is True, for output of Quantity or DataArary respectively, with a given
       unit,
-        - ndarray becomes Quantity or DataArray (with matching coords) with output unit
-        - Quantity is converted to output unit, then returned or converted to DataArray with
+
+        * ndarray becomes Quantity or DataArray (with matching coords) with output unit
+        * Quantity is converted to output unit, then returned or converted to DataArray with
           matching coords
-        - DataArray is has units converted via the accessor, then converted to Quantity via
+        * DataArray is has units converted via the accessor, then converted to Quantity via
           the accessor or returned
 
     The output to match can be specified two ways:
