@@ -484,7 +484,7 @@ class MetPyDatasetAccessor:
         coords = dict(self._rebuild_coords(var, crs))
         if crs is not None:
             coords['crs'] = crs
-        return var.assign_coords(coords)
+        return var.assign_coords(**coords)
 
     def _rebuild_coords(self, var, crs):
         """Clean up the units on the coordinate variables."""
