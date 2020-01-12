@@ -141,6 +141,7 @@ class MetPyDataArrayAccessor:
     def convert_units(self, units):
         """Convert the data values to different units in-place."""
         self.unit_array = self.unit_array.to(units)
+        return self._data_array  # allow method chaining
 
     @property
     def crs(self):
@@ -189,6 +190,8 @@ class MetPyDataArrayAccessor:
             # Clear _metpy_axis attribute on all coordinates
             for coord_var in self._data_array.coords.values():
                 coord_var.attrs.pop('_metpy_axis', None)
+
+        return self._data_array  # allow method chaining
 
     def _generate_coordinate_map(self):
         """Generate a coordinate map via CF conventions and other methods."""
@@ -445,7 +448,15 @@ class MetPyDatasetAccessor:
             return subset
 
         var = self._dataset[varname]
+
+        # Assign coordinates if the coordinates argument is given
+        if coordinates is not None:
+            var.metpy.assign_coordinates(coordinates)
+
+        # Attempt to build the crs coordinate
+        crs = None
         if 'grid_mapping' in var.attrs:
+            # Use given CF grid_mapping
             proj_name = var.attrs['grid_mapping']
             try:
                 proj_var = self._dataset.variables[proj_name]
@@ -454,45 +465,46 @@ class MetPyDatasetAccessor:
                     'Could not find variable corresponding to the value of '
                     'grid_mapping: {}'.format(proj_name))
             else:
-                var.coords['crs'] = CFProjection(proj_var.attrs)
+                crs = CFProjection(proj_var.attrs)
 
-        self._fixup_coords(var)
+        if crs is None and not check_axis(var, 'latitude', 'longitude'):
+            # This isn't a lat or lon coordinate itself, so determine if we need to fall back
+            # to creating a latitude_longitude CRS. We do so if there exists valid coordinates
+            # for latitude and longitude, even if they are not the dimension coordinates of
+            # the variable.
+            def _has_coord(coord_type):
+                return any(check_axis(coord_var, coord_type)
+                           for coord_var in var.coords.values())
+            if _has_coord('latitude') and _has_coord('longitude'):
+                crs = CFProjection({'grid_mapping_name': 'latitude_longitude'})
+                log.warning('Found valid latitude/longitude coordinates, assuming '
+                            'latitude_longitude for projection grid_mapping variable')
 
-        # Trying to guess whether we should be adding a crs to this variable's coordinates
-        # First make sure it's missing CRS but isn't lat/lon itself
-        if not check_axis(var, 'latitude', 'longitude') and 'crs' not in var.coords:
-            # Look for both lat/lon in the coordinates
-            has_lat = has_lon = False
-            for coord_var in var.coords.values():
-                has_lat = has_lat or check_axis(coord_var, 'latitude')
-                has_lon = has_lon or check_axis(coord_var, 'longitude')
+        # Rebuild the coordinates of the dataarray, and return
+        coords = dict(self._rebuild_coords(var, crs))
+        if crs is not None:
+            coords['crs'] = crs
+        return var.assign_coords(**coords)
 
-            # If we found them, create a lat/lon projection as the crs coord
-            if has_lat and has_lon:
-                var.coords['crs'] = CFProjection({'grid_mapping_name': 'latitude_longitude'})
-                log.warning('Found latitude/longitude values, assuming latitude_longitude '
-                            'for projection grid_mapping variable')
-
-        # Assign coordinates if the coordinates argument is given
-        if coordinates is not None:
-            var.metpy.assign_coordinates(coordinates)
-
-        return var
-
-    def _fixup_coords(self, var):
+    def _rebuild_coords(self, var, crs):
         """Clean up the units on the coordinate variables."""
-        for coord_name, data_array in var.coords.items():
-            if (check_axis(data_array, 'x', 'y')
-                    and not check_axis(data_array, 'longitude', 'latitude')):
+        for coord_name, coord_var in var.coords.items():
+            if (check_axis(coord_var, 'x', 'y')
+                    and not check_axis(coord_var, 'longitude', 'latitude')):
                 try:
-                    var.coords[coord_name].metpy.convert_units('meters')
-                except DimensionalityError:  # Radians!
-                    if 'crs' in var.coords:
-                        new_data_array = data_array.copy()
-                        height = var.coords['crs'].item()['perspective_point_height']
-                        scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
-                        new_data_array.metpy.unit_array = scaled_vals.to('meters')
-                        var.coords[coord_name] = new_data_array
+                    # Cannot modify an index inplace, so use copy
+                    yield coord_name, coord_var.copy().metpy.convert_units('meters')
+                except DimensionalityError:
+                    # Radians! Attempt to use perspective point height conversion
+                    if crs is not None:
+                        new_coord_var = coord_var.copy()
+                        height = crs['perspective_point_height']
+                        scaled_vals = new_coord_var.metpy.unit_array * (height * units.meters)
+                        new_coord_var.metpy.unit_array = scaled_vals.to('meters')
+                        yield coord_name, new_coord_var
+            else:
+                # Do nothing
+                yield coord_name, coord_var
 
     class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for datasets."""
