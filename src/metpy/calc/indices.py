@@ -17,7 +17,7 @@ exporter = Exporter(globals())
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', bottom='[pressure]', top='[pressure]')
-def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
+def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
 
     Formula used is:
@@ -30,7 +30,7 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
     ----------
     pressure : `pint.Quantity`
         Atmospheric pressure profile
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         Atmospheric dewpoint profile
     bottom: `pint.Quantity`, optional
         Bottom of the layer, specified in pressure. Defaults to None (highest pressure).
@@ -52,9 +52,9 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
     pressure = pressure[sort_inds]
-    dewpt = dewpt[sort_inds]
+    dewpoint = dewpoint[sort_inds]
 
-    pressure, dewpt = _remove_nans(pressure, dewpt)
+    pressure, dewpoint = _remove_nans(pressure, dewpoint)
 
     if top is None:
         top = np.nanmin(pressure.magnitude) * pressure.units
@@ -62,9 +62,10 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
     if bottom is None:
         bottom = np.nanmax(pressure.magnitude) * pressure.units
 
-    pres_layer, dewpt_layer = get_layer(pressure, dewpt, bottom=bottom, depth=bottom - top)
+    pres_layer, dewpoint_layer = get_layer(pressure, dewpoint, bottom=bottom,
+                                           depth=bottom - top)
 
-    w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
+    w = mixing_ratio(saturation_vapor_pressure(dewpoint_layer), pres_layer)
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
     pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units)

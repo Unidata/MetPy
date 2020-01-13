@@ -25,7 +25,7 @@ sat_pressure_0c = 6.112 * units.millibar
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]', '[temperature]')
-def relative_humidity_from_dewpoint(temperature, dewpt):
+def relative_humidity_from_dewpoint(temperature, dewpoint):
     r"""Calculate the relative humidity.
 
     Uses temperature and dewpoint in celsius to calculate relative
@@ -48,7 +48,7 @@ def relative_humidity_from_dewpoint(temperature, dewpt):
     saturation_vapor_pressure
 
     """
-    e = saturation_vapor_pressure(dewpt)
+    e = saturation_vapor_pressure(dewpoint)
     e_s = saturation_vapor_pressure(temperature)
     return (e / e_s)
 
@@ -302,10 +302,10 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
+def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) using from the starting point.
 
-    The starting state for the parcel is defined by `temperature`, `dewpt`,
+    The starting state for the parcel is defined by `temperature`, `dewpoint`,
     and `pressure`. If these are arrays, this function will return a LCL
     for every index. This function does work with surface grids as a result.
 
@@ -315,7 +315,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
         The starting atmospheric pressure
     temperature : `pint.Quantity`
         The starting temperature
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         The starting dewpoint
 
     Returns
@@ -349,10 +349,10 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 
     """
     def _lcl_iter(p, p0, w, t):
-        td = dewpoint(vapor_pressure(units.Quantity(p, pressure.units), w))
+        td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
         return (p0 * (td / t) ** (1. / mpconsts.kappa)).m
 
-    w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
+    w = mixing_ratio(saturation_vapor_pressure(dewpoint), pressure)
     lcl_p = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
                            xtol=eps, maxiter=max_iters)
 
@@ -360,13 +360,13 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
     lcl_p = np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p) * pressure.units
 
-    return lcl_p, dewpoint(vapor_pressure(lcl_p, w)).to(temperature.units)
+    return lcl_p, globals()['dewpoint'](vapor_pressure(lcl_p, w)).to(temperature.units)
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_start=None,
+def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
         which='top'):
     r"""Calculate the level of free convection (LFC).
 
@@ -382,12 +382,12 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         The atmospheric pressure
     temperature : `pint.Quantity`
         The temperature at the levels given by `pressure`
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         The dewpoint at the levels given by `pressure`
     parcel_temperature_profile: `pint.Quantity`, optional
         The parcel temperature profile from which to calculate the LFC. Defaults to the
         surface parcel profile.
-    dewpt_start: `pint.Quantity`, optional
+    dewpoint_start: `pint.Quantity`, optional
         The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
         dewpoint.
     which: str, optional
@@ -409,15 +409,15 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     parcel_profile
 
     """
-    pressure, temperature, dewpt = _remove_nans(pressure, temperature, dewpt)
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
-        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
-        pressure, temperature, dewpt, parcel_temperature_profile = new_stuff
+        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpoint)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_stuff
         parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
 
-    if dewpt_start is None:
-        dewpt_start = dewpt[0]
+    if dewpoint_start is None:
+        dewpoint_start = dewpoint[0]
 
     # The parcel profile and data may have the same first data point.
     # If that is the case, ignore that point to get the real first
@@ -430,7 +430,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
                                   temperature, direction='increasing', log_x=True)
 
     # Compute LCL for this parcel for future comparisons
-    this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpt_start)
+    this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpoint_start)
 
     # The LFC could:
     # 1) Not exist
@@ -466,7 +466,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         else:
             return _multiple_el_lfc_options(x, y, idx, which, pressure,
                                             parcel_temperature_profile, temperature,
-                                            dewpt, intersect_type='LFC')
+                                            dewpoint, intersect_type='LFC')
 
 
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
@@ -541,7 +541,7 @@ def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dew
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top'):
+def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -554,7 +554,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
         The atmospheric pressure profile
     temperature : `pint.Quantity`
         The temperature at the levels given by `pressure`
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         The dewpoint at the levels given by `pressure`
     parcel_temperature_profile: `pint.Quantity`, optional
         The parcel temperature profile from which to calculate the EL. Defaults to the
@@ -578,11 +578,11 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     parcel_profile
 
     """
-    pressure, temperature, dewpt = _remove_nans(pressure, temperature, dewpt)
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
-        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
-        pressure, temperature, dewpt, parcel_temperature_profile = new_stuff
+        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpoint)
+        pressure, temperature, dewpoint, parcel_temperature_profile = new_stuff
         parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
 
     # If the top of the sounding parcel is warmer than the environment, there is no EL
@@ -593,11 +593,11 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     # and reassigned to allow np.log() to function properly.
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
                               direction='decreasing', log_x=True)
-    lcl_p, _ = lcl(pressure[0], temperature[0], dewpt[0])
+    lcl_p, _ = lcl(pressure[0], temperature[0], dewpoint[0])
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                        parcel_temperature_profile, temperature, dewpt,
+                                        parcel_temperature_profile, temperature, dewpoint,
                                         intersect_type='EL')
     else:
         return np.nan * pressure.units, np.nan * temperature.units
@@ -606,10 +606,10 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile(pressure, temperature, dewpt):
+def parcel_profile(pressure, temperature, dewpoint):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
-    The parcel starts at `temperature`, and `dewpt`, lifted up
+    The parcel starts at `temperature`, and `dewpoint`, lifted up
     dry adiabatically to the LCL, and then moist adiabatically from there.
     `pressure` specifies the pressure levels for the profile.
 
@@ -620,7 +620,7 @@ def parcel_profile(pressure, temperature, dewpt):
         high to low pressure.
     temperature : `pint.Quantity`
         The starting temperature
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         The starting dewpoint
 
     Returns
@@ -633,17 +633,17 @@ def parcel_profile(pressure, temperature, dewpt):
     lcl, moist_lapse, dry_lapse
 
     """
-    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpt)
+    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint)
     return concatenate((t_l, t_u))
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile_with_lcl(pressure, temperature, dewpt):
+def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
-    The parcel starts at `temperature`, and `dewpt`, lifted up
+    The parcel starts at `temperature`, and `dewpoint`, lifted up
     dry adiabatically to the LCL, and then moist adiabatically from there.
     `pressure` specifies the pressure levels for the profile. This function returns
     a profile that includes the LCL.
@@ -656,7 +656,7 @@ def parcel_profile_with_lcl(pressure, temperature, dewpt):
     temperature : `pint.Quantity`
         The atmospheric temperature at the levels in `pressure`. The first entry should be at
         the same level as the first `pressure` data point.
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         The atmospheric dewpoint at the levels in `pressure`. The first entry should be at
         the same level as the first `pressure` data point.
 
@@ -678,15 +678,15 @@ def parcel_profile_with_lcl(pressure, temperature, dewpt):
 
     """
     p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
-                                                              dewpt[0])
+                                                              dewpoint[0])
     new_press = concatenate((p_l, p_lcl, p_u))
     prof_temp = concatenate((t_l, t_lcl, t_u))
     new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
-    new_dewp = _insert_lcl_level(pressure, dewpt, p_lcl)
+    new_dewp = _insert_lcl_level(pressure, dewpoint, p_lcl)
     return new_press, new_temp, new_dewp, prof_temp
 
 
-def _parcel_profile_helper(pressure, temperature, dewpt):
+def _parcel_profile_helper(pressure, temperature, dewpoint):
     """Help calculate parcel profiles.
 
     Returns the temperature and pressure, above, below, and including the LCL. The
@@ -694,7 +694,7 @@ def _parcel_profile_helper(pressure, temperature, dewpt):
 
     """
     # Find the LCL
-    press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpt)
+    press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpoint)
     press_lcl = press_lcl.to(pressure.units)
 
     # Find the dry adiabatic profile, *including* the LCL. We need >= the LCL in case the
@@ -1445,7 +1445,7 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def cape_cin(pressure, temperature, dewpt, parcel_profile, which_lfc='bottom',
+def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom',
              which_el='top'):
     r"""Calculate CAPE and CIN.
 
@@ -1461,7 +1461,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile, which_lfc='bottom',
         lowest pressure.
     temperature : `pint.Quantity`
         The atmospheric temperature corresponding to pressure.
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         The atmospheric dewpoint corresponding to pressure.
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel.
@@ -1504,10 +1504,10 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile, which_lfc='bottom',
     lfc, el
 
     """
-    pressure, temperature, dewpt, parcel_profile = _remove_nans(pressure, temperature, dewpt,
-                                                                parcel_profile)
+    pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
+                                                                   dewpoint, parcel_profile)
     # Calculate LFC limit of integration
-    lfc_pressure, _ = lfc(pressure, temperature, dewpt,
+    lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
                           parcel_temperature_profile=parcel_profile, which=which_lfc)
 
     # If there is no LFC, no need to proceed.
@@ -1517,7 +1517,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile, which_lfc='bottom',
         lfc_pressure = lfc_pressure.magnitude
 
     # Calculate the EL limit of integration
-    el_pressure, _ = el(pressure, temperature, dewpt,
+    el_pressure, _ = el(pressure, temperature, dewpoint,
                         parcel_temperature_profile=parcel_profile, which=which_el)
 
     # No EL and we use the top reading of the sounding.
@@ -1922,7 +1922,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
+def mixed_parcel(p, temperature, dewpoint, parcel_start_pressure=None,
                  height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
     r"""Calculate the properties of a parcel mixed from a layer.
 
@@ -1935,7 +1935,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
         Atmospheric pressure profile
     temperature : `pint.Quantity`
         Atmospheric temperature profile
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         Atmospheric dewpoint profile
     parcel_start_pressure : `pint.Quantity`, optional
         Pressure at which the mixed parcel should begin (default None)
@@ -1966,7 +1966,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
 
     # Calculate the potential temperature and mixing ratio over the layer
     theta = potential_temperature(p, temperature)
-    mixing_ratio = saturation_mixing_ratio(p, dewpt)
+    mixing_ratio = saturation_mixing_ratio(p, dewpoint)
 
     # Mix the variables over the layer
     mean_theta, mean_mixing_ratio = mixed_layer(p, theta, mixing_ratio, bottom=bottom,
@@ -1978,10 +1978,13 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
 
     # Convert back to dewpoint
     mean_vapor_pressure = vapor_pressure(parcel_start_pressure, mean_mixing_ratio)
-    mean_dewpoint = dewpoint(mean_vapor_pressure)
+
+    # Using globals() here allows us to keep the dewpoint parameter but still call the
+    # function of the same name.
+    mean_dewpoint = globals()['dewpoint'](mean_vapor_pressure)
 
     return (parcel_start_pressure, mean_temperature.to(temperature.units),
-            mean_dewpoint.to(dewpt.units))
+            mean_dewpoint.to(dewpoint.units))
 
 
 @exporter.export
