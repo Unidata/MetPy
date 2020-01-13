@@ -476,7 +476,7 @@ def height_to_geopotential(height):
 
 @exporter.export
 @preprocess_xarray
-def geopotential_to_height(geopot):
+def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
 
     Calculates the height above mean sea level from geopotential using the following formula,
@@ -531,7 +531,7 @@ def geopotential_to_height(geopot):
     height_to_geopotential
 
     """
-    return (geopot * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopot)
+    return (geopotential * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopotential)
 
 
 @exporter.export
