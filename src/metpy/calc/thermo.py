@@ -133,7 +133,7 @@ def potential_temperature(pressure, temperature):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]')
-def temperature_from_potential_temperature(pressure, theta):
+def temperature_from_potential_temperature(pressure, potential_temperature):
     r"""Calculate the temperature from a given potential temperature.
 
     Uses the inverse of the Poisson equation to calculate the temperature from a
@@ -143,7 +143,7 @@ def temperature_from_potential_temperature(pressure, theta):
     ----------
     pressure : `pint.Quantity`
         total atmospheric pressure
-    theta : `pint.Quantity`
+    potential_temperature : `pint.Quantity`
         potential temperature
 
     Returns
@@ -169,10 +169,10 @@ def temperature_from_potential_temperature(pressure, theta):
     >>> # potential temperature
     >>> theta = np.array([ 286.12859679, 288.22362587]) * units.kelvin
     >>> p = 850 * units.mbar
-    >>> T = temperature_from_potential_temperature(p,theta)
+    >>> T = temperature_from_potential_temperature(p, theta)
 
     """
-    return theta * exner_function(pressure)
+    return potential_temperature * exner_function(pressure)
 
 
 @exporter.export
@@ -1642,15 +1642,15 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]', '[pressure]', '[temperature]')
-def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
+def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
                              temperature_out=False, max_iters=50, eps=1e-6,
                              bottom_up_search=True, **kwargs):
     r"""Interpolate data in isobaric coordinates to isentropic coordinates.
 
     Parameters
     ----------
-    theta_levels : array
-        One-dimensional array of desired theta surfaces
+    levels : array
+        One-dimensional array of desired potential temperature surfaces
     pressure : array
         One-dimensional array of pressure levels
     temperature : array
@@ -1665,7 +1665,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
     eps : float, optional
         The desired absolute error in the calculated value, defaults to 1e-6.
     bottom_up_search : bool, optional
-        Controls whether to search for theta levels bottom-up, or top-down. Defaults to
+        Controls whether to search for levels bottom-up, or top-down. Defaults to
         True, which is bottom-up search.
     args : array, optional
         Any additional variables will be interpolated to each isentropic level.
@@ -1719,8 +1719,8 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
     levs = pres[sorter]
     tmpk = temperature[sorter]
 
-    theta_levels = np.asarray(theta_levels.m_as('kelvin')).reshape(-1)
-    isentlevels = theta_levels[np.argsort(theta_levels)]
+    levels = np.asarray(levels.m_as('kelvin')).reshape(-1)
+    isentlevels = levels[np.argsort(levels)]
 
     # Make the desired isentropic levels the same shape as temperature
     shape = list(temperature.shape)
@@ -1734,7 +1734,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
     pres_theta = potential_temperature(levs, tmpk)
 
     # Raise error if input theta level is larger than pres_theta max
-    if np.max(pres_theta.m) < np.max(theta_levels):
+    if np.max(pres_theta.m) < np.max(levels):
         raise ValueError('Input theta level out of data bounds')
 
     # Find log of pressure to implement assumption of linear temperature dependence on
@@ -1745,7 +1745,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
     pok = mpconsts.P0 ** ka
 
     # index values for each point for the pressure level nearest to the desired theta level
-    above, below, good = find_bounding_indices(pres_theta.m, theta_levels, axis,
+    above, below, good = find_bounding_indices(pres_theta.m, levels, axis,
                                                from_below=bottom_up_search)
 
     # calculate constants for the interpolation

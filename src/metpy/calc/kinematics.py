@@ -337,7 +337,7 @@ def advection(scalar, wind, deltas):
 @preprocess_xarray
 @ensure_yx_order
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
+def frontogenesis(potential_temperature, u, v, dx, dy, dim_order='yx'):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -353,7 +353,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
     Parameters
     ----------
-    thta : (M, N) `pint.Quantity`
+    potential_temperature : (M, N) `pint.Quantity`
         Potential temperature
     u : (M, N) `pint.Quantity`
         x component of the wind
@@ -381,8 +381,8 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
     """
     # Get gradients of potential temperature in both x and y
-    ddy_thta = first_derivative(thta, delta=dy, axis=-2)
-    ddx_thta = first_derivative(thta, delta=dx, axis=-1)
+    ddy_thta = first_derivative(potential_temperature, delta=dy, axis=-2)
+    ddx_thta = first_derivative(potential_temperature, delta=dx, axis=-1)
 
     # Compute the magnitude of the potential temperature gradient
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
