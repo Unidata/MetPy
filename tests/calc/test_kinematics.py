@@ -34,7 +34,7 @@ def test_zero_vorticity():
     """Test vorticity calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    v = vorticity(u.T, u, 1 * units.meter, 1 * units.meter)
     true_v = np.zeros_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -43,7 +43,7 @@ def test_vorticity():
     """Test vorticity for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    v = vorticity(u.T, u.T, 1 * units.meter, 1 * units.meter)
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -52,20 +52,16 @@ def test_vorticity_asym():
     """Test vorticity calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    vort = vorticity(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    vort = vorticity(u, v, 1 * units.meters, 2 * units.meters)
     true_vort = np.array([[-2.5, 3.5, 13.], [8.5, -1.5, -11.], [-5.5, -1.5, 0.]]) / units.sec
     assert_array_equal(vort, true_vort)
-
-    # Now try for xy ordered
-    vort = vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters, dim_order='xy')
-    assert_array_equal(vort, true_vort.T)
 
 
 def test_zero_divergence():
     """Test divergence calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = divergence(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c = divergence(u.T, u, 1 * units.meter, 1 * units.meter)
     true_c = 2. * np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
@@ -74,7 +70,7 @@ def test_divergence():
     """Test divergence for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = divergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c = divergence(u.T, u.T, 1 * units.meter, 1 * units.meter)
     true_c = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
@@ -101,57 +97,37 @@ def test_divergence_asym():
     """Test divergence calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    c = divergence(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    c = divergence(u, v, 1 * units.meters, 2 * units.meters)
     true_c = np.array([[-2, 5.5, -2.5], [2., 0.5, -1.5], [3., -1.5, 8.5]]) / units.sec
     assert_array_equal(c, true_c)
-
-    # Now try for xy ordered
-    c = divergence(u.T, v.T, 1 * units.meters, 2 * units.meters, dim_order='xy')
-    assert_array_equal(c, true_c.T)
 
 
 def test_shearing_deformation_asym():
     """Test shearing deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    sh = shearing_deformation(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    sh = shearing_deformation(u, v, 1 * units.meters, 2 * units.meters)
     true_sh = np.array([[-7.5, -1.5, 1.], [9.5, -0.5, -11.], [1.5, 5.5, 12.]]) / units.sec
     assert_array_equal(sh, true_sh)
-
-    # Now try for yx ordered
-    sh = shearing_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                              dim_order='xy')
-    assert_array_equal(sh, true_sh.T)
 
 
 def test_stretching_deformation_asym():
     """Test stretching deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    st = stretching_deformation(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    st = stretching_deformation(u, v, 1 * units.meters, 2 * units.meters)
     true_st = np.array([[4., 0.5, 12.5], [4., 1.5, -0.5], [1., 5.5, -4.5]]) / units.sec
     assert_array_equal(st, true_st)
-
-    # Now try for yx ordered
-    st = stretching_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                                dim_order='xy')
-    assert_array_equal(st, true_st.T)
 
 
 def test_total_deformation_asym():
     """Test total deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    tdef = total_deformation(u, v, 1 * units.meters, 2 * units.meters,
-                             dim_order='yx')
+    tdef = total_deformation(u, v, 1 * units.meters, 2 * units.meters)
     true_tdef = np.array([[8.5, 1.58113883, 12.5399362], [10.30776406, 1.58113883, 11.0113578],
                           [1.80277562, 7.7781746, 12.8160056]]) / units.sec
     assert_almost_equal(tdef, true_tdef)
-
-    # Now try for xy ordered
-    tdef = total_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                             dim_order='xy')
-    assert_almost_equal(tdef, true_tdef.T)
 
 
 def test_frontogenesis_asym():
@@ -159,25 +135,19 @@ def test_frontogenesis_asym():
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     theta = np.array([[303, 295, 305], [308, 310, 312], [299, 293, 289]]) * units('K')
-    fronto = frontogenesis(theta, u, v, 1 * units.meters, 2 * units.meters,
-                           dim_order='yx')
+    fronto = frontogenesis(theta, u, v, 1 * units.meters, 2 * units.meters)
     true_fronto = np.array([[-52.4746386, -37.3658646, -50.3996939],
                             [3.5777088, -2.1221867, -16.9941166],
                             [-23.1417334, 26.0499143, -158.4839684]]
                            ) * units.K / units.meter / units.sec
     assert_almost_equal(fronto, true_fronto)
 
-    # Now try for xy ordered
-    fronto = frontogenesis(theta.T, u.T, v.T, 1 * units.meters, 2 * units.meters,
-                           dim_order='xy')
-    assert_almost_equal(fronto, true_fronto.T)
-
 
 def test_advection_uniform():
     """Test advection calculation for a uniform 1D field."""
     u = np.ones((3,)) * units('m/s')
     s = np.ones_like(u) * units.kelvin
-    a = advection(s, u, (1 * units.meter,), dim_order='xy')
+    a = advection(s.T, u.T, (1 * units.meter,))
     truth = np.zeros_like(u) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -186,7 +156,7 @@ def test_advection_1d_uniform_wind():
     """Test advection for simple 1D case with uniform wind."""
     u = np.ones((3,)) * units('m/s')
     s = np.array([1, 2, 3]) * units('kg')
-    a = advection(s, u, (1 * units.meter,), dim_order='xy')
+    a = advection(s.T, u.T, (1 * units.meter,))
     truth = -np.ones_like(u) * units('kg/sec')
     assert_array_equal(a, truth)
 
@@ -195,7 +165,7 @@ def test_advection_1d():
     """Test advection calculation with varying wind and field."""
     u = np.array([1, 2, 3]) * units('m/s')
     s = np.array([1, 2, 3]) * units('Pa')
-    a = advection(s, u, (1 * units.meter,), dim_order='xy')
+    a = advection(s.T, u.T, (1 * units.meter,))
     truth = np.array([-1, -2, -3]) * units('Pa/sec')
     assert_array_equal(a, truth)
 
@@ -204,7 +174,7 @@ def test_advection_2d_uniform():
     """Test advection for uniform 2D field."""
     u = np.ones((3, 3)) * units('m/s')
     s = np.ones_like(u) * units.kelvin
-    a = advection(s, [u, u], (1 * units.meter, 1 * units.meter), dim_order='xy')
+    a = advection(s.T, [u.T, u.T], (1 * units.meter, 1 * units.meter))
     truth = np.zeros_like(u) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -214,7 +184,7 @@ def test_advection_2d():
     u = np.ones((3, 3)) * units('m/s')
     v = 2 * np.ones((3, 3)) * units('m/s')
     s = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]]) * units.kelvin
-    a = advection(s, [u, v], (1 * units.meter, 1 * units.meter), dim_order='xy')
+    a = advection(s.T, [v.T, u.T], (1 * units.meter, 1 * units.meter))
     truth = np.array([[-6, -4, 2], [-8, 0, 8], [-2, 4, 6]]) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -224,25 +194,21 @@ def test_advection_2d_asym():
     u = np.arange(9).reshape(3, 3) * units('m/s')
     v = 2 * u
     s = np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * units.kelvin
-    a = advection(s, [u, v], (2 * units.meter, 1 * units.meter), dim_order='yx')
+    a = advection(s, [u, v], (2 * units.meter, 1 * units.meter))
     truth = np.array([[0, -20.75, -2.5], [-33., -16., 20.], [-48, 91., 8]]) * units('K/sec')
     assert_array_equal(a, truth)
-
-    # Now try xy ordered
-    a = advection(s.T, [u.T, v.T], (2 * units.meter, 1 * units.meter), dim_order='xy')
-    assert_array_equal(a, truth.T)
 
 
 def test_geostrophic_wind():
     """Test geostrophic wind calculation with basic conditions."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units.meter
     # Using g as the value for f allows it to cancel out
-    ug, vg = geostrophic_wind(z, g.magnitude / units.sec,
-                              100. * units.meter, 100. * units.meter, dim_order='xy')
+    ug, vg = geostrophic_wind(z.T, g.magnitude / units.sec,
+                              100. * units.meter, 100. * units.meter)
     true_u = np.array([[-2, 0, 2]] * 3) * units('m/s')
     true_v = -true_u.T
-    assert_array_equal(ug, true_u)
-    assert_array_equal(vg, true_v)
+    assert_array_equal(ug, true_u.T)
+    assert_array_equal(vg, true_v.T)
 
 
 def test_geostrophic_wind_asym():
@@ -250,28 +216,21 @@ def test_geostrophic_wind_asym():
     z = np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * 200. * units.meter
     # Using g as the value for f allows it to cancel out
     ug, vg = geostrophic_wind(z, g.magnitude / units.sec,
-                              200. * units.meter, 100. * units.meter, dim_order='yx')
+                              200. * units.meter, 100. * units.meter)
     true_u = -np.array([[5, 20, 0], [7, 4, 0], [9, -12, 0]]) * units('m/s')
     true_v = np.array([[0.5, 1.5, 2.5], [8, 0, -8], [-2, -2, -2]]) * units('m/s')
     assert_array_equal(ug, true_u)
     assert_array_equal(vg, true_v)
 
-    # Now try for xy ordered
-    ug, vg = geostrophic_wind(z.T, g.magnitude / units.sec,
-                              200. * units.meter, 100. * units.meter, dim_order='xy')
-    assert_array_equal(ug, true_u.T)
-    assert_array_equal(vg, true_v.T)
-
 
 def test_geostrophic_geopotential():
     """Test geostrophic wind calculation with geopotential."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
-    ug, vg = geostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
-                              dim_order='xy')
+    ug, vg = geostrophic_wind(z.T, 1 / units.sec, 100. * units.meter, 100. * units.meter)
     true_u = np.array([[-2, 0, 2]] * 3) * units('m/s')
     true_v = -true_u.T
-    assert_array_equal(ug, true_u)
-    assert_array_equal(vg, true_v)
+    assert_array_equal(ug, true_u.T)
+    assert_array_equal(vg, true_v.T)
 
 
 def test_geostrophic_3d():
@@ -279,15 +238,15 @@ def test_geostrophic_3d():
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.
     # Using g as the value for f allows it to cancel out
     z3d = np.dstack((z, z)) * units.meter
-    ug, vg = geostrophic_wind(z3d, g.magnitude / units.sec,
-                              100. * units.meter, 100. * units.meter, dim_order='xy')
+    ug, vg = geostrophic_wind(z3d.T, g.magnitude / units.sec,
+                              100. * units.meter, 100. * units.meter)
     true_u = np.array([[-2, 0, 2]] * 3) * units('m/s')
     true_v = -true_u.T
 
     true_u = concatenate((true_u[..., None], true_u[..., None]), axis=2)
     true_v = concatenate((true_v[..., None], true_v[..., None]), axis=2)
-    assert_array_equal(ug, true_u)
-    assert_array_equal(vg, true_v)
+    assert_array_equal(ug, true_u.T)
+    assert_array_equal(vg, true_v.T)
 
 
 def test_geostrophic_gempak():
@@ -300,7 +259,7 @@ def test_geostrophic_gempak():
     # Inverting dy since latitudes in array increase as you go up
     dy = -np.deg2rad(0.25) * Re
     f = (2 * omega * np.sin(np.deg2rad(44))).to('1/s')
-    ug, vg = geostrophic_wind(z * units.m, f, dx, dy, dim_order='xy')
+    ug, vg = geostrophic_wind(z.T * units.m, f, dx.T, dy.T)
     true_u = np.array([[21.97512, 21.97512, 22.08005],
                        [31.89402, 32.69477, 33.73863],
                        [38.43922, 40.18805, 42.14609]])
@@ -316,23 +275,23 @@ def test_no_ageostrophic_geopotential():
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = np.array([[-2, 0, 2]] * 3) * units('m/s')
     v = -u.T
-    uag, vag = ageostrophic_wind(z, u, v, 1 / units.sec, 100. * units.meter,
-                                 100. * units.meter, dim_order='xy')
+    uag, vag = ageostrophic_wind(z.T, u.T, v.T, 1 / units.sec, 100. * units.meter,
+                                 100. * units.meter)
     true = np.array([[0, 0, 0]] * 3) * units('m/s')
-    assert_array_equal(uag, true)
-    assert_array_equal(vag, true)
+    assert_array_equal(uag, true.T)
+    assert_array_equal(vag, true.T)
 
 
 def test_ageostrophic_geopotential():
     """Test ageostrophic wind calculation with future input variable order."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
-    uag, vag = ageostrophic_wind(z, u, v, 1 / units.sec, 100. * units.meter,
-                                 100. * units.meter, dim_order='xy')
+    uag, vag = ageostrophic_wind(z.T, u.T, v.T, 1 / units.sec, 100. * units.meter,
+                                 100. * units.meter)
     u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
     v_true = -u_true.T
-    assert_array_equal(uag, u_true)
-    assert_array_equal(vag, v_true)
+    assert_array_equal(uag, u_true.T)
+    assert_array_equal(vag, v_true.T)
 
 
 def test_streamfunc():
@@ -460,16 +419,11 @@ def test_absolute_vorticity_asym():
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     lats = np.array([[30, 30, 30], [20, 20, 20], [10, 10, 10]]) * units.degrees
-    vort = absolute_vorticity(u, v, 1 * units.meters, 2 * units.meters, lats, dim_order='yx')
+    vort = absolute_vorticity(u, v, 1 * units.meters, 2 * units.meters, lats)
     true_vort = np.array([[-2.499927, 3.500073, 13.00007],
                           [8.500050, -1.499950, -10.99995],
                           [-5.499975, -1.499975, 2.532525e-5]]) / units.sec
     assert_almost_equal(vort, true_vort, 5)
-
-    # Now try for xy ordered
-    vort = absolute_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                              lats.T, dim_order='xy')
-    assert_almost_equal(vort, true_vort.T, 5)
 
 
 @pytest.fixture
@@ -787,13 +741,6 @@ def test_potential_vorticity_barotropic(pv_data):
     pv = potential_vorticity_barotropic(heights, u, v, dx, dy, lats)
     avor = absolute_vorticity(u, v, dx, dy, lats)
     truth = avor / heights
-    assert_almost_equal(pv, truth, 10)
-
-    # Now try for xy ordered
-    pv = potential_vorticity_barotropic(heights.T, u.T, v.T, dx.T, dy.T, lats.T,
-                                        dim_order='xy')
-    avor = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
-    truth = avor / heights.T
     assert_almost_equal(pv, truth, 10)
 
 

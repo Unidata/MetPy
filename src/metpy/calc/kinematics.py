@@ -21,69 +21,8 @@ def _stack(arrs):
     return concatenate([a[np.newaxis] if iterable(a) else a for a in arrs], axis=0)
 
 
-def _is_x_first_dim(dim_order):
-    """Determine whether x is the first dimension based on the value of dim_order."""
-    if dim_order is None:
-        dim_order = 'yx'
-    return dim_order == 'xy'
-
-
-def _check_and_flip(arr):
-    """Transpose array or list of arrays if they are 2D."""
-    if hasattr(arr, 'ndim'):
-        if arr.ndim >= 2:
-            return arr.T
-        else:
-            return arr
-    elif not isinstance(arr, str) and iterable(arr):
-        return tuple(_check_and_flip(a) for a in arr)
-    else:
-        return arr
-
-
-def ensure_yx_order(func):
-    """Wrap a function to ensure all array arguments are y, x ordered, based on kwarg."""
-    @functools.wraps(func)
-    def wrapper(*args, dim_order=None, **kwargs):
-        # Check what order we're given
-        x_first = _is_x_first_dim(dim_order)
-
-        # If x is the first dimension, flip (transpose) every array within the function args.
-        if x_first:
-            args = tuple(_check_and_flip(arr) for arr in args)
-            for k, v in kwargs:
-                kwargs[k] = _check_and_flip(v)
-
-        ret = func(*args, **kwargs)
-
-        # If we flipped on the way in, need to flip on the way out so that output array(s)
-        # match the dimension order of the original input.
-        if x_first:
-            return _check_and_flip(ret)
-        else:
-            return ret
-
-    # Inject a docstring for the dim_order argument into the function's docstring.
-    dim_order_doc = """
-    dim_order : str or ``None``, optional
-        The ordering of dimensions in passed in arrays. Can be one of ``None``, ``'xy'``,
-        or ``'yx'``. ``'xy'`` indicates that the dimension corresponding to x is the leading
-        dimension, followed by y. ``'yx'`` indicates that x is the last dimension, preceded
-        by y. ``None`` indicates that the default ordering should be assumed,
-        which is 'yx'. Can only be passed as a keyword argument, i.e.
-        func(..., dim_order='xy')."""
-
-    # Find the first blank line after the start of the parameters section
-    params = wrapper.__doc__.find('Parameters')
-    blank = wrapper.__doc__.find('\n\n', params)
-    wrapper.__doc__ = wrapper.__doc__[:blank] + dim_order_doc + wrapper.__doc__[blank:]
-
-    return wrapper
-
-
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
@@ -123,7 +62,6 @@ def vorticity(u, v, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units(dx='[length]', dy='[length]')
 def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of a vector.
@@ -163,7 +101,6 @@ def divergence(u, v, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def shearing_deformation(u, v, dx, dy):
     r"""Calculate the shearing deformation of the horizontal wind.
@@ -203,7 +140,6 @@ def shearing_deformation(u, v, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def stretching_deformation(u, v, dx, dy):
     r"""Calculate the stretching deformation of the horizontal wind.
@@ -243,7 +179,6 @@ def stretching_deformation(u, v, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def total_deformation(u, v, dx, dy):
     r"""Calculate the horizontal total deformation of the horizontal wind.
@@ -283,7 +218,6 @@ def total_deformation(u, v, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 def advection(scalar, wind, deltas):
     r"""Calculate the advection of a scalar field by the wind.
 
@@ -335,9 +269,8 @@ def advection(scalar, wind, deltas):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(potential_temperature, u, v, dx, dy, dim_order='yx'):
+def frontogenesis(potential_temperature, u, v, dx, dy):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -388,12 +321,12 @@ def frontogenesis(potential_temperature, u, v, dx, dy, dim_order='yx'):
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd = shearing_deformation(u, v, dx, dy, dim_order=dim_order)
-    strd = stretching_deformation(u, v, dx, dy, dim_order=dim_order)
-    tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
+    shrd = shearing_deformation(u, v, dx, dy)
+    strd = stretching_deformation(u, v, dx, dy)
+    tdef = total_deformation(u, v, dx, dy)
 
     # Get the divergence of the wind field
-    div = divergence(u, v, dx, dy, dim_order=dim_order)
+    div = divergence(u, v, dx, dy)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -404,7 +337,6 @@ def frontogenesis(potential_temperature, u, v, dx, dy, dim_order='yx'):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units(f='[frequency]', dx='[length]', dy='[length]')
 def geostrophic_wind(height, f, dx, dy):
     r"""Calculate the geostrophic wind given from the height or geopotential.
@@ -447,9 +379,8 @@ def geostrophic_wind(height, f, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@ensure_yx_order
 @check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
-def ageostrophic_wind(height, u, v, f, dx, dy, dim_order='yx'):
+def ageostrophic_wind(height, u, v, f, dx, dy):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
 
     Parameters
@@ -485,7 +416,7 @@ def ageostrophic_wind(height, u, v, f, dx, dy, dim_order='yx'):
     `future` module back to the `kinematics` module.
 
     """
-    u_geostrophic, v_geostrophic = geostrophic_wind(height, f, dx, dy, dim_order=dim_order)
+    u_geostrophic, v_geostrophic = geostrophic_wind(height, f, dx, dy)
     return u - u_geostrophic, v - v_geostrophic
 
 
@@ -601,7 +532,7 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
 @exporter.export
 @preprocess_xarray
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx, dy, latitude, dim_order='yx'):
+def absolute_vorticity(u, v, dx, dy, latitude):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
@@ -631,7 +562,7 @@ def absolute_vorticity(u, v, dx, dy, latitude, dim_order='yx'):
 
     """
     f = coriolis_parameter(latitude)
-    relative_vorticity = vorticity(u, v, dx, dy, dim_order=dim_order)
+    relative_vorticity = vorticity(u, v, dx, dy)
     return relative_vorticity + f
 
 
@@ -695,7 +626,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
         raise ValueError('Length of potential temperature along the pressure axis '
                          '{} must be at least 3.'.format(-3))
 
-    avor = absolute_vorticity(u, v, dx, dy, latitude, dim_order='yx')
+    avor = absolute_vorticity(u, v, dx, dy, latitude)
     dthtadp = first_derivative(potential_temperature, x=pressure, axis=-3)
 
     if ((np.shape(potential_temperature)[-2] == 1)
@@ -716,7 +647,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_barotropic(height, u, v, dx, dy, latitude, dim_order='yx'):
+def potential_vorticity_barotropic(height, u, v, dx, dy, latitude):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
     .. math:: PV = \frac{f + \zeta}{H}
@@ -751,7 +682,7 @@ def potential_vorticity_barotropic(height, u, v, dx, dy, latitude, dim_order='yx
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    avor = absolute_vorticity(u, v, dx, dy, latitude, dim_order=dim_order)
+    avor = absolute_vorticity(u, v, dx, dy, latitude)
     return (avor / height).to('meter**-1 * second**-1')
 
 
