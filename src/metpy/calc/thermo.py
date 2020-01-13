@@ -831,7 +831,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def dewpoint(e):
+def dewpoint(vapor_pressure):
     r"""Calculate the ambient dewpoint given the vapor pressure.
 
     Parameters
@@ -857,7 +857,7 @@ def dewpoint(e):
     .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}
 
     """
-    val = np.log(e / sat_pressure_0c)
+    val = np.log(vapor_pressure / sat_pressure_0c)
     return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
 
 
