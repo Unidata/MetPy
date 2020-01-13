@@ -176,7 +176,7 @@ def test_critical_angle():
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
     ca = critical_angle(data['pressure'], data['u_wind'],
                         data['v_wind'], data['height'],
-                        stormu=0 * units('m/s'), stormv=0 * units('m/s'))
+                        u_storm=0 * units('m/s'), v_storm=0 * units('m/s'))
     truth = [140.0626637513269] * units('degrees')
     assert_almost_equal(ca, truth, 8)
 
@@ -187,10 +187,10 @@ def test_critical_angle_units():
     # Set storm motion in m/s
     ca_ms = critical_angle(data['pressure'], data['u_wind'],
                            data['v_wind'], data['height'],
-                           stormu=10 * units('m/s'), stormv=10 * units('m/s'))
+                           u_storm=10 * units('m/s'), v_storm=10 * units('m/s'))
     # Set same storm motion in kt and m/s
     ca_kt_ms = critical_angle(data['pressure'], data['u_wind'],
                               data['v_wind'], data['height'],
-                              stormu=10 * units('m/s'), stormv=19.4384449244 * units('kt'))
+                              u_storm=10 * units('m/s'), v_storm=19.4384449244 * units('kt'))
     # Make sure the resulting critical angles are equal
     assert_almost_equal(ca_ms, ca_kt_ms, 8)

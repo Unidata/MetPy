@@ -324,7 +324,7 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[speed]', '[speed]', '[length]', '[speed]', '[speed]')
-def critical_angle(pressure, u, v, height, stormu, stormv):
+def critical_angle(pressure, u, v, height, u_storm, v_storm):
     r"""Calculate the critical angle.
 
     The critical angle is the angle between the 10m storm-relative inflow vector
@@ -344,9 +344,9 @@ def critical_angle(pressure, u, v, height, stormu, stormv):
         V-component of sounding winds.
     height : `pint.Quantity`
         Heights from sounding.
-    stormu : `pint.Quantity`
+    u_storm : `pint.Quantity`
         U-component of storm motion.
-    stormv : `pint.Quantity`
+    v_storm : `pint.Quantity`
         V-component of storm motion.
 
     Returns
@@ -358,8 +358,8 @@ def critical_angle(pressure, u, v, height, stormu, stormv):
     # Convert everything to m/s
     u = u.to('m/s')
     v = v.to('m/s')
-    stormu = stormu.to('m/s')
-    stormv = stormv.to('m/s')
+    u_storm = u_storm.to('m/s')
+    v_storm = v_storm.to('m/s')
 
     sort_inds = np.argsort(pressure[::-1])
     pressure = pressure[sort_inds]
@@ -371,8 +371,8 @@ def critical_angle(pressure, u, v, height, stormu, stormv):
     shr5 = bulk_shear(pressure, u, v, height=height, depth=500 * units('meter'))
 
     # Make everything relative to the sfc wind orientation
-    umn = stormu - u[0]
-    vmn = stormv - v[0]
+    umn = u_storm - u[0]
+    vmn = v_storm - v[0]
 
     vshr = np.asarray([shr5[0].magnitude, shr5[1].magnitude])
     vsm = np.asarray([umn.magnitude, vmn.magnitude])
