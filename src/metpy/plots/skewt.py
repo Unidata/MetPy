@@ -337,7 +337,7 @@ class SkewT(object):
         if matplotlib.__version__[:3] > '3.1':
             self.ax.set_aspect(aspect, adjustable='box')
 
-    def plot(self, p, t, *args, **kwargs):
+    def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
 
         Simple wrapper around plot so that pressure is the first (independent)
@@ -345,7 +345,7 @@ class SkewT(object):
 
         Parameters
         ----------
-        p : array_like
+        pressure : array_like
             pressure values
         t : array_like
             temperature values, can also be used for things like dew point
@@ -365,10 +365,10 @@ class SkewT(object):
 
         """
         # Skew-T logP plotting
-        t, p = _delete_masked_points(t, p)
-        return self.ax.plot(t, p, *args, **kwargs)
+        t, pressure = _delete_masked_points(t, pressure)
+        return self.ax.plot(t, pressure, *args, **kwargs)
 
-    def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
+    def plot_barbs(self, pressure, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
         r"""Plot wind barbs.
 
@@ -378,7 +378,7 @@ class SkewT(object):
 
         Parameters
         ----------
-        p : array_like
+        pressure : array_like
             pressure values
         u : array_like
             U (East-West) component of wind
@@ -421,16 +421,16 @@ class SkewT(object):
                                  'u and v wind components.')
 
         # Assemble array of x-locations in axes space
-        x = np.empty_like(p)
+        x = np.empty_like(pressure)
         x.fill(xloc)
 
         # Do barbs plot at this location
         if c is not None:
-            b = self.ax.barbs(x, p, u, v, c,
+            b = self.ax.barbs(x, pressure, u, v, c,
                               transform=self.ax.get_yaxis_transform(which='tick2'),
                               clip_on=True, zorder=2, **kwargs)
         else:
-            b = self.ax.barbs(x, p, u, v,
+            b = self.ax.barbs(x, pressure, u, v,
                               transform=self.ax.get_yaxis_transform(which='tick2'),
                               clip_on=True, zorder=2, **kwargs)
 
@@ -441,7 +441,7 @@ class SkewT(object):
         b.set_clip_box(transforms.TransformedBbox(ax_bbox, self.ax.transAxes))
         return b
 
-    def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
+    def plot_dry_adiabats(self, t0=None, pressure=None, **kwargs):
         r"""Plot dry adiabats.
 
         Adds dry adiabats (lines of constant potential temperature) to the
@@ -454,7 +454,7 @@ class SkewT(object):
             Starting temperature values in Kelvin. If none are given, they will be
             generated using the current temperature range at the bottom of
             the plot.
-        p : array_like, optional
+        pressure : array_like, optional
             Pressure values to be included in the dry adiabats. If not
             specified, they will be linearly distributed across the current
             plotted pressure range.
@@ -483,12 +483,12 @@ class SkewT(object):
             t0 = np.arange(xmin, xmax + 1, 10) * units.degC
 
         # Get pressure levels based on ylims if necessary
-        if p is None:
-            p = np.linspace(*self.ax.get_ylim()) * units.mbar
+        if pressure is None:
+            pressure = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
-        linedata = [np.vstack((ti.m, p.m)).T for ti in t]
+        t = dry_lapse(pressure, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
         kwargs.setdefault('colors', 'r')
@@ -497,7 +497,7 @@ class SkewT(object):
         self.dry_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.dry_adiabats
 
-    def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
+    def plot_moist_adiabats(self, t0=None, pressure=None, **kwargs):
         r"""Plot moist adiabats.
 
         Adds saturated pseudo-adiabats (lines of constant equivalent potential
@@ -511,7 +511,7 @@ class SkewT(object):
             Starting temperature values in Kelvin. If none are given, they will be
             generated using the current temperature range at the bottom of
             the plot.
-        p : array_like, optional
+        pressure : array_like, optional
             Pressure values to be included in the moist adiabats. If not
             specified, they will be linearly distributed across the current
             plotted pressure range.
@@ -541,12 +541,12 @@ class SkewT(object):
                                  np.arange(0, xmax + 1, 5))) * units.degC
 
         # Get pressure levels based on ylims if necessary
-        if p is None:
-            p = np.linspace(*self.ax.get_ylim()) * units.mbar
+        if pressure is None:
+            pressure = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
-        linedata = [np.vstack((ti.m, p.m)).T for ti in t]
+        t = moist_lapse(pressure, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
         kwargs.setdefault('colors', 'b')
@@ -555,7 +555,7 @@ class SkewT(object):
         self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.moist_adiabats
 
-    def plot_mixing_lines(self, w=None, p=None, **kwargs):
+    def plot_mixing_lines(self, mixing_ratio=None, pressure=None, **kwargs):
         r"""Plot lines of constant mixing ratio.
 
         Adds lines of constant mixing ratio (isohumes) to the
@@ -564,10 +564,10 @@ class SkewT(object):
 
         Parameters
         ----------
-        w : array_like, optional
+        mixing_ratio : array_like, optional
             Unitless mixing ratio values to plot. If none are given, default
             values are used.
-        p : array_like, optional
+        pressure : array_like, optional
             Pressure values to be included in the isohumes. If not
             specified, they will be linearly distributed across the current
             plotted pressure range up to 600 mb.
@@ -589,17 +589,17 @@ class SkewT(object):
             self.mixing_lines.remove()
 
         # Default mixing level values if necessary
-        if w is None:
-            w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
-                          0.016, 0.024, 0.032]).reshape(-1, 1)
+        if mixing_ratio is None:
+            mixing_ratio = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
+                                     0.016, 0.024, 0.032]).reshape(-1, 1)
 
         # Set pressure range if necessary
-        if p is None:
-            p = np.linspace(600, max(self.ax.get_ylim())) * units.mbar
+        if pressure is None:
+            pressure = np.linspace(600, max(self.ax.get_ylim())) * units.mbar
 
         # Assemble data for plotting
-        td = dewpoint(vapor_pressure(p, w))
-        linedata = [np.vstack((t.m, p.m)).T for t in td]
+        td = dewpoint(vapor_pressure(pressure, mixing_ratio))
+        linedata = [np.vstack((t.m, pressure.m)).T for t in td]
 
         # Add to plot
         kwargs.setdefault('colors', 'g')
@@ -663,7 +663,7 @@ class SkewT(object):
 
         return self.ax.fill_betweenx(*arrs, **fill_args)
 
-    def shade_cape(self, p, t, t_parcel, **kwargs):
+    def shade_cape(self, pressure, t, t_parcel, **kwargs):
         r"""Shade areas of Convective Available Potential Energy (CAPE).
 
         Shades areas where the parcel is warmer than the environment (areas of positive
@@ -671,7 +671,7 @@ class SkewT(object):
 
         Parameters
         ----------
-        p : array_like
+        pressure : array_like
             Pressure values
         t : array_like
             Temperature values
@@ -694,9 +694,9 @@ class SkewT(object):
         :func:`matplotlib.axes.Axes.fill_betweenx`
 
         """
-        return self.shade_area(p, t_parcel, t, which='positive', **kwargs)
+        return self.shade_area(pressure, t_parcel, t, which='positive', **kwargs)
 
-    def shade_cin(self, p, t, t_parcel, dewpoint=None, **kwargs):
+    def shade_cin(self, pressure, t, t_parcel, dewpoint=None, **kwargs):
         r"""Shade areas of Convective INhibition (CIN).
 
         Shades areas where the parcel is cooler than the environment (areas of negative
@@ -705,7 +705,7 @@ class SkewT(object):
 
         Parameters
         ----------
-        p : array_like
+        pressure : array_like
             Pressure values
         t : array_like
             Temperature values
@@ -727,12 +727,13 @@ class SkewT(object):
 
         """
         if dewpoint is not None:
-            lcl_p, _ = lcl(p[0], t[0], dewpoint[0])
-            el_p, _ = el(p, t, dewpoint, t_parcel)
-            idx = np.logical_and(p > el_p, p < lcl_p)
+            lcl_p, _ = lcl(pressure[0], t[0], dewpoint[0])
+            el_p, _ = el(pressure, t, dewpoint, t_parcel)
+            idx = np.logical_and(pressure > el_p, pressure < lcl_p)
         else:
-            idx = np.arange(0, len(p))
-        return self.shade_area(p[idx], t_parcel[idx], t[idx], which='negative', **kwargs)
+            idx = np.arange(0, len(pressure))
+        return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
+                               **kwargs)
 
 
 @exporter.export

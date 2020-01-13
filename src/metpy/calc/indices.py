@@ -17,7 +17,7 @@ exporter = Exporter(globals())
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', bottom='[pressure]', top='[pressure]')
-def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
+def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
 
     Formula used is:
@@ -30,7 +30,7 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
     ----------
     pressure : `pint.Quantity`
         Atmospheric pressure profile
-    dewpt : `pint.Quantity`
+    dewpoint : `pint.Quantity`
         Atmospheric dewpoint profile
     bottom: `pint.Quantity`, optional
         Bottom of the layer, specified in pressure. Defaults to None (highest pressure).
@@ -52,9 +52,9 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
     pressure = pressure[sort_inds]
-    dewpt = dewpt[sort_inds]
+    dewpoint = dewpoint[sort_inds]
 
-    pressure, dewpt = _remove_nans(pressure, dewpt)
+    pressure, dewpoint = _remove_nans(pressure, dewpoint)
 
     if top is None:
         top = np.nanmin(pressure.magnitude) * pressure.units
@@ -62,9 +62,10 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
     if bottom is None:
         bottom = np.nanmax(pressure.magnitude) * pressure.units
 
-    pres_layer, dewpt_layer = get_layer(pressure, dewpt, bottom=bottom, depth=bottom - top)
+    pres_layer, dewpoint_layer = get_layer(pressure, dewpoint, bottom=bottom,
+                                           depth=bottom - top)
 
-    w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
+    w = mixing_ratio(saturation_vapor_pressure(dewpoint_layer), pres_layer)
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
     pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units)
@@ -75,7 +76,7 @@ def precipitable_water(pressure, dewpt, *, bottom=None, top=None):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def mean_pressure_weighted(pressure, *args, heights=None, bottom=None, depth=None):
+def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
 
     Layer top and bottom specified in height or pressure.
@@ -86,7 +87,7 @@ def mean_pressure_weighted(pressure, *args, heights=None, bottom=None, depth=Non
         Atmospheric pressure profile
     args : `pint.Quantity`
         Parameters for which the pressure-weighted mean is to be calculated.
-    heights : `pint.Quantity`, optional
+    height : `pint.Quantity`, optional
         Heights from sounding. Standard atmosphere heights assumed (if needed)
         if no heights are given.
     bottom: `pint.Quantity`, optional
@@ -106,7 +107,7 @@ def mean_pressure_weighted(pressure, *args, heights=None, bottom=None, depth=Non
 
     """
     ret = []  # Returned variable means in layer
-    layer_arg = get_layer(pressure, *args, heights=heights,
+    layer_arg = get_layer(pressure, *args, height=height,
                           bottom=bottom, depth=depth)
     layer_p = layer_arg[0]
     layer_arg = layer_arg[1:]
@@ -124,7 +125,7 @@ def mean_pressure_weighted(pressure, *args, heights=None, bottom=None, depth=Non
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[speed]', '[speed]', '[length]')
-def bunkers_storm_motion(pressure, u, v, heights):
+def bunkers_storm_motion(pressure, u, v, height):
     r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
 
     Uses the storm motion calculation from [Bunkers2000]_.
@@ -137,8 +138,8 @@ def bunkers_storm_motion(pressure, u, v, heights):
         U component of the wind
     v : `pint.Quantity`
         V component of the wind
-    heights : `pint.Quantity`
-        Heights from sounding
+    height : `pint.Quantity`
+        Height from sounding
 
     Returns
     -------
@@ -151,17 +152,17 @@ def bunkers_storm_motion(pressure, u, v, heights):
 
     """
     # mean wind from sfc-6km
-    wind_mean = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
+    wind_mean = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
                                                    depth=6000 * units('meter')))
 
     # mean wind from sfc-500m
-    wind_500m = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
+    wind_500m = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
                                                    depth=500 * units('meter')))
 
     # mean wind from 5.5-6km
-    wind_5500m = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
+    wind_5500m = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
                                                     depth=500 * units('meter'),
-                                                    bottom=heights[0] + 5500 * units('meter')))
+                                                    bottom=height[0] + 5500 * units('meter')))
 
     # Calculate the shear vector from sfc-500m to 5.5-6km
     shear = wind_5500m - wind_500m
@@ -184,7 +185,7 @@ def bunkers_storm_motion(pressure, u, v, heights):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[speed]', '[speed]')
-def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
+def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     r"""Calculate bulk shear through a layer.
 
     Layer top and bottom specified in meters or pressure.
@@ -215,7 +216,7 @@ def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
         v-component of layer bulk shear
 
     """
-    _, u_layer, v_layer = get_layer(pressure, u, v, heights=heights,
+    _, u_layer, v_layer = get_layer(pressure, u, v, height=height,
                                     bottom=bottom, depth=depth)
 
     u_shr = u_layer[-1] - u_layer[0]
@@ -323,7 +324,7 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[speed]', '[speed]', '[length]', '[speed]', '[speed]')
-def critical_angle(pressure, u, v, heights, stormu, stormv):
+def critical_angle(pressure, u, v, height, u_storm, v_storm):
     r"""Calculate the critical angle.
 
     The critical angle is the angle between the 10m storm-relative inflow vector
@@ -341,11 +342,11 @@ def critical_angle(pressure, u, v, heights, stormu, stormv):
         U-component of sounding winds.
     v : `pint.Quantity`
         V-component of sounding winds.
-    heights : `pint.Quantity`
+    height : `pint.Quantity`
         Heights from sounding.
-    stormu : `pint.Quantity`
+    u_storm : `pint.Quantity`
         U-component of storm motion.
-    stormv : `pint.Quantity`
+    v_storm : `pint.Quantity`
         V-component of storm motion.
 
     Returns
@@ -357,21 +358,21 @@ def critical_angle(pressure, u, v, heights, stormu, stormv):
     # Convert everything to m/s
     u = u.to('m/s')
     v = v.to('m/s')
-    stormu = stormu.to('m/s')
-    stormv = stormv.to('m/s')
+    u_storm = u_storm.to('m/s')
+    v_storm = v_storm.to('m/s')
 
     sort_inds = np.argsort(pressure[::-1])
     pressure = pressure[sort_inds]
-    heights = heights[sort_inds]
+    height = height[sort_inds]
     u = u[sort_inds]
     v = v[sort_inds]
 
     # Calculate sfc-500m shear vector
-    shr5 = bulk_shear(pressure, u, v, heights=heights, depth=500 * units('meter'))
+    shr5 = bulk_shear(pressure, u, v, height=height, depth=500 * units('meter'))
 
     # Make everything relative to the sfc wind orientation
-    umn = stormu - u[0]
-    vmn = stormv - v[0]
+    umn = u_storm - u[0]
+    vmn = v_storm - v[0]
 
     vshr = np.asarray([shr5[0].magnitude, shr5[1].magnitude])
     vsm = np.asarray([umn.magnitude, vmn.magnitude])

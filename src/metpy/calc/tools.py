@@ -306,10 +306,10 @@ def reduce_point_density(points, radius, priority=None):
     return keep
 
 
-def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
+def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
     """Calculate the bounding pressure and height in a layer.
 
-    Given pressure, optional heights, and a bound, return either the closest pressure/height
+    Given pressure, optional heights and a bound, return either the closest pressure/height
     or interpolated pressure/height. If no heights are provided, a standard atmosphere
     ([NOAA1976]_) is assumed.
 
@@ -319,7 +319,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         Atmospheric pressures
     bound : `pint.Quantity`
         Bound to retrieve (in pressure or height)
-    heights : `pint.Quantity`, optional
+    height : `pint.Quantity`, optional
         Atmospheric heights associated with the pressure levels. Defaults to using
         heights calculated from ``pressure`` assuming a standard atmosphere.
     interpolate : boolean, optional
@@ -336,8 +336,8 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
     # Make sure pressure is monotonically decreasing
     sort_inds = np.argsort(pressure)[::-1]
     pressure = pressure[sort_inds]
-    if heights is not None:
-        heights = heights[sort_inds]
+    if height is not None:
+        height = height[sort_inds]
 
     # Bound is given in pressure
     if bound.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
@@ -346,33 +346,33 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
             bound_pressure = bound
             # If we have heights, we know the exact height value, otherwise return standard
             # atmosphere height for the pressure
-            if heights is not None:
-                bound_height = heights[pressure == bound_pressure]
+            if height is not None:
+                bound_height = height[pressure == bound_pressure]
             else:
                 bound_height = pressure_to_height_std(bound_pressure)
         # If bound is not in the data, return the nearest or interpolated values
         else:
             if interpolate:
                 bound_pressure = bound  # Use the user specified bound
-                if heights is not None:  # Interpolate heights from the height data
-                    bound_height = log_interpolate_1d(bound_pressure, pressure, heights)
+                if height is not None:  # Interpolate heights from the height data
+                    bound_height = log_interpolate_1d(bound_pressure, pressure, height)
                 else:  # If not heights given, use the standard atmosphere
                     bound_height = pressure_to_height_std(bound_pressure)
             else:  # No interpolation, find the closest values
                 idx = (np.abs(pressure - bound)).argmin()
                 bound_pressure = pressure[idx]
-                if heights is not None:
-                    bound_height = heights[idx]
+                if height is not None:
+                    bound_height = height[idx]
                 else:
                     bound_height = pressure_to_height_std(bound_pressure)
 
     # Bound is given in height
     elif bound.dimensionality == {'[length]': 1.0}:
         # If there is height data, see if we have the bound or need to interpolate/find nearest
-        if heights is not None:
-            if bound in heights:  # Bound is in the height data
+        if height is not None:
+            if bound in height:  # Bound is in the height data
                 bound_height = bound
-                bound_pressure = pressure[heights == bound]
+                bound_pressure = pressure[height == bound]
             else:  # Bound is not in the data
                 if interpolate:
                     bound_height = bound
@@ -380,13 +380,13 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
                     # Need to cast back to the input type since interp (up to at least numpy
                     # 1.13 always returns float64. This can cause upstream users problems,
                     # resulting in something like np.append() to upcast.
-                    bound_pressure = (np.interp(np.atleast_1d(bound.m), heights.m,
+                    bound_pressure = (np.interp(np.atleast_1d(bound.m), height.m,
                                                 pressure.m).astype(result_type(bound))
                                       * pressure.units)
                 else:
-                    idx = (np.abs(heights - bound)).argmin()
+                    idx = (np.abs(height - bound)).argmin()
                     bound_pressure = pressure[idx]
-                    bound_height = heights[idx]
+                    bound_height = height[idx]
         else:  # Don't have heights, so assume a standard atmosphere
             bound_height = bound
             bound_pressure = height_to_pressure_std(bound)
@@ -405,11 +405,10 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
     if not (_greater_or_close(bound_pressure, np.nanmin(pressure.m) * pressure.units)
             and _less_or_close(bound_pressure, np.nanmax(pressure.m) * pressure.units)):
         raise ValueError('Specified bound is outside pressure range.')
-    if heights is not None and not (_less_or_close(bound_height,
-                                                   np.nanmax(heights.m) * heights.units)
-                                    and _greater_or_close(bound_height,
-                                                          np.nanmin(heights.m)
-                                                          * heights.units)):
+    if height is not None and not (_less_or_close(bound_height,
+                                                  np.nanmax(height.m) * height.units)
+                                   and _greater_or_close(bound_height,
+                                                         np.nanmin(height.m) * height.units)):
         raise ValueError('Specified bound is outside height range.')
 
     return bound_pressure, bound_height
@@ -418,16 +417,16 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 @exporter.export
 @preprocess_xarray
 @check_units('[length]')
-def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with_agl=False):
+def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_agl=False):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer using
-    the heights only.
+    the height only.
 
     Parameters
     ----------
-    heights : array-like
-        Atmospheric heights
+    height : array-like
+        Atmospheric height
     depth : `pint.Quantity`
         The thickness of the layer
     args : array-like
@@ -438,8 +437,8 @@ def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with
         Interpolate the top and bottom points if they are not in the given data. Defaults
         to True.
     with_agl : bool, optional
-        Returns the heights as above ground level by subtracting the minimum height in the
-        provided heights. Defaults to False.
+        Returns the height as above ground level by subtracting the minimum height in the
+        provided height. Defaults to False.
 
     Returns
     -------
@@ -449,20 +448,20 @@ def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with
     """
     # Make sure pressure and datavars are the same length
     for datavar in args:
-        if len(heights) != len(datavar):
+        if len(height) != len(datavar):
             raise ValueError('Height and data variables must have the same length.')
 
     # If we want things in AGL, subtract the minimum height from all height values
     if with_agl:
-        sfc_height = np.min(heights)
-        heights = heights - sfc_height
+        sfc_height = np.min(height)
+        height = height - sfc_height
 
     # If the bottom is not specified, make it the surface
     if bottom is None:
-        bottom = heights[0]
+        bottom = height[0]
 
     # Make heights and arguments base units
-    heights = heights.to_base_units()
+    height = height.to_base_units()
     bottom = bottom.to_base_units()
 
     # Calculate the top of the layer
@@ -471,22 +470,22 @@ def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with
     ret = []  # returned data variables in layer
 
     # Ensure heights are sorted in ascending order
-    sort_inds = np.argsort(heights)
-    heights = heights[sort_inds]
+    sort_inds = np.argsort(height)
+    height = height[sort_inds]
 
     # Mask based on top and bottom
-    inds = _greater_or_close(heights, bottom) & _less_or_close(heights, top)
-    heights_interp = heights[inds]
+    inds = _greater_or_close(height, bottom) & _less_or_close(height, top)
+    heights_interp = height[inds]
 
     # Interpolate heights at bounds if necessary and sort
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if top not in heights_interp:
             heights_interp = units.Quantity(np.sort(np.append(heights_interp.m, top.m)),
-                                            heights.units)
+                                            height.units)
         if bottom not in heights_interp:
             heights_interp = units.Quantity(np.sort(np.append(heights_interp.m, bottom.m)),
-                                            heights.units)
+                                            height.units)
 
     ret.append(heights_interp)
 
@@ -496,7 +495,7 @@ def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with
 
         if interpolate:
             # Interpolate for the possibly missing bottom/top values
-            datavar_interp = interpolate_1d(heights_interp, heights, datavar)
+            datavar_interp = interpolate_1d(heights_interp, height, datavar)
             datavar = datavar_interp
         else:
             datavar = datavar[inds]
@@ -508,7 +507,7 @@ def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def get_layer(pressure, *args, heights=None, bottom=None, depth=100 * units.hPa,
+def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
               interpolate=True):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
 
@@ -524,9 +523,9 @@ def get_layer(pressure, *args, heights=None, bottom=None, depth=100 * units.hPa,
         Atmospheric pressure profile
     args : array-like
         Atmospheric variable(s) measured at the given pressures
-    heights: array-like, optional
+    height: array-like, optional
         Atmospheric heights corresponding to the given pressures. Defaults to using
-        heights calculated from ``p`` assuming a standard atmosphere [NOAA1976]_.
+        heights calculated from ``pressure`` assuming a standard atmosphere [NOAA1976]_.
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure. Defaults
         to the highest pressure or lowest height given.
@@ -557,7 +556,7 @@ def get_layer(pressure, *args, heights=None, bottom=None, depth=100 * units.hPa,
         bottom = np.nanmax(pressure.m) * pressure.units
 
     bottom_pressure, bottom_height = _get_bound_pressure_height(pressure, bottom,
-                                                                heights=heights,
+                                                                height=height,
                                                                 interpolate=interpolate)
 
     # Calculate the top if whatever units depth is in
@@ -568,7 +567,7 @@ def get_layer(pressure, *args, heights=None, bottom=None, depth=100 * units.hPa,
     else:
         raise ValueError('Depth must be specified in units of length or pressure')
 
-    top_pressure, _ = _get_bound_pressure_height(pressure, top, heights=heights,
+    top_pressure, _ = _get_bound_pressure_height(pressure, top, height=height,
                                                  interpolate=interpolate)
 
     ret = []  # returned data variables in layer

@@ -102,7 +102,7 @@ print(isenthgt.shape)
 # The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
 # have to be calculated after the interpolation to isentropic space.
 
-isentrh = 100 * mpcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
+isentrh = 100 * mpcalc.relative_humidity_from_specific_humidity(isentprs, isenttmp, isentspech)
 
 #######################################
 # **Plotting the Isentropic Analysis**

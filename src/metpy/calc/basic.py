@@ -108,14 +108,14 @@ def wind_direction(u, v, convention='from'):
 @exporter.export
 @preprocess_xarray
 @check_units('[speed]')
-def wind_components(speed, wdir):
+def wind_components(speed, wind_direction):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
     ----------
     speed : `pint.Quantity`
         The wind speed (magnitude)
-    wdir : `pint.Quantity`
+    wind_direction : `pint.Quantity`
         The wind direction, specified as the direction from which the wind is
         blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
@@ -138,9 +138,9 @@ def wind_components(speed, wdir):
      <Quantity(7.071067811865477, 'meter / second')>)
 
     """
-    wdir = _check_radians(wdir, max_radians=4 * np.pi)
-    u = -speed * np.sin(wdir)
-    v = -speed * np.cos(wdir)
+    wind_direction = _check_radians(wind_direction, max_radians=4 * np.pi)
+    u = -speed * np.sin(wind_direction)
+    v = -speed * np.cos(wind_direction)
     return u, v
 
 
@@ -209,7 +209,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]')
-def heat_index(temperature, rh, mask_undefined=True):
+def heat_index(temperature, relative_humidity, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
     The implementation uses the formula outlined in [Rothfusz1990]_, which is a
@@ -222,7 +222,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     ----------
     temperature : `pint.Quantity`
         Air temperature
-    rh : `pint.Quantity`
+    relative_humidity : `pint.Quantity`
         The relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
 
@@ -243,25 +243,25 @@ def heat_index(temperature, rh, mask_undefined=True):
 
     """
     temperature = atleast_1d(temperature)
-    rh = atleast_1d(rh)
-    # assign units to rh if they currently are not present
-    if not hasattr(rh, 'units'):
-        rh = rh * units.dimensionless
+    relative_humidity = atleast_1d(relative_humidity)
+    # assign units to relative_humidity if they currently are not present
+    if not hasattr(relative_humidity, 'units'):
+        relative_humidity = relative_humidity * units.dimensionless
     delta = temperature.to(units.degF) - 0. * units.degF
-    rh2 = rh * rh
+    rh2 = relative_humidity * relative_humidity
     delta2 = delta * delta
 
-    # Simplifed Heat Index -- constants converted for RH in [0, 1]
-    a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * rh
+    # Simplifed Heat Index -- constants converted for relative_humidity in [0, 1]
+    a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * relative_humidity
 
-    # More refined Heat Index -- constants converted for RH in [0, 1]
+    # More refined Heat Index -- constants converted for relative_humidity in [0, 1]
     b = (-42.379 * units.degF
          + 2.04901523 * delta
-         + 1014.333127 * units.delta_degF * rh
-         - 22.475541 * delta * rh
+         + 1014.333127 * units.delta_degF * relative_humidity
+         - 22.475541 * delta * relative_humidity
          - 6.83783e-3 / units.delta_degF * delta2
          - 5.481717e2 * units.delta_degF * rh2
-         + 1.22874e-1 / units.delta_degF * delta2 * rh
+         + 1.22874e-1 / units.delta_degF * delta2 * relative_humidity
          + 8.5282 * delta * rh2
          - 1.99e-2 / units.delta_degF * delta2 * rh2)
 
@@ -287,19 +287,19 @@ def heat_index(temperature, rh, mask_undefined=True):
         hi[sel] = b[sel]
 
     # Adjustment for RH <= 13% and 80F <= T <= 112F
-    sel = ((rh <= 13. * units.percent) & (temperature >= 80. * units.degF)
+    sel = ((relative_humidity <= 13. * units.percent) & (temperature >= 80. * units.degF)
            & (temperature <= 112. * units.degF))
     if np.any(sel):
-        rh15adj = ((13. - rh * 100.) / 4.
+        rh15adj = ((13. - relative_humidity * 100.) / 4.
                    * ((17. * units.delta_degF - np.abs(delta - 95. * units.delta_degF))
                       / 17. * units.delta_degF) ** 0.5)
         hi[sel] = hi[sel] - rh15adj[sel]
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
-    sel = ((rh > 85. * units.percent) & (temperature >= 80. * units.degF)
+    sel = ((relative_humidity > 85. * units.percent) & (temperature >= 80. * units.degF)
            & (temperature <= 87. * units.degF))
     if np.any(sel):
-        rh85adj = 0.02 * (rh * 100. - 85.) * (87. * units.delta_degF - delta)
+        rh85adj = 0.02 * (relative_humidity * 100. - 85.) * (87. * units.delta_degF - delta)
         hi[sel] = hi[sel] + rh85adj[sel]
 
     # See if we need to mask any undefined values
@@ -313,7 +313,8 @@ def heat_index(temperature, rh, mask_undefined=True):
 @exporter.export
 @preprocess_xarray
 @check_units(temperature='[temperature]', speed='[speed]')
-def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_undefined=True):
+def apparent_temperature(temperature, relative_humidity, speed, face_level_winds=False,
+                         mask_undefined=True):
     r"""Calculate the current apparent temperature.
 
     Calculates the current apparent temperature based on the wind chill or heat index
@@ -323,7 +324,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
     ----------
     temperature : `pint.Quantity`
         The air temperature
-    rh : `pint.Quantity`
+    relative_humidity : `pint.Quantity`
         The relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
     speed : `pint.Quantity`
@@ -355,14 +356,14 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
     is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
 
     temperature = atleast_1d(temperature)
-    rh = atleast_1d(rh)
+    relative_humidity = atleast_1d(relative_humidity)
     speed = atleast_1d(speed)
 
     # NB: mask_defined=True is needed to know where computed values exist
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
                                        mask_undefined=True).to(temperature.units)
 
-    heat_index_temperature = heat_index(temperature, rh,
+    heat_index_temperature = heat_index(temperature, relative_humidity,
                                         mask_undefined=True).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
@@ -392,7 +393,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
 @preprocess_xarray
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
-    r"""Convert pressure data to heights using the U.S. standard atmosphere [NOAA1976]_.
+    r"""Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
 
@@ -475,7 +476,7 @@ def height_to_geopotential(height):
 
 @exporter.export
 @preprocess_xarray
-def geopotential_to_height(geopot):
+def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
 
     Calculates the height above mean sea level from geopotential using the following formula,
@@ -530,7 +531,7 @@ def geopotential_to_height(geopot):
     height_to_geopotential
 
     """
-    return (geopot * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopot)
+    return (geopotential * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopotential)
 
 
 @exporter.export
@@ -643,7 +644,7 @@ def add_pressure_to_height(height, pressure):
 @exporter.export
 @preprocess_xarray
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
-def sigma_to_pressure(sigma, psfc, ptop):
+def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     r"""Calculate pressure from sigma values.
 
     Parameters
@@ -651,10 +652,10 @@ def sigma_to_pressure(sigma, psfc, ptop):
     sigma : ndarray
         The sigma levels to be converted to pressure levels.
 
-    psfc : `pint.Quantity`
+    pressure_sfc : `pint.Quantity`
         The surface pressure value.
 
-    ptop : `pint.Quantity`
+    pressure_top : `pint.Quantity`
         The pressure value at the top of the model domain.
 
     Returns
@@ -677,10 +678,10 @@ def sigma_to_pressure(sigma, psfc, ptop):
     if np.any(sigma < 0) or np.any(sigma > 1):
         raise ValueError('Sigma values should be bounded by 0 and 1')
 
-    if psfc.magnitude < 0 or ptop.magnitude < 0:
+    if pressure_sfc.magnitude < 0 or pressure_top.magnitude < 0:
         raise ValueError('Pressure input should be non-negative')
 
-    return sigma * (psfc - ptop) + ptop
+    return sigma * (pressure_sfc - pressure_top) + pressure_top
 
 
 @exporter.export

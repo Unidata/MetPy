@@ -242,7 +242,7 @@ def get_bounds_data():
 ])
 def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
     """Test getting bounds in layers with various parameter combinations."""
-    bounds = _get_bound_pressure_height(pressure, bound, heights=hgts, interpolate=interp)
+    bounds = _get_bound_pressure_height(pressure, bound, height=hgts, interpolate=interp)
     assert_array_almost_equal(bounds[0], expected[0], 4)
     assert_array_almost_equal(bounds[1], expected[1], 4)
 
@@ -268,9 +268,9 @@ def test_get_bound_height_out_of_range():
     p = np.arange(900, 300, -100) * units.hPa
     h = np.arange(1, 7) * units.kilometer
     with pytest.raises(ValueError):
-        _get_bound_pressure_height(p, 8 * units.kilometer, heights=h)
+        _get_bound_pressure_height(p, 8 * units.kilometer, height=h)
     with pytest.raises(ValueError):
-        _get_bound_pressure_height(p, 100 * units.meter, heights=h)
+        _get_bound_pressure_height(p, 100 * units.meter, height=h)
 
 
 @pytest.mark.parametrize('flip_order', [(True, False)])
@@ -289,7 +289,7 @@ def test_get_layer_float32(flip_order):
     if flip_order:
         p = p[::-1]
         hgt = hgt[::-1]
-    p_layer, hgt_layer = get_layer(p, hgt, heights=hgt, depth=1000. * units.meter)
+    p_layer, hgt_layer = get_layer(p, hgt, height=hgt, depth=1000. * units.meter)
     assert_array_almost_equal(p_layer, true_p_layer, 4)
     assert_array_almost_equal(hgt_layer, true_hgt_layer, 4)
 
@@ -329,7 +329,7 @@ def layer_test_data():
 ])
 def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected):
     """Test get_layer functionality."""
-    p_layer, y_layer = get_layer(pressure, variable, heights=heights, bottom=bottom,
+    p_layer, y_layer = get_layer(pressure, variable, height=heights, bottom=bottom,
                                  depth=depth, interpolate=interp)
     assert_array_almost_equal(p_layer, expected[0], 4)
     assert_array_almost_equal(y_layer, expected[1], 4)

@@ -668,8 +668,8 @@ def test_wet_psychrometric_vapor_pressure():
     p = 1013.25 * units.mbar
     dry_bulb_temperature = 20. * units.degC
     wet_bulb_temperature = 18. * units.degC
-    psychrometric_vapor_pressure = psychrometric_vapor_pressure_wet(dry_bulb_temperature,
-                                                                    wet_bulb_temperature, p)
+    psychrometric_vapor_pressure = psychrometric_vapor_pressure_wet(p, dry_bulb_temperature,
+                                                                    wet_bulb_temperature)
     assert_almost_equal(psychrometric_vapor_pressure, 19.3673 * units.mbar, 3)
 
 
@@ -678,8 +678,8 @@ def test_wet_psychrometric_rh():
     p = 1013.25 * units.mbar
     dry_bulb_temperature = 20. * units.degC
     wet_bulb_temperature = 18. * units.degC
-    psychrometric_rh = relative_humidity_wet_psychrometric(dry_bulb_temperature,
-                                                           wet_bulb_temperature, p)
+    psychrometric_rh = relative_humidity_wet_psychrometric(p, dry_bulb_temperature,
+                                                           wet_bulb_temperature)
     assert_almost_equal(psychrometric_rh, 82.8747 * units.percent, 3)
 
 
@@ -689,8 +689,8 @@ def test_wet_psychrometric_rh_kwargs():
     dry_bulb_temperature = 20. * units.degC
     wet_bulb_temperature = 18. * units.degC
     coeff = 6.1e-4 / units.kelvin
-    psychrometric_rh = relative_humidity_wet_psychrometric(dry_bulb_temperature,
-                                                           wet_bulb_temperature, p,
+    psychrometric_rh = relative_humidity_wet_psychrometric(p, dry_bulb_temperature,
+                                                           wet_bulb_temperature,
                                                            psychrometer_coefficient=coeff)
     assert_almost_equal(psychrometric_rh, 82.9701 * units.percent, 3)
 
@@ -700,7 +700,7 @@ def test_mixing_ratio_from_relative_humidity():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     rh = 81.7219 * units.percent
-    w = mixing_ratio_from_relative_humidity(rh, temperature, p)
+    w = mixing_ratio_from_relative_humidity(p, temperature, rh)
     assert_almost_equal(w, 0.012 * units.dimensionless, 3)
 
 
@@ -709,7 +709,7 @@ def test_rh_mixing_ratio():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     w = 0.012 * units.dimensionless
-    rh = relative_humidity_from_mixing_ratio(w, temperature, p)
+    rh = relative_humidity_from_mixing_ratio(p, temperature, w)
     assert_almost_equal(rh, 81.7219 * units.percent, 3)
 
 
@@ -746,7 +746,7 @@ def test_rh_specific_humidity():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    rh = relative_humidity_from_specific_humidity(q, temperature, p)
+    rh = relative_humidity_from_specific_humidity(p, temperature, q)
     assert_almost_equal(rh, 82.7145 * units.percent, 3)
 
 
@@ -1113,7 +1113,7 @@ def test_thickness_hydrostatic():
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
-    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing)
+    thickness = thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing)
     assert_almost_equal(thickness, 9892.07 * units.m, 2)
 
 
@@ -1122,7 +1122,7 @@ def test_thickness_hydrostatic_subset():
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
-    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing,
+    thickness = thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing,
                                       bottom=850 * units.hPa, depth=150 * units.hPa)
     assert_almost_equal(thickness, 1630.81 * units.m, 2)
 
@@ -1173,7 +1173,7 @@ def test_mixing_ratio_from_rh_dimensions():
     p = 1000. * units.mbar
     temperature = 0. * units.degC
     rh = 100. * units.percent
-    assert (str(mixing_ratio_from_relative_humidity(rh, temperature, p).units)
+    assert (str(mixing_ratio_from_relative_humidity(p, temperature, rh).units)
             == 'dimensionless')
 
 
@@ -1283,7 +1283,7 @@ def test_dewpoint_specific_humidity():
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
-    td = dewpoint_from_specific_humidity(q, temperature, p)
+    td = dewpoint_from_specific_humidity(p, temperature, q)
     assert_almost_equal(td, 16.973 * units.degC, 3)
 
 
@@ -1508,7 +1508,7 @@ def test_vertical_velocity_moist_air():
 def test_specific_humidity_from_dewpoint():
     """Specific humidity from dewpoint."""
     p = 1013.25 * units.mbar
-    q = specific_humidity_from_dewpoint(16.973 * units.degC, p)
+    q = specific_humidity_from_dewpoint(p, 16.973 * units.degC)
     assert_almost_equal(q, 0.012 * units.dimensionless, 3)
 
 
