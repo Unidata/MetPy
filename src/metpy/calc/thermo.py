@@ -1922,7 +1922,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def mixed_parcel(p, temperature, dewpoint, parcel_start_pressure=None,
+def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
                  height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
     r"""Calculate the properties of a parcel mixed from a layer.
 
@@ -1931,7 +1931,7 @@ def mixed_parcel(p, temperature, dewpoint, parcel_start_pressure=None,
 
     Parameters
     ----------
-    p : `pint.Quantity`
+    pressure : `pint.Quantity`
         Atmospheric pressure profile
     temperature : `pint.Quantity`
         Atmospheric temperature profile
@@ -1962,14 +1962,14 @@ def mixed_parcel(p, temperature, dewpoint, parcel_start_pressure=None,
     """
     # If a parcel starting pressure is not provided, use the surface
     if not parcel_start_pressure:
-        parcel_start_pressure = p[0]
+        parcel_start_pressure = pressure[0]
 
     # Calculate the potential temperature and mixing ratio over the layer
-    theta = potential_temperature(p, temperature)
-    mixing_ratio = saturation_mixing_ratio(p, dewpoint)
+    theta = potential_temperature(pressure, temperature)
+    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
 
     # Mix the variables over the layer
-    mean_theta, mean_mixing_ratio = mixed_layer(p, theta, mixing_ratio, bottom=bottom,
+    mean_theta, mean_mixing_ratio = mixed_layer(pressure, theta, mixing_ratio, bottom=bottom,
                                                 height=height, depth=depth,
                                                 interpolate=interpolate)
 
@@ -1990,7 +1990,8 @@ def mixed_parcel(p, temperature, dewpoint, parcel_start_pressure=None,
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def mixed_layer(p, *args, height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
+def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
+                interpolate=True):
     r"""Mix variable(s) over a layer, yielding a mass-weighted average.
 
     This function will integrate a data variable with respect to pressure and determine the
@@ -1998,7 +1999,7 @@ def mixed_layer(p, *args, height=None, bottom=None, depth=100 * units.hPa, inter
 
     Parameters
     ----------
-    p : array-like
+    pressure : array-like
         Atmospheric pressure profile
     datavar : array-like
         Atmospheric variable measured at the given pressures
@@ -2019,7 +2020,7 @@ def mixed_layer(p, *args, height=None, bottom=None, depth=100 * units.hPa, inter
         The mixed value of the data variable.
 
     """
-    layer = get_layer(p, *args, height=height, bottom=bottom,
+    layer = get_layer(pressure, *args, height=height, bottom=bottom,
                       depth=depth, interpolate=interpolate)
     p_layer = layer[0]
     datavars_layer = layer[1:]

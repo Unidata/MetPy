@@ -525,7 +525,7 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
         Atmospheric variable(s) measured at the given pressures
     height: array-like, optional
         Atmospheric heights corresponding to the given pressures. Defaults to using
-        heights calculated from ``p`` assuming a standard atmosphere [NOAA1976]_.
+        heights calculated from ``pressure`` assuming a standard atmosphere [NOAA1976]_.
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure. Defaults
         to the highest pressure or lowest height given.
