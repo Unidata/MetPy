@@ -108,14 +108,14 @@ def wind_direction(u, v, convention='from'):
 @exporter.export
 @preprocess_xarray
 @check_units('[speed]')
-def wind_components(speed, wdir):
+def wind_components(speed, wind_direction):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
     ----------
     speed : `pint.Quantity`
         The wind speed (magnitude)
-    wdir : `pint.Quantity`
+    wind_direction : `pint.Quantity`
         The wind direction, specified as the direction from which the wind is
         blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
@@ -138,9 +138,9 @@ def wind_components(speed, wdir):
      <Quantity(7.071067811865477, 'meter / second')>)
 
     """
-    wdir = _check_radians(wdir, max_radians=4 * np.pi)
-    u = -speed * np.sin(wdir)
-    v = -speed * np.cos(wdir)
+    wind_direction = _check_radians(wind_direction, max_radians=4 * np.pi)
+    u = -speed * np.sin(wind_direction)
+    v = -speed * np.cos(wind_direction)
     return u, v
 
 
