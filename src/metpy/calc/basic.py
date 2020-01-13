@@ -644,7 +644,7 @@ def add_pressure_to_height(height, pressure):
 @exporter.export
 @preprocess_xarray
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
-def sigma_to_pressure(sigma, psfc, ptop):
+def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     r"""Calculate pressure from sigma values.
 
     Parameters
@@ -652,10 +652,10 @@ def sigma_to_pressure(sigma, psfc, ptop):
     sigma : ndarray
         The sigma levels to be converted to pressure levels.
 
-    psfc : `pint.Quantity`
+    pressure_sfc : `pint.Quantity`
         The surface pressure value.
 
-    ptop : `pint.Quantity`
+    pressure_top : `pint.Quantity`
         The pressure value at the top of the model domain.
 
     Returns
@@ -678,10 +678,10 @@ def sigma_to_pressure(sigma, psfc, ptop):
     if np.any(sigma < 0) or np.any(sigma > 1):
         raise ValueError('Sigma values should be bounded by 0 and 1')
 
-    if psfc.magnitude < 0 or ptop.magnitude < 0:
+    if pressure_sfc.magnitude < 0 or pressure_top.magnitude < 0:
         raise ValueError('Pressure input should be non-negative')
 
-    return sigma * (psfc - ptop) + ptop
+    return sigma * (pressure_sfc - pressure_top) + pressure_top
 
 
 @exporter.export
