@@ -439,7 +439,7 @@ class MetPyDataArrayAccessor:
         indexers = _reassign_quantity_indexer(self._data_array, indexers)
         return self._data_array.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
-    def assign_crs(self, cf_attributes=None, **kwargs)
+    def assign_crs(self, cf_attributes=None, **kwargs):
         """Assign a CRS to this DataArray based on CF projection attributes.
 
         Parameters
@@ -483,8 +483,8 @@ class MetPyDataArrayAccessor:
 
         """
         # Check for existing latitude and longitude coords
-        if (not force and (self._metpy_axis_search('latitude') is not None or
-                           self._metpy_axis_search('longitude'))):
+        if (not force and (self._metpy_axis_search('latitude') is not None
+                           or self._metpy_axis_search('longitude'))):
             raise RuntimeError('Latitude/longitude coordinate(s) are present. If you wish to '
                                'overwrite these, specify force=True.')
 
@@ -519,8 +519,8 @@ class MetPyDataArrayAccessor:
 
         """
         # Check for existing latitude and longitude coords
-        if (not force and (self._metpy_axis_search('y') is not None or
-                           self._metpy_axis_search('x'))):
+        if (not force and (self._metpy_axis_search('y') is not None
+                           or self._metpy_axis_search('x'))):
             raise RuntimeError('y/x coordinate(s) are present. If you wish to overwrite '
                                'these, specify force=True.')
 
@@ -662,7 +662,7 @@ class MetPyDatasetAccessor:
         indexers = _reassign_quantity_indexer(self._dataset, indexers)
         return self._dataset.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
-    def assign_crs(self, cf_attributes=None, **kwargs)
+    def assign_crs(self, cf_attributes=None, **kwargs):
         """Assign a CRS to this Datatset based on CF projection attributes.
 
         Parameters
@@ -727,7 +727,7 @@ class MetPyDatasetAccessor:
             latitude, longitude = _build_latitude_longitude(grid_prototype)
             return self.assign_coords(latitude=latitude, longitude=longitude)
 
-    def assign_y_x(self, force=False, tolerance):
+    def assign_y_x(self, force=False, tolerance=None):
         """Assign y and x dimension coordinates derived from 2D latitude and longitude.
 
         Parameters
@@ -771,6 +771,41 @@ class MetPyDatasetAccessor:
         else:
             y, x = _build_y_x(grid_prototype)
             return self.assign_coords(**{y.name: y, x.name: x})
+
+    def update_attribute(self, attribute, mapping):
+        """Update attribute of all Dataset variables.
+
+        Parameters
+        ----------
+        attribute : str,
+            Name of attribute to update
+        mapping : dict or callable
+            Either a dict, with keys as variable names and values as attribute values to set,
+            or a callable, which must accept one positional argument (variable name) and
+            arbitrary keyword arguments (all existing variable attributes). If a variable name
+            is not present/the callable returns None, the attribute will not be updated.
+
+        Returns
+        -------
+        `xarray.Dataset`
+            Dataset with attribute updated (modified in place, and returned to allow method
+            chaining)
+
+        """
+        # Make mapping uniform
+        if callable(mapping):
+            mapping_func = mapping
+        else:
+            def mapping_func(varname, **kwargs):
+                return mapping.get(varname, None)
+
+        # Apply across all variables
+        for varname in list(self._dataset.data_vars) + list(self._dataset.coords):
+            value = mapping_func(varname, **self._dataset[varname].attrs)
+            if value is not None:
+                self._dataset[varname].attrs[attribute] = value
+
+        return self._dataset
 
 
 def _assign_axis(attributes, axis):
@@ -854,10 +889,10 @@ def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
 
 def _build_latitude_longitude(da):
     """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
-    y, x = data.metpy.coordinates('y', 'x')
+    y, x = da.metpy.coordinates('y', 'x')
     yy, xx = np.meshgrid(y.values, x.values)
-    lonlats = ccrs.Geodetic(globe=self.cartopy_globe).transform_points(self.cartopy_crs,
-                                                                       xx, yy)
+    lonlats = ccrs.Geodetic(globe=da.metpy.cartopy_globe).transform_points(
+        da.metpy.cartopy_crs, xx, yy)
     longitude = xr.DataArray(lonlats[..., 0], dims=(y.name, x.name),
                              coords={y.name: y, x.name: x},
                              attrs={'units': 'degrees_east', 'standard_name': 'longitude'})
@@ -891,10 +926,10 @@ def _build_y_x(da, tolerance):
         x = np.median(xxyyzz[..., 0], axis=1)
         y = np.median(xxyyzz[..., 1], axis=0)
         x = xr.DataArray(x, name=latitude.dims[1], dims=(latitude.dims[1],),
-                         coords={latitude.dims[1]: x,},
+                         coords={latitude.dims[1]: x},
                          attrs={'units': 'meter', 'standard_name': 'projection_x_coordinate'})
         y = xr.DataArray(y, name=latitude.dims[0], dims=(latitude.dims[0],),
-                         coords={latitude.dims[0]: y,},
+                         coords={latitude.dims[0]: y},
                          attrs={'units': 'meter', 'standard_name': 'projection_x_coordinate'})
         return y, x
     else:
