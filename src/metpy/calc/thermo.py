@@ -178,11 +178,11 @@ def temperature_from_potential_temperature(pressure, potential_temperature):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[pressure]')
-def dry_lapse(pressure, temperature, ref_pressure=None):
+def dry_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming only dry processes.
 
     This function lifts a parcel starting at `temperature`, conserving
-    potential temperature. The starting pressure can be given by `ref_pressure`.
+    potential temperature. The starting pressure can be given by `reference_pressure`.
 
     Parameters
     ----------
@@ -190,7 +190,7 @@ def dry_lapse(pressure, temperature, ref_pressure=None):
         The atmospheric pressure level(s) of interest
     temperature : `pint.Quantity`
         The starting temperature
-    ref_pressure : `pint.Quantity`, optional
+    reference_pressure : `pint.Quantity`, optional
         The reference pressure. If not given, it defaults to the first element of the
         pressure array.
 
@@ -206,19 +206,19 @@ def dry_lapse(pressure, temperature, ref_pressure=None):
     potential_temperature
 
     """
-    if ref_pressure is None:
-        ref_pressure = pressure[0]
-    return temperature * (pressure / ref_pressure)**mpconsts.kappa
+    if reference_pressure is None:
+        reference_pressure = pressure[0]
+    return temperature * (pressure / reference_pressure)**mpconsts.kappa
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[pressure]')
-def moist_lapse(pressure, temperature, ref_pressure=None):
+def moist_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
     This function lifts a parcel starting at `temperature`. The starting pressure can
-    be given by `ref_pressure`. Essentially, this function is calculating moist
+    be given by `reference_pressure`. Essentially, this function is calculating moist
     pseudo-adiabats.
 
     Parameters
@@ -227,7 +227,7 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
         The atmospheric pressure level(s) of interest
     temperature : `pint.Quantity`
         The starting temperature
-    ref_pressure : `pint.Quantity`, optional
+    reference_pressure : `pint.Quantity`, optional
         The reference pressure. If not given, it defaults to the first element of the
         pressure array.
 
@@ -262,11 +262,11 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
                                     / (mpconsts.Rd * t * t)))).to('kelvin')
         return (frac / p).magnitude
 
-    if ref_pressure is None:
-        ref_pressure = pressure[0]
+    if reference_pressure is None:
+        reference_pressure = pressure[0]
 
     pressure = pressure.to('mbar')
-    ref_pressure = ref_pressure.to('mbar')
+    reference_pressure = reference_pressure.to('mbar')
     temperature = atleast_1d(temperature)
 
     side = 'left'
@@ -277,19 +277,19 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
         pressure = pressure[::-1]
         side = 'right'
 
-    ref_pres_idx = np.searchsorted(pressure.m, ref_pressure.m, side=side)
+    ref_pres_idx = np.searchsorted(pressure.m, reference_pressure.m, side=side)
 
     ret_temperatures = np.empty((0, temperature.shape[0]))
 
-    if ref_pressure > pressure.min():
+    if reference_pressure > pressure.min():
         # Integrate downward in pressure
-        pres_down = np.append(ref_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
+        pres_down = np.append(reference_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
         trace_down = si.odeint(dt, temperature.m.squeeze(), pres_down.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_down[:0:-1]))
 
-    if ref_pressure < pressure.max():
+    if reference_pressure < pressure.max():
         # Integrate upward in pressure
-        pres_up = np.append(ref_pressure.m, pressure[ref_pres_idx:].m)
+        pres_up = np.append(reference_pressure.m, pressure[ref_pres_idx:].m)
         trace_up = si.odeint(dt, temperature.m.squeeze(), pres_up.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_up[1:]))
 
