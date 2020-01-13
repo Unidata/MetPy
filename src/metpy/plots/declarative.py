@@ -630,12 +630,12 @@ class MapPanel(Panel):
 
     layers = List(Union([Unicode(), Instance('cartopy.feature.Feature')]),
                   default_value=['coastline'])
-    layers.__doc__ = """A string for a pre-defined feature layer or a Cartopy Feature object.
+    layers.__doc__ = """A list of strings for a pre-defined feature layer or a Cartopy Feature object.
 
     Like the projection, there are a couple of pre-defined feature layers that can be called
     using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
-    'land', 'ocean', 'rivers', 'usstates', and 'uscounties'. Additionally, this trait can be
-    set using a Cartopy Feature object.
+    'land', 'ocean', 'rivers', 'usstates', and 'uscounties'. Additionally, this can accept
+    Cartopy Feature objects.
     """
 
     title = Unicode()
