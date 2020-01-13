@@ -555,7 +555,7 @@ class SkewT(object):
         self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.moist_adiabats
 
-    def plot_mixing_lines(self, w=None, pressure=None, **kwargs):
+    def plot_mixing_lines(self, mixing_ratio=None, pressure=None, **kwargs):
         r"""Plot lines of constant mixing ratio.
 
         Adds lines of constant mixing ratio (isohumes) to the
@@ -564,7 +564,7 @@ class SkewT(object):
 
         Parameters
         ----------
-        w : array_like, optional
+        mixing_ratio : array_like, optional
             Unitless mixing ratio values to plot. If none are given, default
             values are used.
         pressure : array_like, optional
@@ -589,16 +589,16 @@ class SkewT(object):
             self.mixing_lines.remove()
 
         # Default mixing level values if necessary
-        if w is None:
-            w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
-                          0.016, 0.024, 0.032]).reshape(-1, 1)
+        if mixing_ratio is None:
+            mixing_ratio = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
+                                     0.016, 0.024, 0.032]).reshape(-1, 1)
 
         # Set pressure range if necessary
         if pressure is None:
             pressure = np.linspace(600, max(self.ax.get_ylim())) * units.mbar
 
         # Assemble data for plotting
-        td = dewpoint(vapor_pressure(pressure, w))
+        td = dewpoint(vapor_pressure(pressure, mixing_ratio))
         linedata = [np.vstack((t.m, pressure.m)).T for t in td]
 
         # Add to plot
