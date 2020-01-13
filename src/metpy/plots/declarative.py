@@ -500,7 +500,7 @@ class Panel(HasTraits):
 
 @exporter.export
 class PanelContainer(HasTraits):
-    """Collects panels and set complete figure related settings (e.g., figsize)."""
+    """Collects panels and set complete figure related settings (e.g., size)."""
 
     size = Union([Tuple(Int(), Int()), Instance(type(None))], default_value=None)
     size.__doc__ = """This trait takes a tuple of (width, height) to set the size of the
@@ -616,7 +616,7 @@ class MapPanel(Panel):
     This trait can also be set with a string value associated with the named geographic regions
     within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
     For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
-    For regional plots, US state postal codes can be used.
+    For regional plots, US postal state abbreviations can be used.
     """
 
     projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
@@ -634,8 +634,8 @@ class MapPanel(Panel):
 
     Like the projection, there are a couple of pre-defined feature layers that can be called
     using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
-    'land', 'ocean', and 'rivers'. Additionally, this trait can be set using a Cartopy Feature
-    object.
+    'land', 'ocean', 'rivers', 'usstates', and 'uscounties'. Additionally, this trait can be
+    set using a Cartopy Feature object.
     """
 
     title = Unicode()
@@ -745,7 +745,7 @@ class MapPanel(Panel):
             elif self.area is not None:
                 # Try to look up if we have a string
                 if isinstance(self.area, str):
-                    area = _areas[self.area]
+                    area = _areas[self.area.lower()]
                 # Otherwise, assume we have a tuple to use as the extent
                 else:
                     area = self.area
