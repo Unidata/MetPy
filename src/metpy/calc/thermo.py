@@ -1161,9 +1161,9 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
 
 @exporter.export
 @preprocess_xarray
-@check_units('[temperature]', '[temperature]', '[pressure]')
-def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperature,
-                                        pressure, **kwargs):
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb_temperature,
+                                        **kwargs):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
     This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
@@ -1171,12 +1171,12 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
 
     Parameters
     ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
     dry_bulb_temperature: `pint.Quantity`
         Dry bulb temperature
     web_bulb_temperature: `pint.Quantity`
         Wet bulb temperature
-    pressure: `pint.Quantity`
-        Total atmospheric pressure
 
     Returns
     -------
@@ -1196,15 +1196,15 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
     psychrometric_vapor_pressure_wet, saturation_vapor_pressure
 
     """
-    return (psychrometric_vapor_pressure_wet(dry_bulb_temperature, web_bulb_temperature,
-                                             pressure, **kwargs)
+    return (psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature,
+                                             web_bulb_temperature, **kwargs)
             / saturation_vapor_pressure(dry_bulb_temperature))
 
 
 @exporter.export
 @preprocess_xarray
-@check_units('[temperature]', '[temperature]', '[pressure]')
-def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature, pressure,
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_temperature,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
@@ -1213,12 +1213,12 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
 
     Parameters
     ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
     dry_bulb_temperature: `pint.Quantity`
         Dry bulb temperature
     wet_bulb_temperature: `pint.Quantity`
         Wet bulb temperature
-    pressure: `pint.Quantity`
-        Total atmospheric pressure
     psychrometer_coefficient: `pint.Quantity`, optional
         Psychrometer coefficient. Defaults to 6.21e-4 K^-1.
 
@@ -1253,19 +1253,19 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
 
 @exporter.export
 @preprocess_xarray
-@check_units('[dimensionless]', '[temperature]', '[pressure]')
-def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure):
+@check_units('[pressure]', '[temperature]', '[dimensionless]')
+def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
 
     Parameters
     ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
     relative_humidity: array_like
         The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
         a percentage if proper units are attached.
-    temperature: `pint.Quantity`
-        Air temperature
-    pressure: `pint.Quantity`
-        Total atmospheric pressure
 
     Returns
     -------
@@ -1293,18 +1293,18 @@ def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure
 
 @exporter.export
 @preprocess_xarray
-@check_units('[dimensionless]', '[temperature]', '[pressure]')
-def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
+@check_units('[pressure]', '[temperature]', '[dimensionless]')
+def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
     Parameters
     ----------
-    mixing_ratio: `pint.Quantity`
-        Dimensionless mass mixing ratio
-    temperature: `pint.Quantity`
-        Air temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    mixing_ratio: `pint.Quantity`
+        Dimensionless mass mixing ratio
 
     Returns
     -------
@@ -1405,18 +1405,18 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
 @exporter.export
 @preprocess_xarray
-@check_units('[dimensionless]', '[temperature]', '[pressure]')
-def relative_humidity_from_specific_humidity(specific_humidity, temperature, pressure):
+@check_units('[pressure]', '[temperature]', '[dimensionless]')
+def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
 
     Parameters
     ----------
-    specific_humidity: `pint.Quantity`
-        Specific humidity of air
-    temperature: `pint.Quantity`
-        Air temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
 
     Returns
     -------
@@ -2218,7 +2218,7 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     mixing_ratio_from_relative_humidity
 
     """
-    mixing = mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure)
+    mixing = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
 
     return thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing, bottom=bottom,
                                  depth=depth)
@@ -2431,18 +2431,18 @@ def static_stability(pressure, temperature, axis=0):
 
 @exporter.export
 @preprocess_xarray
-@check_units('[dimensionless]', '[temperature]', '[pressure]')
-def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
+@check_units('[pressure]', '[temperature]', '[dimensionless]')
+def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
 
     Parameters
     ----------
-    specific_humidity: `pint.Quantity`
-        Specific humidity of air
-    temperature: `pint.Quantity`
-        Air temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
 
     Returns
     -------
@@ -2456,7 +2456,7 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
     """
     return dewpoint_from_relative_humidity(temperature,
                                            relative_humidity_from_specific_humidity(
-                                               specific_humidity, temperature, pressure))
+                                               pressure, temperature, specific_humidity))
 
 
 @exporter.export
@@ -2550,8 +2550,8 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 
 @exporter.export
 @preprocess_xarray
-@check_units('[temperature]', '[pressure]')
-def specific_humidity_from_dewpoint(dewpoint, pressure):
+@check_units('[pressure]', '[temperature]')
+def specific_humidity_from_dewpoint(pressure, dewpoint):
     r"""Calculate the specific humidity from the dewpoint temperature and pressure.
 
     Parameters
