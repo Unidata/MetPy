@@ -1113,7 +1113,7 @@ def test_thickness_hydrostatic():
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
-    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing)
+    thickness = thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing)
     assert_almost_equal(thickness, 9892.07 * units.m, 2)
 
 
@@ -1122,7 +1122,7 @@ def test_thickness_hydrostatic_subset():
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
-    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing,
+    thickness = thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing,
                                       bottom=850 * units.hPa, depth=150 * units.hPa)
     assert_almost_equal(thickness, 1630.81 * units.m, 2)
 

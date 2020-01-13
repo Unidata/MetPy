@@ -730,17 +730,17 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[dimensionless]')
-def vapor_pressure(pressure, mixing):
+def vapor_pressure(pressure, mixing_ratio):
     r"""Calculate water vapor (partial) pressure.
 
-    Given total `pressure` and water vapor `mixing` ratio, calculates the
+    Given total `pressure` and water vapor `mixing_ratio`, calculates the
     partial pressure of water vapor.
 
     Parameters
     ----------
     pressure : `pint.Quantity`
         total atmospheric pressure
-    mixing : `pint.Quantity`
+    mixing_ratio : `pint.Quantity`
         dimensionless mass mixing ratio
 
     Returns
@@ -761,7 +761,7 @@ def vapor_pressure(pressure, mixing):
     saturation_vapor_pressure, dewpoint
 
     """
-    return pressure * mixing / (mpconsts.epsilon + mixing)
+    return pressure * mixing_ratio / (mpconsts.epsilon + mixing_ratio)
 
 
 @exporter.export
@@ -1055,7 +1055,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
-def virtual_temperature(temperature, mixing, molecular_weight_ratio=mpconsts.epsilon):
+def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
@@ -1065,7 +1065,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=mpconsts.eps
     ----------
     temperature: `pint.Quantity`
         air temperature
-    mixing : `pint.Quantity`
+    mixing_ratio : `pint.Quantity`
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
@@ -1082,14 +1082,14 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=mpconsts.eps
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
     """
-    return temperature * ((mixing + molecular_weight_ratio)
-                          / (molecular_weight_ratio * (1 + mixing)))
+    return temperature * ((mixing_ratio + molecular_weight_ratio)
+                          / (molecular_weight_ratio * (1 + mixing_ratio)))
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
-def virtual_potential_temperature(pressure, temperature, mixing,
+def virtual_potential_temperature(pressure, temperature, mixing_ratio,
                                   molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual potential temperature.
 
@@ -1102,7 +1102,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
         Total atmospheric pressure
     temperature: `pint.Quantity`
         air temperature
-    mixing : `pint.Quantity`
+    mixing_ratio : `pint.Quantity`
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
@@ -1120,13 +1120,13 @@ def virtual_potential_temperature(pressure, temperature, mixing,
 
     """
     pottemp = potential_temperature(pressure, temperature)
-    return virtual_temperature(pottemp, mixing, molecular_weight_ratio)
+    return virtual_temperature(pottemp, mixing_ratio, molecular_weight_ratio)
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
-def density(pressure, temperature, mixing, molecular_weight_ratio=mpconsts.epsilon):
+def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate density.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
@@ -1138,7 +1138,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=mpconsts.epsil
         Total atmospheric pressure
     temperature: `pint.Quantity`
         air temperature
-    mixing : `pint.Quantity`
+    mixing_ratio : `pint.Quantity`
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
@@ -1155,7 +1155,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=mpconsts.epsil
     .. math:: \rho = \frac{p}{R_dT_v}
 
     """
-    virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
+    virttemp = virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
     return (pressure / (mpconsts.Rd * virttemp)).to(units.kilogram / units.meter ** 3)
 
 
@@ -2103,7 +2103,7 @@ def moist_static_energy(height, temperature, specific_humidity):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]')
-def thickness_hydrostatic(pressure, temperature, mixing=None,
+def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
                           molecular_weight_ratio=mpconsts.epsilon, bottom=None, depth=None):
     r"""Calculate the thickness of a layer via the hypsometric equation.
 
@@ -2124,7 +2124,7 @@ def thickness_hydrostatic(pressure, temperature, mixing=None,
         Atmospheric pressure profile
     temperature : `pint.Quantity`
         Atmospheric temperature profile
-    mixing : `pint.Quantity`, optional
+    mixing_ratio : `pint.Quantity`, optional
         Profile of dimensionless mass mixing ratio. If none is given, virtual temperature
         is simply set to be the given temperature.
     molecular_weight_ratio : `pint.Quantity` or float, optional
@@ -2150,17 +2150,18 @@ def thickness_hydrostatic(pressure, temperature, mixing=None,
     # Get the data for the layer, conditional upon bottom/depth being specified and mixing
     # ratio being given
     if bottom is None and depth is None:
-        if mixing is None:
+        if mixing_ratio is None:
             layer_p, layer_virttemp = pressure, temperature
         else:
             layer_p = pressure
-            layer_virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
+            layer_virttemp = virtual_temperature(temperature, mixing_ratio,
+                                                 molecular_weight_ratio)
     else:
-        if mixing is None:
+        if mixing_ratio is None:
             layer_p, layer_virttemp = get_layer(pressure, temperature, bottom=bottom,
                                                 depth=depth)
         else:
-            layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing,
+            layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing_ratio,
                                                      bottom=bottom, depth=depth)
             layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
@@ -2218,7 +2219,7 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     """
     mixing = mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure)
 
-    return thickness_hydrostatic(pressure, temperature, mixing=mixing, bottom=bottom,
+    return thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing, bottom=bottom,
                                  depth=depth)
 
 
@@ -2460,7 +2461,7 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
 @exporter.export
 @preprocess_xarray
 @check_units('[length]/[time]', '[pressure]', '[temperature]')
-def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
+def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
     r"""Calculate omega from w assuming hydrostatic conditions.
 
     This function converts vertical velocity with respect to height
@@ -2472,7 +2473,7 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
     .. math:: \omega \simeq -\rho g w
 
     Density (:math:`\rho`) is calculated using the :func:`density` function,
-    from the given pressure and temperature. If `mixing` is given, the virtual
+    from the given pressure and temperature. If `mixing_ratio` is given, the virtual
     temperature correction is used, otherwise, dry air is assumed.
 
     Parameters
@@ -2483,8 +2484,8 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
         Total atmospheric pressure
     temperature: `pint.Quantity`
         Air temperature
-    mixing: `pint.Quantity`, optional
-        Mixing ratio of air
+    mixing_ratio: `pint.Quantity`, optional
+        Mixing_ratio ratio of air
 
     Returns
     -------
@@ -2496,14 +2497,14 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
     density, vertical_velocity
 
     """
-    rho = density(pressure, temperature, mixing)
-    return (- mpconsts.g * rho * w).to('Pa/s')
+    rho = density(pressure, temperature, mixing_ratio)
+    return (-mpconsts.g * rho * w).to('Pa/s')
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]/[time]', '[pressure]', '[temperature]')
-def vertical_velocity(omega, pressure, temperature, mixing=0):
+def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
     r"""Calculate w from omega assuming hydrostatic conditions.
 
     This function converts vertical velocity with respect to pressure
@@ -2518,7 +2519,7 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
     .. math:: w \simeq \frac{- \omega}{\rho g}
 
     Density (:math:`\rho`) is calculated using the :func:`density` function,
-    from the given pressure and temperature. If `mixing` is given, the virtual
+    from the given pressure and temperature. If `mixing_ratio` is given, the virtual
     temperature correction is used, otherwise, dry air is assumed.
 
     Parameters
@@ -2529,7 +2530,7 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
         Total atmospheric pressure
     temperature: `pint.Quantity`
         Air temperature
-    mixing: `pint.Quantity`, optional
+    mixing_ratio: `pint.Quantity`, optional
         Mixing ratio of air
 
     Returns
@@ -2542,7 +2543,7 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
     density, vertical_velocity_pressure
 
     """
-    rho = density(pressure, temperature, mixing)
+    rho = density(pressure, temperature, mixing_ratio)
     return (omega / (- mpconsts.g * rho)).to('m/s')
 
 
