@@ -503,7 +503,7 @@ def test_declarative_colored_barbs():
     panel = MapPanel()
     panel.layout = (1, 1, 1)
     panel.projection = ccrs.PlateCarree()
-    panel.area = 'ne'
+    panel.area = 'NE'
     panel.layers = ['states']
     panel.plots = [obs]
 

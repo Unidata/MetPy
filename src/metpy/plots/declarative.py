@@ -745,7 +745,7 @@ class MapPanel(Panel):
             elif self.area is not None:
                 # Try to look up if we have a string
                 if isinstance(self.area, str):
-                    area = _areas[self.area]
+                    area = _areas[self.area.lower()]
                 # Otherwise, assume we have a tuple to use as the extent
                 else:
                     area = self.area
