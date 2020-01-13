@@ -258,7 +258,7 @@ def tangential_component(data_x, data_y, index='index'):
 
 @exporter.export
 @check_matching_coordinates
-def absolute_momentum(u_wind, v_wind, index='index'):
+def absolute_momentum(u, v, index='index'):
     r"""Calculate cross-sectional absolute momentum (also called pseudoangular momentum).
 
     As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is
@@ -276,9 +276,9 @@ def absolute_momentum(u_wind, v_wind, index='index'):
 
     Parameters
     ----------
-    u_wind : `xarray.DataArray`
+    u : `xarray.DataArray`
         The input DataArray of the x-component (in terms of data projection) of the wind.
-    v_wind : `xarray.DataArray`
+    v : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the wind.
 
     Returns
@@ -288,11 +288,11 @@ def absolute_momentum(u_wind, v_wind, index='index'):
 
     Notes
     -----
-    The coordinates of `u_wind` and `v_wind` must match.
+    The coordinates of `u` and `v` must match.
 
     """
     # Get the normal component of the wind
-    norm_wind = normal_component(u_wind, v_wind, index=index)
+    norm_wind = normal_component(u, v, index=index)
     norm_wind.metpy.convert_units('m/s')
 
     # Get other pieces of calculation (all as ndarrays matching shape of norm_wind)
