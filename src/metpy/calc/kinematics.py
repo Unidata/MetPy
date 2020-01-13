@@ -601,7 +601,7 @@ def storm_relative_helicity(heights, u, v, depth, *, bottom=0 * units.m,
 @exporter.export
 @preprocess_xarray
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
+def absolute_vorticity(u, v, dx, dy, latitude, dim_order='yx'):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
@@ -616,8 +616,8 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
     dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    lats : (M, N) ndarray
-        latitudes of the wind data in radians or with appropriate unit information attached
+    latitude : (M, N) ndarray
+        latitude of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
@@ -630,7 +630,7 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    f = coriolis_parameter(lats)
+    f = coriolis_parameter(latitude)
     relative_vorticity = vorticity(u, v, dx, dy, dim_order=dim_order)
     return relative_vorticity + f
 
@@ -639,7 +639,7 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
 @preprocess_xarray
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats):
+def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, latitude):
     r"""Calculate the baroclinic potential vorticity.
 
     .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
@@ -664,8 +664,8 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
     dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    lats : (M, N) ndarray
-        latitudes of the wind data in radians or with appropriate unit information attached
+    latitude : (M, N) ndarray
+        latitude of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
@@ -695,7 +695,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
         raise ValueError('Length of potential temperature along the pressure axis '
                          '{} must be at least 3.'.format(-3))
 
-    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order='yx')
+    avor = absolute_vorticity(u, v, dx, dy, latitude, dim_order='yx')
     dthtadp = first_derivative(potential_temperature, x=pressure, axis=-3)
 
     if ((np.shape(potential_temperature)[-2] == 1)
@@ -716,7 +716,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
+def potential_vorticity_barotropic(heights, u, v, dx, dy, latitude, dim_order='yx'):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
     .. math:: PV = \frac{f + \zeta}{H}
@@ -737,8 +737,8 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
     dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    lats : (M, N) ndarray
-        latitudes of the wind data in radians or with appropriate unit information attached
+    latitude : (M, N) ndarray
+        latitude of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
@@ -751,7 +751,7 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, dim_order=dim_order)
     return (avor / heights).to('meter**-1 * second**-1')
 
 
@@ -759,7 +759,7 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
 @preprocess_xarray
 @check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
              '[dimensionless]')
-def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
+def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude):
     r"""Calculate the inertial advective wind.
 
     .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
@@ -791,8 +791,8 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    lats : (M, N) ndarray
-        latitudes of the wind data in radians or with appropriate unit information attached
+    latitude : (M, N) ndarray
+        latitude of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
@@ -811,7 +811,7 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    f = coriolis_parameter(lats)
+    f = coriolis_parameter(latitude)
 
     dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(-2, -1))
     dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(-2, -1))
