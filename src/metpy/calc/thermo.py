@@ -864,7 +864,7 @@ def dewpoint(e):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[pressure]', '[dimensionless]')
-def mixing_ratio(part_press, tot_press, molecular_weight_ratio=mpconsts.epsilon):
+def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate the mixing ratio of a gas.
 
     This calculates mixing ratio given its partial pressure and the total pressure of
@@ -873,9 +873,9 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=mpconsts.epsilon)
 
     Parameters
     ----------
-    part_press : `pint.Quantity`
+    partial_press : `pint.Quantity`
         Partial pressure of the constituent gas
-    tot_press : `pint.Quantity`
+    total_press : `pint.Quantity`
         Total air pressure
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
@@ -899,14 +899,14 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=mpconsts.epsilon)
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return (molecular_weight_ratio * part_press
-            / (tot_press - part_press)).to('dimensionless')
+    return (molecular_weight_ratio * partial_press
+            / (total_press - partial_press)).to('dimensionless')
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]')
-def saturation_mixing_ratio(tot_press, temperature):
+def saturation_mixing_ratio(total_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
 
     This calculation is given total pressure and the temperature. The implementation
@@ -914,7 +914,7 @@ def saturation_mixing_ratio(tot_press, temperature):
 
     Parameters
     ----------
-    tot_press: `pint.Quantity`
+    total_press: `pint.Quantity`
         Total atmospheric pressure
     temperature: `pint.Quantity`
         air temperature
@@ -925,7 +925,7 @@ def saturation_mixing_ratio(tot_press, temperature):
         The saturation mixing ratio, dimensionless
 
     """
-    return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
+    return mixing_ratio(saturation_vapor_pressure(temperature), total_press)
 
 
 @exporter.export
