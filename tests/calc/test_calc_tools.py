@@ -5,6 +5,7 @@
 
 from collections import namedtuple
 
+import cartopy.crs as ccrs
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
@@ -988,6 +989,75 @@ def test_grid_deltas_from_dataarray_xy(test_da_xy):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
+def test_grid_deltas_from_dataarray_actual_xy(test_da_xy):
+    """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
+    # Construct lon/lat coordinates
+    y, x = xr.broadcast(*test_da_xy.metpy.coordinates('y', 'x'))
+    lonlat = (ccrs.Geodetic(test_da_xy.metpy.cartopy_globe)
+              .transform_points(test_da_xy.metpy.cartopy_crs, x.values, y.values))
+    lon = lonlat[..., 0]
+    lat = lonlat[..., 1]
+    test_da_xy = test_da_xy.assign_coords(
+        longitude=xr.DataArray(lon, dims=('y', 'x'), attrs={'units': 'degrees_east'}),
+        latitude=xr.DataArray(lat, dims=('y', 'x'), attrs={'units': 'degrees_north'}))
+
+    # Actually test calculation
+    dx, dy = grid_deltas_from_dataarray(test_da_xy, kind='actual')
+    true_dx = [[[[494426.3249766, 493977.6028005, 493044.0656467],
+                 [498740.2046073, 498474.9771064, 497891.6588559],
+                 [500276.2649627, 500256.3440237, 500139.9484845],
+                 [498740.6956936, 499045.0391707, 499542.7244501]]]] * units.m
+    true_dy = [[[[496862.4106337, 496685.4729999, 496132.0732114, 495137.8882404],
+                 [499774.9676486, 499706.3354977, 499467.5546773, 498965.2587818],
+                 [499750.8962991, 499826.2263137, 500004.4977747, 500150.9897759]]]] * units.m
+    assert_array_almost_equal(dx, true_dx, 3)
+    assert_array_almost_equal(dy, true_dy, 3)
+
+
+def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
+    """Test grid_deltas_from_dataarray with a lonlat grid and kind='nominal'."""
+    dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
+    true_dx = [[[3.333333] * 3]] * units.degrees
+    true_dy = [[[3.333333]] * 3] * units.degrees
+    assert_array_almost_equal(dx, true_dx, 5)
+    assert_array_almost_equal(dy, true_dy, 5)
+
+
+def test_grid_deltas_from_dataarray_lonlat_assumed_order():
+    """Test grid_deltas_from_dataarray when dim order must be assumed."""
+    # Create test dataarray
+    lat, lon = np.meshgrid(np.array([38., 40., 42]), np.array([263., 265., 267.]))
+    test_da = xr.DataArray(
+        np.linspace(300, 250, 3 * 3).reshape((3, 3)),
+        name='temperature',
+        dims=('dim_0', 'dim_1'),
+        coords={
+            'lat': xr.DataArray(lat, dims=('dim_0', 'dim_1'),
+                                attrs={'units': 'degrees_north'}),
+            'lon': xr.DataArray(lon, dims=('dim_0', 'dim_1'), attrs={'units': 'degrees_east'})
+        },
+        attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
+
+    # Run and check for warning
+    with pytest.warns(UserWarning, match=r'y and x dimensions unable to be identified.*'):
+        dx, dy = grid_deltas_from_dataarray(test_da)
+
+    # Check results
+    true_dx = [[222031.0111961, 222107.8492205],
+               [222031.0111961, 222107.8492205],
+               [222031.0111961, 222107.8492205]] * units.m
+    true_dy = [[175661.5413976, 170784.1311091, 165697.7563223],
+               [175661.5413976, 170784.1311091, 165697.7563223]] * units.m
+    assert_array_almost_equal(dx, true_dx, 5)
+    assert_array_almost_equal(dy, true_dy, 5)
+
+
+def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
+    """Test grid_deltas_from_dataarray when kind is invalid."""
+    with pytest.raises(ValueError):
+        grid_deltas_from_dataarray(test_da_xy, kind='invalid')
+
+
 def test_first_derivative_xarray_lonlat(test_da_lonlat):
     """Test first derivative with an xarray.DataArray on a lonlat grid in each axis usage."""
     deriv = first_derivative(test_da_lonlat, axis='lon')  # dimension coordinate name
@@ -1106,6 +1176,35 @@ def test_gradient_xarray_implicit_axes(test_da_xy):
 
     truth_y = xr.full_like(data, -2.797203e-06)
     truth_y.attrs['units'] = 'kelvin / meter'
+
+    xr.testing.assert_allclose(deriv_x, truth_x)
+    assert deriv_x.metpy.units == truth_x.metpy.units
+
+    xr.testing.assert_allclose(deriv_y, truth_y)
+    assert deriv_y.metpy.units == truth_y.metpy.units
+
+
+def test_gradient_xarray_implicit_axes_transposed(test_da_lonlat):
+    """Test the 2D gradient with no axes specified but in x/y order."""
+    test_da = test_da_lonlat.isel(isobaric=0).transpose('lon', 'lat')
+    deriv_x, deriv_y = gradient(test_da)
+
+    truth_x = xr.DataArray(
+        np.array([[-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
+                  [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
+                  [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
+                  [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06]]),
+        dims=test_da.dims,
+        coords=test_da.coords,
+        attrs={'units': 'kelvin / meter'})
+    truth_y = xr.DataArray(
+        np.array([[-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
+                  [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
+                  [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
+                  [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05]]),
+        dims=test_da.dims,
+        coords=test_da.coords,
+        attrs={'units': 'kelvin / meter'})
 
     xr.testing.assert_allclose(deriv_x, truth_x)
     assert deriv_x.metpy.units == truth_x.metpy.units

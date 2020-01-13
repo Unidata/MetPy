@@ -4,6 +4,7 @@
 """Contains a collection of generally useful calculation tools."""
 import functools
 from operator import itemgetter
+import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
@@ -654,7 +655,7 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     good = np.empty(indices_shape, dtype=np.bool)
 
     # Used to put the output in the proper location
-    store_slice = [slice(None)] * arr.ndim
+    take = make_take(arr.ndim, axis)
 
     # Loop over all of the values and for each, see where the value would be found from a
     # linear search
@@ -684,9 +685,9 @@ def find_bounding_indices(arr, values, axis, from_below=True):
         index[~good_search] = 0
 
         # Put the results in the proper slice
-        store_slice[axis] = level_index
-        indices[tuple(store_slice)] = index
-        good[tuple(store_slice)] = good_search
+        store_slice = take(level_index)
+        indices[store_slice] = index
+        good[store_slice] = good_search
 
     # Create index values for broadcasting arrays
     above = broadcast_indices(arr, indices, arr.ndim, axis)
@@ -739,20 +740,31 @@ def _less_or_close(a, value, **kwargs):
     return (a < value) | np.isclose(a, value, **kwargs)
 
 
+def make_take(ndims, slice_dim):
+    """Generate a take function to index in a particular dimension."""
+    def take(indexer):
+        return tuple(indexer if slice_dim % ndims == i else slice(None)  # noqa: S001
+                     for i in range(ndims))
+    return take
+
+
 @exporter.export
 @preprocess_xarray
-def lat_lon_grid_deltas(longitude, latitude, **kwargs):
-    r"""Calculate the delta between grid points that are in a latitude/longitude format.
-
-    Calculate the signed delta distance between grid points when the grid spacing is defined by
-    delta lat/lon rather than delta x/y
+def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
+    r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
     Parameters
     ----------
     longitude : array_like
-        array of longitudes defining the grid
+        array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in
+        degrees.
     latitude : array_like
-        array of latitudes defining the grid
+        array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
+        degrees.
+    y_dim : int
+        axis number for the y dimesion, defaults to -2.
+    x_dim: int
+        axis number for the x dimension, defaults to -1.
     kwargs
         Other keyword arguments to pass to :class:`~pyproj.Geod`
 
@@ -765,7 +777,8 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     Notes
     -----
     Accepts 1D, 2D, or higher arrays for latitude and longitude
-    Assumes [..., Y, X] for >=2 dimensional arrays
+    Assumes [..., Y, X] dimension order for input and output, unless keyword arguments `y_dim`
+    and `x_dim` are otherwise specified.
 
     """
     from pyproj import Geod
@@ -786,35 +799,48 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
         longitude = np.asarray(longitude)
         latitude = np.asarray(latitude)
 
+    # Determine dimension order for offset slicing
+    take_y = make_take(latitude.ndim, y_dim)
+    take_x = make_take(latitude.ndim, x_dim)
+
     geod_args = {'ellps': 'sphere'}
     if kwargs:
         geod_args = kwargs
 
     g = Geod(**geod_args)
 
-    forward_az, _, dy = g.inv(longitude[..., :-1, :], latitude[..., :-1, :],
-                              longitude[..., 1:, :], latitude[..., 1:, :])
+    forward_az, _, dy = g.inv(longitude[take_y(slice(None, -1))],
+                              latitude[take_y(slice(None, -1))],
+                              longitude[take_y(slice(1, None))],
+                              latitude[take_y(slice(1, None))])
     dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
 
-    forward_az, _, dx = g.inv(longitude[..., :, :-1], latitude[..., :, :-1],
-                              longitude[..., :, 1:], latitude[..., :, 1:])
+    forward_az, _, dx = g.inv(longitude[take_x(slice(None, -1))],
+                              latitude[take_x(slice(None, -1))],
+                              longitude[take_x(slice(1, None))],
+                              latitude[take_x(slice(1, None))])
     dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
     return dx * units.meter, dy * units.meter
 
 
 @exporter.export
-def grid_deltas_from_dataarray(f):
+def grid_deltas_from_dataarray(f, kind='default'):
     """Calculate the horizontal deltas between grid points of a DataArray.
 
     Calculate the signed delta distance between grid points of a DataArray in the horizontal
-    directions, whether the grid is lat/lon or x/y.
+    directions, using actual (real distance) or nominal (in projection space) deltas.
 
     Parameters
     ----------
     f : `xarray.DataArray`
-        Parsed DataArray on a latitude/longitude grid, in (..., lat, lon) or (..., y, x)
-        dimension order
+        Parsed DataArray (MetPy's crs coordinate must be available for kind="actual")
+    kind : str
+        Type of grid delta to calculate. "actual" returns true distances as calculated from
+        longitude and latitude via `lat_lon_grid_deltas`. "nominal" returns horizontal
+        differences in the data's coordinate space, either in degrees (for lat/lon CRS) or
+        meters (for y/x CRS). "default" behaves like "actual" for datasets with a lat/lon CRS
+        and like "nominal" for all others. Defaults to "default".
 
     Returns
     -------
@@ -827,17 +853,45 @@ def grid_deltas_from_dataarray(f):
     lat_lon_grid_deltas
 
     """
-    if f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
-        dx, dy = lat_lon_grid_deltas(f.metpy.x, f.metpy.y,
-                                     initstring=f.metpy.cartopy_crs.proj4_init)
-        slc_x = slc_y = tuple([np.newaxis] * (f.ndim - 2) + [slice(None)] * 2)
+    # Determine behavior
+    if kind == 'default' and f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
+        kind = 'actual'
+    elif kind == 'default':
+        kind = 'nominal'
+    elif kind not in ('actual', 'nominal'):
+        raise ValueError('"kind" argument must be specified as "default", "actual", or '
+                         '"nominal"')
+
+    if kind == 'actual':
+        # Get latitude/longitude coordinates and find dim order
+        latitude, longitude = xr.broadcast(*f.metpy.coordinates('latitude', 'longitude'))
+        try:
+            y_dim = latitude.metpy.find_axis_number('y')
+            x_dim = latitude.metpy.find_axis_number('x')
+        except AttributeError:
+            warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
+                          'dimension order.')
+            y_dim, x_dim = -2, -1
+        # Obtain grid deltas as xarray Variables
+        (dx_var, dx_units), (dy_var, dy_units) = (
+            (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
+            for deltas in lat_lon_grid_deltas(longitude, latitude, y_dim=y_dim, x_dim=x_dim,
+                                              initstring=f.metpy.cartopy_crs.proj4_init))
     else:
-        dx = np.diff(f.metpy.x.metpy.unit_array.to('m').magnitude) * units('m')
-        dy = np.diff(f.metpy.y.metpy.unit_array.to('m').magnitude) * units('m')
-        slc = [np.newaxis] * (f.ndim - 2)
-        slc_x = tuple(slc + [np.newaxis, slice(None)])
-        slc_y = tuple(slc + [slice(None), np.newaxis])
-    return dx[slc_x], dy[slc_y]
+        # Obtain y/x coordinate differences
+        y, x = f.metpy.coordinates('y', 'x')
+        dx_var = x.diff(x.dims[0]).variable
+        dx_units = units(x.attrs.get('units'))
+        dy_var = y.diff(y.dims[0]).variable
+        dy_units = units(y.attrs.get('units'))
+
+    # Broadcast to input and attach units
+    dx = dx_var.set_dims(f.dims, shape=[dx_var.sizes[dim] if dim in dx_var.dims else 1
+                                        for dim in f.dims]).data * dx_units
+    dy = dy_var.set_dims(f.dims, shape=[dy_var.sizes[dim] if dim in dy_var.dims else 1
+                                        for dim in f.dims]).data * dy_units
+
+    return dx, dy
 
 
 def xarray_derivative_wrap(func):
@@ -911,7 +965,8 @@ def first_derivative(f, **kwargs):
         integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate
         dimension name or the axis type) or integer (referring to axis number), unless using
         implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults
-        to 0.
+        to 0. For reference, the current standard axis types are 'time', 'vertical', 'y', and
+        'x'.
     x : array-like, optional
         The coordinate values corresponding to the grid points in `f`.
     delta : array-like, optional
@@ -929,61 +984,46 @@ def first_derivative(f, **kwargs):
 
     """
     n, axis, delta = _process_deriv_args(f, kwargs)
-
-    # create slice objects --- initially all are [:, :, ..., :]
-    slice0 = [slice(None)] * n
-    slice1 = [slice(None)] * n
-    slice2 = [slice(None)] * n
-    delta_slice0 = [slice(None)] * n
-    delta_slice1 = [slice(None)] * n
+    take = make_take(n, axis)
 
     # First handle centered case
-    slice0[axis] = slice(None, -2)
-    slice1[axis] = slice(1, -1)
-    slice2[axis] = slice(2, None)
-    delta_slice0[axis] = slice(None, -1)
-    delta_slice1[axis] = slice(1, None)
+    slice0 = take(slice(None, -2))
+    slice1 = take(slice(1, -1))
+    slice2 = take(slice(2, None))
+    delta_slice0 = take(slice(None, -1))
+    delta_slice1 = take(slice(1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    delta_diff = delta[tuple(delta_slice1)] - delta[tuple(delta_slice0)]
-    center = (- delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)])
-              * f[tuple(slice0)]
-              + delta_diff / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-              * f[tuple(slice1)]
-              + delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)])
-              * f[tuple(slice2)])
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    delta_diff = delta[delta_slice1] - delta[delta_slice0]
+    center = (- delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
+              + delta_diff / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+              + delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
 
     # Fill in "left" edge with forward difference
-    slice0[axis] = slice(None, 1)
-    slice1[axis] = slice(1, 2)
-    slice2[axis] = slice(2, 3)
-    delta_slice0[axis] = slice(None, 1)
-    delta_slice1[axis] = slice(1, 2)
+    slice0 = take(slice(None, 1))
+    slice1 = take(slice(1, 2))
+    slice2 = take(slice(2, 3))
+    delta_slice0 = take(slice(None, 1))
+    delta_slice1 = take(slice(1, 2))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    big_delta = combined_delta + delta[tuple(delta_slice0)]
-    left = (- big_delta / (combined_delta * delta[tuple(delta_slice0)])
-            * f[tuple(slice0)]
-            + combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-            * f[tuple(slice1)]
-            - delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)])
-            * f[tuple(slice2)])
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    big_delta = combined_delta + delta[delta_slice0]
+    left = (- big_delta / (combined_delta * delta[delta_slice0]) * f[slice0]
+            + combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+            - delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
 
     # Now the "right" edge with backward difference
-    slice0[axis] = slice(-3, -2)
-    slice1[axis] = slice(-2, -1)
-    slice2[axis] = slice(-1, None)
-    delta_slice0[axis] = slice(-2, -1)
-    delta_slice1[axis] = slice(-1, None)
+    slice0 = take(slice(-3, -2))
+    slice1 = take(slice(-2, -1))
+    slice2 = take(slice(-1, None))
+    delta_slice0 = take(slice(-2, -1))
+    delta_slice1 = take(slice(-1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    big_delta = combined_delta + delta[tuple(delta_slice1)]
-    right = (delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)])
-             * f[tuple(slice0)]
-             - combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-             * f[tuple(slice1)]
-             + big_delta / (combined_delta * delta[tuple(delta_slice1)])
-             * f[tuple(slice2)])
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    big_delta = combined_delta + delta[delta_slice1]
+    right = (delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
+             - combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+             + big_delta / (combined_delta * delta[delta_slice1]) * f[slice2])
 
     return concatenate((left, center, right), axis=axis)
 
@@ -1015,7 +1055,8 @@ def second_derivative(f, **kwargs):
         integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate
         dimension name or the axis type) or integer (referring to axis number), unless using
         implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults
-        to 0.
+        to 0. For reference, the current standard axis types are 'time', 'vertical', 'y', and
+        'x'.
     x : array-like, optional
         The coordinate values corresponding to the grid points in `f`.
     delta : array-like, optional
@@ -1033,50 +1074,43 @@ def second_derivative(f, **kwargs):
 
     """
     n, axis, delta = _process_deriv_args(f, kwargs)
-
-    # create slice objects --- initially all are [:, :, ..., :]
-    slice0 = [slice(None)] * n
-    slice1 = [slice(None)] * n
-    slice2 = [slice(None)] * n
-    delta_slice0 = [slice(None)] * n
-    delta_slice1 = [slice(None)] * n
+    take = make_take(n, axis)
 
     # First handle centered case
-    slice0[axis] = slice(None, -2)
-    slice1[axis] = slice(1, -1)
-    slice2[axis] = slice(2, None)
-    delta_slice0[axis] = slice(None, -1)
-    delta_slice1[axis] = slice(1, None)
+    slice0 = take(slice(None, -2))
+    slice1 = take(slice(1, -1))
+    slice2 = take(slice(2, None))
+    delta_slice0 = take(slice(None, -1))
+    delta_slice1 = take(slice(1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    center = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
-                  - f[tuple(slice1)] / (delta[tuple(delta_slice0)]
-                                        * delta[tuple(delta_slice1)])
-                  + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    center = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
+                  - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+                  + f[slice2] / (combined_delta * delta[delta_slice1]))
 
     # Fill in "left" edge
-    slice0[axis] = slice(None, 1)
-    slice1[axis] = slice(1, 2)
-    slice2[axis] = slice(2, 3)
-    delta_slice0[axis] = slice(None, 1)
-    delta_slice1[axis] = slice(1, 2)
+    slice0 = take(slice(None, 1))
+    slice1 = take(slice(1, 2))
+    slice2 = take(slice(2, 3))
+    delta_slice0 = take(slice(None, 1))
+    delta_slice1 = take(slice(1, 2))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    left = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
-                - f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-                + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    left = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
+                - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+                + f[slice2] / (combined_delta * delta[delta_slice1]))
 
     # Now the "right" edge
-    slice0[axis] = slice(-3, -2)
-    slice1[axis] = slice(-2, -1)
-    slice2[axis] = slice(-1, None)
-    delta_slice0[axis] = slice(-2, -1)
-    delta_slice1[axis] = slice(-1, None)
+    slice0 = take(slice(-3, -2))
+    slice1 = take(slice(-2, -1))
+    slice2 = take(slice(-1, None))
+    delta_slice0 = take(slice(-2, -1))
+    delta_slice1 = take(slice(-1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    right = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
-                 - f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-                 + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    right = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
+                 - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+                 + f[slice2] / (combined_delta * delta[delta_slice1]))
 
     return concatenate((left, center, right), axis=axis)
 
@@ -1110,7 +1144,9 @@ def gradient(f, **kwargs):
         `pint.Quantity` is not used) or integers that specify the array axes along which to
         take the derivatives. Defaults to all axes of `f`. If given, and used with
         `coordinates` or `deltas`, its length must be less than or equal to that of the
-        `coordinates` or `deltas` given.
+        `coordinates` or `deltas` given. In general, each axis can be an axis number
+        (integer), dimension coordinate name (string) or a standard axis type (string). The
+        current standard axis types are 'time', 'vertical', 'y', and 'x'.
 
     Returns
     -------
@@ -1159,7 +1195,9 @@ def laplacian(f, **kwargs):
         `pint.Quantity` is not used) or integers that specify the array axes along which to
         take the derivatives. Defaults to all axes of `f`. If given, and used with
         `coordinates` or `deltas`, its length must be less than or equal to that of the
-        `coordinates` or `deltas` given.
+        `coordinates` or `deltas` given. In general, each axis can be an axis number
+        (integer), dimension coordinate name (string) or a standard axis type (string). The
+        current standard axis types are 'time', 'vertical', 'y', and 'x'.
 
     Returns
     -------
