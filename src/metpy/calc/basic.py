@@ -392,7 +392,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
 @preprocess_xarray
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
-    r"""Convert pressure data to heights using the U.S. standard atmosphere [NOAA1976]_.
+    r"""Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
 

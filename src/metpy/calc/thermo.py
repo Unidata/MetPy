@@ -1595,7 +1595,7 @@ def _find_append_zero_crossings(x, y):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
+def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
                          bottom=None, depth=300 * units.hPa):
     """
     Determine the most unstable parcel in a layer.
@@ -1611,7 +1611,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
         Atmospheric temperature profile
     dewpoint: `pint.Quantity`
         Atmospheric dewpoint profile
-    heights: `pint.Quantity`, optional
+    height: `pint.Quantity`, optional
         Atmospheric height profile. Standard atmosphere assumed when None (the default).
     bottom: `pint.Quantity`, optional
         Bottom of the layer to consider for the calculation in pressure or height.
@@ -1633,7 +1633,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
 
     """
     p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
-                                           depth=depth, heights=heights, interpolate=False)
+                                           depth=depth, height=height, interpolate=False)
     theta_e = equivalent_potential_temperature(p_layer, t_layer, td_layer)
     max_idx = np.argmax(theta_e)
     return p_layer[max_idx], t_layer[max_idx], td_layer[max_idx], max_idx
@@ -1923,7 +1923,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
-                 heights=None, bottom=None, depth=100 * units.hPa, interpolate=True):
+                 height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
     r"""Calculate the properties of a parcel mixed from a layer.
 
     Determines the properties of an air parcel that is the result of complete mixing of a
@@ -1939,7 +1939,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
         Atmospheric dewpoint profile
     parcel_start_pressure : `pint.Quantity`, optional
         Pressure at which the mixed parcel should begin (default None)
-    heights: `pint.Quantity`, optional
+    height: `pint.Quantity`, optional
         Atmospheric heights corresponding to the given pressures (default None)
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure
@@ -1970,7 +1970,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
 
     # Mix the variables over the layer
     mean_theta, mean_mixing_ratio = mixed_layer(p, theta, mixing_ratio, bottom=bottom,
-                                                heights=heights, depth=depth,
+                                                height=height, depth=depth,
                                                 interpolate=interpolate)
 
     # Convert back to temperature
@@ -1987,7 +1987,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def mixed_layer(p, *args, heights=None, bottom=None, depth=100 * units.hPa, interpolate=True):
+def mixed_layer(p, *args, height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
     r"""Mix variable(s) over a layer, yielding a mass-weighted average.
 
     This function will integrate a data variable with respect to pressure and determine the
@@ -1999,7 +1999,7 @@ def mixed_layer(p, *args, heights=None, bottom=None, depth=100 * units.hPa, inte
         Atmospheric pressure profile
     datavar : array-like
         Atmospheric variable measured at the given pressures
-    heights: array-like, optional
+    height: array-like, optional
         Atmospheric heights corresponding to the given pressures (default None)
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure
@@ -2016,7 +2016,7 @@ def mixed_layer(p, *args, heights=None, bottom=None, depth=100 * units.hPa, inte
         The mixed value of the data variable.
 
     """
-    layer = get_layer(p, *args, heights=heights, bottom=bottom,
+    layer = get_layer(p, *args, height=height, bottom=bottom,
                       depth=depth, interpolate=interpolate)
     p_layer = layer[0]
     datavars_layer = layer[1:]
@@ -2032,7 +2032,7 @@ def mixed_layer(p, *args, heights=None, bottom=None, depth=100 * units.hPa, inte
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[temperature]')
-def dry_static_energy(heights, temperature):
+def dry_static_energy(height, temperature):
     r"""Calculate the dry static energy of parcels.
 
     This function will calculate the dry static energy following the first two terms of
@@ -2047,7 +2047,7 @@ def dry_static_energy(heights, temperature):
 
     Parameters
     ----------
-    heights : `pint.Quantity`
+    height : `pint.Quantity`
         Atmospheric height
     temperature : `pint.Quantity`
         Air temperature
@@ -2058,13 +2058,13 @@ def dry_static_energy(heights, temperature):
         The dry static energy
 
     """
-    return (mpconsts.g * heights + mpconsts.Cp_d * temperature).to('kJ/kg')
+    return (mpconsts.g * height + mpconsts.Cp_d * temperature).to('kJ/kg')
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[temperature]', '[dimensionless]')
-def moist_static_energy(heights, temperature, specific_humidity):
+def moist_static_energy(height, temperature, specific_humidity):
     r"""Calculate the moist static energy of parcels.
 
     This function will calculate the moist static energy following
@@ -2080,7 +2080,7 @@ def moist_static_energy(heights, temperature, specific_humidity):
 
     Parameters
     ----------
-    heights : `pint.Quantity`
+    height : `pint.Quantity`
         Atmospheric height
     temperature : `pint.Quantity`
         Air temperature
@@ -2093,7 +2093,7 @@ def moist_static_energy(heights, temperature, specific_humidity):
         The moist static energy
 
     """
-    return (dry_static_energy(heights, temperature)
+    return (dry_static_energy(height, temperature)
             + mpconsts.Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
 
 
@@ -2222,7 +2222,7 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[temperature]')
-def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
+def brunt_vaisala_frequency_squared(height, potential_temperature, axis=0):
     r"""Calculate the square of the Brunt-Vaisala frequency.
 
     Brunt-Vaisala frequency squared (a measure of atmospheric stability) is given by the
@@ -2234,7 +2234,7 @@ def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
 
     Parameters
     ----------
-    heights : `pint.Quantity`
+    height : `pint.Quantity`
         One-dimensional profile of atmospheric height
     potential_temperature : `pint.Quantity`
         Atmospheric potential temperature
@@ -2256,13 +2256,13 @@ def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
 
     # Calculate and return the square of Brunt-Vaisala frequency
     return mpconsts.g / potential_temperature * first_derivative(potential_temperature,
-                                                                 x=heights, axis=axis)
+                                                                 x=height, axis=axis)
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[temperature]')
-def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
+def brunt_vaisala_frequency(height, potential_temperature, axis=0):
     r"""Calculate the Brunt-Vaisala frequency.
 
     This function will calculate the Brunt-Vaisala frequency as follows:
@@ -2272,11 +2272,11 @@ def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
     This formula based off of Equations 3.75 and 3.77 in [Hobbs2006]_.
 
     This function is a wrapper for `brunt_vaisala_frequency_squared` that filters out negative
-    (unstable) quanties and takes the square root.
+    (unstable) quantities and takes the square root.
 
     Parameters
     ----------
-    heights : `pint.Quantity`
+    height : `pint.Quantity`
         One-dimensional profile of atmospheric height
     potential_temperature : `pint.Quantity`
         Atmospheric potential temperature
@@ -2293,7 +2293,7 @@ def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
     brunt_vaisala_frequency_squared, brunt_vaisala_period, potential_temperature
 
     """
-    bv_freq_squared = brunt_vaisala_frequency_squared(heights, potential_temperature,
+    bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
                                                       axis=axis)
     bv_freq_squared[bv_freq_squared.magnitude < 0] = np.nan
 
@@ -2303,11 +2303,11 @@ def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
 @exporter.export
 @preprocess_xarray
 @check_units('[length]', '[temperature]')
-def brunt_vaisala_period(heights, potential_temperature, axis=0):
+def brunt_vaisala_period(height, potential_temperature, axis=0):
     r"""Calculate the Brunt-Vaisala period.
 
     This function is a helper function for `brunt_vaisala_frequency` that calculates the
-    period of oscilation as in Exercise 3.13 of [Hobbs2006]_:
+    period of oscillation as in Exercise 3.13 of [Hobbs2006]_:
 
     .. math:: \tau = \frac{2\pi}{N}
 
@@ -2315,7 +2315,7 @@ def brunt_vaisala_period(heights, potential_temperature, axis=0):
 
     Parameters
     ----------
-    heights : `pint.Quantity`
+    height : `pint.Quantity`
         One-dimensional profile of atmospheric height
     potential_temperature : pint.Quantity`
         Atmospheric potential temperature
@@ -2332,7 +2332,7 @@ def brunt_vaisala_period(heights, potential_temperature, axis=0):
     brunt_vaisala_frequency, brunt_vaisala_frequency_squared, potential_temperature
 
     """
-    bv_freq_squared = brunt_vaisala_frequency_squared(heights, potential_temperature,
+    bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
                                                       axis=axis)
     bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
 
