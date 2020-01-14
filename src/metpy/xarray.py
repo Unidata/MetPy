@@ -20,6 +20,7 @@ import logging
 import re
 import warnings
 
+import cartopy.crs as ccrs
 import numpy as np
 import xarray as xr
 
@@ -238,8 +239,10 @@ class MetPyDataArrayAccessor:
             return
 
         # Ambiguous axis, raise warning and do not parse
-        warnings.warn('More than one ' + axis + ' coordinate present for variable "'
-                      + self._data_array.name + '".')
+        varname = (' "' + self._data_array.name + '"'
+                   if self._data_array.name is not None else '')
+        warnings.warn('More than one ' + axis + ' coordinate present for variable'
+                      + varname + '.')
         coord_lists[axis] = []
 
     def _metpy_axis_search(self, metpy_axis):
@@ -438,6 +441,98 @@ class MetPyDataArrayAccessor:
         indexers = _reassign_quantity_indexer(self._data_array, indexers)
         return self._data_array.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
+    def assign_crs(self, cf_attributes=None, **kwargs):
+        """Assign a CRS to this DataArray based on CF projection attributes.
+
+        Parameters
+        ----------
+        cf_attributes : dict, optional
+            Dictionary of CF projection attributes
+        kwargs : optional
+            CF projection attributes specified as keyword arguments
+
+        Returns
+        -------
+        `xarray.DataArray`
+            New xarray DataArray with CRS coordinate assigned
+
+        Notes
+        -----
+        CF projection arguments should be supplied as a dictionary or collection of kwargs,
+        but not both.
+
+        """
+        return _assign_crs(self._data_array, cf_attributes, kwargs)
+
+    def assign_latitude_longitude(self, force=False):
+        """Assign latitude and longitude coordinates derived from y and x coordinates.
+
+        Parameters
+        ----------
+        force : bool, optional
+            If force is true, overwrite latitude and longitude coordinates if they exist,
+            otherwise, raise a RuntimeError if such coordinates exist.
+
+        Returns
+        -------
+        `xarray.DataArray`
+            New xarray DataArray with latitude and longtiude auxilary coordinates assigned.
+
+        Notes
+        -----
+        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        transformations.
+
+        """
+        # Check for existing latitude and longitude coords
+        if (not force and (self._metpy_axis_search('latitude') is not None
+                           or self._metpy_axis_search('longitude'))):
+            raise RuntimeError('Latitude/longitude coordinate(s) are present. If you wish to '
+                               'overwrite these, specify force=True.')
+
+        # Build new latitude and longitude DataArrays
+        latitude, longitude = _build_latitude_longitude(self._data_array)
+
+        # Assign new coordinates, refresh MetPy's parsed axis attribute, and return result
+        new_dataarray = self._data_array.assign_coords(latitude=latitude, longitude=longitude)
+        return new_dataarray.metpy.assign_coordinates(None)
+
+    def assign_y_x(self, force=False, tolerance=None):
+        """Assign y and x dimension coordinates derived from 2D latitude and longitude.
+
+        Parameters
+        ----------
+        force : bool, optional
+            If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
+            RuntimeError if such coordinates exist.
+        tolerance : `pint.Quantity`
+            Maximum range tolerated when collapsing projected y and x coordinates from 2D to
+            1D. Defaults to 1 meter.
+
+        Returns
+        -------
+        `xarray.DataArray`
+            New xarray DataArray with y and x dimension coordinates assigned.
+
+        Notes
+        -----
+        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        transformations.
+
+        """
+        # Check for existing latitude and longitude coords
+        if (not force and (self._metpy_axis_search('y') is not None
+                           or self._metpy_axis_search('x'))):
+            raise RuntimeError('y/x coordinate(s) are present. If you wish to overwrite '
+                               'these, specify force=True.')
+
+        # Build new y and x DataArrays
+        y, x = _build_y_x(self._data_array, tolerance)
+
+        # Assign new coordinates, refresh MetPy's parsed axis attribute, and return result
+        new_dataarray = self._data_array.assign_coords(**{y.name: y, x.name: x})
+        return new_dataarray.metpy.assign_coordinates(None)
+
 
 @xr.register_dataset_accessor('metpy')
 class MetPyDatasetAccessor:
@@ -569,6 +664,151 @@ class MetPyDatasetAccessor:
         indexers = _reassign_quantity_indexer(self._dataset, indexers)
         return self._dataset.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
+    def assign_crs(self, cf_attributes=None, **kwargs):
+        """Assign a CRS to this Datatset based on CF projection attributes.
+
+        Parameters
+        ----------
+        cf_attributes : dict, optional
+            Dictionary of CF projection attributes
+        kwargs : optional
+            CF projection attributes specified as keyword arguments
+
+        Returns
+        -------
+        `xarray.Dataset`
+            New xarray Dataset with CRS coordinate assigned
+
+        Notes
+        -----
+        CF projection arguments should be supplied as a dictionary or collection of kwargs,
+        but not both.
+
+        """
+        return _assign_crs(self._dataset, cf_attributes, kwargs)
+
+    def assign_latitude_longitude(self, force=False):
+        """Assign latitude and longitude coordinates derived from y and x coordinates.
+
+        Parameters
+        ----------
+        force : bool, optional
+            If force is true, overwrite latitude and longitude coordinates if they exist,
+            otherwise, raise a RuntimeError if such coordinates exist.
+
+        Returns
+        -------
+        `xarray.Dataset`
+            New xarray Dataset with latitude and longitude coordinates assigned to all
+            variables with y and x coordinates.
+
+        Notes
+        -----
+        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        transformations.
+
+        """
+        # Determine if there is a valid grid prototype from which to compute the coordinates,
+        # while also checking for existing lat/lon coords
+        grid_prototype = None
+        for data_var in self._dataset.data_vars.values():
+            if hasattr(data_var.metpy, 'y') and hasattr(data_var.metpy, 'x'):
+                if grid_prototype is None:
+                    grid_prototype = data_var
+                if (not force and (hasattr(data_var.metpy, 'latitude')
+                                   or hasattr(data_var.metpy, 'longitude'))):
+                    raise RuntimeError('Latitude/longitude coordinate(s) are present. If you '
+                                       'wish to overwrite these, specify force=True.')
+
+        # Calculate latitude and longitude from grid_prototype, if it exists, and assign
+        if grid_prototype is None:
+            warnings.warn('No latitude and longitude assigned since horizontal coordinates '
+                          'were not found')
+            return self._dataset
+        else:
+            latitude, longitude = _build_latitude_longitude(grid_prototype)
+            return self.assign_coords(latitude=latitude, longitude=longitude)
+
+    def assign_y_x(self, force=False, tolerance=None):
+        """Assign y and x dimension coordinates derived from 2D latitude and longitude.
+
+        Parameters
+        ----------
+        force : bool, optional
+            If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
+            RuntimeError if such coordinates exist.
+        tolerance : `pint.Quantity`
+            Maximum range tolerated when collapsing projected y and x coordinates from 2D to
+            1D. Defaults to 1 meter.
+
+        Returns
+        -------
+        `xarray.Dataset`
+            New xarray Dataset with y and x dimension coordinates assigned to all variables
+            with valid latitude and longitude coordinates.
+
+        Notes
+        -----
+        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        transformations.
+
+        """
+        # Determine if there is a valid grid prototype from which to compute the coordinates,
+        # while also checking for existing y and x coords
+        grid_prototype = None
+        for data_var in self._dataset.data_vars.values():
+            if hasattr(data_var.metpy, 'latitude') and hasattr(data_var.metpy, 'longitude'):
+                if grid_prototype is None:
+                    grid_prototype = data_var
+                if (not force and (hasattr(data_var.metpy, 'y')
+                                   or hasattr(data_var.metpy, 'x'))):
+                    raise RuntimeError('y/x coordinate(s) are present. If you wish to '
+                                       'overwrite these, specify force=True.')
+
+        # Calculate y and x from grid_prototype, if it exists, and assign
+        if grid_prototype is None:
+            warnings.warn('No y and x coordinates assigned since horizontal coordinates '
+                          'were not found')
+            return self._dataset
+        else:
+            y, x = _build_y_x(grid_prototype, tolerance)
+            return self._dataset.assign_coords(**{y.name: y, x.name: x})
+
+    def update_attribute(self, attribute, mapping):
+        """Update attribute of all Dataset variables.
+
+        Parameters
+        ----------
+        attribute : str,
+            Name of attribute to update
+        mapping : dict or callable
+            Either a dict, with keys as variable names and values as attribute values to set,
+            or a callable, which must accept one positional argument (variable name) and
+            arbitrary keyword arguments (all existing variable attributes). If a variable name
+            is not present/the callable returns None, the attribute will not be updated.
+
+        Returns
+        -------
+        `xarray.Dataset`
+            Dataset with attribute updated (modified in place, and returned to allow method
+            chaining)
+
+        """
+        # Make mapping uniform
+        if callable(mapping):
+            mapping_func = mapping
+        else:
+            def mapping_func(varname, **kwargs):
+                return mapping.get(varname, None)
+
+        # Apply across all variables
+        for varname in list(self._dataset.data_vars) + list(self._dataset.coords):
+            value = mapping_func(varname, **self._dataset[varname].attrs)
+            if value is not None:
+                self._dataset[varname].attrs[attribute] = value
+
+        return self._dataset
+
 
 def _assign_axis(attributes, axis):
     """Assign the given axis to the _metpy_axis attribute."""
@@ -633,6 +873,78 @@ def check_axis(var, *axes):
 
     # If no match has been made, return False (rather than None)
     return False
+
+
+def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
+    from .plots.mapping import CFProjection
+
+    # Handle argument options
+    if cf_attributes is not None and len(cf_kwargs) > 0:
+        raise ValueError('Cannot specify both attribute dictionary and kwargs.')
+    elif cf_attributes is None and len(cf_kwargs) == 0:
+        raise ValueError('Must specify either attribute dictionary or kwargs.')
+    attrs = cf_attributes if cf_attributes is not None else cf_kwargs
+
+    # Assign crs coordinate to xarray object
+    return xarray_object.assign_coords(crs=CFProjection(attrs))
+
+
+def _build_latitude_longitude(da):
+    """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
+    y, x = da.metpy.coordinates('y', 'x')
+    xx, yy = np.meshgrid(x.values, y.values)
+    lonlats = ccrs.Geodetic(globe=da.metpy.cartopy_globe).transform_points(
+        da.metpy.cartopy_crs, xx, yy)
+    longitude = xr.DataArray(lonlats[..., 0], dims=(y.name, x.name),
+                             coords={y.name: y, x.name: x},
+                             attrs={'units': 'degrees_east', 'standard_name': 'longitude'})
+    latitude = xr.DataArray(lonlats[..., 1], dims=(y.name, x.name),
+                            coords={y.name: y, x.name: x},
+                            attrs={'units': 'degrees_north', 'standard_name': 'latitude'})
+    return latitude, longitude
+
+
+def _build_y_x(da, tolerance):
+    """Build y/x coordinates from DataArray's latitude/longitude coordinates."""
+    # Initial sanity checks
+    latitude, longitude = da.metpy.coordinates('latitude', 'longitude')
+    if latitude.dims != longitude.dims:
+        raise ValueError('Latitude and longitude must have same dimensionality')
+    elif latitude.ndim != 2:
+        raise ValueError('To build 1D y/x coordinates via assign_y_x, latitude/longitude '
+                         'must be 2D')
+
+    # Convert to projected y/x
+    xxyy = da.metpy.cartopy_crs.transform_points(ccrs.Geodetic(da.metpy.cartopy_globe),
+                                                 longitude.values,
+                                                 latitude.values)
+
+    # Handle tolerance
+    tolerance = 1 if tolerance is None else tolerance.m_as('m')
+
+    # If within tolerance, take median to collapse to 1D
+    try:
+        y_dim = latitude.metpy.find_axis_number('y')
+        x_dim = latitude.metpy.find_axis_number('x')
+    except AttributeError:
+        warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
+                      'dimension order.')
+        y_dim, x_dim = 0, 1
+    if (np.all(np.ptp(xxyy[..., 0], axis=y_dim) < tolerance)
+            and np.all(np.ptp(xxyy[..., 1], axis=x_dim) < tolerance)):
+        x = np.median(xxyy[..., 0], axis=y_dim)
+        y = np.median(xxyy[..., 1], axis=x_dim)
+        x = xr.DataArray(x, name=latitude.dims[x_dim], dims=(latitude.dims[x_dim],),
+                         coords={latitude.dims[x_dim]: x},
+                         attrs={'units': 'meter', 'standard_name': 'projection_x_coordinate'})
+        y = xr.DataArray(y, name=latitude.dims[y_dim], dims=(latitude.dims[y_dim],),
+                         coords={latitude.dims[y_dim]: y},
+                         attrs={'units': 'meter', 'standard_name': 'projection_y_coordinate'})
+        return y, x
+    else:
+        raise ValueError('Projected y and x coordinates cannot be collapsed to 1D within '
+                         'tolerance. Verify that your latitude and longitude coordinates '
+                         'correpsond to your CRS coordinate.')
 
 
 def preprocess_xarray(func):
