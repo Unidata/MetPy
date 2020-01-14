@@ -239,8 +239,10 @@ class MetPyDataArrayAccessor:
             return
 
         # Ambiguous axis, raise warning and do not parse
-        warnings.warn('More than one ' + axis + ' coordinate present for variable "'
-                      + self._data_array.name + '".')
+        varname = (' "' + self._data_array.name + '"'
+                   if self._data_array.name is not None else '')
+        warnings.warn('More than one ' + axis + ' coordinate present for variable'
+                      + varname + '.')
         coord_lists[axis] = []
 
     def _metpy_axis_search(self, metpy_axis):
@@ -709,8 +711,8 @@ class MetPyDatasetAccessor:
         # Determine if there is a valid grid prototype from which to compute the coordinates,
         # while also checking for existing lat/lon coords
         grid_prototype = None
-        for data_var in self._dataset.data_vars:
-            if hasattr(data_var.metpy, 'y') and hasattr(data_var.metpy, 'y'):
+        for data_var in self._dataset.data_vars.values():
+            if hasattr(data_var.metpy, 'y') and hasattr(data_var.metpy, 'x'):
                 if grid_prototype is None:
                     grid_prototype = data_var
                 if (not force and (hasattr(data_var.metpy, 'latitude')
@@ -754,7 +756,7 @@ class MetPyDatasetAccessor:
         # Determine if there is a valid grid prototype from which to compute the coordinates,
         # while also checking for existing y and x coords
         grid_prototype = None
-        for data_var in self._dataset.data_vars:
+        for data_var in self._dataset.data_vars.values():
             if hasattr(data_var.metpy, 'latitude') and hasattr(data_var.metpy, 'longitude'):
                 if grid_prototype is None:
                     grid_prototype = data_var
@@ -769,8 +771,8 @@ class MetPyDatasetAccessor:
                           'were not found')
             return self._dataset
         else:
-            y, x = _build_y_x(grid_prototype)
-            return self.assign_coords(**{y.name: y, x.name: x})
+            y, x = _build_y_x(grid_prototype, tolerance)
+            return self._dataset.assign_coords(**{y.name: y, x.name: x})
 
     def update_attribute(self, attribute, mapping):
         """Update attribute of all Dataset variables.
@@ -890,7 +892,7 @@ def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
 def _build_latitude_longitude(da):
     """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
     y, x = da.metpy.coordinates('y', 'x')
-    yy, xx = np.meshgrid(y.values, x.values)
+    xx, yy = np.meshgrid(x.values, y.values)
     lonlats = ccrs.Geodetic(globe=da.metpy.cartopy_globe).transform_points(
         da.metpy.cartopy_crs, xx, yy)
     longitude = xr.DataArray(lonlats[..., 0], dims=(y.name, x.name),
@@ -913,24 +915,31 @@ def _build_y_x(da, tolerance):
                          'must be 2D')
 
     # Convert to projected y/x
-    xxyyzz = da.metpy.cartopy_crs(ccrs.Geodetic(da.metpy.cartopy_globe), longitude.values,
-                                  latitude.values)
+    xxyy = da.metpy.cartopy_crs.transform_points(ccrs.Geodetic(da.metpy.cartopy_globe),
+                                                 longitude.values,
+                                                 latitude.values)
 
     # Handle tolerance
-    tolerance = 1 * units.m if tolerance is None else tolerance.m_as('m')
+    tolerance = 1 if tolerance is None else tolerance.m_as('m')
 
     # If within tolerance, take median to collapse to 1D
-    # TODO USE find_axis_number added in #1260
-    if (np.all(np.ptp(xxyyzz[..., 0], axis=1) < tolerance)
-            and np.all(np.ptp(xxyyzz[..., 1], axis=0) < tolerance)):
-        x = np.median(xxyyzz[..., 0], axis=1)
-        y = np.median(xxyyzz[..., 1], axis=0)
-        x = xr.DataArray(x, name=latitude.dims[1], dims=(latitude.dims[1],),
-                         coords={latitude.dims[1]: x},
+    try:
+        y_dim = latitude.metpy.find_axis_number('y')
+        x_dim = latitude.metpy.find_axis_number('x')
+    except AttributeError:
+        warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
+                      'dimension order.')
+        y_dim, x_dim = 0, 1
+    if (np.all(np.ptp(xxyy[..., 0], axis=y_dim) < tolerance)
+            and np.all(np.ptp(xxyy[..., 1], axis=x_dim) < tolerance)):
+        x = np.median(xxyy[..., 0], axis=y_dim)
+        y = np.median(xxyy[..., 1], axis=x_dim)
+        x = xr.DataArray(x, name=latitude.dims[x_dim], dims=(latitude.dims[x_dim],),
+                         coords={latitude.dims[x_dim]: x},
                          attrs={'units': 'meter', 'standard_name': 'projection_x_coordinate'})
-        y = xr.DataArray(y, name=latitude.dims[0], dims=(latitude.dims[0],),
-                         coords={latitude.dims[0]: y},
-                         attrs={'units': 'meter', 'standard_name': 'projection_x_coordinate'})
+        y = xr.DataArray(y, name=latitude.dims[y_dim], dims=(latitude.dims[y_dim],),
+                         coords={latitude.dims[y_dim]: y},
+                         attrs={'units': 'meter', 'standard_name': 'projection_y_coordinate'})
         return y, x
     else:
         raise ValueError('Projected y and x coordinates cannot be collapsed to 1D within '
