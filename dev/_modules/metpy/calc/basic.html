@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.basic &mdash; MetPy 0.11.1</title>
+  <title>metpy.calc.basic &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,8 +119,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
@@ -204,11 +204,13 @@
 <span class="sd">* heat index</span>
 <span class="sd">* windchill</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
 
+<span class="kn">from</span> <span class="nn">.tools</span> <span class="kn">import</span> <span class="n">wrap_output_like</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">mpconsts</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">masked_array</span><span class="p">,</span> <span class="n">units</span>
@@ -303,14 +305,14 @@
 <div class="viewcode-block" id="wind_components"><a class="viewcode-back" href="../../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">wdir</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">wind_direction</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the U, V wind vector components from the speed and direction.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    speed : `pint.Quantity`</span>
 <span class="sd">        The wind speed (magnitude)</span>
-<span class="sd">    wdir : `pint.Quantity`</span>
+<span class="sd">    wind_direction : `pint.Quantity`</span>
 <span class="sd">        The wind direction, specified as the direction from which the wind is</span>
 <span class="sd">        blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.</span>
 
@@ -333,9 +335,9 @@
 <span class="sd">     &lt;Quantity(7.071067811865477, &#39;meter / second&#39;)&gt;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">wdir</span> <span class="o">=</span> <span class="n">_check_radians</span><span class="p">(</span><span class="n">wdir</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">wdir</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">wdir</span><span class="p">)</span>
+    <span class="n">wind_direction</span> <span class="o">=</span> <span class="n">_check_radians</span><span class="p">(</span><span class="n">wind_direction</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">wind_direction</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">wind_direction</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
 
 
@@ -404,7 +406,7 @@
 <div class="viewcode-block" id="heat_index"><a class="viewcode-back" href="../../../api/generated/metpy.calc.heat_index.html#metpy.calc.heat_index">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">heat_index</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rh</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">heat_index</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Heat Index from the current temperature and relative humidity.</span>
 
 <span class="sd">    The implementation uses the formula outlined in [Rothfusz1990]_, which is a</span>
@@ -417,7 +419,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
-<span class="sd">    rh : `pint.Quantity`</span>
+<span class="sd">    relative_humidity : `pint.Quantity`</span>
 <span class="sd">        The relative humidity expressed as a unitless ratio in the range [0, 1].</span>
 <span class="sd">        Can also pass a percentage if proper units are attached.</span>
 
@@ -438,25 +440,25 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
-    <span class="n">rh</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">rh</span><span class="p">)</span>
-    <span class="c1"># assign units to rh if they currently are not present</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rh</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
-        <span class="n">rh</span> <span class="o">=</span> <span class="n">rh</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">dimensionless</span>
+    <span class="n">relative_humidity</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">relative_humidity</span><span class="p">)</span>
+    <span class="c1"># assign units to relative_humidity if they currently are not present</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">relative_humidity</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
+        <span class="n">relative_humidity</span> <span class="o">=</span> <span class="n">relative_humidity</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">dimensionless</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span>
-    <span class="n">rh2</span> <span class="o">=</span> <span class="n">rh</span> <span class="o">*</span> <span class="n">rh</span>
+    <span class="n">rh2</span> <span class="o">=</span> <span class="n">relative_humidity</span> <span class="o">*</span> <span class="n">relative_humidity</span>
     <span class="n">delta2</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">delta</span>
 
-    <span class="c1"># Simplifed Heat Index -- constants converted for RH in [0, 1]</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span> <span class="o">+</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">+</span> <span class="mf">4.7</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">rh</span>
+    <span class="c1"># Simplifed Heat Index -- constants converted for relative_humidity in [0, 1]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span> <span class="o">+</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">+</span> <span class="mf">4.7</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">relative_humidity</span>
 
-    <span class="c1"># More refined Heat Index -- constants converted for RH in [0, 1]</span>
+    <span class="c1"># More refined Heat Index -- constants converted for relative_humidity in [0, 1]</span>
     <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">42.379</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span>
          <span class="o">+</span> <span class="mf">2.04901523</span> <span class="o">*</span> <span class="n">delta</span>
-         <span class="o">+</span> <span class="mf">1014.333127</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">rh</span>
-         <span class="o">-</span> <span class="mf">22.475541</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">rh</span>
+         <span class="o">+</span> <span class="mf">1014.333127</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">relative_humidity</span>
+         <span class="o">-</span> <span class="mf">22.475541</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">relative_humidity</span>
          <span class="o">-</span> <span class="mf">6.83783e-3</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span>
          <span class="o">-</span> <span class="mf">5.481717e2</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">rh2</span>
-         <span class="o">+</span> <span class="mf">1.22874e-1</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span> <span class="o">*</span> <span class="n">rh</span>
+         <span class="o">+</span> <span class="mf">1.22874e-1</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span> <span class="o">*</span> <span class="n">relative_humidity</span>
          <span class="o">+</span> <span class="mf">8.5282</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">rh2</span>
          <span class="o">-</span> <span class="mf">1.99e-2</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span> <span class="o">*</span> <span class="n">rh2</span><span class="p">)</span>
 
@@ -482,19 +484,19 @@
         <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
 
     <span class="c1"># Adjustment for RH &lt;= 13% and 80F &lt;= T &lt;= 112F</span>
-    <span class="n">sel</span> <span class="o">=</span> <span class="p">((</span><span class="n">rh</span> <span class="o">&lt;=</span> <span class="mf">13.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;=</span> <span class="mf">80.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="p">((</span><span class="n">relative_humidity</span> <span class="o">&lt;=</span> <span class="mf">13.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;=</span> <span class="mf">80.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span>
            <span class="o">&amp;</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&lt;=</span> <span class="mf">112.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sel</span><span class="p">):</span>
-        <span class="n">rh15adj</span> <span class="o">=</span> <span class="p">((</span><span class="mf">13.</span> <span class="o">-</span> <span class="n">rh</span> <span class="o">*</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">4.</span>
+        <span class="n">rh15adj</span> <span class="o">=</span> <span class="p">((</span><span class="mf">13.</span> <span class="o">-</span> <span class="n">relative_humidity</span> <span class="o">*</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">4.</span>
                    <span class="o">*</span> <span class="p">((</span><span class="mf">17.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">delta</span> <span class="o">-</span> <span class="mf">95.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span><span class="p">))</span>
                       <span class="o">/</span> <span class="mf">17.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
         <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">=</span> <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">-</span> <span class="n">rh15adj</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
 
     <span class="c1"># Adjustment for RH &gt; 85% and 80F &lt;= T &lt;= 87F</span>
-    <span class="n">sel</span> <span class="o">=</span> <span class="p">((</span><span class="n">rh</span> <span class="o">&gt;</span> <span class="mf">85.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;=</span> <span class="mf">80.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="p">((</span><span class="n">relative_humidity</span> <span class="o">&gt;</span> <span class="mf">85.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;=</span> <span class="mf">80.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span>
            <span class="o">&amp;</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&lt;=</span> <span class="mf">87.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sel</span><span class="p">):</span>
-        <span class="n">rh85adj</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="p">(</span><span class="n">rh</span> <span class="o">*</span> <span class="mf">100.</span> <span class="o">-</span> <span class="mf">85.</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">87.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span>
+        <span class="n">rh85adj</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="p">(</span><span class="n">relative_humidity</span> <span class="o">*</span> <span class="mf">100.</span> <span class="o">-</span> <span class="mf">85.</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">87.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">-</span> <span class="n">delta</span><span class="p">)</span>
         <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">=</span> <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">+</span> <span class="n">rh85adj</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
 
     <span class="c1"># See if we need to mask any undefined values</span>
@@ -508,7 +510,8 @@
 <div class="viewcode-block" id="apparent_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.apparent_temperature.html#metpy.calc.apparent_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">apparent_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rh</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">face_level_winds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">apparent_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">face_level_winds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the current apparent temperature.</span>
 
 <span class="sd">    Calculates the current apparent temperature based on the wind chill or heat index</span>
@@ -518,7 +521,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        The air temperature</span>
-<span class="sd">    rh : `pint.Quantity`</span>
+<span class="sd">    relative_humidity : `pint.Quantity`</span>
 <span class="sd">        The relative humidity expressed as a unitless ratio in the range [0, 1].</span>
 <span class="sd">        Can also pass a percentage if proper units are attached.</span>
 <span class="sd">    speed : `pint.Quantity`</span>
@@ -550,14 +553,14 @@
     <span class="n">is_not_scalar</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
 
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
-    <span class="n">rh</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">rh</span><span class="p">)</span>
+    <span class="n">relative_humidity</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">relative_humidity</span><span class="p">)</span>
     <span class="n">speed</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
 
     <span class="c1"># NB: mask_defined=True is needed to know where computed values exist</span>
     <span class="n">wind_chill_temperature</span> <span class="o">=</span> <span class="n">windchill</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">face_level_winds</span><span class="o">=</span><span class="n">face_level_winds</span><span class="p">,</span>
                                        <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
-    <span class="n">heat_index_temperature</span> <span class="o">=</span> <span class="n">heat_index</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rh</span><span class="p">,</span>
+    <span class="n">heat_index_temperature</span> <span class="o">=</span> <span class="n">heat_index</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">,</span>
                                         <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
     <span class="c1"># Combine the heat index and wind chill arrays (no point has a value in both)</span>
@@ -587,7 +590,7 @@
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">pressure_to_height_std</span><span class="p">(</span><span class="n">pressure</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert pressure data to heights using the U.S. standard atmosphere [NOAA1976]_.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.</span>
 
 <span class="sd">    The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.</span>
 
@@ -670,7 +673,7 @@
 
 <div class="viewcode-block" id="geopotential_to_height"><a class="viewcode-back" href="../../../api/generated/metpy.calc.geopotential_to_height.html#metpy.calc.geopotential_to_height">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
-<span class="k">def</span> <span class="nf">geopotential_to_height</span><span class="p">(</span><span class="n">geopot</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">geopotential_to_height</span><span class="p">(</span><span class="n">geopotential</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute height above sea level from a given geopotential.</span>
 
 <span class="sd">    Calculates the height above mean sea level from geopotential using the following formula,</span>
@@ -725,7 +728,7 @@
 <span class="sd">    height_to_geopotential</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">geopot</span> <span class="o">*</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Re</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Re</span> <span class="o">-</span> <span class="n">geopot</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">geopotential</span> <span class="o">*</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Re</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Re</span> <span class="o">-</span> <span class="n">geopotential</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="height_to_pressure_std"><a class="viewcode-back" href="../../../api/generated/metpy.calc.height_to_pressure_std.html#metpy.calc.height_to_pressure_std">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -838,7 +841,7 @@
 <div class="viewcode-block" id="sigma_to_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.sigma_to_pressure.html#metpy.calc.sigma_to_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">sigma_to_pressure</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">psfc</span><span class="p">,</span> <span class="n">ptop</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">sigma_to_pressure</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">pressure_sfc</span><span class="p">,</span> <span class="n">pressure_top</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate pressure from sigma values.</span>
 
 <span class="sd">    Parameters</span>
@@ -846,10 +849,10 @@
 <span class="sd">    sigma : ndarray</span>
 <span class="sd">        The sigma levels to be converted to pressure levels.</span>
 
-<span class="sd">    psfc : `pint.Quantity`</span>
+<span class="sd">    pressure_sfc : `pint.Quantity`</span>
 <span class="sd">        The surface pressure value.</span>
 
-<span class="sd">    ptop : `pint.Quantity`</span>
+<span class="sd">    pressure_top : `pint.Quantity`</span>
 <span class="sd">        The pressure value at the top of the model domain.</span>
 
 <span class="sd">    Returns</span>
@@ -872,15 +875,14 @@
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sigma values should be bounded by 0 and 1&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">psfc</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ptop</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">pressure_sfc</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">pressure_top</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pressure input should be non-negative&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">psfc</span> <span class="o">-</span> <span class="n">ptop</span><span class="p">)</span> <span class="o">+</span> <span class="n">ptop</span></div>
+    <span class="k">return</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">pressure_sfc</span> <span class="o">-</span> <span class="n">pressure_top</span><span class="p">)</span> <span class="o">+</span> <span class="n">pressure_top</span></div>
 
 
 <div class="viewcode-block" id="smooth_gaussian"><a class="viewcode-back" href="../../../api/generated/metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="nd">@wrap_output_like</span><span class="p">(</span><span class="n">argument</span><span class="o">=</span><span class="s1">&#39;scalar_grid&#39;</span><span class="p">,</span> <span class="n">match_unit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">smooth_gaussian</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Filter with normal distribution of weights.</span>
 
@@ -971,16 +973,190 @@
     <span class="k">return</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">sgma_seq</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="smooth_window"><a class="viewcode-back" href="../../../api/generated/metpy.calc.smooth_window.html#metpy.calc.smooth_window">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@wrap_output_like</span><span class="p">(</span><span class="n">argument</span><span class="o">=</span><span class="s1">&#39;scalar_grid&#39;</span><span class="p">,</span> <span class="n">match_unit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">smooth_window</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">normalize_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filter with an arbitrary window smoother.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scalar_grid : array-like</span>
+<span class="sd">        N-dimensional scalar grid to be smoothed.</span>
+
+<span class="sd">    window : ndarray</span>
+<span class="sd">        The window to use in smoothing. Can have dimension less than or equal to N. If</span>
+<span class="sd">        dimension less than N, the scalar grid will be smoothed along its trailing dimensions.</span>
+<span class="sd">        Shape along each dimension must be odd.</span>
+
+<span class="sd">    passes : int</span>
+<span class="sd">        The number of times to apply the filter to the grid. Defaults to 1.</span>
+
+<span class="sd">    normalize_weights : bool</span>
+<span class="sd">        If true, divide the values in window by the sum of all values in the window to obtain</span>
+<span class="sd">        the normalized smoothing weights. If false, use supplied values directly as the</span>
+<span class="sd">        weights.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The filtered scalar grid.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function can be applied multiple times to create a more smoothed field and will only</span>
+<span class="sd">    smooth the interior points, leaving the end points with their original values (this</span>
+<span class="sd">    function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in the shape of</span>
+<span class="sd">    `window` around the data). If a masked value or NaN values exists in the array, it will</span>
+<span class="sd">    propagate to any point that uses that particular grid point in the smoothing calculation.</span>
+<span class="sd">    Applying the smoothing function multiple times will propogate NaNs further throughout the</span>
+<span class="sd">    domain.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    smooth_rectangular, smooth_circular, smooth_n_point, smooth_gaussian</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_pad</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Return number of entries to pad given length along dimension.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">_zero_to_none</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Convert zero values to None, otherwise return what is given.</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_offset</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="c1"># Return padded slice offset by k entries</span>
+        <span class="k">return</span> <span class="nb">slice</span><span class="p">(</span><span class="n">_zero_to_none</span><span class="p">(</span><span class="n">pad</span> <span class="o">+</span> <span class="n">k</span><span class="p">),</span> <span class="n">_zero_to_none</span><span class="p">(</span><span class="o">-</span><span class="n">pad</span> <span class="o">+</span> <span class="n">k</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_trailing_dims</span><span class="p">(</span><span class="n">indexer</span><span class="p">):</span>
+        <span class="c1"># Add ... to the front of an indexer, since we are working with trailing dimensions.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">indexer</span><span class="p">)</span>
+
+    <span class="c1"># Verify that shape in all dimensions is odd (need to have a neighboorhood around a</span>
+    <span class="c1"># central point)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="n">size</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">window</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The shape of the smoothing window must be odd in all dimensions.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Optionally normalize the supplied weighting window</span>
+    <span class="k">if</span> <span class="n">normalize_weights</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">window</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">window</span>
+
+    <span class="c1"># Set indexes</span>
+    <span class="c1"># Inner index for the centered array elements that are affected by the smoothing</span>
+    <span class="n">inner_full_index</span> <span class="o">=</span> <span class="n">_trailing_dims</span><span class="p">(</span><span class="n">_offset</span><span class="p">(</span><span class="n">_pad</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="c1"># Indexes to iterate over each weight</span>
+    <span class="n">weight_indexes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+
+    <span class="c1"># Index for full array elements, offset by the weight index</span>
+    <span class="k">def</span> <span class="nf">offset_full_index</span><span class="p">(</span><span class="n">weight_index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_trailing_dims</span><span class="p">(</span><span class="n">_offset</span><span class="p">(</span><span class="n">_pad</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">weight_index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">_pad</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+                              <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="c1"># TODO: this is not lazy-loading/dask compatible, as it &quot;densifies&quot; the data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">passes</span><span class="p">):</span>
+        <span class="c1"># Set values corresponding to smoothing weights by summing over each weight and</span>
+        <span class="c1"># applying offsets in needed dimensions</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">inner_full_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="n">offset_full_index</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span>
+                                     <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">weight_indexes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="smooth_rectangular"><a class="viewcode-back" href="../../../api/generated/metpy.calc.smooth_rectangular.html#metpy.calc.smooth_rectangular">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">smooth_rectangular</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filter with a rectangular window smoother.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scalar_grid : array-like</span>
+<span class="sd">        N-dimensional scalar grid to be smoothed.</span>
+
+<span class="sd">    size : int or sequence of ints</span>
+<span class="sd">        Shape of rectangle along the trailing dimension(s) of the scalar grid.</span>
+
+<span class="sd">    passes : int</span>
+<span class="sd">        The number of times to apply the filter to the grid. Defaults to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The filtered scalar grid.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function can be applied multiple times to create a more smoothed field and will only</span>
+<span class="sd">    smooth the interior points, leaving the end points with their original values (this</span>
+<span class="sd">    function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in `size` around</span>
+<span class="sd">    the data). If a masked value or NaN values exists in the array, it will propagate to any</span>
+<span class="sd">    point that uses that particular grid point in the smoothing calculation. Applying the</span>
+<span class="sd">    smoothing function multiple times will propogate NaNs further throughout the domain.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    smooth_window, smooth_circular, smooth_n_point, smooth_gaussian</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">smooth_window</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">passes</span><span class="o">=</span><span class="n">passes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="smooth_circular"><a class="viewcode-back" href="../../../api/generated/metpy.calc.smooth_circular.html#metpy.calc.smooth_circular">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">smooth_circular</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filter with a circular window smoother.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scalar_grid : array-like</span>
+<span class="sd">        N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only</span>
+<span class="sd">        done along the last two.</span>
+
+<span class="sd">    radius : int</span>
+<span class="sd">        Radius of the circular smoothing window. The &quot;diameter&quot; of the circle (width of</span>
+<span class="sd">        smoothing window) is 2 * radius + 1 to provide a smoothing window with odd shape.</span>
+
+<span class="sd">    passes : int</span>
+<span class="sd">        The number of times to apply the filter to the grid. Defaults to 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The filtered scalar grid.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function can be applied multiple times to create a more smoothed field and will only</span>
+<span class="sd">    smooth the interior points, leaving the end points with their original values (this</span>
+<span class="sd">    function will leave an unsmoothed edge of size `radius` around the data). If a masked</span>
+<span class="sd">    value or NaN values exists in the array, it will propagate to any point that uses that</span>
+<span class="sd">    particular grid point in the smoothing calculation. Applying the smoothing function</span>
+<span class="sd">    multiple times will propogate NaNs further throughout the domain.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    smooth_window, smooth_rectangular, smooth_n_point, smooth_gaussian</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate the circle</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[:</span><span class="n">size</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span><span class="p">]</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">radius</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">radius</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">radius</span>
+
+    <span class="c1"># Apply smoother</span>
+    <span class="k">return</span> <span class="n">smooth_window</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">circle</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="n">passes</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="smooth_n_point"><a class="viewcode-back" href="../../../api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">smooth_n_point</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Filter with normal distribution of weights.</span>
+    <span class="sd">&quot;&quot;&quot;Filter with an n-point smoother.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    scalar_grid : array-like or `pint.Quantity`</span>
-<span class="sd">        Some 2D scalar grid to be smoothed.</span>
+<span class="sd">        N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only</span>
+<span class="sd">        done along the last two.</span>
 
 <span class="sd">    n: int</span>
 <span class="sd">        The number of points to use in smoothing, only valid inputs</span>
@@ -992,41 +1168,37 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like or `pint.Quantity`</span>
-<span class="sd">        The filtered 2D scalar grid.</span>
+<span class="sd">        The filtered scalar grid.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This function is a close replication of the GEMPAK function SM5S</span>
-<span class="sd">    and SM9S depending on the choice of the number of points to use</span>
-<span class="sd">    for smoothing. This function can be applied multiple times to</span>
-<span class="sd">    create a more smoothed field and will only smooth the interior</span>
-<span class="sd">    points, leaving the end points with their original values. If a</span>
-<span class="sd">    masked value or NaN values exists in the array, it will propagate</span>
-<span class="sd">    to any point that uses that particular grid point in the smoothing</span>
-<span class="sd">    calculation. Applying the smoothing function multiple times will</span>
-<span class="sd">    propagate NaNs further throughout the domain.</span>
+<span class="sd">    This function is a close replication of the GEMPAK function SM5S and SM9S depending on the</span>
+<span class="sd">    choice of the number of points to use for smoothing. This function can be applied multiple</span>
+<span class="sd">    times to create a more smoothed field and will only smooth the interior points, leaving</span>
+<span class="sd">    the end points with their original values (this function will leave an unsmoothed edge of</span>
+<span class="sd">    size 1 around the data). If a masked value or NaN values exists in the array, it will</span>
+<span class="sd">    propagate to any point that uses that particular grid point in the smoothing calculation.</span>
+<span class="sd">    Applying the smoothing function multiple times will propogate NaNs further throughout the</span>
+<span class="sd">    domain.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    smooth_window, smooth_rectangular, smooth_circular, smooth_gaussian</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="mf">0.25</span>
-        <span class="n">q</span> <span class="o">=</span> <span class="mf">0.125</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0625</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0625</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0625</span><span class="p">],</span>
+                            <span class="p">[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">],</span>
+                            <span class="p">[</span><span class="mf">0.0625</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.0625</span><span class="p">]])</span>
     <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span>
-        <span class="n">q</span> <span class="o">=</span> <span class="mf">0.125</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                            <span class="p">[</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">],</span>
+                            <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The number of points to use in the smoothing &#39;</span>
                          <span class="s1">&#39;calculation must be either 5 or 9.&#39;</span><span class="p">)</span>
 
-    <span class="n">smooth_grid</span> <span class="o">=</span> <span class="n">scalar_grid</span><span class="p">[:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">passes</span><span class="p">):</span>
-        <span class="n">smooth_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">smooth_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                                   <span class="o">+</span> <span class="n">q</span> <span class="o">*</span> <span class="p">(</span><span class="n">smooth_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">smooth_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span>
-                                          <span class="o">+</span> <span class="n">smooth_grid</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">smooth_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-                                   <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">smooth_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">+</span> <span class="n">smooth_grid</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span>
-                                          <span class="o">+</span> <span class="n">smooth_grid</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">+</span> <span class="n">smooth_grid</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">smooth_grid</span></div>
+    <span class="k">return</span> <span class="n">smooth_window</span><span class="p">(</span><span class="n">scalar_grid</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="n">passes</span><span class="p">,</span> <span class="n">normalize_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="altimeter_to_station_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.altimeter_to_station_pressure.html#metpy.calc.altimeter_to_station_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1222,7 +1394,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -1259,7 +1431,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

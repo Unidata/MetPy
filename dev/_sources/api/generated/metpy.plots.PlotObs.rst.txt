@@ -28,6 +28,7 @@ PlotObs
       ~PlotObs.time_window
       ~PlotObs.vector_field
       ~PlotObs.vector_field_color
+      ~PlotObs.vector_field_length
 
    
    
@@ -86,6 +87,7 @@ PlotObs
    .. autoattribute:: time_window
    .. autoattribute:: vector_field
    .. autoattribute:: vector_field_color
+   .. autoattribute:: vector_field_length
 
    
    

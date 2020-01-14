@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>isentropic_interpolation &mdash; MetPy 0.11.1</title>
+  <title>isentropic_interpolation &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="nearest_intersection_idx" href="metpy.calc.nearest_intersection_idx.html"/>
         <link rel="prev" title="get_perturbation" href="metpy.calc.get_perturbation.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -137,6 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#smoothing">Smoothing</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#other">Other</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
@@ -149,11 +150,8 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.parse_angle.html">parse_angle</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
@@ -244,12 +242,12 @@
 <h1>isentropic_interpolation<a class="headerlink" href="#isentropic-interpolation" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.isentropic_interpolation">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">isentropic_interpolation</code><span class="sig-paren">(</span><em class="sig-param">theta_levels</em>, <em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">*args</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">temperature_out=False</em>, <em class="sig-param">max_iters=50</em>, <em class="sig-param">eps=1e-06</em>, <em class="sig-param">bottom_up_search=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">isentropic_interpolation</code><span class="sig-paren">(</span><em class="sig-param">levels</em>, <em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">*args</em>, <em class="sig-param">axis=0</em>, <em class="sig-param">temperature_out=False</em>, <em class="sig-param">max_iters=50</em>, <em class="sig-param">eps=1e-06</em>, <em class="sig-param">bottom_up_search=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data in isobaric coordinates to isentropic coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta_levels</strong> (<em>array</em>) – One-dimensional array of desired theta surfaces</p></li>
+<li><p><strong>levels</strong> (<em>array</em>) – One-dimensional array of desired potential temperature surfaces</p></li>
 <li><p><strong>pressure</strong> (<em>array</em>) – One-dimensional array of pressure levels</p></li>
 <li><p><strong>temperature</strong> (<em>array</em>) – Array of temperature</p></li>
 <li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to the vertical in the temperature array, defaults to 0.</p></li>
@@ -257,7 +255,7 @@
 Defaults to False.</p></li>
 <li><p><strong>max_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
 <li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
-<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for theta levels bottom-up, or top-down. Defaults to
+<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for levels bottom-up, or top-down. Defaults to
 True, which is bottom-up search.</p></li>
 <li><p><strong>args</strong> (<em>array</em><em>, </em><em>optional</em>) – Any additional variables will be interpolated to each isentropic level.</p></li>
 </ul>
@@ -274,8 +272,6 @@ linearly with the natural log of pressure. Linear interpolation is then used in 
 vertical to find the pressure at each isentropic level. Interpolation method from
 <a class="reference internal" href="../../references.html#ziv1994" id="id1"><span>[Ziv1994]</span></a>. Any additional arguments are assumed to vary linearly with temperature and will
 be linearly interpolated to the new isentropic levels.</p>
-<p><a class="reference internal" href="#metpy.calc.isentropic_interpolation" title="metpy.calc.isentropic_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isentropic_interpolation</span></code></a> previously accepted <em class="xref py py-obj">tmpk_out</em> as an argument. That has been
-deprecated in 0.11 in favor of <em class="xref py py-obj">temperature_out</em> and support will end in 1.0.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
@@ -314,7 +310,7 @@ deprecated in 0.11 in favor of <em class="xref py py-obj">temperature_out</em> a
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -351,7 +347,7 @@ deprecated in 0.11 in favor of <em class="xref py py-obj">temperature_out</em> a
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

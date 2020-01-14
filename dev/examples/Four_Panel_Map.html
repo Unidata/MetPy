@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Four Panel Map &mdash; MetPy 0.11.1</title>
+  <title>Four Panel Map &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../index.html"/>
         <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Cross Section Analysis" href="cross_section.html"/>
         <link rel="prev" title="Advanced Sounding" href="Advanced_Sounding.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,7 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference/API Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
@@ -298,7 +298,29 @@ Attributes:
 <span class="n">winds_300</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Smooth the height data</span>
+<pre>&lt;xarray.DataArray &#x27;winds_300&#x27; (lat: 201, lon: 361)&gt;
+array([[  9.06131819,   9.01952253,   9.13813758, ..., 110.36004629,
+        111.83865508, 112.03460858],
+       [  7.66772117,   7.6033894 ,   7.66032592, ..., 109.23386609,
+        110.0245243 , 111.4624905 ],
+       [  7.57101844,   7.33527694,   7.17117905, ..., 109.48676816,
+        109.47831485, 110.61312632],
+       ...,
+       [ 46.42656091,  45.90972299,  45.47516017, ...,  30.04356059,
+         31.90807565,  33.73844196],
+       [ 44.9448637 ,  44.59884182,  44.16121654, ...,  33.1024792 ,
+         34.51569353,  35.92905988],
+       [ 43.29190924,  43.03102843,  42.77341402, ...,  34.65171756,
+         35.87749102,  37.29193628]])
+Coordinates:
+  * lat      (lat) float32 65.0 64.75 64.5 64.25 64.0 ... 15.75 15.5 15.25 15.0
+  * lon      (lon) float32 220.0 220.25 220.5 220.75 ... 309.5 309.75 310.0
+    time     datetime64[ns] 2017-02-28T21:00:00
+Attributes:
+    units:          knot
+    standard_name:  winds_300</pre>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Smooth the height data</span>
 <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">heights_300</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="View documentation for scipy.ndimage.gaussian_filter"><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span></a><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;heights_300&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">heights_500</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter" title="View documentation for scipy.ndimage.gaussian_filter"><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span></a><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;heights_500&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
@@ -355,7 +377,7 @@ Attributes:
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_Four_Panel_Map_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_Four_Panel_Map_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  7.111 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  7.145 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-four-panel-map-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d506add257ad1ffd2447607d972a8e31/Four_Panel_Map.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Four_Panel_Map.py</span></code></a></p>
@@ -390,7 +412,7 @@ Attributes:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -427,7 +449,7 @@ Attributes:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

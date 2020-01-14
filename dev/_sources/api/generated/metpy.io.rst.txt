@@ -13,6 +13,7 @@ io
       :toctree: ./
 
    
+      add_station_lat_lon
       is_precip_mode
       parse_metar_file
       parse_metar_to_dataframe

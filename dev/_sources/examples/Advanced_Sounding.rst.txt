@@ -111,7 +111,7 @@ Create a new figure. The dimensions here give a good aspect ratio.
     skew.plot(p, prof, 'k', linewidth=2)
 
     # Shade areas of CAPE and CIN
-    skew.shade_cin(p, T, prof)
+    skew.shade_cin(p, T, prof, Td)
     skew.shade_cape(p, T, prof)
 
     # An example of a slanted line at constant T -- in this case the 0
@@ -132,13 +132,22 @@ Create a new figure. The dimensions here give a good aspect ratio.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/pint/quantity.py:1474: RuntimeWarning: invalid value encountered in greater
+      return op(self._magnitude, other._magnitude)
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.610 seconds)
+   **Total running time of the script:** ( 0 minutes  0.650 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding.py:

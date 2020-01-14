@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Isentropic Analysis &mdash; MetPy 0.11.1</title>
+  <title>Isentropic Analysis &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../index.html"/>
         <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Meteogram" href="meteogram_metpy.html"/>
         <link rel="prev" title="Cross Section Analysis" href="cross_section.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,7 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference/API Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
@@ -283,26 +283,24 @@ isentropic levels created, the conversion to isentropic coordinates can begin. D
 passed to the function as below. The function requires that isentropic levels, isobaric
 levels, and temperature be input. Any additional inputs (in this case relative humidity, u,
 and v wind components) will be linearly interpolated to isentropic space.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">isent_anal</span></a> <span class="o">=</span> <a href="../api/generated/metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation" title="View documentation for metpy.calc.isentropic_interpolation"><span class="n">mpcalc</span><span class="o">.</span><span class="n">isentropic_interpolation</span></a><span class="p">(</span><span class="n">isentlevs</span><span class="p">,</span>
-                                             <span class="n">lev</span><span class="p">,</span>
-                                             <span class="n">tmp</span><span class="p">,</span>
-                                             <span class="n">spech</span><span class="p">,</span>
-                                             <span class="n">uwnd</span><span class="p">,</span>
-                                             <span class="n">vwnd</span><span class="p">,</span>
-                                             <span class="n">hgt</span><span class="p">,</span>
-                                             <span class="n">tmpk_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">isent_ana</span></a> <span class="o">=</span> <a href="../api/generated/metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation" title="View documentation for metpy.calc.isentropic_interpolation"><span class="n">mpcalc</span><span class="o">.</span><span class="n">isentropic_interpolation</span></a><span class="p">(</span><span class="n">isentlevs</span><span class="p">,</span>
+                                            <span class="n">lev</span><span class="p">,</span>
+                                            <span class="n">tmp</span><span class="p">,</span>
+                                            <span class="n">spech</span><span class="p">,</span>
+                                            <span class="n">uwnd</span><span class="p">,</span>
+                                            <span class="n">vwnd</span><span class="p">,</span>
+                                            <span class="n">hgt</span><span class="p">,</span>
+                                            <span class="n">temperature_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/calc/thermo.py:1727: MetpyDeprecationWarning: The use of &quot;tmpk_out&quot; has been deprecated in favor of&quot;temperature_out&quot;,
-  &#39;&quot;temperature_out&quot;,&#39;, metpyDeprecation)
-/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
   warnings.warn(&#39;Interpolation point out of data bounds encountered&#39;)
 </pre></div>
 </div>
 <p>The output is a list, so now we will separate the variables to different names before
 plotting.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">isentprs</span><span class="p">,</span> <span class="n">isenttmp</span><span class="p">,</span> <span class="n">isentspech</span><span class="p">,</span> <span class="n">isentu</span><span class="p">,</span> <span class="n">isentv</span><span class="p">,</span> <span class="n">isenthgt</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">isent_anal</span></a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">isentprs</span><span class="p">,</span> <span class="n">isenttmp</span><span class="p">,</span> <span class="n">isentspech</span><span class="p">,</span> <span class="n">isentu</span><span class="p">,</span> <span class="n">isentv</span><span class="p">,</span> <span class="n">isenthgt</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">isent_ana</span></a>
 <span class="n">isentu</span><span class="o">.</span><span class="n">ito</span><span class="p">(</span><span class="s1">&#39;kt&#39;</span><span class="p">)</span>
 <span class="n">isentv</span><span class="o">.</span><span class="n">ito</span><span class="p">(</span><span class="s1">&#39;kt&#39;</span><span class="p">)</span>
 </pre></div>
@@ -329,7 +327,7 @@ coordinates, with the number of vertical levels as specified above.</p>
 <p><strong>Converting to Relative Humidity</strong></p>
 <p>The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
 have to be calculated after the interpolation to isentropic space.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">isentrh</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <a href="../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="View documentation for metpy.calc.relative_humidity_from_specific_humidity"><span class="n">mpcalc</span><span class="o">.</span><span class="n">relative_humidity_from_specific_humidity</span></a><span class="p">(</span><span class="n">isentspech</span><span class="p">,</span> <span class="n">isenttmp</span><span class="p">,</span> <span class="n">isentprs</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">isentrh</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <a href="../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="View documentation for metpy.calc.relative_humidity_from_specific_humidity"><span class="n">mpcalc</span><span class="o">.</span><span class="n">relative_humidity_from_specific_humidity</span></a><span class="p">(</span><span class="n">isentprs</span><span class="p">,</span> <span class="n">isenttmp</span><span class="p">,</span> <span class="n">isentspech</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Plotting the Isentropic Analysis</strong></p>
@@ -435,7 +433,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
   fig.tight_layout()
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.829 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.391 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-isentropic-example-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9dcdf4bbc3c0720b95e846f48b609c2e/isentropic_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">isentropic_example.py</span></code></a></p>
@@ -470,7 +468,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -507,7 +505,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

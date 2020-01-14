@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gradient &mdash; MetPy 0.11.1</title>
+  <title>Gradient &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
-        <link rel="next" title="GINI Water Vapor Imagery" href="../formats/GINI_Water_Vapor.html"/>
+        <link rel="next" title="Smoothing" href="Smoothing.html"/>
         <link rel="prev" title="Angle to Direction" href="Angle_to_Direction.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,13 +121,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference/API Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#calculations">Calculations</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Parse_Angles.html">Parse angles</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Angle_to_Direction.html">Angle to Direction</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Smoothing.html">Smoothing</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
@@ -135,7 +136,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
@@ -257,8 +258,8 @@ can be utilized.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
-Gradient in x direction:  [[ 2.  0. -2.] [ 2.  0. -2.] [ 2.  0. -2.] [ 2.  0. -2.]] kelvin / kilometer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[2.0 2.0 2.0] [2.0 2.0 2.0] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
+Gradient in x direction:  [[2.0 0.0 -2.0] [2.0 0.0 -2.0] [2.0 0.0 -2.0] [2.0 0.0 -2.0]] kelvin / kilometer
 </pre></div>
 </div>
 <p>It’s also possible that we do not have the position of data points, but know
@@ -272,8 +273,8 @@ axes.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
-Gradient in x direction:  [[ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.]] kelvin / kilometer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[2.0 2.0 2.0] [2.0 2.0 2.0] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
+Gradient in x direction:  [[1.0 0.0 -1.0] [1.0 0.0 -1.0] [1.0 0.0 -1.0] [1.0 0.0 -1.0]] kelvin / kilometer
 </pre></div>
 </div>
 <p>Finally, the deltas can be arrays for unevenly spaced data.</p>
@@ -290,11 +291,11 @@ Gradient in x direction:  [[ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 0.33333333  0.66666667  2.33333333] [ 1.66666667  0.66666667  1.66666667] [ 0.83333333 -0.16666667 -1.66666667] [-3.83333333 -1.83333333 -4.33333333]] kelvin / kilometer
-Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0.66666667 -1.33333333] [ 0.83333333  0.16666667 -0.83333333] [ 1.5         0.5        -1.5       ]] kelvin / kilometer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[0.3333333333333428 0.6666666666666572 2.333333333333357] [1.6666666666666572 0.6666666666666714 1.6666666666666714] [0.8333333333333286 -0.1666666666666643 -1.6666666666666856] [-3.8333333333333144 -1.8333333333333428 -4.333333333333371]] kelvin / kilometer
+Gradient in x direction:  [[0.833333333333357 0.1666666666666714 -0.8333333333333712] [1.333333333333286 0.6666666666666572 -1.3333333333333144] [0.833333333333357 0.1666666666666714 -0.8333333333333428] [1.5000000000000426 0.5000000000000142 -1.5]] kelvin / kilometer
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.015 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.016 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-gradient-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/14685a475a26aa909281823c9d590260/Gradient.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Gradient.py</span></code></a></p>
@@ -316,7 +317,7 @@ Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../formats/GINI_Water_Vapor.html" class="btn btn-neutral float-right" title="GINI Water Vapor Imagery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Smoothing.html" class="btn btn-neutral float-right" title="Smoothing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Angle_to_Direction.html" class="btn btn-neutral" title="Angle to Direction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -329,7 +330,7 @@ Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -366,7 +367,7 @@ Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

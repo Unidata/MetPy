@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.cross_sections &mdash; MetPy 0.11.1</title>
+  <title>metpy.calc.cross_sections &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,8 +119,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
@@ -453,7 +453,7 @@
 
 <div class="viewcode-block" id="absolute_momentum"><a class="viewcode-back" href="../../../api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@check_matching_coordinates</span>
-<span class="k">def</span> <span class="nf">absolute_momentum</span><span class="p">(</span><span class="n">u_wind</span><span class="p">,</span> <span class="n">v_wind</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">absolute_momentum</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate cross-sectional absolute momentum (also called pseudoangular momentum).</span>
 
 <span class="sd">    As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is</span>
@@ -471,9 +471,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u_wind : `xarray.DataArray`</span>
+<span class="sd">    u : `xarray.DataArray`</span>
 <span class="sd">        The input DataArray of the x-component (in terms of data projection) of the wind.</span>
-<span class="sd">    v_wind : `xarray.DataArray`</span>
+<span class="sd">    v : `xarray.DataArray`</span>
 <span class="sd">        The input DataArray of the y-component (in terms of data projection) of the wind.</span>
 
 <span class="sd">    Returns</span>
@@ -483,11 +483,11 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The coordinates of `u_wind` and `v_wind` must match.</span>
+<span class="sd">    The coordinates of `u` and `v` must match.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the normal component of the wind</span>
-    <span class="n">norm_wind</span> <span class="o">=</span> <span class="n">normal_component</span><span class="p">(</span><span class="n">u_wind</span><span class="p">,</span> <span class="n">v_wind</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">norm_wind</span> <span class="o">=</span> <span class="n">normal_component</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
     <span class="n">norm_wind</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
 
     <span class="c1"># Get other pieces of calculation (all as ndarrays matching shape of norm_wind)</span>
@@ -519,7 +519,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -556,7 +556,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

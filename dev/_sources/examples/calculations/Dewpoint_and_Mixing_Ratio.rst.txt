@@ -117,7 +117,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
  .. code-block:: none
 
-    13.854135353732214 degC
+    13.854135353732214 degree_Celsius
 
 
 
@@ -139,7 +139,7 @@ Which can of course be converted to Fahrenheit
 
  .. code-block:: none
 
-    56.937444036717935 degF
+    56.9374436367179 degree_Fahrenheit
 
 
 
@@ -184,7 +184,7 @@ And print the corresponding dewpoint
 
  .. code-block:: none
 
-    11.376545231347285 degC 52.47778181642507 degF
+    11.376545231347285 degree_Celsius 52.47778141642504 degree_Fahrenheit
 
 
 

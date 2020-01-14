@@ -758,19 +758,19 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">SM5S(S)</td>
-        <td class="tg-notimplemented">5-point smoother</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/659">Issue #659</a></td>
+        <td class="tg-implemented">SM5S(S)</td>
+        <td class="tg-implemented">5-point smoother</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">SM9S(S)</td>
-        <td class="tg-notimplemented">9-point smoother</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/659">Issue #659</a></td>
+        <td class="tg-implemented">SM9S(S)</td>
+        <td class="tg-implemented">9-point smoother</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -1150,11 +1150,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">SM5V(V)</td>
-        <td class="tg-notimplemented">5-point smoother</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/659">Issue #659</a></td>
+        <td class="tg-implemented">SM5V(V)</td>
+        <td class="tg-implemented">5-point smoother</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>

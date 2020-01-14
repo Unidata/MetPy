@@ -24,8 +24,6 @@ Plots time series data as a meteogram.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/xarray.py:655: MetpyDeprecationWarning: The dewpoint_rh function was deprecated in version 0.12. This function has been renamed dewpoint_from_relative_humidity.
-      return func(*args, **kwargs)
     /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/pandas/plotting/_matplotlib/converter.py:103: FutureWarning: Using an implicitly registered datetime converter for a matplotlib plotting method. The converter was registered by pandas on import. Future versions of pandas will require you to explicitly register matplotlib converters.
 
     To register the converters:
@@ -50,7 +48,7 @@ Plots time series data as a meteogram.
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from metpy.calc import dewpoint_rh
+    from metpy.calc import dewpoint_from_relative_humidity
     from metpy.cbook import get_test_data
     from metpy.plots import add_metpy_logo
     from metpy.units import units
@@ -237,8 +235,8 @@ Plots time series data as a meteogram.
     data = {'wind_speed': (np.array(ws) * units('m/s')).to(units('knots')),
             'wind_speed_max': (np.array(wsmax) * units('m/s')).to(units('knots')),
             'wind_direction': np.array(wd) * units('degrees'),
-            'dewpoint': dewpoint_rh((np.array(temp) * units('degC')).to(units('K')),
-                                    np.array(rh) / 100.).to(units('degF')),
+            'dewpoint': dewpoint_from_relative_humidity((np.array(temp) * units.degC).to(units.K),
+                                                        np.array(rh) / 100.).to(units('degF')),
             'air_temperature': (np.array(temp) * units('degC')).to(units('degF')),
             'mean_slp': calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa'),
             'relative_humidity': np.array(rh), 'times': np.array(date)}
@@ -256,7 +254,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.805 seconds)
+   **Total running time of the script:** ( 0 minutes  1.009 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:

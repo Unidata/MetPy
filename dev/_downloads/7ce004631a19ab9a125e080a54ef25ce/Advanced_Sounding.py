@@ -73,7 +73,7 @@ prof = mpcalc.parcel_profile(p, T[0], Td[0]).to('degC')
 skew.plot(p, prof, 'k', linewidth=2)
 
 # Shade areas of CAPE and CIN
-skew.shade_cin(p, T, prof)
+skew.shade_cin(p, T, prof, Td)
 skew.shade_cape(p, T, prof)
 
 # An example of a slanted line at constant T -- in this case the 0

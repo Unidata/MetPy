@@ -168,7 +168,7 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 
  .. code-block:: none
 
-    5 delta_degC
+    5 delta_degree_Celsius
 
 
 
@@ -191,7 +191,7 @@ We can add a delta to an offset unit as well since it is a relative change.
 
  .. code-block:: none
 
-    27.77777777777778 degC
+    27.77777777777778 degree_Celsius
 
 
 
@@ -267,8 +267,8 @@ units. Abbreviations or full unit names are acceptable.
 
  .. code-block:: none
 
-    [11.  9. 13.  6.  2. 11. 12.  4.  1. 13.] meter / second
-    [ 5.  3.  4.  4. 11. 11.  3.  7.  1.  1.] meter / second
+    [11.0 9.0 13.0 6.0 2.0 11.0 12.0 4.0 1.0 13.0] meter / second
+    [5.0 3.0 4.0 4.0 11.0 11.0 3.0 7.0 1.0 1.0] meter / second
 
 
 

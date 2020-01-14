@@ -51,6 +51,10 @@ Other items:
   to break other users' code, so care must be taken not to introduce bugs.
 * Be aware that the pull request review process is not immediate, and is
   generally proportional to the size of the pull request.
+* Function arguments:
+  - Use full names for parameters rather than symbols (e.g. temperature instead of t)
+  - Order: pressure/height -> temperature/wind -> moisture (in general, but not a hard and
+    fast rule--like to allow for some default arguments).
 
 ## Reporting a bug
 The easiest way to get involved is to report issues you encounter when using MetPy or by

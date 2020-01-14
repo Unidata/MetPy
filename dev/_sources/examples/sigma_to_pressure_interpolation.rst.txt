@@ -51,9 +51,9 @@ University Department of Geography and Meteorology.
     lon = data.variables['lon'][:]
     time = data.variables['time']
     vtimes = num2date(time[:], time.units)
-    temperature = data.variables['temperature'][:] * units.celsius
-    pres = data.variables['pressure'][:] * units.pascal
-    hgt = data.variables['height'][:] * units.meter
+    temperature = units.Quantity(data.variables['temperature'][:], 'degC')
+    pres = units.Quantity(data.variables['pressure'][:], 'Pa')
+    hgt = units.Quantity(data.variables['height'][:], 'meter')
 
 
 
@@ -165,7 +165,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.106 seconds)
+   **Total running time of the script:** ( 0 minutes  3.951 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:

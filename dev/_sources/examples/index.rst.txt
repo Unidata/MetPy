@@ -256,6 +256,26 @@ Examples using various calculation functions from MetPy.
    :hidden:
 
    /examples/calculations/Gradient
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions.">
+
+.. only:: html
+
+ .. figure:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
+
+     :ref:`sphx_glr_examples_calculations_Smoothing.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Smoothing
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

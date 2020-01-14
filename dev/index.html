@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>MetPy &mdash; MetPy 0.11.1</title>
+  <title>MetPy &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="#"/>
+    <link rel="top" title="MetPy 0.12.0" href="#"/>
         <link rel="next" title="Installation Guide" href="installguide.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,8 +119,8 @@
 <li class="toctree-l1"><a class="reference internal" href="installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
@@ -207,12 +207,7 @@ performing calculations with weather data. If you’re new to MetPy, check
 out our <a class="reference internal" href="startingguide.html"><span class="doc">Getting Started</span></a> guide. Development is
 supported by the National Science Foundation through grants AGS-1344155,
 OAC-1740315, AGS-1901712.</p>
-<p>MetPy follows <a class="reference external" href="https://semver.org">semantic versioning</a> in its version number. With our
-current 0.x version, that implies that MetPy’s APIs (application programming interfaces) are
-still evolving (we won’t break things just for fun, but many things are still changing as we
-work through design issues). Also, for a version <em class="xref py py-obj">0.x.y</em>, we change <em class="xref py py-obj">x</em> when we
-release new features, and <em class="xref py py-obj">y</em> when we make a release with only bug fixes.</p>
-<p>For additional MetPy examples not included in this repository, please see the <a class="reference external" href="https://unidata.github.io/python-gallery/">Unidata Python
+<p>For additional MetPy examples not included in this repository, please see the <a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Unidata Python
 Gallery</a>.</p>
 <p>We support Python &gt;= 3.6. Support for Python 2.7 was dropped with the release of 0.12.</p>
 <div class="section" id="contact-us">
@@ -230,6 +225,17 @@ python support email address</a></p></li>
 <li><p>If you use MetPy in a publication, please see <a class="reference internal" href="citing.html#citing-metpy"><span class="std std-ref">Citing MetPy</span></a>.</p></li>
 <li><p>For release announcements, join Unidata’s <a class="reference external" href="https://www.unidata.ucar.edu/support/#mailinglists">python-users</a> mailing list</p></li>
 </ul>
+</div>
+<div class="section" id="versions">
+<h2>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h2>
+<p>MetPy follows <a class="reference external" href="https://semver.org">semantic versioning</a> in its version number. This means
+that any MetPy <code class="docutils literal notranslate"><span class="pre">1.x</span></code> release will be backwards compatible with an earlier <code class="docutils literal notranslate"><span class="pre">1.y</span></code> release. By
+“backward compatible”, we mean that <strong>correct</strong> code that works on a <code class="docutils literal notranslate"><span class="pre">1.y</span></code> version will work
+on a future <code class="docutils literal notranslate"><span class="pre">1.x</span></code> version. It’s always possible for bug fixes to change behavior or make
+incorrect code cease to work. Backwards-incompatible changes will only be allowed when changing
+to version <code class="docutils literal notranslate"><span class="pre">2.0</span></code>. Such changes will be proceeded by <em class="xref py py-obj">MetpyDeprecationWarning</em> or
+<em class="xref py py-obj">FutureWarning</em> as appropriate. For a version <code class="docutils literal notranslate"><span class="pre">1.x.y</span></code>, we change <code class="docutils literal notranslate"><span class="pre">x</span></code> when we
+release new features, and <code class="docutils literal notranslate"><span class="pre">y</span></code> when we make a release with only bug fixes.</p>
 </div>
 <div class="section" id="media">
 <h2>Media<a class="headerlink" href="#media" title="Permalink to this headline">¶</a></h2>
@@ -264,7 +270,7 @@ spirit please have a look at our <a class="reference external" href="https://git
 <ul class="simple">
 <li><p><a class="reference external" href="https://unidata.github.io/netcdf4-python/">netCDF4-python</a> is the officially blessed Python API for <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/">netCDF</a></p></li>
 <li><p><a class="reference external" href="https://unidata.github.io/siphon/">siphon</a> is a Python API for accessing remote data on <a class="reference external" href="https://www.unidata.ucar.edu/software/thredds/current/tds/">THREDDS Data Servers</a></p></li>
-<li><p>The <a class="reference external" href="https://unidata.github.io/python-gallery/">Unidata Python Gallery</a> is a collection of meteorological Python scripts</p></li>
+<li><p>The <a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Unidata Python Gallery</a> is a collection of meteorological Python scripts</p></li>
 </ul>
 </div>
 </div>
@@ -290,7 +296,7 @@ spirit please have a look at our <a class="reference external" href="https://git
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -327,7 +333,7 @@ spirit please have a look at our <a class="reference external" href="https://git
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

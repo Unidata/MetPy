@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>smooth_n_point &mdash; MetPy 0.11.1</title>
+  <title>smooth_n_point &mdash; MetPy 0.12.0</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.11.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
-        <link rel="next" title="dewpoint_rh" href="metpy.calc.dewpoint_rh.html"/>
-        <link rel="prev" title="smooth_gaussian" href="metpy.calc.smooth_gaussian.html"/> 
+        <link rel="next" title="angle_to_direction" href="metpy.calc.angle_to_direction.html"/>
+        <link rel="prev" title="smooth_circular" href="metpy.calc.smooth_circular.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.11.1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -137,23 +137,15 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#other">Other</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.parse_angle.html">parse_angle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#smoothing">Smoothing</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_window.html">smooth_window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_rectangular.html">smooth_rectangular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_circular.html">smooth_circular</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">smooth_n_point</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
@@ -245,33 +237,44 @@
 <dl class="function">
 <dt id="metpy.calc.smooth_n_point">
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">smooth_n_point</code><span class="sig-paren">(</span><em class="sig-param">scalar_grid</em>, <em class="sig-param">n=5</em>, <em class="sig-param">passes=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#smooth_n_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.smooth_n_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filter with normal distribution of weights.</p>
+<dd><p>Filter with an n-point smoother.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scalar_grid</strong> (array-like or <em class="xref py py-obj">pint.Quantity</em>) – Some 2D scalar grid to be smoothed.</p></li>
+<li><p><strong>scalar_grid</strong> (array-like or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only
+done along the last two.</p></li>
 <li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to use in smoothing, only valid inputs
 are 5 and 9. Defaults to 5.</p></li>
 <li><p><strong>passes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of times to apply the filter to the grid. Defaults to 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>array-like or <em class="xref py py-obj">pint.Quantity</em> – The filtered 2D scalar grid.</p>
+<dd class="field-even"><p>array-like or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The filtered scalar grid.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This function is a close replication of the GEMPAK function SM5S
-and SM9S depending on the choice of the number of points to use
-for smoothing. This function can be applied multiple times to
-create a more smoothed field and will only smooth the interior
-points, leaving the end points with their original values. If a
-masked value or NaN values exists in the array, it will propagate
-to any point that uses that particular grid point in the smoothing
-calculation. Applying the smoothing function multiple times will
-propagate NaNs further throughout the domain.</p>
+<p>This function is a close replication of the GEMPAK function SM5S and SM9S depending on the
+choice of the number of points to use for smoothing. This function can be applied multiple
+times to create a more smoothed field and will only smooth the interior points, leaving
+the end points with their original values (this function will leave an unsmoothed edge of
+size 1 around the data). If a masked value or NaN values exists in the array, it will
+propagate to any point that uses that particular grid point in the smoothing calculation.
+Applying the smoothing function multiple times will propogate NaNs further throughout the
+domain.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.smooth_window.html#metpy.calc.smooth_window" title="metpy.calc.smooth_window"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_window()</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_rectangular.html#metpy.calc.smooth_rectangular" title="metpy.calc.smooth_rectangular"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_rectangular()</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_circular.html#metpy.calc.smooth_circular" title="metpy.calc.smooth_circular"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_circular()</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_gaussian()</span></code></a></p>
+</div>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div class="section" id="examples-using-metpy-calc-smooth-n-point">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.smooth_n_point</span></code><a class="headerlink" href="#examples-using-metpy-calc-smooth-n-point" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions."><div class="figure align-default" id="id1">
+<img alt="../../_images/sphx_glr_Smoothing_thumb.png" src="../../_images/sphx_glr_Smoothing_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/calculations/Smoothing.html#sphx-glr-examples-calculations-smoothing-py"><span class="std std-ref">Smoothing</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -283,10 +286,10 @@ propagate NaNs further throughout the domain.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.calc.dewpoint_rh.html" class="btn btn-neutral float-right" title="dewpoint_rh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.calc.angle_to_direction.html" class="btn btn-neutral float-right" title="angle_to_direction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.smooth_gaussian.html" class="btn btn-neutral" title="smooth_gaussian" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.smooth_circular.html" class="btn btn-neutral" title="smooth_circular" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -296,7 +299,7 @@ propagate NaNs further throughout the domain.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 00:03:05.
+      Last updated on Jan 14, 2020 at 09:19:10.
 
     </p>
   </div>
@@ -333,7 +336,7 @@ propagate NaNs further throughout the domain.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.1.post152+ge56e12d',
+            VERSION:'0.12.0.post98+ge9a14f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
