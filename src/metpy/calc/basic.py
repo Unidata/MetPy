@@ -848,16 +848,24 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     else:
         weights = window
 
+    # Set indexes
+    # Inner index for the centered array elements that are affected by the smoothing
+    inner_full_index = _trailing_dims(_offset(_pad(n), 0) for n in weights.shape)
+    # Indexes to iterate over each weight
+    weight_indexes = tuple(product(*(range(n) for n in weights.shape)))
+
+    # Index for full array elements, offset by the weight index
+    def offset_full_index(weight_index):
+        return _trailing_dims(_offset(_pad(n), weight_index[i] - _pad(n))
+                              for i, n in enumerate(weights.shape))
+
     # TODO: this is not lazy-loading/dask compatible, as it "densifies" the data
     data = np.array(scalar_grid)
     for _ in range(passes):
         # Set values corresponding to smoothing weights by summing over each weight and
         # applying offsets in needed dimensions
-        data[_trailing_dims(_offset(_pad(n), 0) for n in weights.shape)] = sum(
-            weights[index] * data[_trailing_dims(_offset(_pad(n), index[i] - _pad(n))
-                                                 for i, n in enumerate(weights.shape))]
-            for index in product(*(range(n) for n in weights.shape))
-        )
+        data[inner_full_index] = sum(weights[index] * data[offset_full_index(index)]
+                                     for index in weight_indexes)
 
     return data
 
@@ -910,7 +918,8 @@ def smooth_circular(scalar_grid, radius, passes=1):
         done along the last two.
 
     radius : int
-        Radius of the circular smoothing window
+        Radius of the circular smoothing window. The "diameter" of the circle (width of
+        smoothing window) is 2 * radius + 1 to provide a smoothing window with odd shape.
 
     passes : int
         The number of times to apply the filter to the grid. Defaults to 1.
