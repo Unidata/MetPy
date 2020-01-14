@@ -448,7 +448,7 @@ class MetPyDataArrayAccessor:
         ----------
         cf_attributes : dict, optional
             Dictionary of CF projection attributes
-        **kwargs : optional
+        kwargs : optional
             CF projection attributes specified as keyword arguments
 
         Returns
@@ -671,7 +671,7 @@ class MetPyDatasetAccessor:
         ----------
         cf_attributes : dict, optional
             Dictionary of CF projection attributes
-        **kwargs : optional
+        kwargs : optional
             CF projection attributes specified as keyword arguments
 
         Returns
