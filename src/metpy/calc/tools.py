@@ -5,6 +5,7 @@
 import functools
 from inspect import signature
 from operator import itemgetter
+import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
