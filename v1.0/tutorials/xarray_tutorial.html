@@ -1,0 +1,1348 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>xarray with MetPy Tutorial &mdash; MetPy 1.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/xarray_tutorial.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 1.0" href="../index.html"/>
+        <link rel="up" title="Tutorials" href="index.html"/>
+        <link rel="next" title="Reference Guide" href="../api/index.html"/>
+        <link rel="prev" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>1.0</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="unit_tutorial.html">Units Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">xarray with MetPy Tutorial</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-data">Getting Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparing-data">Preparing Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#units">Units</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#coordinates">Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#indexing-and-selecting-data">Indexing and Selecting Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#projections">Projections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculations">Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plotting">Plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-could-go-wrong">What Could Go Wrong?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>xarray with MetPy Tutorial</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../tutorials/xarray_tutorial.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-xarray-tutorial-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="xarray-with-metpy-tutorial">
+<span id="sphx-glr-tutorials-xarray-tutorial-py"></span><h1>xarray with MetPy Tutorial<a class="headerlink" href="#xarray-with-metpy-tutorial" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://xarray.pydata.org/">xarray</a> is a powerful Python package that provides N-dimensional
+labeled arrays and datasets following the Common Data Model. While the process of integrating
+xarray features into MetPy is ongoing, this tutorial demonstrates how xarray can be used
+within the current version of MetPy. MetPy’s integration primarily works through accessors
+which allow simplified projection handling and coordinate identification. Unit and calculation
+support is currently available in a limited fashion, but should be improved in future
+versions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="c1"># Any import of metpy will activate the accessors</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.testing</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+</pre></div>
+</div>
+<div class="section" id="getting-data">
+<h2>Getting Data<a class="headerlink" href="#getting-data" title="Permalink to this headline">¶</a></h2>
+<p>While xarray can handle a wide variety of n-dimensional data (essentially anything that can
+be stored in a netCDF file), a common use case is working with model output. Such model
+data can be obtained from a THREDDS Data Server using the siphon package, but for this
+tutorial, we will use an example subset of GFS data from Hurrican Irma (September 5th,
+2017).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open the netCDF file as a xarray Dataset</span>
+<span class="n">data</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;irma_gfs_example.nc&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># View a summary of the Dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
+Dimensions:                              (isobaric1: 21, isobaric3: 31, latitude: 81, longitude: 131, time1: 9)
+Coordinates:
+  * time1                                (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
+    reftime                              datetime64[ns] ...
+  * latitude                             (latitude) float32 50.0 49.5 ... 10.0
+  * isobaric3                            (isobaric3) float64 100.0 ... 1e+05
+  * isobaric1                            (isobaric1) float64 1e+04 ... 1e+05
+  * longitude                            (longitude) float32 250.0 ... 315.0
+Data variables:
+    Vertical_velocity_pressure_isobaric  (time1, isobaric1, latitude, longitude) float32 ...
+    Relative_humidity_isobaric           (time1, isobaric3, latitude, longitude) float32 ...
+    Temperature_isobaric                 (time1, isobaric3, latitude, longitude) float32 ...
+    u-component_of_wind_isobaric         (time1, isobaric3, latitude, longitude) float32 ...
+    v-component_of_wind_isobaric         (time1, isobaric3, latitude, longitude) float32 ...
+    Geopotential_height_isobaric         (time1, isobaric3, latitude, longitude) float32 ...
+    LatLon_361X720-0p25S-180p00E         int32 ...
+Attributes:
+    Originating_or_generating_Center:                                        ...
+    Originating_or_generating_Subcenter:                                     ...
+    GRIB_table_version:                                                      ...
+    Type_of_generating_process:                                              ...
+    Analysis_or_forecast_generating_process_identifier_defined_by_originating...
+    Conventions:                                                             ...
+    history:                                                                 ...
+    featureType:                                                             ...
+    History:                                                                 ...
+    geospatial_lat_min:                                                      ...
+    geospatial_lat_max:                                                      ...
+    geospatial_lon_min:                                                      ...
+    geospatial_lon_max:                                                      ...
+</pre></div>
+</div>
+</div>
+<div class="section" id="preparing-data">
+<h2>Preparing Data<a class="headerlink" href="#preparing-data" title="Permalink to this headline">¶</a></h2>
+<p>To make use of the data within MetPy, we need to parse the dataset for projection
+information following the CF conventions. For this, we use the
+<code class="docutils literal notranslate"><span class="pre">data.metpy.parse_cf()</span></code> method, which will return a new, parsed <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
+<p>Additionally, we rename our data variables for easier reference.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To parse the full dataset, we can call parse_cf without an argument, and assign the returned</span>
+<span class="c1"># Dataset.</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
+
+<span class="c1"># If we instead want just a single variable, we can pass that variable name to parse_cf and</span>
+<span class="c1"># it will return just that data variable as a DataArray.</span>
+<span class="n">data_var</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">&#39;Temperature_isobaric&#39;</span><span class="p">)</span>
+
+<span class="c1"># If we want only a subset of variables, we can pass a list of variable names as well.</span>
+<span class="n">data_subset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">([</span><span class="s1">&#39;u-component_of_wind_isobaric&#39;</span><span class="p">,</span>
+                                   <span class="s1">&#39;v-component_of_wind_isobaric&#39;</span><span class="p">])</span>
+
+<span class="c1"># To rename variables, supply a dictionary between old and new names to the rename method</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span>
+    <span class="s1">&#39;Vertical_velocity_pressure_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;omega&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Relative_humidity_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;relative_humidity&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Temperature_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;u-component_of_wind_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;v-component_of_wind_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Geopotential_height_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;height&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="units">
+<h2>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h2>
+<p>MetPy’s DataArray accessor has a <code class="docutils literal notranslate"><span class="pre">unit_array</span></code> property to obtain a <code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array
+of just the data from the DataArray (metadata is removed) and a <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> method to
+convert the the data from one unit to another (keeping it as a DataArray). For now, we’ll
+just use <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> to convert our temperature to <code class="docutils literal notranslate"><span class="pre">degC</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<pre>&lt;xarray.DataArray &#x27;temperature&#x27; (time1: 9, isobaric3: 31, latitude: 81, longitude: 131)&gt;
+array([[[[-15.149994 , -15.149994 , -15.25     , ..., -14.949982 ,
+          -14.949982 , -14.850006 ],
+         [-15.25     , -15.25     , -15.350006 , ..., -14.949982 ,
+          -14.949982 , -14.949982 ],
+         [-15.350006 , -15.350006 , -15.350006 , ..., -15.049988 ,
+          -15.049988 , -15.049988 ],
+         ...,
+         [-12.350006 , -12.350006 , -12.350006 , ..., -15.149994 ,
+          -15.049988 , -14.949982 ],
+         [-12.149994 , -12.149994 , -12.149994 , ..., -15.049988 ,
+          -15.049988 , -14.949982 ],
+         [-11.949982 , -11.949982 , -11.949982 , ..., -15.049988 ,
+          -14.949982 , -14.850006 ]],
+
+        [[-16.649994 , -16.649994 , -16.649994 , ..., -17.549988 ,
+          -17.549988 , -17.649994 ],
+         [-16.75     , -16.75     , -16.850006 , ..., -17.649994 ,
+          -17.649994 , -17.649994 ],
+         [-16.949982 , -16.949982 , -16.949982 , ..., -17.75     ,
+          -17.75     , -17.75     ],
+         ...,
+         [-14.049988 , -14.049988 , -14.049988 , ..., -12.049988 ,
+          -11.75     , -11.549988 ],
+         [-13.949982 , -13.949982 , -13.949982 , ..., -12.049988 ,
+          -11.75     , -11.549988 ],
+         [-13.75     , -13.850006 , -13.850006 , ..., -12.049988 ,
+          -11.75     , -11.549988 ]],
+
+        [[-21.75     , -21.75     , -21.75     , ..., -22.649994 ,
+          -22.649994 , -22.649994 ],
+         [-21.949997 , -21.84999  , -21.84999  , ..., -22.75     ,
+          -22.75     , -22.75     ],
+         [-22.049988 , -22.049988 , -22.049988 , ..., -22.84999  ,
+          -22.84999  , -22.949997 ],
+         ...,
+         [-22.149994 , -22.149994 , -22.149994 , ..., -18.84999  ,
+          -18.949997 , -19.149994 ],
+         [-22.049988 , -22.049988 , -22.049988 , ..., -18.34999  ,
+          -18.449997 , -18.649994 ],
+         [-21.949997 , -21.949997 , -21.949997 , ..., -17.84999  ,
+          -18.049988 , -18.149994 ]],
+
+        ...,
+
+        [[ 14.25     ,  13.75     ,  13.149994 , ...,  12.550018 ,
+           11.450012 ,  11.050018 ],
+         [ 13.75     ,  13.75     ,  13.649994 , ...,  12.350006 ,
+           11.950012 ,  11.75     ],
+         [ 13.649994 ,  13.450012 ,  13.649994 , ...,  12.149994 ,
+           12.050018 ,  12.149994 ],
+         ...,
+         [ 22.149994 ,  22.149994 ,  22.149994 , ...,  22.550018 ,
+           22.649994 ,  22.75     ],
+         [ 22.050018 ,  22.050018 ,  21.950012 , ...,  22.550018 ,
+           22.149994 ,  22.350006 ],
+         [ 21.950012 ,  21.75     ,  22.149994 , ...,  22.550018 ,
+           22.450012 ,  22.050018 ]],
+
+        [[ 15.649994 ,  15.149994 ,  14.649994 , ...,  11.950012 ,
+           11.850006 ,  11.75     ],
+         [ 15.149994 ,  15.149994 ,  15.050018 , ...,  11.950012 ,
+           11.649994 ,  11.450012 ],
+         [ 15.050018 ,  14.850006 ,  15.050018 , ...,  11.850006 ,
+           11.75     ,  11.649994 ],
+         ...,
+         [ 24.149994 ,  24.25     ,  24.149994 , ...,  24.649994 ,
+           24.649994 ,  24.850006 ],
+         [ 23.950012 ,  23.950012 ,  23.850006 , ...,  24.649994 ,
+           24.25     ,  24.450012 ],
+         [ 23.850006 ,  23.649994 ,  23.75     , ...,  24.649994 ,
+           24.25     ,  24.050018 ]],
+
+        [[ 17.050018 ,  16.550018 ,  16.050018 , ...,  13.450012 ,
+           13.450012 ,  13.550018 ],
+         [ 16.550018 ,  16.550018 ,  16.450012 , ...,  13.350006 ,
+           13.050018 ,  12.950012 ],
+         [ 16.450012 ,  16.25     ,  16.450012 , ...,  13.050018 ,
+           12.850006 ,  12.850006 ],
+         ...,
+         [ 26.350006 ,  26.350006 ,  26.25     , ...,  26.75     ,
+           26.850006 ,  26.950012 ],
+         [ 26.050018 ,  26.050018 ,  25.950012 , ...,  26.75     ,
+           26.350006 ,  26.550018 ],
+         [ 26.050018 ,  25.75     ,  25.649994 , ...,  26.75     ,
+           26.350006 ,  26.149994 ]]],
+
+
+       [[[-14.650024 , -14.650024 , -14.650024 , ..., -13.550018 ,
+          -13.550018 , -13.550018 ],
+         [-14.650024 , -14.650024 , -14.650024 , ..., -13.650024 ,
+          -13.650024 , -13.650024 ],
+         [-14.7500305, -14.7500305, -14.650024 , ..., -13.650024 ,
+          -13.650024 , -13.650024 ],
+         ...,
+         [-13.7500305, -13.650024 , -13.650024 , ..., -13.550018 ,
+          -13.650024 , -13.850006 ],
+         [-13.650024 , -13.550018 , -13.550018 , ..., -13.350006 ,
+          -13.550018 , -13.650024 ],
+         [-13.550018 , -13.450012 , -13.450012 , ..., -13.150024 ,
+          -13.350006 , -13.450012 ]],
+
+        [[-16.850006 , -16.850006 , -16.850006 , ..., -16.050018 ,
+          -16.050018 , -16.050018 ],
+         [-17.050018 , -17.050018 , -17.050018 , ..., -16.150024 ,
+          -16.150024 , -16.150024 ],
+         [-17.150024 , -17.150024 , -17.150024 , ..., -16.25003  ,
+          -16.25003  , -16.25003  ],
+         ...,
+         [-14.850006 , -14.950012 , -14.950012 , ..., -12.2500305,
+          -11.950012 , -11.7500305],
+         [-14.650024 , -14.7500305, -14.850006 , ..., -12.150024 ,
+          -11.850006 , -11.650024 ],
+         [-14.450012 , -14.550018 , -14.650024 , ..., -12.050018 ,
+          -11.7500305, -11.550018 ]],
+
+        [[-22.150024 , -22.150024 , -22.150024 , ..., -22.250015 ,
+          -22.250015 , -22.250015 ],
+         [-22.350021 , -22.350021 , -22.350021 , ..., -22.350021 ,
+          -22.350021 , -22.350021 ],
+         [-22.550018 , -22.450012 , -22.450012 , ..., -22.450012 ,
+          -22.450012 , -22.450012 ],
+         ...,
+         [-23.550018 , -23.650024 , -23.650024 , ..., -17.250015 ,
+          -17.150024 , -16.950012 ],
+         [-23.450012 , -23.450012 , -23.550018 , ..., -16.950012 ,
+          -16.75003  , -16.650024 ],
+         [-23.250015 , -23.350021 , -23.350021 , ..., -16.650024 ,
+          -16.550018 , -16.350006 ]],
+
+        ...,
+
+        [[ 15.850006 ,  15.450012 ,  15.050018 , ...,  12.149994 ,
+           12.25     ,  12.050018 ],
+         [ 15.050018 ,  14.75     ,  14.649994 , ...,  12.25     ,
+           12.25     ,  12.25     ],
+         [ 15.149994 ,  14.950012 ,  14.950012 , ...,  12.149994 ,
+           11.950012 ,  11.75     ],
+         ...,
+         [ 22.149994 ,  22.149994 ,  22.149994 , ...,  22.850006 ,
+           22.75     ,  22.850006 ],
+         [ 21.950012 ,  21.850006 ,  21.950012 , ...,  22.550018 ,
+           22.350006 ,  22.450012 ],
+         [ 21.850006 ,  21.75     ,  22.350006 , ...,  22.649994 ,
+           22.450012 ,  22.25     ]],
+
+        [[ 17.269836 ,  16.869843 ,  16.469818 , ...,  12.269836 ,
+           12.16983  ,  12.16983  ],
+         [ 16.469818 ,  16.16983  ,  16.069824 , ...,  12.66983  ,
+           12.469818 ,  12.269836 ],
+         [ 16.569824 ,  16.369843 ,  16.369843 , ...,  12.869843 ,
+           13.069824 ,  13.069824 ],
+         ...,
+         [ 24.16983  ,  24.069824 ,  24.069824 , ...,  25.069824 ,
+           24.969818 ,  25.069824 ],
+         [ 23.869843 ,  23.769836 ,  23.869843 , ...,  24.569824 ,
+           24.369843 ,  24.569824 ],
+         [ 23.769836 ,  23.66983  ,  23.869843 , ...,  24.66983  ,
+           24.369843 ,  24.269836 ]],
+
+        [[ 18.66983  ,  18.269836 ,  17.869843 , ...,  13.469818 ,
+           13.66983  ,  13.769836 ],
+         [ 17.869843 ,  17.569824 ,  17.469818 , ...,  13.469818 ,
+           13.369843 ,  13.16983  ],
+         [ 17.969818 ,  17.769836 ,  17.769836 , ...,  13.269836 ,
+           13.069824 ,  12.869843 ],
+         ...,
+         [ 26.269836 ,  26.16983  ,  26.16983  , ...,  27.16983  ,
+           27.16983  ,  27.16983  ],
+         [ 25.969818 ,  25.969818 ,  25.969818 , ...,  26.66983  ,
+           26.469818 ,  26.769836 ],
+         [ 25.869843 ,  25.769836 ,  25.769836 , ...,  26.869843 ,
+           26.469818 ,  26.469818 ]]],
+
+
+       [[[-12.7500305, -12.7500305, -12.7500305, ..., -12.2500305,
+          -12.2500305, -12.2500305],
+         [-12.850006 , -12.850006 , -12.850006 , ..., -12.350006 ,
+          -12.350006 , -12.350006 ],
+         [-12.950012 , -12.950012 , -12.950012 , ..., -12.450012 ,
+          -12.450012 , -12.450012 ],
+         ...,
+         [-11.7500305, -11.7500305, -11.7500305, ..., -11.650024 ,
+          -11.7500305, -11.850006 ],
+         [-11.7500305, -11.650024 , -11.650024 , ..., -11.350006 ,
+          -11.450012 , -11.650024 ],
+         [-11.7500305, -11.650024 , -11.550018 , ..., -11.150024 ,
+          -11.2500305, -11.350006 ]],
+
+        [[-15.2499695, -15.2499695, -15.2499695, ..., -14.2499695,
+          -14.2499695, -14.2499695],
+         [-15.449982 , -15.449982 , -15.449982 , ..., -14.349976 ,
+          -14.349976 , -14.349976 ],
+         [-15.549957 , -15.549957 , -15.549957 , ..., -14.349976 ,
+          -14.349976 , -14.349976 ],
+         ...,
+         [-12.049957 , -12.149963 , -12.149963 , ..., -10.949982 ,
+          -10.949982 , -11.049957 ],
+         [-11.7499695, -11.849976 , -11.949982 , ..., -10.849976 ,
+          -10.949982 , -10.949982 ],
+         [-11.549957 , -11.549957 , -11.649963 , ..., -10.7499695,
+          -10.849976 , -10.849976 ]],
+
+        [[-21.649994 , -21.649994 , -21.649994 , ..., -21.149994 ,
+          -21.149994 , -21.149994 ],
+         [-21.84999  , -21.84999  , -21.75     , ..., -21.149994 ,
+          -21.149994 , -21.25     ],
+         [-21.949997 , -21.949997 , -21.949997 , ..., -21.25     ,
+          -21.25     , -21.25     ],
+         ...,
+         [-21.449997 , -21.549988 , -21.649994 , ..., -17.149994 ,
+          -17.049988 , -16.949982 ],
+         [-21.25     , -21.34999  , -21.449997 , ..., -17.149994 ,
+          -16.949982 , -16.850006 ],
+         [-21.049988 , -21.149994 , -21.25     , ..., -17.049988 ,
+          -16.949982 , -16.75     ]],
+
+        ...,
+
+        [[ 20.149994 ,  19.75     ,  19.149994 , ...,  12.149994 ,
+           12.149994 ,  12.149994 ],
+         [ 19.25     ,  18.75     ,  18.350006 , ...,  12.25     ,
+           12.25     ,  12.350006 ],
+         [ 19.25     ,  19.050018 ,  18.75     , ...,  12.350006 ,
+           12.350006 ,  12.25     ],
+         ...,
+         [ 21.950012 ,  21.950012 ,  21.950012 , ...,  23.050018 ,
+           23.149994 ,  23.050018 ],
+         [ 21.850006 ,  21.850006 ,  22.050018 , ...,  22.649994 ,
+           22.75     ,  22.75     ],
+         [ 21.850006 ,  21.75     ,  22.25     , ...,  22.75     ,
+           22.550018 ,  22.649994 ]],
+
+        [[ 21.649994 ,  21.149994 ,  20.549988 , ...,  12.449982 ,
+           12.149994 ,  12.2499695],
+         [ 20.649994 ,  20.149994 ,  19.74997  , ...,  13.049988 ,
+           12.7499695,  12.2499695],
+         [ 20.649994 ,  20.449982 ,  20.149994 , ...,  12.849976 ,
+           12.349976 ,  12.2499695],
+         ...,
+         [ 23.949982 ,  23.949982 ,  23.949982 , ...,  25.149994 ,
+           25.349976 ,  25.149994 ],
+         [ 23.74997  ,  23.849976 ,  23.949982 , ...,  24.849976 ,
+           24.949982 ,  24.949982 ],
+         [ 23.74997  ,  23.549988 ,  23.74997  , ...,  24.849976 ,
+           24.74997  ,  24.849976 ]],
+
+        [[ 23.056976 ,  22.556976 ,  21.957    , ...,  13.256989 ,
+           13.556976 ,  13.756989 ],
+         [ 22.056976 ,  21.556976 ,  21.156982 , ...,  13.256989 ,
+           13.156982 ,  13.056976 ],
+         [ 22.056976 ,  21.856995 ,  21.556976 , ...,  12.957001 ,
+           12.756989 ,  12.556976 ],
+         ...,
+         [ 26.056976 ,  26.056976 ,  26.056976 , ...,  27.356995 ,
+           27.556976 ,  27.356995 ],
+         [ 25.957    ,  25.957    ,  26.056976 , ...,  27.056976 ,
+           27.156982 ,  27.156982 ],
+         [ 25.856995 ,  25.656982 ,  25.656982 , ...,  26.957    ,
+           26.856995 ,  27.056976 ]]],
+
+
+       ...,
+
+
+       [[[-12.150024 , -12.2500305, -12.2500305, ..., -16.150024 ,
+          -16.25003  , -16.25003  ],
+         [-12.2500305, -12.2500305, -12.2500305, ..., -16.25003  ,
+          -16.25003  , -16.25003  ],
+         [-12.2500305, -12.2500305, -12.2500305, ..., -16.25003  ,
+          -16.25003  , -16.350006 ],
+         ...,
+         [-10.050018 , -10.2500305, -10.550018 , ...,  -9.7500305,
+           -9.7500305,  -9.7500305],
+         [-10.050018 , -10.350006 , -10.550018 , ...,  -9.950012 ,
+           -9.850006 ,  -9.950012 ],
+         [-10.150024 , -10.350006 , -10.550018 , ..., -10.050018 ,
+          -10.050018 , -10.050018 ]],
+
+        [[-14.149994 , -14.149994 , -14.25     , ..., -18.649994 ,
+          -18.649994 , -18.649994 ],
+         [-14.25     , -14.350006 , -14.350006 , ..., -18.649994 ,
+          -18.649994 , -18.75     ],
+         [-14.449982 , -14.449982 , -14.549988 , ..., -18.649994 ,
+          -18.75     , -18.75     ],
+         ...,
+         [-15.449982 , -15.449982 , -15.350006 , ..., -11.850006 ,
+          -12.149994 , -12.350006 ],
+         [-15.350006 , -15.25     , -15.25     , ..., -11.75     ,
+          -11.949982 , -12.25     ],
+         [-15.149994 , -15.149994 , -15.049988 , ..., -11.549988 ,
+          -11.850006 , -12.149994 ]],
+
+        [[-19.950012 , -19.950012 , -19.950012 , ..., -24.950012 ,
+          -24.950012 , -24.950012 ],
+         [-20.050018 , -20.050018 , -20.050018 , ..., -25.050018 ,
+          -25.050018 , -25.050018 ],
+         [-20.150024 , -20.250015 , -20.250015 , ..., -25.050018 ,
+          -25.150024 , -25.150024 ],
+         ...,
+         [-23.250015 , -23.150024 , -22.950012 , ..., -20.650024 ,
+          -20.850021 , -21.050018 ],
+         [-22.950012 , -22.850021 , -22.750015 , ..., -20.250015 ,
+          -20.450012 , -20.650024 ],
+         [-22.750015 , -22.650024 , -22.550018 , ..., -19.850021 ,
+          -20.150024 , -20.350021 ]],
+
+        ...,
+
+        [[ 19.25     ,  18.149994 ,  18.149994 , ...,  16.550018 ,
+           16.25     ,  16.050018 ],
+         [ 18.350006 ,  17.950012 ,  18.25     , ...,  16.450012 ,
+           16.149994 ,  15.950012 ],
+         [ 18.75     ,  18.25     ,  18.149994 , ...,  16.450012 ,
+           16.149994 ,  15.850006 ],
+         ...,
+         [ 22.550018 ,  22.350006 ,  22.149994 , ...,  23.050018 ,
+           22.450012 ,  22.350006 ],
+         [ 22.450012 ,  22.149994 ,  22.149994 , ...,  22.649994 ,
+           22.149994 ,  22.149994 ],
+         [ 22.450012 ,  22.649994 ,  22.75     , ...,  22.25     ,
+           22.050018 ,  22.050018 ]],
+
+        [[ 20.649994 ,  19.550018 ,  19.550018 , ...,  16.950012 ,
+           16.75     ,  16.550018 ],
+         [ 19.850006 ,  19.350006 ,  19.75     , ...,  17.050018 ,
+           16.75     ,  16.450012 ],
+         [ 20.149994 ,  19.649994 ,  19.550018 , ...,  16.950012 ,
+           16.75     ,  16.350006 ],
+         ...,
+         [ 24.450012 ,  24.25     ,  24.149994 , ...,  24.450012 ,
+           24.550018 ,  24.350006 ],
+         [ 24.25     ,  24.050018 ,  24.050018 , ...,  24.050018 ,
+           24.25     ,  24.350006 ],
+         [ 23.850006 ,  23.850006 ,  24.050018 , ...,  23.950012 ,
+           24.149994 ,  24.149994 ]],
+
+        [[ 22.050018 ,  20.950012 ,  20.950012 , ...,  14.75     ,
+           14.649994 ,  14.450012 ],
+         [ 21.25     ,  20.75     ,  21.149994 , ...,  14.75     ,
+           14.649994 ,  14.550018 ],
+         [ 21.550018 ,  21.050018 ,  20.950012 , ...,  14.550018 ,
+           14.550018 ,  14.450012 ],
+         ...,
+         [ 26.450012 ,  26.450012 ,  26.25     , ...,  26.350006 ,
+           26.75     ,  26.550018 ],
+         [ 26.25     ,  26.149994 ,  26.050018 , ...,  26.050018 ,
+           26.350006 ,  26.550018 ],
+         [ 25.850006 ,  25.649994 ,  25.850006 , ...,  26.050018 ,
+           26.350006 ,  26.25     ]]],
+
+
+       [[[-13.949982 , -13.949982 , -14.049988 , ..., -17.049988 ,
+          -16.949982 , -16.949982 ],
+         [-14.049988 , -14.049988 , -14.149994 , ..., -17.149994 ,
+          -17.049988 , -17.049988 ],
+         [-14.149994 , -14.149994 , -14.149994 , ..., -17.25     ,
+          -17.25     , -17.149994 ],
+         ...,
+         [ -8.549988 ,  -8.649994 ,  -8.75     , ..., -14.149994 ,
+          -14.149994 , -14.149994 ],
+         [ -8.449982 ,  -8.549988 ,  -8.649994 , ..., -14.25     ,
+          -14.25     , -14.25     ],
+         [ -8.449982 ,  -8.549988 ,  -8.649994 , ..., -14.350006 ,
+          -14.350006 , -14.350006 ]],
+
+        [[-15.75     , -15.75     , -15.75     , ..., -19.149994 ,
+          -19.25     , -19.34999  ],
+         [-15.850006 , -15.850006 , -15.850006 , ..., -19.149994 ,
+          -19.149994 , -19.25     ],
+         [-15.850006 , -15.949982 , -15.949982 , ..., -19.049988 ,
+          -19.149994 , -19.25     ],
+         ...,
+         [-12.449982 , -12.449982 , -12.549988 , ..., -14.149994 ,
+          -14.049988 , -13.75     ],
+         [-12.350006 , -12.350006 , -12.350006 , ..., -14.049988 ,
+          -13.850006 , -13.549988 ],
+         [-12.149994 , -12.25     , -12.25     , ..., -13.850006 ,
+          -13.649994 , -13.449982 ]],
+
+        [[-21.250015 , -21.250015 , -21.250015 , ..., -25.150024 ,
+          -25.250015 , -25.250015 ],
+         [-21.350021 , -21.350021 , -21.350021 , ..., -25.050018 ,
+          -25.050018 , -25.150024 ],
+         [-21.350021 , -21.450012 , -21.450012 , ..., -24.950012 ,
+          -24.950012 , -25.050018 ],
+         ...,
+         [-22.250015 , -22.150024 , -22.150024 , ..., -20.750015 ,
+          -20.750015 , -20.650024 ],
+         [-21.950012 , -21.950012 , -21.950012 , ..., -20.250015 ,
+          -20.250015 , -20.150024 ],
+         [-21.750015 , -21.650024 , -21.650024 , ..., -19.850021 ,
+          -19.750015 , -19.750015 ]],
+
+        ...,
+
+        [[ 17.756989 ,  16.556976 ,  16.556976 , ...,  17.457    ,
+           17.256989 ,  16.856995 ],
+         [ 16.856995 ,  16.656982 ,  17.056976 , ...,  18.056976 ,
+           17.556976 ,  17.056976 ],
+         [ 17.156982 ,  16.856995 ,  17.056976 , ...,  17.856995 ,
+           17.556976 ,  17.156982 ],
+         ...,
+         [ 22.356995 ,  22.356995 ,  22.256989 , ...,  22.556976 ,
+           22.457    ,  22.457    ],
+         [ 22.256989 ,  22.156982 ,  22.056976 , ...,  21.957    ,
+           21.957    ,  22.156982 ],
+         [ 22.156982 ,  21.957    ,  22.056976 , ...,  21.756989 ,
+           21.756989 ,  21.957    ]],
+
+        [[ 19.149994 ,  17.950012 ,  18.050018 , ...,  16.25     ,
+           16.75     ,  17.149994 ],
+         [ 18.25     ,  18.050018 ,  18.450012 , ...,  16.850006 ,
+           17.050018 ,  17.25     ],
+         [ 18.550018 ,  18.25     ,  18.550018 , ...,  17.149994 ,
+           17.050018 ,  17.050018 ],
+         ...,
+         [ 24.450012 ,  24.450012 ,  24.350006 , ...,  24.649994 ,
+           24.649994 ,  24.550018 ],
+         [ 24.25     ,  24.149994 ,  24.149994 , ...,  23.950012 ,
+           24.050018 ,  24.350006 ],
+         [ 24.050018 ,  23.75     ,  23.850006 , ...,  23.649994 ,
+           23.950012 ,  24.050018 ]],
+
+        [[ 20.550018 ,  19.350006 ,  19.450012 , ...,  14.050018 ,
+           14.25     ,  14.450012 ],
+         [ 19.649994 ,  19.450012 ,  19.850006 , ...,  14.149994 ,
+           14.25     ,  14.350006 ],
+         [ 19.950012 ,  19.649994 ,  19.950012 , ...,  14.149994 ,
+           14.350006 ,  14.350006 ],
+         ...,
+         [ 26.550018 ,  26.550018 ,  26.450012 , ...,  26.75     ,
+           26.75     ,  26.75     ],
+         [ 26.350006 ,  26.350006 ,  26.25     , ...,  26.149994 ,
+           26.25     ,  26.550018 ],
+         [ 26.149994 ,  25.850006 ,  25.950012 , ...,  25.75     ,
+           26.149994 ,  26.25     ]]],
+
+
+       [[[-15.350006 , -15.350006 , -15.449982 , ..., -16.649994 ,
+          -16.649994 , -16.549988 ],
+         [-15.350006 , -15.449982 , -15.449982 , ..., -16.75     ,
+          -16.649994 , -16.649994 ],
+         [-15.449982 , -15.449982 , -15.449982 , ..., -16.75     ,
+          -16.75     , -16.649994 ],
+         ...,
+         [-10.75     , -10.850006 , -10.949982 , ..., -14.049988 ,
+          -13.949982 , -13.949982 ],
+         [-10.649994 , -10.75     , -10.850006 , ..., -13.949982 ,
+          -13.949982 , -13.949982 ],
+         [-10.649994 , -10.75     , -10.850006 , ..., -13.949982 ,
+          -13.949982 , -13.949982 ]],
+
+        [[-17.049988 , -17.049988 , -17.149994 , ..., -19.649994 ,
+          -19.649994 , -19.649994 ],
+         [-17.25     , -17.25     , -17.25     , ..., -19.75     ,
+          -19.75     , -19.75     ],
+         [-17.34999  , -17.449997 , -17.449997 , ..., -19.84999  ,
+          -19.84999  , -19.75     ],
+         ...,
+         [-13.350006 , -13.25     , -13.25     , ..., -14.649994 ,
+          -14.449982 , -14.25     ],
+         [-13.25     , -13.25     , -13.25     , ..., -14.649994 ,
+          -14.449982 , -14.25     ],
+         [-13.149994 , -13.149994 , -13.149994 , ..., -14.549988 ,
+          -14.350006 , -14.25     ]],
+
+        [[-22.450012 , -22.450012 , -22.450012 , ..., -25.050018 ,
+          -25.050018 , -25.150024 ],
+         [-22.550018 , -22.550018 , -22.550018 , ..., -25.050018 ,
+          -25.050018 , -25.150024 ],
+         [-22.750015 , -22.750015 , -22.750015 , ..., -25.050018 ,
+          -25.050018 , -25.150024 ],
+         ...,
+         [-22.750015 , -22.750015 , -22.750015 , ..., -19.850021 ,
+          -19.850021 , -19.850021 ],
+         [-22.450012 , -22.550018 , -22.550018 , ..., -19.650024 ,
+          -19.550018 , -19.450012 ],
+         [-22.250015 , -22.250015 , -22.350021 , ..., -19.350021 ,
+          -19.250015 , -19.150024 ]],
+
+        ...,
+
+        [[ 17.356995 ,  15.656982 ,  15.856995 , ...,  16.556976 ,
+           17.056976 ,  17.556976 ],
+         [ 16.756989 ,  16.156982 ,  16.256989 , ...,  17.656982 ,
+           17.957    ,  18.156982 ],
+         [ 16.056976 ,  15.756989 ,  15.957001 , ...,  17.957    ,
+           17.957    ,  17.856995 ],
+         ...,
+         [ 22.256989 ,  22.256989 ,  22.256989 , ...,  22.556976 ,
+           22.556976 ,  22.356995 ],
+         [ 22.156982 ,  22.156982 ,  22.156982 , ...,  22.056976 ,
+           22.156982 ,  22.256989 ],
+         [ 22.156982 ,  21.957    ,  21.957    , ...,  21.656982 ,
+           21.856995 ,  21.957    ]],
+
+        [[ 18.75     ,  17.050018 ,  17.350006 , ...,  15.25     ,
+           15.450012 ,  15.75     ],
+         [ 18.25     ,  17.550018 ,  17.649994 , ...,  16.149994 ,
+           16.350006 ,  16.75     ],
+         [ 17.550018 ,  17.25     ,  17.350006 , ...,  16.75     ,
+           16.950012 ,  17.350006 ],
+         ...,
+         [ 24.350006 ,  24.450012 ,  24.350006 , ...,  24.75     ,
+           24.649994 ,  24.550018 ],
+         [ 24.25     ,  24.25     ,  24.149994 , ...,  24.25     ,
+           24.350006 ,  24.450012 ],
+         [ 24.050018 ,  23.950012 ,  23.850006 , ...,  23.850006 ,
+           24.050018 ,  24.149994 ]],
+
+        [[ 20.149994 ,  18.450012 ,  18.75     , ...,  13.649994 ,
+           13.75     ,  13.850006 ],
+         [ 19.649994 ,  18.950012 ,  19.050018 , ...,  13.850006 ,
+           13.75     ,  13.850006 ],
+         [ 18.950012 ,  18.649994 ,  18.75     , ...,  13.950012 ,
+           14.149994 ,  14.350006 ],
+         ...,
+         [ 26.450012 ,  26.550018 ,  26.550018 , ...,  26.950012 ,
+           26.850006 ,  26.649994 ],
+         [ 26.350006 ,  26.350006 ,  26.25     , ...,  26.350006 ,
+           26.550018 ,  26.550018 ],
+         [ 26.25     ,  26.149994 ,  26.050018 , ...,  26.050018 ,
+           26.149994 ,  26.25     ]]]], dtype=float32)
+Coordinates:
+  * time1      (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
+    reftime    datetime64[ns] 2017-09-05T12:00:00
+  * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
+  * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
+    crs        object Projection: latitude_longitude
+  * isobaric3  (isobaric3) float64 100.0 200.0 300.0 ... 9.5e+04 9.75e+04 1e+05
+Attributes:
+    long_name:                      Temperature @ Isobaric surface
+    units:                          degree_Celsius
+    Grib_Variable_Id:               VAR_0-0-0_L100
+    Grib2_Parameter:                [0 0 0]
+    Grib2_Parameter_Discipline:     Meteorological products
+    Grib2_Parameter_Category:       Temperature
+    Grib2_Parameter_Name:           Temperature
+    Grib2_Level_Type:               100
+    Grib2_Level_Desc:               Isobaric surface
+    Grib2_Generating_Process_Type:  Forecast
+    grid_mapping:                   LatLon_361X720-0p25S-180p00E</pre>
+<br />
+<br /></div>
+<div class="section" id="coordinates">
+<h2>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline">¶</a></h2>
+<p>You may have noticed how we directly accessed the vertical coordinates above using their
+names. However, in general, if we are working with a particular DataArray, we don’t have to
+worry about that since MetPy is able to parse the coordinates and so obtain a particular
+coordinate type directly. There are two ways to do this:</p>
+<ol class="arabic simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.coordinates</span></code> method</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.x</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.y</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.longitude</span></code>,
+<code class="docutils literal notranslate"><span class="pre">data_var.metpy.latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.vertical</span></code>,  <code class="docutils literal notranslate"><span class="pre">data_var.metpy.time</span></code>
+properties</p></li>
+</ol>
+<p>The valid coordinate types are:</p>
+<ul class="simple">
+<li><p>x</p></li>
+<li><p>y</p></li>
+<li><p>longitude</p></li>
+<li><p>latitude</p></li>
+<li><p>vertical</p></li>
+<li><p>time</p></li>
+</ul>
+<p>(Both approaches are shown below)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">vertical</span></code>, and <code class="docutils literal notranslate"><span class="pre">time</span></code> coordinates cannot be multidimensional,
+however, the <code class="docutils literal notranslate"><span class="pre">longitude</span></code> and <code class="docutils literal notranslate"><span class="pre">latitude</span></code> coordinates can (which is often the case for
+gridded weather data in its native projection). Note that for gridded data on an
+equirectangular projection, such as the GFS data in this example, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">longitude</span></code>
+will be identical (as will <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">latitude</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get multiple coordinates (for example, in just the x and y direction)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
+
+<span class="c1"># If we want to get just a single coordinate from the coordinates method, we have to use</span>
+<span class="c1"># tuple unpacking because the coordinates method returns a generator</span>
+<span class="n">vertical</span><span class="p">,</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+
+<span class="c1"># Or, we can just get a coordinate from the property</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span>
+
+<span class="c1"># To verify, we can inspect all their names</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vertical</span><span class="p">,</span> <span class="n">time</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;longitude&#39;, &#39;latitude&#39;, &#39;isobaric3&#39;, &#39;time1&#39;]
+</pre></div>
+</div>
+</div>
+<div class="section" id="indexing-and-selecting-data">
+<h2>Indexing and Selecting Data<a class="headerlink" href="#indexing-and-selecting-data" title="Permalink to this headline">¶</a></h2>
+<p>MetPy provides wrappers for the usual xarray indexing and selection routines that can handle
+quantities with units. For DataArrays, MetPy also allows using the coordinate axis types
+mentioned above as aliases for the coordinates. And so, if we wanted 850 hPa heights,
+we would take:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray &#39;height&#39; (time1: 9, latitude: 81, longitude: 131)&gt;
+array([[[1593.8025, 1594.1064, ..., 1453.2264, 1458.3625],
+        [1594.7784, 1595.0825, ..., 1463.3065, 1468.4905],
+        ...,
+        [1511.4985, 1511.8025, ..., 1537.6584, 1536.9385],
+        [1511.2745, 1511.9305, ..., 1537.9146, 1537.0825]],
+
+       [[1590.0658, 1590.8018, ..., 1463.2977, 1465.3617],
+        [1591.5537, 1591.9377, ..., 1472.6577, 1475.2338],
+        ...,
+        [1522.8977, 1523.2977, ..., 1536.4337, 1535.5857],
+        [1523.0417, 1523.4738, ..., 1536.7058, 1535.6978]],
+
+       ...,
+
+       [[1546.7413, 1547.8773, ..., 1553.7174, 1555.9254],
+        [1547.8453, 1549.2374, ..., 1563.6373, 1565.6533],
+        ...,
+        [1514.6774, 1514.1814, ..., 1524.7733, 1524.3093],
+        [1515.4934, 1515.0294, ..., 1524.8214, 1524.3414]],
+
+       [[1542.1625, 1542.6906, ..., 1561.7946, 1564.2264],
+        [1542.2426, 1543.2345, ..., 1571.6665, 1574.0825],
+        ...,
+        [1507.6505, 1507.2025, ..., 1538.3385, 1537.8905],
+        [1508.5625, 1508.0505, ..., 1538.8185, 1538.6105]]], dtype=float32)
+Coordinates:
+  * time1      (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
+    reftime    datetime64[ns] 2017-09-05T12:00:00
+  * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
+  * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
+    crs        object Projection: latitude_longitude
+    isobaric3  float64 8.5e+04
+Attributes:
+    long_name:                      Geopotential height @ Isobaric surface
+    units:                          gpm
+    Grib_Variable_Id:               VAR_0-3-5_L100
+    Grib2_Parameter:                [0 3 5]
+    Grib2_Parameter_Discipline:     Meteorological products
+    Grib2_Parameter_Category:       Mass
+    Grib2_Parameter_Name:           Geopotential height
+    Grib2_Level_Type:               100
+    Grib2_Level_Desc:               Isobaric surface
+    Grib2_Generating_Process_Type:  Forecast
+    grid_mapping:                   LatLon_361X720-0p25S-180p00E
+</pre></div>
+</div>
+<p>For full details on xarray indexing/selection, see
+<a class="reference external" href="http://xarray.pydata.org/en/stable/indexing.html">xarray’s documentation</a>.</p>
+</div>
+<div class="section" id="projections">
+<h2>Projections<a class="headerlink" href="#projections" title="Permalink to this headline">¶</a></h2>
+<p>Getting the cartopy coordinate reference system (CRS) of the projection of a DataArray is as
+straightforward as using the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_crs</span></code> property:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_crs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_crs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7fdee92e44c0&gt;
+</pre></div>
+</div>
+<p>The cartopy <code class="docutils literal notranslate"><span class="pre">Globe</span></code> can similarly be accessed via the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_globe</span></code>
+property:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_globe</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_globe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_globe</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7fdf060b5748&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="calculations">
+<h2>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h2>
+<p>Most of the calculations in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> will accept DataArrays by converting them
+into their corresponding unit arrays. While this may often work without any issues, we must
+keep in mind that because the calculations are working with unit arrays and not DataArrays:</p>
+<ul class="simple">
+<li><p>The calculations will return unit arrays rather than DataArrays</p></li>
+<li><p>Broadcasting must be taken care of outside of the calculation, as it would only recognize
+dimensions by order, not name</p></li>
+</ul>
+<p>As an example, we calculate geostropic wind at 500 hPa below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="View documentation for xarray.broadcast"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="View documentation for metpy.calc.coriolis_parameter"><span class="n">mpcalc</span><span class="o">.</span><span class="n">coriolis_parameter</span></a><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="View documentation for metpy.calc.lat_lon_grid_deltas"><span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span></a><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">initstring</span><span class="o">=</span><span class="n">data_crs</span><span class="o">.</span><span class="n">proj4_init</span><span class="p">)</span>
+<span class="n">heights</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
+<span class="n">u_geo</span><span class="p">,</span> <span class="n">v_geo</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="View documentation for metpy.calc.geostrophic_wind"><span class="n">mpcalc</span><span class="o">.</span><span class="n">geostrophic_wind</span></a><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u_geo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_geo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398031156 6.251403116857854 3.2825541563237786 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.816296728549826 4.388776144480824 4.325234764565967 ...  31.008031569492147 30.753751181686432 30.53090851162976] [5.127334159205037 4.8391046648176665 5.800603470028939 ...  29.193827699079304 29.03383493002396 28.58473535972384] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
+[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245151438716 -13.540158320367329 -14.854696392129718 ...  4.919261875064201 5.747462478394741 6.7213265044217945] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.609707782452212 3.1007692883802775 2.0210959055875346 ...  2.4259734241357735 3.63896013620366 3.3723334776431315] [4.799363905563508 4.2371674868632 2.5436801152315818 ...  1.5555250602976798 2.9679142225845174 3.812933379494143]] meter / second
+</pre></div>
+</div>
+<p>Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
+can accept <em>and</em> return xarray objects). Right now, this includes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Derivative functions</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">first_derivative</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">second_derivative</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">laplacian</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Cross-section functions</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cross_section_components</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">normal_component</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tangential_component</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">absolute_momentum</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Smoothing functions</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">smooth_gaussian</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smooth_n_point</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smooth_window</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smooth_rectangular</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smooth_circular</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>More details can be found by looking at the documentation for the specific function of
+interest.</p>
+<p>There is also the special case of the helper function, <code class="docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code>, which
+takes a <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> input, but returns unit arrays for use in other calculations. We could
+rewrite the above geostrophic wind example using this helper function as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
+<span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="View documentation for xarray.broadcast"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="View documentation for metpy.calc.coriolis_parameter"><span class="n">mpcalc</span><span class="o">.</span><span class="n">coriolis_parameter</span></a><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.grid_deltas_from_dataarray.html#metpy.calc.grid_deltas_from_dataarray" title="View documentation for metpy.calc.grid_deltas_from_dataarray"><span class="n">mpcalc</span><span class="o">.</span><span class="n">grid_deltas_from_dataarray</span></a><span class="p">(</span><span class="n">heights</span><span class="p">)</span>
+<span class="n">u_geo</span><span class="p">,</span> <span class="n">v_geo</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="View documentation for metpy.calc.geostrophic_wind"><span class="n">mpcalc</span><span class="o">.</span><span class="n">geostrophic_wind</span></a><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u_geo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_geo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398031156 6.251403116857854 3.2825541563237786 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.816296728549826 4.388776144480824 4.325234764565967 ...  31.008031569492147 30.753751181686432 30.53090851162976] [5.127334159205037 4.8391046648176665 5.800603470028939 ...  29.193827699079304 29.03383493002396 28.58473535972384] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
+[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245151438716 -13.540158320367329 -14.854696392129718 ...  4.919261875064201 5.747462478394741 6.7213265044217945] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.609707782452212 3.1007692883802775 2.0210959055875346 ...  2.4259734241357735 3.63896013620366 3.3723334776431315] [4.799363905563508 4.2371674868632 2.5436801152315818 ...  1.5555250602976798 2.9679142225845174 3.812933379494143]] meter / second
+</pre></div>
+</div>
+</div>
+<div class="section" id="plotting">
+<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
+<p>Like most meteorological data, we want to be able to plot these data. DataArrays can be used
+like normal numpy arrays in plotting code, which is the recommended process at the current
+point in time, or we can use some of xarray’s plotting functionality for quick inspection of
+the data.</p>
+<p>(More detail beyond the following can be found at <a class="reference external" href="http://xarray.pydata.org/en/stable/plotting.html">xarray’s plotting reference</a>.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A very simple example example of a plot of 500 hPa heights</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_xarray_tutorial_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_001.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s add a projection and coastlines to it</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">())</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                          <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">data_crs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_xarray_tutorial_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_002.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Or, let&#39;s make a full 500 hPa map with heights, temperature, winds, and humidity</span>
+
+<span class="c1"># Select the data for this time and level</span>
+<span class="n">data_level</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vertical</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
+
+<span class="c1"># Create the matplotlib figure and axis</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">data_crs</span><span class="p">})</span>
+
+<span class="c1"># Plot RH as filled contours</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="View documentation for matplotlib.contour.QuadContourSet"><span class="n">rh</span></a> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;relative_humidity&#39;</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+                 <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#99ff00&#39;</span><span class="p">,</span> <span class="s1">&#39;#00ff00&#39;</span><span class="p">,</span> <span class="s1">&#39;#00cc00&#39;</span><span class="p">])</span>
+
+<span class="c1"># Plot wind barbs, but not all of them</span>
+<a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a><span class="p">],</span> <span class="n">y</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a><span class="p">],</span>
+         <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">),</span>
+         <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#slice" title="View documentation for builtins.slice"><span class="n">wind_slice</span></a><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">),</span>
+         <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="c1"># Plot heights and temperature as contours</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="View documentation for matplotlib.contour.QuadContourSet"><span class="n">h_contour</span></a> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5400</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="View documentation for matplotlib.contour.QuadContourSet"><span class="n">h_contour</span></a><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                 <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="View documentation for matplotlib.contour.QuadContourSet"><span class="n">t_contour</span></a> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span>
+                       <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="View documentation for matplotlib.contour.QuadContourSet"><span class="n">t_contour</span></a><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                 <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Add geographic features</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COLORS</span><span class="p">[</span><span class="s1">&#39;land&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">OCEAN</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COLORS</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;#c7c783&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAKES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COLORS</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">],</span>
+               <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;#c7c783&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Set a title and show the plot</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;500 hPa Heights (m), Temperature (</span><span class="se">\u00B0</span><span class="s1">C), Humidity (%) at &#39;</span>
+             <span class="o">+</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%MZ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_xarray_tutorial_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_003.png" />
+</div>
+<div class="section" id="what-could-go-wrong">
+<h2>What Could Go Wrong?<a class="headerlink" href="#what-could-go-wrong" title="Permalink to this headline">¶</a></h2>
+<p>Depending on your dataset and what you are trying to do, you might run into problems with
+xarray and MetPy. Below are examples of some of the most common issues</p>
+<ul class="simple">
+<li><p>Multiple coordinate conflict</p></li>
+<li><p>An axis not being available</p></li>
+<li><p>An axis not being interpretable</p></li>
+<li><p>Arrays not broadcasting in calculations</p></li>
+</ul>
+<p><strong>Coordinate Conflict</strong></p>
+<p>Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+<p>Error Message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">env</span><span class="o">/</span><span class="n">MetPy</span><span class="o">/</span><span class="n">metpy</span><span class="o">/</span><span class="n">xarray</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">305</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">More</span> <span class="n">than</span>
+<span class="n">one</span> <span class="n">x</span> <span class="n">coordinate</span> <span class="n">present</span> <span class="k">for</span> <span class="n">variable</span> <span class="s2">&quot;Temperature&quot;</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Fix:</p>
+<p>Manually assign the coordinates using the <code class="docutils literal notranslate"><span class="pre">assign_coordinates()</span></code> method on your DataArray,
+or by specifying the <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">parse_cf()</span></code> method on your Dataset,
+to map the <code class="docutils literal notranslate"><span class="pre">time</span></code>, <code class="docutils literal notranslate"><span class="pre">vertical</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">longitude</span></code> axes (as
+applicable to your data) to the corresponding coordinates.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;isobaric&#39;</span><span class="p">,</span>
+                                        <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">})</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temperature</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">&#39;Temperature&#39;</span><span class="p">,</span>
+                                  <span class="n">coordinates</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;isobaric&#39;</span><span class="p">,</span>
+                                               <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">})</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+<p><strong>Axis Unavailable</strong></p>
+<p>Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span>
+</pre></div>
+</div>
+<p>Error Message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">AttributeError</span><span class="p">:</span> <span class="n">vertical</span> <span class="n">attribute</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">available</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>This means that your data variable does not have the coordinate that was requested, at
+least as far as the parser can recognize. Verify that you are requesting a
+coordinate that your data actually has, and if it still is not available,
+you will need to manually specify the coordinates as discussed above.</p>
+<p><strong>Axis Not Interpretable</strong></p>
+<p>Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ensemble</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;ensemble&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Error Message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">AttributeError</span><span class="p">:</span> <span class="s1">&#39;ensemble&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">an</span> <span class="n">interpretable</span> <span class="n">axis</span>
+</pre></div>
+</div>
+<p>This means that you are requesting a coordinate that MetPy is (currently) unable to parse.
+While this means it cannot be recognized automatically, you can still obtain your desired
+coordinate directly by accessing it by name. If you have a need for systematic
+identification of a new coordinate type, we welcome pull requests for such new functionality
+on GitHub!</p>
+<p><strong>Broadcasting in Calculations</strong></p>
+<p>Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">potential_temperature</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;isobaric3&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Error Message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">ValueError</span><span class="p">:</span> <span class="n">operands</span> <span class="n">could</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">broadcast</span> <span class="n">together</span> <span class="k">with</span> <span class="n">shapes</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">81</span><span class="p">,</span><span class="mi">131</span><span class="p">)</span> <span class="p">(</span><span class="mi">31</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>This is a symptom of the incomplete integration of xarray with MetPy’s calculations; the
+calculations currently convert the DataArrays to unit arrays that do not recognize which
+coordinates match with which. And so, we must do some manipulations.</p>
+<p>Fix 1 (xarray broadcasting):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="View documentation for xarray.broadcast"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;isobaric3&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Fix 2 (unit array broadcasting):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">potential_temperature</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;isobaric3&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.395 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-xarray-tutorial-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/fdf887129bd8090f4be24127e43a5148/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/8c91fa5ab51e12860cfa1e679eaa746d/xarray_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">xarray_tutorial.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="Reference Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="upperair_soundings.html" class="btn btn-neutral" title="Upper Air Sounding Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Jan 14, 2020 at 12:29:19.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0rc1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+      <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

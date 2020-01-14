@@ -1,0 +1,16 @@
+
+:orphan:
+
+.. _sphx_glr_tutorials_sg_execution_times:
+
+Computation times
+=================
+**00:03.913** total execution time for **tutorials** files:
+
++-----------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``xarray_tutorial.py``)       | 00:02.395 | 0.0 MB |
++-----------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_upperair_soundings.py` (``upperair_soundings.py``) | 00:01.512 | 0.0 MB |
++-----------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_unit_tutorial.py` (``unit_tutorial.py``)           | 00:00.006 | 0.0 MB |
++-----------------------------------------------------------------------------+-----------+--------+

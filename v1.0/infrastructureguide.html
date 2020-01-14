@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Infrastructure Guide &mdash; MetPy 1.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/infrastructureguide.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="MetPy 1.0" href="index.html"/>
+        <link rel="next" title="Citing MetPy" href="citing.html"/>
+        <link rel="prev" title="Contributors Guide" href="CONTRIBUTING.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>1.0</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Infrastructure Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-tools">Other Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#releasing">Releasing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pypi">PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conda">Conda</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Infrastructure Guide</li>
+    
+    
+    <li class="source-link">
+        
+            
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/infrastructureguide.rst"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="infrastructure-guide">
+<h1>Infrastructure Guide<a class="headerlink" href="#infrastructure-guide" title="Permalink to this headline">¶</a></h1>
+<p>This guide serves as an advanced version of the contributing documentation and contains the
+information on how we manage MetPy and the infrastructure behind it.</p>
+<div class="section" id="versioning">
+<h2>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h2>
+<p>To manage identifying the version of the code, MetPy relies upon <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>. <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> takes the current version of the
+source from git tags and any additional commits. For development, the version will have a
+string like <code class="docutils literal notranslate"><span class="pre">0.10.0.post209+gff2e549f.d20190918</span></code>, which comes from <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>. This
+version means that the current code is 209 commits past the 0.10.0 tag, on git hash
+<code class="docutils literal notranslate"><span class="pre">ff2e549f</span></code>, with local changes on top, last made on a date (indicated by <code class="docutils literal notranslate"><span class="pre">d20190918</span></code>). For
+a release, or non-git repo source dir, the version will just come from the most recent tag
+(i.e. <code class="docutils literal notranslate"><span class="pre">v0.10.0</span></code>).</p>
+<p>To make a new version, simply add a new tag with a name like <code class="docutils literal notranslate"><span class="pre">vMajor.Minor.Bugfix</span></code> and push
+to GitHub. Github will add a new release with a source archive.zip file. Running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span>
+</pre></div>
+</div>
+<p>will build a new source distribution with the appropriately generated version file as well.
+This will also create a new stable set of documentation.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>MetPy’s documentation is built using sphinx &gt;= 2.1. API documentation is automatically
+generated from docstrings, written using the
+<a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">NumPy docstring standard</a>.
+There are also example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory. Using the <code class="docutils literal notranslate"><span class="pre">sphinx-gallery</span></code>
+extension, these examples are executed and turned into a gallery of thumbnails. The
+extension also makes these scripts available as Jupyter notebooks.</p>
+<p>The documentation is hosted on <a class="reference external" href="https://unidata.github.io/MetPy">GitHub Pages</a>. The docs are
+built automatically from <code class="docutils literal notranslate"><span class="pre">master</span></code> with every build on Travis-CI; every merged PR will
+have the built docs upload to GitHub Pages. As part of the build, the documentation is also
+checked with <code class="docutils literal notranslate"><span class="pre">doc8</span></code>. To see what the docs will look like, you also need to install the
+<code class="docutils literal notranslate"><span class="pre">sphinx-rtd-theme</span></code> package.</p>
+</div>
+<div class="section" id="other-tools">
+<h2>Other Tools<a class="headerlink" href="#other-tools" title="Permalink to this headline">¶</a></h2>
+<p>Continuous integration is performed by <a class="reference external" href="http://www.travis-ci.com/Unidata/MetPy">Travis CI</a>
+and <a class="reference external" href="https://ci.appveyor.com/project/Unidata/metpy/branch/master">AppVeyor</a>.
+Travis runs the unit tests on Linux for all supported versions of Python, as well as runs
+against the minimum package versions. <code class="docutils literal notranslate"><span class="pre">flake8</span></code> (with the <code class="docutils literal notranslate"><span class="pre">pep8-naming</span></code> and
+<code class="docutils literal notranslate"><span class="pre">flake8-quotes</span></code> plugins) is also run against the code to check formatting. Travis is also
+used to build the documentation and to run the examples to ensure they stay working. AppVeyor
+is a similar service; here the tests and examples are run against Python 2 and 3 for both
+32- and 64-bit versions of Windows.</p>
+<p>Test coverage is monitored by <a class="reference external" href="https://codecov.io/github/Unidata/MetPy">codecov.io</a>.</p>
+<p>The following services are used to track code quality:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://app.codacy.com/project/Unidata/MetPy/dashboard">Codacy</a></p></li>
+<li><p><a class="reference external" href="https://codeclimate.com/github/Unidata/MetPy">Code Climate</a></p></li>
+<li><p><a class="reference external" href="https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)">Scrutinizer</a></p></li>
+</ul>
+</div>
+<div class="section" id="releasing">
+<h2>Releasing<a class="headerlink" href="#releasing" title="Permalink to this headline">¶</a></h2>
+<p>To create a new release, go to the GitHub page and make a new release. The tag should be a
+sensible version number, like v1.0.0. Add a name (can just be the version) and add some release
+notes on what the big changes are. It’s also possible to use
+<a class="reference external" href="https://github.com/spyder-ide/loghub">loghub</a> to get information on all the issues and PRs
+that were closed for the relevant milestone.</p>
+<div class="section" id="pypi">
+<h3>PyPI<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
+<p>Once the new release is published on GitHub, this will create the tag, which will trigger
+new builds on Travis (and AppVeyor, but that’s not relevant). When the main test build on
+Travis (currently Python 3 tests) succeeds, Travis will handle building the source
+distribution and wheels, and upload them to PyPI.</p>
+<p>To build and upload manually (if for some reason it is necessary):</p>
+<ol class="arabic simple">
+<li><p>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> will give
+you the proper version.</p></li>
+<li><p>(optional) Perform a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-f</span> <span class="pre">-x</span> <span class="pre">-d</span></code> from the root of the repository. This will
+<strong>delete</strong> everything not tracked by git, but will also ensure clean source distribution.
+<code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> is set to include/exclude mostly correctly, but could miss some things.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code> (this requires that <code class="docutils literal notranslate"><span class="pre">wheel</span></code> is installed).</p></li>
+<li><p>Upload using <code class="docutils literal notranslate"><span class="pre">twine</span></code>: <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code>, assuming the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> directory contains
+only files for this release. This upload process will include any changes to the <code class="docutils literal notranslate"><span class="pre">README</span></code>
+as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p></li>
+</ol>
+</div>
+<div class="section" id="conda">
+<h3>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h3>
+<p>MetPy conda packages are automatically produced and uploaded to
+<a class="reference external" href="https://anaconda.org/conda-forge/MetPy">Anaconda.org</a> thanks to conda-forge. Once the
+release is built and uploaded to PyPI, then a Pull Request should be made against the
+<a class="reference external" href="https://github.com/conda-forge/metpy-feedstock">MetPy feedstock</a>, which contains the
+recipe for building MetPy’s conda packages. The Pull Request should:</p>
+<ol class="arabic simple">
+<li><p>Update the version</p></li>
+<li><p>Update the hash to match that of the new source distribution <strong>uploaded to PyPI</strong></p></li>
+<li><p>Reset the build number to 0 (if necessary)</p></li>
+<li><p>Update the dependencies (and their versions) as necessary</p></li>
+</ol>
+<p>The Pull Request will test building the packages on all the platforms. Once this succeeds,
+the Pull Request can be merged, which will trigger the final build and upload of the
+packages to anaconda.org.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="citing.html" class="btn btn-neutral float-right" title="Citing MetPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="CONTRIBUTING.html" class="btn btn-neutral" title="Contributors Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Jan 14, 2020 at 12:29:19.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0rc1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

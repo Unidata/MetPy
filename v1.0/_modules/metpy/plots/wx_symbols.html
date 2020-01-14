@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.plots.wx_symbols &mdash; MetPy 1.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/plots/wx_symbols.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 1.0" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>1.0</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.plots.wx_symbols</li>
+    
+    
+    <li class="source-link">
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.plots.wx_symbols</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2016,2017,2019 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Simplify using the weather symbol font.</span>
+
+<span class="sd">See WMO manual 485 Vol 1 for more info on the symbols.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.font_manager</span> <span class="k">as</span> <span class="nn">fm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+<span class="c1"># Create a matplotlib font object pointing to our weather symbol font</span>
+<span class="n">wx_symbol_font</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;metpy.plots&#39;</span><span class="p">,</span>
+                                                           <span class="s1">&#39;fonts/wx_symbols.ttf&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="wx_code_to_numeric"><a class="viewcode-back" href="../../../api/generated/metpy.plots.wx_code_to_numeric.html#metpy.plots.wx_code_to_numeric">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">wx_code_to_numeric</span><span class="p">(</span><span class="n">codes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine the numeric weather symbol value from METAR code text.</span>
+
+<span class="sd">    A robust method to identifies the numeric value for plotting the correct symbol from a</span>
+<span class="sd">    decoded METAR current weather group. The METAR codes should be strings with no missing</span>
+<span class="sd">    values or NaN strings (empty strings are okay).</span>
+
+<span class="sd">    For example, if from a Pandas Dataframe sfc_df.wxcodes.fillna(&#39;&#39;)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    codes : Array like containing string values of METAR weather codes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array of numeric codes of current weather symbols from the wx_code_map for use in</span>
+<span class="sd">    plotting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wx_sym_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+        <span class="n">wxcode</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">else</span> <span class="n">s</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">wx_sym_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wx_code_map</span><span class="p">[</span><span class="n">wxcode</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wxcode</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)):</span>
+                <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                           <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+            <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">wx_sym_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wx_code_map</span><span class="p">[</span><span class="n">wxcode</span><span class="p">[</span><span class="n">opt</span><span class="p">]])</span>
+                    <span class="k">break</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">wx_sym_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">wx_sym_list</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">CodePointMapping</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Map integer values to font code points.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">font_start</span><span class="p">,</span> <span class="n">font_jumps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_jumps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        num : int</span>
+<span class="sd">            The number of values that will be mapped</span>
+<span class="sd">        font_start : int</span>
+<span class="sd">            The first code point in the font to use in the mapping</span>
+<span class="sd">        font_jumps : list[int, int], optional</span>
+<span class="sd">            Sequence of code point jumps in the font. These are places where the next</span>
+<span class="sd">            font code point does not correspond to a new input code. This is usually caused</span>
+<span class="sd">            by there being multiple symbols for a single code. Defaults to :data:`None`, which</span>
+<span class="sd">            indicates no jumps.</span>
+<span class="sd">        char_jumps : list[int, int], optional</span>
+<span class="sd">            Sequence of code jumps. These are places where the next code value does not</span>
+<span class="sd">            have a valid code point in the font. This usually comes from place in the WMO</span>
+<span class="sd">            table where codes have no symbol. Defaults to :data:`None`, which indicates no</span>
+<span class="sd">            jumps.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">next_font_jump</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_pop</span><span class="p">(</span><span class="n">font_jumps</span><span class="p">)</span>
+        <span class="n">next_char_jump</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_pop</span><span class="p">(</span><span class="n">char_jumps</span><span class="p">)</span>
+        <span class="n">font_point</span> <span class="o">=</span> <span class="n">font_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">code</span> <span class="o">&lt;</span> <span class="n">num</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">next_char_jump</span> <span class="ow">and</span> <span class="n">code</span> <span class="o">&gt;=</span> <span class="n">next_char_jump</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">jump_len</span> <span class="o">=</span> <span class="n">next_char_jump</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">code</span> <span class="o">+=</span> <span class="n">jump_len</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chrs</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">jump_len</span><span class="p">)</span>
+                <span class="n">next_char_jump</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_pop</span><span class="p">(</span><span class="n">char_jumps</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">font_point</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">next_font_jump</span> <span class="ow">and</span> <span class="n">code</span> <span class="o">&gt;=</span> <span class="n">next_font_jump</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">font_point</span> <span class="o">+=</span> <span class="n">next_font_jump</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">next_font_jump</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_pop</span><span class="p">(</span><span class="n">font_jumps</span><span class="p">)</span>
+                <span class="n">code</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">font_point</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_safe_pop</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Safely pop from a list.</span>
+
+<span class="sd">        Returns None if list empty.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">l</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the Unicode code point corresponding to `code`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chrs</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of codes supported by this mapping.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chrs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">alt_char</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">alt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get one of the alternate code points for a given value.</span>
+
+<span class="sd">        In the WMO tables, some code have multiple symbols. This allows getting that</span>
+<span class="sd">        symbol rather than main one.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        code : int</span>
+<span class="sd">            The code for looking up the font code point</span>
+<span class="sd">        alt : int</span>
+<span class="sd">            The number of the alternate symbol</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The appropriate code point in the font</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">code</span><span class="p">))</span> <span class="o">+</span> <span class="n">alt</span><span class="p">)</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># Set up mapping objects for various groups of symbols. The integer values follow from</span>
+<span class="c1"># the WMO.</span>
+<span class="c1">#</span>
+
+<span class="k">with</span> <span class="n">exporter</span><span class="p">:</span>
+    <span class="c1">#: Current weather</span>
+    <span class="n">current_weather</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mh">0xE9A2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                                                     <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+
+    <span class="c1">#: Current weather from an automated station</span>
+    <span class="n">current_weather_auto</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mh">0xE94B</span><span class="p">,</span> <span class="p">[(</span><span class="mi">92</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
+                                            <span class="p">[(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                             <span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">69</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">79</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+
+    <span class="c1">#: Low clouds</span>
+    <span class="n">low_clouds</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xE933</span><span class="p">,</span> <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#: Mid-altitude clouds</span>
+    <span class="n">mid_clouds</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xE93D</span><span class="p">,</span> <span class="n">char_jumps</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#: High clouds</span>
+    <span class="n">high_clouds</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xE946</span><span class="p">,</span> <span class="n">char_jumps</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1">#: Sky cover symbols</span>
+    <span class="n">sky_cover</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mh">0xE90A</span><span class="p">)</span>
+
+    <span class="c1">#: Pressure tendency</span>
+    <span class="n">pressure_tendency</span> <span class="o">=</span> <span class="n">CodePointMapping</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mh">0xE900</span><span class="p">)</span>
+
+    <span class="c1">#####################################################################</span>
+    <span class="c1"># This dictionary is for mapping METAR present weather text codes</span>
+    <span class="c1"># to WMO codes for plotting wx symbols along with the station plots.</span>
+    <span class="c1"># Pages II-4-3 and II-4-4 of this document describes the difference between</span>
+    <span class="c1"># manned and automated stations:</span>
+    <span class="c1"># https://github.com/Unidata/MetPy/files/1151142/485_Vol_I_en.pdf</span>
+    <span class="c1"># It may become necessary to add automated station wx_codes in the future,</span>
+    <span class="c1"># but that will also require knowing the status of all stations.</span>
+
+    <span class="n">wx_code_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;TSNO&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;VA&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;FU&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                   <span class="s1">&#39;HZ&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;DU&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;BLDU&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;SA&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                   <span class="s1">&#39;BLSA&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;VCBLSA&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;VCBLDU&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;BLPY&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                   <span class="s1">&#39;PO&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;VCPO&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;VCDS&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;VCSS&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+                   <span class="s1">&#39;BR&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;BCBR&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;BC&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;MIFG&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                   <span class="s1">&#39;VCTS&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;VIRGA&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;VCSH&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;TS&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+                   <span class="s1">&#39;THDR&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;VCTSHZ&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;TSFZFG&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;TSBR&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+                   <span class="s1">&#39;TSDZ&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;SQ&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;FC&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="s1">&#39;+FC&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+                   <span class="s1">&#39;DS&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s1">&#39;SS&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s1">&#39;DRSA&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s1">&#39;DRDU&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span>
+                   <span class="s1">&#39;TSUP&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;+DS&#39;</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s1">&#39;+SS&#39;</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s1">&#39;-BLSN&#39;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
+                   <span class="s1">&#39;BLSN&#39;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="s1">&#39;+BLSN&#39;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="s1">&#39;VCBLSN&#39;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="s1">&#39;DRSN&#39;</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
+                   <span class="s1">&#39;+DRSN&#39;</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span> <span class="s1">&#39;VCFG&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;BCFG&#39;</span><span class="p">:</span> <span class="mi">41</span><span class="p">,</span> <span class="s1">&#39;PRFG&#39;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
+                   <span class="s1">&#39;FG&#39;</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span> <span class="s1">&#39;FZFG&#39;</span><span class="p">:</span> <span class="mi">49</span><span class="p">,</span> <span class="s1">&#39;-VCTSDZ&#39;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span> <span class="s1">&#39;-DZ&#39;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+                   <span class="s1">&#39;-DZBR&#39;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span> <span class="s1">&#39;VCTSDZ&#39;</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span> <span class="s1">&#39;DZ&#39;</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span> <span class="s1">&#39;+VCTSDZ&#39;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+                   <span class="s1">&#39;+DZ&#39;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;-FZDZ&#39;</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s1">&#39;-FZDZSN&#39;</span><span class="p">:</span> <span class="mi">56</span><span class="p">,</span> <span class="s1">&#39;FZDZ&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+                   <span class="s1">&#39;+FZDZ&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> <span class="s1">&#39;FZDZSN&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> <span class="s1">&#39;-DZRA&#39;</span><span class="p">:</span> <span class="mi">58</span><span class="p">,</span> <span class="s1">&#39;DZRA&#39;</span><span class="p">:</span> <span class="mi">59</span><span class="p">,</span>
+                   <span class="s1">&#39;+DZRA&#39;</span><span class="p">:</span> <span class="mi">59</span><span class="p">,</span> <span class="s1">&#39;-VCTSRA&#39;</span><span class="p">:</span> <span class="mi">61</span><span class="p">,</span> <span class="s1">&#39;-RA&#39;</span><span class="p">:</span> <span class="mi">61</span><span class="p">,</span> <span class="s1">&#39;-RABR&#39;</span><span class="p">:</span> <span class="mi">61</span><span class="p">,</span>
+                   <span class="s1">&#39;VCTSRA&#39;</span><span class="p">:</span> <span class="mi">63</span><span class="p">,</span> <span class="s1">&#39;RA&#39;</span><span class="p">:</span> <span class="mi">63</span><span class="p">,</span> <span class="s1">&#39;RABR&#39;</span><span class="p">:</span> <span class="mi">63</span><span class="p">,</span> <span class="s1">&#39;RAFG&#39;</span><span class="p">:</span> <span class="mi">63</span><span class="p">,</span>
+                   <span class="s1">&#39;+VCTSRA&#39;</span><span class="p">:</span> <span class="mi">65</span><span class="p">,</span> <span class="s1">&#39;+RA&#39;</span><span class="p">:</span> <span class="mi">65</span><span class="p">,</span> <span class="s1">&#39;-FZRA&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;-FZRASN&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span>
+                   <span class="s1">&#39;-FZRABR&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;-FZRAPL&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;-FZRASNPL&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;TSFZRAPL&#39;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span>
+                   <span class="s1">&#39;-TSFZRA&#39;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span> <span class="s1">&#39;FZRA&#39;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span> <span class="s1">&#39;+FZRA&#39;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span> <span class="s1">&#39;FZRASN&#39;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span>
+                   <span class="s1">&#39;TSFZRA&#39;</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span> <span class="s1">&#39;-DZSN&#39;</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="s1">&#39;-RASN&#39;</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="s1">&#39;-SNRA&#39;</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span>
+                   <span class="s1">&#39;-SNDZ&#39;</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="s1">&#39;RASN&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;+RASN&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;SNRA&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+                   <span class="s1">&#39;DZSN&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;SNDZ&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;+DZSN&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;+SNDZ&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+                   <span class="s1">&#39;-VCTSSN&#39;</span><span class="p">:</span> <span class="mi">71</span><span class="p">,</span> <span class="s1">&#39;-SN&#39;</span><span class="p">:</span> <span class="mi">71</span><span class="p">,</span> <span class="s1">&#39;-SNBR&#39;</span><span class="p">:</span> <span class="mi">71</span><span class="p">,</span> <span class="s1">&#39;VCTSSN&#39;</span><span class="p">:</span> <span class="mi">73</span><span class="p">,</span>
+                   <span class="s1">&#39;SN&#39;</span><span class="p">:</span> <span class="mi">73</span><span class="p">,</span> <span class="s1">&#39;+VCTSSN&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="s1">&#39;+SN&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="s1">&#39;VCTSUP&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span>
+                   <span class="s1">&#39;IN&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span> <span class="s1">&#39;-UP&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span> <span class="s1">&#39;UP&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span> <span class="s1">&#39;+UP&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span>
+                   <span class="s1">&#39;-SNSG&#39;</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="s1">&#39;SG&#39;</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="s1">&#39;-SG&#39;</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="s1">&#39;IC&#39;</span><span class="p">:</span> <span class="mi">78</span><span class="p">,</span>
+                   <span class="s1">&#39;-FZDZPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-FZDZPLSN&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;FZDZPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-FZRAPLSN&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span>
+                   <span class="s1">&#39;FZRAPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;+FZRAPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-RAPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-RASNPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span>
+                   <span class="s1">&#39;-RAPLSN&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;+RAPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;RAPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-SNPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span>
+                   <span class="s1">&#39;SNPL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-PL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;PL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-PLSN&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span>
+                   <span class="s1">&#39;-PLRA&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;PLRA&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-PLDZ&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;+PL&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span>
+                   <span class="s1">&#39;PLSN&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;PLUP&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;+PLSN&#39;</span><span class="p">:</span> <span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;-SH&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+                   <span class="s1">&#39;-SHRA&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;SH&#39;</span><span class="p">:</span> <span class="mi">81</span><span class="p">,</span> <span class="s1">&#39;SHRA&#39;</span><span class="p">:</span> <span class="mi">81</span><span class="p">,</span> <span class="s1">&#39;+SH&#39;</span><span class="p">:</span> <span class="mi">81</span><span class="p">,</span>
+                   <span class="s1">&#39;+SHRA&#39;</span><span class="p">:</span> <span class="mi">81</span><span class="p">,</span> <span class="s1">&#39;-SHRASN&#39;</span><span class="p">:</span> <span class="mi">83</span><span class="p">,</span> <span class="s1">&#39;-SHSNRA&#39;</span><span class="p">:</span> <span class="mi">83</span><span class="p">,</span> <span class="s1">&#39;+SHRABR&#39;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span>
+                   <span class="s1">&#39;SHRASN&#39;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span> <span class="s1">&#39;+SHRASN&#39;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span> <span class="s1">&#39;SHSNRA&#39;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span> <span class="s1">&#39;+SHSNRA&#39;</span><span class="p">:</span> <span class="mi">84</span><span class="p">,</span>
+                   <span class="s1">&#39;-SHSN&#39;</span><span class="p">:</span> <span class="mi">85</span><span class="p">,</span> <span class="s1">&#39;SHSN&#39;</span><span class="p">:</span> <span class="mi">86</span><span class="p">,</span> <span class="s1">&#39;+SHSN&#39;</span><span class="p">:</span> <span class="mi">86</span><span class="p">,</span> <span class="s1">&#39;-GS&#39;</span><span class="p">:</span> <span class="mi">87</span><span class="p">,</span>
+                   <span class="s1">&#39;-SHGS&#39;</span><span class="p">:</span> <span class="mi">87</span><span class="p">,</span> <span class="s1">&#39;FZRAPLGS&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;-SNGS&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;GSPLSN&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span>
+                   <span class="s1">&#39;GSPL&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;PLGSSN&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;GS&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;SHGS&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span>
+                   <span class="s1">&#39;+GS&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;+SHGS&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;-GR&#39;</span><span class="p">:</span> <span class="mi">89</span><span class="p">,</span> <span class="s1">&#39;-SHGR&#39;</span><span class="p">:</span> <span class="mi">89</span><span class="p">,</span>
+                   <span class="s1">&#39;-SNGR&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;SHGR&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;+GR&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+                   <span class="s1">&#39;+SHGR&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;-TSRA&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;TSRA&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;TSSN&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span>
+                   <span class="s1">&#39;TSPL&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;-TSDZ&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;-TSSN&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;-TSPL&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span>
+                   <span class="s1">&#39;TSPLSN&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;TSSNPL&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;-TSSNPL&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;TSRAGS&#39;</span><span class="p">:</span> <span class="mi">96</span><span class="p">,</span>
+                   <span class="s1">&#39;TSGS&#39;</span><span class="p">:</span> <span class="mi">96</span><span class="p">,</span> <span class="s1">&#39;TSGR&#39;</span><span class="p">:</span> <span class="mi">96</span><span class="p">,</span> <span class="s1">&#39;+TSRA&#39;</span><span class="p">:</span> <span class="mi">97</span><span class="p">,</span> <span class="s1">&#39;+TSSN&#39;</span><span class="p">:</span> <span class="mi">97</span><span class="p">,</span>
+                   <span class="s1">&#39;+TSPL&#39;</span><span class="p">:</span> <span class="mi">97</span><span class="p">,</span> <span class="s1">&#39;+TSPLSN&#39;</span><span class="p">:</span> <span class="mi">97</span><span class="p">,</span> <span class="s1">&#39;TSSA&#39;</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span> <span class="s1">&#39;TSDS&#39;</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span>
+                   <span class="s1">&#39;TSDU&#39;</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span> <span class="s1">&#39;+TSGS&#39;</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span> <span class="s1">&#39;+TSGR&#39;</span><span class="p">:</span> <span class="mi">99</span><span class="p">}</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Jan 14, 2020 at 12:29:19.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0rc1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

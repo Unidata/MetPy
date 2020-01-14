@@ -1,0 +1,12 @@
+normal_component
+===========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: normal_component
+
+.. include:: metpy.calc.normal_component.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

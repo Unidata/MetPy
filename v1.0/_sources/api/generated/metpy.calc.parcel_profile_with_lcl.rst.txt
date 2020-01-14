@@ -1,0 +1,12 @@
+parcel_profile_with_lcl
+==================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: parcel_profile_with_lcl
+
+.. include:: metpy.calc.parcel_profile_with_lcl.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+geodesic
+==========================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: geodesic
+
+.. include:: metpy.interpolate.geodesic.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

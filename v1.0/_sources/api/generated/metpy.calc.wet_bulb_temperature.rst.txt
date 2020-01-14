@@ -1,0 +1,12 @@
+wet_bulb_temperature
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: wet_bulb_temperature
+
+.. include:: metpy.calc.wet_bulb_temperature.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+cape_cin
+===================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: cape_cin
+
+.. include:: metpy.calc.cape_cin.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

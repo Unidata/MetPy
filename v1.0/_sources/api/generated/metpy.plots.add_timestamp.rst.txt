@@ -1,0 +1,12 @@
+add_timestamp
+=========================
+
+.. currentmodule:: metpy.plots
+
+.. autofunction:: add_timestamp
+
+.. include:: metpy.plots.add_timestamp.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

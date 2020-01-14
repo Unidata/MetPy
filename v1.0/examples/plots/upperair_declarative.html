@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Upper Air Analysis using Declarative Syntax &mdash; MetPy 1.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/upperair_declarative.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 1.0" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
+        <link rel="next" title="Surface Analysis using Declarative Syntax" href="surface_declarative.html"/>
+        <link rel="prev" title="Combined Plotting" href="Combined_plotting.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>1.0</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#gridding">Gridding</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#plotting">Plotting</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Simplified_Image_Plot.html">Simple Plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Combined_plotting.html">Combined Plotting</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Upper Air Analysis using Declarative Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surface_declarative.html">Surface Analysis using Declarative Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Simple_Sounding.html">Simple Sounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesonet_Stationplot.html">Mesonet Station Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Station_Plot.html">Station Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Station_Plot_with_Layout.html">Station Plot with Layout</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Examples</a> &raquo;</li>
+        
+      <li>Upper Air Analysis using Declarative Syntax</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/plots/upperair_declarative.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-upperair-declarative-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="upper-air-analysis-using-declarative-syntax">
+<span id="sphx-glr-examples-plots-upperair-declarative-py"></span><h1>Upper Air Analysis using Declarative Syntax<a class="headerlink" href="#upper-air-analysis-using-declarative-syntax" title="Permalink to this headline">¶</a></h1>
+<p>The MetPy declarative syntax allows for a simplified interface to creating common
+meteorological analyses including upper air observation plots.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="View documentation for datetime.datetime"><span class="n">datetime</span></a>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">import</span> <span class="nn">metpy.plots</span> <span class="k">as</span> <span class="nn">mpplots</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+</pre></div>
+</div>
+<p><strong>Getting the data</strong></p>
+<p>In this example, data is originally from the Iowa State Upper-air archive
+(<a class="reference external" href="https://mesonet.agron.iastate.edu/archive/raob/">https://mesonet.agron.iastate.edu/archive/raob/</a>) available through a Siphon method.
+The data are pre-processed to attach latitude/longitude locations for each RAOB site.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;UPA_obs.csv&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>Plotting the data</strong></p>
+<p>Use the declarative plotting interface to create a CONUS upper-air map for 500 hPa</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the Observations</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">mpplots</span><span class="o">.</span><span class="n">PlotObs</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="View documentation for datetime.datetime"><span class="n">datetime</span></a><span class="p">(</span><span class="mi">1993</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">500</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NW&#39;</span><span class="p">,</span> <span class="s1">&#39;SW&#39;</span><span class="p">,</span> <span class="s1">&#39;NE&#39;</span><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;.0f&#39;</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]]</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">vector_field</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;u_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;v_wind&#39;</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="o">.</span><span class="n">reduce_points</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Add map features for the particular panel</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">mpplots</span><span class="o">.</span><span class="n">MapPanel</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">124</span><span class="p">,</span> <span class="o">-</span><span class="mi">72</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">53</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;lcc&#39;</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coastline&#39;</span><span class="p">,</span> <span class="s1">&#39;borders&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="View documentation for metpy.plots.PlotObs"><span class="n">obs</span></a><span class="p">]</span>
+
+<span class="c1"># Collecting panels for complete figure</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">mpplots</span><span class="o">.</span><span class="n">PanelContainer</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="p">]</span>
+
+<span class="c1"># Showing the results</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_upperair_declarative_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_upperair_declarative_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
+  u, v = self.projection.transform_vectors(t, x, y, u, v)
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
+  u, v = self.projection.transform_vectors(t, x, y, u, v)
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_land.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_ocean.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_0_boundary_lines_land.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  22.536 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-upperair-declarative-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/a519b093777a2b63ced71d531cb53070/upperair_declarative.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_declarative.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/f1c8c5b9729cd7164037ec8618030966/upperair_declarative.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">upperair_declarative.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="surface_declarative.html" class="btn btn-neutral float-right" title="Surface Analysis using Declarative Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Combined_plotting.html" class="btn btn-neutral" title="Combined Plotting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Jan 14, 2020 at 12:29:19.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0rc1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
