@@ -941,7 +941,7 @@ def xarray_derivative_wrap(func):
 
 @exporter.export
 @xarray_derivative_wrap
-def first_derivative(f, **kwargs):
+def first_derivative(f, axis=None, x=None, delta=None):
     """Calculate the first derivative of a grid of values.
 
     Works for both regularly-spaced data and grids with varying spacing.
@@ -984,7 +984,7 @@ def first_derivative(f, **kwargs):
     second_derivative
 
     """
-    n, axis, delta = _process_deriv_args(f, kwargs)
+    n, axis, delta = _process_deriv_args(f, axis, x, delta)
     take = make_take(n, axis)
 
     # First handle centered case
@@ -1031,7 +1031,7 @@ def first_derivative(f, **kwargs):
 
 @exporter.export
 @xarray_derivative_wrap
-def second_derivative(f, **kwargs):
+def second_derivative(f, axis=None, x=None, delta=None):
     """Calculate the second derivative of a grid of values.
 
     Works for both regularly-spaced data and grids with varying spacing.
@@ -1074,7 +1074,7 @@ def second_derivative(f, **kwargs):
     first_derivative
 
     """
-    n, axis, delta = _process_deriv_args(f, kwargs)
+    n, axis, delta = _process_deriv_args(f, axis, x, delta)
     take = make_take(n, axis)
 
     # First handle centered case
@@ -1117,7 +1117,7 @@ def second_derivative(f, **kwargs):
 
 
 @exporter.export
-def gradient(f, **kwargs):
+def gradient(f, coordinates=None, deltas=None, axes=None):
     """Calculate the gradient of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
@@ -1164,13 +1164,13 @@ def gradient(f, **kwargs):
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
     """
-    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
     return tuple(first_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
                  for ind, axis in enumerate(axes))
 
 
 @exporter.export
-def laplacian(f, **kwargs):
+def laplacian(f, coordinates=None, deltas=None, axes=None):
     """Calculate the laplacian of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
@@ -1215,7 +1215,7 @@ def laplacian(f, **kwargs):
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
     """
-    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
     derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
               for ind, axis in enumerate(axes)]
     laplac = sum(derivs)
@@ -1237,26 +1237,27 @@ def _broadcast_to_axis(arr, axis, ndim):
     return arr
 
 
-def _process_gradient_args(f, kwargs):
+def _process_gradient_args(f, axes, coordinates, deltas):
     """Handle common processing of arguments for gradient and gradient-like functions."""
-    axes = kwargs.get('axes', range(f.ndim))
+    axes_given = axes is not None
+    axes = axes if axes_given else range(f.ndim)
 
     def _check_length(positions):
-        if 'axes' in kwargs and len(positions) < len(axes):
+        if axes_given and len(positions) < len(axes):
             raise ValueError('Length of "coordinates" or "deltas" cannot be less than that '
                              'of "axes".')
-        elif 'axes' not in kwargs and len(positions) != len(axes):
+        elif not axes_given and len(positions) != len(axes):
             raise ValueError('Length of "coordinates" or "deltas" must match the number of '
                              'dimensions of "f" when "axes" is not given.')
 
-    if 'deltas' in kwargs:
-        if 'coordinates' in kwargs or 'x' in kwargs:
+    if deltas is not None:
+        if coordinates is not None:
             raise ValueError('Cannot specify both "coordinates" and "deltas".')
-        _check_length(kwargs['deltas'])
-        return 'delta', kwargs['deltas'], axes
-    elif 'coordinates' in kwargs:
-        _check_length(kwargs['coordinates'])
-        return 'x', kwargs['coordinates'], axes
+        _check_length(deltas)
+        return 'delta', deltas, axes
+    elif coordinates is not None:
+        _check_length(coordinates)
+        return 'x', coordinates, axes
     elif isinstance(f, xr.DataArray):
         return 'pass', axes, axes  # only the axis argument matters
     else:
@@ -1264,19 +1265,19 @@ def _process_gradient_args(f, kwargs):
                          'when "f" is not a DataArray.')
 
 
-def _process_deriv_args(f, kwargs):
+def _process_deriv_args(f, axis, x, delta):
     """Handle common processing of arguments for derivative functions."""
     n = f.ndim
-    axis = normalize_axis_index(kwargs.get('axis', 0), n)
+    axis = normalize_axis_index(axis if axis is not None else 0, n)
 
     if f.shape[axis] < 3:
         raise ValueError('f must have at least 3 point along the desired axis.')
 
-    if 'delta' in kwargs:
-        if 'x' in kwargs:
+    if delta is not None:
+        if x is not None:
             raise ValueError('Cannot specify both "x" and "delta".')
 
-        delta = atleast_1d(kwargs['delta'])
+        delta = atleast_1d(delta)
         if delta.size == 1:
             diff_size = list(f.shape)
             diff_size[axis] -= 1
@@ -1286,8 +1287,8 @@ def _process_deriv_args(f, kwargs):
                 delta = delta * delta_units
         else:
             delta = _broadcast_to_axis(delta, axis, n)
-    elif 'x' in kwargs:
-        x = _broadcast_to_axis(kwargs['x'], axis, n)
+    elif x is not None:
+        x = _broadcast_to_axis(x, axis, n)
         delta = diff(x, axis=axis)
     else:
         raise ValueError('Must specify either "x" or "delta" for value positions.')
