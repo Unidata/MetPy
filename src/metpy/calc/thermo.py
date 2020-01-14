@@ -9,7 +9,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
-                    find_intersections, first_derivative, get_layer)
+                    find_intersections, first_derivative, get_layer, wrap_output_like)
 from .. import constants as mpconsts
 from ..cbook import broadcast_indices
 from ..interpolate.one_dimension import interpolate_1d
@@ -23,7 +23,8 @@ sat_pressure_0c = 6.112 * units.millibar
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('temperature', 'dewpoint')
 @check_units('[temperature]', '[temperature]')
 def relative_humidity_from_dewpoint(temperature, dewpoint):
     r"""Calculate the relative humidity.
@@ -54,6 +55,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
 
 
 @exporter.export
+@wrap_output_like(argument='pressure')
 @preprocess_xarray()
 @check_units('[pressure]', '[pressure]')
 def exner_function(pressure, reference_pressure=mpconsts.P0):
@@ -89,7 +91,8 @@ def exner_function(pressure, reference_pressure=mpconsts.P0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature')
 @check_units('[pressure]', '[temperature]')
 def potential_temperature(pressure, temperature):
     r"""Calculate the potential temperature.
@@ -131,7 +134,8 @@ def potential_temperature(pressure, temperature):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='potential_temperature')
+@preprocess_xarray('pressure', 'potential_temperature')
 @check_units('[pressure]', '[temperature]')
 def temperature_from_potential_temperature(pressure, potential_temperature):
     r"""Calculate the temperature from a given potential temperature.
@@ -176,7 +180,8 @@ def temperature_from_potential_temperature(pressure, potential_temperature):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature')
 @check_units('[pressure]', '[temperature]', '[pressure]')
 def dry_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming only dry processes.
@@ -728,7 +733,8 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='mixing_ratio')
+@preprocess_xarray('pressure', 'mixing_ratio')
 @check_units('[pressure]', '[dimensionless]')
 def vapor_pressure(pressure, mixing_ratio):
     r"""Calculate water vapor (partial) pressure.
@@ -765,6 +771,7 @@ def vapor_pressure(pressure, mixing_ratio):
 
 
 @exporter.export
+@wrap_output_like(argument='temperature')
 @preprocess_xarray()
 @check_units('[temperature]')
 def saturation_vapor_pressure(temperature):
@@ -801,7 +808,8 @@ def saturation_vapor_pressure(temperature):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('temperature', 'relative_humidity')
 @check_units('[temperature]', '[dimensionless]')
 def dewpoint_from_relative_humidity(temperature, relative_humidity):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
@@ -829,6 +837,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 
 
 @exporter.export
+@wrap_output_like(argument='vapor_pressure')
 @preprocess_xarray()
 @check_units('[pressure]')
 def dewpoint(vapor_pressure):
@@ -862,7 +871,8 @@ def dewpoint(vapor_pressure):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='partial_press')
+@preprocess_xarray('partial_press', 'total_press')
 @check_units('[pressure]', '[pressure]', '[dimensionless]')
 def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate the mixing ratio of a gas.
@@ -904,7 +914,8 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('total_press', 'temperature')
 @check_units('[pressure]', '[temperature]')
 def saturation_mixing_ratio(total_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
@@ -929,7 +940,8 @@ def saturation_mixing_ratio(total_press, temperature):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'dewpoint')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
@@ -986,7 +998,8 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature')
 @check_units('[pressure]', '[temperature]')
 def saturation_equivalent_potential_temperature(pressure, temperature):
     r"""Calculate saturation equivalent potential temperature.
@@ -1053,7 +1066,8 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('temperature', 'mixing_ratio')
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
 def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual temperature.
@@ -1087,7 +1101,8 @@ def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpcons
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'mixing_ratio')
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
 def virtual_potential_temperature(pressure, temperature, mixing_ratio,
                                   molecular_weight_ratio=mpconsts.epsilon):
@@ -1124,7 +1139,8 @@ def virtual_potential_temperature(pressure, temperature, mixing_ratio,
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'mixing_ratio')
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
 def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate density.
@@ -1160,7 +1176,8 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='dry_bulb_temperature')
+@preprocess_xarray('pressure', 'dry_bulb_temperature', 'wet_bulb_temperature')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb_temperature,
                                         **kwargs):
@@ -1202,7 +1219,8 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='dry_bulb_temperature')
+@preprocess_xarray('pressure', 'dry_bulb_temperature', 'wet_bulb_temperature')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_temperature,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
@@ -1252,7 +1270,8 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'relative_humidity')
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
@@ -1292,7 +1311,8 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'mixing_ratio')
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
@@ -1330,6 +1350,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
 
 @exporter.export
+@wrap_output_like(argument='specific_humidity')
 @preprocess_xarray()
 @check_units('[dimensionless]')
 def mixing_ratio_from_specific_humidity(specific_humidity):
@@ -1367,6 +1388,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
 
 @exporter.export
+@wrap_output_like(argument='mixing_ratio')
 @preprocess_xarray()
 @check_units('[dimensionless]')
 def specific_humidity_from_mixing_ratio(mixing_ratio):
@@ -1404,7 +1426,8 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'specific_humidity')
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
@@ -2034,7 +2057,8 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('height', 'temperature')
 @check_units('[length]', '[temperature]')
 def dry_static_energy(height, temperature):
     r"""Calculate the dry static energy of parcels.
@@ -2066,7 +2090,8 @@ def dry_static_energy(height, temperature):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('height', 'temperature', 'specific_humidity')
 @check_units('[length]', '[temperature]', '[dimensionless]')
 def moist_static_energy(height, temperature, specific_humidity):
     r"""Calculate the moist static energy of parcels.
@@ -2225,7 +2250,8 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='potential_temperature')
+@preprocess_xarray('height', 'potential_temperature')
 @check_units('[length]', '[temperature]')
 def brunt_vaisala_frequency_squared(height, potential_temperature, axis=0):
     r"""Calculate the square of the Brunt-Vaisala frequency.
@@ -2265,7 +2291,8 @@ def brunt_vaisala_frequency_squared(height, potential_temperature, axis=0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='potential_temperature')
+@preprocess_xarray('height', 'potential_temperature')
 @check_units('[length]', '[temperature]')
 def brunt_vaisala_frequency(height, potential_temperature, axis=0):
     r"""Calculate the Brunt-Vaisala frequency.
@@ -2306,7 +2333,8 @@ def brunt_vaisala_frequency(height, potential_temperature, axis=0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='potential_temperature')
+@preprocess_xarray('height', 'potential_temperature')
 @check_units('[length]', '[temperature]')
 def brunt_vaisala_period(height, potential_temperature, axis=0):
     r"""Calculate the Brunt-Vaisala period.
@@ -2345,7 +2373,8 @@ def brunt_vaisala_period(height, potential_temperature, axis=0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'dewpoint')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def wet_bulb_temperature(pressure, temperature, dewpoint):
     """Calculate the wet-bulb temperature using Normand's rule.
@@ -2398,7 +2427,8 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature')
 @check_units('[pressure]', '[temperature]')
 def static_stability(pressure, temperature, axis=0):
     r"""Calculate the static stability within a vertical profile.
@@ -2430,7 +2460,8 @@ def static_stability(pressure, temperature, axis=0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'specific_humidity')
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
@@ -2460,7 +2491,8 @@ def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'w')
 @check_units('[length]/[time]', '[pressure]', '[temperature]')
 def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
     r"""Calculate omega from w assuming hydrostatic conditions.
@@ -2503,7 +2535,8 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='temperature')
+@preprocess_xarray('pressure', 'temperature', 'omega')
 @check_units('[pressure]/[time]', '[pressure]', '[temperature]')
 def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
     r"""Calculate w from omega assuming hydrostatic conditions.
@@ -2549,7 +2582,8 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 
 
 @exporter.export
-@preprocess_xarray()
+@wrap_output_like(argument='dewpoint')
+@preprocess_xarray('pressure', 'dewpoint')
 @check_units('[pressure]', '[temperature]')
 def specific_humidity_from_dewpoint(pressure, dewpoint):
     r"""Calculate the specific humidity from the dewpoint temperature and pressure.

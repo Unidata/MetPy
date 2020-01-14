@@ -2,10 +2,15 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
+import functools
+from inspect import signature
+
 import numpy as np
+import xarray as xr
 
 from . import coriolis_parameter
-from .tools import first_derivative, get_layer_heights, gradient
+from .tools import (first_derivative, get_layer_heights, gradient, grid_deltas_from_dataarray,
+                    wrap_output_like)
 from .. import constants as mpconsts
 from ..cbook import iterable
 from ..package_tools import Exporter
@@ -19,10 +24,54 @@ def _stack(arrs):
     return concatenate([a[np.newaxis] if iterable(a) else a for a in arrs], axis=0)
 
 
+def add_grid_arguments_from_xarray(func):
+    """Fill in optional arguments like dx/dy from DataArray arguments."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        bound_args = signature(func).bind(*args, **kwargs)
+        bound_args.apply_defaults()
+
+        # Search for DataArray with valid latitude and longitude coordinates to find grid
+        # deltas and any other needed parameter
+        dataarray_arguments = [value for value in bound_args.arguments.values()
+                               if isinstance(value, xr.DataArray)]
+        grid_prototype = None
+        for da in dataarray_arguments:
+            if hasattr(da.metpy, 'latitude') and hasattr(da.metpy, 'longitude'):
+                grid_prototype = da
+                break
+
+        # Fill in dx/dy
+        if (grid_prototype is not None
+                and bound_args.arguments['dx'] is None
+                and bound_args.arguments['dy'] is None):
+            (bound_args.arguments['dx'],
+             bound_args.arguments['dy']) = grid_deltas_from_dataarray(grid_prototype,
+                                                                      kind='actual')
+
+        # Fill in latitude
+        if (grid_prototype is not None
+                and 'latitude' in bound_args.arguments
+                and bound_args.arguments['latitude'] is None):
+            bound_args.arguments['latitude'] = grid_prototype.metpy.latitude.metpy.unit_array
+
+        # Fill in Coriolis parameter
+        if (grid_prototype is not None
+                and 'f' in bound_args.arguments
+                and bound_args.arguments['f'] is None):
+            bound_args.arguments['f'] = coriolis_parameter(
+                grid_prototype.metpy.latitude.metpy.unit_array)
+
+        return func(*bound_args.args, **bound_args.kwargs)
+    return wrapper
+
+
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def vorticity(u, v, dx, dy):
+def vorticity(u, v, dx=None, dy=None):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
@@ -59,9 +108,11 @@ def vorticity(u, v, dx, dy):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units(dx='[length]', dy='[length]')
-def divergence(u, v, dx, dy):
+def divergence(u, v, dx=None, dy=None):
     r"""Calculate the horizontal divergence of a vector.
 
     Parameters
@@ -98,9 +149,11 @@ def divergence(u, v, dx, dy):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def shearing_deformation(u, v, dx, dy):
+def shearing_deformation(u, v, dx=None, dy=None):
     r"""Calculate the shearing deformation of the horizontal wind.
 
     Parameters
@@ -137,9 +190,11 @@ def shearing_deformation(u, v, dx, dy):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def stretching_deformation(u, v, dx, dy):
+def stretching_deformation(u, v, dx=None, dy=None):
     r"""Calculate the stretching deformation of the horizontal wind.
 
     Parameters
@@ -176,9 +231,11 @@ def stretching_deformation(u, v, dx, dy):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def total_deformation(u, v, dx, dy):
+def total_deformation(u, v, dx=None, dy=None):
     r"""Calculate the horizontal total deformation of the horizontal wind.
 
     Parameters
@@ -243,6 +300,10 @@ def advection(scalar, wind, deltas):
     N-dimensional array
         An N-dimensional array containing the advection at all grid points.
 
+    Notes
+    -----
+    This function does not current return xarray DataArrays.
+
     """
     # This allows passing in a list of wind components or an array.
     wind = _stack(wind)
@@ -266,9 +327,11 @@ def advection(scalar, wind, deltas):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(potential_temperature, u, v, dx, dy):
+def frontogenesis(potential_temperature, u, v, dx=None, dy=None):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -334,9 +397,11 @@ def frontogenesis(potential_temperature, u, v, dx, dy):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='height')
 @preprocess_xarray()
 @check_units(f='[frequency]', dx='[length]', dy='[length]')
-def geostrophic_wind(height, f, dx, dy):
+def geostrophic_wind(height, f=None, dx=None, dy=None):
     r"""Calculate the geostrophic wind given from the height or geopotential.
 
     Parameters
@@ -376,9 +441,11 @@ def geostrophic_wind(height, f, dx, dy):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
-def ageostrophic_wind(height, u, v, f, dx, dy):
+def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
 
     Parameters
@@ -419,6 +486,7 @@ def ageostrophic_wind(height, u, v, f, dx, dy):
 
 
 @exporter.export
+@wrap_output_like(argument='height')
 @preprocess_xarray()
 @check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
@@ -504,6 +572,10 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     `pint.Quantity`
         total storm-relative helicity
 
+    Notes
+    -----
+    This function does not currently return xarray DataArrays
+
     """
     _, u, v = get_layer_heights(height, depth, u, v, with_agl=True, bottom=bottom)
 
@@ -528,9 +600,11 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx, dy, latitude):
+def absolute_vorticity(u, v, dx=None, dy=None, latitude=None):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
@@ -565,10 +639,13 @@ def absolute_vorticity(u, v, dx, dy, latitude):
 
 
 @exporter.export
-@preprocess_xarray()
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
+@preprocess_xarray('potential_temperature', 'pressure', 'u', 'v')
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, latitude):
+def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx=None, dy=None,
+                                   latitude=None):
     r"""Calculate the baroclinic potential vorticity.
 
     .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
@@ -643,9 +720,11 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_barotropic(height, u, v, dx, dy, latitude):
+def potential_vorticity_barotropic(height, u, v, dx=None, dy=None, latitude=None):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
     .. math:: PV = \frac{f + \zeta}{H}
@@ -685,10 +764,13 @@ def potential_vorticity_barotropic(height, u, v, dx, dy, latitude):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
              '[dimensionless]')
-def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude):
+def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx=None, dy=None,
+                            latitude=None):
     r"""Calculate the inertial advective wind.
 
     .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
@@ -752,9 +834,11 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
-def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
+def q_vector(u, v, temperature, pressure, dx=None, dy=None, static_stability=1):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 
     .. math:: \vec{Q} = (Q_1, Q_2)

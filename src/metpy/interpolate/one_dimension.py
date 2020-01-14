@@ -14,7 +14,6 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-
 @preprocess_xarray()
 def interpolate_nans_1d(x, y, kind='linear'):
     """Interpolate NaN values in y.
@@ -95,6 +94,9 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     Notes
     -----
     xp and args must be the same shape.
+    
+    This function does not return xarray DataArrays. Use upstream interpolation utilities
+    until MetPy gains an xarray-compatable implementation.
 
     """
     # Handle units
@@ -216,6 +218,9 @@ def log_interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan):
     Notes
     -----
     xp and args must be the same shape.
+    
+    This function does not return xarray DataArrays. Use upstream interpolation utilities
+    until MetPy gains an xarray-compatable implementation.
 
     """
     # Handle units

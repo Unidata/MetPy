@@ -180,7 +180,7 @@ def test_preprocess_xarray():
 
 
 def test_preprocess_xarray_with_broadcasting():
-    """test xarray preprocessing decorator with arguments to broadcast specified."""
+    """Test xarray preprocessing decorator with arguments to broadcast specified."""
     data = xr.DataArray(np.arange(9).reshape((3, 3)), dims=('y', 'x'), attrs={'units': 'N'})
     data2 = xr.DataArray([1, 0, 0], dims=('y'), attrs={'units': 'm'})
 

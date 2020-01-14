@@ -29,6 +29,7 @@ p0 = 1013.25 * units.hPa
 
 
 @exporter.export
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]')
 def wind_speed(u, v):
@@ -56,6 +57,7 @@ def wind_speed(u, v):
 
 
 @exporter.export
+@wrap_output_like(argument='u')
 @preprocess_xarray()
 @check_units('[speed]', '[speed]')
 def wind_direction(u, v, convention='from'):
@@ -147,6 +149,7 @@ def wind_components(speed, wind_direction):
 
 
 @exporter.export
+@wrap_output_like(argument='temperature')
 @preprocess_xarray()
 @check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
@@ -209,6 +212,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
+@wrap_output_like(argument='temperature')
 @preprocess_xarray()
 @check_units('[temperature]')
 def heat_index(temperature, relative_humidity, mask_undefined=True):
@@ -313,6 +317,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
 
 
 @exporter.export
+@wrap_output_like(argument='temperature')
 @preprocess_xarray()
 @check_units(temperature='[temperature]', speed='[speed]')
 def apparent_temperature(temperature, relative_humidity, speed, face_level_winds=False,
@@ -392,6 +397,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
 
 
 @exporter.export
+@wrap_output_like(argument='pressure')
 @preprocess_xarray()
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
@@ -420,6 +426,7 @@ def pressure_to_height_std(pressure):
 
 
 @exporter.export
+@wrap_output_like(argument='height')
 @preprocess_xarray()
 @check_units('[length]')
 def height_to_geopotential(height):
@@ -477,6 +484,7 @@ def height_to_geopotential(height):
 
 
 @exporter.export
+@wrap_output_like(argument='geopotential')
 @preprocess_xarray()
 def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
@@ -537,6 +545,7 @@ def geopotential_to_height(geopotential):
 
 
 @exporter.export
+@wrap_output_like(argument='height')
 @preprocess_xarray()
 @check_units('[length]')
 def height_to_pressure_std(height):
@@ -564,6 +573,7 @@ def height_to_pressure_std(height):
 
 
 @exporter.export
+@wrap_output_like(argument='latitude')
 @preprocess_xarray()
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
@@ -586,6 +596,7 @@ def coriolis_parameter(latitude):
 
 
 @exporter.export
+@wrap_output_like(argument='pressure')
 @preprocess_xarray()
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
@@ -615,6 +626,7 @@ def add_height_to_pressure(pressure, height):
 
 
 @exporter.export
+@wrap_output_like(argument='height')
 @preprocess_xarray()
 @check_units('[length]', '[pressure]')
 def add_pressure_to_height(height, pressure):
@@ -1007,6 +1019,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
 
 
 @exporter.export
+@wrap_output_like(argument='altimeter_value')
 @preprocess_xarray()
 @check_units('[pressure]', '[length]')
 def altimeter_to_station_pressure(altimeter_value, height):
@@ -1089,6 +1102,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
 
 @exporter.export
+@wrap_output_like(argument='altimeter_value')
 @preprocess_xarray()
 @check_units('[pressure]', '[length]', '[temperature]')
 def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):

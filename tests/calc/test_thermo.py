@@ -54,7 +54,8 @@ def test_relative_humidity_from_dewpoint_xarray():
     """Test Relative Humidity calculation with xarray data arrays."""
     temp = xr.DataArray(25., attrs={'units': 'degC'})
     dewp = xr.DataArray(15., attrs={'units': 'degC'})
-    assert_almost_equal(relative_humidity_from_dewpoint(temp, dewp), 53.80 * units.percent, 2)
+    assert_almost_equal(relative_humidity_from_dewpoint(temp, dewp).metpy.unit_array,
+                        53.80 * units.percent, 2)
 
 
 def test_exner_function():
