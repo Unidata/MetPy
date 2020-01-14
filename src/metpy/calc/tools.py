@@ -39,7 +39,7 @@ DIR_DICT[UND] = np.nan
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def resample_nn_1d(a, centers):
     """Return one-dimensional nearest-neighbor indexes based on user-specified centers.
 
@@ -65,7 +65,7 @@ def resample_nn_1d(a, centers):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def nearest_intersection_idx(a, b):
     """Determine the index of the point just before two lines with common x values.
 
@@ -93,7 +93,7 @@ def nearest_intersection_idx(a, b):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 @units.wraps(('=A', '=B'), ('=A', '=B', '=B', None, None))
 def find_intersections(x, a, b, direction='all', log_x=False):
     """Calculate the best estimate of intersection.
@@ -233,7 +233,7 @@ def _delete_masked_points(*arrs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def reduce_point_density(points, radius, priority=None):
     r"""Return a mask to reduce the density of points in irregularly-spaced data.
 
@@ -417,7 +417,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 @check_units('[length]')
 def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_agl=False):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
@@ -507,7 +507,7 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 @check_units('[pressure]')
 def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
               interpolate=True):
@@ -609,7 +609,7 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def find_bounding_indices(arr, values, axis, from_below=True):
     """Find the indices surrounding the values within arr along axis.
 
@@ -750,7 +750,7 @@ def make_take(ndims, slice_dim):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
     r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
@@ -905,7 +905,7 @@ def xarray_derivative_wrap(func):
     def wrapper(f, **kwargs):
         if 'x' in kwargs or 'delta' in kwargs:
             # Use the usual DataArray to pint.Quantity preprocessing wrapper
-            return preprocess_xarray(func)(f, **kwargs)
+            return preprocess_xarray()(func)(f, **kwargs)
         elif isinstance(f, xr.DataArray):
             # Get axis argument, defaulting to first dimension
             axis = f.metpy.find_axis_name(kwargs.get('axis', 0))
@@ -1296,7 +1296,7 @@ def _process_deriv_args(f, kwargs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
@@ -1352,7 +1352,7 @@ def _abbrieviate_direction(ext_dir_str):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_xarray()
 def angle_to_direction(input_angle, full=False, level=3):
     """Convert the meteorological angle to directional text.
 

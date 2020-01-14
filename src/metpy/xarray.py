@@ -16,6 +16,7 @@ Dataset.
 See Also: :doc:`xarray with MetPy Tutorial </tutorials/xarray_tutorial>`.
 """
 import functools
+from inspect import signature
 import logging
 import re
 import warnings
@@ -874,7 +875,6 @@ def check_axis(var, *axes):
     # If no match has been made, return False (rather than None)
     return False
 
-
 def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
     from .plots.mapping import CFProjection
 
@@ -947,18 +947,38 @@ def _build_y_x(da, tolerance):
                          'correpsond to your CRS coordinate.')
 
 
-def preprocess_xarray(func):
-    """Decorate a function to convert all DataArray arguments to pint.Quantities.
+def preprocess_xarray(*broadcast_argument_labels):
+    """Create decorator to convert input DataArray arguments to pint.Quantities.
+
+    While all input DataArrays are converted to Quantities, any arguments named by ``*args``
+    will be broadcasted together prior to conversion.
 
     This uses the metpy xarray accessors to do the actual conversion.
     """
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        args = tuple(a.metpy.unit_array if isinstance(a, xr.DataArray) else a for a in args)
-        kwargs = {name: (v.metpy.unit_array if isinstance(v, xr.DataArray) else v)
-                  for name, v in kwargs.items()}
-        return func(*args, **kwargs)
-    return wrapper
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            bound_args = signature(func).bind(*args, **kwargs)
+
+            # Auto-broadcast selected arguements, and update bound arguments for signature
+            arg_labels_to_broadcast = [label for label in broadcast_argument_labels
+                                       if label in bound_args.arguments
+                                       and isinstance(bound_args.arguments[label],
+                                                      xr.DataArray)]
+            broadcasted_args = xr.broadcast(*tuple(bound_args.arguments[label]
+                                                   for label in arg_labels_to_broadcast))
+            for i, label in enumerate(arg_labels_to_broadcast):
+                bound_args.arguments[label] = broadcasted_args[i]
+
+            # Cast all DataArrays to Pint Quantities
+            for arg_name in bound_args.arguments:
+                if isinstance(bound_args.arguments[arg_name], xr.DataArray):
+                    bound_args.arguments[arg_name] = bound_args.arguments[
+                        arg_name].metpy.unit_array
+
+            return func(*bound_args.args, **bound_args.kwargs)
+        return wrapper
+    return decorator
 
 
 def check_matching_coordinates(func):

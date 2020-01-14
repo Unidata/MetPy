@@ -172,11 +172,23 @@ def test_preprocess_xarray():
     data = xr.DataArray(np.ones(3), attrs={'units': 'km'})
     data2 = xr.DataArray(np.ones(3), attrs={'units': 'm'})
 
-    @preprocess_xarray
+    @preprocess_xarray()
     def func(a, b):
         return a.to('m') + b
 
     assert_array_equal(func(data, b=data2), np.array([1001, 1001, 1001]) * units.m)
+
+
+def test_preprocess_xarray_with_broadcasting():
+    """test xarray preprocessing decorator with arguments to broadcast specified."""
+    data = xr.DataArray(np.arange(9).reshape((3, 3)), dims=('y', 'x'), attrs={'units': 'N'})
+    data2 = xr.DataArray([1, 0, 0], dims=('y'), attrs={'units': 'm'})
+
+    @preprocess_xarray('a', 'b')
+    def func(a, b):
+        return a * b
+
+    assert_array_equal(func(data, data2), [[0, 1, 2], [0, 0, 0], [0, 0, 0]] * units('N m'))
 
 
 def test_strftime():
