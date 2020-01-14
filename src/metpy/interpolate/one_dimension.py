@@ -94,7 +94,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     Notes
     -----
     xp and args must be the same shape.
-    
+
     This function does not return xarray DataArrays. Use upstream interpolation utilities
     until MetPy gains an xarray-compatable implementation.
 
@@ -218,7 +218,7 @@ def log_interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan):
     Notes
     -----
     xp and args must be the same shape.
-    
+
     This function does not return xarray DataArrays. Use upstream interpolation utilities
     until MetPy gains an xarray-compatable implementation.
 

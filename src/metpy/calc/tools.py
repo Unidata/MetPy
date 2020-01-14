@@ -56,7 +56,7 @@ def wrap_output_like(**wrap_kwargs):
         * ``xarray.DataArray``
 
     (if matched output is not one of these types, we instead treat the match as if it was a
-    dimenionless Quantity.)
+    dimsenionless Quantity.)
 
     This wrapping/conversion follows the following rules:
 
@@ -66,7 +66,7 @@ def wrap_output_like(**wrap_kwargs):
         * Quantity is unchanged or becomes DataArray with input units and output coords
         * DataArray is converted to Quantity by accessor or is unchanged
 
-    - If match_unit is True, for output of Quantity or DataArary respectively, with a given
+    - If match_unit is True, for output of Quantity or DataArray respectively, with a given
       unit,
 
         * ndarray becomes Quantity or DataArray (with matching coords) with output unit
