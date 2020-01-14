@@ -19,9 +19,10 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
-                              _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS, UND)
+                              _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS, UND,
+                              wrap_output_like)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
-from metpy.units import units
+from metpy.units import DimensionalityError, units
 
 
 FULL_CIRCLE_DEGREES = np.arange(0, 360, BASE_DEGREE_MULTIPLIER.m) * units.degree
@@ -1260,3 +1261,223 @@ def test_remove_nans():
     y_expected = np.array([0, 1, 3, 4])
     assert_array_almost_equal(x_expected, x_test, 0)
     assert_almost_equal(y_expected, y_test, 0)
+
+
+@pytest.mark.parametrize('test, other, match_unit, expected', [
+    (np.arange(4), np.arange(4), False, np.arange(4) * units('dimensionless')),
+    (np.arange(4), np.arange(4), True, np.arange(4) * units('dimensionless')),
+    (np.arange(4), [0] * units.m, False, np.arange(4) * units('dimensionless')),
+    (np.arange(4), [0] * units.m, True, np.arange(4) * units.m),
+    (
+        np.arange(4),
+        xr.DataArray(
+            np.zeros(4),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'units': 'meter', 'description': 'Just some zeros'}
+        ),
+        False,
+        xr.DataArray(
+            np.arange(4),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'units': ''}
+        )
+    ),
+    (
+        np.arange(4),
+        xr.DataArray(
+            np.zeros(4),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'units': 'meter', 'description': 'Just some zeros'}
+        ),
+        True,
+        xr.DataArray(
+            np.arange(4),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'units': 'meter'}
+        )
+    ),
+    ([2, 4, 8] * units.kg, [0] * units.m, False, [2, 4, 8] * units.kg),
+    ([2, 4, 8] * units.kg, [0] * units.g, True, [2000, 4000, 8000] * units.g),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'meter'}
+        ),
+        False,
+        xr.DataArray(
+            [2, 4, 8],
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'kilogram'}
+        )
+    ),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'gram'}
+        ),
+        True,
+        xr.DataArray(
+            [2000, 4000, 8000],
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'gram'}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64),
+        False,
+        units.Quantity(np.linspace(0, 1, 5), 'meter')
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        [0] * units.kg,
+        False,
+        np.linspace(0, 1, 5) * units.m
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        [0] * units.cm,
+        True,
+        np.linspace(0, 100, 5) * units.cm
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        xr.DataArray(
+            np.zeros(3),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'kilogram', 'description': 'Alternative data'}
+        ),
+        False,
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        xr.DataArray(
+            np.zeros(3),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'centimeter', 'description': 'Alternative data'}
+        ),
+        True,
+        xr.DataArray(
+            np.linspace(0, 100, 5),
+            attrs={'units': 'centimeter', 'description': 'A range of values'}
+        )
+    ),
+])
+def test_wrap_output_like_with_other_kwarg(test, other, match_unit, expected):
+    """Test the wrap output like decorator when using the output kwarg."""
+    @wrap_output_like(other=other, match_unit=match_unit)
+    def almost_identity(arg):
+        return arg
+
+    result = almost_identity(test)
+
+    if hasattr(expected, 'units'):
+        assert expected.units == result.units
+    if isinstance(expected, xr.DataArray):
+        xr.testing.assert_identical(result, expected)
+    else:
+        assert_array_equal(result, expected)
+
+
+@pytest.mark.parametrize('test, other', [
+    ([2, 4, 8] * units.kg, [0] * units.m),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'meter'}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter'}
+        ),
+        [0] * units.kg
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter'}
+        ),
+        xr.DataArray(
+            np.zeros(3),
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)},
+            attrs={'units': 'kilogram'}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5),
+            attrs={'units': 'meter', 'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64)
+    )
+])
+def test_wrap_output_like_with_other_kwarg_raising_dimensionality_error(test, other):
+    """Test the wrap output like decorator when when a dimensionality error is raised."""
+    @wrap_output_like(other=other, match_unit=True)
+    def almost_identity(arg):
+        return arg
+
+    with pytest.raises(DimensionalityError):
+        almost_identity(test)
+
+
+def test_wrap_output_like_with_argument_kwarg():
+    """Test the wrap output like decorator with signature recognition."""
+    @wrap_output_like(argument='a')
+    def double(a):
+        return units.Quantity(2) * a.metpy.unit_array
+
+    test = xr.DataArray([1, 3, 5, 7], attrs={'units': 'm'})
+    expected = xr.DataArray([2, 6, 10, 14], attrs={'units': 'meter'})
+
+    xr.testing.assert_identical(double(test), expected)
+
+
+def test_wrap_output_like_without_control_kwarg():
+    """Test that the wrap output like decorator fails when not provided a control param."""
+    @wrap_output_like()
+    def func(arg):
+        return np.array(arg)
+
+    with pytest.raises(ValueError) as exc:
+        func(0)
+        assert 'Must specify keyword' in str(exc)

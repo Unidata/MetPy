@@ -168,6 +168,17 @@ Standard Atmosphere
       height_to_pressure_std
       pressure_to_height_std
 
+Smoothing
+---------
+   .. autosummary::
+      :toctree: ./
+
+      smooth_gaussian
+      smooth_window
+      smooth_rectangular
+      smooth_circular
+      smooth_n_point
+
 Other
 -----
 
@@ -185,5 +196,4 @@ Other
       parse_angle
       reduce_point_density
       resample_nn_1d
-      smooth_gaussian
-      smooth_n_point
+
