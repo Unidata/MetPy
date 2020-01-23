@@ -10,7 +10,7 @@ Upper air analysis is a staple of many synoptic and mesoscale analysis
 problems. In this tutorial we will gather weather balloon data, plot it,
 perform a series of thermodynamic calculations, and summarize the results.
 To learn more about the Skew-T diagram and its use in weather analysis and
-forecasting, checkout `this <https://homes.comet.ucar.edu/~alanbol/aws-tr-79-006.pdf>`_
+forecasting, checkout `this <http://www.pmarshwx.com/research/manuals/AF_skewt_manual.pdf>`_
 air weather service guide.
 """
 
