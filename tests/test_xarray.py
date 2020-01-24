@@ -852,6 +852,16 @@ def test_assign_latitude_longitude_force_existing_dataarray(
     np.testing.assert_array_almost_equal(test_coord_helper_da_latlon['longitude'].values,
                                          lon.values, 3)
 
+def test_assign_latitude_longitude_basic_dataset(test_coord_helper_da_yx,
+                                           test_coord_helper_da_latlon):
+    """Test assign_latitude_longitude in basic usage on Dataset"""
+    ds = test_coord_helper_da_yx.to_dataset(name='test').metpy.assign_latitude_longitude()
+    lat, lon = ds['test'].metpy.coordinates('latitude', 'longitude'(
+    np.testing.assert_array_almost_equal(test_coord_helper_da_latlon['latitude'].values,
+                                         lat.values, 3)
+    np.testing.assert_array_almost_equal(test_coord_helper_da_latlon['longitude'].values,
+                                         lon.values, 3)
+
 
 def test_assign_y_x_basic_dataarray(test_coord_helper_da_yx, test_coord_helper_da_latlon):
     """Test assign_y_x in basic usage on DataArray."""
