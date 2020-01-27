@@ -852,6 +852,7 @@ def test_assign_latitude_longitude_force_existing_dataarray(
     np.testing.assert_array_almost_equal(test_coord_helper_da_latlon['longitude'].values,
                                          lon.values, 3)
 
+
 def test_assign_latitude_longitude_basic_dataset(test_coord_helper_da_yx,
                                                  test_coord_helper_da_latlon):
     """Test assign_latitude_longitude in basic usage on Dataset"""
