@@ -14,7 +14,10 @@ earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`    
 gravitational_constant   :math:`G`       G           :math:`\text{m}^{3} {kg}^{-1} {s}^{-2}` Gravitational constant
 earth_avg_angular_vel    :math:`\Omega`  omega       :math:`\text{rad s}^{-1}`               Avg. angular velocity of Earth
 earth_sfc_avg_dist_sun   :math:`d`       d           :math:`\text{m}`                        Avg. distance of the Earth from the Sun
+earth_sfc_ahel_dis_sun   :math:`d_a`     da          :math:`\text{m}`                        Aphelion dist. of Earth from the Sun
+earth_sfc_phel_dis_sun   :math:`d_p`     dp          :math:`\text{m}`                        Perihelion dist. of Earth from the Sun
 earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`                 Avg. solar irradiance of Earth
+earth_solar_luminosity   :math:`L`       L           :math: `text{W}`                        Avg. luminosity of sun
 earth_max_declination    :math:`\delta`  delta       :math:`\text{degrees}`                  Max. solar declination angle of Earth
 earth_orbit_eccentricity :math:`e`                   :math:`\text{None}`                     Avg. eccentricity of Earth's orbit
 earth_mass               :math:`m_e`     me          :math:`\text{kg}`                       Total mass of the Earth (approx)
@@ -77,7 +80,10 @@ with exporter:
                                   .to('m^3 / kg / s^2'))
     omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
+    d_a = earth_sfc_ahel_dis_sun = 1.520e11 * units.m
+    d_p = earth_sfc_phel_dis_sun = 1.471e11 * units.m
     S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
+    L = earth_solar_luminosity = units.Quantity(3.828e26, 'W')
     delta = earth_max_declination = 23.45 * units.deg
     earth_orbit_eccentricity = 0.0167
     earth_mass = me = 5.9722e24 * units.kg

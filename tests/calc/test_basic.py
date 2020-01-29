@@ -10,11 +10,11 @@ import xarray as xr
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
-                        apparent_temperature, coriolis_parameter, geopotential_to_height,
-                        heat_index, height_to_geopotential, height_to_pressure_std,
-                        pressure_to_height_std, sigma_to_pressure, smooth_circular,
-                        smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
-                        wind_components, wind_direction, wind_speed, windchill)
+                        apparent_temperature, coriolis_parameter, earth_solar_irradiance_r,
+                        geopotential_to_height, heat_index, height_to_geopotential, 
+                        height_to_pressure_std, pressure_to_height_std, sigma_to_pressure, 
+                        smooth_circular, smooth_gaussian, smooth_n_point, smooth_rectangular,
+                        smooth_window, wind_components, wind_direction, wind_speed, windchill)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import units
 
@@ -365,6 +365,14 @@ def test_coriolis_force():
     assert_almost_equal(cor, values, 7)
 
 
+def test_earth_solar_irradiance_r():
+    """Test solar irradiance at radius calculation."""
+    radius = np.array([1.496e11, 1.520e11, 1.471e11]) * units.meter
+    cor = earth_solar_irradiance_r(radius)
+    values = np.array([1361.1277179, 1318.4840767, 1407.7862518]) * units('W / m^2')
+    assert_almost_equal(cor, values, 7)
+    
+    
 def test_add_height_to_pressure():
     """Test the pressure at height above pressure calculation."""
     pressure = add_height_to_pressure(1000 * units.hPa, 877.17421094 * units.meter)
