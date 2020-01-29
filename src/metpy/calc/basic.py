@@ -607,7 +607,7 @@ def earth_solar_irradiance_r(radius):
     earth_solar_irradiance
 
     """
-    irradiance_at_r = earth_solar_luminosity / (4 * np.pi * radius**2)
+    irradiance_at_r = mpconsts.L / (4 * np.pi * radius**2)
     return irradiance_at_r * units('W / m^2')
 
 
