@@ -587,6 +587,32 @@ def coriolis_parameter(latitude):
 
 @exporter.export
 @preprocess_xarray
+@check_units('[length]')  
+def earth_solar_irradiance_r(radius):
+    r"""Caclulates solar irradiance for arbitrary points in 
+    Earth's orbit.
+
+    Parameters
+    ----------
+    radius : `pint.Quantity`
+        Distance from the sun in meters
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding solar irradiance for the orbital radius
+
+    See Also
+    --------
+    earth_solar_irradiance
+
+    """
+    irradiance_at_r = mpconsts.L / (4 * np.pi * radius**2)
+    return irradiance_at_r * units('W / m^2')
+
+
+@exporter.export
+@preprocess_xarray
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
