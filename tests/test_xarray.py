@@ -749,14 +749,14 @@ def test_assign_crs_error_with_both_attrs(test_ds_generic):
     """Test ValueError is raised when both dictionary and kwargs given."""
     with pytest.raises(ValueError) as exc:
         test_ds_generic.metpy.assign_crs(sample_cf_attrs, **sample_cf_attrs)
-        assert 'Cannot specify both' in str(exc)
+    assert 'Cannot specify both' in str(exc)
 
 
 def test_assign_crs_error_with_neither_attrs(test_ds_generic):
     """Test ValueError is raised when neither dictionary and kwargs given."""
     with pytest.raises(ValueError) as exc:
         test_ds_generic.metpy.assign_crs()
-        assert 'Must set either' in str(exc)
+    assert 'Must specify either' in str(exc)
 
 
 def test_assign_latitude_longitude_no_horizontal(test_ds_generic):
@@ -839,7 +839,7 @@ def test_assign_latitude_longitude_error_existing_dataarray(
     """Test assign_latitude_longitude failure with existing coordinates."""
     with pytest.raises(RuntimeError) as exc:
         test_coord_helper_da_dummy_latlon.metpy.assign_latitude_longitude()
-        assert 'Latitude/longitude coordinate(s) are present' in str(exc)
+    assert 'Latitude/longitude coordinate(s) are present' in str(exc)
 
 
 def test_assign_latitude_longitude_force_existing_dataarray(
@@ -866,7 +866,7 @@ def test_assign_y_x_error_existing_dataarray(
     """Test assign_y_x failure with existing coordinates."""
     with pytest.raises(RuntimeError) as exc:
         test_coord_helper_da_dummy_yx.metpy.assign_y_x()
-        assert 'y/x coordinate(s) are present' in str(exc)
+    assert 'y/x coordinate(s) are present' in str(exc)
 
 
 def test_assign_y_x_force_existing_dataarray(
@@ -882,7 +882,7 @@ def test_assign_y_x_dataarray_outside_tolerance(test_coord_helper_da_latlon):
     """Test assign_y_x raises ValueError when tolerance is exceeded on DataArray."""
     with pytest.raises(ValueError) as exc:
         test_coord_helper_da_latlon.metpy.assign_y_x(tolerance=1 * units('um'))
-        assert 'cannot be collapsed to 1D within tolerance' in str(exc)
+    assert 'cannot be collapsed to 1D within tolerance' in str(exc)
 
 
 def test_assign_y_x_dataarray_transposed(test_coord_helper_da_yx, test_coord_helper_da_latlon):
@@ -911,7 +911,7 @@ def test_assign_y_x_error_existing_dataset(
     """Test assign_y_x failure with existing coordinates for Dataset."""
     with pytest.raises(RuntimeError) as exc:
         test_coord_helper_da_dummy_yx.to_dataset(name='test').metpy.assign_y_x()
-        assert 'y/x coordinate(s) are present' in str(exc)
+    assert 'y/x coordinate(s) are present' in str(exc)
 
 
 def test_update_attribute_dictionary(test_ds_generic):

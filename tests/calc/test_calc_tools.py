@@ -1476,8 +1476,8 @@ def test_wrap_output_like_without_control_kwarg():
     """Test that the wrap output like decorator fails when not provided a control param."""
     @wrap_output_like()
     def func(arg):
-        return np.array(arg)
+        """Do nothing."""
 
     with pytest.raises(ValueError) as exc:
         func(0)
-        assert 'Must specify keyword' in str(exc)
+    assert 'Must specify keyword' in str(exc)
