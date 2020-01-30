@@ -740,7 +740,7 @@ def test_smooth_window_with_bad_window():
     temperature = [37, 32, 34, 29, 28, 24, 26, 24, 27, 30] * units.degF
     with pytest.raises(ValueError) as exc:
         smooth_window(temperature, np.ones(4))
-        assert 'must be odd in all dimensions' in str(exc)
+    assert 'must be odd in all dimensions' in str(exc)
 
 
 def test_altimeter_to_station_pressure_inhg():
