@@ -106,6 +106,36 @@ def test_declarative_contour_options():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.035)
+def test_declarative_contour_convert_units():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 30
+    contour.linewidth = 1
+    contour.linecolor = 'red'
+    contour.linestyle = 'dashed'
+    contour.clabels = True
+    contour.plot_units = 'degC'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.proj = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -413,6 +443,33 @@ def test_declarative_barb_gfs():
     pc.draw()
 
     barb.level = 700 * units.hPa
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.346)
+def test_declarative_barb_gfs_knots():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    barb = BarbPlot()
+    barb.data = data
+    barb.level = 300 * units.hPa
+    barb.field = ['u-component_of_wind_isobaric', 'v-component_of_wind_isobaric']
+    barb.skip = (3, 3)
+    barb.earth_relative = False
+    barb.plot_units = 'knot'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [barb]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
 
     return pc.figure
 
