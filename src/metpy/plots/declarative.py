@@ -928,9 +928,7 @@ class PlotScalar(Plots2D):
             data_subset = data.metpy.sel(**subset).squeeze()
 
             if self.plot_units is not None:
-                data_subset.values = (data_subset.values
-                                      * units(data_subset.units)).to(self.plot_units).m
-                data_subset.attrs['units'] = self.plot_units
+                data_subset.metpy.convert_units(self.plot_units)
             self._griddata = data_subset
 
         return self._griddata
@@ -1208,12 +1206,8 @@ class PlotVector(Plots2D):
             data_subset_v = v.metpy.sel(**subset).squeeze()
 
             if self.plot_units is not None:
-                data_subset_u.values = (data_subset_u.values
-                                        * units(data_subset_u.units)).to(self.plot_units).m
-                data_subset_u.attrs['units'] = self.plot_units
-                data_subset_v.values = (data_subset_v.values
-                                        * units(data_subset_v.units)).to(self.plot_units).m
-                data_subset_v.attrs['units'] = self.plot_units
+                data_subset_u.metpy.convert_units(self.plot_units)
+                data_subset_v.metpy.convert_units(self.plot_units)
             self._griddata_u = data_subset_u
             self._griddata_v = data_subset_v
 
