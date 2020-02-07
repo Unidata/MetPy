@@ -783,6 +783,13 @@ class Plots2D(HasTraits):
     from the Python standard library.
     """
 
+    plot_units = Unicode(allow_none=True, default_value=None)
+    plot_units.__doc__ = """The desired units to plot the field in.
+
+    Setting this attribute will convert the units of the field variable to the given units for
+    plotting using the MetPy Units module.
+    """
+
     @property
     def _cmap_obj(self):
         """Return the colormap object.
@@ -918,7 +925,11 @@ class PlotScalar(Plots2D):
 
             if self.time is not None:
                 subset[data.metpy.time.name] = self.time
-            self._griddata = data.metpy.sel(**subset).squeeze()
+            data_subset = data.metpy.sel(**subset).squeeze()
+
+            if self.plot_units is not None:
+                data_subset.metpy.convert_units(self.plot_units)
+            self._griddata = data_subset
 
         return self._griddata
 
@@ -1191,8 +1202,14 @@ class PlotVector(Plots2D):
 
             if self.time is not None:
                 subset[u.metpy.time.name] = self.time
-            self._griddata_u = u.metpy.sel(**subset).squeeze()
-            self._griddata_v = v.metpy.sel(**subset).squeeze()
+            data_subset_u = u.metpy.sel(**subset).squeeze()
+            data_subset_v = v.metpy.sel(**subset).squeeze()
+
+            if self.plot_units is not None:
+                data_subset_u.metpy.convert_units(self.plot_units)
+                data_subset_v.metpy.convert_units(self.plot_units)
+            self._griddata_u = data_subset_u
+            self._griddata_v = data_subset_v
 
         return (self._griddata_u, self._griddata_v)
 
