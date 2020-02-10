@@ -16,7 +16,8 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         first_derivative, get_layer, get_layer_heights, gradient,
                         grid_deltas_from_dataarray, laplacian, lat_lon_grid_deltas,
                         nearest_intersection_idx, parse_angle, pressure_to_height_std,
-                        reduce_point_density, resample_nn_1d, second_derivative)
+                        reduce_point_density, resample_nn_1d, second_derivative,
+                        regular_to_rotated, rotated_to_regular)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS, UND,
@@ -1481,3 +1482,31 @@ def test_wrap_output_like_without_control_kwarg():
     with pytest.raises(ValueError) as exc:
         func(0)
     assert 'Must specify keyword' in str(exc)
+
+
+def test_regular_to_rotated():
+    result = regular_to_rotated(0, 0, 0, 0)
+    expected = (0.0, -90.0)
+    assert_array_almost_equal(expected, result, 2)
+
+
+def test_rotated_to_regular():
+    result = regular_to_rotated(0, 0, 0, 90.)
+    expected = (0.0, 0.0)
+    assert_array_almost_equal(expected, result, 2)
+
+
+def test_regular_to_rotated_with_array():
+    lats = np.array([0, 0])
+    lons = np.array([0, 0])
+    result = regular_to_rotated(0, 0, lons, lats)
+    expected = np.array([[0,0],[-90,-90]])
+    assert_array_almost_equal(expected, result, 2)
+
+
+def test_rotated_to_regular_with_array():
+    lats = np.array([0, 0])
+    lons = np.array([0, 0])
+    result = regular_to_rotated(0, 90, lons, lats)
+    expected = np.array([[180,180],[0,0]])
+    assert_array_almost_equal(expected, result, 2)

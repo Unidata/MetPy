@@ -1604,3 +1604,155 @@ def _wrap_output_like_not_matching_units(result, match):
                                 attrs={'units': result_units})
         else:
             return units.Quantity(result_magnitude, result_units)
+
+
+@exporter.export
+def rotated_to_regular(pole_lon, pole_lat, lon, lat):
+    """Transform a grid from rotated coordinates to regular
+
+    Can transform a rotated grid or point to a regular latitude-longitude grid.
+
+    Parameters
+    ----------
+    pole_lon : numeric
+        Longitude of pole in rotated grid
+    pole_lat : numeric
+        Latitude of pole in rotated grid
+    lon      : numeric or array-like numeric
+        Longitude for point to rotate or array of longitudes for points.
+    lat      : numeric or array-like numeric
+        Latitude for point to rotate or array of latitudes for points.
+
+    Returns
+    -------
+    lon2
+        Longitude of regular grid
+    lat2
+        Latitude of regular grid
+    """
+
+    rad = np.pi / 180.
+    radinv = 1. / rad
+
+    sin_pole = np.sin(rad * (pole_lat + 90.))
+    cos_pole = np.cos(rad * (pole_lat + 90.))
+
+    sin_lon = np.sin(rad * lon)
+    cos_lon = np.cos(rad * lon)
+    sin_lat = np.sin(rad * lat)
+    cos_lat = np.cos(rad * lat)
+
+    lat_tmp = cos_pole * sin_lat + sin_pole * cos_lat * cos_lon
+
+    try:
+        lat_tmp[np.where(lat_tmp < -1.)] = -1.
+        lat_tmp[np.where(lat_tmp > 1.)] = 1.
+    except TypeError:
+        if lat_tmp < -1.:
+            lat_tmp = -1.
+        if lat_tmp > 1.:
+            lat_tmp = 1.
+
+    lat2 = np.arcsin(lat_tmp) * radinv
+
+    cos_lat2 = np.cos(lat2 * rad)
+
+    cos_tmp = (cos_pole * cos_lat * cos_lon - sin_pole * sin_lat) / cos_lat2
+
+    try:
+        cos_tmp[np.where(cos_tmp < -1.)] = -1.
+        cos_tmp[np.where(cos_tmp > 1.)] = 1.
+    except TypeError:
+        if cos_tmp < -1.:
+            cos_tmp = -1.
+        if cos_tmp > 1.:
+            cos_tmp = 1.
+
+    tmp_sin_lon = cos_lat * sin_lon / cos_lat2
+    tmp_cos_lon = np.arccos(cos_tmp) * radinv
+
+    try:
+        tmp_cos_lon[np.where(tmp_sin_lon < 0.)] = - \
+            tmp_cos_lon[np.where(tmp_sin_lon < 0.)]
+    except IndexError:
+        if tmp_sin_lon < 0.:
+            tmp_cos_lon = -tmp_cos_lon
+
+    lon2 = tmp_cos_lon + pole_lon
+
+    return lon2, lat2
+
+@exporter.export
+def regular_to_rotated(pole_lon, pole_lat, lon, lat):
+    """Transform a grid from regular coordinates to rotated
+
+     Can transform a regular grid or point to a rotated latitude-longitude
+     grid.
+
+     Parameters
+     ----------
+     pole_lon : numeric
+         Longitude of pole in desired rotated grid
+     pole_lat : numeric
+         Latitude of pole in desired rotated grid
+     lon      : numeric or array-like numeric
+         Longitude for point to rotate or array of longitudes for points.
+     lat      : numeric or array-like numeric
+         Latitude for point to rotate or array of latitudes for points.
+
+     Returns
+     -------
+     lon2
+         Longitude of rotated grid
+     lat2
+         Latitude of rotated grid
+    """
+    rad = np.pi / 180.
+    radinv = 1. / rad
+
+    sin_pole = np.sin(rad * (pole_lat + 90.))
+    cos_pole = np.cos(rad * (pole_lat + 90.))
+
+    tmp_lon = rad * (lon - pole_lon)
+
+    sin_lon = np.sin(tmp_lon)
+    cos_lon = np.cos(tmp_lon)
+    sin_lat = np.sin(rad * lat)
+    cos_lat = np.cos(rad * lat)
+    lat_tmp = cos_pole * sin_lat - sin_pole * cos_lat * cos_lon
+
+    try:
+        lat_tmp[np.where(lat_tmp < -1.)] = -1.
+        lat_tmp[np.where(lat_tmp > 1.)] = 1.
+    except TypeError:
+        if lat_tmp < -1:
+            lat_tmp = -1.
+        if lat_tmp > 1:
+            lat_tmp = 1.
+
+    lat2 = np.arcsin(lat_tmp) * radinv
+
+    cos_tmp = np.cos(lat2 * rad)
+
+    tmp_lon_rot = (cos_pole * cos_lat * cos_lon + sin_pole * sin_lat) / cos_tmp
+
+    try:
+        tmp_lon_rot[np.where(tmp_lon_rot < -1.)] = -1.
+        tmp_lon_rot[np.where(tmp_lon_rot > 1.)] = 1.
+    except TypeError:
+        if tmp_lon_rot < -1.:
+            tmp_lon_rot = -1.
+        if tmp_lon_rot > 1.:
+            tmp_lon_rot = 1.
+
+    rot_check = cos_lat * sin_lon / cos_tmp
+
+    lon2 = np.arccos(tmp_lon_rot) * radinv
+
+    try:
+        lon2[np.where(rot_check < 0.)] = -lon2[np.where(rot_check < 0.)]
+    except IndexError:
+        if rot_check < 0.:
+            lon2 = -lon2
+
+    return lon2, lat2
