@@ -727,7 +727,7 @@ class MetPyDatasetAccessor:
             return self._dataset
         else:
             latitude, longitude = _build_latitude_longitude(grid_prototype)
-            return self.assign_coords(latitude=latitude, longitude=longitude)
+            return self._dataset.assign_coords(latitude=latitude, longitude=longitude)
 
     def assign_y_x(self, force=False, tolerance=None):
         """Assign y and x dimension coordinates derived from 2D latitude and longitude.
