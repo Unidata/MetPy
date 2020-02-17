@@ -750,7 +750,7 @@ class MapPanel(Panel):
             # Add all of the maps
             for feat in self._layer_features:
                 self.ax.add_feature(feat)
-            
+
             # Use the set title or generate one.
             title = self.title or ',\n'.join(plot.name for plot in self.plots)
             self.ax.set_title(title)
@@ -1100,7 +1100,7 @@ class ContourPlot(PlotScalar, ContourTraits):
                                              linestyles=self.linestyle,
                                              transform=imdata.metpy.cartopy_crs)
         if self.clabels:
-            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=2,
+            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True)
 
 
