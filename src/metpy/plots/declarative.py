@@ -730,15 +730,6 @@ class MapPanel(Panel):
         # Only need to run if we've actually changed.
         if self._need_redraw:
 
-            # Draw all of the plots.
-            for p in self.plots:
-                with p.hold_trait_notifications():
-                    p.draw()
-
-            # Add all of the maps
-            for feat in self._layer_features:
-                self.ax.add_feature(feat)
-
             # Set the extent as appropriate based on the area. One special case for 'global'
             if self.area == 'global':
                 self.ax.set_global()
@@ -750,6 +741,15 @@ class MapPanel(Panel):
                 else:
                     area = self.area
                 self.ax.set_extent(area, DEFAULT_LAT_LON)
+
+            # Draw all of the plots.
+            for p in self.plots:
+                with p.hold_trait_notifications():
+                    p.draw()
+
+            # Add all of the maps
+            for feat in self._layer_features:
+                self.ax.add_feature(feat)
 
             # Use the set title or generate one.
             title = self.title or ',\n'.join(plot.name for plot in self.plots)
@@ -1100,7 +1100,7 @@ class ContourPlot(PlotScalar, ContourTraits):
                                              linestyles=self.linestyle,
                                              transform=imdata.metpy.cartopy_crs)
         if self.clabels:
-            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=2,
+            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True)
 
 
