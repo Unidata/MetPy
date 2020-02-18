@@ -14,7 +14,7 @@ from .. import constants as mpconsts
 from ..cbook import broadcast_indices
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
-from ..units import atleast_1d, check_units, concatenate, units
+from ..units import check_units, concatenate, units
 from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
@@ -267,7 +267,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     pressure = pressure.to('mbar')
     reference_pressure = reference_pressure.to('mbar')
-    temperature = atleast_1d(temperature)
+    temperature = np.atleast_1d(temperature)
 
     side = 'left'
 
@@ -2374,9 +2374,9 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 
     """
     if not hasattr(pressure, 'shape'):
-        pressure = atleast_1d(pressure)
-        temperature = atleast_1d(temperature)
-        dewpoint = atleast_1d(dewpoint)
+        pressure = np.atleast_1d(pressure)
+        temperature = np.atleast_1d(temperature)
+        dewpoint = np.atleast_1d(dewpoint)
 
     it = np.nditer([pressure, temperature, dewpoint, None],
                    op_dtypes=['float', 'float', 'float', 'float'],

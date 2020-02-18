@@ -16,7 +16,7 @@ import xarray as xr
 from ..cbook import broadcast_indices, result_type
 from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
-from ..units import atleast_1d, check_units, concatenate, diff, units
+from ..units import check_units, concatenate, units
 from ..xarray import check_axis, preprocess_xarray
 
 exporter = Exporter(globals())
@@ -1276,7 +1276,7 @@ def _process_deriv_args(f, kwargs):
         if 'x' in kwargs:
             raise ValueError('Cannot specify both "x" and "delta".')
 
-        delta = atleast_1d(kwargs['delta'])
+        delta = np.atleast_1d(kwargs['delta'])
         if delta.size == 1:
             diff_size = list(f.shape)
             diff_size[axis] -= 1
@@ -1288,7 +1288,7 @@ def _process_deriv_args(f, kwargs):
             delta = _broadcast_to_axis(delta, axis, n)
     elif 'x' in kwargs:
         x = _broadcast_to_axis(kwargs['x'], axis, n)
-        delta = diff(x, axis=axis)
+        delta = np.diff(x, axis=axis)
     else:
         raise ValueError('Must specify either "x" or "delta" for value positions.')
 

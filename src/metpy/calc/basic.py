@@ -18,7 +18,7 @@ from scipy.ndimage import gaussian_filter
 from .tools import wrap_output_like
 from .. import constants as mpconsts
 from ..package_tools import Exporter
-from ..units import atleast_1d, check_units, masked_array, units
+from ..units import check_units, masked_array, units
 from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
@@ -90,7 +90,7 @@ def wind_direction(u, v, convention='from'):
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
-    wdir = atleast_1d(wdir)
+    wdir = np.atleast_1d(wdir)
 
     # Handle oceanographic convection
     if convention == 'to':
@@ -244,8 +244,8 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     windchill
 
     """
-    temperature = atleast_1d(temperature)
-    relative_humidity = atleast_1d(relative_humidity)
+    temperature = np.atleast_1d(temperature)
+    relative_humidity = np.atleast_1d(relative_humidity)
     # assign units to relative_humidity if they currently are not present
     if not hasattr(relative_humidity, 'units'):
         relative_humidity = relative_humidity * units.dimensionless
@@ -357,9 +357,9 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     """
     is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
 
-    temperature = atleast_1d(temperature)
-    relative_humidity = atleast_1d(relative_humidity)
-    speed = atleast_1d(speed)
+    temperature = np.atleast_1d(temperature)
+    relative_humidity = np.atleast_1d(relative_humidity)
+    speed = np.atleast_1d(speed)
 
     # NB: mask_defined=True is needed to know where computed values exist
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
@@ -388,7 +388,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     if is_not_scalar:
         return app_temperature
     else:
-        return atleast_1d(app_temperature)[0]
+        return np.atleast_1d(app_temperature)[0]
 
 
 @exporter.export
