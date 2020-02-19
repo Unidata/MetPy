@@ -105,9 +105,9 @@ class MetPyDataArrayAccessor:
     to a particular axis (given sufficent metadata):
 
         >>> import xarray as xr
-        >>> temperature = xr.DataArray([[0, 1], [2, 3]], dims=('lat', 'lon'),
-        ...                            coords={'lat': [40, 41], 'lon': [-105, -104]},
-        ...                            attrs={'units': 'degC'})
+        >>> from metpy.units import units
+        >>> temperature = xr.DataArray([[0, 1], [2, 3]] * units.degC, dims=('lat', 'lon'),
+        ...                            coords={'lat': [40, 41], 'lon': [-105, -104]})
         >>> temperature.metpy.x
         <xarray.DataArray 'lon' (lon: 2)>
         array([-105, -104])
@@ -121,31 +121,64 @@ class MetPyDataArrayAccessor:
     def __init__(self, data_array):  # noqa: D107
         # Initialize accessor with a DataArray. (Do not use directly).
         self._data_array = data_array
-        self._units = self._data_array.attrs.get('units', 'dimensionless')
 
     @property
     def units(self):
-        """Return the units of this DataArray as a `pint.Quantity`."""
-        if self._units != '%':
-            return units(self._units)
+        """Return the units of this DataArray as a `pint.Unit`."""
+        if isinstance(self._data_array.data, units.Quantity):
+            return self._data_array.data.units
         else:
-            return units('percent')
+            return units.parse_units(self._data_array.attrs.get('units', 'dimensionless'))
+
+    @property
+    def magnitude(self):
+        """Return the magnitude of the data values of this DataArray (i.e., without units)."""
+        if isinstance(self._data_array.data, units.Quantity):
+            return self._data_array.data.magnitude
+        else:
+            return self._data_array.data
 
     @property
     def unit_array(self):
         """Return the data values of this DataArray as a `pint.Quantity`."""
-        return self._data_array.values * self.units
+        if isinstance(self._data_array.data, units.Quantity):
+            return self._data_array.data
+        else:
+            return units.Quantity(self._data_array.values, self.units)
 
     @unit_array.setter
     def unit_array(self, values):
-        """Set data values from a `pint.Quantity`."""
-        self._data_array.values = values.magnitude
-        self._units = self._data_array.attrs['units'] = str(values.units)
+        """Set data values using a `pint.Quantity`."""
+        if not isinstance(values, units.Quantity):
+            values = units.Quantity(values, 'dimensionless')
+
+        if isinstance(self._data_array.data, units.Quantity):
+            self._data_array.data = values
+        else:
+            self._data_array.data = values.magnitude
+            self._data_array.attrs['units'] = str(values.units)
 
     def convert_units(self, units):
         """Convert the data values to different units in-place."""
         self.unit_array = self.unit_array.to(units)
         return self._data_array  # allow method chaining
+
+    def quantify(self):
+        """Convert the data to a `pint.Quantity` based on the units attribute in place."""
+        if not isinstance(self._data_array.data, units.Quantity):
+            # Only quantify if not already quantified
+            self._data_array.data = self._data_array.data * self.units
+            if 'units' in self._data_array.attrs:
+                del self._data_array.attrs['units']
+        return self._data_array
+
+    def dequantify(self):
+        """Convert the contained data to its magnitude and place units in attribute."""
+        if isinstance(self._data_array.data, units.Quantity):
+            # Only dequantify if quantified
+            self._data_array.attrs['units'] = str(self.units)
+            self._data_array.data = self._data_array.data.magnitude
+        return self._data_array
 
     @property
     def crs(self):
@@ -855,12 +888,12 @@ def check_axis(var, *axes):
             if (axis in coordinate_criteria['units'] and (
                     (
                         coordinate_criteria['units'][axis]['match'] == 'dimensionality'
-                        and (units.get_dimensionality(var.attrs.get('units'))
+                        and (units.get_dimensionality(var.metpy.units)
                              == units.get_dimensionality(
                                  coordinate_criteria['units'][axis]['units']))
                     ) or (
                         coordinate_criteria['units'][axis]['match'] == 'name'
-                        and var.attrs.get('units')
+                        and str(var.metpy.units)
                         in coordinate_criteria['units'][axis]['units']
                     ))):
                 return True
@@ -974,23 +1007,6 @@ def check_matching_coordinates(func):
                     raise ValueError('Input DataArray arguments must be on same coordinates.')
         return func(*args, **kwargs)
     return wrapper
-
-
-# If DatetimeAccessor does not have a strftime (xarray <0.12.2), monkey patch one in
-try:
-    from xarray.core.accessors import DatetimeAccessor
-    if not hasattr(DatetimeAccessor, 'strftime'):
-        def strftime(self, date_format):
-            """Format time as a string."""
-            import pandas as pd
-            values = self._obj.data
-            values_as_series = pd.Series(values.ravel())
-            strs = values_as_series.dt.strftime(date_format)
-            return strs.values.reshape(values.shape)
-
-        DatetimeAccessor.strftime = strftime
-except ImportError:
-    pass
 
 
 def _reassign_quantity_indexer(data, indexers):

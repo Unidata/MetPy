@@ -96,26 +96,25 @@ def test_unit_array(test_var):
 
 def test_units(test_var):
     """Test the units property on the accessor."""
-    assert test_var.metpy.units == units('kelvin')
+    assert test_var.metpy.units == units.kelvin
 
 
 def test_units_percent():
-    """Test that '%' is converted to 'percent'."""
+    """Test that '%' is handled as 'percent'."""
     test_var_percent = xr.open_dataset(
         get_test_data('irma_gfs_example.nc',
                       as_file_obj=False))['Relative_humidity_isobaric']
-    assert test_var_percent.metpy.units == units('percent')
+    assert test_var_percent.metpy.units == units.percent
 
 
 def test_convert_units(test_var):
     """Test in-place conversion of units."""
     test_var.metpy.convert_units('degC')
 
-    # Check that variable metadata is updated
-    assert units(test_var.attrs['units']) == units('degC')
+    # Check that units are updated
+    assert test_var.metpy.units == units.degC
 
     # Make sure we now get an array back with properly converted values
-    assert test_var.metpy.unit_array.units == units.degC
     assert_almost_equal(test_var[0, 0, 0, 0], 18.44 * units.degC, 2)
 
 
@@ -180,7 +179,7 @@ def test_preprocess_xarray():
 
 
 def test_strftime():
-    """Test our monkey-patched xarray strftime."""
+    """Test strftime on datetime accessor."""
     data = xr.DataArray(np.datetime64('2000-01-01 01:00:00'))
     assert '2000-01-01 01:00:00' == data.dt.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -664,11 +663,20 @@ def test_coordinate_identification_shared_but_not_equal_coords():
     assert ds['isobaric2'].identical(ds['u'].metpy.vertical)
 
 
-def test_check_no_quantification_of_xarray_data(test_ds_generic):
-    """Test that .unit_array setter does not insert a `pint.Quantity` into the DataArray."""
-    var = test_ds_generic['e']
+def test_check_maintained_quantification_of_xarray_data_on_setter(test_ds_generic):
+    """Test .unit_array inserts a `pint.Quantity` into the DataArray when already so."""
+    var = test_ds_generic['test'][0, 0, 0, 0].metpy.quantify()
+    var.metpy.unit_array = [1000, 925, 850, 700, 500] * units.hPa
+    assert isinstance(var.data, units.Quantity)
+    assert var.data.units == units.hPa
+
+
+def test_check_no_quantification_of_xarray_data_on_setter(test_ds_generic):
+    """Test .unit_array does not insert a `pint.Quantity` when not already so."""
+    var = test_ds_generic['test'][0, 0, 0, 0]
     var.metpy.unit_array = [1000, 925, 850, 700, 500] * units.hPa
     assert not isinstance(var.data, units.Quantity)
+    assert var.metpy.units == units.hPa
 
 
 def test_one_dimensional_lat_lon(test_ds_generic):
