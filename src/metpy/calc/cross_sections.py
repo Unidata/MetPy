@@ -13,6 +13,7 @@ import xarray as xr
 from .basic import coriolis_parameter
 from .tools import first_derivative
 from ..package_tools import Exporter
+from ..units import units
 from ..xarray import check_axis, check_matching_coordinates
 
 exporter = Exporter(globals())
@@ -49,8 +50,8 @@ def distances_from_cross_section(cross):
         y = distance * np.cos(np.deg2rad(forward_az))
 
         # Build into DataArrays
-        x = xr.DataArray(x, coords=lon.coords, dims=lon.dims, attrs={'units': 'meters'})
-        y = xr.DataArray(y, coords=lat.coords, dims=lat.dims, attrs={'units': 'meters'})
+        x = xr.DataArray(x * units.meter, coords=lon.coords, dims=lon.dims)
+        y = xr.DataArray(y * units.meter, coords=lat.coords, dims=lat.dims)
 
     elif check_axis(cross.metpy.x, 'x') and check_axis(cross.metpy.y, 'y'):
 
@@ -86,8 +87,7 @@ def latitude_from_cross_section(cross):
         latitude = ccrs.Geodetic().transform_points(cross.metpy.cartopy_crs,
                                                     cross.metpy.x.values,
                                                     y.values)[..., 1]
-        latitude = xr.DataArray(latitude, coords=y.coords, dims=y.dims,
-                                attrs={'units': 'degrees_north'})
+        latitude = xr.DataArray(latitude * units.degrees_north, coords=y.coords, dims=y.dims)
         return latitude
 
 
@@ -165,10 +165,6 @@ def cross_section_components(data_x, data_y, index='index'):
     component_tang = data_x * unit_tang[0] + data_y * unit_tang[1]
     component_norm = data_x * unit_norm[0] + data_y * unit_norm[1]
 
-    # Reattach units (only reliable attribute after operation)
-    component_tang.attrs = {'units': data_x.attrs['units']}
-    component_norm.attrs = {'units': data_x.attrs['units']}
-
     return component_tang, component_norm
 
 
@@ -207,9 +203,8 @@ def normal_component(data_x, data_y, index='index'):
     component_norm = data_x * unit_norm[0] + data_y * unit_norm[1]
 
     # Reattach only reliable attributes after operation
-    for attr in ('units', 'grid_mapping'):
-        if attr in data_x.attrs:
-            component_norm.attrs[attr] = data_x.attrs[attr]
+    if 'grid_mapping' in data_x.attrs:
+        component_norm.attrs['grid_mapping'] = data_x.attrs['grid_mapping']
 
     return component_norm
 
@@ -249,9 +244,8 @@ def tangential_component(data_x, data_y, index='index'):
     component_tang = data_x * unit_tang[0] + data_y * unit_tang[1]
 
     # Reattach only reliable attributes after operation
-    for attr in ('units', 'grid_mapping'):
-        if attr in data_x.attrs:
-            component_tang.attrs[attr] = data_x.attrs[attr]
+    if 'grid_mapping' in data_x.attrs:
+        component_tang.attrs['grid_mapping'] = data_x.attrs['grid_mapping']
 
     return component_tang
 
@@ -296,16 +290,13 @@ def absolute_momentum(u, v, index='index'):
     norm_wind.metpy.convert_units('m/s')
 
     # Get other pieces of calculation (all as ndarrays matching shape of norm_wind)
-    latitude = latitude_from_cross_section(norm_wind)  # in degrees_north
+    latitude = latitude_from_cross_section(norm_wind)
     _, latitude = xr.broadcast(norm_wind, latitude)
-    f = coriolis_parameter(np.deg2rad(latitude.values)).magnitude  # in 1/s
+    f = coriolis_parameter(np.deg2rad(latitude.values))
     x, y = distances_from_cross_section(norm_wind)
     x.metpy.convert_units('meters')
     y.metpy.convert_units('meters')
     _, x, y = xr.broadcast(norm_wind, x, y)
-    distance = np.hypot(x, y).values  # in meters
+    distance = np.hypot(x.metpy.quantify(), y.metpy.quantify())
 
-    m = norm_wind + f * distance
-    m.attrs = {'units': norm_wind.attrs['units']}
-
-    return m
+    return norm_wind + f * distance

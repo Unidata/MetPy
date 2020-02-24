@@ -165,7 +165,10 @@ class MetPyDataArrayAccessor:
 
     def quantify(self):
         """Convert the data to a `pint.Quantity` based on the units attribute in place."""
-        if not isinstance(self._data_array.data, units.Quantity):
+        if (
+            not isinstance(self._data_array.data, units.Quantity)
+            and np.issubdtype(self._data_array.data.dtype, np.number)
+        ):
             # Only quantify if not already quantified
             self._data_array.data = self._data_array.data * self.units
             if 'units' in self._data_array.attrs:
@@ -650,11 +653,11 @@ class MetPyDatasetAccessor:
                 log.warning('Found valid latitude/longitude coordinates, assuming '
                             'latitude_longitude for projection grid_mapping variable')
 
-        # Rebuild the coordinates of the dataarray, and return
+        # Rebuild the coordinates of the dataarray, and return quantified DataArray
         coords = dict(self._rebuild_coords(var, crs))
         if crs is not None:
             coords['crs'] = crs
-        return var.assign_coords(**coords)
+        return var.assign_coords(**coords).metpy.quantify()
 
     def _rebuild_coords(self, var, crs):
         """Clean up the units on the coordinate variables."""

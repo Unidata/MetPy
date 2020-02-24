@@ -13,13 +13,14 @@ from metpy.calc.cross_sections import (distances_from_cross_section,
                                        latitude_from_cross_section)
 from metpy.interpolate import cross_section
 from metpy.testing import assert_array_almost_equal, assert_xarray_allclose
+from metpy.units import units
 
 
 @pytest.fixture()
 def test_cross_lonlat():
     """Return cross section on a lon/lat grid with no time coordinate for use in tests."""
-    data_u = np.linspace(-40, 40, 5 * 6 * 7).reshape((5, 6, 7))
-    data_v = np.linspace(40, -40, 5 * 6 * 7).reshape((5, 6, 7))
+    data_u = np.linspace(-40, 40, 5 * 6 * 7).reshape((5, 6, 7)) * units.knots
+    data_v = np.linspace(40, -40, 5 * 6 * 7).reshape((5, 6, 7)) * units.knots
     ds = xr.Dataset(
         {
             'u_wind': (['isobaric', 'lat', 'lon'], data_u),
@@ -46,8 +47,6 @@ def test_cross_lonlat():
             )
         }
     )
-    ds['u_wind'].attrs['units'] = 'knots'
-    ds['v_wind'].attrs['units'] = 'knots'
 
     start, end = (30.5, 255.5), (44.5, 274.5)
     return cross_section(ds.metpy.parse_cf(), start, end, steps=7, interp_type='nearest')
@@ -56,8 +55,8 @@ def test_cross_lonlat():
 @pytest.fixture()
 def test_cross_xy():
     """Return cross section on a x/y grid with a time coordinate for use in tests."""
-    data_u = np.linspace(-25, 25, 5 * 6 * 7).reshape((1, 5, 6, 7))
-    data_v = np.linspace(25, -25, 5 * 6 * 7).reshape((1, 5, 6, 7))
+    data_u = np.linspace(-25, 25, 5 * 6 * 7).reshape((1, 5, 6, 7)) * units('m/s')
+    data_v = np.linspace(25, -25, 5 * 6 * 7).reshape((1, 5, 6, 7)) * units('m/s')
     ds = xr.Dataset(
         {
             'u_wind': (['time', 'isobaric', 'y', 'x'], data_u),
@@ -91,7 +90,6 @@ def test_cross_xy():
         }
     )
     ds['u_wind'].attrs = ds['v_wind'].attrs = {
-        'units': 'm/s',
         'grid_mapping': 'lambert_conformal'
     }
     ds['lambert_conformal'].attrs = {
@@ -117,26 +115,24 @@ def test_distances_from_cross_section_given_lonlat(test_cross_lonlat):
                               1133651.21398864, 1417064.0174858, 1700476.82098296])
     index = xr.DataArray(range(7), name='index', dims=['index'])
     true_x = xr.DataArray(
-        true_x_values,
+        true_x_values * units.meters,
         coords={
             'crs': test_cross_lonlat['crs'],
             'lat': test_cross_lonlat['lat'],
             'lon': test_cross_lonlat['lon'],
             'index': index,
         },
-        dims=['index'],
-        attrs={'units': 'meters'}
+        dims=['index']
     )
     true_y = xr.DataArray(
-        true_y_values,
+        true_y_values * units.meters,
         coords={
             'crs': test_cross_lonlat['crs'],
             'lat': test_cross_lonlat['lat'],
             'lon': test_cross_lonlat['lon'],
             'index': index,
         },
-        dims=['index'],
-        attrs={'units': 'meters'}
+        dims=['index']
     )
     assert_xarray_allclose(x, true_x)
     assert_xarray_allclose(y, true_y)
@@ -168,15 +164,14 @@ def test_latitude_from_cross_section_given_y(test_cross_xy):
                                      43.0845549, 42.95])
     index = xr.DataArray(range(7), name='index', dims=['index'])
     true_latitude = xr.DataArray(
-        true_latitude_values,
+        true_latitude_values * units.degrees_north,
         coords={
             'crs': test_cross_xy['crs'],
             'y': test_cross_xy['y'],
             'x': test_cross_xy['x'],
             'index': index,
         },
-        dims=['index'],
-        attrs={'units': 'degrees_north'}
+        dims=['index']
     )
     assert_xarray_allclose(latitude, true_latitude)
 
@@ -235,11 +230,11 @@ def test_cross_section_components(test_cross_lonlat):
                                        -25.13011869, -29.45357997, -33.77704125],
                                       [-34.31747391, -38.64093519, -42.96439647, -47.28785775,
                                        -47.82829041, -52.15175169, -56.47521297]])
-    true_tang_wind = xr.DataArray(true_tang_wind_values,
+    true_tang_wind = xr.DataArray(true_tang_wind_values * units.knots,
                                   coords=test_cross_lonlat['u_wind'].coords,
                                   dims=test_cross_lonlat['u_wind'].dims,
                                   attrs=test_cross_lonlat['u_wind'].attrs)
-    true_norm_wind = xr.DataArray(true_norm_wind_values,
+    true_norm_wind = xr.DataArray(true_norm_wind_values * units.knots,
                                   coords=test_cross_lonlat['u_wind'].coords,
                                   dims=test_cross_lonlat['u_wind'].dims,
                                   attrs=test_cross_lonlat['u_wind'].attrs)
@@ -260,7 +255,7 @@ def test_tangential_component(test_cross_xy):
                                         5.84347621, 6.49821458, 7.12201819],
                                        [8.85432685, 9.39001443, 9.90304096, 10.41945241,
                                         10.93426433, 11.43606396, 11.90970179]]])
-    true_tang_wind = xr.DataArray(true_tang_wind_values,
+    true_tang_wind = xr.DataArray(true_tang_wind_values * units('m/s'),
                                   coords=test_cross_xy['u_wind'].coords,
                                   dims=test_cross_xy['u_wind'].dims,
                                   attrs=test_cross_xy['u_wind'].attrs)
@@ -280,7 +275,7 @@ def test_normal_component(test_cross_xy):
                                         -15.22809117, -17.53474865, -19.90214816],
                                        [-19.5758891, -21.71335642, -23.92155707, -26.18279611,
                                         -28.49467817, -30.8590159, -33.28110701]]])
-    true_norm_wind = xr.DataArray(true_norm_wind_values,
+    true_norm_wind = xr.DataArray(true_norm_wind_values * units('m/s'),
                                   coords=test_cross_xy['u_wind'].coords,
                                   dims=test_cross_xy['u_wind'].dims,
                                   attrs=test_cross_xy['u_wind'].attrs)
@@ -301,10 +296,9 @@ def test_absolute_momentum_given_lonlat(test_cross_lonlat):
                                      [-17.6544338, 10.29896833, 42.1895445, 77.67190477,
                                       118.32104328, 159.84996612, 203.78899492]])
 
-    true_momentum = xr.DataArray(true_momentum_values,
+    true_momentum = xr.DataArray(true_momentum_values * units('m/s'),
                                  coords=test_cross_lonlat['u_wind'].coords,
-                                 dims=test_cross_lonlat['u_wind'].dims,
-                                 attrs={'units': 'meter / second'})
+                                 dims=test_cross_lonlat['u_wind'].dims)
     assert_xarray_allclose(momentum, true_momentum)
 
 
@@ -321,8 +315,7 @@ def test_absolute_momentum_given_xy(test_cross_xy):
                                        175.24900718, 225.76516831, 278.20450691],
                                       [117.43415353, 94.19367366, 93.23867305, 119.05994273,
                                        161.98242018, 212.44090106, 264.82554806]]])
-    true_momentum = xr.DataArray(true_momentum_values,
+    true_momentum = xr.DataArray(true_momentum_values * units('m/s'),
                                  coords=test_cross_xy['u_wind'].coords,
-                                 dims=test_cross_xy['u_wind'].dims,
-                                 attrs={'units': 'meter / second'})
+                                 dims=test_cross_xy['u_wind'].dims)
     assert_xarray_allclose(momentum, true_momentum)
