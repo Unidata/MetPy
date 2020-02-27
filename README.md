@@ -34,7 +34,7 @@ Gallery](https://unidata.github.io/python-gallery/).
 We support Python >= 3.6.
 
 0.12 is the first version to drop support for Python 2.7 in Fall 2019. See
-`here <https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst>`_ for more
+[here](https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst) for more
 information.
 
 Need Help?
