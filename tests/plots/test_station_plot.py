@@ -434,3 +434,38 @@ def test_symbol_pandas_timeseries():
     ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%-d'))
 
     return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_stationplot_unit_conversion():
+    """Test the StationPlot API."""
+    fig = plt.figure(figsize=(9, 9))
+
+    # testing data
+    x = np.array([1, 5])
+    y = np.array([2, 4])
+
+    # Make the plot
+    sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16)
+    sp.plot_barb([20, 0], [0, -50])
+    sp.plot_text('E', ['KOKC', 'ICT'], color='blue')
+    sp.plot_parameter('NW', [10.5, 15] * units.degC, plot_units='degF', color='red')
+    sp.plot_symbol('S', [5, 7], high_clouds, color='green')
+
+    sp.ax.set_xlim(0, 6)
+    sp.ax.set_ylim(0, 6)
+
+    return fig
+
+
+def test_scalar_unit_conversion_exception():
+    """Test that errors are raise if unit conversion is requested on un-united data."""
+    T = 50
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    with pytest.raises(ValueError):
+        stnplot.plot_parameter('C', T, plot_units='degC')
