@@ -841,7 +841,8 @@ def test_attribute_error_station():
         pc.draw()
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs_change_units():
     """Test making a surface observation plot."""
     data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
@@ -867,6 +868,42 @@ def test_declarative_sfc_obs_change_units():
     # Bringing it all together
     pc = PanelContainer()
     pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.09}.get(MPL_VERSION, 0.022))
+def test_declarative_multiple_sfc_obs_change_units():
+    """Test making a surface observation plot."""
+    data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
+                            year=2019, month=7)
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(2019, 7, 1, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['air_temperature', 'dew_point_temperature', 'air_pressure_at_sea_level']
+    obs.locations = ['NW', 'W', 'NE']
+    obs.colors = ['red', 'green', 'black']
+    obs.reduce_points = 0.75
+    obs.plot_units = ['degF', 'degF', None]
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (12, 12)
     pc.panels = [panel]
 
     pc.draw()

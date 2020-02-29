@@ -1305,12 +1305,14 @@ class PlotObs(HasTraits):
       * time
       * fields
       * locations (optional)
-      * time_range (optional)
+      * time_window (optional)
       * formats (optional)
       * colors (optional)
+      * plot_units (optional)
       * vector_field (optional)
       * vector_field_color (optional)
       * vector_field_length (optional)
+      * vector_plot_units (optional)
       * reduce_points (optional)
     """
 
@@ -1397,14 +1399,14 @@ class PlotObs(HasTraits):
     plot_units.__doc__ = """A list of the desired units to plot the fields in.
 
     Setting this attribute will convert the units of the field variable to the given units for
-    plotting using the MetPy Units module, provided that units are attached to the DateFrame.
+    plotting using the MetPy Units module, provided that units are attached to the DataFrame.
     """
 
     vector_plot_units = Unicode(default_value=None, allow_none=True)
     vector_plot_units.__doc__ = """The desired units to plot the vector field in.
 
     Setting this attribute will convert the units of the field variable to the given units for
-    plotting using the MetPy Units module, provided that units are attached to the DateFrame.
+    plotting using the MetPy Units module, provided that units are attached to the DataFrame.
     """
 
     def clear(self):
@@ -1574,14 +1576,14 @@ class PlotObs(HasTraits):
         if self.vector_field[0] is not None:
             vector_kwargs = {}
             vector_kwargs['color'] = self.vector_field_color
-            if self.vector_plot_units is not None:
-                vector_kwargs['plot_units'] = self.vector_plot_units
+            vector_kwargs['plot_units'] = self.vector_plot_units
             if hasattr(self.data, 'units') and (vector_kwargs['plot_units'] is not None):
                 u = (data[self.vector_field[0]][subset].values
                      * units(self.data.units[self.vector_field[0]]))
                 v = (data[self.vector_field[1]][subset].values
                      * units(self.data.units[self.vector_field[1]]))
             else:
+                vector_kwargs.pop('plot_units')
                 u = data[self.vector_field[0]][subset]
                 v = data[self.vector_field[1]][subset]
             if self.vector_field_length is not None:

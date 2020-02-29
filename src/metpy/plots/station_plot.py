@@ -185,6 +185,8 @@ class StationPlot(object):
             How to format the data as a string for plotting. If a string, it should be
             compatible with the :func:`format` builtin. If a callable, this should take a
             value and return a string. Defaults to '0.f'.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.
 
@@ -348,9 +350,6 @@ class StationPlot(object):
             else:
                 raise ValueError('To convert to plotting units, units must be attached to '
                                  'scalar value being converted.')
-
-        # Strip units, CartoPy transform doesn't like
-        scalar_value = np.array(scalar_value)
         return scalar_value
 
     def _make_kwargs(self, kwargs):
