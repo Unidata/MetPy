@@ -419,6 +419,34 @@ def test_declarative_barb_earth_relative():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.612)
+def test_declarative_gridded_scale():
+    """Test making a contour plot."""
+    import numpy as np
+    data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height_isobaric'
+    contour.level = 300 * units.hPa
+    contour.linewidth = 2
+    contour.contours = np.arange(0, 2000, 12).tolist()
+    contour.scale = 1e-1
+    contour.clabels = True
+
+    panel = MapPanel()
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.346)
 def test_declarative_barb_gfs():
     """Test making a contour plot."""

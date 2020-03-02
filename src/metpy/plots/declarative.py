@@ -895,6 +895,14 @@ class PlotScalar(Plots2D):
     `list(ds)`
     """
 
+    scale = Float(default_value = 1e0)
+    scale.__doc__ = """Scale the field to be plotted by the value given.
+
+    This attribute will scale the field by multiplying it by ten to the scale. For example, to
+    scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
+    the data values will be scaled by 10^5.
+    """
+
     @observe('field')
     def _update_data(self, _=None):
         """Handle updating the internal cache of data.
@@ -929,7 +937,7 @@ class PlotScalar(Plots2D):
 
             if self.plot_units is not None:
                 data_subset.metpy.convert_units(self.plot_units)
-            self._griddata = data_subset
+            self._griddata = data_subset * self.scale
 
         return self._griddata
 
@@ -1297,12 +1305,14 @@ class PlotObs(HasTraits):
       * time
       * fields
       * locations (optional)
-      * time_range (optional)
+      * time_window (optional)
       * formats (optional)
       * colors (optional)
+      * plot_units (optional)
       * vector_field (optional)
       * vector_field_color (optional)
       * vector_field_length (optional)
+      * vector_plot_units (optional)
       * reduce_points (optional)
     """
 
@@ -1382,6 +1392,20 @@ class PlotObs(HasTraits):
 
     reduce_points = Float(default_value=0)
     reduce_points.__doc__ = """Float to reduce number of points plotted. (optional)"""
+
+    plot_units = List(default_value=[None], allow_none=True)
+    plot_units.__doc__ = """A list of the desired units to plot the fields in.
+
+    Setting this attribute will convert the units of the field variable to the given units for
+    plotting using the MetPy Units module, provided that units are attached to the DateFrame.
+    """
+
+    vector_plot_units = Unicode(default_value=None, allow_none=True)
+    vector_plot_units.__doc__ = """The desired units to plot the vector field in.
+
+    Setting this attribute will convert the units of the field variable to the given units for
+    plotting using the MetPy Units module, provided that units are attached to the DateFrame.
+    """
 
     def clear(self):
         """Clear the plot.
@@ -1509,31 +1533,52 @@ class PlotObs(HasTraits):
                                   transform=ccrs.PlateCarree(), fontsize=10)
 
         for i, ob_type in enumerate(self.fields):
+            field_kwargs = {}
             if len(self.locations) > 1:
                 location = self.locations[i]
             else:
                 location = self.locations[0]
             if len(self.colors) > 1:
-                color = self.colors[i]
+                field_kwargs['color'] = self.colors[i]
             else:
-                color = self.colors[0]
+                field_kwargs['color'] = self.colors[0]
             if len(self.formats) > 1:
-                formats = self.formats[i]
+                field_kwargs['formatter'] = self.formats[i]
             else:
-                formats = self.formats[0]
-            if formats is not None:
-                mapper = getattr(wx_symbols, str(formats), None)
+                field_kwargs['formatter'] = self.formats[0]
+            if len(self.plot_units) > 1:
+                field_kwargs['plot_units'] = self.plot_units[i]
+            else:
+                field_kwargs['plot_units'] = self.plot_units[0]
+            if hasattr(self.data, 'units') and (field_kwargs['plot_units'] is not None):
+                parameter = data[ob_type][subset].values * units(self.data.units[ob_type])
+            else:
+                parameter = data[ob_type][subset]
+            if field_kwargs['formatter'] is not None:
+                mapper = getattr(wx_symbols, str(field_kwargs['formatter']), None)
                 if mapper is not None:
-                    self.handle.plot_symbol(location, data[ob_type][subset],
-                                            mapper, color=color)
+                    field_kwargs.pop('formatter')
+                    self.handle.plot_symbol(location, parameter,
+                                            mapper, **field_kwargs)
                 else:
-                    self.handle.plot_parameter(location, data[ob_type][subset],
-                                               color=color, formatter=self.formats[i])
+                    self.handle.plot_parameter(location, parameter, **field_kwargs)
             else:
-                self.handle.plot_parameter(location, data[ob_type][subset], color=color)
+                field_kwargs.pop('formatter')
+                self.handle.plot_parameter(location, parameter, **field_kwargs)
+
         if self.vector_field[0] is not None:
-            kwargs = {'color': self.vector_field_color}
+            vector_kwargs = {}
+            vector_kwargs['color'] = self.vector_field_color
+            vector_kwargs['plot_units'] = self.vector_plot_units
+            if hasattr(self.data, 'units') and (vector_kwargs['plot_units'] is not None):
+                u = (data[self.vector_field[0]][subset].values
+                     * units(self.data.units[self.vector_field[0]]))
+                v = (data[self.vector_field[1]][subset].values
+                     * units(self.data.units[self.vector_field[1]]))
+            else:
+                vector_kwargs.pop('plot_units')
+                u = data[self.vector_field[0]][subset]
+                v = data[self.vector_field[1]][subset]
             if self.vector_field_length is not None:
-                kwargs['length'] = self.vector_field_length
-            self.handle.plot_barb(data[self.vector_field[0]][subset],
-                                  data[self.vector_field[1]][subset], **kwargs)
+                vector_kwargs['length'] = self.vector_field_length
+            self.handle.plot_barb(u, v, **vector_kwargs)
