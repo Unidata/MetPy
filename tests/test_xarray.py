@@ -94,6 +94,13 @@ def test_unit_array(test_var):
     assert arr.units == units.kelvin
 
 
+def test_unit_array_setter_without_units(test_ds_generic):
+    """Test setting a unit array when data is not a quantity."""
+    test_ds_generic['test'].metpy.unit_array = np.ones((1, 3, 3, 5, 5))
+    np.testing.assert_array_equal(test_ds_generic['test'].data, np.ones((1, 3, 3, 5, 5)))
+    assert test_ds_generic['test'].attrs['units'] == 'dimensionless'
+
+
 def test_units(test_var):
     """Test the units property on the accessor."""
     assert test_var.metpy.units == units.kelvin
@@ -107,6 +114,21 @@ def test_units_percent():
     assert test_var_percent.metpy.units == units.percent
 
 
+def test_magnitude_with_quantity(test_var):
+    """Test magnitude property on accessor when data is a quantity."""
+    assert isinstance(test_var.metpy.magnitude, np.ndarray)
+    np.testing.assert_array_almost_equal(test_var.metpy.magnitude, np.asarray(test_var.values))
+
+
+def test_magnitude_without_quantity(test_ds_generic):
+    """Test magnitude property on accessor when data is not a quantity."""
+    assert isinstance(test_ds_generic['test'].data, np.ndarray)
+    np.testing.assert_array_equal(
+        test_ds_generic['test'].metpy.magnitude,
+        np.asarray(test_ds_generic['test'].values)
+    )
+
+
 def test_convert_units(test_var):
     """Test in-place conversion of units."""
     test_var.metpy.convert_units('degC')
@@ -116,6 +138,27 @@ def test_convert_units(test_var):
 
     # Make sure we now get an array back with properly converted values
     assert_almost_equal(test_var[0, 0, 0, 0], 18.44 * units.degC, 2)
+
+
+def test_quantify(test_ds_generic):
+    """Test quantify method for converting data to Quantity inplace."""
+    original = test_ds_generic['test'].values
+    test_ds_generic['test'].metpy.quantify()
+    assert isinstance(test_ds_generic['test'].data, units.Quantity)
+    assert test_ds_generic['test'].data.units == units.dimensionless
+    np.testing.assert_array_almost_equal(
+        test_ds_generic['test'].data,
+        units.Quantity(original)
+    )
+
+
+def test_dequantify(test_var):
+    """Test dequantify method for converting data away from Quantity inplace."""
+    original = test_var.data.copy()
+    test_var.metpy.dequantify()
+    assert isinstance(test_var.data, np.ndarray)
+    assert test_var.attrs['units'] == 'kelvin'
+    np.testing.assert_array_almost_equal(test_var.data, original.magnitude)
 
 
 def test_radian_projection_coords():
