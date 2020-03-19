@@ -23,6 +23,7 @@ BarbPlot
       ~BarbPlot.name
       ~BarbPlot.parent
       ~BarbPlot.pivot
+      ~BarbPlot.plot_units
       ~BarbPlot.plotdata
       ~BarbPlot.skip
       ~BarbPlot.time
@@ -81,6 +82,7 @@ BarbPlot
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot
+   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: skip
    .. autoattribute:: time

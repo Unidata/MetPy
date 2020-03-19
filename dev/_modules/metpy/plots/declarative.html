@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.declarative &mdash; MetPy 0.12.0</title>
+  <title>metpy.plots.declarative &mdash; MetPy 1.0.0rc1</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.12.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 1.0.0rc1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.0</option>
+                      <option value=''>1.0.0rc1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -925,15 +925,6 @@
         <span class="c1"># Only need to run if we&#39;ve actually changed.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
 
-            <span class="c1"># Draw all of the plots.</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">hold_trait_notifications</span><span class="p">():</span>
-                    <span class="n">p</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-
-            <span class="c1"># Add all of the maps</span>
-            <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layer_features</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
-
             <span class="c1"># Set the extent as appropriate based on the area. One special case for &#39;global&#39;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
@@ -945,6 +936,15 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">DEFAULT_LAT_LON</span><span class="p">)</span>
+
+            <span class="c1"># Draw all of the plots.</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">hold_trait_notifications</span><span class="p">():</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+            <span class="c1"># Add all of the maps</span>
+            <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layer_features</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
 
             <span class="c1"># Use the set title or generate one.</span>
             <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">)</span>
@@ -976,6 +976,13 @@
 <span class="s2">    If a forecast hour is to be plotted the time should be set to the valid future time, which</span>
 <span class="s2">    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects</span>
 <span class="s2">    from the Python standard library.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">plot_units</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">plot_units</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The desired units to plot the field in.</span>
+
+<span class="s2">    Setting this attribute will convert the units of the field variable to the given units for</span>
+<span class="s2">    plotting using the MetPy Units module.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -1113,7 +1120,11 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">subset</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">data_subset</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span> <span class="o">=</span> <span class="n">data_subset</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span>
 
@@ -1284,7 +1295,7 @@
                                              <span class="n">linestyles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linestyle</span><span class="p">,</span>
                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clabels</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
                                <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
@@ -1386,8 +1397,14 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">subset</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">data_subset_u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">data_subset_v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">data_subset_u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
+                <span class="n">data_subset_v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span> <span class="o">=</span> <span class="n">data_subset_u</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span> <span class="o">=</span> <span class="n">data_subset_v</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span><span class="p">)</span>
 
@@ -1618,12 +1635,12 @@
             <span class="n">dim_stns</span> <span class="o">=</span> <span class="p">[</span><span class="n">stn_var</span> <span class="k">for</span> <span class="n">stn_var</span> <span class="ow">in</span> <span class="n">stn_vars</span> <span class="k">if</span> <span class="n">stn_var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dim_times</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Time variable not found. Valid variable names are:&#39;</span>
-                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{time_vars}</span><span class="s1">&#39;</span><span class="p">)</span>
+                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">time_vars</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">dim_time</span> <span class="o">=</span> <span class="n">dim_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dim_stns</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Station variable not found. Valid variable names are: &#39;</span>
-                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{stn_vars}</span><span class="s1">&#39;</span><span class="p">)</span>
+                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">stn_vars</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">dim_stn</span> <span class="o">=</span> <span class="n">dim_stns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1730,7 +1747,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 09:19:10.
+      Last updated on Mar 19, 2020 at 01:35:58.
 
     </p>
   </div>
@@ -1767,7 +1784,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.12.0.post98+ge9a14f8',
+            VERSION:'1.0.0rc1.post20+g235b248',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

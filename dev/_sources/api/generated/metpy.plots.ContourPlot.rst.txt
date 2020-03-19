@@ -24,6 +24,7 @@ ContourPlot
       ~ContourPlot.linewidth
       ~ContourPlot.name
       ~ContourPlot.parent
+      ~ContourPlot.plot_units
       ~ContourPlot.plotdata
       ~ContourPlot.time
 
@@ -82,6 +83,7 @@ ContourPlot
    .. autoattribute:: linewidth
    .. autoattribute:: name
    .. autoattribute:: parent
+   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: time
 

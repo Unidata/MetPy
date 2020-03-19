@@ -24,6 +24,7 @@ FilledContourPlot
       ~FilledContourPlot.level
       ~FilledContourPlot.name
       ~FilledContourPlot.parent
+      ~FilledContourPlot.plot_units
       ~FilledContourPlot.plotdata
       ~FilledContourPlot.time
 
@@ -82,6 +83,7 @@ FilledContourPlot
    .. autoattribute:: level
    .. autoattribute:: name
    .. autoattribute:: parent
+   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: time
 

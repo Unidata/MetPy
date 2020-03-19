@@ -19,6 +19,7 @@ PlotScalar
       ~PlotScalar.level
       ~PlotScalar.name
       ~PlotScalar.parent
+      ~PlotScalar.plot_units
       ~PlotScalar.plotdata
       ~PlotScalar.time
 
@@ -72,6 +73,7 @@ PlotScalar
    .. autoattribute:: level
    .. autoattribute:: name
    .. autoattribute:: parent
+   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: time
 

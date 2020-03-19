@@ -17,6 +17,7 @@ Plots2D
       ~Plots2D.level
       ~Plots2D.name
       ~Plots2D.parent
+      ~Plots2D.plot_units
       ~Plots2D.time
 
    
@@ -66,6 +67,7 @@ Plots2D
    .. autoattribute:: level
    .. autoattribute:: name
    .. autoattribute:: parent
+   .. autoattribute:: plot_units
    .. autoattribute:: time
 
    
