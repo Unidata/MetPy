@@ -49,7 +49,7 @@ def _name_lookup(names):
     mapper = dict(zip(range(len(names)), names))
 
     def lookup(val):
-        return mapper.get(val, 'Unknown')
+        return mapper.get(val, 'UnknownValue')
     return lookup
 
 
@@ -101,7 +101,8 @@ class GiniFile(AbstractDataStore):
                 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)',
                 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)',
                 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)',
-                'Sounder (3.74 micron)', 'Sounder (Visible)']
+                # Percent Normal TPW found empirically from Service Change Notice 20-03
+                'Sounder (3.74 micron)', 'Sounder (Visible)', 'Percent Normal TPW']
 
     prod_desc_fmt = NamedStruct([('source', 'b'),
                                  ('creating_entity', 'b', _name_lookup(crafts)),

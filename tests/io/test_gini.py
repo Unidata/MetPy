@@ -175,3 +175,10 @@ def test_unidata_composite():
 
     # Check data value
     assert 66 == f.data[2160, 2130]
+
+
+def test_percent_normal():
+    """Test reading PCT products properly."""
+    f = GiniFile(get_test_data('PR-NATIONAL_1km_PCT_20200320_0446.gini'))
+
+    assert f.prod_desc.channel == 'Percent Normal TPW'
