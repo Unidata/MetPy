@@ -342,32 +342,6 @@ class GiniFile(AbstractDataStore):
 
         return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var)]
 
-    # FIXME: Work around xarray <=0.10.3 docstring for load angering sphinx
-    # That's the only reason this exists.
-    def load(self):
-        """
-        Load the variables and attributes simultaneously.
-
-        A centralized loading function makes it easier to create
-        data stores that do automatic encoding/decoding.
-
-        For example::
-
-            class SuffixAppendingDataStore(AbstractDataStore):
-
-                def load(self):
-                    variables, attributes = AbstractDataStore.load(self)
-                    variables = {'%s_suffix' % k: v
-                                 for k, v in iteritems(variables)}
-                    attributes = {'%s_suffix' % k: v
-                                  for k, v in iteritems(attributes)}
-                    return variables, attributes
-
-        This function will be called anytime variables or attributes
-        are requested, so care should be taken to make sure its fast.
-        """
-        return super().load()
-
     def get_variables(self):
         """Get all variables in the file.
 
