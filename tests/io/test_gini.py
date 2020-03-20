@@ -158,6 +158,14 @@ def test_gini_str():
     assert str(f) == truth
 
 
+def test_gini_pathlib():
+    """Test that GiniFile works with `pathlib.Path` instances."""
+    from pathlib import Path
+    src = Path(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini', as_file_obj=False))
+    f = GiniFile(src)
+    assert f.prod_desc.sector_id == 'West CONUS'
+
+
 def test_unidata_composite():
     """Test reading radar composites in GINI format made by Unidata."""
     f = GiniFile(get_test_data('Level3_Composite_dhr_1km_20180309_2225.gini'))

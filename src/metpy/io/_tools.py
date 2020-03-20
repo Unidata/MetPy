@@ -22,6 +22,9 @@ def open_as_needed(filename, mode='rb'):
     if hasattr(filename, 'read'):
         return filename
 
+    # This will convert pathlib.Path instances to strings
+    filename = str(filename)
+
     if filename.endswith('.bz2'):
         return bz2.BZ2File(filename, mode)
     elif filename.endswith('.gz'):
