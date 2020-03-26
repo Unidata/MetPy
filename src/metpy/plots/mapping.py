@@ -14,6 +14,7 @@ from ..cbook import Registry
 class CFProjection(object):
     """Handle parsing CF projection metadata."""
 
+    # mapping from Cartopy to CF vocabulary
     _default_attr_mapping = [('false_easting', 'false_easting'),
                              ('false_northing', 'false_northing'),
                              ('central_latitude', 'latitude_of_projection_origin'),
@@ -123,6 +124,18 @@ def make_lcc(attrs_dict, globe):
             kwargs['standard_parallels'] = [kwargs['standard_parallels']]
     return ccrs.LambertConformal(globe=globe, **kwargs)
 
+@CFProjection.register('albers_conical_equal_area')
+def make_aea(attrs_dict, globe):
+    """Handle Albers Equal Area."""
+    attr_mapping = [('central_longitude', 'longitude_of_central_meridian'),
+                    ('standard_parallels', 'standard_parallel')]
+    kwargs = CFProjection.build_projection_kwargs(attrs_dict, attr_mapping)
+    if 'standard_parallels' in kwargs:
+        try:
+            len(kwargs['standard_parallels'])
+        except TypeError:
+            kwargs['standard_parallels'] = [kwargs['standard_parallels']]
+    return ccrs.AlbersEqualArea(globe=globe, **kwargs)
 
 @CFProjection.register('latitude_longitude')
 def make_latlon(attrs_dict, globe):
