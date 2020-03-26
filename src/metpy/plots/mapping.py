@@ -124,6 +124,7 @@ def make_lcc(attrs_dict, globe):
             kwargs['standard_parallels'] = [kwargs['standard_parallels']]
     return ccrs.LambertConformal(globe=globe, **kwargs)
 
+
 @CFProjection.register('albers_conical_equal_area')
 def make_aea(attrs_dict, globe):
     """Handle Albers Equal Area."""
@@ -136,6 +137,7 @@ def make_aea(attrs_dict, globe):
         except TypeError:
             kwargs['standard_parallels'] = [kwargs['standard_parallels']]
     return ccrs.AlbersEqualArea(globe=globe, **kwargs)
+
 
 @CFProjection.register('latitude_longitude')
 def make_latlon(attrs_dict, globe):
