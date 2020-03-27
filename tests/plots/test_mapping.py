@@ -66,6 +66,7 @@ def test_globe_spheroid():
     assert globe_params['a'] == 6367000
     assert globe_params['b'] == 6360000
 
+    
 def test_aea():
     """Test handling albers equal area projection."""
     attrs = {'grid_mapping_name': 'albers_conical_equal_area', 'earth_radius': 6367000,
