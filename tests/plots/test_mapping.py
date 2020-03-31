@@ -89,7 +89,7 @@ def test_aea_minimal():
 
 def test_aea_single_std_parallel():
     """Test albers equal area with one standard parallel."""
-    attrs = {'grid_mapping_name': 'albers_conical_equal_area', 'standard_parallel': 25}
+    attrs = {'grid_mapping_name': 'albers_conical_equal_area', 'standard_parallel': 20}
     crs = CFProjection(attrs).to_cartopy()
     assert isinstance(crs, ccrs.AlbersEqualArea)
     assert crs.proj4_params['lat_1'] == 20
