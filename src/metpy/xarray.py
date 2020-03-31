@@ -146,47 +146,43 @@ class MetPyDataArrayAccessor:
         else:
             return units.Quantity(self._data_array.values, self.units)
 
-    @unit_array.setter
-    def unit_array(self, values):
-        """Set data values using a `pint.Quantity`."""
-        if not isinstance(values, units.Quantity):
-            values = units.Quantity(values, 'dimensionless')
-
-        if isinstance(self._data_array.data, units.Quantity):
-            self._data_array.data = values
-        else:
-            try:
-                self._data_array.data = values.magnitude
-            except ValueError:
-                self._data_array = self._data_array.assign_coords(
-                    coords={str(self._data_array.name): values.magnitude}
-                )
-            self._data_array.attrs['units'] = str(values.units)
-
     def convert_units(self, units):
-        """Convert the data values to different units in-place."""
-        self.unit_array = self.unit_array.to(units)
-        return self._data_array  # allow method chaining
+        """Return new DataArray with values converted to different units."""
+        return self.quantify().copy(data=self.unit_array.to(units))
+
+    def convert_coordinate_units(self, coord, units):
+        """Return new DataArray with coordinate converted to different units."""
+        new_coord_var = self._data_array[coord].copy(
+            data=self._data_array[coord].metpy.unit_array.m_as(units)
+        )
+        new_coord_var.attrs['units'] = str(units)
+        return self._data_array.assign_coords(coords={coord: new_coord_var})
 
     def quantify(self):
-        """Convert the data to a `pint.Quantity` based on the units attribute in place."""
+        """Return a DataArray with the data converted to a `pint.Quantity`."""
         if (
             not isinstance(self._data_array.data, units.Quantity)
             and np.issubdtype(self._data_array.data.dtype, np.number)
         ):
-            # Only quantify if not already quantified
-            self._data_array.data = self._data_array.data * self.units
-            if 'units' in self._data_array.attrs:
-                del self._data_array.attrs['units']
-        return self._data_array
+            # Only quantify if not already quantified and is quantifiable
+            quantified_dataarray = self._data_array.copy(data=self.unit_array)
+            if 'units' in quantified_dataarray.attrs:
+                del quantified_dataarray.attrs['units']
+        else:
+            quantified_dataarray = self._data_array
+        return quantified_dataarray
 
     def dequantify(self):
-        """Convert the contained data to its magnitude and place units in attribute."""
+        """Return a DataArray with the data as magnitude and the units as an attribute."""
         if isinstance(self._data_array.data, units.Quantity):
             # Only dequantify if quantified
-            self._data_array.attrs['units'] = str(self.units)
-            self._data_array.data = self._data_array.data.magnitude
-        return self._data_array
+            dequantified_dataarray = self._data_array.copy(
+                data=self._data_array.data.magnitude
+            )
+            dequantified_dataarray.attrs['units'] = str(self.units)
+        else:
+            dequantified_dataarray = self._data_array
+        return dequantified_dataarray
 
     @property
     def crs(self):
@@ -659,10 +655,10 @@ class MetPyDatasetAccessor:
                             'latitude_longitude for projection grid_mapping variable')
 
         # Rebuild the coordinates of the dataarray, and return quantified DataArray
-        coords = dict(self._rebuild_coords(var, crs))
+        var = self._rebuild_coords(var, crs)
         if crs is not None:
-            coords['crs'] = crs
-        return var.assign_coords(**coords).metpy.quantify()
+            var = var.assign_coords(coords={'crs': crs})
+        return var.metpy.quantify()
 
     def _rebuild_coords(self, var, crs):
         """Clean up the units on the coordinate variables."""
@@ -670,20 +666,21 @@ class MetPyDatasetAccessor:
             if (check_axis(coord_var, 'x', 'y')
                     and not check_axis(coord_var, 'longitude', 'latitude')):
                 try:
-                    # Cannot modify an index inplace, so use copy
-                    yield coord_name, coord_var.copy().metpy.convert_units('meters')
+                    var = var.metpy.convert_coordinate_units(coord_name, 'meters')
                 except DimensionalityError:
                     # Radians! Attempt to use perspective point height conversion
                     if crs is not None:
-                        new_coord_var = coord_var.copy()
                         height = crs['perspective_point_height']
-                        scaled_vals = new_coord_var * (height * units.meters)
-                        new_coord_var = scaled_vals.metpy.convert_units('meter')
-                        new_coord_var = new_coord_var.assign_attrs({'units': 'meter'})
-                        yield coord_name, new_coord_var
-            else:
-                # Do nothing
-                yield coord_name, coord_var
+                        new_coord_var = coord_var.copy(
+                            data=(
+                                coord_var.metpy.unit_array
+                                * (height * units.meter)
+                            ).m_as('meter')
+                        )
+                        new_coord_var.attrs['units'] = 'meter'
+                        var = var.assign_coords(coords={coord_name: new_coord_var})
+
+        return var
 
     class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for datasets."""
@@ -1022,7 +1019,7 @@ def _reassign_quantity_indexer(data, indexers):
     """Reassign a units.Quantity indexer to units of relevant coordinate."""
     def _to_magnitude(val, unit):
         try:
-            return val.to(unit).m
+            return val.m_as(unit)
         except AttributeError:
             return val
 
