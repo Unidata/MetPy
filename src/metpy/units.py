@@ -175,7 +175,7 @@ def diff(x, **kwargs):
         # Can't just use units because of how things like temperature work
         it = x.flat
         true_units = (next(it) - next(it)).units
-        return ret * true_units
+        return true_units * ret
     else:
         return np.diff(x, **kwargs)
 
