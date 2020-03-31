@@ -155,7 +155,12 @@ class MetPyDataArrayAccessor:
         if isinstance(self._data_array.data, units.Quantity):
             self._data_array.data = values
         else:
-            self._data_array.data = values.magnitude
+            try:
+                self._data_array.data = values.magnitude
+            except ValueError:
+                self._data_array = self._data_array.assign_coords(
+                    coords={str(self._data_array.name): values.magnitude}
+                )
             self._data_array.attrs['units'] = str(values.units)
 
     def convert_units(self, units):
@@ -672,8 +677,9 @@ class MetPyDatasetAccessor:
                     if crs is not None:
                         new_coord_var = coord_var.copy()
                         height = crs['perspective_point_height']
-                        scaled_vals = new_coord_var.metpy.unit_array * (height * units.meters)
-                        new_coord_var.metpy.unit_array = scaled_vals.to('meters')
+                        scaled_vals = new_coord_var * (height * units.meters)
+                        new_coord_var = scaled_vals.metpy.convert_units('meter')
+                        new_coord_var = new_coord_var.assign_attrs({'units': 'meter'})
                         yield coord_name, new_coord_var
             else:
                 # Do nothing
