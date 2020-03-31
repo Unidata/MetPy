@@ -66,8 +66,8 @@ cross['Relative_humidity'] = xr.DataArray(rh,
                                           dims=specific_humidity.dims,
                                           attrs={'units': rh.units})
 
-cross['u_wind'].metpy.convert_units('knots')
-cross['v_wind'].metpy.convert_units('knots')
+cross['u_wind'] = cross['u_wind'].metpy.convert_units('knots')
+cross['v_wind'] = cross['v_wind'].metpy.convert_units('knots')
 cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(cross['u_wind'],
                                                                    cross['v_wind'])
 

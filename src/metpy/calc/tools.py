@@ -1583,7 +1583,7 @@ def _wrap_output_like_matching_units(result, match):
         match_units = ''
 
     if isinstance(result, xr.DataArray):
-        result.metpy.convert_units(match_units)
+        result = result.metpy.convert_units(match_units)
         return result.metpy.quantify() if output_xarray else result.metpy.unit_array
     else:
         result = result.m_as(match_units) if isinstance(result, units.Quantity) else result
