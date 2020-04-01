@@ -92,6 +92,8 @@ References
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
 
+.. [Holton2004] Holton, J. R., 2004: *An Introduction to Dynamic Meteorology*. 4th ed. Academic Press, 535 pp.
+
 .. [Koch1983] Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
            objective map analysis scheme for use with satellite and conventional data.
            **J. Appl. Meteor. Climatol.**, *22*, 1487-1503,
