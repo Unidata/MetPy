@@ -118,6 +118,13 @@ def test_convert_units(test_var):
     assert_almost_equal(test_var[0, 0, 0, 0], 18.44 * units.degC, 2)
 
 
+def test_convert_coordinate_units(test_ds_generic):
+    """Test conversion of coordinate units."""
+    result = test_ds_generic['test'].metpy.convert_coordinate_units('b', 'percent')
+    assert result['b'].data[1] == 100.
+    assert result['b'].metpy.units == units.percent
+
+
 def test_radian_projection_coords():
     """Test fallback code for radian units in projection coordinate variables."""
     proj = xr.DataArray(0, attrs={'grid_mapping_name': 'geostationary',
@@ -670,8 +677,8 @@ def test_coordinate_identification_shared_but_not_equal_coords():
 
 def test_check_no_quantification_of_xarray_data(test_ds_generic):
     """Test that .unit_array setter does not insert a `pint.Quantity` into the DataArray."""
-    var = test_ds_generic['e']
-    var.metpy.unit_array = [1000, 925, 850, 700, 500] * units.hPa
+    var = test_ds_generic['test']
+    var.metpy.unit_array = np.zeros(var.shape) * units.hPa
     assert not isinstance(var.data, units.Quantity)
 
 

@@ -137,12 +137,29 @@ class MetPyDataArrayAccessor:
     @unit_array.setter
     def unit_array(self, values):
         """Set data values from a `pint.Quantity`."""
-        self._data_array.values = values.magnitude
+        try:
+            self._data_array.values = values.magnitude
+        except ValueError:
+            raise ValueError('Unable to set unit array to a dimension coordinate. Use the '
+                             'assign_coords method instead')
         self._units = self._data_array.attrs['units'] = str(values.units)
 
     def convert_units(self, units):
         """Convert the data values to different units in-place."""
         self.unit_array = self.unit_array.to(units)
+
+    def convert_coordinate_units(self, coord, units):
+        """Return new DataArray with coordinate converted to different units.
+
+        Notes
+        -----
+        Backported from MetPy 1.0.
+        """
+        new_coord_var = self._data_array[coord].copy(
+            data=self._data_array[coord].metpy.unit_array.m_as(units)
+        )
+        new_coord_var.attrs['units'] = str(units)
+        return self._data_array.assign_coords(coords={coord: new_coord_var})
 
     @property
     def crs(self):
@@ -517,7 +534,7 @@ class MetPyDatasetAccessor:
             else:
                 var.coords['crs'] = CFProjection(proj_var.attrs)
 
-        self._fixup_coords(var)
+        var = self._fixup_coords(var)
 
         # Trying to guess whether we should be adding a crs to this variable's coordinates
         # First make sure it's missing CRS but isn't lat/lon itself
@@ -542,18 +559,23 @@ class MetPyDatasetAccessor:
 
     def _fixup_coords(self, var):
         """Clean up the units on the coordinate variables."""
-        for coord_name, data_array in var.coords.items():
-            if (check_axis(data_array, 'x', 'y')
-                    and not check_axis(data_array, 'longitude', 'latitude')):
+        for coord_name, coord_var in var.coords.items():
+            if (check_axis(coord_var, 'x', 'y')
+                    and not check_axis(coord_var, 'longitude', 'latitude')):
                 try:
-                    var.coords[coord_name].metpy.convert_units('meters')
+                    var = var.metpy.convert_coordinate_units(coord_name, 'meter')
                 except DimensionalityError:  # Radians!
                     if 'crs' in var.coords:
-                        new_data_array = data_array.copy()
                         height = var.coords['crs'].item()['perspective_point_height']
-                        scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
-                        new_data_array.metpy.unit_array = scaled_vals.to('meters')
-                        var.coords[coord_name] = new_data_array
+                        new_coord_var = coord_var.copy(
+                            data=(
+                                coord_var.metpy.unit_array * (height * units.meters)
+                            ).m_as('meter')
+                        )
+                        new_coord_var.attrs['units'] = 'meter'
+                        var = var.assign_coords(coords={coord_name: new_coord_var})
+
+        return var
 
     class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for datasets."""
