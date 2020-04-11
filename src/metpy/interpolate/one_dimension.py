@@ -8,13 +8,13 @@ import numpy as np
 
 from ..cbook import broadcast_indices
 from ..package_tools import Exporter
-from ..xarray import preprocess_xarray
+from ..xarray import preprocess_and_wrap
 
 exporter = Exporter(globals())
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def interpolate_nans_1d(x, y, kind='linear'):
     """Interpolate NaN values in y.
 
@@ -49,7 +49,7 @@ def interpolate_nans_1d(x, y, kind='linear'):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=False):
     r"""Interpolates data with any shape over a specified axis.
 
@@ -174,7 +174,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def log_interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan):
     r"""Interpolates data with logarithmic x-scale over a specified axis.
 

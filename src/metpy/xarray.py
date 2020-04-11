@@ -1084,7 +1084,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
             bound_args = signature(func).bind(*args, **kwargs)
 
             # Obtain proper match if referencing an input
-            match = list(wrap_like)
+            match = list(wrap_like) if isinstance(wrap_like, tuple) else wrap_like
             if isinstance(wrap_like, str):
                 match = bound_args.arguments[wrap_like]
             elif isinstance(wrap_like, tuple):
@@ -1094,7 +1094,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
 
             # Auto-broadcast select xarray arguments, and update bound_args
             if broadcast is not None:
-                arg_names_to_broadcast = (
+                arg_names_to_broadcast = tuple(
                     arg_name for arg_name in broadcast
                     if arg_name in bound_args.arguments
                     and isinstance(bound_args.arguments[arg_name], xr.DataArray)
@@ -1147,8 +1147,14 @@ def _wrap_output_like_matching_units(result, match):
         result = result.metpy.convert_units(match_units)
         return result if output_xarray else result.metpy.unit_array
     else:
-        result = result.to(match_units) if isinstance(result, units.Quantity) else result
-        return match.copy(data=result) if output_xarray else result
+        result = (
+            result.to(match_units) if isinstance(result, units.Quantity)
+            else units.Quantity(result, match_units)
+        )
+        return (
+            xr.DataArray(result, coords=match.coords, dims=match.dims) if output_xarray
+            else result
+        )
 
 
 def _wrap_output_like_not_matching_units(result, match):
@@ -1157,7 +1163,19 @@ def _wrap_output_like_not_matching_units(result, match):
     if isinstance(result, xr.DataArray):
         return result if output_xarray else result.metpy.unit_array
     else:
-        return match.copy(data=result) if output_xarray else result
+        # Determine if need to upcast to Quantity
+        if (
+            (
+                isinstance(match, units.Quantity)
+                or (output_xarray and isinstance(match.data, units.Quantity))
+            )
+            and not isinstance(result, units.Quantity)
+        ):
+            result = units.Quantity(result)
+        return (
+            xr.DataArray(result, coords=match.coords, dims=match.dims) if output_xarray
+            else result
+        )
 
 
 def check_matching_coordinates(func):
