@@ -11,8 +11,8 @@ import xarray as xr
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data, needs_cartopy)
-from metpy.units import units
-from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
+from metpy.units import DimensionalityError, units
+from metpy.xarray import check_axis, check_matching_coordinates, preprocess_and_wrap
 
 
 @pytest.fixture
@@ -232,12 +232,12 @@ def test_missing_grid_mapping_var(caplog):
     assert 'Could not find' in caplog.text
 
 
-def test_preprocess_xarray():
-    """Test xarray preprocessing decorator."""
+def test_preprocess_and_wrap_only_preprocessing():
+    """Test xarray preprocessing and wrapping decorator for only preprocessing."""
     data = xr.DataArray(np.ones(3), attrs={'units': 'km'})
     data2 = xr.DataArray(np.ones(3), attrs={'units': 'm'})
 
-    @preprocess_xarray
+    @preprocess_and_wrap()
     def func(a, b):
         return a.to('m') + b
 
@@ -1028,3 +1028,231 @@ def test_update_attribute_callable(test_ds_generic):
     assert 'even' not in test_ds_generic['b'].attrs
     assert 'even' not in test_ds_generic['d'].attrs
     assert 'even' not in test_ds_generic['test'].attrs
+    test_ds_generic.metpy.update_attribute('even', even_ascii)
+
+
+@pytest.mark.parametrize('test, other, match_unit, expected', [
+    (np.arange(4), np.arange(4), False, np.arange(4)),
+    (np.arange(4), np.arange(4), True, np.arange(4) * units('dimensionless')),
+    (np.arange(4), [0] * units.m, False, np.arange(4) * units('dimensionless')),
+    (np.arange(4), [0] * units.m, True, np.arange(4) * units.m),
+    (
+        np.arange(4),
+        xr.DataArray(
+            np.zeros(4) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'description': 'Just some zeros'}
+        ),
+        False,
+        xr.DataArray(
+            np.arange(4) * units.dimensionless,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)}
+        )
+    ),
+    (
+        np.arange(4),
+        xr.DataArray(
+            np.zeros(4) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'description': 'Just some zeros'}
+        ),
+        True,
+        xr.DataArray(
+            np.arange(4) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)}
+        )
+    ),
+    ([2, 4, 8] * units.kg, [0] * units.m, False, [2, 4, 8] * units.kg),
+    ([2, 4, 8] * units.kg, [0] * units.g, True, [2000, 4000, 8000] * units.g),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        ),
+        False,
+        xr.DataArray(
+            [2, 4, 8] * units.kilogram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        )
+    ),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3) * units.gram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        ),
+        True,
+        xr.DataArray(
+            [2000, 4000, 8000] * units.gram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64),
+        False,
+        units.Quantity(np.linspace(0, 1, 5), 'meter')
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        [0] * units.kg,
+        False,
+        np.linspace(0, 1, 5) * units.m
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        [0] * units.cm,
+        True,
+        np.linspace(0, 100, 5) * units.cm
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        xr.DataArray(
+            np.zeros(5) * units.kilogram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)},
+            attrs={'description': 'Alternative data'}
+        ),
+        False,
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        xr.DataArray(
+            np.zeros(5) * units.centimeter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)},
+            attrs={'description': 'Alternative data'}
+        ),
+        True,
+        xr.DataArray(
+            np.linspace(0, 100, 5) * units.centimeter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)}
+        )
+    ),
+])
+def test_wrap_with_wrap_like_kwarg(test, other, match_unit, expected):
+    """Test the preprocess and wrap decorator when using wrap_like."""
+    @preprocess_and_wrap(wrap_like=other, match_unit=match_unit)
+    def almost_identity(arg):
+        return arg
+
+    result = almost_identity(test)
+
+    if hasattr(expected, 'units'):
+        assert expected.units == result.units
+    if isinstance(expected, xr.DataArray):
+        xr.testing.assert_identical(result, expected)
+    else:
+        assert_array_equal(result, expected)
+
+
+@pytest.mark.parametrize('test, other', [
+    ([2, 4, 8] * units.kg, [0] * units.m),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter
+        ),
+        [0] * units.kg
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter
+        ),
+        xr.DataArray(
+            np.zeros(5) * units.kg,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64)
+    )
+])
+def test_wrap_with_wrap_like_kwarg_raising_dimensionality_error(test, other):
+    """Test the preprocess and wrap decorator when a dimensionality error is raised."""
+    @preprocess_and_wrap(wrap_like=other, match_unit=True)
+    def almost_identity(arg):
+        return arg
+
+    with pytest.raises(DimensionalityError):
+        almost_identity(test)
+
+
+def test_wrap_with_argument_kwarg():
+    """Test the preprocess and wrap decorator with signature recognition."""
+    @preprocess_and_wrap(wrap_like='a')
+    def double(a):
+        return units.Quantity(2) * a
+
+    test = xr.DataArray([1, 3, 5, 7] * units.m)
+    expected = xr.DataArray([2, 6, 10, 14] * units.m)
+
+    xr.testing.assert_identical(double(test), expected)
+
+
+def test_preprocess_and_wrap_with_broadcasting():
+    """Test preprocessing and wrapping decorator with arguments to broadcast specified."""
+    # Not quantified
+    data = xr.DataArray(np.arange(9).reshape((3, 3)), dims=('y', 'x'), attrs={'units': 'N'})
+    # Quantified
+    data2 = xr.DataArray([1, 0, 0] * units.m, dims=('y'))
+
+    @preprocess_and_wrap(broadcast=('a', 'b'))
+    def func(a, b):
+        return a * b
+
+    assert_array_equal(func(data, data2), [[0, 1, 2], [0, 0, 0], [0, 0, 0]] * units('N m'))
+
+
+def test_preprocess_and_wrap_with_to_magnitude():
+    """Test preprocessing and wrapping with casting to magnitude."""
+    data = xr.DataArray([1, 0, 1] * units.m)
+    data2 = [0, 1, 1] * units.cm
+
+    @preprocess_and_wrap(wrap_like='a', to_magnitude=True)
+    def func(a, b):
+        return a * b
+
+    np.testing.assert_array_equal(func(data, data2), np.array([0, 0, 1]))
