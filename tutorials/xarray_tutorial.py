@@ -82,7 +82,7 @@ data = data.rename({
 # convert the the data from one unit to another (keeping it as a DataArray). For now, we'll
 # just use ``convert_units`` to convert our temperature to ``degC``.
 
-data['temperature'].metpy.convert_units('degC')
+data['temperature'] = data['temperature'].metpy.convert_units('degC')
 
 #########################################################################
 # Coordinates

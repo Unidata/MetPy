@@ -1087,6 +1087,7 @@ def test_first_derivative_xarray_lonlat(test_da_lonlat):
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['crs'] = test_da_lonlat['crs']
     truth.attrs['units'] = 'kelvin / meter'
+    truth.metpy.quantify()
 
     # Assert result matches expectation
     xr.testing.assert_allclose(deriv, truth)
@@ -1102,6 +1103,7 @@ def test_first_derivative_xarray_time_and_default_axis(test_da_xy):
     deriv = first_derivative(test_da_xy)
     truth = xr.full_like(test_da_xy, -0.000777000777)
     truth.attrs['units'] = 'kelvin / second'
+    truth.metpy.quantify()
 
     xr.testing.assert_allclose(deriv, truth)
     assert deriv.metpy.units == truth.metpy.units
@@ -1121,6 +1123,7 @@ def test_first_derivative_xarray_time_subsecond_precision():
 
     truth = xr.full_like(test_da, 5.)
     truth.attrs['units'] = 'kelvin / second'
+    truth.metpy.quantify()
 
     xr.testing.assert_allclose(deriv, truth)
     assert deriv.metpy.units == truth.metpy.units
@@ -1138,6 +1141,7 @@ def test_second_derivative_xarray_lonlat(test_da_lonlat):
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['crs'] = test_da_lonlat['crs']
     truth.attrs['units'] = 'kelvin / meter^2'
+    truth.metpy.quantify()
 
     xr.testing.assert_allclose(deriv, truth)
     assert deriv.metpy.units == truth.metpy.units
@@ -1152,9 +1156,11 @@ def test_gradient_xarray(test_da_xy):
 
     truth_x = xr.full_like(test_da_xy, -6.993007e-07)
     truth_x.attrs['units'] = 'kelvin / meter'
+    truth_x.metpy.quantify()
 
     truth_y = xr.full_like(test_da_xy, -2.797203e-06)
     truth_y.attrs['units'] = 'kelvin / meter'
+    truth_y.metpy.quantify()
 
     partial = xr.DataArray(
         np.array([0.04129204, 0.03330003, 0.02264402]),
@@ -1163,6 +1169,7 @@ def test_gradient_xarray(test_da_xy):
     _, truth_p = xr.broadcast(test_da_xy, partial)
     truth_p.coords['crs'] = test_da_xy['crs']
     truth_p.attrs['units'] = 'kelvin / hectopascal'
+    truth_p.metpy.quantify()
 
     # Assert results match expectations
     xr.testing.assert_allclose(deriv_x, truth_x)
@@ -1188,9 +1195,11 @@ def test_gradient_xarray_implicit_axes(test_da_xy):
 
     truth_x = xr.full_like(data, -6.993007e-07)
     truth_x.attrs['units'] = 'kelvin / meter'
+    truth_x.metpy.quantify()
 
     truth_y = xr.full_like(data, -2.797203e-06)
     truth_y.attrs['units'] = 'kelvin / meter'
+    truth_y.metpy.quantify()
 
     xr.testing.assert_allclose(deriv_x, truth_x)
     assert deriv_x.metpy.units == truth_x.metpy.units
@@ -1205,21 +1214,25 @@ def test_gradient_xarray_implicit_axes_transposed(test_da_lonlat):
     deriv_x, deriv_y = gradient(test_da)
 
     truth_x = xr.DataArray(
-        np.array([[-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
-                  [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
-                  [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
-                  [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06]]),
+        np.array(
+            [[-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
+             [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
+             [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06],
+             [-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06]]
+        ) * units('kelvin / meter'),
         dims=test_da.dims,
-        coords=test_da.coords,
-        attrs={'units': 'kelvin / meter'})
+        coords=test_da.coords
+    )
     truth_y = xr.DataArray(
-        np.array([[-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
-                  [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
-                  [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
-                  [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05]]),
+        np.array(
+            [[-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
+             [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
+             [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05],
+             [-1.15162805e-05, -1.15101023e-05, -1.15037894e-05, -1.14973413e-05]]
+        ) * units('kelvin / meter'),
         dims=test_da.dims,
-        coords=test_da.coords,
-        attrs={'units': 'kelvin / meter'})
+        coords=test_da.coords
+    )
 
     xr.testing.assert_allclose(deriv_x, truth_x)
     assert deriv_x.metpy.units == truth_x.metpy.units
@@ -1240,6 +1253,7 @@ def test_laplacian_xarray_lonlat(test_da_lonlat):
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['crs'] = test_da_lonlat['crs']
     truth.attrs['units'] = 'kelvin / meter^2'
+    truth.metpy.quantify()
 
     xr.testing.assert_allclose(laplac, truth)
     assert laplac.metpy.units == truth.metpy.units
@@ -1285,33 +1299,31 @@ def test_remove_nans():
     (
         np.arange(4),
         xr.DataArray(
-            np.zeros(4),
+            np.zeros(4) * units.meter,
             dims=('x',),
             coords={'x': np.linspace(0, 1, 4)},
-            attrs={'units': 'meter', 'description': 'Just some zeros'}
+            attrs={'description': 'Just some zeros'}
         ),
         False,
         xr.DataArray(
-            np.arange(4),
+            np.arange(4) * units.dimensionless,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 4)},
-            attrs={'units': ''}
+            coords={'x': np.linspace(0, 1, 4)}
         )
     ),
     (
         np.arange(4),
         xr.DataArray(
-            np.zeros(4),
+            np.zeros(4) * units.meter,
             dims=('x',),
             coords={'x': np.linspace(0, 1, 4)},
-            attrs={'units': 'meter', 'description': 'Just some zeros'}
+            attrs={'description': 'Just some zeros'}
         ),
         True,
         xr.DataArray(
-            np.arange(4),
+            np.arange(4) * units.meter,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 4)},
-            attrs={'units': 'meter'}
+            coords={'x': np.linspace(0, 1, 4)}
         )
     ),
     ([2, 4, 8] * units.kg, [0] * units.m, False, [2, 4, 8] * units.kg),
@@ -1319,39 +1331,35 @@ def test_remove_nans():
     (
         [2, 4, 8] * units.kg,
         xr.DataArray(
-            np.zeros(3),
+            np.zeros(3) * units.meter,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'meter'}
+            coords={'x': np.linspace(0, 1, 3)}
         ),
         False,
         xr.DataArray(
-            [2, 4, 8],
+            [2, 4, 8] * units.kilogram,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'kilogram'}
+            coords={'x': np.linspace(0, 1, 3)}
         )
     ),
     (
         [2, 4, 8] * units.kg,
         xr.DataArray(
-            np.zeros(3),
+            np.zeros(3) * units.gram,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'gram'}
+            coords={'x': np.linspace(0, 1, 3)}
         ),
         True,
         xr.DataArray(
-            [2000, 4000, 8000],
+            [2000, 4000, 8000] * units.gram,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'gram'}
+            coords={'x': np.linspace(0, 1, 3)}
         )
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         ),
         np.arange(4, dtype=np.float64),
         False,
@@ -1359,8 +1367,8 @@ def test_remove_nans():
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         ),
         [0] * units.kg,
         False,
@@ -1368,8 +1376,8 @@ def test_remove_nans():
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         ),
         [0] * units.cm,
         True,
@@ -1377,36 +1385,36 @@ def test_remove_nans():
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         ),
         xr.DataArray(
-            np.zeros(3),
+            np.zeros(3) * units.kilogram,
             dims=('x',),
             coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'kilogram', 'description': 'Alternative data'}
+            attrs={'description': 'Alternative data'}
         ),
         False,
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         )
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         ),
         xr.DataArray(
-            np.zeros(3),
+            np.zeros(3) * units.centimeter,
             dims=('x',),
             coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'centimeter', 'description': 'Alternative data'}
+            attrs={'description': 'Alternative data'}
         ),
         True,
         xr.DataArray(
-            np.linspace(0, 100, 5),
-            attrs={'units': 'centimeter', 'description': 'A range of values'}
+            np.linspace(0, 100, 5) * units.centimeter,
+            attrs={'description': 'A range of values'}
         )
     ),
 ])
@@ -1431,35 +1439,31 @@ def test_wrap_output_like_with_other_kwarg(test, other, match_unit, expected):
     (
         [2, 4, 8] * units.kg,
         xr.DataArray(
-            np.zeros(3),
+            np.zeros(3) * units.meter,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'meter'}
+            coords={'x': np.linspace(0, 1, 3)}
         )
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter'}
+            np.linspace(0, 1, 5) * units.meter
         ),
         [0] * units.kg
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter'}
+            np.linspace(0, 1, 5) * units.meter
         ),
         xr.DataArray(
-            np.zeros(3),
+            np.zeros(3) * units.kg,
             dims=('x',),
-            coords={'x': np.linspace(0, 1, 3)},
-            attrs={'units': 'kilogram'}
+            coords={'x': np.linspace(0, 1, 3)}
         )
     ),
     (
         xr.DataArray(
-            np.linspace(0, 1, 5),
-            attrs={'units': 'meter', 'description': 'A range of values'}
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
         ),
         np.arange(4, dtype=np.float64)
     )
@@ -1480,8 +1484,8 @@ def test_wrap_output_like_with_argument_kwarg():
     def double(a):
         return units.Quantity(2) * a.metpy.unit_array
 
-    test = xr.DataArray([1, 3, 5, 7], attrs={'units': 'm'})
-    expected = xr.DataArray([2, 6, 10, 14], attrs={'units': 'meter'})
+    test = xr.DataArray([1, 3, 5, 7] * units.m)
+    expected = xr.DataArray([2, 6, 10, 14] * units.m)
 
     xr.testing.assert_identical(double(test), expected)
 

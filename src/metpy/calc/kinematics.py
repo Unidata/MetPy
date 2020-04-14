@@ -9,7 +9,7 @@ from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..cbook import iterable
 from ..package_tools import Exporter
-from ..units import atleast_2d, check_units, concatenate, units
+from ..units import check_units, concatenate, units
 from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
@@ -260,7 +260,7 @@ def advection(scalar, wind, deltas):
 
     # Make them be at least 2D (handling the 1D case) so that we can do the
     # multiply and sum below
-    grad, wind = atleast_2d(grad, wind)
+    grad, wind = np.atleast_2d(grad, wind)
 
     return (-grad * wind).sum(axis=0)
 
