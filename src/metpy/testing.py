@@ -125,8 +125,6 @@ def check_and_drop_units(actual, desired):
     except DimensionalityError:
         raise AssertionError('Units are not compatible: {} should be {}'.format(
             actual.units, getattr(desired, 'units', 'dimensionless')))
-    except AttributeError:
-        pass
 
     if hasattr(actual, 'magnitude'):
         actual = actual.magnitude

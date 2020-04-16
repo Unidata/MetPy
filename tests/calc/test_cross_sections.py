@@ -148,7 +148,7 @@ def test_distances_from_cross_section_given_xy(test_cross_xy):
 def test_distances_from_cross_section_given_bad_coords(test_cross_xy):
     """Ensure an AttributeError is raised when the cross section lacks neeed coordinates."""
     with pytest.raises(AttributeError):
-        distances_from_cross_section(test_cross_xy['u_wind'].drop_vars('x'))
+        distances_from_cross_section(test_cross_xy['u_wind'].drop('x'))
 
 
 def test_latitude_from_cross_section_given_lat(test_cross_lonlat):

@@ -1035,9 +1035,10 @@ def data_4d():
     data = xr.open_dataset(get_test_data('irma_gfs_example.nc', False))
     data = data.metpy.parse_cf()
     data['Geopotential_height_isobaric'].attrs['units'] = 'm'
-    subset = data.drop_vars((
+    subset = data.drop((
         'LatLon_361X720-0p25S-180p00E', 'Vertical_velocity_pressure_isobaric', 'isobaric1',
         'Relative_humidity_isobaric', 'reftime'
+
     )).sel(
         latitude=[46., 44., 42., 40.],
         longitude=[262., 267., 272., 277.],
