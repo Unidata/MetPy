@@ -57,7 +57,7 @@ def test_var_multidim_full(test_ds):
 @pytest.fixture
 def test_var_multidim_no_xy(test_var_multidim_full):
     """Provide a variable with multidimensional lat/lon coords but without x/y coords."""
-    return test_var_multidim_full.drop_vars(['y', 'x'])
+    return test_var_multidim_full.drop(['y', 'x'])
 
 
 def test_projection(test_var):
@@ -474,7 +474,7 @@ def test_coordinates_identical_true(test_ds_generic):
 
 def test_coordinates_identical_false_number_of_coords(test_ds_generic):
     """Test coordinates identical method when false due to number of coordinates."""
-    other_ds = test_ds_generic.drop_vars('e')
+    other_ds = test_ds_generic.drop('e')
     assert not test_ds_generic['test'].metpy.coordinates_identical(other_ds['test'])
 
 
