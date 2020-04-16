@@ -485,7 +485,8 @@ def test_declarative_sfc_obs_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.1': 9.771, '2.1': 9.771}.get(MPL_VERSION, 0.))
 def test_declarative_sfc_obs_full():
     """Test making a full surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
