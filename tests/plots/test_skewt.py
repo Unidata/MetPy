@@ -204,7 +204,7 @@ def test_skewt_shade_cape_cin_no_limit(test_profile):
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig)
+        skew = SkewT(fig, aspect='auto')
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_cape(p, t, tp)
