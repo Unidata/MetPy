@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
+        Click :ref:`here <sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
 
 
 Dewpoint and Mixing Ratio
@@ -205,13 +207,13 @@ And print the corresponding dewpoint
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Dewpoint_and_Mixing_Ratio.py <Dewpoint_and_Mixing_Ratio.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Dewpoint_and_Mixing_Ratio.ipynb <Dewpoint_and_Mixing_Ratio.ipynb>`
 

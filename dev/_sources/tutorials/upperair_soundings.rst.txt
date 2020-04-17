@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_tutorials_upperair_soundings.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_tutorials_upperair_soundings.py:
+        Click :ref:`here <sphx_glr_download_tutorials_upperair_soundings.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_tutorials_upperair_soundings.py:
 
 
 ===========================
@@ -207,7 +209,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
     skew.plot(p, parcel_prof, 'k', linewidth=2)
 
     # Shade areas of CAPE and CIN
-    skew.shade_cin(p, T, parcel_prof, Td)
+    skew.shade_cin(p, T, parcel_prof)
     skew.shade_cape(p, T, parcel_prof)
 
     # Plot a zero degree isotherm
@@ -263,7 +265,7 @@ which are not drawn.
     skew.plot(p, parcel_prof, 'k', linewidth=2)
 
     # Shade areas of CAPE and CIN
-    skew.shade_cin(p, T, parcel_prof, Td)
+    skew.shade_cin(p, T, parcel_prof)
     skew.shade_cape(p, T, parcel_prof)
 
     # Plot a zero degree isotherm
@@ -297,7 +299,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.448 seconds)
+   **Total running time of the script:** ( 0 minutes  1.446 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:
@@ -310,13 +312,13 @@ which are not drawn.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: upperair_soundings.py <upperair_soundings.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: upperair_soundings.ipynb <upperair_soundings.ipynb>`
 

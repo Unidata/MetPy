@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Units Tutorial &mdash; MetPy 1.0.0rc1</title>
+  <title>Units Tutorial &mdash; MetPy 0.12.0</title>
   
 
   
@@ -34,16 +34,20 @@
   
 
   
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
   
 
   
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 1.0.0rc1" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/>
         <link rel="prev" title="Tutorials" href="index.html"/> 
@@ -81,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>1.0.0rc1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Units Tutorial</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#simple-calculation">Simple Calculation</a></li>
@@ -217,7 +221,7 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-unit-tutorial-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-unit-tutorial-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="units-tutorial">
 <span id="sphx-glr-tutorials-unit-tutorial-py"></span><h1>Units Tutorial<a class="headerlink" href="#units-tutorial" title="Permalink to this headline">¶</a></h1>
@@ -234,7 +238,7 @@ etc. In this tutorial we’ll show some examples of working with units and get
 you on your way to utilizing the computation functions in MetPy.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a>
 </pre></div>
 </div>
 <div class="section" id="simple-calculation">
@@ -244,8 +248,8 @@ one of our colleagues measures their side of the rectangle in imperial units
 and the other in metric units. No problem! First we need to attach units to
 our measurements. For many units the easiest way is by find the unit as an
 attribute of the unit registry:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="mf">10.4</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">inches</span>
-<span class="n">width</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">meters</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="mf">10.4</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">inches</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">meters</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -298,7 +302,7 @@ fail as an “Ambiguous operation with offset unit”).</p>
 <p>On the other hand, we can subtract two offset quantities and get a delta. A delta unit is
 pint’s way of representing a relative change in two offset units, indicating that this is
 not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees Celsius.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -306,7 +310,7 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 </pre></div>
 </div>
 <p>We can add a delta to an offset unit as well since it is a relative change.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">delta_degF</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">delta_degF</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -316,14 +320,14 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 <p>Absolute temperature scales like Kelvin and Rankine do not have an offset
 and therefore can be used in addition/subtraction without the need for a
 delta version of the unit.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>283 kelvin
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -335,8 +339,8 @@ delta version of the unit.</p>
 <h2>Compound Units<a class="headerlink" href="#compound-units" title="Permalink to this headline">¶</a></h2>
 <p>We can create compound units for things like speed by parsing a string of
 units. Abbreviations or full unit names are acceptable.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -362,10 +366,10 @@ ecosystem. The expected error will be
 </ul>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.006 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5efd259fad2625b979995a43ebbb8b81/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c93092487c8713b537d47b1774b1c063/unit_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">unit_tutorial.ipynb</span></code></a></p>
 </div>
 </div>
@@ -396,7 +400,7 @@ ecosystem. The expected error will be
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Mar 19, 2020 at 01:35:58.
+      Last updated on Apr 17, 2020 at 22:08:48.
 
     </p>
   </div>
@@ -433,7 +437,7 @@ ecosystem. The expected error will be
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.0rc1.post20+g235b248',
+            VERSION:'0.12.0.post12+g3f6e5f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

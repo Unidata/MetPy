@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Angle to Direction &mdash; MetPy 1.0.0rc1</title>
+  <title>Angle to Direction &mdash; MetPy 0.12.0</title>
   
 
   
@@ -34,16 +34,20 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Gradient" href="Gradient.html"/>
         <link rel="prev" title="Dewpoint and Mixing Ratio" href="Dewpoint_and_Mixing_Ratio.html"/> 
@@ -81,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>1.0.0rc1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,14 +125,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference/API Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#calculations">Calculations</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Parse_Angles.html">Parse angles</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Angle to Direction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Gradient.html">Gradient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Smoothing.html">Smoothing</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
@@ -136,7 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
@@ -220,7 +223,7 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-angle-to-direction-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-angle-to-direction-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="angle-to-direction">
 <span id="sphx-glr-examples-calculations-angle-to-direction-py"></span><h1>Angle to Direction<a class="headerlink" href="#angle-to-direction" title="Permalink to this headline">¶</a></h1>
@@ -228,11 +231,11 @@
 <p>The code below shows how to convert angles into directional text.
 It also  demonstrates the function’s flexibility.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a>
 </pre></div>
 </div>
 <p>Create a test value of an angle</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">angle_deg</span> <span class="o">=</span> <span class="mi">70</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degree&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">angle_deg</span> <span class="o">=</span> <span class="mi">70</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degree&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -242,8 +245,8 @@ It also  demonstrates the function’s flexibility.</p>
 </div>
 <p>Now throw that angle into the function to
 get the corresponding direction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="View documentation for builtins.str"><span class="n">dir_str</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="View documentation for metpy.calc.angle_to_direction"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="View documentation for builtins.str"><span class="n">dir_str</span></a><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -253,9 +256,9 @@ get the corresponding direction</p>
 <p>The function can also handle array of angles,
 rounding to the nearest direction, handling angles &gt; 360,
 and defaulting to degrees if no units are specified.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">angle_deg_list</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">361</span><span class="p">,</span> <span class="mi">719</span><span class="p">]</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="View documentation for metpy.calc.angle_to_direction"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">angle_deg_list</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">dir_str_list</span></a><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">361</span><span class="p">,</span> <span class="mi">719</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -263,20 +266,20 @@ and defaulting to degrees if no units are specified.</p>
 </pre></div>
 </div>
 <p>If you want the unabbrieviated version, input full=True</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">full_dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="View documentation for metpy.calc.angle_to_direction"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">angle_deg_list</span></a><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">full_dir_str_list</span></a><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full_dir_str_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full_dir_str_list</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;North&#39;, &#39;North&#39;, &#39;North&#39;]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.004 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.003 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-angle-to-direction-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d87dba94c16d6daf41f860da9254ad0c/Angle_to_Direction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Angle_to_Direction.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5e50ab42ac6ec7bf58df35e403f36520/Angle_to_Direction.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Angle_to_Direction.ipynb</span></code></a></p>
 </div>
 </div>
@@ -306,7 +309,7 @@ and defaulting to degrees if no units are specified.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Mar 19, 2020 at 01:35:58.
+      Last updated on Apr 17, 2020 at 22:08:48.
 
     </p>
   </div>
@@ -343,7 +346,7 @@ and defaulting to degrees if no units are specified.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post20+g235b248',
+            VERSION:'0.12.0.post12+g3f6e5f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

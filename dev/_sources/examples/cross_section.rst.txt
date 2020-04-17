@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_cross_section.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_cross_section.py:
+        Click :ref:`here <sphx_glr_download_examples_cross_section.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_cross_section.py:
 
 
 ======================
@@ -181,7 +183,7 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
                                                             cross['Specific_humidity'])
 
     theta = mpcalc.potential_temperature(pressure, temperature)
-    rh = mpcalc.relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity)
+    rh = mpcalc.relative_humidity_from_specific_humidity(specific_humidity, temperature, pressure)
 
     # These calculations return unit arrays, so put those back into DataArrays in our Dataset
     cross['Potential_temperature'] = xr.DataArray(theta,
@@ -334,7 +336,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.914 seconds)
+   **Total running time of the script:** ( 0 minutes  2.843 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
@@ -347,13 +349,13 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: cross_section.py <cross_section.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: cross_section.ipynb <cross_section.ipynb>`
 

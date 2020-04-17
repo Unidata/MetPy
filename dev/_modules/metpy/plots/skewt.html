@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.skewt &mdash; MetPy 1.0.0rc1</title>
+  <title>metpy.plots.skewt &mdash; MetPy 0.12.0</title>
   
 
   
@@ -34,16 +34,20 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 1.0.0rc1" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +83,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>1.0.0rc1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
@@ -203,6 +207,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">ExitStack</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">from</span> <span class="nn">matplotlib.axes</span> <span class="kn">import</span> <span class="n">Axes</span>
@@ -217,8 +222,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">._util</span> <span class="kn">import</span> <span class="n">colored_line</span>
-<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">lcl</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
 <span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="kn">import</span> <span class="n">_delete_masked_points</span>
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="kn">import</span> <span class="n">metpyDeprecation</span>
 <span class="kn">from</span> <span class="nn">..interpolate</span> <span class="kn">import</span> <span class="n">interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
@@ -532,7 +538,7 @@
         <span class="k">if</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span> <span class="s1">&#39;3.1&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
 
 <span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
@@ -540,7 +546,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        p : array_like</span>
 <span class="sd">            pressure values</span>
 <span class="sd">        t : array_like</span>
 <span class="sd">            temperature values, can also be used for things like dew point</span>
@@ -560,10 +566,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Skew-T logP plotting</span>
-        <span class="n">t</span><span class="p">,</span> <span class="n">pressure</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">t</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                    <span class="n">y_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot wind barbs.</span>
 
@@ -573,7 +579,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        p : array_like</span>
 <span class="sd">            pressure values</span>
 <span class="sd">        u : array_like</span>
 <span class="sd">            U (East-West) component of wind</span>
@@ -616,16 +622,16 @@
                                  <span class="s1">&#39;u and v wind components.&#39;</span><span class="p">)</span>
 
         <span class="c1"># Assemble array of x-locations in axes space</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">x</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">xloc</span><span class="p">)</span>
 
         <span class="c1"># Do barbs plot at this location</span>
         <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span>
                               <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;tick2&#39;</span><span class="p">),</span>
                               <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span>
                               <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;tick2&#39;</span><span class="p">),</span>
                               <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -636,7 +642,7 @@
         <span class="n">b</span><span class="o">.</span><span class="n">set_clip_box</span><span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">TransformedBbox</span><span class="p">(</span><span class="n">ax_bbox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">b</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_dry_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_dry_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dry_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewT.plot_dry_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_dry_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dry_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot dry adiabats.</span>
 
 <span class="sd">        Adds dry adiabats (lines of constant potential temperature) to the</span>
@@ -649,7 +655,7 @@
 <span class="sd">            Starting temperature values in Kelvin. If none are given, they will be</span>
 <span class="sd">            generated using the current temperature range at the bottom of</span>
 <span class="sd">            the plot.</span>
-<span class="sd">        pressure : array_like, optional</span>
+<span class="sd">        p : array_like, optional</span>
 <span class="sd">            Pressure values to be included in the dry adiabats. If not</span>
 <span class="sd">            specified, they will be linearly distributed across the current</span>
 <span class="sd">            plotted pressure range.</span>
@@ -678,12 +684,12 @@
             <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
 
         <span class="c1"># Get pressure levels based on ylims if necessary</span>
-        <span class="k">if</span> <span class="n">pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
 
         <span class="c1"># Assemble into data for plotting</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
-        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
 
         <span class="c1"># Add to plot</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
@@ -692,7 +698,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_moist_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewT.plot_moist_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot moist adiabats.</span>
 
 <span class="sd">        Adds saturated pseudo-adiabats (lines of constant equivalent potential</span>
@@ -706,7 +712,7 @@
 <span class="sd">            Starting temperature values in Kelvin. If none are given, they will be</span>
 <span class="sd">            generated using the current temperature range at the bottom of</span>
 <span class="sd">            the plot.</span>
-<span class="sd">        pressure : array_like, optional</span>
+<span class="sd">        p : array_like, optional</span>
 <span class="sd">            Pressure values to be included in the moist adiabats. If not</span>
 <span class="sd">            specified, they will be linearly distributed across the current</span>
 <span class="sd">            plotted pressure range.</span>
@@ -736,12 +742,12 @@
                                  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)))</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
 
         <span class="c1"># Get pressure levels based on ylims if necessary</span>
-        <span class="k">if</span> <span class="n">pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
 
         <span class="c1"># Assemble into data for plotting</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
-        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
 
         <span class="c1"># Add to plot</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
@@ -750,7 +756,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span></div>
 
-<div class="viewcode-block" id="SkewT.plot_mixing_lines"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewT.plot_mixing_lines"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot lines of constant mixing ratio.</span>
 
 <span class="sd">        Adds lines of constant mixing ratio (isohumes) to the</span>
@@ -759,10 +765,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        mixing_ratio : array_like, optional</span>
+<span class="sd">        w : array_like, optional</span>
 <span class="sd">            Unitless mixing ratio values to plot. If none are given, default</span>
 <span class="sd">            values are used.</span>
-<span class="sd">        pressure : array_like, optional</span>
+<span class="sd">        p : array_like, optional</span>
 <span class="sd">            Pressure values to be included in the isohumes. If not</span>
 <span class="sd">            specified, they will be linearly distributed across the current</span>
 <span class="sd">            plotted pressure range up to 600 mb.</span>
@@ -784,17 +790,17 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 
         <span class="c1"># Default mixing level values if necessary</span>
-        <span class="k">if</span> <span class="n">mixing_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">mixing_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
-                                     <span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="mf">0.032</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
+                          <span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="mf">0.032</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Set pressure range if necessary</span>
-        <span class="k">if</span> <span class="n">pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()))</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()))</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
 
         <span class="c1"># Assemble data for plotting</span>
-        <span class="n">td</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">))</span>
-        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">td</span><span class="p">]</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">td</span><span class="p">]</span>
 
         <span class="c1"># Add to plot</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
@@ -858,24 +864,20 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">,</span> <span class="o">**</span><span class="n">fill_args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.shade_cape"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cape">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective Available Potential Energy (CAPE).</span>
+<div class="viewcode-block" id="SkewT.shade_cape"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cape">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of CAPE.</span>
 
 <span class="sd">        Shades areas where the parcel is warmer than the environment (areas of positive</span>
 <span class="sd">        buoyancy.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        p : array_like</span>
 <span class="sd">            Pressure values</span>
 <span class="sd">        t : array_like</span>
 <span class="sd">            Temperature values</span>
-<span class="sd">        dewpoint : array_like</span>
-<span class="sd">            Dewpoint values</span>
 <span class="sd">        t_parcel : array_like</span>
 <span class="sd">            Parcel path temperature values</span>
-<span class="sd">        limit_shading : bool</span>
-<span class="sd">            Eliminate shading below the LCL or above the EL, default is True</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`</span>
 
@@ -889,25 +891,22 @@
 <span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewT.shade_cin"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cin">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">dewpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of Convective INhibition (CIN).</span>
+<div class="viewcode-block" id="SkewT.shade_cin"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cin">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of CIN.</span>
 
 <span class="sd">        Shades areas where the parcel is cooler than the environment (areas of negative</span>
-<span class="sd">        buoyancy. If `dewpoint` is passed in, negative area below the lifting condensation</span>
-<span class="sd">        level or above the equilibrium level is not shaded.</span>
+<span class="sd">        buoyancy.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        p : array_like</span>
 <span class="sd">            Pressure values</span>
 <span class="sd">        t : array_like</span>
 <span class="sd">            Temperature values</span>
 <span class="sd">        t_parcel : array_like</span>
 <span class="sd">            Parcel path temperature values</span>
-<span class="sd">        dewpoint : array_like</span>
-<span class="sd">            Dew point values, optional</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`</span>
 
@@ -921,14 +920,7 @@
 <span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">dewpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">lcl_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpoint</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">el_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">el</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">)</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">pressure</span> <span class="o">&gt;</span> <span class="n">el_p</span><span class="p">,</span> <span class="n">pressure</span> <span class="o">&lt;</span> <span class="n">lcl_p</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pressure</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">t_parcel</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;negative&#39;</span><span class="p">,</span>
-                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;negative&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Hodograph"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1110,7 +1102,17 @@
 <span class="sd">        --------</span>
 <span class="sd">        :meth:`Hodograph.plot`</span>
 
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        `plot_colormapped` previously accepted `bounds` as a parameter for coordinate values.</span>
+<span class="sd">        This has been deprecated in 0.11 in favor of `intervals`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;bounds&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">intervals</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bounds&#39;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The use of &quot;bounds&quot; as a parameter has been deprecated in &#39;</span>
+                          <span class="s1">&#39;favor of &quot;intervals&quot;,&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
+
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 
         <span class="c1"># Plotting a color segmented hodograph</span>
@@ -1174,7 +1176,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Mar 19, 2020 at 01:35:58.
+      Last updated on Apr 17, 2020 at 22:08:48.
 
     </p>
   </div>
@@ -1211,7 +1213,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post20+g235b248',
+            VERSION:'0.12.0.post12+g3f6e5f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

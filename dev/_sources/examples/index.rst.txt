@@ -256,26 +256,6 @@ Examples using various calculation functions from MetPy.
    :hidden:
 
    /examples/calculations/Gradient
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions.">
-
-.. only:: html
-
- .. figure:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
-
-     :ref:`sphx_glr_examples_calculations_Smoothing.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/calculations/Smoothing
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -716,13 +696,13 @@ Examples using MetPy's various specialty plotting routines.
     :class: sphx-glr-footer-gallery
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
     :download:`Download all examples in Python source code: examples_python.zip <//home/travis/build/Unidata/MetPy/docs/examples/examples_python.zip>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
     :download:`Download all examples in Jupyter notebooks: examples_jupyter.zip <//home/travis/build/Unidata/MetPy/docs/examples/examples_jupyter.zip>`
 

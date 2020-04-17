@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_formats_NEXRAD_Level_3_File.py:
+        Click :ref:`here <sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_formats_NEXRAD_Level_3_File.py:
 
 
 NEXRAD Level 3 File
@@ -76,7 +78,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.570 seconds)
+   **Total running time of the script:** ( 0 minutes  0.553 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py:
@@ -89,13 +91,13 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: NEXRAD_Level_3_File.py <NEXRAD_Level_3_File.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: NEXRAD_Level_3_File.ipynb <NEXRAD_Level_3_File.ipynb>`
 

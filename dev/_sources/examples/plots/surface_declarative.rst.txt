@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_plots_surface_declarative.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_plots_surface_declarative.py:
+        Click :ref:`here <sphx_glr_download_examples_plots_surface_declarative.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_plots_surface_declarative.py:
 
 
 =========================================
@@ -115,7 +117,7 @@ Georgia.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  23.323 seconds)
+   **Total running time of the script:** ( 0 minutes  23.205 seconds)
 
 
 .. _sphx_glr_download_examples_plots_surface_declarative.py:
@@ -128,13 +130,13 @@ Georgia.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: surface_declarative.py <surface_declarative.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: surface_declarative.ipynb <surface_declarative.ipynb>`
 

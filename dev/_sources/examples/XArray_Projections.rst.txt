@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_XArray_Projections.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_XArray_Projections.py:
+        Click :ref:`here <sphx_glr_download_examples_XArray_Projections.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_XArray_Projections.py:
 
 
 XArray Projection Handling
@@ -53,7 +55,7 @@ data on a map using CartoPy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.213 seconds)
+   **Total running time of the script:** ( 0 minutes  8.201 seconds)
 
 
 .. _sphx_glr_download_examples_XArray_Projections.py:
@@ -66,13 +68,13 @@ data on a map using CartoPy.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: XArray_Projections.py <XArray_Projections.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: XArray_Projections.ipynb <XArray_Projections.ipynb>`
 

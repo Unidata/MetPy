@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py:
+        Click :ref:`here <sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py:
 
 
 Find Natural Neighbors Verification
@@ -118,7 +120,7 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.609 seconds)
+   **Total running time of the script:** ( 0 minutes  0.602 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:
@@ -131,13 +133,13 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Find_Natural_Neighbors_Verification.py <Find_Natural_Neighbors_Verification.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Find_Natural_Neighbors_Verification.ipynb <Find_Natural_Neighbors_Verification.ipynb>`
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>MapPanel &mdash; MetPy 1.0.0rc1</title>
+  <title>MapPanel &mdash; MetPy 0.12.0</title>
   
 
   
@@ -34,16 +34,20 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="PanelContainer" href="metpy.plots.PanelContainer.html"/>
         <link rel="prev" title="ImagePlot" href="metpy.plots.ImagePlot.html"/> 
@@ -81,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>1.0.0rc1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -265,7 +269,7 @@ projection, graphics area, and title.</p>
 <td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers" title="metpy.plots.MapPanel.layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers</span></code></a></p></td>
-<td><p>A list of strings for a pre-defined feature layer or a Cartopy Feature object.</p></td>
+<td><p>A string for a pre-defined feature layer or a Cartopy Feature object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layout" title="metpy.plots.MapPanel.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
 <td><p>A tuple that contains the description (nrows, ncols, index) of the panel position; default value is (1, 1, 1).</p></td>
@@ -368,7 +372,7 @@ corner.</p>
 <p>This trait can also be set with a string value associated with the named geographic regions
 within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
 For a CONUS region, the following strings can be used: ‘us’, ‘spcus’, ‘ncus’, and ‘afus’.
-For regional plots, US postal state abbreviations can be used.</p>
+For regional plots, US state postal codes can be used.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -390,11 +394,11 @@ prior to entering the block.</p>
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.layers">
 <code class="sig-name descname">layers</code><a class="headerlink" href="#metpy.plots.MapPanel.layers" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of strings for a pre-defined feature layer or a Cartopy Feature object.</p>
+<dd><p>A string for a pre-defined feature layer or a Cartopy Feature object.</p>
 <p>Like the projection, there are a couple of pre-defined feature layers that can be called
 using a short name. The pre-defined layers are: ‘coastline’, ‘states’, ‘borders’, ‘lakes’,
-‘land’, ‘ocean’, ‘rivers’, ‘usstates’, and ‘uscounties’. Additionally, this can accept
-Cartopy Feature objects.</p>
+‘land’, ‘ocean’, and ‘rivers’. Additionally, this trait can be set using a Cartopy Feature
+object.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -709,7 +713,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Mar 19, 2020 at 01:35:58.
+      Last updated on Apr 17, 2020 at 22:08:48.
 
     </p>
   </div>
@@ -746,7 +750,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post20+g235b248',
+            VERSION:'0.12.0.post12+g3f6e5f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

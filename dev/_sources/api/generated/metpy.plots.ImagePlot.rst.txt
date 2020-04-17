@@ -22,7 +22,6 @@ ImagePlot
       ~ImagePlot.level
       ~ImagePlot.name
       ~ImagePlot.parent
-      ~ImagePlot.plot_units
       ~ImagePlot.plotdata
       ~ImagePlot.time
 
@@ -79,7 +78,6 @@ ImagePlot
    .. autoattribute:: level
    .. autoattribute:: name
    .. autoattribute:: parent
-   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: time
 

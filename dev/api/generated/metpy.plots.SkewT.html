@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SkewT &mdash; MetPy 1.0.0rc1</title>
+  <title>SkewT &mdash; MetPy 0.12.0</title>
   
 
   
@@ -34,16 +34,20 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="StationPlot" href="metpy.plots.StationPlot.html"/>
         <link rel="prev" title="Plots2D" href="metpy.plots.Plots2D.html"/> 
@@ -81,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>1.0.0rc1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -292,29 +296,29 @@ the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.__init__" title="metpy.plots.SkewT.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
 <td><p>Create SkewT - logP plots.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(pressure, t, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(p, t, *args, **kwargs)</p></td>
 <td><p>Plot data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_barbs" title="metpy.plots.SkewT.plot_barbs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_barbs</span></code></a>(pressure, u, v[, c, xloc, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_barbs" title="metpy.plots.SkewT.plot_barbs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_barbs</span></code></a>(p, u, v[, c, xloc, …])</p></td>
 <td><p>Plot wind barbs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_dry_adiabats" title="metpy.plots.SkewT.plot_dry_adiabats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_dry_adiabats</span></code></a>([t0, pressure])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_dry_adiabats" title="metpy.plots.SkewT.plot_dry_adiabats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_dry_adiabats</span></code></a>([t0, p])</p></td>
 <td><p>Plot dry adiabats.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_mixing_lines" title="metpy.plots.SkewT.plot_mixing_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_mixing_lines</span></code></a>([mixing_ratio, pressure])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_mixing_lines" title="metpy.plots.SkewT.plot_mixing_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_mixing_lines</span></code></a>([w, p])</p></td>
 <td><p>Plot lines of constant mixing ratio.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_moist_adiabats" title="metpy.plots.SkewT.plot_moist_adiabats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_moist_adiabats</span></code></a>([t0, pressure])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot_moist_adiabats" title="metpy.plots.SkewT.plot_moist_adiabats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_moist_adiabats</span></code></a>([t0, p])</p></td>
 <td><p>Plot moist adiabats.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.shade_area" title="metpy.plots.SkewT.shade_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shade_area</span></code></a>(y, x1[, x2, which])</p></td>
 <td><p>Shade area between two curves.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.shade_cape" title="metpy.plots.SkewT.shade_cape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shade_cape</span></code></a>(pressure, t, t_parcel, **kwargs)</p></td>
-<td><p>Shade areas of Convective Available Potential Energy (CAPE).</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.shade_cape" title="metpy.plots.SkewT.shade_cape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shade_cape</span></code></a>(p, t, t_parcel, **kwargs)</p></td>
+<td><p>Shade areas of CAPE.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.shade_cin" title="metpy.plots.SkewT.shade_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shade_cin</span></code></a>(pressure, t, t_parcel[, dewpoint])</p></td>
-<td><p>Shade areas of Convective INhibition (CIN).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.shade_cin" title="metpy.plots.SkewT.shade_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shade_cin</span></code></a>(p, t, t_parcel, **kwargs)</p></td>
+<td><p>Shade areas of CIN.</p></td>
 </tr>
 </tbody>
 </table>
@@ -348,14 +352,14 @@ the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">t</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">t</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot data.</p>
 <p>Simple wrapper around plot so that pressure is the first (independent)
 input. This is essentially a wrapper around <a class="reference internal" href="#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em>array_like</em>) – pressure values</p></li>
+<li><p><strong>p</strong> (<em>array_like</em>) – pressure values</p></li>
 <li><p><strong>t</strong> (<em>array_like</em>) – temperature values, can also be used for things like dew point</p></li>
 <li><p><strong>args</strong> – Other positional arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code></a></p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code></a></p></li>
@@ -373,7 +377,7 @@ input. This is essentially a wrapper around <a class="reference internal" href="
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.plot_barbs">
-<code class="sig-name descname">plot_barbs</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">c=None</em>, <em class="sig-param">xloc=1.0</em>, <em class="sig-param">x_clip_radius=0.1</em>, <em class="sig-param">y_clip_radius=0.08</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_barbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_barbs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_barbs</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">c=None</em>, <em class="sig-param">xloc=1.0</em>, <em class="sig-param">x_clip_radius=0.1</em>, <em class="sig-param">y_clip_radius=0.08</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_barbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_barbs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot wind barbs.</p>
 <p>Adds wind barbs to the skew-T plot. This is a wrapper around the
 <em class="xref py py-obj">barbs</em> command that adds to appropriate transform to place the
@@ -381,7 +385,7 @@ barbs in a vertical line, located as a function of pressure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em>array_like</em>) – pressure values</p></li>
+<li><p><strong>p</strong> (<em>array_like</em>) – pressure values</p></li>
 <li><p><strong>u</strong> (<em>array_like</em>) – U (East-West) component of wind</p></li>
 <li><p><strong>v</strong> (<em>array_like</em>) – V (North-South) component of wind</p></li>
 <li><p><strong>c</strong> – An optional array used to map colors to the barbs</p></li>
@@ -407,7 +411,7 @@ before clipping wind barbs in the y-direction. Defaults to 0.08.</p></li>
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.plot_dry_adiabats">
-<code class="sig-name descname">plot_dry_adiabats</code><span class="sig-paren">(</span><em class="sig-param">t0=None</em>, <em class="sig-param">pressure=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_dry_adiabats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_dry_adiabats" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_dry_adiabats</code><span class="sig-paren">(</span><em class="sig-param">t0=None</em>, <em class="sig-param">p=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_dry_adiabats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_dry_adiabats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot dry adiabats.</p>
 <p>Adds dry adiabats (lines of constant potential temperature) to the
 plot. The default style of these lines is dashed red lines with an alpha
@@ -418,7 +422,7 @@ value of 0.5. These can be overridden using keyword arguments.</p>
 <li><p><strong>t0</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Starting temperature values in Kelvin. If none are given, they will be
 generated using the current temperature range at the bottom of
 the plot.</p></li>
-<li><p><strong>pressure</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Pressure values to be included in the dry adiabats. If not
+<li><p><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Pressure values to be included in the dry adiabats. If not
 specified, they will be linearly distributed across the current
 plotted pressure range.</p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v3.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p></li>
@@ -436,7 +440,7 @@ plotted pressure range.</p></li>
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.plot_mixing_lines">
-<code class="sig-name descname">plot_mixing_lines</code><span class="sig-paren">(</span><em class="sig-param">mixing_ratio=None</em>, <em class="sig-param">pressure=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_mixing_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_mixing_lines" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_mixing_lines</code><span class="sig-paren">(</span><em class="sig-param">w=None</em>, <em class="sig-param">p=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_mixing_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_mixing_lines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot lines of constant mixing ratio.</p>
 <p>Adds lines of constant mixing ratio (isohumes) to the
 plot. The default style of these lines is dashed green lines with an
@@ -444,9 +448,9 @@ alpha value of 0.8. These can be overridden using keyword arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mixing_ratio</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Unitless mixing ratio values to plot. If none are given, default
+<li><p><strong>w</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Unitless mixing ratio values to plot. If none are given, default
 values are used.</p></li>
-<li><p><strong>pressure</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Pressure values to be included in the isohumes. If not
+<li><p><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Pressure values to be included in the isohumes. If not
 specified, they will be linearly distributed across the current
 plotted pressure range up to 600 mb.</p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v3.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p></li>
@@ -464,7 +468,7 @@ plotted pressure range up to 600 mb.</p></li>
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.plot_moist_adiabats">
-<code class="sig-name descname">plot_moist_adiabats</code><span class="sig-paren">(</span><em class="sig-param">t0=None</em>, <em class="sig-param">pressure=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_moist_adiabats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_moist_adiabats" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_moist_adiabats</code><span class="sig-paren">(</span><em class="sig-param">t0=None</em>, <em class="sig-param">p=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_moist_adiabats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_moist_adiabats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot moist adiabats.</p>
 <p>Adds saturated pseudo-adiabats (lines of constant equivalent potential
 temperature) to the plot. The default style of these lines is dashed
@@ -476,7 +480,7 @@ keyword arguments.</p>
 <li><p><strong>t0</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Starting temperature values in Kelvin. If none are given, they will be
 generated using the current temperature range at the bottom of
 the plot.</p></li>
-<li><p><strong>pressure</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Pressure values to be included in the moist adiabats. If not
+<li><p><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Pressure values to be included in the moist adiabats. If not
 specified, they will be linearly distributed across the current
 plotted pressure range.</p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v3.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p></li>
@@ -521,18 +525,16 @@ Will be overridden by where.</p></li>
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.shade_cape">
-<code class="sig-name descname">shade_cape</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">t</em>, <em class="sig-param">t_parcel</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_cape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_cape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shade areas of Convective Available Potential Energy (CAPE).</p>
+<code class="sig-name descname">shade_cape</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">t</em>, <em class="sig-param">t_parcel</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_cape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_cape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shade areas of CAPE.</p>
 <p>Shades areas where the parcel is warmer than the environment (areas of positive
 buoyancy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em>array_like</em>) – Pressure values</p></li>
+<li><p><strong>p</strong> (<em>array_like</em>) – Pressure values</p></li>
 <li><p><strong>t</strong> (<em>array_like</em>) – Temperature values</p></li>
-<li><p><strong>dewpoint</strong> (<em>array_like</em>) – Dewpoint values</p></li>
 <li><p><strong>t_parcel</strong> (<em>array_like</em>) – Parcel path temperature values</p></li>
-<li><p><strong>limit_shading</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Eliminate shading below the LCL or above the EL, default is True</p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v3.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></p></li>
 </ul>
 </dd>
@@ -548,18 +550,16 @@ buoyancy.</p>
 
 <dl class="method">
 <dt id="metpy.plots.SkewT.shade_cin">
-<code class="sig-name descname">shade_cin</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">t</em>, <em class="sig-param">t_parcel</em>, <em class="sig-param">dewpoint=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_cin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shade areas of Convective INhibition (CIN).</p>
+<code class="sig-name descname">shade_cin</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">t</em>, <em class="sig-param">t_parcel</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_cin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shade areas of CIN.</p>
 <p>Shades areas where the parcel is cooler than the environment (areas of negative
-buoyancy. If <em class="xref py py-obj">dewpoint</em> is passed in, negative area below the lifting condensation
-level or above the equilibrium level is not shaded.</p>
+buoyancy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em>array_like</em>) – Pressure values</p></li>
+<li><p><strong>p</strong> (<em>array_like</em>) – Pressure values</p></li>
 <li><p><strong>t</strong> (<em>array_like</em>) – Temperature values</p></li>
 <li><p><strong>t_parcel</strong> (<em>array_like</em>) – Parcel path temperature values</p></li>
-<li><p><strong>dewpoint</strong> (<em>array_like</em>) – Dew point values, optional</p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v3.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></p></li>
 </ul>
 </dd>
@@ -623,7 +623,7 @@ level or above the equilibrium level is not shaded.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Mar 19, 2020 at 01:35:58.
+      Last updated on Apr 17, 2020 at 22:08:48.
 
     </p>
   </div>
@@ -660,7 +660,7 @@ level or above the equilibrium level is not shaded.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post20+g235b248',
+            VERSION:'0.12.0.post12+g3f6e5f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

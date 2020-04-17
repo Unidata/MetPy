@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_gridding_Natural_Neighbor_Verification.py:
+        Click :ref:`here <sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_gridding_Natural_Neighbor_Verification.py:
 
 
 Natural Neighbor Verification
@@ -188,7 +190,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fe96fbf4390>
+    <matplotlib.legend.Legend object at 0x7efd12a1aef0>
 
 
 
@@ -458,7 +460,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.846 seconds)
+   **Total running time of the script:** ( 0 minutes  0.833 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:
@@ -471,13 +473,13 @@ the above visual example to the 3rd decimal place.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Natural_Neighbor_Verification.py <Natural_Neighbor_Verification.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Natural_Neighbor_Verification.ipynb <Natural_Neighbor_Verification.ipynb>`
 

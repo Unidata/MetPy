@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>laplacian &mdash; MetPy 1.0.0rc1</title>
+  <title>laplacian &mdash; MetPy 0.12.0</title>
   
 
   
@@ -34,16 +34,20 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="lat_lon_grid_deltas" href="metpy.calc.lat_lon_grid_deltas.html"/>
         <link rel="prev" title="grid_deltas_from_dataarray" href="metpy.calc.grid_deltas_from_dataarray.html"/> 
@@ -81,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>1.0.0rc1</option>
+                      <option value=''>0.12.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -149,8 +153,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#smoothing">Smoothing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
@@ -245,11 +249,11 @@
 <dd><p>Calculate the laplacian of a grid of values.</p>
 <p>Works for both regularly-spaced data, and grids with varying spacing.</p>
 <p>Either <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with  attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> are given, <em class="xref py py-obj">f</em> will be converted to a
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with  attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> are given, <em class="xref py py-obj">f</em> will be converted to a
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> and the gradient returned as a tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, otherwise, if
 neither <em class="xref py py-obj">coordinates</em> nor <em class="xref py py-obj">deltas</em> are given, the attached coordinate information belonging
-to <em class="xref py py-obj">axis</em> will be used and the gradient will be returned as a tuple of <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+to <em class="xref py py-obj">axis</em> will be used and the gradient will be returned as a tuple of <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -257,13 +261,11 @@ to <em class="xref py py-obj">axis</em> will be used and the gradient will be re
 <li><p><strong>coordinates</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em></p></li>
 <li><p><strong>deltas</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Spacing between the grid points in <em class="xref py py-obj">f</em>. There should be one item less than the size
 of <em class="xref py py-obj">f</em> along the applicable axis.</p></li>
-<li><p><strong>axes</strong> (<em>sequence</em><em>, </em><em>optional</em>) – Sequence of strings (if <em class="xref py py-obj">f</em> is a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> and implicit conversion to
+<li><p><strong>axes</strong> (<em>sequence</em><em>, </em><em>optional</em>) – Sequence of strings (if <em class="xref py py-obj">f</em> is a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> and implicit conversion to
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> is not used) or integers that specify the array axes along which to
 take the derivatives. Defaults to all axes of <em class="xref py py-obj">f</em>. If given, and used with
 <em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em>, its length must be less than or equal to that of the
-<em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> given. In general, each axis can be an axis number
-(integer), dimension coordinate name (string) or a standard axis type (string). The
-current standard axis types are ‘time’, ‘vertical’, ‘y’, and ‘x’.</p></li>
+<em class="xref py py-obj">coordinates</em> or <em class="xref py py-obj">deltas</em> given.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -304,7 +306,7 @@ current standard axis types are ‘time’, ‘vertical’, ‘y’, and ‘x’
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Mar 19, 2020 at 01:35:58.
+      Last updated on Apr 17, 2020 at 22:08:48.
 
     </p>
   </div>
@@ -341,7 +343,7 @@ current standard axis types are ‘time’, ‘vertical’, ‘y’, and ‘x’
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post20+g235b248',
+            VERSION:'0.12.0.post12+g3f6e5f8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

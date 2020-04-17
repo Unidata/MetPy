@@ -112,7 +112,7 @@ References
 
 .. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
            Division, NWS Southern Region Headquarters, 1990.
-           `SR90-23 <_static/rothfusz-1990-heat-index-equation.pdf>`_, 2 pp.
+           `SR90-23 <https://www.weather.gov/media/ffc/ta_htindx.PDF>`_, 2 pp.
 
 .. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
            Academic Press, 627 pp.

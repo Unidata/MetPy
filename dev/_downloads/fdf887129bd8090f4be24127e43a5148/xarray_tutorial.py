@@ -196,12 +196,6 @@ print(v_geo)
 #     - ``normal_component``
 #     - ``tangential_component``
 #     - ``absolute_momentum``
-# - Smoothing functions
-#     - ``smooth_gaussian``
-#     - ``smooth_n_point``
-#     - ``smooth_window``
-#     - ``smooth_rectangular``
-#     - ``smooth_circular``
 #
 # More details can be found by looking at the documentation for the specific function of
 # interest.
