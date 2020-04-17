@@ -16,7 +16,7 @@ from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare(tolerance=.02, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=.0202, remove_text=True, style='default')
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -47,7 +47,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=.027 if matplotlib.__version__ < '3.2' else 34.4,
+@pytest.mark.mpl_image_compare(tolerance=.0272 if matplotlib.__version__ < '3.2' else 34.4,
                                remove_text=True, style='default')
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
@@ -66,6 +66,9 @@ def test_skewt_api_units():
         skew.plot_moist_adiabats()
         skew.plot_mixing_lines()
 
+        # This works around the fact that newer pint versions default to degrees_Celsius
+        skew.ax.set_xlabel('degC')
+
     return fig
 
 
@@ -82,7 +85,7 @@ def test_skewt_default_aspect_empty():
     return fig
 
 
-@pytest.mark.skipif(matplotlib.__version__ < '3' or matplotlib.__version__ >= '3.2',
+@pytest.mark.skipif(matplotlib.__version__ < '3.2',
                     reason='Matplotlib versions generate different image sizes.')
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
                                savefig_kwargs={'bbox_inches': 'tight'})
