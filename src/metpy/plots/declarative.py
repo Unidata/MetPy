@@ -500,7 +500,7 @@ class Panel(HasTraits):
 
 @exporter.export
 class PanelContainer(HasTraits):
-    """Collects panels and set complete figure related settings (e.g., figsize)."""
+    """Collects panels and set complete figure related settings (e.g., size)."""
 
     size = Union([Tuple(Int(), Int()), Instance(type(None))], default_value=None)
     size.__doc__ = """This trait takes a tuple of (width, height) to set the size of the
@@ -616,7 +616,7 @@ class MapPanel(Panel):
     This trait can also be set with a string value associated with the named geographic regions
     within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
     For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
-    For regional plots, US state postal codes can be used.
+    For regional plots, US postal state abbreviations can be used.
     """
 
     projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
@@ -634,8 +634,8 @@ class MapPanel(Panel):
 
     Like the projection, there are a couple of pre-defined feature layers that can be called
     using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
-    'land', 'ocean', and 'rivers'. Additionally, this trait can be set using a Cartopy Feature
-    object.
+    'land', 'ocean', 'rivers', 'usstates', and 'uscounties'. Additionally, this trait can be
+    set using a Cartopy Feature object.
     """
 
     title = Unicode()
@@ -730,15 +730,6 @@ class MapPanel(Panel):
         # Only need to run if we've actually changed.
         if self._need_redraw:
 
-            # Draw all of the plots.
-            for p in self.plots:
-                with p.hold_trait_notifications():
-                    p.draw()
-
-            # Add all of the maps
-            for feat in self._layer_features:
-                self.ax.add_feature(feat)
-
             # Set the extent as appropriate based on the area. One special case for 'global'
             if self.area == 'global':
                 self.ax.set_global()
@@ -750,6 +741,15 @@ class MapPanel(Panel):
                 else:
                     area = self.area
                 self.ax.set_extent(area, DEFAULT_LAT_LON)
+
+            # Draw all of the plots.
+            for p in self.plots:
+                with p.hold_trait_notifications():
+                    p.draw()
+
+            # Add all of the maps
+            for feat in self._layer_features:
+                self.ax.add_feature(feat)
 
             # Use the set title or generate one.
             title = self.title or ',\n'.join(plot.name for plot in self.plots)
@@ -989,10 +989,11 @@ class ColorfillTraits(HasTraits):
     """
 
     colorbar = Unicode(default_value=None, allow_none=True)
-    colorbar.__doc__ = """A boolean (True/False) on whether to add a colorbar to the plot.
+    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the plot.
 
-    To add a colorbar associated with the plot data set the trait to ``True``, the default
-    values is ``False``.
+    To add a colorbar associated with the plot, set the trait to ``horizontal`` or
+    ``vertical``,specifying the orientation of the produced colorbar. The default value is
+    ``None``.
     """
 
 
@@ -1088,7 +1089,7 @@ class ContourPlot(PlotScalar, ContourTraits):
                                              linestyles=self.linestyle,
                                              transform=imdata.metpy.cartopy_crs)
         if self.clabels:
-            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=2,
+            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True)
 
 
