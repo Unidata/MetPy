@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -219,7 +223,7 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-parse-angles-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-parse-angles-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="parse-angles">
 <span id="sphx-glr-examples-calculations-parse-angles-py"></span><h1>Parse angles<a class="headerlink" href="#parse-angles" title="Permalink to this headline">¶</a></h1>
@@ -231,8 +235,8 @@ in handling various string formatting.</p>
 </pre></div>
 </div>
 <p>Create a test value of a directional text</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="View documentation for builtins.str"><span class="n">dir_str</span></a> <span class="o">=</span> <span class="s1">&#39;SOUTH SOUTH EAST&#39;</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="View documentation for builtins.str"><span class="n">dir_str</span></a><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str</span></a> <span class="o">=</span> <span class="s1">&#39;SOUTH SOUTH EAST&#39;</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -241,7 +245,7 @@ in handling various string formatting.</p>
 </div>
 <p>Now throw that string into the function to calculate
 the corresponding angle</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">angle_deg</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.parse_angle.html#metpy.calc.parse_angle" title="View documentation for metpy.calc.parse_angle"><span class="n">mpcalc</span><span class="o">.</span><span class="n">parse_angle</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="View documentation for builtins.str"><span class="n">dir_str</span></a><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">angle_deg</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.parse_angle.html#metpy.calc.parse_angle" title="metpy.calc.parse_angle" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">parse_angle</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str</span></a><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -251,9 +255,9 @@ the corresponding angle</p>
 </div>
 <p>The function can also handle arrays of string
 in many different abbrieviations and capitalizations</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">dir_str_list</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ne&#39;</span><span class="p">,</span> <span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTHEAST&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTH_EAST&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTH east&#39;</span><span class="p">]</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">angle_deg_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.parse_angle.html#metpy.calc.parse_angle" title="View documentation for metpy.calc.parse_angle"><span class="n">mpcalc</span><span class="o">.</span><span class="n">parse_angle</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">dir_str_list</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">angle_deg_list</span></a><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ne&#39;</span><span class="p">,</span> <span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTHEAST&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTH_EAST&#39;</span><span class="p">,</span> <span class="s1">&#39;NORTH east&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.parse_angle.html#metpy.calc.parse_angle" title="metpy.calc.parse_angle" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">parse_angle</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dir_str_list</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">angle_deg_list</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -262,10 +266,10 @@ in many different abbrieviations and capitalizations</p>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.002 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-parse-angles-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/54195876c9d3fd59aca24be9404bedbc/Parse_Angles.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Parse_Angles.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/591c50ddf519b58966833b985f7ca28b/Parse_Angles.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Parse_Angles.ipynb</span></code></a></p>
 </div>
 </div>
@@ -295,7 +299,7 @@ in many different abbrieviations and capitalizations</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -332,7 +336,7 @@ in many different abbrieviations and capitalizations</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

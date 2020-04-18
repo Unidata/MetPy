@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -288,6 +292,14 @@ be removed in v1.0.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units">
+<code class="sig-name descname">convert_coordinate_units</code><span class="sig-paren">(</span><em class="sig-param">coord</em>, <em class="sig-param">units</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_coordinate_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new DataArray with coordinate converted to different units.</p>
+<p class="rubric">Notes</p>
+<p>Backported from MetPy 1.0.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.convert_units">
 <code class="sig-name descname">convert_units</code><span class="sig-paren">(</span><em class="sig-param">units</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the data values to different units in-place.</p>
@@ -372,13 +384,13 @@ name (string) or a standard axis type (string).</p>
 <dl class="method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.unit_array">
 <em class="property">property </em><code class="sig-name descname">unit_array</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.unit_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the data values of this DataArray as a <em class="xref py py-obj">pint.Quantity</em>.</p>
+<dd><p>Return the data values of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.units">
 <em class="property">property </em><code class="sig-name descname">units</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the units of this DataArray as a <em class="xref py py-obj">pint.Quantity</em>.</p>
+<dd><p>Return the units of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -441,7 +453,7 @@ if you wish to override MetPy’s automatic parsing of some axis type(s).</p></l
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Parsed DataArray (if varname is a string) or Dataset</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Parsed DataArray (if varname is a string) or Dataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -480,7 +492,7 @@ if you wish to override MetPy’s automatic parsing of some axis type(s).</p></l
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -517,7 +529,7 @@ if you wish to override MetPy’s automatic parsing of some axis type(s).</p></l
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

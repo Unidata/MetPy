@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -259,12 +263,12 @@ to saturation before it can freely rise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature at the levels given by <em class="xref py py-obj">pressure</em></p></li>
-<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The dewpoint at the levels given by <em class="xref py py-obj">pressure</em></p></li>
-<li><p><strong>parcel_temperature_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The parcel temperature profile from which to calculate the LFC. Defaults to the
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The temperature at the levels given by <em class="xref py py-obj">pressure</em></p></li>
+<li><p><strong>dewpt</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The dewpoint at the levels given by <em class="xref py py-obj">pressure</em></p></li>
+<li><p><strong>parcel_temperature_profile</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The parcel temperature profile from which to calculate the LFC. Defaults to the
 surface parcel profile.</p></li>
-<li><p><strong>dewpt_start</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
+<li><p><strong>dewpt_start</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
 dewpoint.</p></li>
 <li><p><strong>which</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Pick which LFC to return. Options are ‘top’, ‘bottom’, ‘wide’, ‘most_cape’, and ‘all’.
 ‘top’ returns the lowest-pressure LFC, default.
@@ -275,8 +279,8 @@ dewpoint.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em class="xref py py-obj">pint.Quantity</em> – The LFC pressure, or array of same if which=’all’</p></li>
-<li><p><em class="xref py py-obj">pint.Quantity</em> – The LFC temperature, or array of same if which=’all’</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The LFC pressure, or array of same if which=’all’</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The LFC temperature, or array of same if which=’all’</p></li>
 </ul>
 </p>
 </dd>
@@ -312,7 +316,7 @@ dewpoint.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -349,7 +353,7 @@ dewpoint.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

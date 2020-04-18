@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -2661,7 +2665,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="o">=</span> <span class="n">_ParameterKind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;value </span><span class="si">{kind!r}</span><span class="s1"> is not a valid Parameter.kind&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;value </span><span class="si">{</span><span class="n">kind</span><span class="si">!r}</span><span class="s1"> is not a valid Parameter.kind&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_empty</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_VAR_POSITIONAL</span><span class="p">,</span> <span class="n">_VAR_KEYWORD</span><span class="p">):</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> parameters cannot have default values&#39;</span>
@@ -3345,7 +3349,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -3382,7 +3386,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

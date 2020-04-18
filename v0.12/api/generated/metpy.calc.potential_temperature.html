@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -251,12 +255,12 @@ given <em class="xref py py-obj">pressure</em> and <em class="xref py py-obj">te
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – total atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – air temperature</p></li>
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – total atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – air temperature</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The potential temperature corresponding to the temperature and
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The potential temperature corresponding to the temperature and
 pressure.</p>
 </dd>
 </dl>
@@ -271,7 +275,7 @@ pressure.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">potential_temperature</span><span class="p">(</span><span class="mf">800.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="mf">273.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
-<span class="go">&lt;Quantity(290.96653180346203, &#39;kelvin&#39;)&gt;</span>
+<span class="go">&lt;Quantity(290.9665329591884, &#39;kelvin&#39;)&gt;</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -308,7 +312,7 @@ pressure.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -345,7 +349,7 @@ pressure.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

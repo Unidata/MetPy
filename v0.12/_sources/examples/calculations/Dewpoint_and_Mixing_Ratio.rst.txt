@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
+        Click :ref:`here <sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
 
 
 Dewpoint and Mixing Ratio
@@ -117,7 +119,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
  .. code-block:: none
 
-    13.854135353732214 degC
+    13.854135353732214 degree_Celsius
 
 
 
@@ -139,7 +141,7 @@ Which can of course be converted to Fahrenheit
 
  .. code-block:: none
 
-    56.937444036717935 degF
+    56.9374436367179 degree_Fahrenheit
 
 
 
@@ -184,7 +186,7 @@ And print the corresponding dewpoint
 
  .. code-block:: none
 
-    11.376545231347285 degC 52.47778181642507 degF
+    11.376545231347285 degree_Celsius 52.47778141642504 degree_Fahrenheit
 
 
 
@@ -192,7 +194,7 @@ And print the corresponding dewpoint
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.004 seconds)
+   **Total running time of the script:** ( 0 minutes  0.005 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
@@ -205,13 +207,13 @@ And print the corresponding dewpoint
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Dewpoint_and_Mixing_Ratio.py <Dewpoint_and_Mixing_Ratio.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Dewpoint_and_Mixing_Ratio.ipynb <Dewpoint_and_Mixing_Ratio.ipynb>`
 

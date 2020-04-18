@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_plots_Combined_plotting.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_plots_Combined_plotting.py:
+        Click :ref:`here <sphx_glr_download_examples_plots_Combined_plotting.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_plots_Combined_plotting.py:
 
 
 Combined Plotting
@@ -110,7 +112,7 @@ Plot the data on a map
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.435 seconds)
+   **Total running time of the script:** ( 0 minutes  4.206 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:
@@ -123,13 +125,13 @@ Plot the data on a map
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Combined_plotting.py <Combined_plotting.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Combined_plotting.ipynb <Combined_plotting.ipynb>`
 

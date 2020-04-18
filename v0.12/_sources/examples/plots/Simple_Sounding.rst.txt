@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_plots_Simple_Sounding.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_plots_Simple_Sounding.py:
+        Click :ref:`here <sphx_glr_download_examples_plots_Simple_Sounding.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_plots_Simple_Sounding.py:
 
 
 Simple Sounding
@@ -127,7 +129,7 @@ assign units.
  .. code-block:: none
 
 
-    <matplotlib.image.FigureImage object at 0x7f9147a650b8>
+    <matplotlib.image.FigureImage object at 0x7fd7af9ff4e0>
 
 
 
@@ -177,7 +179,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.067 seconds)
+   **Total running time of the script:** ( 0 minutes  1.061 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:
@@ -190,13 +192,13 @@ assign units.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Simple_Sounding.py <Simple_Sounding.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Simple_Sounding.ipynb <Simple_Sounding.ipynb>`
 

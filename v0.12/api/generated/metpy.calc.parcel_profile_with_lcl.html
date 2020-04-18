@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -258,20 +262,20 @@ a profile that includes the LCL.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest. This array must be from
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric pressure level(s) of interest. This array must be from
 high to low pressure.</p></li>
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric temperature at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
 the same level as the first <em class="xref py py-obj">pressure</em> data point.</p></li>
-<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dewpoint at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
+<li><p><strong>dewpt</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric dewpoint at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
 the same level as the first <em class="xref py py-obj">pressure</em> data point.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The parcel profile pressures, which includes the specified levels and the LCL</p></li>
-<li><p><strong>ambient_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature values, including the value interpolated to the LCL level</p></li>
-<li><p><strong>ambient_dew_point</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dewpoint values, including the value interpolated to the LCL level</p></li>
-<li><p><strong>profile_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The parcel profile temperatures at all of the levels in the returned pressures array,
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The parcel profile pressures, which includes the specified levels and the LCL</p></li>
+<li><p><strong>ambient_temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric temperature values, including the value interpolated to the LCL level</p></li>
+<li><p><strong>ambient_dew_point</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric dewpoint values, including the value interpolated to the LCL level</p></li>
+<li><p><strong>profile_temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The parcel profile temperatures at all of the levels in the returned pressures array,
 including the LCL.</p></li>
 </ul>
 </p>
@@ -308,7 +312,7 @@ including the LCL.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -345,7 +349,7 @@ including the LCL.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

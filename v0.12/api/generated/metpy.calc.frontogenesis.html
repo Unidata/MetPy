@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -269,12 +273,12 @@ outlined in <a class="reference internal" href="../../references.html#bluestein1
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>thta</strong> ((M, N) <em class="xref py py-obj">pint.Quantity</em>) – Potential temperature</p></li>
-<li><p><strong>u</strong> ((M, N) <em class="xref py py-obj">pint.Quantity</em>) – x component of the wind</p></li>
-<li><p><strong>v</strong> ((M, N) <em class="xref py py-obj">pint.Quantity</em>) – y component of the wind</p></li>
-<li><p><strong>dx</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+<li><p><strong>thta</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Potential temperature</p></li>
+<li><p><strong>u</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – x component of the wind</p></li>
+<li><p><strong>v</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – y component of the wind</p></li>
+<li><p><strong>dx</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
 the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
-<li><p><strong>dy</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+<li><p><strong>dy</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
 the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
 <li><p><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">'yx'</span></code>. <code class="docutils literal notranslate"><span class="pre">'xy'</span></code> indicates that the dimension corresponding to x is the leading
@@ -285,7 +289,7 @@ func(…, dim_order=’xy’).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(M, N) <em class="xref py py-obj">pint.Quantity</em> – 2D Frontogenesis in [temperature units]/m/s</p>
+<dd class="field-even"><p>(M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – 2D Frontogenesis in [temperature units]/m/s</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -320,7 +324,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -357,7 +361,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

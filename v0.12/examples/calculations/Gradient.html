@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -219,7 +223,7 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-gradient-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-gradient-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="gradient">
 <span id="sphx-glr-examples-calculations-gradient-py"></span><h1>Gradient<a class="headerlink" href="#gradient" title="Permalink to this headline">¶</a></h1>
@@ -233,32 +237,32 @@ can be utilized.</p>
 </pre></div>
 </div>
 <p>Create some test data to use for our example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span>
                  <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
                  <span class="p">[</span><span class="mi">27</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
                  <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">24</span><span class="p">]])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
 
 <span class="c1"># Create an array of x position data (the coordinates of our temperature data)</span>
-<span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilometer</span>
 
-<span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilometer</span>
 </pre></div>
 </div>
 <p>Calculate the gradient using the coordinates of the data</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="View documentation for metpy.calc.gradient"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
-Gradient in x direction:  [[ 2.  0. -2.] [ 2.  0. -2.] [ 2.  0. -2.] [ 2.  0. -2.]] kelvin / kilometer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[2.0 2.0 2.0] [2.0 2.0 2.0] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
+Gradient in x direction:  [[2.0 0.0 -2.0] [2.0 0.0 -2.0] [2.0 0.0 -2.0] [2.0 0.0 -2.0]] kelvin / kilometer
 </pre></div>
 </div>
 <p>It’s also possible that we do not have the position of data points, but know
@@ -266,40 +270,40 @@ that they are evenly spaced. We can then specify a scalar delta value for each
 axes.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x_delta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">km</span>
 <span class="n">y_delta</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">km</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="View documentation for metpy.calc.gradient"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">y_delta</span><span class="p">,</span> <span class="n">x_delta</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">y_delta</span><span class="p">,</span> <span class="n">x_delta</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
-Gradient in x direction:  [[ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.]] kelvin / kilometer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[2.0 2.0 2.0] [2.0 2.0 2.0] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
+Gradient in x direction:  [[1.0 0.0 -1.0] [1.0 0.0 -1.0] [1.0 0.0 -1.0] [1.0 0.0 -1.0]] kelvin / kilometer
 </pre></div>
 </div>
 <p>Finally, the deltas can be arrays for unevenly spaced data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x_deltas</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x_deltas</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
                      <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilometer</span>
-<span class="n">y_deltas</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="n">y_deltas</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                      <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilometer</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="View documentation for metpy.calc.gradient"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">y_deltas</span><span class="p">,</span> <span class="n">x_deltas</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">grad</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">y_deltas</span><span class="p">,</span> <span class="n">x_deltas</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grad</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 0.33333333  0.66666667  2.33333333] [ 1.66666667  0.66666667  1.66666667] [ 0.83333333 -0.16666667 -1.66666667] [-3.83333333 -1.83333333 -4.33333333]] kelvin / kilometer
-Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0.66666667 -1.33333333] [ 0.83333333  0.16666667 -0.83333333] [ 1.5         0.5        -1.5       ]] kelvin / kilometer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[0.3333333333333428 0.6666666666666572 2.333333333333357] [1.6666666666666572 0.6666666666666714 1.6666666666666714] [0.8333333333333286 -0.1666666666666643 -1.6666666666666856] [-3.8333333333333144 -1.8333333333333428 -4.333333333333371]] kelvin / kilometer
+Gradient in x direction:  [[0.833333333333357 0.1666666666666714 -0.8333333333333712] [1.333333333333286 0.6666666666666572 -1.3333333333333144] [0.833333333333357 0.1666666666666714 -0.8333333333333428] [1.5000000000000426 0.5000000000000142 -1.5]] kelvin / kilometer
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.014 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-gradient-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/14685a475a26aa909281823c9d590260/Gradient.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Gradient.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/62a1acd718d4c5b9717787544d4cf09f/Gradient.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Gradient.ipynb</span></code></a></p>
 </div>
 </div>
@@ -329,7 +333,7 @@ Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -366,7 +370,7 @@ Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

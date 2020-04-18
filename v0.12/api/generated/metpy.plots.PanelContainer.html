@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -243,7 +247,7 @@
 <dl class="class">
 <dt id="metpy.plots.PanelContainer">
 <em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">PanelContainer</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PanelContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PanelContainer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Collects panels and set complete figure related settings (e.g., figsize).</p>
+<dd><p>Collects panels and set complete figure related settings (e.g., size).</p>
 <p class="rubric">Attributes Summary</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -380,7 +384,7 @@ prior to entering the block.</p>
 <code class="sig-name descname">size</code><a class="headerlink" href="#metpy.plots.PanelContainer.size" title="Permalink to this definition">¶</a></dt>
 <dd><p>This trait takes a tuple of (width, height) to set the size of the
 figure.</p>
-<p>This trait defaults to None and will assume the default <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="(in Matplotlib v3.1.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.figure</span></code></a> size.</p>
+<p>This trait defaults to None and will assume the default <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="(in Matplotlib v3.2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.figure</span></code></a> size.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -528,7 +532,7 @@ then unintall it.</p></li>
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PanelContainer.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PanelContainer.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the constructed graphic as an image file.</p>
 <p>This method takes a string for saved file name. Additionally, the same arguments and
-keyword arguments that <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.savefig.html#matplotlib.pyplot.savefig" title="(in Matplotlib v3.1.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.savefig</span></code></a> does.</p>
+keyword arguments that <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.savefig.html#matplotlib.pyplot.savefig" title="(in Matplotlib v3.2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.savefig</span></code></a> does.</p>
 </dd></dl>
 
 <dl class="method">
@@ -663,7 +667,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -700,7 +704,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

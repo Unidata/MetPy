@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -239,14 +243,14 @@ are used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>array_like</em>) – The source data. If <code class="docutils literal notranslate"><span class="pre">data_units</span></code> is <em class="xref py py-obj">None</em>, this should be a <em class="xref py py-obj">pint.Quantity</em> with
+<li><p><strong>data</strong> (<em>array_like</em>) – The source data. If <code class="docutils literal notranslate"><span class="pre">data_units</span></code> is <em class="xref py py-obj">None</em>, this should be a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> with
 the desired units.</p></li>
-<li><p><strong>data_units</strong> (str or <em class="xref py py-obj">pint.Unit</em>, optional) – The units for the resulting <em class="xref py py-obj">pint.Quantity</em></p></li>
+<li><p><strong>data_units</strong> (str or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code>, optional) – The units for the resulting <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></p></li>
 <li><p><strong>kwargs</strong> – Arbitrary keyword arguments passed to <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_array.html#numpy.ma.masked_array" title="(in NumPy v1.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ma.masked_array</span></code></a>, optional</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em></p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -276,7 +280,7 @@ the desired units.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -313,7 +317,7 @@ the desired units.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

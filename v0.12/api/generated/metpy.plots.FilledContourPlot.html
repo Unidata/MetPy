@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -252,7 +256,7 @@
 <td><p>A boolean (True/False) on whether to plot contour labels.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colorbar" title="metpy.plots.FilledContourPlot.colorbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar</span></code></a></p></td>
-<td><p>A boolean (True/False) on whether to add a colorbar to the plot.</p></td>
+<td><p>A string (horizontal/vertical) on whether to add a colorbar to the plot.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colormap" title="metpy.plots.FilledContourPlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></p></td>
 <td><p>The string name for a Matplolib or MetPy colormap.</p></td>
@@ -381,9 +385,10 @@
 <dl class="attribute">
 <dt id="metpy.plots.FilledContourPlot.colorbar">
 <code class="sig-name descname">colorbar</code><a class="headerlink" href="#metpy.plots.FilledContourPlot.colorbar" title="Permalink to this definition">¶</a></dt>
-<dd><p>A boolean (True/False) on whether to add a colorbar to the plot.</p>
-<p>To add a colorbar associated with the plot data set the trait to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default
-values is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dd><p>A string (horizontal/vertical) on whether to add a colorbar to the plot.</p>
+<p>To add a colorbar associated with the plot, set the trait to <code class="docutils literal notranslate"><span class="pre">horizontal</span></code> or
+<code class="docutils literal notranslate"><span class="pre">vertical</span></code>,specifying the orientation of the produced colorbar. The default value is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -442,7 +447,7 @@ variables with the following command assuming the dataset was read using xarray 
 <dd><p>A tuple of min and max values that represent the range of values
 to color the rasterized image.</p>
 <p>The min and max values entered as a tuple will be converted to a
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.1.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -743,7 +748,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -780,7 +785,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

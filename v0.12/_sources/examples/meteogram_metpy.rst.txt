@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_meteogram_metpy.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_meteogram_metpy.py:
+        Click :ref:`here <sphx_glr_download_examples_meteogram_metpy.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_meteogram_metpy.py:
 
 
 Meteogram
@@ -24,14 +26,10 @@ Plots time series data as a meteogram.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/xarray.py:655: MetpyDeprecationWarning: The dewpoint_rh function was deprecated in version 0.12. This function has been renamed dewpoint_from_relative_humidity.
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/xarray.py:677: MetpyDeprecationWarning: The dewpoint_rh function was deprecated in version 0.12. This function has been renamed dewpoint_from_relative_humidity.
       return func(*args, **kwargs)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/pandas/plotting/_matplotlib/converter.py:103: FutureWarning: Using an implicitly registered datetime converter for a matplotlib plotting method. The converter was registered by pandas on import. Future versions of pandas will require you to explicitly register matplotlib converters.
-
-    To register the converters:
-            >>> from pandas.plotting import register_matplotlib_converters
-            >>> register_matplotlib_converters()
-      warnings.warn(msg, FutureWarning)
+    /home/travis/build/Unidata/MetPy/examples/meteogram_metpy.py:82: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      ax7.set_yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
 
 
 
@@ -256,7 +254,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.785 seconds)
+   **Total running time of the script:** ( 0 minutes  0.981 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:
@@ -269,13 +267,13 @@ Plots time series data as a meteogram.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: meteogram_metpy.py <meteogram_metpy.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: meteogram_metpy.ipynb <meteogram_metpy.ipynb>`
 

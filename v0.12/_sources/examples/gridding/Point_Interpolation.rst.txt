@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_gridding_Point_Interpolation.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_gridding_Point_Interpolation.py:
+        Click :ref:`here <sphx_glr_download_examples_gridding_Point_Interpolation.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_gridding_Point_Interpolation.py:
 
 
 Point Interpolation
@@ -130,7 +132,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f9147ed11d0>
+    <matplotlib.colorbar.Colorbar object at 0x7fd7af9ffb00>
 
 
 
@@ -161,7 +163,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f9147b965f8>
+    <matplotlib.colorbar.Colorbar object at 0x7fd7afcfefd0>
 
 
 
@@ -197,7 +199,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f9147dfe470>
+    <matplotlib.colorbar.Colorbar object at 0x7fd7afa269e8>
 
 
 
@@ -231,7 +233,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f91479ef0f0>
+    <matplotlib.colorbar.Colorbar object at 0x7fd7aef96dd8>
 
 
 
@@ -263,7 +265,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.189 seconds)
+   **Total running time of the script:** ( 0 minutes  5.217 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
@@ -276,13 +278,13 @@ linear
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Point_Interpolation.py <Point_Interpolation.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Point_Interpolation.ipynb <Point_Interpolation.ipynb>`
 

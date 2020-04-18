@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -229,7 +233,7 @@
     <span class="sd">&quot;&quot;&quot;Find the root and group name of a netCDF4/h5netcdf dataset.&quot;&quot;&quot;</span>
     <span class="n">hierarchy</span> <span class="o">=</span> <span class="p">()</span>
     <span class="k">while</span> <span class="n">ds</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">hierarchy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span> <span class="o">+</span> <span class="n">hierarchy</span>
+        <span class="n">hierarchy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],)</span> <span class="o">+</span> <span class="n">hierarchy</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">parent</span>
     <span class="n">group</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hierarchy</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ds</span><span class="p">,</span> <span class="n">group</span>
@@ -593,7 +597,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -630,7 +634,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

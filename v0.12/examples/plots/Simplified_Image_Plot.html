@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -226,7 +230,7 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-simplified-image-plot-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-simplified-image-plot-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="simple-plotting">
 <span id="sphx-glr-examples-plots-simplified-image-plot-py"></span><h1>Simple Plotting<a class="headerlink" href="#simple-plotting" title="Permalink to this headline">¶</a></h1>
@@ -243,30 +247,30 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.io</span> <span class="kn">import</span> <a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="View documentation for metpy.io.GiniFile"><span class="n">GiniFile</span></a>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a>
+<span class="kn">from</span> <span class="nn">metpy.io</span> <span class="kn">import</span> <a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile" class="sphx-glr-backref-module-metpy-io sphx-glr-backref-type-py-class"><span class="n">GiniFile</span></a>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a>
 
-<span class="n">data</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="View documentation for metpy.io.GiniFile"><span class="n">GiniFile</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;NHEM-MULTICOMP_1km_IR_20151208_2100.gini&#39;</span><span class="p">)))</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="xarray.open_dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile" class="sphx-glr-backref-module-metpy-io sphx-glr-backref-type-py-class"><span class="n">GiniFile</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;NHEM-MULTICOMP_1km_IR_20151208_2100.gini&#39;</span><span class="p">)))</span>
 
-<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">()</span>
-<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;IR&#39;</span>
-<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">&#39;Greys_r&#39;</span>
+<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">ImagePlot</span></a><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot.data" title="metpy.plots.ImagePlot.data" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-attribute"><span class="n">img</span><span class="o">.</span><span class="n">data</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span><span class="o">.</span><span class="n">field</span></a> <span class="o">=</span> <span class="s1">&#39;IR&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span><span class="o">.</span><span class="n">colormap</span></a> <span class="o">=</span> <span class="s1">&#39;Greys_r&#39;</span>
 
-<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">()</span>
-<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">img</span></a><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">plots</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span></a><span class="p">]</span>
 
-<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a><span class="p">()</span>
-<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">panel</span></a><span class="p">]</span>
-<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">pc</span></a><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span><span class="o">.</span><span class="n">panels</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.562 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.611 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-simplified-image-plot-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/809005d7a1d6a933279bc1556eae1313/Simplified_Image_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simplified_Image_Plot.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/cc4d32e7208ddd5bd00c7f866683d0f4/Simplified_Image_Plot.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Simplified_Image_Plot.ipynb</span></code></a></p>
 </div>
 </div>
@@ -296,7 +300,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -333,7 +337,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

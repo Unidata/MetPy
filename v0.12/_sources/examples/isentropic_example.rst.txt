@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_isentropic_example.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_isentropic_example.py:
+        Click :ref:`here <sphx_glr_download_examples_isentropic_example.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_isentropic_example.py:
 
 
 ===================
@@ -369,7 +371,7 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.166 seconds)
+   **Total running time of the script:** ( 0 minutes  12.047 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:
@@ -382,13 +384,13 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: isentropic_example.py <isentropic_example.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: isentropic_example.ipynb <isentropic_example.ipynb>`
 

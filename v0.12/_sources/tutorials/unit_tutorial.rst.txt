@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_tutorials_unit_tutorial.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_tutorials_unit_tutorial.py:
+        Click :ref:`here <sphx_glr_download_tutorials_unit_tutorial.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_tutorials_unit_tutorial.py:
 
 
 ==============
@@ -168,7 +170,7 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 
  .. code-block:: none
 
-    5 delta_degC
+    5 delta_degree_Celsius
 
 
 
@@ -191,7 +193,7 @@ We can add a delta to an offset unit as well since it is a relative change.
 
  .. code-block:: none
 
-    27.77777777777778 degC
+    27.77777777777778 degree_Celsius
 
 
 
@@ -267,8 +269,8 @@ units. Abbreviations or full unit names are acceptable.
 
  .. code-block:: none
 
-    [11.  9. 13.  6.  2. 11. 12.  4.  1. 13.] meter / second
-    [ 5.  3.  4.  4. 11. 11.  3.  7.  1.  1.] meter / second
+    [11.0 9.0 13.0 6.0 2.0 11.0 12.0 4.0 1.0 13.0] meter / second
+    [5.0 3.0 4.0 4.0 11.0 11.0 3.0 7.0 1.0 1.0] meter / second
 
 
 
@@ -288,7 +290,7 @@ these when you're having issues
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.005 seconds)
+   **Total running time of the script:** ( 0 minutes  0.006 seconds)
 
 
 .. _sphx_glr_download_tutorials_unit_tutorial.py:
@@ -301,13 +303,13 @@ these when you're having issues
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: unit_tutorial.py <unit_tutorial.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: unit_tutorial.ipynb <unit_tutorial.ipynb>`
 

@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -241,10 +245,10 @@ as appropriate for the current conditions. Follows <a class="reference internal"
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The air temperature</p></li>
-<li><p><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The air temperature</p></li>
+<li><p><strong>rh</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
 Can also pass a percentage if proper units are attached.</p></li>
-<li><p><strong>speed</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The wind speed at 10m.  If instead the winds are at face level,
+<li><p><strong>speed</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The wind speed at 10m.  If instead the winds are at face level,
 <em class="xref py py-obj">face_level_winds</em> should be set to <em class="xref py py-obj">True</em> and the 1.5 multiplicative
 correction will be applied automatically.</p></li>
 <li><p><strong>face_level_winds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether the wind speeds were measured at facial
@@ -259,7 +263,7 @@ Defaults to <em class="xref py py-obj">True</em>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding apparent temperature value(s)</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The corresponding apparent temperature value(s)</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -293,7 +297,7 @@ Defaults to <em class="xref py py-obj">True</em>.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -330,7 +334,7 @@ Defaults to <em class="xref py py-obj">True</em>.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

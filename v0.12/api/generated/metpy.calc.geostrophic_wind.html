@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -258,13 +262,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>heights</strong> ((M, N) <em class="xref py py-obj">pint.Quantity</em>) – The height field, with either leading dimensions of (x, y) or trailing dimensions
+<li><p><strong>heights</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The height field, with either leading dimensions of (x, y) or trailing dimensions
 of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p></li>
 <li><p><strong>f</strong> (<em>array_like</em>) – The coriolis parameter.  This can be a scalar to be applied
 everywhere or an array of values.</p></li>
-<li><p><strong>dx</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+<li><p><strong>dx</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
 the size of <em class="xref py py-obj">heights</em> along the applicable axis.</p></li>
-<li><p><strong>dy</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+<li><p><strong>dy</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
 the size of <em class="xref py py-obj">heights</em> along the applicable axis.</p></li>
 <li><p><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">'yx'</span></code>. <code class="docutils literal notranslate"><span class="pre">'xy'</span></code> indicates that the dimension corresponding to x is the leading
@@ -275,7 +279,7 @@ func(…, dim_order=’xy’).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A 2-item tuple of arrays, <em class="xref py py-obj">pint.Quantity</em> – A tuple of the u-component and v-component of the geostrophic wind.</p>
+<dd class="field-even"><p>A 2-item tuple of arrays, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – A tuple of the u-component and v-component of the geostrophic wind.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -315,7 +319,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -352,7 +356,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

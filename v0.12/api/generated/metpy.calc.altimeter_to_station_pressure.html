@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -250,13 +254,13 @@ or other parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>altimeter_value</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The altimeter setting value as defined by the METAR or other observation,
+<li><p><strong>altimeter_value</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The altimeter setting value as defined by the METAR or other observation,
 which can be measured in either inches of mercury (in. Hg) or millibars (mb)</p></li>
-<li><p><strong>height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Elevation of the station measuring pressure.</p></li>
+<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Elevation of the station measuring pressure.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The station pressure in hPa or in. Hg, which can be used to calculate sea-level
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The station pressure in hPa or in. Hg, which can be used to calculate sea-level
 pressure</p>
 </dd>
 </dl>
@@ -320,7 +324,7 @@ calculate station pressure <span class="math notranslate nohighlight">\((p_{mb})
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -357,7 +361,7 @@ calculate station pressure <span class="math notranslate nohighlight">\((p_{mb})
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

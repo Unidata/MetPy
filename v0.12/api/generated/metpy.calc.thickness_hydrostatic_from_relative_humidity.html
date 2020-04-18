@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -272,18 +276,18 @@ from the profiles of temperature and relative humidity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</p></li>
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric temperature profile</p></li>
-<li><p><strong>relative_humidity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric relative humidity profile. The relative humidity is expressed as a
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric pressure profile</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric temperature profile</p></li>
+<li><p><strong>relative_humidity</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric relative humidity profile. The relative humidity is expressed as a
 unitless ratio in the range [0, 1]. Can also pass a percentage if proper units are
 attached.</p></li>
-<li><p><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The bottom of the layer in pressure. Defaults to the first observation.</p></li>
-<li><p><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
+<li><p><strong>bottom</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The bottom of the layer in pressure. Defaults to the first observation.</p></li>
+<li><p><strong>depth</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
 and 100 hPa if bottom is given.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The thickness of the layer in meters.</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The thickness of the layer in meters.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -317,7 +321,7 @@ and 100 hPa if bottom is given.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -354,7 +358,7 @@ and 100 hPa if bottom is given.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

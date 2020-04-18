@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -266,15 +270,15 @@ they have the same units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>part_press</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Partial pressure of the constituent gas</p></li>
-<li><p><strong>tot_press</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total air pressure</p></li>
-<li><p><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
+<li><p><strong>part_press</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Partial pressure of the constituent gas</p></li>
+<li><p><strong>tot_press</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Total air pressure</p></li>
+<li><p><strong>molecular_weight_ratio</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
 for air. Defaults to the ratio for water vapor to dry air
 (<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -313,7 +317,7 @@ such as <a class="reference internal" href="../../references.html#hobbs1977" id=
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -350,7 +354,7 @@ such as <a class="reference internal" href="../../references.html#hobbs1977" id=
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

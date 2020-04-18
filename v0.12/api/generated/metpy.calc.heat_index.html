@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -244,13 +248,13 @@ depiction of this algorithm and further discussion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
-<li><p><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Air temperature</p></li>
+<li><p><strong>rh</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
 Can also pass a percentage if proper units are attached.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding Heat Index value(s)</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The corresponding Heat Index value(s)</p>
 </dd>
 <dt class="field-odd">Other Parameters</dt>
 <dd class="field-odd"><p><strong>mask_undefined</strong> (<em>bool, optional</em>) – A flag indicating whether a masked array should be returned with
@@ -288,7 +292,7 @@ values masked where the temperature &lt; 80F. Defaults to <em class="xref py py-
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -325,7 +329,7 @@ values masked where the temperature &lt; 80F. Defaults to <em class="xref py py-
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

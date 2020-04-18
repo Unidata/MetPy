@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -332,12 +336,29 @@
     <span class="nd">@unit_array</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">unit_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set data values from a `pint.Quantity`.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unable to set unit array to a dimension coordinate. Use the &#39;</span>
+                             <span class="s1">&#39;assign_coords method instead&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.convert_units"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.convert_units">[docs]</a>    <span class="k">def</span> <span class="nf">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the data values to different units in-place.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MetPyDataArrayAccessor.convert_coordinate_units"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units">[docs]</a>    <span class="k">def</span> <span class="nf">convert_coordinate_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return new DataArray with coordinate converted to different units.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Backported from MetPy 1.0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_coord_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">new_coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="n">coord</span><span class="p">:</span> <span class="n">new_coord_var</span><span class="p">})</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">crs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -465,10 +486,10 @@
                 <span class="c1"># Warn if assigning multidimensional coord to x/y</span>
                 <span class="c1"># TODO: Remove in v1.0</span>
                 <span class="k">if</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">):</span>
-                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Multidimensional coordinate </span><span class="si">{coord_var.name}</span><span class="s1"> assigned for &#39;</span>
-                                  <span class="sa">f</span><span class="s1">&#39;axis &quot;</span><span class="si">{axis}</span><span class="s1">&quot;. This behavior has been deprecated and will &#39;</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Multidimensional coordinate </span><span class="si">{</span><span class="n">coord_var</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> assigned for &#39;</span>
+                                  <span class="sa">f</span><span class="s1">&#39;axis &quot;</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s1">&quot;. This behavior has been deprecated and will &#39;</span>
                                   <span class="s1">&#39;be removed in v1.0 (only one-dimensional coordinates will &#39;</span>
-                                  <span class="sa">f</span><span class="s1">&#39;be available for the &quot;</span><span class="si">{axis}</span><span class="s1">&quot; axis).&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
+                                  <span class="sa">f</span><span class="s1">&#39;be available for the &quot;</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s1">&quot; axis).&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
 
                 <span class="n">_assign_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
 
@@ -712,7 +733,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">(</span><span class="n">proj_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fixup_coords</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixup_coords</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
         <span class="c1"># Trying to guess whether we should be adding a crs to this variable&#39;s coordinates</span>
         <span class="c1"># First make sure it&#39;s missing CRS but isn&#39;t lat/lon itself</span>
@@ -737,18 +758,23 @@
 
     <span class="k">def</span> <span class="nf">_fixup_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clean up the units on the coordinate variables.&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">coord_name</span><span class="p">,</span> <span class="n">data_array</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">check_axis</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">coord_name</span><span class="p">,</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">)):</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">)</span>
+                    <span class="n">var</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_coordinate_units</span><span class="p">(</span><span class="n">coord_name</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">DimensionalityError</span><span class="p">:</span>  <span class="c1"># Radians!</span>
                     <span class="k">if</span> <span class="s1">&#39;crs&#39;</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-                        <span class="n">new_data_array</span> <span class="o">=</span> <span class="n">data_array</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                         <span class="n">height</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()[</span><span class="s1">&#39;perspective_point_height&#39;</span><span class="p">]</span>
-                        <span class="n">scaled_vals</span> <span class="o">=</span> <span class="n">new_data_array</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span> <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span><span class="p">)</span>
-                        <span class="n">new_data_array</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span> <span class="o">=</span> <span class="n">scaled_vals</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">)</span>
-                        <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_data_array</span>
+                        <span class="n">new_coord_var</span> <span class="o">=</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+                            <span class="n">data</span><span class="o">=</span><span class="p">(</span>
+                                <span class="n">coord_var</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span> <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span><span class="p">)</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">new_coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;meter&#39;</span>
+                        <span class="n">var</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="n">coord_name</span><span class="p">:</span> <span class="n">new_coord_var</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">var</span>
 
     <span class="k">class</span> <span class="nc">_LocIndexer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Provide the unit-wrapped .loc indexer for datasets.&quot;&quot;&quot;</span>
@@ -930,7 +956,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -967,7 +993,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

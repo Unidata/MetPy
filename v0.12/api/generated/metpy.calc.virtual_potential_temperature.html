@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -265,16 +269,16 @@ The implementation uses the formula outlined in <a class="reference internal" hr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – air temperature</p></li>
-<li><p><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</p></li>
-<li><p><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Total atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – air temperature</p></li>
+<li><p><strong>mixing</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – dimensionless mass mixing ratio</p></li>
+<li><p><strong>molecular_weight_ratio</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
 for air. Defaults to the ratio for water vapor to dry air.
 (<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding virtual potential temperature of the parcel</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The corresponding virtual potential temperature of the parcel</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -307,7 +311,7 @@ for air. Defaults to the ratio for water vapor to dry air.
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -344,7 +348,7 @@ for air. Defaults to the ratio for water vapor to dry air.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

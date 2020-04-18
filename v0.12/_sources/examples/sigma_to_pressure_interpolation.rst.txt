@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_sigma_to_pressure_interpolation.py:
+        Click :ref:`here <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_sigma_to_pressure_interpolation.py:
 
 
 ===============================
@@ -51,9 +53,9 @@ University Department of Geography and Meteorology.
     lon = data.variables['lon'][:]
     time = data.variables['time']
     vtimes = num2date(time[:], time.units)
-    temperature = data.variables['temperature'][:] * units.celsius
-    pres = data.variables['pressure'][:] * units.pascal
-    hgt = data.variables['height'][:] * units.meter
+    temperature = units.Quantity(data.variables['temperature'][:], 'degC')
+    pres = units.Quantity(data.variables['pressure'][:], 'Pa')
+    hgt = units.Quantity(data.variables['height'][:], 'meter')
 
 
 
@@ -165,7 +167,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.140 seconds)
+   **Total running time of the script:** ( 0 minutes  3.940 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
@@ -178,13 +180,13 @@ variable for plotting.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: sigma_to_pressure_interpolation.py <sigma_to_pressure_interpolation.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: sigma_to_pressure_interpolation.ipynb <sigma_to_pressure_interpolation.ipynb>`
 

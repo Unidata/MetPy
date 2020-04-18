@@ -34,9 +34,13 @@
   
 
   
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
     <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   
-    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
   
 
   
@@ -278,6 +282,7 @@
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.specifiers&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.requirements&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.markers&#39;</span><span class="p">)</span>
+<span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.py2_warn&#39;</span><span class="p">)</span>
 
 
 <span class="n">__metaclass__</span> <span class="o">=</span> <span class="nb">type</span>
@@ -1429,12 +1434,13 @@
         <span class="n">mode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">st_mode</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">&amp;</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IWOTH</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">&amp;</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IWGRP</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is writable by group/others and vulnerable to attack &quot;</span>
-                <span class="s2">&quot;when &quot;</span>
-                <span class="s2">&quot;used with get_resource_filename. Consider a more secure &quot;</span>
+                <span class="s2">&quot;Extraction path is writable by group/others &quot;</span>
+                <span class="s2">&quot;and vulnerable to attack when &quot;</span>
+                <span class="s2">&quot;used with get_resource_filename (</span><span class="si">{path}</span><span class="s2">). &quot;</span>
+                <span class="s2">&quot;Consider a more secure &quot;</span>
                 <span class="s2">&quot;location (set with .set_extraction_path or the &quot;</span>
-                <span class="s2">&quot;PYTHON_EGG_CACHE environment variable).&quot;</span> <span class="o">%</span> <span class="n">path</span>
-            <span class="p">)</span>
+                <span class="s2">&quot;PYTHON_EGG_CACHE environment variable).&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tempname</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
@@ -2390,10 +2396,14 @@
     <span class="k">if</span> <span class="n">importer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="c1"># capture warnings due to #1111</span>
-    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-        <span class="n">loader</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">packageName</span><span class="p">)</span>
+    <span class="c1"># use find_spec (PEP 451) and fall-back to find_module (PEP 302)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">packageName</span><span class="p">)</span><span class="o">.</span><span class="n">loader</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="c1"># capture warnings due to #1111</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">packageName</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">loader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -2523,7 +2533,8 @@
 
 <span class="k">def</span> <span class="nf">normalize_path</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Normalize a file/dir name for comparison purposes&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">_cygwin_patch</span><span class="p">(</span><span class="n">filename</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
+        <span class="n">_cygwin_patch</span><span class="p">(</span><span class="n">filename</span><span class="p">))))</span>
 
 
 <span class="k">def</span> <span class="nf">_cygwin_patch</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>  <span class="c1"># pragma: nocover</span>
@@ -3482,6 +3493,7 @@
     <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">working_set</span><span class="o">.</span><span class="n">add_entry</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
     <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
 
+
 <span class="k">class</span> <span class="nc">PkgResourcesDeprecationWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for warning about deprecations in ``pkg_resources``</span>
@@ -3504,7 +3516,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 06, 2020 at 04:43:38.
+      Last updated on Apr 18, 2020 at 00:39:04.
 
     </p>
   </div>
@@ -3541,7 +3553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.12.0',
+            VERSION:'0.12.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
