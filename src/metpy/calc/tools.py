@@ -826,6 +826,46 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
+def azimuth_range_to_lat_lon(azimuth, range, center_lon, center_lat, **kwargs):
+    """   
+    Convert azimuth and range bins in a polar coordinate system to lat/lon coordinates.
+    Pole refers to the origin of the coordinate system. Adapted from Brian Blaylock's code.
+
+    Parameters
+    - - - - -
+    azimuth :   array_like
+                array of azimuths defining the grid. If not a `pint.Quantity`, assumed to be in degrees.
+    range  :    array_like
+                array of range distances from the pole. Typically in meters.
+    center_lat  :  float
+                The latitude of the pole in decimal degrees
+    center_lon :  float
+                The longitude of the pole in decimal degrees
+
+    Returns
+    -------
+    lat, lon:
+        two dimensional arrays of latitudes and longitudes corresponding
+        to the bin positions in the polar coordinate system
+
+    """              
+
+    from pyproj import Geod
+    geod_args = {'ellps': 'sphere'}
+    if kwargs:s
+        geod_args = kwargs
+    g = Geod(**geod_args)
+
+    lats = np.ones([len(azimuths),len(rng)])*center_lat
+    lons = np.ones([len(azimuths),len(rng)])*center_lon
+    az2D = np.ones_like(lats)*azimuths[:,None]
+    rng2D = np.ones_like(lats)*np.transpose(rng[:,None])
+    lat,lon,back=g.fwd(lons,lats,az2D,rng2D)
+    return lat,lon
+
+
+@exporter.export
 def grid_deltas_from_dataarray(f, kind='default'):
     """Calculate the horizontal deltas between grid points of a DataArray.
 
