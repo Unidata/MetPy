@@ -1,2 +1,4 @@
+* text=auto
+
 *.ipynb	diff=jupyternotebook
 talks/* linguist-documentation

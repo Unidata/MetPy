@@ -19,8 +19,8 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
-                              _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS, UND,
-                              wrap_output_like)
+                              _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
+                              DIR_STRS, UND, wrap_output_like)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import DimensionalityError, units
 
@@ -850,6 +850,69 @@ def test_angle_to_direction_level_1():
         'W', 'W', 'W', 'W', 'N']
     output_dirs = angle_to_direction(FULL_CIRCLE_DEGREES, level=1)
     assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_azimuth_range_to_lat_lon():
+    """Test converstion of azimuth and range to lat/lon grid."""
+    az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
+    rng = [2125., 64625., 127125., 189625., 252125., 314625.]
+    clon = -89.98416666666667
+    clat = 32.27972222222222
+    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat)
+    true_lon = [[-89.9946968, -90.3061798, -90.6211612, -90.9397425, -91.2620282,
+                -91.5881257],
+                [-89.9938369, -90.2799198, -90.5692874, -90.8620385, -91.1582743,
+                -91.4580996],
+                [-89.9929086, -90.251559, -90.5132417, -90.7780507, -91.0460827,
+                -91.3174374],
+                [-89.9919961, -90.2236737, -90.4581161, -90.6954113, -90.9356497,
+                -91.178925],
+                [-89.9910545, -90.1948876, -90.4011921, -90.6100481, -90.8215385,
+                -91.0357492]]
+    true_lat = [[32.2966329, 32.7936114, 33.2898102, 33.7852055, 34.2797726,
+                34.773486],
+                [32.2969961, 32.804717, 33.3117799, 33.8181643, 34.3238488,
+                34.8288114],
+                [32.2973461, 32.8154229, 33.3329617, 33.8499452, 34.3663556,
+                34.8821746],
+                [32.29765, 32.8247204, 33.3513589, 33.8775516, 34.4032838,
+                34.9285404],
+                [32.2979242, 32.8331062, 33.367954, 33.9024562, 34.4366016,
+                34.9703782]]
+    assert_array_almost_equal(output_lon, true_lon, 6)
+    assert_array_almost_equal(output_lat, true_lat, 6)
+
+
+def test_azimuth_range_to_lat_lon_diff_ellps():
+    """Test converstion of azimuth and range to lat/lon grid."""
+    az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
+    rng = [2125., 64625., 127125., 189625., 252125., 314625.]
+    clon = -89.98416666666667
+    clat = 32.27972222222222
+    kwargs = {'ellps': 'WGS84'}
+    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat, **kwargs)
+    true_lon = [[-89.9946749, -90.3055083, -90.6198256, -90.9377279, -91.2593193,
+                -91.5847066],
+                [-89.9938168, -90.279303, -90.5680603, -90.860187, -91.1557841,
+                -91.4549558],
+                [-89.9928904, -90.2510012, -90.5121319, -90.7763758, -91.0438294,
+                -91.3145919],
+                [-89.9919799, -90.2231741, -90.4571217, -90.6939102, -90.9336298,
+                -91.1763737],
+                [-89.9910402, -90.194448, -90.4003169, -90.6087268, -90.8197603,
+                -91.0335027]]
+    true_lat = [[32.2966791, 32.794996, 33.2924932, 33.7891466, 34.2849315,
+                34.7798223],
+                [32.2970433, 32.8061309, 33.3145188, 33.8221862, 34.3291116,
+                34.835273],
+                [32.2973942, 32.816865, 33.3357544, 33.8540448, 34.3717184,
+                34.8887564],
+                [32.297699, 32.826187, 33.3541984, 33.8817186, 34.4087331,
+                34.9352264],
+                [32.2979739, 32.834595, 33.3708355, 33.906684, 34.4421288,
+                34.9771578]]
+    assert_array_almost_equal(output_lon, true_lon, 6)
+    assert_array_almost_equal(output_lat, true_lat, 6)
 
 
 def test_3d_gradient_3d_data_no_axes(deriv_4d_data):

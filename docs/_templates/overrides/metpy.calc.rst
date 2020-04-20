@@ -188,6 +188,7 @@ Other
       :toctree: ./
 
       angle_to_direction
+      azimuth_range_to_lat_lon
       find_bounding_indices
       find_intersections
       get_layer
@@ -198,4 +199,3 @@ Other
       parse_angle
       reduce_point_density
       resample_nn_1d
-
