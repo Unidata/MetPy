@@ -152,9 +152,10 @@ Units
 -----
 
 MetPy's DataArray accessor has a ``unit_array`` property to obtain a ``pint.Quantity`` array
-of just the data from the DataArray (metadata is removed) and a ``convert_units`` method to
-convert the the data from one unit to another (keeping it as a DataArray). For now, we'll
-just use ``convert_units`` to convert our temperature to ``degC``.
+of just the data from the DataArray (metadata other than units is removed) and a
+``convert_units`` method to convert the the data from one unit to another (keeping it as a
+DataArray). For now, we'll just use ``convert_units`` to convert our temperature to
+``degC``.
 
 
 .. code-block:: default
@@ -168,6 +169,16 @@ just use ``convert_units`` to convert our temperature to ``degC``.
 
 
 
+
+WARNING: Versions of MetPy prior to 1.0 (including 0.12) require units to be in the
+attributes of your xarray DataArray. If you attempt to use a DataArray containing a
+``pint.Quantity`` instead, incorrect results are likely to occur, since these earlier
+versions of MetPy will ignore the ``pint.Quantity`` and still just rely upon the units
+attribute. See `GitHub Issue #1358 <https://github.com/Unidata/MetPy/issues/1358>`_ for more
+details.
+
+Note that this changes in newer versions of MetPy as of 1.0, when Quantities-in-xarray
+became the default behavior.
 
 Coordinates
 -----------
@@ -330,7 +341,7 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x7efcf69c4fc0>
+    <cartopy.crs.PlateCarree object at 0x7f70ffe1af68>
 
 
 
@@ -355,7 +366,7 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x7efd12d365c0>
+    <cartopy._crs.Globe object at 0x7f7118140eb8>
 
 
 
@@ -679,7 +690,7 @@ Fix 2 (unit array broadcasting):
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.227 seconds)
+   **Total running time of the script:** ( 0 minutes  2.368 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:

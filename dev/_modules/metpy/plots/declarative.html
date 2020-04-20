@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.declarative &mdash; MetPy 0.12.0</title>
+  <title>metpy.plots.declarative &mdash; MetPy 0.12.1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.12.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.12.1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -83,7 +83,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.0</option>
+                      <option value=''>0.12.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -699,7 +699,7 @@
 
 <div class="viewcode-block" id="PanelContainer"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PanelContainer</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Collects panels and set complete figure related settings (e.g., figsize).&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Collects panels and set complete figure related settings (e.g., size).&quot;&quot;&quot;</span>
 
     <span class="n">size</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">()),</span> <span class="n">Instance</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))],</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">size</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;This trait takes a tuple of (width, height) to set the size of the</span>
@@ -815,7 +815,7 @@
 <span class="s2">    This trait can also be set with a string value associated with the named geographic regions</span>
 <span class="s2">    within MetPy. The tuples associated with the names are based on a PlatteCarree projection.</span>
 <span class="s2">    For a CONUS region, the following strings can be used: &#39;us&#39;, &#39;spcus&#39;, &#39;ncus&#39;, and &#39;afus&#39;.</span>
-<span class="s2">    For regional plots, US state postal codes can be used.</span>
+<span class="s2">    For regional plots, US postal state abbreviations can be used.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">projection</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Instance</span><span class="p">(</span><span class="s1">&#39;cartopy.crs.Projection&#39;</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
@@ -833,8 +833,8 @@
 
 <span class="s2">    Like the projection, there are a couple of pre-defined feature layers that can be called</span>
 <span class="s2">    using a short name. The pre-defined layers are: &#39;coastline&#39;, &#39;states&#39;, &#39;borders&#39;, &#39;lakes&#39;,</span>
-<span class="s2">    &#39;land&#39;, &#39;ocean&#39;, and &#39;rivers&#39;. Additionally, this trait can be set using a Cartopy Feature</span>
-<span class="s2">    object.</span>
+<span class="s2">    &#39;land&#39;, &#39;ocean&#39;, &#39;rivers&#39;, &#39;usstates&#39;, and &#39;uscounties&#39;. Additionally, this trait can be</span>
+<span class="s2">    set using a Cartopy Feature object.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">title</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">()</span>
@@ -929,15 +929,6 @@
         <span class="c1"># Only need to run if we&#39;ve actually changed.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
 
-            <span class="c1"># Draw all of the plots.</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">hold_trait_notifications</span><span class="p">():</span>
-                    <span class="n">p</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-
-            <span class="c1"># Add all of the maps</span>
-            <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layer_features</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
-
             <span class="c1"># Set the extent as appropriate based on the area. One special case for &#39;global&#39;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
@@ -949,6 +940,15 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">DEFAULT_LAT_LON</span><span class="p">)</span>
+
+            <span class="c1"># Draw all of the plots.</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">hold_trait_notifications</span><span class="p">():</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+            <span class="c1"># Add all of the maps</span>
+            <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layer_features</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
 
             <span class="c1"># Use the set title or generate one.</span>
             <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">)</span>
@@ -1188,10 +1188,11 @@
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">colorbar</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">colorbar</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A boolean (True/False) on whether to add a colorbar to the plot.</span>
+    <span class="n">colorbar</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string (horizontal/vertical) on whether to add a colorbar to the plot.</span>
 
-<span class="s2">    To add a colorbar associated with the plot data set the trait to ``True``, the default</span>
-<span class="s2">    values is ``False``.</span>
+<span class="s2">    To add a colorbar associated with the plot, set the trait to ``horizontal`` or</span>
+<span class="s2">    ``vertical``,specifying the orientation of the produced colorbar. The default value is</span>
+<span class="s2">    ``None``.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
 
@@ -1287,7 +1288,7 @@
                                              <span class="n">linestyles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linestyle</span><span class="p">,</span>
                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clabels</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
                                <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
@@ -1720,7 +1721,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 17, 2020 at 22:08:48.
+      Last updated on Apr 20, 2020 at 20:03:06.
 
     </p>
   </div>
@@ -1757,7 +1758,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.12.0.post12+g3f6e5f8',
+            VERSION:'0.12.1.post2+gc3df3bc',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

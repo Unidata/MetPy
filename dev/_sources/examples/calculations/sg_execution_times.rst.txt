@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**00:00.024** total execution time for **examples_calculations** files:
+**00:00.029** total execution time for **examples_calculations** files:
 
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)                                   | 00:00.014 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)                                   | 00:00.018 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py` (``Dewpoint_and_Mixing_Ratio.py``) | 00:00.005 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py` (``Angle_to_Direction.py``)               | 00:00.003 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py` (``Angle_to_Direction.py``)               | 00:00.004 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_examples_calculations_Parse_Angles.py` (``Parse_Angles.py``)                           | 00:00.002 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+

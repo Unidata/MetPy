@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>xarray with MetPy Tutorial &mdash; MetPy 0.12.0</title>
+  <title>xarray with MetPy Tutorial &mdash; MetPy 0.12.1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.12.0" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12.1" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="Reference Guide" href="../api/index.html"/>
         <link rel="prev" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.0</option>
+                      <option value=''>0.12.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -331,12 +331,21 @@ information following the CF conventions. For this, we use the
 <div class="section" id="units">
 <h2>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h2>
 <p>MetPy’s DataArray accessor has a <code class="docutils literal notranslate"><span class="pre">unit_array</span></code> property to obtain a <code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array
-of just the data from the DataArray (metadata is removed) and a <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> method to
-convert the the data from one unit to another (keeping it as a DataArray). For now, we’ll
-just use <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> to convert our temperature to <code class="docutils literal notranslate"><span class="pre">degC</span></code>.</p>
+of just the data from the DataArray (metadata other than units is removed) and a
+<code class="docutils literal notranslate"><span class="pre">convert_units</span></code> method to convert the the data from one unit to another (keeping it as a
+DataArray). For now, we’ll just use <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> to convert our temperature to
+<code class="docutils literal notranslate"><span class="pre">degC</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>WARNING: Versions of MetPy prior to 1.0 (including 0.12) require units to be in the
+attributes of your xarray DataArray. If you attempt to use a DataArray containing a
+<code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> instead, incorrect results are likely to occur, since these earlier
+versions of MetPy will ignore the <code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> and still just rely upon the units
+attribute. See <a class="reference external" href="https://github.com/Unidata/MetPy/issues/1358">GitHub Issue #1358</a> for more
+details.</p>
+<p>Note that this changes in newer versions of MetPy as of 1.0, when Quantities-in-xarray
+became the default behavior.</p>
 </div>
 <div class="section" id="coordinates">
 <h2>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline">¶</a></h2>
@@ -453,7 +462,7 @@ straightforward as using the <code class="docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7efcf69c4fc0&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7f70ffe1af68&gt;
 </pre></div>
 </div>
 <p>The cartopy <code class="docutils literal notranslate"><span class="pre">Globe</span></code> can similarly be accessed via the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_globe</span></code>
@@ -463,7 +472,7 @@ property:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7efd12d365c0&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7f7118140eb8&gt;
 </pre></div>
 </div>
 </div>
@@ -689,7 +698,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.227 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.368 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-xarray-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fdf887129bd8090f4be24127e43a5148/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></p>
@@ -725,7 +734,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 17, 2020 at 22:08:48.
+      Last updated on Apr 20, 2020 at 20:03:06.
 
     </p>
   </div>
@@ -762,7 +771,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.12.0.post12+g3f6e5f8',
+            VERSION:'0.12.1.post2+gc3df3bc',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>FilledContourPlot &mdash; MetPy 0.12.0</title>
+  <title>FilledContourPlot &mdash; MetPy 0.12.1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="Hodograph" href="metpy.plots.Hodograph.html"/>
         <link rel="prev" title="ContourPlot" href="metpy.plots.ContourPlot.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.0</option>
+                      <option value=''>0.12.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -256,7 +256,7 @@
 <td><p>A boolean (True/False) on whether to plot contour labels.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colorbar" title="metpy.plots.FilledContourPlot.colorbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar</span></code></a></p></td>
-<td><p>A boolean (True/False) on whether to add a colorbar to the plot.</p></td>
+<td><p>A string (horizontal/vertical) on whether to add a colorbar to the plot.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colormap" title="metpy.plots.FilledContourPlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></p></td>
 <td><p>The string name for a Matplolib or MetPy colormap.</p></td>
@@ -385,9 +385,10 @@
 <dl class="attribute">
 <dt id="metpy.plots.FilledContourPlot.colorbar">
 <code class="sig-name descname">colorbar</code><a class="headerlink" href="#metpy.plots.FilledContourPlot.colorbar" title="Permalink to this definition">¶</a></dt>
-<dd><p>A boolean (True/False) on whether to add a colorbar to the plot.</p>
-<p>To add a colorbar associated with the plot data set the trait to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default
-values is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dd><p>A string (horizontal/vertical) on whether to add a colorbar to the plot.</p>
+<p>To add a colorbar associated with the plot, set the trait to <code class="docutils literal notranslate"><span class="pre">horizontal</span></code> or
+<code class="docutils literal notranslate"><span class="pre">vertical</span></code>,specifying the orientation of the produced colorbar. The default value is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -747,7 +748,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 17, 2020 at 22:08:48.
+      Last updated on Apr 20, 2020 at 20:03:06.
 
     </p>
   </div>
@@ -784,7 +785,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.0.post12+g3f6e5f8',
+            VERSION:'0.12.1.post2+gc3df3bc',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
