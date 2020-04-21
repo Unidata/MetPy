@@ -87,13 +87,13 @@ common meteorological tasks.
 
   .. container:: sphx-glr-download sphx-glr-download-python
 
-    :download:`Download all examples in Python source code: tutorials_python.zip <//home/travis/build/Unidata/MetPy/docs/tutorials/tutorials_python.zip>`
+    :download:`Download all examples in Python source code: tutorials_python.zip <//Users/rmay/repos/metpy/docs/tutorials/tutorials_python.zip>`
 
 
 
   .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-    :download:`Download all examples in Jupyter notebooks: tutorials_jupyter.zip <//home/travis/build/Unidata/MetPy/docs/tutorials/tutorials_jupyter.zip>`
+    :download:`Download all examples in Jupyter notebooks: tutorials_jupyter.zip <//Users/rmay/repos/metpy/docs/tutorials/tutorials_jupyter.zip>`
 
 
 .. only:: html

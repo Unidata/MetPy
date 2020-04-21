@@ -101,16 +101,12 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
+    /Users/rmay/miniconda3/envs/docs/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
       u, v = self.projection.transform_vectors(t, x, y, u, v)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
+    /Users/rmay/miniconda3/envs/docs/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
       u, v = self.projection.transform_vectors(t, x, y, u, v)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_land.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_ocean.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_0_boundary_lines_land.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+    /Users/rmay/repos/metpy/src/metpy/plots/declarative.py:571: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
 
 
 
@@ -118,7 +114,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  22.027 seconds)
+   **Total running time of the script:** ( 0 minutes  9.001 seconds)
 
 
 .. _sphx_glr_download_examples_plots_upperair_declarative.py:

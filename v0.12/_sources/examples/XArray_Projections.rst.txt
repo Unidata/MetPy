@@ -21,8 +21,21 @@ data on a map using CartoPy.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /Users/rmay/repos/metpy/examples/XArray_Projections.py:34: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
 
 
+
+
+
+
+|
 
 
 .. code-block:: default
@@ -32,7 +45,7 @@ data on a map using CartoPy.
     import xarray as xr
 
     # Any import of metpy will activate the accessors
-    from metpy.testing import get_test_data
+    from metpy.cbook import get_test_data
 
     ds = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
     data_var = ds.metpy.parse_cf('Temperature')
@@ -55,7 +68,7 @@ data on a map using CartoPy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.179 seconds)
+   **Total running time of the script:** ( 0 minutes  3.818 seconds)
 
 
 .. _sphx_glr_download_examples_XArray_Projections.py:

@@ -63,7 +63,7 @@ https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalo
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/io/metar.py:627: UserWarning: Pandas doesn't allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
+    /Users/rmay/repos/metpy/src/metpy/io/metar.py:627: UserWarning: Pandas doesn't allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
       df.units = col_units
 
 
@@ -171,10 +171,12 @@ The payoff
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
+    /Users/rmay/miniconda3/envs/docs/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
       u, v = self.projection.transform_vectors(t, x, y, u, v)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
+    /Users/rmay/miniconda3/envs/docs/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
       u, v = self.projection.transform_vectors(t, x, y, u, v)
+    /Users/rmay/repos/metpy/examples/plots/Station_Plot.py:111: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
 
 
 
@@ -182,7 +184,7 @@ The payoff
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  11.559 seconds)
+   **Total running time of the script:** ( 0 minutes  13.233 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot.py:

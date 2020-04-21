@@ -103,7 +103,7 @@ variable for plotting.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
+    /Users/rmay/repos/metpy/src/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -161,13 +161,22 @@ variable for plotting.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /Users/rmay/repos/metpy/examples/sigma_to_pressure_interpolation.py:97: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.940 seconds)
+   **Total running time of the script:** ( 0 minutes  3.679 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Station Plot &mdash; MetPy 0.12</title>
+  <title>Station Plot &mdash; MetPy 0.12.1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Station Plot with Layout" href="Station_Plot_with_Layout.html"/>
         <link rel="prev" title="Mesonet Station Plot" href="Mesonet_Stationplot.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12</option>
+                      <option value=''>0.12.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -264,7 +264,7 @@ like dealing with separating text and assembling a pandas dataframe
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/io/metar.py:627: UserWarning: Pandas doesn&#39;t allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/src/metpy/io/metar.py:627: UserWarning: Pandas doesn&#39;t allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
   df.units = col_units
 </pre></div>
 </div>
@@ -346,13 +346,15 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 </div>
 <img alt="../../_images/sphx_glr_Station_Plot_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/miniconda3/envs/docs/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
   u, v = self.projection.transform_vectors(t, x, y, u, v)
-/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
+/Users/rmay/miniconda3/envs/docs/lib/python3.8/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
   u, v = self.projection.transform_vectors(t, x, y, u, v)
+/Users/rmay/repos/metpy/examples/plots/Station_Plot.py:111: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.559 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  13.233 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f7fb7b4e11b9030fa7c1b08f65033c97/Station_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot.py</span></code></a></p>
@@ -388,7 +390,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 18, 2020 at 00:39:04.
+      Last updated on Apr 20, 2020 at 18:52:46.
 
     </p>
   </div>
@@ -425,7 +427,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1',
+            VERSION:'0.12.1.post2+gc3df3bc6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

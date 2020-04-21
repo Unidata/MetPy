@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ColortableRegistry &mdash; MetPy 0.12</title>
+  <title>ColortableRegistry &mdash; MetPy 0.12.1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
         <link rel="up" title="ctables" href="metpy.plots.ctables.html"/>
         <link rel="next" title="colortables" href="metpy.plots.ctables.colortables.html"/>
         <link rel="prev" title="resource_stream" href="metpy.plots.ctables.resource_stream.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12</option>
+                      <option value=''>0.12.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -279,8 +279,8 @@ matplotlib’s Normalize instances to go with the colortable.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.pop" title="metpy.plots.ctables.ColortableRegistry.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</p></td>
 <td><p>If key is not found, d is returned if given, otherwise KeyError is raised</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="metpy.plots.ctables.ColortableRegistry.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a>()</p></td>
-<td><p>2-tuple; but raise KeyError if D is empty.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="metpy.plots.ctables.ColortableRegistry.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a></p></td>
+<td><p>Remove and return a (key, value) pair as a 2-tuple.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.scan_dir" title="metpy.plots.ctables.ColortableRegistry.scan_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_dir</span></code></a>(path)</p></td>
 <td><p>Scan a directory on disk for color table files and add them to the registry.</p></td>
@@ -434,8 +434,10 @@ from the number of entries matching the color table, and the color table itself.
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.popitem">
-<code class="sig-name descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; (k, v), remove and return some (key, value) pair as a<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="Permalink to this definition">¶</a></dt>
-<dd><p>2-tuple; but raise KeyError if D is empty.</p>
+<code class="sig-name descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
 </dd></dl>
 
 <dl class="method">
@@ -510,7 +512,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 18, 2020 at 00:39:04.
+      Last updated on Apr 20, 2020 at 18:52:46.
 
     </p>
   </div>
@@ -547,7 +549,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1',
+            VERSION:'0.12.1.post2+gc3df3bc6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

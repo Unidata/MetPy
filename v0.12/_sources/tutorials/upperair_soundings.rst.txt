@@ -176,6 +176,15 @@ These lines perform the following tasks:
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /Users/rmay/repos/metpy/tutorials/upperair_soundings.py:113: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
+
 
 
 
@@ -229,6 +238,15 @@ useful when performing further analysis on the Skew-T diagram. Often the
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_002.png
     :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /Users/rmay/repos/metpy/tutorials/upperair_soundings.py:154: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
 
 
 
@@ -293,13 +311,22 @@ which are not drawn.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /Users/rmay/repos/metpy/tutorials/upperair_soundings.py:205: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.439 seconds)
+   **Total running time of the script:** ( 0 minutes  1.567 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:

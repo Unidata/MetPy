@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>xarray with MetPy Tutorial &mdash; MetPy 0.12</title>
+  <title>xarray with MetPy Tutorial &mdash; MetPy 0.12.1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.12" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12.1" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="Reference Guide" href="../api/index.html"/>
         <link rel="prev" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12</option>
+                      <option value=''>0.12.1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,7 +244,7 @@ versions.</p>
 
 <span class="c1"># Any import of metpy will activate the accessors</span>
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.testing</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
@@ -331,12 +331,21 @@ information following the CF conventions. For this, we use the
 <div class="section" id="units">
 <h2>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h2>
 <p>MetPy’s DataArray accessor has a <code class="docutils literal notranslate"><span class="pre">unit_array</span></code> property to obtain a <code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> array
-of just the data from the DataArray (metadata is removed) and a <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> method to
-convert the the data from one unit to another (keeping it as a DataArray). For now, we’ll
-just use <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> to convert our temperature to <code class="docutils literal notranslate"><span class="pre">degC</span></code>.</p>
+of just the data from the DataArray (metadata other than units is removed) and a
+<code class="docutils literal notranslate"><span class="pre">convert_units</span></code> method to convert the the data from one unit to another (keeping it as a
+DataArray). For now, we’ll just use <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> to convert our temperature to
+<code class="docutils literal notranslate"><span class="pre">degC</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>WARNING: Versions of MetPy prior to 1.0 (including 0.12) require units to be in the
+attributes of your xarray DataArray. If you attempt to use a DataArray containing a
+<code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> instead, incorrect results are likely to occur, since these earlier
+versions of MetPy will ignore the <code class="docutils literal notranslate"><span class="pre">pint.Quantity</span></code> and still just rely upon the units
+attribute. See <a class="reference external" href="https://github.com/Unidata/MetPy/issues/1358">GitHub Issue #1358</a> for more
+details.</p>
+<p>Note that this changes in newer versions of MetPy as of 1.0, when Quantities-in-xarray
+became the default behavior.</p>
 </div>
 <div class="section" id="coordinates">
 <h2>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline">¶</a></h2>
@@ -453,7 +462,7 @@ straightforward as using the <code class="docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7fd795435eb8&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x12297dcc0&gt;
 </pre></div>
 </div>
 <p>The cartopy <code class="docutils literal notranslate"><span class="pre">Globe</span></code> can similarly be accessed via the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_globe</span></code>
@@ -463,7 +472,7 @@ property:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7fd7afbb7e80&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x11d207790&gt;
 </pre></div>
 </div>
 </div>
@@ -488,8 +497,8 @@ dimensions by order, not name</p></li>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398031156 6.251403116857854 3.2825541563237786 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.816296728549826 4.388776144480824 4.325234764565967 ...  31.008031569492147 30.753751181686432 30.53090851162976] [5.127334159205037 4.8391046648176665 5.800603470028939 ...  29.193827699079304 29.03383493002396 28.58473535972384] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
-[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245151438716 -13.540158320367329 -14.854696392129718 ...  4.919261875064201 5.747462478394741 6.7213265044217945] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.609707782452212 3.1007692883802775 2.0210959055875346 ...  2.4259734241357735 3.63896013620366 3.3723334776431315] [4.799363905563508 4.2371674868632 2.5436801152315818 ...  1.5555250602976798 2.9679142225845174 3.812933379494143]] meter / second
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398006794 6.251403116856027 3.2825541563213423 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.8162967285510536 4.388776144480824 4.325234764565967 ...  31.008031569492758 30.75375118168766 30.530908511630987] [5.127333709607048 4.839104240492895 5.800602961393702 ...  29.19382513917348 29.03383238414735 28.584732853227813] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
+[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.60970778243941 3.1007692883802775 2.0210959055900948 ...  2.4259734241357735 3.63896013620366 3.3723334776636142] [4.799363905542013 4.237167486865887 2.5436801152342685 ...  1.5555250602976798 2.9679142225845174 3.8129333795048903]] meter / second
 </pre></div>
 </div>
 <p>Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
@@ -531,8 +540,8 @@ rewrite the above geostrophic wind example using this helper function as follows
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398031156 6.251403116857854 3.2825541563237786 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.816296728549826 4.388776144480824 4.325234764565967 ...  31.008031569492147 30.753751181686432 30.53090851162976] [5.127334159205037 4.8391046648176665 5.800603470028939 ...  29.193827699079304 29.03383493002396 28.58473535972384] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
-[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245151438716 -13.540158320367329 -14.854696392129718 ...  4.919261875064201 5.747462478394741 6.7213265044217945] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.609707782452212 3.1007692883802775 2.0210959055875346 ...  2.4259734241357735 3.63896013620366 3.3723334776431315] [4.799363905563508 4.2371674868632 2.5436801152315818 ...  1.5555250602976798 2.9679142225845174 3.812933379494143]] meter / second
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398006794 6.251403116856027 3.2825541563213423 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.8162967285510536 4.388776144480824 4.325234764565967 ...  31.008031569492758 30.75375118168766 30.530908511630987] [5.127333709607048 4.839104240492895 5.800602961393702 ...  29.19382513917348 29.03383238414735 28.584732853227813] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
+[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.60970778243941 3.1007692883802775 2.0210959055900948 ...  2.4259734241357735 3.63896013620366 3.3723334776636142] [4.799363905542013 4.237167486865887 2.5436801152342685 ...  1.5555250602976798 2.9679142225845174 3.8129333795048903]] meter / second
 </pre></div>
 </div>
 </div>
@@ -549,6 +558,11 @@ the data.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_xarray_tutorial_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:242: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s add a projection and coastlines to it</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">())</span>
 <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -558,6 +572,11 @@ the data.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_xarray_tutorial_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:251: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Or, let&#39;s make a full 500 hPa map with heights, temperature, winds, and humidity</span>
 
 <span class="c1"># Select the data for this time and level</span>
@@ -600,6 +619,11 @@ the data.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_xarray_tutorial_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_003.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:293: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+</pre></div>
+</div>
 </div>
 <div class="section" id="what-could-go-wrong">
 <h2>What Could Go Wrong?<a class="headerlink" href="#what-could-go-wrong" title="Permalink to this headline">¶</a></h2>
@@ -689,7 +713,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.269 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.945 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-xarray-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fdf887129bd8090f4be24127e43a5148/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></p>
@@ -725,7 +749,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 18, 2020 at 00:39:04.
+      Last updated on Apr 20, 2020 at 18:52:46.
 
     </p>
   </div>
@@ -762,7 +786,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.12.1',
+            VERSION:'0.12.1.post2+gc3df3bc6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
