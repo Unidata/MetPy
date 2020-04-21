@@ -828,14 +828,15 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
 @exporter.export
 @preprocess_xarray
 def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs):
-    """   
+    """
     Convert azimuth and range bins in a polar coordinate system to lat/lon coordinates.
     Pole refers to the origin of the coordinate system. Adapted from Brian Blaylock's code.
 
     Parameters
     - - - - -
     azimuths :   array_like
-                array of azimuths defining the grid. If not a `pint.Quantity`, assumed to be in degrees.
+                array of azimuths defining the grid. If not a `pint.Quantity`, assumed
+                to be in degrees.
     ranges  :    array_like
                 array of range distances from the pole. Typically in meters.
     center_lat  :  float
@@ -849,20 +850,20 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs)
         two dimensional arrays of latitudes and longitudes corresponding
         to the bin positions in the polar coordinate system
 
-    """              
-
+    """
     from pyproj import Geod
+
     geod_args = {'ellps': 'sphere'}
     if kwargs:
         geod_args = kwargs
     g = Geod(**geod_args)
 
-    lats = np.ones([len(azimuths),len(ranges)])*center_lat
-    lons = np.ones([len(azimuths),len(ranges)])*center_lon
-    az2D = np.ones_like(lats)*azimuths[:,None]
-    rng2D = np.ones_like(lats)*np.transpose(ranges[:,None])
-    lat,lon,back=g.fwd(lons,lats,az2D,rng2D)
-    return lat,lon
+    az2d, rng2d = np.meshgrid(ranges, azimuths)
+    lats = np.full(az2d.shape, center_lat)
+    lons = np.full(az2d.shape, center_lon)
+    lon, lat, _ = g.fwd(lons, lats, az2d, rng2d)
+
+    return lon, lat
 
 
 @exporter.export
