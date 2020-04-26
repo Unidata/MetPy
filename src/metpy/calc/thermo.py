@@ -2607,7 +2607,7 @@ def lifted_index(pressure, temperature, parcel_profile):
 
     Returns
     -------
-    Integer
+    `pint.Quantity`
         Lifted Index.
 
     """
@@ -2618,5 +2618,5 @@ def lifted_index(pressure, temperature, parcel_profile):
     # find the parcel profile temperature at 500 hPa.
     Tp500 = parcel_profile[idx]
     # calculate the lifted index.
-    lifted_index = (T500.m - Tp500.to(units.degC).m)[0]
-    return int(np.round(lifted_index))
+    lifted_index = T500 - Tp500.to(units.degC)
+    return lifted_index
