@@ -2574,3 +2574,49 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
     """
     mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
     return specific_humidity_from_mixing_ratio(mixing_ratio)
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def lifted_index(pressure, temperature, parcel_profile):
+    """Calculate Lifted Index from the pressure temperature and parcel profile.
+
+    Lifted index formula:
+    LI = T500 - Tp500
+    where:
+    T500 is the measured temperature at 500 hPa.
+    Tp500 is the temperature of the lifted parcel at 500 hPa.
+
+    Lifted index is the mean mixing ratio of the lowest 3000' and the potential temperature of
+    the predicted afternoon high are used. The LI can be used as a diagnostic tool as well if
+    the current surface temperature is used. The lower the value (i.e. the greater the negative
+    number), the better the chance for thunderstorms and the greater the threat for severe
+    weather. Note that the Lifted Index differs from the Showalter Index by the initial
+    location of the lifted parcel.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest, in order from highest to
+        lowest pressure.
+    temperature : `pint.Quantity`
+        The atmospheric temperature corresponding to pressure.
+    parcel_profile : `pint.Quantity`
+        The temperature profile of the parcel.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Lifted Index.
+
+    """
+    # find the index for the 500 hPa pressure level.
+    idx = np.where(pressure == 500 * units.hPa)
+    # find the measured temperature at 500 hPa.
+    T500 = temperature[idx]
+    # find the parcel profile temperature at 500 hPa.
+    Tp500 = parcel_profile[idx]
+    # calculate the lifted index.
+    lifted_index = (T500.m - Tp500.to(units.degC).m)[0]
+    return int(np.round(lifted_index))
