@@ -1557,3 +1557,28 @@ def test_lcl_grid_surface_LCLs():
     temp_truth = np.array([15, 9.10391763, 13]) * units.degC
     assert_array_almost_equal(lcl_pressure, pres_truth, 4)
     assert_array_almost_equal(lcl_temperature, temp_truth, 4)
+
+
+def test_lifted_index():
+    """Test the Lifted Index calculation."""
+    pressure = np.array([1014., 1000., 997., 981.2, 947.4, 925., 914.9, 911.,
+                         902., 883., 850., 822.3, 816., 807., 793.2, 770.,
+                         765.1, 753., 737.5, 737., 713., 700., 688., 685.,
+                         680., 666., 659.8, 653., 643., 634., 615., 611.8,
+                         566.2, 516., 500., 487., 484.2, 481., 475., 460.,
+                         400.]) * units.hPa
+    temperature = np.array([24.2, 24.2, 24., 23.1, 21., 19.6, 18.7, 18.4,
+                            19.2, 19.4, 17.2, 15.3, 14.8, 14.4, 13.4, 11.6,
+                            11.1, 10., 8.8, 8.8, 8.2, 7., 5.6, 5.6,
+                            5.6, 4.4, 3.8, 3.2, 3., 3.2, 1.8, 1.5,
+                            -3.4, -9.3, -11.3, -13.1, -13.1, -13.1, -13.7, -15.1,
+                            -23.5]) * units.degC
+    dewpoint = np.array([23.2, 23.1, 22.8, 22., 20.2, 19., 17.6, 17.,
+                         16.8, 15.5, 14., 11.7, 11.2, 8.4, 7., 4.6,
+                         5., 6., 4.2, 4.1, -1.8, -2., -1.4, -0.4,
+                         -3.4, -5.6, -4.3, -2.8, -7., -25.8, -31.2, -31.4,
+                         -34.1, -37.3, -32.3, -34.1, -37.3, -41.1, -37.7, -58.1,
+                         -57.5]) * units.degC
+    parcel_prof = parcel_profile(pressure, temperature[0], dewpoint[0])
+    LI = lifted_index(pressure, temperature, parcel_prof)
+    assert_almost_equal(LI, −7.9176350 * units.delta_degree_Celsius, 2)
