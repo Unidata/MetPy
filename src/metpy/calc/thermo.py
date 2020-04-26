@@ -2588,11 +2588,11 @@ def lifted_index(pressure, temperature, parcel_profile):
     T500 is the measured temperature at 500 hPa.
     Tp500 is the temperature of the lifted parcel at 500 hPa.
 
-    Lifted index is the mean mixing ratio of the lowest 3000' and the potential temperature of
-    the predicted afternoon high are used. The LI can be used as a diagnostic tool as well if
-    the current surface temperature is used. The lower the value (i.e. the greater the negative
-    number), the better the chance for thunderstorms and the greater the threat for severe
-    weather. Note that the Lifted Index differs from the Showalter Index by the initial
+    Lifted Index is the mean mixing ratio of the lowest 3000' and the potential temperature of
+    the predicted afternoon high are used. The Lifted Index can be used as a diagnostic tool as
+    well if the current surface temperature is used. The lower the value (i.e. the greater the
+    negative number), the better the chance for thunderstorms and the greater the threat for
+    severe weather. Note that the Lifted Index differs from the Showalter Index by the initial
     location of the lifted parcel.
 
     Parameters
@@ -2607,7 +2607,7 @@ def lifted_index(pressure, temperature, parcel_profile):
 
     Returns
     -------
-    `pint.Quantity`
+    Integer
         Lifted Index.
 
     """
