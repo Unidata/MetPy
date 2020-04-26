@@ -49,7 +49,7 @@ matrix:
   include:
     - python: 3.6
       env:
-        - VERSIONS="numpy==1.13.0 matplotlib==2.1.0 scipy==1.0.0 pint==0.8 xarray==0.12.3 pandas==0.22.0"
+        - VERSIONS="numpy==1.16.0 matplotlib==2.1.0 scipy==1.0.0 pint==0.10.1 xarray==0.13.0 pandas==0.22.0"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
     - python: "3.8-dev"
@@ -126,6 +126,7 @@ before_script:
 
 script:
   - export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
+  - export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1;
   - if [[ $TASK == "docs" ]]; then
       pushd docs;
       make clean overridecheck html linkcheck O=-W;

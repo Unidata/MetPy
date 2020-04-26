@@ -84,7 +84,7 @@ def test_skewt_default_aspect_empty():
     return fig
 
 
-@pytest.mark.skipif(matplotlib.__version__ < '3' or matplotlib.__version__ >= '3.2',
+@pytest.mark.skipif(matplotlib.__version__ < '3.2',
                     reason='Matplotlib versions generate different image sizes.')
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
                                savefig_kwargs={'bbox_inches': 'tight'})
@@ -204,7 +204,7 @@ def test_skewt_shade_cape_cin_no_limit(test_profile):
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig)
+        skew = SkewT(fig, aspect='auto')
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_cape(p, t, tp)

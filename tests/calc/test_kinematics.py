@@ -1038,6 +1038,7 @@ def data_4d():
     subset = data.drop((
         'LatLon_361X720-0p25S-180p00E', 'Vertical_velocity_pressure_isobaric', 'isobaric1',
         'Relative_humidity_isobaric', 'reftime'
+
     )).sel(
         latitude=[46., 44., 42., 40.],
         longitude=[262., 267., 272., 277.],

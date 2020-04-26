@@ -9,11 +9,11 @@ In general, MetPy tries to support minor versions of dependencies released withi
 years. For Python itself, that means supporting the last two minor releases.
 
 * matplotlib >= 2.1.0
-* numpy >= 1.13.0
+* numpy >= 1.16.0
 * scipy >= 1.0.0
-* pint >= 0.8
+* pint >= 0.10.1
 * pandas >= 0.22.0
-* xarray >= 0.12.3
+* xarray >= 0.13.0
 * traitlets >= 4.3.0
 * pooch >= 0.1
 

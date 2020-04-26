@@ -9,13 +9,14 @@ import xarray as xr
 
 from metpy.interpolate import cross_section, geodesic, interpolate_to_slice
 from metpy.testing import assert_array_almost_equal
+from metpy.units import units
 
 
 @pytest.fixture()
 def test_ds_lonlat():
     """Return dataset on a lon/lat grid with no time coordinate for use in tests."""
-    data_temp = np.linspace(250, 300, 5 * 6 * 7).reshape((5, 6, 7))
-    data_rh = np.linspace(0, 1, 5 * 6 * 7).reshape((5, 6, 7))
+    data_temp = np.linspace(250, 300, 5 * 6 * 7).reshape((5, 6, 7)) * units.kelvin
+    data_rh = np.linspace(0, 1, 5 * 6 * 7).reshape((5, 6, 7)) * units.dimensionless
     ds = xr.Dataset(
         {
             'temperature': (['isobaric', 'lat', 'lon'], data_temp),
@@ -42,15 +43,13 @@ def test_ds_lonlat():
             )
         }
     )
-    ds['temperature'].attrs['units'] = 'kelvin'
-    ds['relative_humidity'].attrs['units'] = 'dimensionless'
     return ds.metpy.parse_cf()
 
 
 @pytest.fixture()
 def test_ds_xy():
     """Return dataset on a x/y grid with a time coordinate for use in tests."""
-    data_temperature = np.linspace(250, 300, 5 * 6 * 7).reshape((1, 5, 6, 7))
+    data_temperature = np.linspace(250, 300, 5 * 6 * 7).reshape((1, 5, 6, 7)) * units.kelvin
     ds = xr.Dataset(
         {
             'temperature': (['time', 'isobaric', 'y', 'x'], data_temperature),
@@ -83,7 +82,6 @@ def test_ds_xy():
         }
     )
     ds['temperature'].attrs = {
-        'units': 'kelvin',
         'grid_mapping': 'lambert_conformal'
     }
     ds['lambert_conformal'].attrs = {
@@ -169,7 +167,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
         dims=['index']
     )
     data_truth = xr.DataArray(
-        truth_values,
+        truth_values * units.kelvin,
         name='temperature',
         coords={
             'time': data['time'],
@@ -179,8 +177,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
             'y': data_truth_y,
             'x': data_truth_x
         },
-        dims=['time', 'isobaric', 'index'],
-        attrs={'units': 'kelvin'}
+        dims=['time', 'isobaric', 'index']
     )
 
     xr.testing.assert_allclose(data_truth, data_cross)

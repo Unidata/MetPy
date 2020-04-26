@@ -10,7 +10,6 @@ import numpy as np
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
                          pressure_tendency, sky_cover, wx_symbol_font)
 from ..package_tools import Exporter
-from ..units import atleast_1d
 
 exporter = Exporter(globals())
 
@@ -58,8 +57,8 @@ class StationPlot(object):
 
         """
         self.ax = ax
-        self.x = atleast_1d(x)
-        self.y = atleast_1d(y)
+        self.x = np.atleast_1d(x)
+        self.y = np.atleast_1d(y)
         self.fontsize = fontsize
         self.spacing = fontsize if spacing is None else spacing
         self.transform = transform

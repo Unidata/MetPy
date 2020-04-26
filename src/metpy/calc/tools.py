@@ -16,7 +16,7 @@ import xarray as xr
 from ..cbook import broadcast_indices, result_type
 from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
-from ..units import atleast_1d, check_units, concatenate, diff, units
+from ..units import check_units, concatenate, units
 from ..xarray import check_axis, preprocess_xarray
 
 exporter = Exporter(globals())
@@ -1276,7 +1276,7 @@ def _process_deriv_args(f, kwargs):
         if 'x' in kwargs:
             raise ValueError('Cannot specify both "x" and "delta".')
 
-        delta = atleast_1d(kwargs['delta'])
+        delta = np.atleast_1d(kwargs['delta'])
         if delta.size == 1:
             diff_size = list(f.shape)
             diff_size[axis] -= 1
@@ -1288,7 +1288,7 @@ def _process_deriv_args(f, kwargs):
             delta = _broadcast_to_axis(delta, axis, n)
     elif 'x' in kwargs:
         x = _broadcast_to_axis(kwargs['x'], axis, n)
-        delta = diff(x, axis=axis)
+        delta = np.diff(x, axis=axis)
     else:
         raise ValueError('Must specify either "x" or "delta" for value positions.')
 
@@ -1492,7 +1492,7 @@ def wrap_output_like(**wrap_kwargs):
     - As matched output (final returned value):
 
         * ``pint.Quantity``
-        * ``xarray.DataArray``
+        * ``xarray.DataArray`` wrapping a ``pint.Quantity``
 
     (if matched output is not one of these types, we instead treat the match as if it was a
     dimenionless Quantity.)
@@ -1572,16 +1572,27 @@ def wrap_output_like(**wrap_kwargs):
 
 def _wrap_output_like_matching_units(result, match):
     """Convert result to be like match with matching units for output wrapper."""
-    match_units = str(getattr(match, 'units', ''))
-    output_xarray = isinstance(match, xr.DataArray)
+    if isinstance(match, xr.DataArray):
+        output_xarray = True
+        match_units = match.metpy.units
+    elif isinstance(match, units.Quantity):
+        output_xarray = False
+        match_units = match.units
+    else:
+        output_xarray = False
+        match_units = ''
+
     if isinstance(result, xr.DataArray):
-        result.metpy.convert_units(match_units)
-        return result if output_xarray else result.metpy.unit_array
+        result = result.metpy.convert_units(match_units)
+        return result.metpy.quantify() if output_xarray else result.metpy.unit_array
     else:
         result = result.m_as(match_units) if isinstance(result, units.Quantity) else result
         if output_xarray:
-            return xr.DataArray(result, dims=match.dims, coords=match.coords,
-                                attrs={'units': match_units})
+            return xr.DataArray(
+                units.Quantity(result, match_units),
+                dims=match.dims,
+                coords=match.coords
+            )
         else:
             return units.Quantity(result, match_units)
 
@@ -1590,7 +1601,7 @@ def _wrap_output_like_not_matching_units(result, match):
     """Convert result to be like match without matching units for output wrapper."""
     output_xarray = isinstance(match, xr.DataArray)
     if isinstance(result, xr.DataArray):
-        return result if output_xarray else result.metpy.unit_array
+        return result.metpy.quantify() if output_xarray else result.metpy.unit_array
     else:
         if isinstance(result, units.Quantity):
             result_magnitude = result.magnitude
@@ -1600,7 +1611,10 @@ def _wrap_output_like_not_matching_units(result, match):
             result_units = ''
 
         if output_xarray:
-            return xr.DataArray(result_magnitude, dims=match.dims, coords=match.coords,
-                                attrs={'units': result_units})
+            return xr.DataArray(
+                units.Quantity(result_magnitude, result_units),
+                dims=match.dims,
+                coords=match.coords
+            )
         else:
             return units.Quantity(result_magnitude, result_units)

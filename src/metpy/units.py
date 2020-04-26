@@ -29,16 +29,17 @@ UndefinedUnitError = pint.UndefinedUnitError
 DimensionalityError = pint.DimensionalityError
 
 # Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs
-try:
-    units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True,
-                              preprocessors=[functools.partial(
-                                             re.sub,
-                                             (r'(?<=[A-Za-z])(?![A-Za-z])(?<![0-9\-][eE])'
-                                              r'(?<![0-9\-])(?=[0-9\-])'),
-                                             '**'),
-                                             lambda string: string.replace('%', 'percent')])
-except TypeError:
-    units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
+units = pint.UnitRegistry(
+    autoconvert_offset_to_baseunit=True,
+    preprocessors=[
+        functools.partial(
+            re.sub,
+            r'(?<=[A-Za-z])(?![A-Za-z])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])',
+            '**'
+        ),
+        lambda string: string.replace('%', 'percent')
+    ]
+)
 
 # Capture v0.10 NEP 18 warning on first creation
 with warnings.catch_warnings():
@@ -55,11 +56,7 @@ units.define('degrees_north = degree = degrees_N = degreesN = degree_north = deg
 units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
 
 # Alias geopotential meters (gpm) to just meters
-try:
-    units._units['meter']._aliases = ('metre', 'gpm')
-    units._units['gpm'] = units._units['meter']
-except AttributeError:
-    log.warning('Failed to add gpm alias to meters.')
+units.define('@alias meter = gpm')
 
 # Silence UnitStrippedWarning
 if hasattr(pint, 'UnitStrippedWarning'):
@@ -104,7 +101,7 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
 def concatenate(arrs, axis=0):
     r"""Concatenate multiple values into a new unitized object.
 
-    This is essentially a unit-aware version of `numpy.concatenate`. All items
+    This is essentially a scalar-/masked array-aware version of `numpy.concatenate`. All items
     must be able to be converted to the same units. If an item has no units, it will be given
     those of the rest of the collection, without conversion. The first units found in the
     arguments is used as the final output units.
@@ -142,100 +139,6 @@ def concatenate(arrs, axis=0):
         data = np.asarray(data)
 
     return units.Quantity(data, dest)
-
-
-def diff(x, **kwargs):
-    """Calculate the n-th discrete difference along given axis.
-
-    Wraps :func:`numpy.diff` to handle units.
-
-    Parameters
-    ----------
-    x : array-like
-        Input data
-    n : int, optional
-        The number of times values are differenced.
-    axis : int, optional
-        The axis along which the difference is taken, default is the last axis.
-
-    Returns
-    -------
-    diff : ndarray
-        The n-th differences. The shape of the output is the same as `a`
-        except along `axis` where the dimension is smaller by `n`. The
-        type of the output is the same as that of the input.
-
-    See Also
-    --------
-    numpy.diff
-
-    """
-    if hasattr(x, 'units'):
-        ret = np.diff(x.magnitude, **kwargs)
-        # Can't just use units because of how things like temperature work
-        it = x.flat
-        true_units = (next(it) - next(it)).units
-        return ret * true_units
-    else:
-        return np.diff(x, **kwargs)
-
-
-def atleast_1d(*arrs):
-    r"""Convert inputs to arrays with at least one dimension.
-
-    Scalars are converted to 1-dimensional arrays, whilst other
-    higher-dimensional inputs are preserved. This is a thin wrapper
-    around `numpy.atleast_1d` to preserve units.
-
-    Parameters
-    ----------
-    arrs : arbitrary positional arguments
-        Input arrays to be converted if necessary
-
-    Returns
-    -------
-    `pint.Quantity`
-        A single quantity or a list of quantities, matching the number of inputs.
-
-    """
-    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
-    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
-    ret = np.atleast_1d(*mags)
-    if len(mags) == 1:
-        if orig_units[0] is not None:
-            return units.Quantity(ret, orig_units[0])
-        else:
-            return ret
-    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
-
-
-def atleast_2d(*arrs):
-    r"""Convert inputs to arrays with at least two dimensions.
-
-    Scalars and 1-dimensional arrays are converted to 2-dimensional arrays,
-    whilst other higher-dimensional inputs are preserved. This is a thin wrapper
-    around `numpy.atleast_2d` to preserve units.
-
-    Parameters
-    ----------
-    arrs : arbitrary positional arguments
-        Input arrays to be converted if necessary
-
-    Returns
-    -------
-    `pint.Quantity`
-        A single quantity or a list of quantities, matching the number of inputs.
-
-    """
-    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
-    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
-    ret = np.atleast_2d(*mags)
-    if len(mags) == 1:
-        if orig_units[0] is not None:
-            return units.Quantity(ret, orig_units[0])
-        else:
-            return ret
-    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def masked_array(data, data_units=None, **kwargs):
@@ -334,56 +237,7 @@ def check_units(*units_by_pos, **units_by_name):
     return dec
 
 
-try:
-    # Try to enable pint's built-in support
-    units.setup_matplotlib()
-except (AttributeError, RuntimeError, ImportError):  # Pint's not available, try our own
-    import matplotlib.units as munits
-
-    class PintAxisInfo(munits.AxisInfo):
-        """Support default axis and tick labeling and default limits."""
-
-        def __init__(self, units):
-            """Set the default label to the pretty-print of the unit."""
-            super().__init__(label='{:P}'.format(units))
-
-    class PintConverter(munits.ConversionInterface):
-        """Implement support for pint within matplotlib's unit conversion framework."""
-
-        def __init__(self, registry):
-            """Initialize converter for pint units."""
-            super().__init__()
-            self._reg = registry
-
-        def convert(self, value, unit, axis):
-            """Convert :`Quantity` instances for matplotlib to use."""
-            if isinstance(value, (tuple, list)):
-                return [self._convert_value(v, unit, axis) for v in value]
-            else:
-                return self._convert_value(value, unit, axis)
-
-        def _convert_value(self, value, unit, axis):
-            """Handle converting using attached unit or falling back to axis units."""
-            if hasattr(value, 'units'):
-                return value.to(unit).magnitude
-            else:
-                return self._reg.Quantity(value, axis.get_units()).to(unit).magnitude
-
-        @staticmethod
-        def axisinfo(unit, axis):
-            """Return axis information for this particular unit."""
-            return PintAxisInfo(unit)
-
-        @staticmethod
-        def default_units(x, axis):
-            """Get the default unit to use for the given combination of unit and axis."""
-            if isinstance(x, (tuple, list)):
-                return getattr(x[0], 'units', 'dimensionless')
-            else:
-                return getattr(x, 'units', 'dimensionless')
-
-    # Register the class
-    munits.registry[units.Quantity] = PintConverter(units)
-    del munits
+# Enable pint's built-in matplotlib support
+units.setup_matplotlib()
 
 del pint

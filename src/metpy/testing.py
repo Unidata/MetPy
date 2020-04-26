@@ -106,6 +106,11 @@ def check_and_drop_units(actual, desired):
 
     """
     try:
+        # Convert DataArrays to Quantities
+        if isinstance(desired, xr.DataArray):
+            desired = desired.metpy.unit_array
+        if isinstance(actual, xr.DataArray):
+            actual = actual.metpy.unit_array
         # If the desired result has units, add dimensionless units if necessary, then
         # ensure that this is compatible to the desired result.
         if hasattr(desired, 'units'):
@@ -120,8 +125,6 @@ def check_and_drop_units(actual, desired):
     except DimensionalityError:
         raise AssertionError('Units are not compatible: {} should be {}'.format(
             actual.units, getattr(desired, 'units', 'dimensionless')))
-    except AttributeError:
-        pass
 
     if hasattr(actual, 'magnitude'):
         actual = actual.magnitude

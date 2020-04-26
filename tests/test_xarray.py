@@ -96,27 +96,68 @@ def test_unit_array(test_var):
 
 def test_units(test_var):
     """Test the units property on the accessor."""
-    assert test_var.metpy.units == units('kelvin')
+    assert test_var.metpy.units == units.kelvin
 
 
 def test_units_percent():
-    """Test that '%' is converted to 'percent'."""
+    """Test that '%' is handled as 'percent'."""
     test_var_percent = xr.open_dataset(
         get_test_data('irma_gfs_example.nc',
                       as_file_obj=False))['Relative_humidity_isobaric']
-    assert test_var_percent.metpy.units == units('percent')
+    assert test_var_percent.metpy.units == units.percent
+
+
+def test_magnitude_with_quantity(test_var):
+    """Test magnitude property on accessor when data is a quantity."""
+    assert isinstance(test_var.metpy.magnitude, np.ndarray)
+    np.testing.assert_array_almost_equal(test_var.metpy.magnitude, np.asarray(test_var.values))
+
+
+def test_magnitude_without_quantity(test_ds_generic):
+    """Test magnitude property on accessor when data is not a quantity."""
+    assert isinstance(test_ds_generic['test'].data, np.ndarray)
+    np.testing.assert_array_equal(
+        test_ds_generic['test'].metpy.magnitude,
+        np.asarray(test_ds_generic['test'].values)
+    )
 
 
 def test_convert_units(test_var):
-    """Test in-place conversion of units."""
-    test_var.metpy.convert_units('degC')
+    """Test conversion of units."""
+    result = test_var.metpy.convert_units('degC')
 
-    # Check that variable metadata is updated
-    assert units(test_var.attrs['units']) == units('degC')
+    # Check that units are updated without modifying original
+    assert result.metpy.units == units.degC
+    assert test_var.metpy.units == units.kelvin
 
     # Make sure we now get an array back with properly converted values
-    assert test_var.metpy.unit_array.units == units.degC
-    assert_almost_equal(test_var[0, 0, 0, 0], 18.44 * units.degC, 2)
+    assert_almost_equal(result[0, 0, 0, 0], 18.44 * units.degC, 2)
+
+
+def test_convert_coordinate_units(test_ds_generic):
+    """Test conversion of coordinate units."""
+    result = test_ds_generic['test'].metpy.convert_coordinate_units('b', 'percent')
+    assert result['b'].data[1] == 100.
+    assert result['b'].metpy.units == units.percent
+
+
+def test_quantify(test_ds_generic):
+    """Test quantify method for converting data to Quantity."""
+    original = test_ds_generic['test'].values
+    result = test_ds_generic['test'].metpy.quantify()
+    assert isinstance(result.data, units.Quantity)
+    assert result.data.units == units.dimensionless
+    assert 'units' not in result.attrs
+    np.testing.assert_array_almost_equal(result.data, units.Quantity(original))
+
+
+def test_dequantify(test_var):
+    """Test dequantify method for converting data away from Quantity."""
+    original = test_var.data
+    result = test_var.metpy.dequantify()
+    assert isinstance(result.data, np.ndarray)
+    assert result.attrs['units'] == 'kelvin'
+    np.testing.assert_array_almost_equal(result.data, original.magnitude)
 
 
 def test_radian_projection_coords():
@@ -177,12 +218,6 @@ def test_preprocess_xarray():
         return a.to('m') + b
 
     assert_array_equal(func(data, b=data2), np.array([1001, 1001, 1001]) * units.m)
-
-
-def test_strftime():
-    """Test our monkey-patched xarray strftime."""
-    data = xr.DataArray(np.datetime64('2000-01-01 01:00:00'))
-    assert '2000-01-01 01:00:00' == data.dt.strftime('%Y-%m-%d %H:%M:%S')
 
 
 def test_coordinates_basic_by_method(test_var):
@@ -662,13 +697,6 @@ def test_coordinate_identification_shared_but_not_equal_coords():
     # Check vertical coordinate on u
     # Fails prior to resolution of Issue #1124
     assert ds['isobaric2'].identical(ds['u'].metpy.vertical)
-
-
-def test_check_no_quantification_of_xarray_data(test_ds_generic):
-    """Test that .unit_array setter does not insert a `pint.Quantity` into the DataArray."""
-    var = test_ds_generic['e']
-    var.metpy.unit_array = [1000, 925, 850, 700, 500] * units.hPa
-    assert not isinstance(var.data, units.Quantity)
 
 
 def test_one_dimensional_lat_lon(test_ds_generic):
