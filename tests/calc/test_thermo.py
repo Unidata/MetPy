@@ -11,8 +11,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
-                        mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
+                        exner_function, isentropic_interpolation, lcl, lfc, lifted_index,
+                        mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
@@ -1581,4 +1581,4 @@ def test_lifted_index():
                          -57.5]) * units.degC
     parcel_prof = parcel_profile(pressure, temperature[0], dewpoint[0])
     LI = lifted_index(pressure, temperature, parcel_prof)
-    assert_almost_equal(LI, −7.9176350 * units.delta_degree_Celsius, 2)
+    assert_almost_equal(LI, -7.9176350 * units.delta_degree_Celsius, 2)
