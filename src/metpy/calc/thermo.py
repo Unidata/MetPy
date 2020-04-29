@@ -2582,18 +2582,15 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
-    Lifted index formula:
+    Lifted index formula derived from [Galway1956] and referenced by [Doswell-Schultz2006]:
     LI = T500 - Tp500
     where:
     T500 is the measured temperature at 500 hPa.
     Tp500 is the temperature of the lifted parcel at 500 hPa.
 
-    Lifted Index is the mean mixing ratio of the lowest 3000' and the potential temperature of
-    the predicted afternoon high are used. The Lifted Index can be used as a diagnostic tool as
-    well if the current surface temperature is used. The lower the value (i.e. the greater the
-    negative number), the better the chance for thunderstorms and the greater the threat for
-    severe weather. Note that the Lifted Index differs from the Showalter Index by the initial
-    location of the lifted parcel.
+    Calculation of the lifted index is defined as the temperature difference between the
+    observed 500 hPa temperature and the temperature of a parcel lifted from the
+    surface to 500 hPa.
 
     Parameters
     ----------
@@ -2604,6 +2601,15 @@ def lifted_index(pressure, temperature, parcel_profile):
         The atmospheric temperature corresponding to pressure.
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel.
+
+    Notes:
+    ------
+    References to the lifted index equation came from:
+    Galloway 1956 Bulletin American Meteorological Society
+    https://journals.ametsoc.org/doi/pdf/10.1175/1520-0477-37.10.528
+
+    Doswell and Schultz 2006 Electronic Journal of Severe Storms Meteorology
+    https://ejssm.org/ojs/index.php/ejssm/article/view/11/10
 
     Returns
     -------
