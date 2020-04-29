@@ -48,6 +48,11 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
+.. [Doswell-Schultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
+           Parameters in Forecasting Severe Storms. *Electronic Journal of Severe Storms
+           Meteorology*,
+           <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.
+
 .. [Esterheld2008] Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
            Non-Tornadic Supercells: A New Hodograph Technique. *E-Journal Of Severe Storms
            Meteorology*, **3(2)**, Retrieved May 10, 2018.
@@ -78,6 +83,11 @@ References
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
            `FCM-R19-2003 <_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
+
+.. [Galway1956] Galway, J. G., 1956: The Lifted Index as a Predictor of Latent Instability.
+           *American Meteorology Society*,
+           doi:`10.1175/1520-0477-37.10.528
+           <https://doi.org/10.1175/1520-0477-37.10.528>`_.
 
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
