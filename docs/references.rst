@@ -51,7 +51,7 @@ References
 .. [Doswell-Schultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
            Parameters in Forecasting Severe Storms. *Electronic Journal of Severe Storms
            Meteorology*,
-           <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.
+           `EJSSM <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.
 
 .. [Esterheld2008] Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
            Non-Tornadic Supercells: A New Hodograph Technique. *E-Journal Of Severe Storms
