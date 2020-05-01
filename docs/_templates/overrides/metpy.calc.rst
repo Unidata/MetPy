@@ -73,6 +73,7 @@ Soundings
       el
       lcl
       lfc
+      lifted_index
       mixed_layer
       mixed_layer_cape_cin
       mixed_parcel
