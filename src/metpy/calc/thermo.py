@@ -2617,3 +2617,40 @@ def lifted_index(pressure, temperature, parcel_profile):
     # calculate the lifted index.
     lifted_index = T500 - Tp500.to(units.degC)
     return lifted_index
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[length]', '[temperature]', '[speed]', '[speed]')
+def gradient_richardson_number(height, potential_temperature, u, v, axis=0):
+    r"""Calculate the gradient (or flux) Richardson number.
+
+    .. math::   Ri = (g/\theta) * \frac{\left(\partial \theta/\partial z\)}
+             {[\left(\partial u / \partial z\right)^2 + \left(\partial v / \partial z\right)^2}
+
+    See [Holton2004]_ pg. 121-122. As noted by [Holton2004]_, flux Richardson
+    number values below 0.25 indicate turbulence.
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Atmospheric height
+    potential_temperature : `pint.Quantity`
+        Atmospheric potential temperature
+    u : `pint.Quantity`
+        x component of the wind
+    v : `pint.Quantity`
+        y component of the wind
+    axis : int, optional
+        The axis corresponding to vertical, defaults to 0.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Gradient Richardson number
+    """
+    dthetadz = first_derivative(potential_temperature, x=height, axis=axis)
+    dudz = first_derivative(u, x=height, axis=axis)
+    dvdz = first_derivative(v, x=height, axis=axis)
+
+    return (mpconsts.g / potential_temperature) * (dthetadz / (dudz ** 2 + dvdz ** 2))

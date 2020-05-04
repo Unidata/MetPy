@@ -11,8 +11,9 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, isentropic_interpolation, lcl, lfc, lifted_index,
-                        mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
+                        exner_function, gradient_richardson_number,
+                        isentropic_interpolation, lcl, lfc, lifted_index, mixed_layer,
+                        mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
@@ -1582,3 +1583,16 @@ def test_lifted_index():
     parcel_prof = parcel_profile(pressure, temperature[0], dewpoint[0])
     LI = lifted_index(pressure, temperature, parcel_prof)
     assert_almost_equal(LI, -7.9176350 * units.delta_degree_Celsius, 2)
+
+
+def test_gradient_richardson_number():
+    """Test gradient Richardson number calculation."""
+    theta = units('K') * np.asarray([254.5, 258.3, 262.2])
+    u_wnd = units('m/s') * np.asarray([-2., -1.1, 0.23])
+    v_wnd = units('m/s') * np.asarray([3.3, 4.2, 5.2])
+    height = units('km') * np.asarray([0.2, 0.4, 0.6])
+
+    result = gradient_richardson_number(height, theta, u_wnd, v_wnd)
+    expected = np.asarray([24.2503551, 13.6242603, 8.4673744])
+
+    assert_array_almost_equal(result, expected, 4)
