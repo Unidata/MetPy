@@ -3,17 +3,20 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Cartopy specific mapping utilities."""
 
+import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
 from ..cbook import get_test_data
 
 
-class MetPyMapFeature(cfeature.NaturalEarthFeature):
+class MetPyMapFeature(cfeature.Feature):
     """A simple interface to US County shapefiles."""
 
     def __init__(self, name, scale, **kwargs):
         """Create USCountiesFeature instance."""
-        super().__init__('', name, scale, **kwargs)
+        super().__init__(ccrs.PlateCarree(), **kwargs)
+        self.name = name
+        self.scale = scale
 
     def geometries(self):
         """Return an iterator of (shapely) geometries for this feature."""

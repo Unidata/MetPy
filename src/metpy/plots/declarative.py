@@ -479,7 +479,7 @@ def lookup_projection(projection_code):
     return projections[projection_code]
 
 
-def lookup_map_feature(feature_name):
+def lookup_map_feature(feature_name, area):
     """Get a Cartopy map feature based on a name."""
     import cartopy.feature as cfeature
     from . import cartopy_utils
@@ -491,7 +491,7 @@ def lookup_map_feature(feature_name):
     except AttributeError:
         feat = getattr(cartopy_utils, name)
         scaler = cfeature.AdaptiveScaler('20m', (('5m', 5), ('500k', 1)))
-    return feat.with_scale(scaler)
+    return feat.with_scale(scaler.scale_from_extent(area))
 
 
 class Panel(HasTraits):
@@ -685,7 +685,7 @@ class MapPanel(Panel):
         """
         for item in self.layers:
             if isinstance(item, str):
-                feat = lookup_map_feature(item)
+                feat = lookup_map_feature(item, self.feature_area)
             else:
                 feat = item
 
@@ -733,6 +733,7 @@ class MapPanel(Panel):
             # Set the extent as appropriate based on the area. One special case for 'global'
             if self.area == 'global':
                 self.ax.set_global()
+                self.feature_area = [-180, 180, 90, -90]
             elif self.area is not None:
                 # Try to look up if we have a string
                 if isinstance(self.area, str):
@@ -740,7 +741,10 @@ class MapPanel(Panel):
                 # Otherwise, assume we have a tuple to use as the extent
                 else:
                     area = self.area
+                self.feature_area = area
                 self.ax.set_extent(area, DEFAULT_LAT_LON)
+            else:
+                self.feature_area = None
 
             # Draw all of the plots.
             for p in self.plots:
