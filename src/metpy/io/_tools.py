@@ -6,6 +6,7 @@
 import bz2
 from collections import namedtuple
 import gzip
+import io
 import logging
 from struct import Struct
 import zlib
@@ -21,14 +22,16 @@ def open_as_needed(filename, mode='rb'):
     """
     if hasattr(filename, 'read'):
         return filename
-
-    if filename.endswith('.bz2'):
-        return bz2.BZ2File(filename, mode)
-    elif filename.endswith('.gz'):
-        return gzip.GzipFile(filename, mode)
-    else:
-        kwargs = {'errors': 'surrogateescape'} if mode != 'rb' else {}
-        return open(filename, mode, **kwargs)
+    try:
+        if filename.endswith('.bz2'):
+            return bz2.BZ2File(filename, mode)
+        elif filename.endswith('.gz'):
+            return gzip.GzipFile(filename, mode)
+        else:
+            kwargs = {'errors': 'surrogateescape'} if mode != 'rb' else {}
+            return open(filename, mode, **kwargs)
+    except OSError:
+        return io.StringIO(filename)
 
 
 class NamedStruct(Struct):

@@ -135,3 +135,23 @@ def test_parse_file_object():
     assert test.air_temperature.values == 21
     assert test.dew_point_temperature.values == 21
     assert test.altimeter.values == 30.03
+
+
+def test_parse_filelike():
+    """Test the parser with a file-like object."""
+    input_data = ('\x01\r\r\n101 \r\r\nSAUS70 KWBC 031200\r\r\nMETAR\r\r\nKI43 031155Z AUTO'
+        ' 00000KT 10SM -DZ OVC110 17/15 A2997 RMK AO2 LTG\r\r\n     DSNT '
+        'NW=\r\r\n\r\r\n\x03\x01\r\r\n945 \r\r\nSAUS70 KWBC 031200\r\r\n'
+        'METAR\r\r\nK27K 031155Z AUTO 00000KT 10SM BKN080 17/13 A2998 RMK AO1=\r\r\n'
+        'KEIK 031148Z AUTO 00000KT 3/4SM BR BKN002 OVC009 09/08 A3012 RMK\r\r\n     '
+        'AO2 T00880083=\r\r\nKVTP 031148Z AUTO 25006KT 230V290 10SM CLR 04/M08 A3029 RMK '
+        'AO2\r\r\n     TSNO=\r\r\n\r\r\n\x03\x01\r\r\n839 \r\r\nSAUS14 KAWN 031200\r\r\n'
+        'METAR KEIK 031148Z AUTO 00000KT 3/4SM BR BKN002 OVC009 09/08 A3012\r\r\n      '
+        'RMK AO2 T00880083=\r\r\nMETAR KVTP 031148Z AUTO 25006KT 230V290 10SM CLR 04/M08 '
+        'A3029 RMK AO2\r\r\n      TSNO=\r\r\n\r\r\n\x03\x01\r\r\n892 \r\r\nSAMX52 MMGL 031200'
+        '\r\r\nMETAR MMPN 031140Z 00000KT 3SM FU  SKC 16/10 A3019 RMK RTS=')
+    df = parse_metar_file(input_data)
+    test = df[df.station_id == 'KVTP']
+    assert test.air_temperature.values == 4
+    assert test.dew_point_temperature.values == -8
+    assert test.altimeter.values == 30.29
