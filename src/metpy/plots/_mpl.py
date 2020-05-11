@@ -102,6 +102,9 @@ if not hasattr(Axes, 'scattertext'):
         self.add_artist(text_obj)
         self.update_datalim(text_obj.get_datalim(self.transData))
         self.autoscale_view()
+
+        # Update the clipbox based on bbox
+        text_obj.clipbox = self.bbox
         return text_obj
 
     class TextCollection(Text):
