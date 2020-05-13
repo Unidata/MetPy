@@ -542,7 +542,7 @@ def test_declarative_sfc_obs_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.00586)
 def test_declarative_colored_barbs():
     """Test making a surface plot with a colored barb (gh-1274)."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -575,7 +575,8 @@ def test_declarative_colored_barbs():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.1': 9.771, '2.1': 9.771}.get(MPL_VERSION, 0.))
+                               tolerance={'3.1': 9.771,
+                                          '2.1': 9.771}.get(MPL_VERSION, 0.00651))
 def test_declarative_sfc_obs_full():
     """Test making a full surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),

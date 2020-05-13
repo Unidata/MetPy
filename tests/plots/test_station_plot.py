@@ -287,7 +287,7 @@ def test_barb_projection(wind_plot):
     # Plot and check barbs (they should align with grid lines)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
-    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
+    ax.gridlines(xlocs=[-120, -105, -90, -75, -60], ylocs=np.arange(24, 55, 6))
     sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
     sp.plot_barb(u, v)
 
@@ -302,7 +302,7 @@ def test_arrow_projection(wind_plot):
     # Plot and check barbs (they should align with grid lines)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
-    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
+    ax.gridlines(xlocs=[-120, -105, -90, -75, -60], ylocs=np.arange(24, 55, 6))
     sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
     sp.plot_arrow(u, v)
     sp.plot_arrow(u, v)  # plot_arrow used twice to hit removal if statement
