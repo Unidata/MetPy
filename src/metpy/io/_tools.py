@@ -304,7 +304,9 @@ def zlib_decompress_all_frames(data):
         try:
             frames.extend(decomp.decompress(data))
             data = decomp.unused_data
+            log.debug('Decompressed zlib frame. %d bytes remain.', len(data))
         except zlib.error:
+            log.debug('Remaining %d bytes are not zlib compressed.', len(data))
             frames.extend(data)
             break
     return frames
