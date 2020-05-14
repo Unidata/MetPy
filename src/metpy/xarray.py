@@ -159,7 +159,14 @@ class MetPyDataArrayAccessor:
         return self._data_array.assign_coords(coords={coord: new_coord_var})
 
     def quantify(self):
-        """Return a DataArray with the data converted to a `pint.Quantity`."""
+        """Return a DataArray with the data converted to a `pint.Quantity`.
+
+        Notes
+        -----
+        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+        by this operation. Do not utilize on moderate to large sized remote datasets before
+        subsetting!
+        """
         if (
             not isinstance(self._data_array.data, units.Quantity)
             and np.issubdtype(self._data_array.data.dtype, np.number)
@@ -658,7 +665,7 @@ class MetPyDatasetAccessor:
         var = self._rebuild_coords(var, crs)
         if crs is not None:
             var = var.assign_coords(coords={'crs': crs})
-        return var.metpy.quantify()
+        return var
 
     def _rebuild_coords(self, var, crs):
         """Clean up the units on the coordinate variables."""
@@ -847,6 +854,14 @@ class MetPyDatasetAccessor:
                 self._dataset[varname].attrs[attribute] = value
 
         return self._dataset
+
+    def quantify(self):
+        """Return new dataset with all numeric variables quantified and cached data loaded."""
+        return self._dataset.map(lambda da: da.metpy.quantify(), keep_attrs=True)
+
+    def dequantify(self):
+        """Return new dataset with variables cast to magnitude and units on attribute."""
+        return self._dataset.map(lambda da: da.metpy.dequantify(), keep_attrs=True)
 
 
 def _assign_axis(attributes, axis):
