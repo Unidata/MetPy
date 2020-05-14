@@ -81,7 +81,7 @@ class Meteogram(object):
         ax7.set_ylim(0, 360)
         ax7.set_yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
         lns = ln1 + ln2 + ln3
-        labs = [l.get_label() for l in lns]
+        labs = [ln.get_label() for ln in lns]
         ax7.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
         ax7.legend(lns, labs, loc='upper center',
                    bbox_to_anchor=(0.5, 1.2), ncol=3, prop={'size': 12})
@@ -112,7 +112,7 @@ class Meteogram(object):
         ax_twin = self.ax2.twinx()
         ax_twin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
         lns = ln4 + ln5
-        labs = [l.get_label() for l in lns]
+        labs = [ln.get_label() for ln in lns]
         ax_twin.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
 
         self.ax2.legend(lns, labs, loc='upper center',
