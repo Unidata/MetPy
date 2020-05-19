@@ -383,7 +383,7 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
 
 @exporter.export
 @preprocess_xarray
-def WK82(altitude=np.arange(18000)*units.m, potential_temperature_sfc=300.*units.degK, mixing_ratio_pbl = 0.014*units('kg/kg'), altitude_tropopause = 12000.*units.m, temperature_tropopause=213.*units.degK, potential_temperature_tropopause=343.*units.degK, pressure_sfc=1000*units.hPa):
+def WK82(pressure_sfc=1000*units.hPa, altitude=np.arange(18000)*units.m, altitude_tropopause = 12000.*units.m, potential_temperature_sfc=300.*units.degK, potential_temperature_tropopause=343.*units.degK, temperature_tropopause=213.*units.degK, mixing_ratio_pbl = 0.014*units('kg/kg')):
     r"""Calculate the Weisman and Klemp analytical thermodynamic profile used for idealized cloud models.
 
     This calculation has the default quantities that can be changed as the arguments in the function. 
