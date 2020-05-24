@@ -140,18 +140,37 @@ class MetPyDataArrayAccessor:
 
     @property
     def unit_array(self):
-        """Return the data values of this DataArray as a `pint.Quantity`."""
+        """Return the data values of this DataArray as a `pint.Quantity`.
+
+        Notes
+        -----
+        If not already existing as a `pint.Quantity` or Dask array, the data of this DataArray
+        will be loaded into memory by this operation.
+        """
         if isinstance(self._data_array.data, units.Quantity):
             return self._data_array.data
         else:
-            return units.Quantity(self._data_array.values, self.units)
+            return units.Quantity(self._data_array.data, self.units)
 
     def convert_units(self, units):
-        """Return new DataArray with values converted to different units."""
+        """Return new DataArray with values converted to different units.
+
+        Notes
+        -----
+        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+        by this operation. Do not utilize on moderate- to large-sized remote datasets before
+        subsetting!
+        """
         return self.quantify().copy(data=self.unit_array.to(units))
 
     def convert_coordinate_units(self, coord, units):
-        """Return new DataArray with coordinate converted to different units."""
+        """Return new DataArray with coordinate converted to different units.
+
+        Notes
+        -----
+        Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded
+        into memory by this operation.
+        """
         new_coord_var = self._data_array[coord].copy(
             data=self._data_array[coord].metpy.unit_array.m_as(units)
         )
@@ -164,7 +183,7 @@ class MetPyDataArrayAccessor:
         Notes
         -----
         Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
-        by this operation. Do not utilize on moderate to large sized remote datasets before
+        by this operation. Do not utilize on moderate- to large-sized remote datasets before
         subsetting!
         """
         if (
