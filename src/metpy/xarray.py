@@ -1101,7 +1101,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
             if isinstance(wrap_like, str):
                 match = bound_args.arguments[wrap_like]
             elif isinstance(wrap_like, tuple):
-                for i in len(wrap_like):
+                for i in range(len(wrap_like)):
                     if isinstance(wrap_like[i], str):
                         match[i] = bound_args.arguments[wrap_like[i]]
 

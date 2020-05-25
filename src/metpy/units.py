@@ -180,9 +180,9 @@ def _check_argument_units(args, defaults, dimensionality):
             # Argument did not have units specified in decorator
             continue
 
-        if arg in defaults:
+        if arg in defaults and (defaults[arg] is not None or val is None):
             check = val == defaults[arg]
-            if check:
+            if isinstance(check, bool) and check:
                 continue
 
         # See if the value passed in is appropriate
