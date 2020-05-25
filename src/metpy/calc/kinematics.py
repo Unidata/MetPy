@@ -218,8 +218,8 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     stretching_deformation, total_deformation
 
     """
-    dudy = first_derivative(u, delta=dy, axis=x_dim)
-    dvdx = first_derivative(v, delta=dx, axis=y_dim)
+    dudy = first_derivative(u, delta=dy, axis=y_dim)
+    dvdx = first_derivative(v, delta=dx, axis=x_dim)
     return dvdx + dudy
 
 

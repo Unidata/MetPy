@@ -1425,8 +1425,8 @@ def test_geostrophic_wind_4d(data_4d):
     assert_array_almost_equal(v_g, v_g_truth, 6)
 
 
-def test_intertial_advective_wind_4d(data_4d):
-    """Test intertial_advective_wind on a 4D (time, pressure, y, x) grid."""
+def test_inertial_advective_wind_4d(data_4d):
+    """Test inertial_advective_wind on a 4D (time, pressure, y, x) grid."""
     f = coriolis_parameter(data_4d.latitude)
     u_g, v_g = geostrophic_wind(data_4d.height, f, data_4d.dx, data_4d.dy)
     u_i, v_i = inertial_advective_wind(u_g, v_g, u_g, v_g, data_4d.dx, data_4d.dy,
