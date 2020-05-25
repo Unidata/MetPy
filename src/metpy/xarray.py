@@ -229,14 +229,17 @@ class MetPyDataArrayAccessor:
 
     def _fixup_coordinate_map(self, coord_map):
         """Ensure sure we have coordinate variables in map, not coordinate names."""
+        new_coord_map = {}
         for axis in coord_map:
             if coord_map[axis] is not None and not isinstance(coord_map[axis], xr.DataArray):
-                coord_map[axis] = self._data_array[coord_map[axis]]
+                new_coord_map[axis] = self._data_array[coord_map[axis]]
+            else:
+                new_coord_map[axis] = coord_map[axis]
 
-        return coord_map
+        return new_coord_map
 
     def assign_coordinates(self, coordinates):
-        """Assign the given coordinates to the given MetPy axis types.
+        """Return new DataArray with given coordinates assigned to the given MetPy axis types.
 
         Parameters
         ----------
@@ -247,18 +250,32 @@ class MetPyDataArrayAccessor:
             which will trigger reparsing of all coordinates on next access.
 
         """
+        coord_updates = {}
         if coordinates:
             # Assign the _metpy_axis attributes according to supplied mapping
             coordinates = self._fixup_coordinate_map(coordinates)
             for axis in coordinates:
                 if coordinates[axis] is not None:
-                    _assign_axis(coordinates[axis].attrs, axis)
+                    coord_updates[coordinates[axis].name] = (
+                        coordinates[axis].assign_attrs(
+                            _assign_axis(coordinates[axis].attrs.copy(), axis)
+                        )
+                    )
         else:
             # Clear _metpy_axis attribute on all coordinates
-            for coord_var in self._data_array.coords.values():
-                coord_var.attrs.pop('_metpy_axis', None)
+            for coord_name, coord_var in self._data_array.coords.items():
+                coord_updates[coord_name] = coord_var.copy(deep=False)
 
-        return self._data_array  # allow method chaining
+                # Some coordinates remained linked in old form under other coordinates. We
+                # need to remove from these.
+                sub_coords = coord_updates[coord_name].coords
+                for sub_coord in sub_coords:
+                    coord_updates[coord_name].coords[sub_coord].attrs.pop('_metpy_axis', None)
+
+                # Now we can remove the _metpy_axis attr from the coordinate itself
+                coord_updates[coord_name].attrs.pop('_metpy_axis', None)
+
+        return self._data_array.assign_coords(coord_updates)
 
     def _generate_coordinate_map(self):
         """Generate a coordinate map via CF conventions and other methods."""
@@ -317,6 +334,11 @@ class MetPyDataArrayAccessor:
                 return coord_var
 
         # Opportunistically parse all coordinates, and assign if not already assigned
+        # Note: since this is generally called by way of the coordinate properties, to cache
+        # the coordinate parsing results in coord_map on the coordinates means modifying the
+        # DataArray in-place (an exception to the usual behavior of MetPy's accessor). This is
+        # considered safe because it only effects the "_metpy_axis" attribute on the
+        # coordinates, and nothing else.
         coord_map = self._generate_coordinate_map()
         for axis, coord_var in coord_map.items():
             if (coord_var is not None
@@ -651,7 +673,7 @@ class MetPyDatasetAccessor:
 
         # Assign coordinates if the coordinates argument is given
         if coordinates is not None:
-            var.metpy.assign_coordinates(coordinates)
+            var = var.metpy.assign_coordinates(coordinates)
 
         # Attempt to build the crs coordinate
         crs = None
@@ -840,7 +862,7 @@ class MetPyDatasetAccessor:
             return self._dataset.assign_coords(**{y.name: y, x.name: x})
 
     def update_attribute(self, attribute, mapping):
-        """Update attribute of all Dataset variables.
+        """Return new Dataset with specified attribute updated on all Dataset variables.
 
         Parameters
         ----------
@@ -855,24 +877,33 @@ class MetPyDatasetAccessor:
         Returns
         -------
         `xarray.Dataset`
-            Dataset with attribute updated (modified in place, and returned to allow method
-            chaining)
+            New Dataset with attribute updated
 
         """
         # Make mapping uniform
-        if callable(mapping):
-            mapping_func = mapping
-        else:
-            def mapping_func(varname, **kwargs):
-                return mapping.get(varname, None)
+        if not callable(mapping):
+            old_mapping = mapping
 
-        # Apply across all variables
-        for varname in list(self._dataset.data_vars) + list(self._dataset.coords):
-            value = mapping_func(varname, **self._dataset[varname].attrs)
-            if value is not None:
-                self._dataset[varname].attrs[attribute] = value
+            def mapping(varname, **kwargs):
+                return old_mapping.get(varname, None)
 
-        return self._dataset
+        # Define mapping function for Dataset.map
+        def mapping_func(da):
+            new_value = mapping(da.name, **da.attrs)
+            if new_value is None:
+                return da
+            else:
+                return da.assign_attrs(**{attribute: new_value})
+
+        # Apply across all variables and coordinates
+        return (
+            self._dataset
+            .map(mapping_func, keep_attrs=True)
+            .assign_coords({
+                coord_name: mapping_func(coord_var)
+                for coord_name, coord_var in self._dataset.coords.items()
+            })
+        )
 
     def quantify(self):
         """Return new dataset with all numeric variables quantified and cached data loaded."""
