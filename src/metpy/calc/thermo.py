@@ -2577,7 +2577,7 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
@@ -2620,7 +2620,7 @@ def lifted_index(pressure, temperature, parcel_profile):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[length]', '[temperature]', '[speed]', '[speed]')
 def gradient_richardson_number(height, potential_temperature, u, v, axis=0):
     r"""Calculate the gradient (or flux) Richardson number.

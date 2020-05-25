@@ -1083,15 +1083,6 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
         def wrapper(*args, **kwargs):
             bound_args = signature(func).bind(*args, **kwargs)
 
-            # Obtain proper match if referencing an input
-            match = list(wrap_like) if isinstance(wrap_like, tuple) else wrap_like
-            if isinstance(wrap_like, str):
-                match = bound_args.arguments[wrap_like]
-            elif isinstance(wrap_like, tuple):
-                for i in len(wrap_like):
-                    if isinstance(wrap_like[i], str):
-                        match[i] = bound_args.arguments[wrap_like[i]]
-
             # Auto-broadcast select xarray arguments, and update bound_args
             if broadcast is not None:
                 arg_names_to_broadcast = tuple(
@@ -1104,6 +1095,15 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                 )
                 for i, arg_name in enumerate(arg_names_to_broadcast):
                     bound_args.arguments[arg_name] = broadcasted_args[i]
+
+            # Obtain proper match if referencing an input
+            match = list(wrap_like) if isinstance(wrap_like, tuple) else wrap_like
+            if isinstance(wrap_like, str):
+                match = bound_args.arguments[wrap_like]
+            elif isinstance(wrap_like, tuple):
+                for i in len(wrap_like):
+                    if isinstance(wrap_like[i], str):
+                        match[i] = bound_args.arguments[wrap_like[i]]
 
             # Cast all DataArrays to Pint Quantities
             for arg_name in bound_args.arguments:
@@ -1131,7 +1131,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                     wrapping = _wrap_output_like_not_matching_units
 
                 if isinstance(match, list):
-                    return tuple(wrapping(*pair) for pair in zip(result, match))
+                    return tuple(wrapping(*args) for args in zip(result, match))
                 else:
                     return wrapping(result, match)
         return wrapper
