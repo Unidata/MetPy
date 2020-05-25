@@ -302,7 +302,7 @@ def test_assign_coordinates_not_overwrite(test_ds_generic):
     """Test that assign_coordinates does not overwrite past axis attributes."""
     data = test_ds_generic.copy()
     data['c'].attrs['axis'] = 'X'
-    data['test'].metpy.assign_coordinates({'y': data['c']})
+    data['test'] = data['test'].metpy.assign_coordinates({'y': data['c']})
     assert data['c'].identical(data['test'].metpy.y)
     assert data['c'].attrs['axis'] == 'X'
 
@@ -622,9 +622,12 @@ def test_data_array_sel_dict_with_units(test_var):
 def test_data_array_sel_kwargs_with_units(test_var):
     """Test .sel on the metpy accessor with kwargs and axis type."""
     truth = test_var.loc[:, 500.][..., 122]
-    selection = test_var.metpy.sel(vertical=5e4 * units.Pa, x=-16.569 * units.km,
-                                   tolerance=1., method='nearest')
-    selection.metpy.assign_coordinates(None)  # truth was not parsed for coordinates
+    selection = (
+        test_var.metpy
+        .sel(vertical=5e4 * units.Pa, x=-16.569 * units.km, tolerance=1., method='nearest')
+        .metpy
+        .assign_coordinates(None)
+    )
     assert truth.identical(selection)
 
 
@@ -983,13 +986,19 @@ def test_update_attribute_dictionary(test_ds_generic):
         'test': 'Filler data',
         'c': 'The third coordinate'
     }
-    test_ds_generic.metpy.update_attribute('description', descriptions)
-    assert 'description' not in test_ds_generic['a'].attrs
-    assert 'description' not in test_ds_generic['b'].attrs
-    assert test_ds_generic['c'].attrs['description'] == 'The third coordinate'
-    assert 'description' not in test_ds_generic['d'].attrs
-    assert 'description' not in test_ds_generic['e'].attrs
-    assert test_ds_generic['test'].attrs['description'] == 'Filler data'
+    result = test_ds_generic.metpy.update_attribute('description', descriptions)
+
+    # Test attribute updates
+    assert 'description' not in result['a'].attrs
+    assert 'description' not in result['b'].attrs
+    assert result['c'].attrs['description'] == 'The third coordinate'
+    assert 'description' not in result['d'].attrs
+    assert 'description' not in result['e'].attrs
+    assert result['test'].attrs['description'] == 'Filler data'
+
+    # Test for no side effects
+    assert 'description' not in test_ds_generic['c'].attrs
+    assert 'description' not in test_ds_generic['test'].attrs
 
 
 def test_update_attribute_callable(test_ds_generic):
@@ -997,10 +1006,17 @@ def test_update_attribute_callable(test_ds_generic):
     def even_ascii(varname, **kwargs):
         if ord(varname[0]) % 2 == 0:
             return 'yes'
-    test_ds_generic.metpy.update_attribute('even', even_ascii)
-    assert 'even' not in test_ds_generic['a'].attrs
-    assert test_ds_generic['b'].attrs['even'] == 'yes'
-    assert 'even' not in test_ds_generic['c'].attrs
-    assert test_ds_generic['d'].attrs['even'] == 'yes'
-    assert 'even' not in test_ds_generic['e'].attrs
-    assert test_ds_generic['test'].attrs['even'] == 'yes'
+    result = test_ds_generic.metpy.update_attribute('even', even_ascii)
+
+    # Test attribute updates
+    assert 'even' not in result['a'].attrs
+    assert result['b'].attrs['even'] == 'yes'
+    assert 'even' not in result['c'].attrs
+    assert result['d'].attrs['even'] == 'yes'
+    assert 'even' not in result['e'].attrs
+    assert result['test'].attrs['even'] == 'yes'
+
+    # Test for no side effects
+    assert 'even' not in test_ds_generic['b'].attrs
+    assert 'even' not in test_ds_generic['d'].attrs
+    assert 'even' not in test_ds_generic['test'].attrs
