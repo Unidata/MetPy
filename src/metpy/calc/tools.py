@@ -38,21 +38,21 @@ DIR_DICT[UND] = np.nan
 
 
 @exporter.export
-@preprocess_and_wrap()
 def resample_nn_1d(a, centers):
     """Return one-dimensional nearest-neighbor indexes based on user-specified centers.
 
     Parameters
     ----------
     a : array-like
-        1-dimensional array of numeric values from which to
-        extract indexes of nearest-neighbors
+        1-dimensional array of numeric values from which to extract indexes of
+        nearest-neighbors
     centers : array-like
         1-dimensional array of numeric values representing a subset of values to approximate
 
     Returns
     -------
-        An array of indexes representing values closest to given array values
+        A list of indexes (in type given by `array.argmin()`) representing values closest to
+        given array values.
 
     """
     ix = []
@@ -64,7 +64,6 @@ def resample_nn_1d(a, centers):
 
 
 @exporter.export
-@preprocess_and_wrap()
 def nearest_intersection_idx(a, b):
     """Determine the index of the point just before two lines with common x values.
 
@@ -119,6 +118,11 @@ def find_intersections(x, a, b, direction='all', log_x=False):
     -------
         A tuple (x, y) of array-like with the x and y coordinates of the
         intersections of the lines.
+
+    Notes
+    -----
+    This function implicity converts `xarray.DataArray` to `pint.Quantity`, with the results
+    given as `pint.Quantity`.
 
     """
     # Change x to logarithmic if log_x=True
@@ -446,6 +450,11 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     `pint.Quantity, pint.Quantity`
         The height and data variables of the layer
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Also, this will return Pint Quantities even when given xarray DataArray profiles.
+
     """
     # Make sure pressure and datavars are the same length
     for datavar in args:
@@ -541,6 +550,11 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     -------
     `pint.Quantity, pint.Quantity`
         The pressure and data variables of the layer
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Also, this will return Pint Quantities even when given xarray DataArray profiles.
 
     """
     # If we get the depth kwarg, but it's None, set it to the default as well
@@ -1337,7 +1351,7 @@ def _process_deriv_args(f, axis, x, delta):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='input_dir')
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
