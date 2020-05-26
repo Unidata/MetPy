@@ -369,7 +369,10 @@ def advection(scalar, wind, deltas):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='potential_temperature')
+@preprocess_and_wrap(
+    wrap_like='potential_temperature',
+    broadcast=('potential_temperature', 'u', 'v')
+)
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
 def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
@@ -443,7 +446,7 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('height', 'height'))
+@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'f'))
 @check_units(f='[frequency]', dx='[length]', dy='[length]')
 def geostrophic_wind(height, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the geostrophic wind given from the height or geopotential.
@@ -489,7 +492,7 @@ def geostrophic_wind(height, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('height', 'height'))
+@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'u', 'v', 'f'))
 @check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
 def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
@@ -532,7 +535,7 @@ def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='height')
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'temperature'))
 @check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
@@ -617,9 +620,13 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     `pint.Quantity`
         total storm-relative helicity
 
-    """
-    # TODO: needs custom xarray compatibility
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
+    """
     _, u, v = get_layer_heights(height, depth, u, v, with_agl=True, bottom=bottom)
 
     storm_relative_u = u - storm_u
@@ -687,7 +694,10 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='potential_temperature')
+@preprocess_and_wrap(
+    wrap_like='potential_temperature',
+    broadcast=('potential_temperature', 'pressure', 'u', 'v')
+)
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_baroclinic(
@@ -792,7 +802,7 @@ def potential_vorticity_baroclinic(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='height')
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v'))
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_barotropic(
     height,
@@ -934,7 +944,10 @@ def inertial_advective_wind(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('u', 'u'))
+@preprocess_and_wrap(
+    wrap_like=('u', 'u'),
+    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
+)
 @check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
 def q_vector(
     u,

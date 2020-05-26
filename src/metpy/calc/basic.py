@@ -28,7 +28,7 @@ p0 = 1013.25 * units.hPa
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]')
 def wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
@@ -55,7 +55,7 @@ def wind_speed(u, v):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]')
 def wind_direction(u, v, convention='from'):
     r"""Compute the wind direction from u and v-components.
@@ -107,7 +107,7 @@ def wind_direction(u, v, convention='from'):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like=('speed', 'speed'))
 @check_units('[speed]')
 def wind_components(speed, wind_direction):
     r"""Calculate the U, V wind vector components from the speed and direction.
@@ -146,7 +146,7 @@ def wind_components(speed, wind_direction):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='temperature')
 @check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
@@ -208,7 +208,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='temperature')
 @check_units('[temperature]')
 def heat_index(temperature, relative_humidity, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
@@ -312,7 +312,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='temperature')
 @check_units(temperature='[temperature]', speed='[speed]')
 def apparent_temperature(temperature, relative_humidity, speed, face_level_winds=False,
                          mask_undefined=True):
@@ -391,7 +391,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.
@@ -419,7 +419,7 @@ def pressure_to_height_std(pressure):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='height')
 @check_units('[length]')
 def height_to_geopotential(height):
     r"""Compute geopotential for a given height above sea level.
@@ -476,7 +476,7 @@ def height_to_geopotential(height):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='geopotential')
 def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
 
@@ -536,7 +536,7 @@ def geopotential_to_height(geopotential):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='height')
 @check_units('[length]')
 def height_to_pressure_std(height):
     r"""Convert height data to pressures using the U.S. standard atmosphere [NOAA1976]_.
@@ -563,7 +563,7 @@ def height_to_pressure_std(height):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='latitude')
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
@@ -585,7 +585,7 @@ def coriolis_parameter(latitude):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
@@ -614,7 +614,7 @@ def add_height_to_pressure(pressure, height):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='height')
 @check_units('[length]', '[pressure]')
 def add_pressure_to_height(height, pressure):
     r"""Calculate the height at a certain pressure above another height.
@@ -643,7 +643,7 @@ def add_pressure_to_height(height, pressure):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='sigma')
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
 def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     r"""Calculate pressure from sigma values.
@@ -1006,7 +1006,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='altimeter_value')
 @check_units('[pressure]', '[length]')
 def altimeter_to_station_pressure(altimeter_value, height):
     r"""Convert the altimeter measurement to station pressure.
@@ -1088,7 +1088,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(wrap_like='altimeter_value')
 @check_units('[pressure]', '[length]', '[temperature]')
 def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     r"""Convert the altimeter setting to sea-level pressure.
