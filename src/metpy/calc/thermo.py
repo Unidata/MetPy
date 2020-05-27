@@ -909,20 +909,26 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
 def saturation_mixing_ratio(total_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
 
-    This calculation is given total pressure and the temperature. The implementation
-    uses the formula outlined in [Hobbs1977]_ pg.73.
+    This calculation is given total atmospheric pressure and air temperature.
 
     Parameters
     ----------
     total_press: `pint.Quantity`
         Total atmospheric pressure
     temperature: `pint.Quantity`
-        air temperature
+        Air temperature
 
     Returns
     -------
     `pint.Quantity`
-        The saturation mixing ratio, dimensionless
+        Saturation mixing ratio, dimensionless
+
+    Notes
+    -----
+    This function is a straightforward implementation of the equation given in many places,
+    such as [Hobbs1977]_ pg.73:
+
+    .. math:: r_s = \epsilon \frac{e_s}{p - e_s}
 
     """
     return mixing_ratio(saturation_vapor_pressure(temperature), total_press)
