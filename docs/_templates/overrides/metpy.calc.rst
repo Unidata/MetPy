@@ -81,6 +81,7 @@ Soundings
       most_unstable_parcel
       parcel_profile
       parcel_profile_with_lcl
+      parcel_profile_with_lcl_as_dataset
       significant_tornado
       storm_relative_helicity
       supercell_composite
@@ -195,6 +196,7 @@ Other
       get_layer_heights
       get_perturbation
       isentropic_interpolation
+      isentropic_interpolation_as_dataset
       nearest_intersection_idx
       parse_angle
       reduce_point_density
