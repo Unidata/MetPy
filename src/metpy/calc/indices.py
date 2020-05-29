@@ -24,23 +24,26 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
 
     .. math::  -\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp
 
-    from [Salby1996]_, p. 28.
+    from [Salby1996]_, p. 28
 
     Parameters
     ----------
     pressure : `pint.Quantity`
         Atmospheric pressure profile
+
     dewpoint : `pint.Quantity`
         Atmospheric dewpoint profile
+
     bottom: `pint.Quantity`, optional
         Bottom of the layer, specified in pressure. Defaults to None (highest pressure).
+
     top: `pint.Quantity`, optional
-        The top of the layer, specified in pressure. Defaults to None (lowest pressure).
+        Top of the layer, specified in pressure. Defaults to None (lowest pressure).
 
     Returns
     -------
     `pint.Quantity`
-        The precipitable water in the layer
+        Precipitable water in the layer
 
     Examples
     --------
@@ -89,18 +92,22 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
     ----------
     pressure : `pint.Quantity`
         Atmospheric pressure profile
+
     args : `pint.Quantity`
-        Parameters for which the pressure-weighted mean is to be calculated.
+        Parameters for which the pressure-weighted mean is to be calculated
+
     height : `pint.Quantity`, optional
         Heights from sounding. Standard atmosphere heights assumed (if needed)
         if no heights are given.
+
     bottom: `pint.Quantity`, optional
         The bottom of the layer in either the provided height coordinate
         or in pressure. Don't provide in meters AGL unless the provided
         height coordinate is meters AGL. Default is the first observation,
         assumed to be the surface.
+
     depth: `pint.Quantity`, optional
-        The depth of the layer in meters or hPa.
+        Depth of the layer in meters or hPa
 
     Returns
     -------
@@ -142,10 +149,13 @@ def bunkers_storm_motion(pressure, u, v, height):
     ----------
     pressure : `pint.Quantity`
         Pressure from sounding
+
     u : `pint.Quantity`
         U component of the wind
+
     v : `pint.Quantity`
         V component of the wind
+
     height : `pint.Quantity`
         Height from sounding
 
@@ -153,8 +163,10 @@ def bunkers_storm_motion(pressure, u, v, height):
     -------
     right_mover: `pint.Quantity`
         U and v component of Bunkers RM storm motion
+
     left_mover: `pint.Quantity`
         U and v component of Bunkers LM storm motion
+
     wind_mean: `pint.Quantity`
         U and v component of sfc-6km mean flow
 
@@ -208,14 +220,19 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     ----------
     pressure : `pint.Quantity`
         Atmospheric pressure profile
+
     u : `pint.Quantity`
-        U-component of wind.
+        U-component of wind
+
     v : `pint.Quantity`
-        V-component of wind.
+        V-component of wind
+
     height : `pint.Quantity`, optional
         Heights from sounding
+
     depth: `pint.Quantity`, optional
         The depth of the layer in meters or hPa. Defaults to 100 hPa.
+
     bottom: `pint.Quantity`, optional
         The bottom of the layer in height or pressure coordinates.
         If using a height, it must be in the same coordinates as the given
@@ -225,9 +242,9 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     Returns
     -------
     u_shr: `pint.Quantity`
-        u-component of layer bulk shear
+        U-component of layer bulk shear
     v_shr: `pint.Quantity`
-        v-component of layer bulk shear
+        V-component of layer bulk shear
 
     Notes
     -----
@@ -267,15 +284,17 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     ----------
     mucape : `pint.Quantity`
         Most-unstable CAPE
+
     effective_storm_helicity : `pint.Quantity`
         Effective-layer storm-relative helicity
+
     effective_shear : `pint.Quantity`
         Effective bulk shear
 
     Returns
     -------
     `pint.Quantity`
-        supercell composite
+        Supercell composite
 
     """
     effective_shear = np.clip(np.atleast_1d(effective_shear), None, 20 * units('m/s'))
@@ -313,17 +332,20 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
     ----------
     sbcape : `pint.Quantity`
         Surface-based CAPE
+
     surface_based_lcl_height : `pint.Quantity`
         Surface-based lifted condensation level
+
     storm_helicity_1km : `pint.Quantity`
         Surface-1km storm-relative helicity
+
     shear_6km : `pint.Quantity`
         Surface-6km bulk shear
 
     Returns
     -------
     `pint.Quantity`
-        significant tornado parameter
+        Significant tornado parameter
 
     """
     surface_based_lcl_height = np.clip(np.atleast_1d(surface_based_lcl_height),
@@ -357,22 +379,27 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Pressures from sounding.
+        Pressures from sounding
+
     u : `pint.Quantity`
-        U-component of sounding winds.
+        U-component of sounding winds
+
     v : `pint.Quantity`
-        V-component of sounding winds.
+        V-component of sounding winds
+
     height : `pint.Quantity`
-        Heights from sounding.
+        Heights from sounding
+
     u_storm : `pint.Quantity`
-        U-component of storm motion.
+        U-component of storm motion
+
     v_storm : `pint.Quantity`
-        V-component of storm motion.
+        V-component of storm motion
 
     Returns
     -------
     `pint.Quantity`
-        critical angle in degrees
+        Critical angle in degrees
 
     Notes
     -----

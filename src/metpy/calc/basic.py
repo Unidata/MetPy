@@ -43,7 +43,7 @@ def wind_speed(u, v):
     Returns
     -------
     wind speed: `pint.Quantity`
-        The speed of the wind
+        Speed of the wind
 
     See Also
     --------
@@ -67,14 +67,14 @@ def wind_direction(u, v, convention='from'):
     v : `pint.Quantity`
         Wind component in the Y (North-South) direction
     convention : str
-        Convention to return direction. 'from' returns the direction the wind is coming from
-        (meteorological convention). 'to' returns the direction the wind is going towards
-        (oceanographic convention). Default is 'from'.
+        Convention to return direction; 'from' returns the direction the wind is coming from
+        (meteorological convention), 'to' returns the direction the wind is going towards
+        (oceanographic convention), default is 'from'.
 
     Returns
     -------
     direction: `pint.Quantity`
-        The direction of the wind in interval [0, 360] degrees, with 360 being North, with the
+        The direction of the wind in intervals [0, 360] degrees, with 360 being North,
         direction defined by the convention kwarg.
 
     See Also
@@ -117,9 +117,9 @@ def wind_components(speed, wind_direction):
     Parameters
     ----------
     speed : `pint.Quantity`
-        The wind speed (magnitude)
+        Wind speed (magnitude)
     wind_direction : `pint.Quantity`
-        The wind direction, specified as the direction from which the wind is
+        Wind direction, specified as the direction from which the wind is
         blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
     Returns
@@ -158,14 +158,14 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     Specifically, these formulas assume that wind speed is measured at
     10m.  If, instead, the speeds are measured at face level, the winds
     need to be multiplied by a factor of 1.5 (this can be done by specifying
-    `face_level_winds` as `True`.)
+    `face_level_winds` as `True`).
 
     Parameters
     ----------
     temperature : `pint.Quantity`
-        The air temperature
+        Air temperature
     speed : `pint.Quantity`
-        The wind speed at 10m.  If instead the winds are at face level,
+        Wind speed at 10m. If instead the winds are at face level,
         `face_level_winds` should be set to `True` and the 1.5 multiplicative
         correction will be applied automatically.
     face_level_winds : bool, optional
@@ -181,7 +181,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     Returns
     -------
     `pint.Quantity`
-        The corresponding Wind Chill Temperature Index value(s)
+        Corresponding Wind Chill Temperature Index value(s)
 
     See Also
     --------
@@ -231,7 +231,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     Returns
     -------
     `pint.Quantity`
-        The corresponding Heat Index value(s)
+        Corresponding Heat Index value(s)
 
     Other Parameters
     ----------------
@@ -327,12 +327,12 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     Parameters
     ----------
     temperature : `pint.Quantity`
-        The air temperature
+        Air temperature
     relative_humidity : `pint.Quantity`
-        The relative humidity expressed as a unitless ratio in the range [0, 1].
+        Relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
     speed : `pint.Quantity`
-        The wind speed at 10m.  If instead the winds are at face level,
+        Wind speed at 10m.  If instead the winds are at face level,
         `face_level_winds` should be set to `True` and the 1.5 multiplicative
         correction will be applied automatically.
     face_level_winds : bool, optional
@@ -350,7 +350,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     Returns
     -------
     `pint.Quantity`
-        The corresponding apparent temperature value(s)
+        Corresponding apparent temperature value(s)
 
     See Also
     --------
@@ -409,7 +409,7 @@ def pressure_to_height_std(pressure):
     Returns
     -------
     `pint.Quantity`
-        The corresponding height value(s)
+        Corresponding height value(s)
 
     Notes
     -----
@@ -434,7 +434,8 @@ def height_to_geopotential(height):
     .. math:: \Phi = \frac{g R_e z}{R_e + z}
 
     (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
-    radius, and :math:`g` is standard gravity.)
+    radius, and :math:`g` is standard gravity).
+
 
     Parameters
     ----------
@@ -444,7 +445,7 @@ def height_to_geopotential(height):
     Returns
     -------
     `pint.Quantity`
-        The corresponding geopotential value(s)
+        Corresponding geopotential value(s)
 
     Examples
     --------
@@ -468,7 +469,7 @@ def height_to_geopotential(height):
     centrifugal force and Earth's eccentricity.
 
     (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton's Law of
-    Gravitation assuming a spherical Earth and no centrifugal force effects.)
+    Gravitation assuming a spherical Earth and no centrifugal force effects).
 
     See Also
     --------
@@ -490,7 +491,8 @@ def geopotential_to_height(geopotential):
     .. math:: z = \frac{\Phi R_e}{gR_e - \Phi}
 
     (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
-    radius, and :math:`g` is standard gravity.)
+    radius, and :math:`g` is standard gravity).
+
 
     Parameters
     ----------
@@ -500,7 +502,7 @@ def geopotential_to_height(geopotential):
     Returns
     -------
     `pint.Quantity`
-        The corresponding value(s) of height above sea level
+        Corresponding value(s) of height above sea level
 
     Examples
     --------
@@ -554,7 +556,7 @@ def height_to_pressure_std(height):
     Returns
     -------
     `pint.Quantity`
-        The corresponding pressure value(s)
+        Corresponding pressure value(s)
 
     Notes
     -----
@@ -580,7 +582,7 @@ def coriolis_parameter(latitude):
     Returns
     -------
     `pint.Quantity`
-        The corresponding coriolis force at each point
+        Corresponding coriolis force at each point
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
@@ -605,7 +607,7 @@ def add_height_to_pressure(pressure, height):
     Returns
     -------
     `pint.Quantity`
-        The corresponding pressure value for the height above the pressure level
+        Corresponding pressure value for the height above the pressure level
 
     See Also
     --------
@@ -654,22 +656,22 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     Parameters
     ----------
     sigma : ndarray
-        The sigma levels to be converted to pressure levels.
+        Sigma levels to be converted to pressure levels
 
     pressure_sfc : `pint.Quantity`
-        The surface pressure value.
+        Surface pressure value
 
     pressure_top : `pint.Quantity`
-        The pressure value at the top of the model domain.
+        Pressure value at the top of the model domain
 
     Returns
     -------
     `pint.Quantity`
-        The pressure values at the given sigma levels.
+        Pressure values at the given sigma levels
 
     Notes
     -----
-    Sigma definition adapted from [Philips1957]_.
+    Sigma definition adapted from [Philips1957]_:
 
     .. math:: p = \sigma * (p_{sfc} - p_{top}) + p_{top}
 
@@ -709,7 +711,7 @@ def smooth_gaussian(scalar_grid, n):
 
     Notes
     -----
-    This function is a close replication of the GEMPAK function GWFS,
+    This function is a close replication of the GEMPAK function ``GWFS``,
     but is not identical.  The following notes are incorporated from
     the GEMPAK source code:
 
@@ -717,9 +719,9 @@ def smooth_gaussian(scalar_grid, n):
     low-pass filter whose weights are determined by the normal
     (Gaussian) probability distribution function for two dimensions.
     The weight given to any grid point within the area covered by the
-    moving average for a target grid point is proportional to
+    moving average for a target grid point is proportional to:
 
-                    EXP [ -( D ** 2 ) ],
+    .. math:: e^{-D^2}
 
     where D is the distance from that point to the target point divided
     by the standard deviation of the normal distribution.  The value of
@@ -788,10 +790,10 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     Parameters
     ----------
     scalar_grid : array-like
-        N-dimensional scalar grid to be smoothed.
+        N-dimensional scalar grid to be smoothed
 
     window : ndarray
-        The window to use in smoothing. Can have dimension less than or equal to N. If
+        Window to use in smoothing. Can have dimension less than or equal to N. If
         dimension less than N, the scalar grid will be smoothed along its trailing dimensions.
         Shape along each dimension must be odd.
 
@@ -806,7 +808,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     Returns
     -------
     array-like
-        The filtered scalar grid.
+        The filtered scalar grid
 
     Notes
     -----
@@ -879,10 +881,10 @@ def smooth_rectangular(scalar_grid, size, passes=1):
     Parameters
     ----------
     scalar_grid : array-like
-        N-dimensional scalar grid to be smoothed.
+        N-dimensional scalar grid to be smoothed
 
     size : int or sequence of ints
-        Shape of rectangle along the trailing dimension(s) of the scalar grid.
+        Shape of rectangle along the trailing dimension(s) of the scalar grid
 
     passes : int
         The number of times to apply the filter to the grid. Defaults to 1.
@@ -890,7 +892,7 @@ def smooth_rectangular(scalar_grid, size, passes=1):
     Returns
     -------
     array-like
-        The filtered scalar grid.
+        The filtered scalar grid
 
     Notes
     -----
@@ -929,7 +931,7 @@ def smooth_circular(scalar_grid, radius, passes=1):
     Returns
     -------
     array-like
-        The filtered scalar grid.
+        The filtered scalar grid
 
     Notes
     -----
@@ -975,7 +977,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     Returns
     -------
     array-like or `pint.Quantity`
-        The filtered scalar grid.
+        The filtered scalar grid
 
     Notes
     -----
@@ -1030,14 +1032,15 @@ def altimeter_to_station_pressure(altimeter_value, height):
     altimeter_value : `pint.Quantity`
         The altimeter setting value as defined by the METAR or other observation,
         which can be measured in either inches of mercury (in. Hg) or millibars (mb)
+
     height: `pint.Quantity`
-        Elevation of the station measuring pressure.
+        Elevation of the station measuring pressure
 
     Returns
     -------
     `pint.Quantity`
-        The station pressure in hPa or in. Hg, which can be used to calculate sea-level
-        pressure
+        The station pressure in hPa or in. Hg. Can be used to calculate sea-level
+        pressure.
 
     See Also
     --------
@@ -1055,7 +1058,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
      .. math::  F = \left [1 + \left(\frac{p_{0}^n a}{T_{0}} \right)
                    \frac{H_{b}}{p_{1}^n} \right ] ^ \frac{1}{n}
 
-    Where
+    Where,
 
     :math:`p_{0}` = standard sea-level pressure = 1013.25 mb
 
@@ -1066,11 +1069,10 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
     :math:`t_{0}` = standard sea-level temperature 288 K
 
-    :math:`H_{b} =` station elevation in meters (elevation for which station
-      pressure is given)
+    :math:`H_{b} =` station elevation in meters (elevation for which station pressure is given)
 
-    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas
-      constant for dry air
+    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas constant for dry
+    air
 
     And solving for :math:`p_{mb}` results in the equation below, which is used to
     calculate station pressure :math:`(p_{mb})`
@@ -1099,7 +1101,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     This function is useful for working with METARs since most provide
     altimeter values, but not sea-level pressure, which is often plotted
     on surface maps. The following definitions of altimeter setting, station pressure, and
-    sea-level pressure are taken from [Smithsonian1951]_
+    sea-level pressure are taken from [Smithsonian1951]_.
     Altimeter setting is the pressure value to which an aircraft altimeter scale
     is set so that it will indicate the altitude above mean sea-level of an aircraft
     on the ground at the location for which the value is determined. It assumes a standard
@@ -1115,9 +1117,11 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     ----------
     altimeter_value : 'pint.Quantity'
         The altimeter setting value is defined by the METAR or other observation,
-        with units of inches of mercury (in Hg) or millibars (hPa)
+        with units of inches of mercury (in Hg) or millibars (hPa).
+
     height  : 'pint.Quantity'
         Elevation of the station measuring pressure. Often times measured in meters
+
     temperature : 'pint.Quantity'
         Temperature at the station
 
@@ -1125,7 +1129,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     -------
     'pint.Quantity'
         The sea-level pressure in hPa and makes pressure values easier to compare
-        between different stations
+        between different stations.
 
     See Also
     --------
@@ -1133,7 +1137,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
 
     Notes
     -----
-    This function is implemented using the following equations from Wallace and Hobbs (1977)
+    This function is implemented using the following equations from Wallace and Hobbs (1977).
 
     Equation 2.29:
      .. math::
@@ -1167,15 +1171,15 @@ def _check_radians(value, max_radians=2 * np.pi):
     Parameters
     ----------
     value : `pint.Quantity`
-        The input value to check.
+        Input value to check
 
     max_radians : float
-        Maximum absolute value of radians before warning.
+        Maximum absolute value of radians before warning
 
     Returns
     -------
     `pint.Quantity`
-        The input value
+        Input value
 
     """
     try:
