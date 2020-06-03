@@ -19,40 +19,115 @@ from metpy.testing import (assert_almost_equal, assert_array_almost_equal, asser
 from metpy.units import units
 
 
-def test_wind_comps_basic():
-    """Test the basic wind component calculation."""
-    speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
-    dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
-    s2 = np.sqrt(2.)
+class TestWindComponents:
+    """Test the wind components function"""
 
-    u, v = wind_components(speed, dirs)
+    @pytest.fixture(scope="session")
+    def truth(self):
+        s2 = np.sqrt(2.)
+        return {
+            'u_scalar': -4 / s2 * units.mph,
+            'v_scalar': -4 / s2 * units.mph,
+            'u_array': np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph,
+            'v_array': np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph,
+        }
 
-    true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
-    true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
+    def test_scalars(self, truth, scalars):
+        """Test with scalars."""
+        u, v = wind_components(scalars['speed'], scalars['dirs'])
 
-    assert_array_almost_equal(true_u, u, 4)
-    assert_array_almost_equal(true_v, v, 4)
-
-
-def test_wind_comps_with_north_and_calm():
-    """Test that the wind component calculation handles northerly and calm winds."""
-    speed = np.array([0, 5, 5]) * units.mph
-    dirs = np.array([0, 360, 0]) * units.deg
-
-    u, v = wind_components(speed, dirs)
-
-    true_u = np.array([0, 0, 0]) * units.mph
-    true_v = np.array([0, -5, -5]) * units.mph
-
-    assert_array_almost_equal(true_u, u, 4)
-    assert_array_almost_equal(true_v, v, 4)
+        assert_almost_equal(truth['u_scalar'], u, 4)
+        assert_almost_equal(truth['v_scalar'], v, 4)
 
 
-def test_wind_comps_scalar():
-    """Test wind components calculation with scalars."""
-    u, v = wind_components(8 * units('m/s'), 150 * units.deg)
-    assert_almost_equal(u, -4 * units('m/s'), 3)
-    assert_almost_equal(v, 6.9282 * units('m/s'), 3)
+    def test_arrays(self, truth, arrays):
+        """Test with arrays."""
+        u, v = wind_components(arrays['speed'], arrays['dirs'])
+
+        assert_array_almost_equal(truth['u_array'], u, 4)
+        assert_array_almost_equal(truth['v_array'], v, 4)
+
+
+    def test_masked(self, truth, masked):
+        """Test with masked arrays."""
+        u, v = wind_components(masked['speed'], masked['dirs'])
+
+        true_u = units.Quantity(
+            np.ma.array(truth['u_array'], mask=masked['mask']), units.mph)
+        true_v = units.Quantity(
+            np.ma.array(truth['v_array'], mask=masked['mask']), units.mph)
+
+        assert_array_almost_equal(true_u, u, 4)
+        assert_array_almost_equal(true_v, v, 4)
+
+
+    def test_nans(self, truth, nans):
+        """Test with nans."""
+        u, v = wind_components(nans['speed'], nans['dirs'])
+
+        true_u = truth['u_array']
+        true_u[::2] = np.nan
+        true_v = truth['v_array']
+        true_v[::2] = np.nan
+
+        assert_array_almost_equal(true_u, u, 4)
+        assert_array_almost_equal(true_v, v, 4)
+
+
+    @pytest.mark.parametrize(
+        "speed, dirs, true_u, true_v",
+        [
+            # Test northerly and calm winds
+            pytest.param(
+                np.array([0, 5, 5]) * units.mph,
+                np.array([0, 360, 0]) * units.deg,
+                np.array([0, 0, 0]) * units.mph,
+                np.array([0, -5, -5]) * units.mph
+            )
+        ]
+    )
+    def test_edge_cases(self, speed, dirs, true_u, true_v):
+        """Test that the wind component calculation handles northerly and calm winds."""
+        u, v = wind_components(speed, dirs)
+
+        assert_array_almost_equal(true_u, u, 4)
+        assert_array_almost_equal(true_v, v, 4)
+
+
+# def test_wind_comps_basic():
+#     """Test the basic wind component calculation."""
+#     speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
+#     dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
+#     s2 = np.sqrt(2.)
+#
+#     u, v = wind_components(speed, dirs)
+#
+#     true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
+#     true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
+#
+#     assert_array_almost_equal(true_u, u, 4)
+#     assert_array_almost_equal(true_v, v, 4)
+#
+#
+# def test_wind_comps_with_north_and_calm():
+#     """Test that the wind component calculation handles northerly and calm winds."""
+#     speed = np.array([0, 5, 5]) * units.mph
+#     dirs = np.array([0, 360, 0]) * units.deg
+#
+#     u, v = wind_components(speed, dirs)
+#
+#     true_u = np.array([0, 0, 0]) * units.mph
+#     true_v = np.array([0, -5, -5]) * units.mph
+#
+#     assert_array_almost_equal(true_u, u, 4)
+#     assert_array_almost_equal(true_v, v, 4)
+#
+#
+# def test_wind_comps_scalar():
+#     """Test wind components calculation with scalars."""
+#     u, v = wind_components(8 * units('m/s'), 150 * units.deg)
+#     assert_almost_equal(u, -4 * units('m/s'), 3)
+#     assert_almost_equal(v, 6.9282 * units('m/s'), 3)
 
 
 def test_speed():

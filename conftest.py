@@ -16,6 +16,7 @@ import traitlets
 import xarray
 
 import metpy.calc
+from metpy.units import units
 
 # Need to disable fallback before importing pint
 os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
