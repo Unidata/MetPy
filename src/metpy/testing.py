@@ -15,6 +15,7 @@ from pint import DimensionalityError
 import pytest
 import xarray as xr
 
+import metpy.calc
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.deprecation import MetpyDeprecationWarning
@@ -242,3 +243,96 @@ def check_and_silence_warning(warn_type):
 
 
 check_and_silence_deprecation = check_and_silence_warning(MetpyDeprecationWarning)
+
+
+def scalar(name, values, truth):
+    """Test a function using scalars."""
+    func = eval(name)
+    args = [v[0] for v in values]
+    truths = [t[0] for t in truth]
+
+    results = func(*args)
+
+    if isinstance(results, tuple):
+        for t, r in zip(truths, results):
+            assert_almost_equal(t, r, 4)
+    else:
+        assert_almost_equal(*truths, results, 4)
+
+
+def array(name, values, truth):
+    """Test a function using arrays."""
+    func = eval(name)
+    results = func(*values)
+
+    _assert_array_results(truth, results)
+
+
+def masked(name, values, truth):
+    """Test a function using masked arrays."""
+    func = eval(name)
+
+    # Create a mask that is True/False for every other value
+    mask = np.ones_like(values[0].m, dtype=bool)
+    mask[::2] = False
+
+    values_masked = [units.Quantity(np.ma.array(v.m, mask=mask), v.units) for v in values]
+    truth_masked = [units.Quantity(np.ma.array(t.m, mask=mask), t.units) for t in truth]
+
+    results = func(*values_masked)
+
+    _assert_array_results(truth_masked, results)
+
+
+def nans(name, values, truth):
+    """Test a function using nans."""
+    func = eval(name)
+
+    # Create copies of values and truth, then add nans at every other index
+    def assign_nans(arr):
+        arr_nans = arr.copy()
+        for i, a in enumerate(arr_nans):
+            anans = a.copy()
+            anans[::2] = np.nan
+            arr_nans[i] = anans
+        return arr_nans
+
+    values_nans = assign_nans(values)
+    truth_nans = assign_nans(truth)
+
+    results = func(*values_nans)
+
+    _assert_array_results(truth_nans, results)
+
+
+def data_array(name, values, truth):
+    """Test a function using data arrays."""
+    func = eval(name)
+
+    values_data_array = [xr.DataArray(v) for v in values]
+    truth_data_array = [xr.DataArray(t) for t in truth]
+
+    results = func(*values_data_array)
+
+    _assert_array_results(truth_data_array, results)
+
+
+def dask_array(name, values, truth):
+    """Test a function using dask arrays."""
+    func = eval(name)
+
+    values_dask = [units.Quantity(da.from_array(v.m), v.units) for v in values]
+    truth_dask = [units.Quantity(da.from_array(t.m), t.units) for t in truth]
+
+    results = func(*values_dask)
+
+    _assert_array_results(truth_dask, results)
+
+
+def _assert_array_results(truth, results):
+    """Assert equality of an array-like data type."""
+    if isinstance(results, tuple):
+        for t, r in zip(truth, results):
+            assert_array_almost_equal(t, r, 4)
+    else:
+        assert_array_almost_equal(*truth, results, 4)

@@ -16,230 +16,108 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         pressure_to_height_std, sigma_to_pressure, smooth_circular,
                         smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
                         wind_components, wind_direction, wind_speed, windchill)
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           scalar, array, masked, nans, data_array, dask_array)
 from metpy.units import units
+from data_basic import function_test_data
 
 
-class TestWindComponents:
-    """Test the wind components function"""
+class TestDataTypes:
+    """Test all functions against supported data types."""
+    scenarios = function_test_data
+    module_ext = "metpy.calc."
 
-    @pytest.fixture()
-    def data(self):
-        mask = np.array([True, True, False, True, True, False, True, True, False])
-
-        speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
-        dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
-
-        speed_nans = np.array([4, np.nan, 4, np.nan, 25, np.nan, 25, np.nan, 10.]) * units.mph
-        dirs_nans = np.array([0, np.nan, 90, 135, 180, np.nan, 270, 315, 360]) * units.deg
-
-        return {
-            'mask': mask,
-            'speed': speed,
-            'dirs': dirs,
-            'speed_nans': speed_nans,
-            'dirs_nans': dirs_nans,
-        }
+    def test_scalars(self, name, values, truth):
+        name = self.module_ext + name
+        scalar(name, values, truth)
 
 
-    @pytest.fixture()
-    def truth(self):
-        s2 = np.sqrt(2.)
-        mask = np.array([True, True, False, True, True, False, True, True, False])
-
-        u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
-        v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
-
-        u_nans = np.array([0, np.nan, -4, np.nan, 0, np.nan, 25, np.nan, 0]) * units.mph
-        v_nans = np.array([-4, np.nan, 0, np.nan, 25, np.nan, 0, np.nan, -10]) * units.mph
-
-        return {
-            'mask': mask,
-            'u': u,
-            'v': v,
-            'u_nans': u_nans,
-            'v_nans': v_nans,
-        }
+    def test_arrays(self, name, values, truth):
+        name = self.module_ext + name
+        array(name, values, truth)
 
 
-    def test_scalars(self):
-        """Test with scalars."""
-        u, v = wind_components(4. * units.mph, 0. * units.deg)
-
-        assert_almost_equal(0 * units.mph, u, 4)
-        assert_almost_equal(-4 * units.mph, v, 4)
+    def test_masked(self, name, values, truth):
+        name = self.module_ext + name
+        masked(name, values, truth)
 
 
-    def test_arrays(self, truth, data):
-        """Test with arrays."""
-        u, v = wind_components(data['speed'], data['dirs'])
-
-        assert_array_almost_equal(truth['u'], u, 4)
-        assert_array_almost_equal(truth['v'], v, 4)
+    def test_nans(self, name, values, truth):
+        name = self.module_ext + name
+        nans(name, values, truth)
 
 
-    def test_masked(self, truth, data):
-        """Test with masked arrays."""
-        speed = units.Quantity(np.ma.array(data['speed'].m, mask=data['mask']), units.mph)
-        dirs = units.Quantity(np.ma.array(data['dirs'].m, mask=data['mask']), units.deg)
-
-        u, v = wind_components(speed, dirs)
-
-        true_u = units.Quantity(np.ma.array(truth['u'].m, mask=truth['mask']), units.mph)
-        true_v = units.Quantity(np.ma.array(truth['v'].m, mask=truth['mask']), units.mph)
-
-        assert_array_almost_equal(true_u, u, 4)
-        assert_array_almost_equal(true_v, v, 4)
+    def test_data_array(self, name, values, truth):
+        name = self.module_ext + name
+        data_array(name, values, truth)
 
 
-    def test_nans(self, truth, data):
-        """Test with nans."""
-        u, v = wind_components(data['speed_nans'], data['dirs_nans'])
-
-        assert_array_almost_equal(truth['u_nans'], u, 4)
-        assert_array_almost_equal(truth['v_nans'], v, 4)
-
-
-    # @pytest.mark.xfail
-    def test_dask(self, truth, data):
-        """Test with dask arrays."""
-        speed = units.Quantity(dask.array.from_array(data['speed'].m), units.mph)
-        dirs = units.Quantity(dask.array.from_array(data['dirs'].m), units.deg)
-
-        u, v = wind_components(speed, dirs)
-
-        true_u = units.Quantity(dask.array.from_array(truth['u'].m), units.mph)
-        true_v = units.Quantity(dask.array.from_array(truth['v'].m), units.mph)
-
-        # assert_array_almost_equal(true_u, u.compute() * units.mph, 4)
-        # assert_array_almost_equal(true_v, v.compute() * units.mph, 4)
-
-        assert_array_almost_equal(true_u, u, 4)
-        assert_array_almost_equal(true_v, v, 4)
+    # Dask arrays currently not supported
+    @pytest.mark.xfail
+    def test_dask_array(self, name, values, truth):
+        name = self.module_ext + name
+        dask_array(name, values, truth)
 
 
-    @pytest.mark.parametrize(
-        "speed, dirs, true_u, true_v",
-        [
-            # Test northerly and calm winds
-            pytest.param(
-                np.array([0, 5, 5]) * units.mph,
-                np.array([0, 360, 0]) * units.deg,
-                np.array([0, 0, 0]) * units.mph,
-                np.array([0, -5, -5]) * units.mph
-            )
-        ]
-    )
-    def test_edge_cases(self, speed, dirs, true_u, true_v):
-        """Test that the wind component calculation handles northerly and calm winds."""
-        u, v = wind_components(speed, dirs)
+def test_wind_comps_basic():
+    """Test the basic wind component calculation."""
+    speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
+    dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
+    s2 = np.sqrt(2.)
 
-        assert_array_almost_equal(true_u, u, 4)
-        assert_array_almost_equal(true_v, v, 4)
+    u, v = wind_components(speed, dirs)
+
+    true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
+    true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
+
+    assert_array_almost_equal(true_u, u, 4)
+    assert_array_almost_equal(true_v, v, 4)
 
 
-# def test_wind_comps_basic():
-#     """Test the basic wind component calculation."""
-#     speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
-#     dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
-#     s2 = np.sqrt(2.)
-#
-#     u, v = wind_components(speed, dirs)
-#
-#     true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
-#     true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
-#
-#     assert_array_almost_equal(true_u, u, 4)
-#     assert_array_almost_equal(true_v, v, 4)
-#
-#
-# def test_wind_comps_with_north_and_calm():
-#     """Test that the wind component calculation handles northerly and calm winds."""
-#     speed = np.array([0, 5, 5]) * units.mph
-#     dirs = np.array([0, 360, 0]) * units.deg
-#
-#     u, v = wind_components(speed, dirs)
-#
-#     true_u = np.array([0, 0, 0]) * units.mph
-#     true_v = np.array([0, -5, -5]) * units.mph
-#
-#     assert_array_almost_equal(true_u, u, 4)
-#     assert_array_almost_equal(true_v, v, 4)
-#
-#
-# def test_wind_comps_scalar():
-#     """Test wind components calculation with scalars."""
-#     u, v = wind_components(8 * units('m/s'), 150 * units.deg)
-#     assert_almost_equal(u, -4 * units('m/s'), 3)
-#     assert_almost_equal(v, 6.9282 * units('m/s'), 3)
+def test_wind_comps_with_north_and_calm():
+    """Test that the wind component calculation handles northerly and calm winds."""
+    speed = np.array([0, 5, 5]) * units.mph
+    dirs = np.array([0, 360, 0]) * units.deg
+
+    u, v = wind_components(speed, dirs)
+
+    true_u = np.array([0, 0, 0]) * units.mph
+    true_v = np.array([0, -5, -5]) * units.mph
+
+    assert_array_almost_equal(true_u, u, 4)
+    assert_array_almost_equal(true_v, v, 4)
 
 
-class TestWindSpeed:
-    """Test the wind speed function"""
-
-    @pytest.fixture()
-    def data(self):
-        s2 = np.sqrt(2.)
-        mask = np.array([True, False, True, False])
-
-        u = np.array([4., 2., 0., 0.]) * units('m/s')
-        v = np.array([0., 2., 4., 0.]) * units('m/s')
-
-        u_nans = np.array([4., np.nan, 0., 0.]) * units('m/s')
-        v_nans = np.array([0., 2., np.nan, 0.]) * units('m/s')
-
-        return {
-            'mask': mask,
-            'u': u,
-            'v': v,
-            'u_nans': u_nans,
-            'v_nans': v_nans,
-        }
+def test_wind_comps_scalar():
+    """Test wind components calculation with scalars."""
+    u, v = wind_components(8 * units('m/s'), 150 * units.deg)
+    assert_almost_equal(u, -4 * units('m/s'), 3)
+    assert_almost_equal(v, 6.9282 * units('m/s'), 3)
 
 
-    @pytest.fixture()
-    def truth(self):
-        s2 = np.sqrt(2.)
-        mask = np.array([True, False, True, False])
+def test_speed():
+    """Test calculating wind speed."""
+    u = np.array([4., 2., 0., 0.]) * units('m/s')
+    v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-        speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
-        speed_nans = np.array([4., np.nan, np.nan, 0.]) * units('m/s')
+    speed = wind_speed(u, v)
 
-        return {
-            'mask': mask,
-            'speed': speed,
-            'speed_nans': speed_nans,
-        }
+    s2 = np.sqrt(2.)
+    true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
+
+    assert_array_almost_equal(true_speed, speed, 4)
 
 
-    def test_scalars(self):
-        """Test with scalars."""
-        speed = wind_speed(0. * units.mph, -4. * units.mph)
+def test_direction():
+    """Test calculating wind direction."""
+    u = np.array([4., 2., 0., 0.]) * units('m/s')
+    v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-        assert_almost_equal(4 * units.mph, speed, 4)
+    direc = wind_direction(u, v)
 
+    true_dir = np.array([270., 225., 180., 0.]) * units.deg
 
-    def test_arrays(self, truth, data):
-        """Test with arrays."""
-        speed = wind_speed(data['u'], data['v'])
-
-        assert_array_almost_equal(truth['speed'], speed, 4)
-
-def test_direction_masked():
-    """Test calculating wind direction from masked wind components."""
-    mask = np.array([True, False, True, False])
-    u = np.array([4., 2., 0., 0.])
-    v = np.array([0., 2., 4., 0.])
-
-    u_masked = units.Quantity(np.ma.array(u, mask=mask), units('m/s'))
-    v_masked = units.Quantity(np.ma.array(v, mask=mask), units('m/s'))
-
-    direc = wind_direction(u_masked, v_masked)
-
-    true_dir = np.array([270., 225., 180., 0.])
-    true_dir_masked = units.Quantity(np.ma.array(true_dir, mask=mask), units.deg)
-
-    assert_array_almost_equal(true_dir_masked, direc, 4)
+    assert_array_almost_equal(true_dir, direc, 4)
 
 
 def test_direction_with_north_and_calm():
@@ -247,207 +125,30 @@ def test_direction_with_north_and_calm():
     u = np.array([0., -0., 0.]) * units('m/s')
     v = np.array([0., 0., -5.]) * units('m/s')
 
-    def test_masked(self, truth, data):
-        """Test with masked arrays."""
-        u = units.Quantity(np.ma.array(data['u'].m, mask=data['mask']), units('m/s'))
-        v = units.Quantity(np.ma.array(data['v'].m, mask=data['mask']), units('m/s'))
+    direc = wind_direction(u, v)
 
-        speed = wind_speed(u, v)
+    true_dir = np.array([0., 0., 360.]) * units.deg
 
-        true_speed = units.Quantity(np.ma.array(truth['speed'].m, mask=truth['mask']), units('m/s'))
-
-        assert_array_almost_equal(true_speed, speed, 4)
+    assert_array_almost_equal(true_dir, direc, 4)
 
 
-    def test_nans(self, truth, data):
-        """Test with nans."""
-        speed = wind_speed(data['u_nans'], data['v_nans'])
-
-        assert_array_almost_equal(truth['speed_nans'], speed, 4)
-
-
-    # @pytest.mark.xfail
-    def test_dask(self, truth, data):
-        u = units.Quantity(dask.array.from_array(data['u'].m), units('m/s'))
-        v = units.Quantity(dask.array.from_array(data['v'].m), units('m/s'))
-
-        speed = wind_speed(u, v)
-
-        true_speed = units.Quantity(dask.array.from_array(truth['speed'].m), units('m/s'))
-
-        # assert_array_almost_equal(true_speed, speed.compute(), 4)
-        assert_array_almost_equal(true_speed, speed, 4)
+def test_direction_dimensions():
+    """Verify wind_direction returns degrees."""
+    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
+    assert str(d.units) == 'degree'
 
 
-# def test_speed():
-#     """Test calculating wind speed."""
-#     u = np.array([4., 2., 0., 0.]) * units('m/s')
-#     v = np.array([0., 2., 4., 0.]) * units('m/s')
-#
-#     speed = wind_speed(u, v)
-#
-#     s2 = np.sqrt(2.)
-#     true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
-#
-#     assert_array_almost_equal(true_speed, speed, 4)
-
-class TestWindDirection:
-    """Test the wind direction function"""
-
-    @pytest.fixture()
-    def data(self):
-        mask = np.array([True, False, True, False])
-
-        u = np.array([4., 2., 0., 0.]) * units('m/s')
-        v = np.array([0., 2., 4., 0.]) * units('m/s')
-        u_nans = np.array([4., np.nan, 0., 0.]) * units('m/s')
-        v_nans = np.array([0., 2., np.nan, 0.]) * units('m/s')
-
-        return {
-            'mask': mask,
-            'u': u,
-            'v': v,
-            'u_nans': u_nans,
-            'v_nans': v_nans,
-        }
+def test_oceanographic_direction():
+    """Test oceanographic direction (to) convention."""
+    d = wind_direction(5 * units('m/s'), -5 * units('m/s'), convention='to')
+    true_dir = 135 * units.deg
+    assert_almost_equal(d, true_dir, 4)
 
 
-    @pytest.fixture()
-    def truth(self):
-        mask = np.array([True, False, True, False])
-
-        dirs = np.array([270., 225., 180., 0.]) * units.deg
-        dirs_nans = np.array([270., np.nan, np.nan, 0.]) * units.deg
-
-        return {
-            'mask': mask,
-            'dirs': dirs,
-            'dirs_nans': dirs_nans,
-        }
-
-
-    def test_scalars(self):
-        """Test with scalars."""
-        direc = wind_direction(4. * units('m/s'), 0. * units('m/s'))
-
-        assert_array_almost_equal(270. * units.deg, direc, 4)
-
-
-    def test_arrays(self, truth, data):
-        """Test with arrays."""
-        dirs = wind_direction(data['u'], data['v'])
-
-        assert_array_almost_equal(truth['dirs'], dirs, 4)
-
-
-    # This will fail due to issues with indexing by an empty masked array
-    # See issue #1390
-    @pytest.mark.xfail
-    def test_masked(self, truth, data):
-        """Test with masked arrays."""
-        u = units.Quantity(np.ma.array(data['u'].m, mask=data['mask']), units('m/s'))
-        v = units.Quantity(np.ma.array(data['v'].m, mask=data['mask']), units('m/s'))
-
-        dirs = wind_direction(u, v)
-
-        true_dirs = units.Quantity(np.ma.array(truth['dirs'].m, mask=truth['mask']), units.deg)
-
-        assert_array_almost_equal(true_dirs, dirs, 4)
-
-
-    def test_nans(self, truth, data):
-        """Test with nans."""
-        dirs = wind_direction(data['u_nans'], data['v_nans'])
-
-        assert_array_almost_equal(truth['dirs_nans'], dirs)
-
-
-    # This will fail due to broadcasting not being implemented in dask
-    @pytest.mark.xfail
-    def test_dask(self, truth, data):
-        """Test with dask arrays"""
-        u = units.Quantity(dask.array.from_array(data['u'].m), units('m/s'))
-        v = units.Quantity(dask.array.from_array(data['v'].m), units('m/s'))
-
-        dirs = wind_direction(u, v)
-
-        true_dirs = units.Quantity(dask.array.from_array(truth['dirs'].m), units.deg)
-
-        assert_array_almost_equal(true_dirs, dirs, 4)
-
-
-    def test_with_north_and_calm(self):
-        """Test how wind direction handles northerly and calm winds."""
-        u = np.array([0., -0., 0.]) * units('m/s')
-        v = np.array([0., 0., -5.]) * units('m/s')
-
-        direc = wind_direction(u, v)
-
-        true_dir = np.array([0., 0., 360.]) * units.deg
-
-        assert_array_almost_equal(true_dir, direc, 4)
-
-
-    def test_dimensions(self):
-        """Verify wind_direction returns degrees."""
-        d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
-        assert str(d.units) == 'degree'
-
-
-    def test_oceanographic(self):
-        """Test oceanographic direction (to) convention."""
-        d = wind_direction(5 * units('m/s'), -5 * units('m/s'), convention='to')
-        true_dir = 135 * units.deg
-        assert_almost_equal(d, true_dir, 4)
-
-
-    def test_invalid_convention(self):
-        """Test the error that is returned if the convention kwarg is not valid."""
-        with pytest.raises(ValueError):
-            wind_direction(1 * units('m/s'), 5 * units('m/s'), convention='test')
-
-
-# def test_direction():
-#     """Test calculating wind direction."""
-#     u = np.array([4., 2., 0., 0.]) * units('m/s')
-#     v = np.array([0., 2., 4., 0.]) * units('m/s')
-#
-#     direc = wind_direction(u, v)
-#
-#     true_dir = np.array([270., 225., 180., 0.]) * units.deg
-#
-#     assert_array_almost_equal(true_dir, direc, 4)
-
-
-# def test_direction_with_north_and_calm():
-#     """Test how wind direction handles northerly and calm winds."""
-#     u = np.array([0., -0., 0.]) * units('m/s')
-#     v = np.array([0., 0., -5.]) * units('m/s')
-#
-#     direc = wind_direction(u, v)
-#
-#     true_dir = np.array([0., 0., 360.]) * units.deg
-#
-#     assert_array_almost_equal(true_dir, direc, 4)
-
-
-# def test_direction_dimensions():
-#     """Verify wind_direction returns degrees."""
-#     d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
-#     assert str(d.units) == 'degree'
-#
-#
-# def test_oceanographic_direction():
-#     """Test oceanographic direction (to) convention."""
-#     d = wind_direction(5 * units('m/s'), -5 * units('m/s'), convention='to')
-#     true_dir = 135 * units.deg
-#     assert_almost_equal(d, true_dir, 4)
-#
-#
-# def test_invalid_direction_convention():
-#     """Test the error that is returned if the convention kwarg is not valid."""
-#     with pytest.raises(ValueError):
-#         wind_direction(1 * units('m/s'), 5 * units('m/s'), convention='test')
+def test_invalid_direction_convention():
+    """Test the error that is returned if the convention kwarg is not valid."""
+    with pytest.raises(ValueError):
+        wind_direction(1 * units('m/s'), 5 * units('m/s'), convention='test')
 
 
 def test_speed_direction_roundtrip():
@@ -465,134 +166,70 @@ def test_speed_direction_roundtrip():
     assert_array_almost_equal(wdir, wdir_out, 4)
 
 
-# def test_scalar_speed():
-#     """Test wind speed with scalars."""
-#     s = wind_speed(-3. * units('m/s'), -4. * units('m/s'))
-#     assert_almost_equal(s, 5. * units('m/s'), 3)
-#
-#
-# def test_scalar_direction():
-#     """Test wind direction with scalars."""
-#     d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
-#     assert_almost_equal(d, 216.870 * units.deg, 3)
-
-class TestWindChill:
-    """Test the windchill function."""
-
-    @pytest.fixture
-    def data(self):
-        mask = np.array([False, True, False, True])
-
-        temp = np.array([40, -10, -45, 20]) * units.degF
-        speed = np.array([5, 55, 25, 15]) * units.mph
-
-        temp_nans = np.array([40, np.nan, -45, 20]) * units.degF
-        speed_nans = np.array([5, 55, np.nan, 15]) * units.mph
-
-        return {
-            'mask': mask,
-            'temp': temp,
-            'speed': speed,
-            'temp_nans': temp_nans,
-            'speed_nans': speed_nans,
-        }
+def test_scalar_speed():
+    """Test wind speed with scalars."""
+    s = wind_speed(-3. * units('m/s'), -4. * units('m/s'))
+    assert_almost_equal(s, 5. * units('m/s'), 3)
 
 
-    @pytest.fixture
-    def truth(self):
-        mask = np.array([False, True, False, True])
-
-        wc = np.array([36, -46, -84, 6]) * units.degF
-        wc_nans = np.array([36, -np.nan, np.nan, 6]) * units.degF
-
-        return {
-            'mask': mask,
-            'wc': wc,
-            'wc_nans': wc_nans,
-        }
+def test_scalar_direction():
+    """Test wind direction with scalars."""
+    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
+    assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
-    def test_scalars(self):
-        """Test with scalars."""
-        wc = windchill(-5 * units.degC, 35 * units('m/s'))
-
-        assert_almost_equal(wc, -18.9357 * units.degC, 0)
-
-
-    def test_arrays(self, truth, data):
-        """Test with arrays."""
-        wc = windchill(data['temp'], data['speed'])
-
-        assert_array_almost_equal(truth['wc'], wc, 0)
+def test_windchill_scalar():
+    """Test wind chill with scalars."""
+    wc = windchill(-5 * units.degC, 35 * units('m/s'))
+    assert_almost_equal(wc, -18.9357 * units.degC, 0)
 
 
-    def test_masked(self, truth, data):
-        """Test with masked arrays."""
-        temp = units.Quantity(np.ma.array(data['temp'].m, mask=data['mask']), units.degF)
-        speed = units.Quantity(np.ma.array(data['speed'].m, mask=data['mask']), units.mph)
+def test_windchill_basic():
+    """Test the basic wind chill calculation."""
+    temp = np.array([40, -10, -45, 20]) * units.degF
+    speed = np.array([5, 55, 25, 15]) * units.mph
 
-        wc = windchill(temp, speed)
-
-        true_wc = units.Quantity(np.ma.array(truth['wc'].m, mask=data['mask']), units.degF)
-
-        assert_array_almost_equal(true_wc, wc, 0)
+    wc = windchill(temp, speed)
+    values = np.array([36, -46, -84, 6]) * units.degF
+    assert_array_almost_equal(wc, values, 0)
 
 
-    def test_nans(self, truth, data):
-        """Test with nans."""
-        wc = windchill(data['temp_nans'], data['speed_nans'])
-
-        assert_array_almost_equal(truth['wc_nans'], wc, 0)
-
-
-    def test_dask(self, truth, data):
-        """Test with dask arrays."""
-        temp = units.Quantity(dask.array.from_array(data['temp'].m), units.degF)
-        speed = units.Quantity(dask.array.from_array(data['speed'].m), units.mph)
-
-        wc = windchill(temp, speed)
-
-        true_wc = units.Quantity(dask.array.from_array(truth['wc'].m), units.degF)
-
-        assert_array_almost_equal(true_wc, wc, 0)
+def test_windchill_kelvin():
+    """Test wind chill when given Kelvin temperatures."""
+    wc = windchill(268.15 * units.kelvin, 35 * units('m/s'))
+    assert_almost_equal(wc, -18.9357 * units.degC, 0)
 
 
-    def test_windchill_kelvin(self):
-        """Test wind chill when given Kelvin temperatures."""
-        wc = windchill(268.15 * units.kelvin, 35 * units('m/s'))
-        assert_almost_equal(wc, -18.9357 * units.degC, 0)
+def test_windchill_invalid():
+    """Test windchill for values that should be masked."""
+    temp = np.array([10, 51, 49, 60, 80, 81]) * units.degF
+    speed = np.array([4, 4, 3, 1, 10, 39]) * units.mph
+
+    wc = windchill(temp, speed)
+    # We don't care about the masked values
+    truth = units.Quantity(np.ma.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan],
+                                       mask=[False, True, True, True, True, True]), units.degF)
+    assert_array_almost_equal(truth, wc)
 
 
-    def test_windchill_invalid(self):
-        """Test windchill for values that should be masked."""
-        temp = np.array([10, 51, 49, 60, 80, 81]) * units.degF
-        speed = np.array([4, 4, 3, 1, 10, 39]) * units.mph
+def test_windchill_undefined_flag():
+    """Test whether masking values for windchill can be disabled."""
+    temp = units.Quantity(np.ma.array([49, 50, 49, 60, 80, 81]), units.degF)
+    speed = units.Quantity(([4, 4, 3, 1, 10, 39]), units.mph)
 
-        wc = windchill(temp, speed)
-        # We don't care about the masked values
-        truth = units.Quantity(np.ma.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan],
-                                           mask=[False, True, True, True, True, True]), units.degF)
-        assert_array_almost_equal(truth, wc)
+    wc = windchill(temp, speed, mask_undefined=False)
+    mask = np.array([False] * 6)
+    assert_array_equal(wc.mask, mask)
 
 
-    def test_windchill_undefined_flag(self):
-        """Test whether masking values for windchill can be disabled."""
-        temp = units.Quantity(np.ma.array([49, 50, 49, 60, 80, 81]), units.degF)
-        speed = units.Quantity(([4, 4, 3, 1, 10, 39]), units.mph)
+def test_windchill_face_level():
+    """Test windchill using the face_level flag."""
+    temp = np.array([20, 0, -20, -40]) * units.degF
+    speed = np.array([15, 30, 45, 60]) * units.mph
 
-        wc = windchill(temp, speed, mask_undefined=False)
-        mask = np.array([False] * 6)
-        assert_array_equal(wc.mask, mask)
-
-
-    def test_windchill_face_level(self):
-        """Test windchill using the face_level flag."""
-        temp = np.array([20, 0, -20, -40]) * units.degF
-        speed = np.array([15, 30, 45, 60]) * units.mph
-
-        wc = windchill(temp, speed, face_level_winds=True)
-        values = np.array([3, -30, -64, -98]) * units.degF
-        assert_array_almost_equal(wc, values, 0)
+    wc = windchill(temp, speed, face_level_winds=True)
+    values = np.array([3, -30, -64, -98]) * units.degF
+    assert_array_almost_equal(wc, values, 0)
 
 
 def test_heat_index_basic():
