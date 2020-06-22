@@ -21,6 +21,10 @@ from metpy.cbook import get_test_data
 from metpy.deprecation import MetpyDeprecationWarning
 from .units import units
 
+try:
+    import dask.array
+except ModuleNotFoundError:
+    pass
 
 def needs_cartopy(test_func):
     """Decorate a test function or fixture as requiring CartoPy.
@@ -245,30 +249,31 @@ def check_and_silence_warning(warn_type):
 check_and_silence_deprecation = check_and_silence_warning(MetpyDeprecationWarning)
 
 
-def scalar(name, values, truth):
+def scalar(name, values, truth, decimal):
     """Test a function using scalars."""
     func = eval(name)
-    args = [v[0] for v in values]
-    truths = [t[0] for t in truth]
+    # Index by a tuple to select a single value from a (potential) ndarray
+    args = [v[tuple(np.zeros_like(v.shape))] for v in values]
+    truths = [t[tuple(np.zeros_like(t.shape))] for t in truth]
 
     results = func(*args)
 
     if isinstance(results, tuple):
         for t, r in zip(truths, results):
-            assert_almost_equal(t, r, 4)
+            assert_almost_equal(t, r, decimal)
     else:
-        assert_almost_equal(*truths, results, 4)
+        assert_almost_equal(*truths, results, decimal)
 
 
-def array(name, values, truth):
+def array(name, values, truth, decimal):
     """Test a function using arrays."""
     func = eval(name)
     results = func(*values)
 
-    _assert_array_results(truth, results)
+    _assert_array_results(truth, results, decimal)
 
 
-def masked(name, values, truth):
+def masked(name, values, truth, decimal):
     """Test a function using masked arrays."""
     func = eval(name)
 
@@ -281,10 +286,10 @@ def masked(name, values, truth):
 
     results = func(*values_masked)
 
-    _assert_array_results(truth_masked, results)
+    _assert_array_results(truth_masked, results, decimal)
 
 
-def nans(name, values, truth):
+def nans(name, values, truth, decimal):
     """Test a function using nans."""
     func = eval(name)
 
@@ -292,7 +297,8 @@ def nans(name, values, truth):
     def assign_nans(arr):
         arr_nans = arr.copy()
         for i, a in enumerate(arr_nans):
-            anans = a.copy()
+            # Force the copied array to float64 so that it plays nicely with nans
+            anans = a.copy().astype('float64')
             anans[::2] = np.nan
             arr_nans[i] = anans
         return arr_nans
@@ -302,10 +308,10 @@ def nans(name, values, truth):
 
     results = func(*values_nans)
 
-    _assert_array_results(truth_nans, results)
+    _assert_array_results(truth_nans, results, decimal)
 
 
-def data_array(name, values, truth):
+def data_array(name, values, truth, decimal):
     """Test a function using data arrays."""
     func = eval(name)
 
@@ -314,25 +320,32 @@ def data_array(name, values, truth):
 
     results = func(*values_data_array)
 
-    _assert_array_results(truth_data_array, results)
+    _assert_array_results(truth_data_array, results, decimal)
 
 
-def dask_array(name, values, truth):
+def dask_array(name, values, truth, decimal):
     """Test a function using dask arrays."""
     func = eval(name)
 
-    values_dask = [units.Quantity(da.from_array(v.m), v.units) for v in values]
-    truth_dask = [units.Quantity(da.from_array(t.m), t.units) for t in truth]
+    values_dask = [units.Quantity(dask.array.from_array(v.m), v.units) for v in values]
+    truth_dask = [units.Quantity(dask.array.from_array(t.m), t.units) for t in truth]
 
     results = func(*values_dask)
 
-    _assert_array_results(truth_dask, results)
+    # Assert that the dask array objects are equal
+    _assert_array_results(truth_dask, results, decimal)
+
+    computed = results.compute()
+    truth_unitless = [t.m for t in truth_dask]
+
+    # Assert that the *computed* numpy arrays are equal
+    _assert_array_results(truth_unitless, computed, decimal)
 
 
-def _assert_array_results(truth, results):
+def _assert_array_results(truth, results, decimal):
     """Assert equality of an array-like data type."""
     if isinstance(results, tuple):
         for t, r in zip(truth, results):
-            assert_array_almost_equal(t, r, 4)
+            assert_array_almost_equal(t, r, decimal)
     else:
-        assert_array_almost_equal(*truth, results, 4)
+        assert_array_almost_equal(*truth, results, decimal)

@@ -3,11 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `basic` module."""
 
+import sys
+
 import numpy as np
 import pandas as pd
 import pytest
 import xarray as xr
-import dask.array
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
@@ -27,51 +28,37 @@ class TestDataTypes:
     scenarios = function_test_data
     module_ext = "metpy.calc."
 
-    def test_scalars(self, name, values, truth):
+    def test_scalars(self, name, values, truth, decimal):
         name = self.module_ext + name
-        scalar(name, values, truth)
+        scalar(name, values, truth, decimal)
 
 
-    def test_arrays(self, name, values, truth):
+    def test_arrays(self, name, values, truth, decimal):
         name = self.module_ext + name
-        array(name, values, truth)
+        array(name, values, truth, decimal)
 
 
-    def test_masked(self, name, values, truth):
+    def test_masked(self, name, values, truth, decimal):
         name = self.module_ext + name
-        masked(name, values, truth)
+        masked(name, values, truth, decimal)
 
 
-    def test_nans(self, name, values, truth):
+    def test_nans(self, name, values, truth, decimal):
         name = self.module_ext + name
-        nans(name, values, truth)
+        nans(name, values, truth, decimal)
 
 
-    def test_data_array(self, name, values, truth):
+    def test_data_array(self, name, values, truth, decimal):
         name = self.module_ext + name
-        data_array(name, values, truth)
+        data_array(name, values, truth, decimal)
 
 
     # Dask arrays currently not supported
+    @pytest.mark.skipif('dask.array' not in sys.modules.keys(), reason="Module 'dask.array' has not been imported.")
     @pytest.mark.xfail
-    def test_dask_array(self, name, values, truth):
+    def test_dask_array(self, name, values, truth, decimal):
         name = self.module_ext + name
-        dask_array(name, values, truth)
-
-
-def test_wind_comps_basic():
-    """Test the basic wind component calculation."""
-    speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
-    dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
-    s2 = np.sqrt(2.)
-
-    u, v = wind_components(speed, dirs)
-
-    true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
-    true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
-
-    assert_array_almost_equal(true_u, u, 4)
-    assert_array_almost_equal(true_v, v, 4)
+        dask_array(name, values, truth, decimal)
 
 
 def test_wind_comps_with_north_and_calm():
@@ -86,38 +73,6 @@ def test_wind_comps_with_north_and_calm():
 
     assert_array_almost_equal(true_u, u, 4)
     assert_array_almost_equal(true_v, v, 4)
-
-
-def test_wind_comps_scalar():
-    """Test wind components calculation with scalars."""
-    u, v = wind_components(8 * units('m/s'), 150 * units.deg)
-    assert_almost_equal(u, -4 * units('m/s'), 3)
-    assert_almost_equal(v, 6.9282 * units('m/s'), 3)
-
-
-def test_speed():
-    """Test calculating wind speed."""
-    u = np.array([4., 2., 0., 0.]) * units('m/s')
-    v = np.array([0., 2., 4., 0.]) * units('m/s')
-
-    speed = wind_speed(u, v)
-
-    s2 = np.sqrt(2.)
-    true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
-
-    assert_array_almost_equal(true_speed, speed, 4)
-
-
-def test_direction():
-    """Test calculating wind direction."""
-    u = np.array([4., 2., 0., 0.]) * units('m/s')
-    v = np.array([0., 2., 4., 0.]) * units('m/s')
-
-    direc = wind_direction(u, v)
-
-    true_dir = np.array([270., 225., 180., 0.]) * units.deg
-
-    assert_array_almost_equal(true_dir, direc, 4)
 
 
 def test_direction_with_north_and_calm():
@@ -166,34 +121,6 @@ def test_speed_direction_roundtrip():
     assert_array_almost_equal(wdir, wdir_out, 4)
 
 
-def test_scalar_speed():
-    """Test wind speed with scalars."""
-    s = wind_speed(-3. * units('m/s'), -4. * units('m/s'))
-    assert_almost_equal(s, 5. * units('m/s'), 3)
-
-
-def test_scalar_direction():
-    """Test wind direction with scalars."""
-    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
-    assert_almost_equal(d, 216.870 * units.deg, 3)
-
-
-def test_windchill_scalar():
-    """Test wind chill with scalars."""
-    wc = windchill(-5 * units.degC, 35 * units('m/s'))
-    assert_almost_equal(wc, -18.9357 * units.degC, 0)
-
-
-def test_windchill_basic():
-    """Test the basic wind chill calculation."""
-    temp = np.array([40, -10, -45, 20]) * units.degF
-    speed = np.array([5, 55, 25, 15]) * units.mph
-
-    wc = windchill(temp, speed)
-    values = np.array([36, -46, -84, 6]) * units.degF
-    assert_array_almost_equal(wc, values, 0)
-
-
 def test_windchill_kelvin():
     """Test wind chill when given Kelvin temperatures."""
     wc = windchill(268.15 * units.kelvin, 35 * units('m/s'))
@@ -230,22 +157,6 @@ def test_windchill_face_level():
     wc = windchill(temp, speed, face_level_winds=True)
     values = np.array([3, -30, -64, -98]) * units.degF
     assert_array_almost_equal(wc, values, 0)
-
-
-def test_heat_index_basic():
-    """Test the basic heat index calculation."""
-    temp = np.array([80, 88, 92, 110, 86]) * units.degF
-    rh = np.array([40, 100, 70, 40, 88]) * units.percent
-
-    hi = heat_index(temp, rh)
-    values = np.array([80, 121, 112, 136, 104]) * units.degF
-    assert_array_almost_equal(hi, values, 0)
-
-
-def test_heat_index_scalar():
-    """Test heat index using scalars."""
-    hi = heat_index(96 * units.degF, 65 * units.percent)
-    assert_almost_equal(hi, 121 * units.degF, 0)
 
 
 def test_heat_index_invalid():
@@ -304,14 +215,6 @@ def test_heat_index_kelvin():
     assert_almost_equal(hi.to('degC'), 50.3406 * units.degC, 4)
 
 
-def test_height_to_geopotential():
-    """Test conversion from height to geopotential."""
-    height = units.Quantity([0, 1000, 2000, 3000], units.m)
-    geopot = height_to_geopotential(height)
-    assert_array_almost_equal(geopot, units.Quantity([0., 9805, 19607,
-                              29406], units('m**2 / second**2')), 0)
-
-
 # See #1075 regarding previous destructive cancellation in floating point
 def test_height_to_geopotential_32bit():
     """Test conversion to geopotential with 32-bit values."""
@@ -320,14 +223,6 @@ def test_height_to_geopotential_32bit():
                       201342.53, 201343.52, 201344.48, 201345.44, 201346.42],
                      dtype=np.float32) * units('J/kg')
     assert_almost_equal(height_to_geopotential(heights), truth, 2)
-
-
-def test_geopotential_to_height():
-    """Test conversion from geopotential to height."""
-    geopotential = units.Quantity([0., 9805.11102602, 19607.14506998, 29406.10358006],
-                                  units('m**2 / second**2'))
-    height = geopotential_to_height(geopotential)
-    assert_array_almost_equal(height, units.Quantity([0, 1000, 2000, 3000], units.m), 0)
 
 
 # See #1075 regarding previous destructive cancellation in floating point
@@ -340,81 +235,9 @@ def test_geopotential_to_height_32bit():
     assert_almost_equal(geopotential_to_height(geopot), truth, 2)
 
 
-# class TestIrrad(object):
-#    def test_basic(self):
-#        'Test the basic solar irradiance calculation.'
-#        from datetime import date
-
-#        d = date(2008, 9, 28)
-#        lat = 35.25
-#        hours = np.linspace(6,18,10)
-
-#        s = solar_irradiance(lat, d, hours)
-#        values = np.array([0., 344.1, 682.6, 933.9, 1067.6, 1067.6, 933.9,
-#            682.6, 344.1, 0.])
-#        assert_array_almost_equal(s, values, 1)
-
-#    def test_scalar(self):
-#        from datetime import date
-#        d = date(2008, 9, 28)
-#        lat = 35.25
-#        hour = 9.5
-#        s = solar_irradiance(lat, d, hour)
-#        assert_almost_equal(s, 852.1, 1)
-
-#    def test_invalid(self):
-#        'Test for values that should be masked.'
-#        from datetime import date
-#        d = date(2008, 9, 28)
-#        lat = 35.25
-#        hours = np.linspace(0,22,12)
-#        s = solar_irradiance(lat, d, hours)
-
-#        mask = np.array([ True,  True,  True,  True, False, False, False,
-#            False, False, True,  True,  True])
-#        assert_array_equal(s.mask, mask)
-
-
-def test_pressure_to_heights_basic():
-    """Test basic pressure to height calculation for standard atmosphere."""
-    pressures = np.array([975.2, 987.5, 956., 943.]) * units.mbar
-    heights = pressure_to_height_std(pressures)
-    values = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
-    assert_almost_equal(heights, values, 1)
-
-
-def test_heights_to_pressure_basic():
-    """Test basic height to pressure calculation for standard atmosphere."""
-    heights = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
-    pressures = height_to_pressure_std(heights)
-    values = np.array([975.2, 987.5, 956., 943.]) * units.mbar
-    assert_almost_equal(pressures, values, 1)
-
-
 def test_pressure_to_heights_units():
     """Test that passing non-mbar units works."""
     assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.859 * units.meter, 3)
-
-
-def test_coriolis_force():
-    """Test basic coriolis force calculation."""
-    lat = np.array([-90., -30., 0., 30., 90.]) * units.degrees
-    cor = coriolis_parameter(lat)
-    values = np.array([-1.4584232E-4, -.72921159E-4, 0, .72921159E-4,
-                       1.4584232E-4]) * units('s^-1')
-    assert_almost_equal(cor, values, 7)
-
-
-def test_add_height_to_pressure():
-    """Test the pressure at height above pressure calculation."""
-    pressure = add_height_to_pressure(1000 * units.hPa, 877.17421094 * units.meter)
-    assert_almost_equal(pressure, 900 * units.hPa, 5)
-
-
-def test_add_pressure_to_height():
-    """Test the height at pressure above height calculation."""
-    height = add_pressure_to_height(110.8286757 * units.m, 100 * units.hPa)
-    assert_almost_equal(height, 988.0028867 * units.meter, 3)
 
 
 def test_sigma_to_pressure():
@@ -445,31 +268,6 @@ def test_coriolis_units():
     """Test that coriolis returns units of 1/second."""
     f = coriolis_parameter(50 * units.degrees)
     assert f.units == units('1/second')
-
-
-def test_apparent_temperature():
-    """Test the apparent temperature calculation."""
-    temperature = np.array([[90, 90, 70],
-                            [20, 20, 60]]) * units.degF
-    rel_humidity = np.array([[60, 20, 60],
-                             [10, 10, 10]]) * units.percent
-    wind = np.array([[5, 3, 3],
-                     [10, 1, 10]]) * units.mph
-    truth = units.Quantity(np.ma.array([[99.6777178, 86.3357671, 70], [8.8140662, 20, 60]],
-                                       mask=[[False, False, True], [False, True, True]]),
-                           units.degF)
-    res = apparent_temperature(temperature, rel_humidity, wind)
-    assert_array_almost_equal(res, truth, 6)
-
-
-def test_apparent_temperature_scalar():
-    """Test the apparent temperature calculation with a scalar."""
-    temperature = 90 * units.degF
-    rel_humidity = 60 * units.percent
-    wind = 5 * units.mph
-    truth = 99.6777178 * units.degF
-    res = apparent_temperature(temperature, rel_humidity, wind)
-    assert_almost_equal(res, truth, 6)
 
 
 def test_apparent_temperature_scalar_no_modification():
@@ -792,15 +590,6 @@ def test_altimeter_to_station_pressure_inhg():
     assert_almost_equal(res, truth, 3)
 
 
-def test_altimeter_to_station_pressure_hpa():
-    """Test the altimeter to station pressure function with hectopascals."""
-    altim = 1013 * units.hectopascal
-    elev = 500 * units.m
-    res = altimeter_to_station_pressure(altim, elev)
-    truth = 954.641 * units.hectopascal
-    assert_almost_equal(res, truth, 3)
-
-
 def test_altimiter_to_sea_level_pressure_inhg():
     """Test the altimeter to sea level pressure function with inches of mercury."""
     altim = 29.8 * units.inHg
@@ -808,14 +597,4 @@ def test_altimiter_to_sea_level_pressure_inhg():
     temp = 30 * units.degC
     res = altimeter_to_sea_level_pressure(altim, elev, temp)
     truth = 1006.089 * units.hectopascal
-    assert_almost_equal(res, truth, 3)
-
-
-def test_altimeter_to_sea_level_pressure_hpa():
-    """Test the altimeter to sea level pressure function with hectopascals."""
-    altim = 1013 * units.hectopascal
-    elev = 500 * units.m
-    temp = 0 * units.degC
-    res = altimeter_to_sea_level_pressure(altim, elev, temp)
-    truth = 1016.246 * units.hectopascal
     assert_almost_equal(res, truth, 3)
