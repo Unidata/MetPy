@@ -536,12 +536,46 @@ def test_declarative_sfc_obs():
     obs.time_window = timedelta(minutes=15)
     obs.level = None
     obs.fields = ['tmpf']
-    obs.color = ['black']
+    obs.colors = ['black']
 
     # Panel for plot with Map features
     panel = MapPanel()
     panel.layout = (1, 1, 1)
     panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 8.09}.get(MPL_VERSION, 0.022))
+def test_declarative_sfc_text():
+    """Test making a surface observation plot with text."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['station']
+    obs.colors = ['black']
+    obs.formats = ['text']
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = 'lcc'
     panel.area = 'in'
     panel.layers = ['states']
     panel.plots = [obs]
