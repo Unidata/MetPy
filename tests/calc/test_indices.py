@@ -18,7 +18,7 @@ def test_precipitable_water():
     """Test precipitable water with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
     pw = precipitable_water(data['pressure'], data['dewpoint'], top=400 * units.hPa)
-    truth = (0.8899441949243486 * units('inches')).to('millimeters')
+    truth = 22.608184252041465 * units('millimeters')
     assert_array_equal(pw, truth)
 
 
@@ -29,7 +29,7 @@ def test_precipitable_water_no_bounds():
     pressure = data['pressure']
     inds = pressure >= 400 * units.hPa
     pw = precipitable_water(pressure[inds], dewpoint[inds])
-    truth = (0.8899441949243486 * units('inches')).to('millimeters')
+    truth = 22.608184252041465 * units('millimeters')
     assert_array_equal(pw, truth)
 
 
@@ -40,7 +40,7 @@ def test_precipitable_water_bound_error():
     dewpoint = np.array([25.5, 24.1, 23.1, 21.2, 21.1, 19.4, 19.2, 19.2, -87.1, -86.5, -86.5,
                          -86.5, -88.1]) * units.degC
     pw = precipitable_water(pressure, dewpoint)
-    truth = 89.86955998646951 * units('millimeters')
+    truth = 89.88387935202375 * units('millimeters')
     assert_almost_equal(pw, truth, 8)
 
 
@@ -56,7 +56,7 @@ def test_precipitable_water_nans():
                         -28.3, np.nan, -32.6, np.nan, -33.8, -35., -35.1, -38.1, -40.,
                         -43.3, -44.6, -46.4, -47., -49.2, -50.7]) * units.degC
     pw = precipitable_water(pressure, dewpoint)
-    truth = 4.003709214463873 * units.mm
+    truth = 4.004347145436532 * units.mm
     assert_almost_equal(pw, truth, 8)
 
 

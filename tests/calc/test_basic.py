@@ -276,8 +276,8 @@ def test_height_to_geopotential():
 def test_height_to_geopotential_32bit():
     """Test conversion to geopotential with 32-bit values."""
     heights = np.linspace(20597, 20598, 11, dtype=np.float32) * units.m
-    truth = np.array([201336.67, 201337.66, 201338.62, 201339.61, 201340.58, 201341.56,
-                      201342.53, 201343.52, 201344.48, 201345.44, 201346.42],
+    truth = np.array([201336.66, 201337.64, 201338.61, 201339.6, 201340.56, 201341.52,
+                      201342.5, 201343.47, 201344.45, 201345.42, 201346.4],
                      dtype=np.float32) * units('J/kg')
     assert_almost_equal(height_to_geopotential(heights), truth, 2)
 
@@ -368,7 +368,7 @@ def test_coriolis_force():
 def test_add_height_to_pressure():
     """Test the pressure at height above pressure calculation."""
     pressure = add_height_to_pressure(1000 * units.hPa, 877.17421094 * units.meter)
-    assert_almost_equal(pressure, 900 * units.hPa, 5)
+    assert_almost_equal(pressure, 899.9999405843099 * units.hPa, 5)
 
 
 def test_add_pressure_to_height():

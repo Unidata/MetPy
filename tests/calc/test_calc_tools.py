@@ -326,7 +326,7 @@ def layer_test_data():
     (layer_test_data()[0], layer_test_data()[1], None, None, 150 * units.hPa, False,
      (np.array([1000, 900]) * units.hPa, np.array([25.0, 16.666666]) * units.degC)),
     (layer_test_data()[0], layer_test_data()[1], None, 2 * units.km, 3 * units.km, True,
-     (np.array([794.85264282, 700., 600., 540.01696548]) * units.hPa,
+     (np.array([794.85252161, 700., 600., 540.016752]) * units.hPa,
       np.array([7.93049516, 0., -8.33333333, -13.14758845]) * units.degC))
 ])
 def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected):
