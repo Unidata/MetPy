@@ -10,6 +10,7 @@ import warnings
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib
+import numpy as np
 import pandas as pd
 import pytest
 from traitlets import TraitError
@@ -77,8 +78,22 @@ def test_declarative_contour():
     return pc.figure
 
 
+@pytest.fixture
+def fix_is_closed_polygon(monkeypatch):
+    """Fix matplotlib.contour._is_closed_polygons for tests.
+
+    Needed because for Matplotlib<3.3, the internal matplotlib.contour._is_closed_polygon
+    uses strict floating point equality. This causes the test below to yield different
+    results for macOS vs. Linux/Windows.
+
+    """
+    monkeypatch.setattr(matplotlib.contour, '_is_closed_polygon',
+                        lambda X: np.allclose(X[0], X[-1], rtol=1e-10, atol=1e-13),
+                        raising=False)
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.035)
-def test_declarative_contour_options():
+def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
@@ -107,7 +122,7 @@ def test_declarative_contour_options():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.035)
-def test_declarative_contour_convert_units():
+def test_declarative_contour_convert_units(fix_is_closed_polygon):
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
