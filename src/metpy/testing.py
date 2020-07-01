@@ -196,17 +196,6 @@ def set_agg_backend():
         plt.switch_backend(prev_backend)
 
 
-@pytest.fixture(autouse=True)
-def patch_round(monkeypatch):
-    """Fixture to patch builtin round using numpy's.
-
-    This works around the fact that built-in round changed between Python 2 and 3. This
-    is probably not needed once we're testing on matplotlib 2.0, which has been updated
-    to use numpy's throughout.
-    """
-    monkeypatch.setitem(__builtins__, 'round', np.round)
-
-
 def check_and_silence_warning(warn_type):
     """Decorate a function to swallow some warning type, making sure they are present.
 

@@ -12,7 +12,7 @@ import pytest
 from metpy.plots import Hodograph, SkewT
 from metpy.testing import check_and_silence_deprecation
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
+from metpy.testing import set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
