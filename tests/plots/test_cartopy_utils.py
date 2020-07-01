@@ -10,7 +10,7 @@ import pytest
 
 from metpy.plots import USCOUNTIES, USSTATES
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
+from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 MPL_VERSION = matplotlib.__version__[:3]
 
