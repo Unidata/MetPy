@@ -57,6 +57,35 @@ def add_grid_arguments_from_xarray(func):
                 warnings.warn('Horizontal dimension numbers not found. Defaulting to '
                               '(..., Y, X) order.')
 
+        # Fill in vertical_dim
+        if (
+            grid_prototype is not None
+            and 'vertical_dim' in bound_args.arguments
+        ):
+            try:
+                bound_args.arguments['vertical_dim'] = (
+                    grid_prototype.metpy.find_axis_number('vertical')
+                )
+            except AttributeError:
+                # If axis number not found, fall back to default but warn.
+                warnings.warn(
+                    'Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.'
+                )
+
+        # Fill in dz
+        if (
+            grid_prototype is not None
+            and 'dz' in bound_args.arguments
+            and bound_args.arguments['dz'] is None
+        ):
+            try:
+                vertical_coord = grid_prototype.metpy.vertical
+                bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
+            except AttributeError:
+                # Skip, since this only comes up in advection, where dz is optional (may not
+                # need vertical at all)
+                pass
+
         # Fill in dx/dy
         if (
             'dx' in bound_args.arguments and bound_args.arguments['dx'] is None
@@ -66,6 +95,13 @@ def add_grid_arguments_from_xarray(func):
                 bound_args.arguments['dx'], bound_args.arguments['dy'] = (
                     grid_deltas_from_dataarray(grid_prototype, kind='actual')
                 )
+            elif 'dz' in bound_args.arguments:
+                # Handle advection case, allowing dx/dy to be None but dz to not be None
+                if bound_args.arguments['dz'] is None:
+                    raise ValueError(
+                        'Must provide dx, dy, and/or dz arguments or input DataArray with '
+                        'proper coordinates.'
+                    )
             else:
                 raise ValueError('Must provide dx/dy arguments or input DataArray with '
                                  'latitude/longitude coordinates.')
@@ -315,56 +351,66 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 
 @exporter.export
-def advection(scalar, wind, deltas):
+@preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
+def advection(
+    scalar,
+    u=None,
+    v=None,
+    w=None,
+    *,
+    dx=None,
+    dy=None,
+    dz=None,
+    x_dim=-1,
+    y_dim=-2,
+    vertical_dim=-3
+):
     r"""Calculate the advection of a scalar field by the wind.
-
-    The order of the dimensions of the arrays must match the order in which
-    the wind components are given.  For example, if the winds are given [u, v],
-    then the scalar and wind arrays must be indexed as x,y (which puts x as the
-    rows, not columns).
 
     Parameters
     ----------
-    scalar : N-dimensional array
-        Array (with N-dimensions) with the quantity to be advected.
-    wind : sequence of arrays
-        Length M sequence of N-dimensional arrays.  Represents the flow,
-        with a component of the wind in each dimension.  For example, for
-        horizontal advection, this could be a list: [u, v], where u and v
-        are each a 2-dimensional array.
-    deltas : sequence of float or ndarray
-        A (length M) sequence containing the grid spacing(s) in each dimension. If using
-        arrays, in each array there should be one item less than the size of `scalar` along the
-        applicable axis.
+    scalar : `pint.Quantity` or `xarray.DataArray`
+        Array (with N-dimensions) with the quantity to be advected. Use `xarray.DataArray` to
+        have dimension ordering automatically determined, otherwise, use default
+        [..., Z, Y, X] ordering or specify *_dim keyword arguments.
+    u, v, w : `pint.Quantity` or `xarray.DataArray` or None
+        N-dimensional arrays with units of velocity representing the flow, with a component of
+        the wind in each dimension. For 1D advection, use 1 positional argument (with `dx` for
+        grid spacing and `x_dim` to specify axis if not the default of -1) or use 1 applicable
+        keyword argument (u, v, or w) for proper physical dimension (with corresponding `d*`
+        for grid spacing and `*_dim` to specify axis). For 2D/horizontal advection, use 2
+        positional arguments in order for u and v winds respectively (with `dx` and `dy` for
+        grid spacings and `x_dim` and `y_dim` keyword arguments to specify axes), or specify u
+        and v as keyword arguments (grid spacings and axes likewise). For 3D advection,
+        likewise use 3 positional arguments in order for u, v, and w winds respectively or
+        specify u, v, and w as keyword arguments (either way, with `dx`, `dy`, `dz` for grid
+        spacings and `x_dim`, `y_dim`, and `vertical_dim` for axes).
+    dx, dy, dz: `pint.Quantity` or None, optional
+        Grid spacing in applicable dimension(s). If using arrays, each array should have one
+        item less than the size of `scalar` along the applicable axis. If `scalar` is an
+        `xarray.DataArray`, these are automatically determined from its coordinates, and are
+        therefore optional. Required if `scalar` is a `pint.Quantity`. These are keyword-only
+        arguments.
+    x_dim, y_dim, vertical_dim: int or None, optional
+        Axis number in applicable dimension(s). Defaults to -1, -2, and -3 respectively for
+        (..., Z, Y, X) dimension ordering. If `scalar` is an `xarray.DataArray`, these are
+        automatically determined from its coordinates. These are keyword-only arguments.
 
     Returns
     -------
-    N-dimensional array
+    `pint.Quantity` or `xarray.DataArray`
         An N-dimensional array containing the advection at all grid points.
 
     """
-    # TODO: This requires custom handling with xarray, since it does not fit the API paradigm
-    # of the rest of kinematics
-
-    # This allows passing in a list of wind components or an array.
-    wind = _stack(wind)
-
-    # If we have more than one component, we need to reverse the order along the first
-    # dimension so that the wind components line up with the
-    # order of the gradients from the ..., y, x ordered array.
-    if wind.ndim > scalar.ndim:
-        wind = wind[::-1]
-
-    # Gradient returns a list of derivatives along each dimension. We convert
-    # this to an array with dimension as the first index. Reverse the deltas to line up
-    # with the order of the dimensions.
-    grad = _stack(gradient(scalar, deltas=deltas[::-1]))
-
-    # Make them be at least 2D (handling the 1D case) so that we can do the
-    # multiply and sum below
-    grad, wind = np.atleast_2d(grad, wind)
-
-    return (-grad * wind).sum(axis=0)
+    return sum(
+        wind * first_derivative(scalar, axis=axis, delta=delta)
+        for wind, delta, axis in (
+            (u, dx, x_dim),
+            (v, dy, y_dim),
+            (w, dz, vertical_dim)
+        )
+        if wind is not None
+    )
 
 
 @exporter.export
@@ -547,14 +593,14 @@ def montgomery_streamfunction(height, temperature):
 
     Parameters
     ----------
-    height : `pint.Quantity`
+    height : `pint.Quantity` or `xarray.DataArray`
         Array of geopotential height of isentropic surfaces
-    temperature : `pint.Quantity`
+    temperature : `pint.Quantity` or `xarray.DataArray`
         Array of temperature on isentropic surfaces
 
     Returns
     -------
-    stream_func : `pint.Quantity`
+    stream_func : `pint.Quantity` or `xarray.DataArray`
 
     Notes
     -----
@@ -651,7 +697,7 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     """Calculate the absolute vorticity of the horizontal wind.
@@ -696,7 +742,7 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'pressure', 'u', 'v')
+    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude')
 )
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
@@ -802,7 +848,7 @@ def potential_vorticity_baroclinic(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v'))
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v', 'latitude'))
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_barotropic(
     height,
@@ -859,7 +905,10 @@ def potential_vorticity_barotropic(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('u', 'u'))
+@preprocess_and_wrap(
+    wrap_like=('u', 'u'),
+    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude')
+)
 @check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
              '[dimensionless]')
 def inertial_advective_wind(
