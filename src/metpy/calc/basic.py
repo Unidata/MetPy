@@ -136,8 +136,7 @@ def wind_components(speed, wind_direction):
     --------
     >>> from metpy.units import units
     >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
-    (<Quantity(7.071067811865475, 'meter / second')>,
-     <Quantity(7.071067811865477, 'meter / second')>)
+     (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
 
     """
     wind_direction = _check_radians(wind_direction, max_radians=4 * np.pi)
