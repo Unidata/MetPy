@@ -143,4 +143,4 @@ Related Projects
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
 .. _siphon: https://unidata.github.io/siphon/
 .. _Unidata Python Gallery: https://unidata.github.io/python-training/gallery/gallery-home
-__ https://www.unidata.ucar.edu/software/thredds/current/tds/
+__ https://www.unidata.ucar.edu/software/tds/current/
