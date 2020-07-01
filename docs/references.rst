@@ -78,8 +78,8 @@ References
            doi:`10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2>`_.
 
-.. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
-           Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
+.. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report
+           on Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
            `FCM-R19-2003 <_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
@@ -92,7 +92,8 @@ References
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
 
-.. [Holton2004] Holton, J. R., 2004: *An Introduction to Dynamic Meteorology*. 4th ed. Academic Press, 535 pp.
+.. [Holton2004] Holton, J. R., 2004: *An Introduction to Dynamic Meteorology*. 4th ed.
+           Academic Press, 535 pp.
 
 .. [Koch1983] Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
            objective map analysis scheme for use with satellite and conventional data.
@@ -122,8 +123,8 @@ References
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
 
-.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
-           Division, NWS Southern Region Headquarters, 1990.
+.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific
+           Services Division, NWS Southern Region Headquarters, 1990.
            `SR90-23 <_static/rothfusz-1990-heat-index-equation.pdf>`_, 2 pp.
 
 .. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
