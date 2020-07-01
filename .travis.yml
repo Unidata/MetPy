@@ -62,10 +62,12 @@ matrix:
       env:
         - TASK="coverage"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
+        - EXTRA_PACKAGES="$EXTRA_PACKAGES setuptools_scm[toml]"
     - python: "3.8-dev"
       env:
         - TASK="docs"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
+        - EXTRA_PACKAGES="$EXTRA_PACKAGES setuptools_scm[toml]"
   allow_failures:
     - python: "3.8-dev"
     - python: nightly
