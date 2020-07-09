@@ -182,7 +182,7 @@ def _check_argument_units(args, defaults, dimensionality):
 
         if arg in defaults:
             check = val == defaults[arg]
-            if check:
+            if np.all(check):
                 continue
 
         # See if the value passed in is appropriate
