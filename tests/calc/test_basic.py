@@ -80,6 +80,23 @@ def test_direction():
     assert_array_almost_equal(true_dir, direc, 4)
 
 
+def test_direction_masked():
+    """Test calculating wind direction from masked wind components."""
+    mask = np.array([True, False, True, False])
+    u = np.array([4., 2., 0., 0.])
+    v = np.array([0., 2., 4., 0.])
+
+    u_masked = units.Quantity(np.ma.array(u, mask=mask), units('m/s'))
+    v_masked = units.Quantity(np.ma.array(v, mask=mask), units('m/s'))
+
+    direc = wind_direction(u_masked, v_masked)
+
+    true_dir = np.array([270., 225., 180., 0.])
+    true_dir_masked = units.Quantity(np.ma.array(true_dir, mask=mask), units.deg)
+
+    assert_array_almost_equal(true_dir_masked, direc, 4)
+
+
 def test_direction_with_north_and_calm():
     """Test how wind direction handles northerly and calm winds."""
     u = np.array([0., -0., 0.]) * units('m/s')
