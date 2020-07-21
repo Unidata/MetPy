@@ -72,11 +72,6 @@ def pytest_generate_tests(metafunc):
             argnames = [x[0] for x in items]
             argvalues.append([x[1] for x in items])
 
-            # Provide a default value of decimal=4 to numpy.testing functions
-            if 'decimal' not in argnames:
-                argnames.append('decimal')
-                argvalues[-1].append(4)
-
         metafunc.parametrize(argnames, argvalues, ids=idlist)
 
     # Skip classes without a "scenarios" attribute

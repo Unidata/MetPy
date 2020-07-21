@@ -17,48 +17,42 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         pressure_to_height_std, sigma_to_pressure, smooth_circular,
                         smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
                         wind_components, wind_direction, wind_speed, windchill)
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           scalar, array, masked, nans, data_array, dask_array)
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+from metpy.data_type_testing import (build_scenarios, scalar, array, masked, nans,
+                                     data_array, dask_arrays)
 from metpy.units import units
 from data_basic import function_test_data
 
 
 class TestDataTypes:
     """Test all functions against supported data types."""
-    scenarios = function_test_data
-    module_ext = "metpy.calc."
+    scenarios = build_scenarios(function_test_data)
 
-    def test_scalars(self, name, values, truth, decimal):
-        name = self.module_ext + name
-        scalar(name, values, truth, decimal)
+    def test_scalars(self, func, args, truth, decimal):
+        scalar(func, args, truth, decimal)
 
 
-    def test_arrays(self, name, values, truth, decimal):
-        name = self.module_ext + name
-        array(name, values, truth, decimal)
+    def test_arrays(self, func, args, truth, decimal):
+        array(func, args, truth, decimal)
 
 
-    def test_masked(self, name, values, truth, decimal):
-        name = self.module_ext + name
-        masked(name, values, truth, decimal)
+    def test_masked(self, func, args, truth, decimal):
+        if func == wind_direction:
+            pytest.xfail("Issue #1390")
+        masked(func, args, truth, decimal)
 
 
-    def test_nans(self, name, values, truth, decimal):
-        name = self.module_ext + name
-        nans(name, values, truth, decimal)
+    def test_nans(self, func, args, truth, decimal):
+        nans(func, args, truth, decimal)
 
 
-    def test_data_array(self, name, values, truth, decimal):
-        name = self.module_ext + name
-        data_array(name, values, truth, decimal)
+    def test_data_array(self, func, args, truth, decimal):
+        data_array(func, args, truth, decimal)
 
 
-    # Dask arrays currently not supported
-    @pytest.mark.skipif('dask.array' not in sys.modules.keys(), reason="Module 'dask.array' has not been imported.")
-    @pytest.mark.xfail
-    def test_dask_array(self, name, values, truth, decimal):
-        name = self.module_ext + name
-        dask_array(name, values, truth, decimal)
+    def test_dask_array(self, func, args, truth, decimal):
+        pytest.xfail("Dask Arrays not fully supported")
+        dask_arrays(func, args, truth, decimal)
 
 
 def test_wind_comps_with_north_and_calm():
