@@ -1,0 +1,8 @@
+matplotlib==2.1.0
+numpy==1.16.0
+scipy==1.0.0
+pint==0.10.1
+xarray==0.13.0
+traitlets==4.3.0
+pooch==0.1
+pandas==0.22.0

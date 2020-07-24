@@ -1,0 +1,6 @@
+matplotlib>=0.0.dev0
+numpy>=0.0.dev0
+scipy>=0.0.dev0
+traitlets>=0.0.dev0
+pooch>=0.0.dev0
+pandas>=0.0.dev0
