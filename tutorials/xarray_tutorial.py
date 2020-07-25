@@ -21,7 +21,7 @@ import xarray as xr
 
 # Any import of metpy will activate the accessors
 import metpy.calc as mpcalc
-from metpy.testing import get_test_data
+from metpy.cbook import get_test_data
 from metpy.units import units
 
 #########################################################################
