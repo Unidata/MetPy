@@ -341,4 +341,6 @@ texinfo_documents = [
 
 linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     r'https://codecov.io/github/Unidata/MetPy',
-    r'https://youtu\.be/[\d\w\-_]+']
+    r'https://youtu\.be/[\d\w\-_]+',
+    # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
+    r'https://doi.org/10.1175/.*']

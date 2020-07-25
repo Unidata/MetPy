@@ -48,7 +48,7 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
-.. [Doswell-Schultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
+.. [DoswellSchultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
            Parameters in Forecasting Severe Storms. *Electronic Journal of Severe Storms
            Meteorology*,
            `EJSSM <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.

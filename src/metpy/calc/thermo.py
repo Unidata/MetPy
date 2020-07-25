@@ -2588,7 +2588,7 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
-    Lifted index formula derived from [Galway1956]_ and referenced by [Doswell-Schultz2006]_:
+    Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
     LI = T500 - Tp500
     where:
     T500 is the measured temperature at 500 hPa.
