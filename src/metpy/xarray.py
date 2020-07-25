@@ -578,7 +578,7 @@ class MetPyDatasetAccessor:
     This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.
 
         >>> import xarray as xr
-        >>> from metpy.testing import get_test_data
+        >>> from metpy.cbook import get_test_data
         >>> ds = xr.open_dataset(get_test_data('narr_example.nc', False)).metpy.parse_cf()
         >>> print(ds['crs'].item())
         Projection: lambert_conformal_conic
