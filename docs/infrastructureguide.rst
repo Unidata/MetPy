@@ -49,13 +49,13 @@ Other Tools
 -----------
 
 Continuous integration is performed by `Travis CI <http://www.travis-ci.com/Unidata/MetPy>`_
-and `AppVeyor <https://ci.appveyor.com/project/Unidata/metpy/branch/master>`_.
+and `GitHub Actions <https://github.com/Unidata/MetPy/actions?query=workflow%3ACI>`_.
 Travis runs the unit tests on Linux for all supported versions of Python, as well as runs
 against the minimum package versions. ``flake8`` (with the ``pep8-naming`` and
 ``flake8-quotes`` plugins) is also run against the code to check formatting. Travis is also
-used to build the documentation and to run the examples to ensure they stay working. AppVeyor
-is a similar service; here the tests and examples are run against Python 2 and 3 for both
-32- and 64-bit versions of Windows.
+used to build the documentation and to run the examples to ensure they stay working. We use
+a custom action running on GitHub to handle running all the tests and building the docs
+across a variety of operating systems and Python versions.
 
 Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/MetPy>`_.
 
@@ -80,8 +80,8 @@ PyPI
 ~~~~
 
 Once the new release is published on GitHub, this will create the tag, which will trigger
-new builds on Travis (and AppVeyor, but that's not relevant). When the main test build on
-Travis (currently Python 3 tests) succeeds, Travis will handle building the source
+new builds on Travis (and our GitHub action, but that's not relevant). When the main test
+build on Travis (currently Python 3 tests) succeeds, Travis will handle building the source
 distribution and wheels, and upload them to PyPI.
 
 To build and upload manually (if for some reason it is necessary):
