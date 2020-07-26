@@ -13,7 +13,7 @@ MetPy
 [![Conda Downloads](https://anaconda.org/conda-forge/metpy/badges/downloads.svg)](https://anaconda.org/conda-forge/metpy)
 
 [![Travis Build Status](https://travis-ci.com/Unidata/MetPy.svg?branch=master)](https://travis-ci.com/Unidata/MetPy)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/dwaletlb23v2ae4e/branch/master?svg=true)](https://ci.appveyor.com/project/Unidata/metpy/branch/master)
+[![CI](https://github.com/Unidata/MetPy/workflows/CI/badge.svg?event=check_suite)](https://github.com/Unidata/MetPy/actions?query=workflow%3ACI)
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=master)](https://codecov.io/github/Unidata/MetPy?branch=master)
 
 [![Codacy issues](https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d)](https://www.codacy.com/app/dopplershift/MetPy)
