@@ -1,20 +1,12 @@
 language: python
-sudo: required
-dist: xenial
+dist: bionic
+os: linux
 
 addons:
-  artifacts:
-    target_paths: /wheelhouse
-    working_dir: $WHEELDIR
-    paths:
-      - $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
   apt:
-    packages: &base_build
-    - libatlas-dev
-    - libatlas-base-dev
-    - liblapack-dev
-    - gfortran
+    packages:
     - libproj-dev
+    - libgeos-dev
 
 git:
   depth: 150
@@ -26,103 +18,52 @@ python:
 
 cache:
   - pip
-  - directories:
-    - $HOME/local
 
 env:
   global:
-    - secure: "MOw+6pAQ8s7XX1U9Pbgw8SIuz5MHODj6PXe6xCSIyGR14/0KFNiR9s6NEIa9i7qnp7HOq/V2M9ZFPPioQCrL8k5V4XzZfNz6kXGUT8DoSAAnAAnDWy4yMRxYMlEcjSY8l0KZ9B3szxypkLh0Qd9+pHZYvRSLt8A8UcZSVSNGDjg="
-    - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
-    - WHEELDIR="$HOME/wheelhouse/"
     # Shapely dependency needed to keep from using Shapely's manylinux wheels
     # which use a different geos that what we build cartopy with on Travis
     - EXTRA_PACKAGES="shapely<1.5.17.post1"
     - EXTRA_INSTALLS="test"
-    - MPLLOCALFREETYPE="1"
-    - TEST_OUTPUT_CONTROL="-s"
     - GH_PAGES_DIR="$HOME/gh-pages"
-  matrix:
+    - VERSIONS="current.txt"
+  jobs:
     - TASK="coverage"
     - TASK="docs"
 
-matrix:
+jobs:
   include:
     - python: 3.6
       env:
-        - VERSIONS="numpy==1.16.0 matplotlib==2.1.0 scipy==1.0.0 pint==0.10.1 xarray==0.13.0 pandas==0.22.0"
+        - VERSIONS="minimum.txt"
         - TASK="coverage"
-        - TEST_OUTPUT_CONTROL=""
-    - python: "3.8-dev"
-      env: PRE="--pre"
-    - python: "3.8-dev"
-      env: TASK="docs" PRE="--pre"
-    - python: nightly
-      env: PRE="--pre"
     - python: "3.8-dev"
       env:
-        - TASK="coverage"
-        - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
+        - VERSIONS="prerelease.txt"
+        - GIT_VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
     - python: "3.8-dev"
       env:
         - TASK="docs"
-        - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
+        - VERSIONS="prerelease.txt"
+        - GIT_VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
   allow_failures:
     - python: "3.8-dev"
-    - python: nightly
 
 before_install:
   # We hard-code the sphinx_rtd_theme to lock in our build with patch for
   # version chooser
-  - python -m pip install --upgrade pip;
-  - if [[ ! -f $HOME/local/lib/libproj.so ]]; then
-        wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
-        tar xf proj-4.9.3.tar.gz;
-        pushd proj-4.9.3;
-        ./configure --prefix=$HOME/local;
-        make;
-        sed -i "" -e s/-I// proj.pc;
-        make install;
-        popd;
-    fi;
-  - export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
-  - export LD_LIBRARY_PATH="$HOME/local/lib";
-  - pkg-config --modversion proj;
+  - python -m pip install --upgrade pip setuptools
+  - python -m pip install --no-binary ":all:" shapely
   - if [[ $TASK == "docs" ]]; then
       export EXTRA_INSTALLS="doc,examples";
-      export EXTRA_PACKAGES="$EXTRA_PACKAGES pillow sphinx_rtd_theme==0.2.5b1.post1 pytest";
+      python -m pip install -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html sphinx_rtd_theme==0.2.5b1.post1 -c ci/${VERSIONS};
+      python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${VERSIONS} ${GIT_VERSIONS};
     else
-      export TEST_OPTS="--flake8 --mpl -W error::metpy.deprecation.MetpyDeprecationWarning";
-      if [[ $TRAVIS_PYTHON_VERSION != 2.7 ]]; then
-        export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
-      fi;
-      if [[ $TASK == "coverage" ]]; then
-        export TEST_OPTS="$TEST_OPTS --cov=metpy --cov=tests";
-        export EXTRA_PACKAGES="$EXTRA_PACKAGES pytest-cov";
-      fi;
+      python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -r ci/linting_requirements.txt -c ci/${VERSIONS} ${GIT_VERSIONS};
     fi;
-  - mkdir $WHEELDIR;
-  # These need to be downloaded because when we run builds later we disable the index
-  - python -m pip download -d $WHEELDIR -f $WHEELHOUSE setuptools wheel setuptools_scm;
-  # Cython needs to be installed before even downloading CartoPy
-  - python -m pip install Cython;
-  - python -m pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - touch $WHEELDIR/download_marker;
-  - travis_wait python -m pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - python -m pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$WHEELDIR $VERSIONS;
-  - travis_wait 30 python -m pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  # Make sure we don't upload MetPy or other development build wheels
-  - rm -f $WHEELDIR/MetPy*.whl $WHEELDIR/xarray-*+*.whl $WHEELDIR/Pint-*dev*.whl;
-  - ls -lrt --full-time $WHEELDIR;
 
 install:
-  - python -m pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$WHEELDIR $VERSIONS;
-
-before_script:
-  - if [[ $TASK == "coverage" ]]; then
-      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter;
-      chmod +x ./cc-test-reporter;
-      ./cc-test-reporter before-build;
-    fi;
+  - python -m pip install ".[$EXTRA_INSTALLS]" -c ci/${VERSIONS}
 
 script:
   - export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
@@ -132,31 +73,22 @@ script:
       make clean overridecheck html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
       popd;
-      if [[ $TRAVIS_PYTHON_VERSION != 2.7 ]]; then
-        PY_IGNORE_IMPORTMISMATCH=1 python -m pytest --doctest-modules -k "not test" src;
-        export DOC_TEST_RESULT=$?;
-      else
-        export DOC_TEST_RESULT=0;
-      fi;
       doc8 docs/;
-      if [[ $? -ne 0 || $DOC_BUILD_RESULT -ne 0 || $DOC_TEST_RESULT -ne 0 ]]; then
+      if [[ $? -ne 0 || $DOC_BUILD_RESULT -ne 0 ]]; then
         false;
       fi;
     else
       flake8 --version;
-      python -m pytest $TEST_OUTPUT_CONTROL $TEST_OPTS;
+      python -m pytest --flake8 --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests;
     fi
 
 after_script:
-  - if [[ $TASK == "coverage" ]]; then
+  - if [[ $TASK != "coverage" ]]; then
       pip install codecov codacy-coverage;
       coverage xml;
       codecov -X gcov -f coverage.xml -e TRAVIS_PYTHON_VERSION;
       python-codacy-coverage -r coverage.xml;
-      ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT;
     fi
-  - ls -lrt --full-time $WHEELDIR;
-  - echo $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
 
 before_deploy:
   # Remove unused, unminified javascript from sphinx
@@ -182,8 +114,3 @@ deploy:
       all_branches: true
       python: 3.7
       condition: '$TASK == "docs"'
-
-notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/7d9db0e3c69256819df7

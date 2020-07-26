@@ -84,10 +84,10 @@ environments. Our recommended setup for contributing is:
   ``cd metpy``
 * Connect your repository to the upstream (main project).
   ``git remote add unidata https://github.com/unidata/metpy.git``
-* Create the development environment by running ``conda env create``. This will install
-  all of the packages in the ``environment.yml`` file.
-* Activate our new development environment ``source activate devel`` on Mac/Linux or
-  ``activate devel`` on Windows.
+* Create the development environment by running
+``conda env create -n devel --file ci/current.txt --file ci/extra-requirements --file ci/test_requirements.txt``.
+This will install all the necessary packages for development.
+* Activate our new development environment by running ``conda activate devel``
 * Make an editable install of MetPy by running ``pip install -e .``
 
 Now you're all set! You have an environment called ``devel`` that you can work in. You'll need
@@ -264,8 +264,8 @@ What now?
 ### Automated Testing
 First, our army of never sleeping robots will begin a series of automated checks.
 The test suite, documentation, style, and more will be checked on various versions of Python
-with current and legacy packages. Travis CI will run testing on Linux and Mac, Appveyor will
-run tests on Windows. Other services will kick in and check if there is a drop in code coverage
+with current and legacy packages. Travis CI and GitHub Actions will run testing on Linux, and
+Mac, and Windows. Other services will kick in and check if there is a drop in code coverage
 or any style variations that should be corrected. If you see a red mark by a service, something
 failed and clicking the "Details" link will give you more information. We're happy to help if
 you are stuck.

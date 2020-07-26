@@ -124,7 +124,7 @@ def potential_temperature(pressure, temperature):
     --------
     >>> from metpy.units import units
     >>> metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)
-    <Quantity(290.9665329591884, 'kelvin')>
+    <Quantity(290.966533, 'kelvin')>
 
     """
     return temperature / exner_function(pressure)
@@ -1172,7 +1172,7 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb
                                         **kwargs):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
-    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
+    This uses a psychrometric relationship as outlined in [WMO8]_, with
     coefficients from [Fan1987]_.
 
     Parameters
@@ -1214,7 +1214,7 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
-    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
+    This uses a psychrometric relationship as outlined in [WMO8]_, with
     coefficients from [Fan1987]_.
 
     Parameters
@@ -2588,7 +2588,7 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
-    Lifted index formula derived from [Galway1956]_ and referenced by [Doswell-Schultz2006]_:
+    Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
     LI = T500 - Tp500
     where:
     T500 is the measured temperature at 500 hPa.

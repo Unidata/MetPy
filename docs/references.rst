@@ -48,7 +48,7 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
-.. [Doswell-Schultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
+.. [DoswellSchultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
            Parameters in Forecasting Severe Storms. *Electronic Journal of Severe Storms
            Meteorology*,
            `EJSSM <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.
@@ -157,5 +157,5 @@ References
            694-703, doi:`10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
-.. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=4147>`_.
+.. [WMO8] WMO, 2018: Guide to Meteorological Instruments and Methods of Observation.
+           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=10179>`_.
