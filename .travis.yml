@@ -73,8 +73,7 @@ script:
       make clean overridecheck html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
       popd;
-      doc8 docs/;
-      if [[ $? -ne 0 || $DOC_BUILD_RESULT -ne 0 ]]; then
+      if [[ $DOC_BUILD_RESULT -ne 0 ]]; then
         false;
       fi;
     else
