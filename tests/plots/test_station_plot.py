@@ -17,6 +17,9 @@ from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
+MPL_VERSION = matplotlib.__version__[:3]
+
+
 @pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationplot_api():
     """Test the StationPlot API."""
@@ -279,7 +282,8 @@ def wind_plot():
     return u, v, x, y
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00323, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0423}.get(MPL_VERSION, 0.00434),
+                               remove_text=True)
 def test_barb_projection(wind_plot):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
@@ -287,14 +291,15 @@ def test_barb_projection(wind_plot):
     # Plot and check barbs (they should align with grid lines)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
-    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
+    ax.gridlines(xlocs=[-120, -105, -90, -75, -60], ylocs=np.arange(24, 55, 6))
     sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
     sp.plot_barb(u, v)
 
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00205, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0693}.get(MPL_VERSION, 0.00382),
+                               remove_text=True)
 def test_arrow_projection(wind_plot):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot
@@ -302,7 +307,7 @@ def test_arrow_projection(wind_plot):
     # Plot and check barbs (they should align with grid lines)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
-    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
+    ax.gridlines(xlocs=[-120, -105, -90, -75, -60], ylocs=np.arange(24, 55, 6))
     sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
     sp.plot_arrow(u, v)
     sp.plot_arrow(u, v)  # plot_arrow used twice to hit removal if statement
