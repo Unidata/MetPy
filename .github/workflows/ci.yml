@@ -140,12 +140,14 @@ jobs:
         key: ${{ runner.os }}-pip-tests-${{ hashFiles('ci/*.txt') }}
         restore-keys: ${{ runner.os }}-pip-tests
 
-    # This installs the stuff needed to build and install Shapely and Cartopy from source
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # Need to install numpy first to make CartoPy happy.
     - name: Install dependencies
       run: |
         sudo apt-get install libgeos-dev libproj-dev
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
+        python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
 
     - name: Install
@@ -227,13 +229,15 @@ jobs:
         key: ${{ runner.os }}-pip-docs-${{ hashFiles('ci/*.txt') }}
         restore-keys: ${{ runner.os }}-pip-docs
 
-    # This installs the stuff needed to build and install Shapely and Cartopy from source
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # Need to install numpy first to make CartoPy happy.
     - name: Install dependencies (PyPI)
       if: ${{ runner.os == 'Linux' }}
       run: |
         sudo apt-get install libgeos-dev libproj-dev
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
+        python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
         python -m pip install -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html sphinx_rtd_theme==0.2.5b1.post1
 
