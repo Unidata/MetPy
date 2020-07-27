@@ -28,8 +28,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.0': 3.09}.get(MPL_VERSION, 0.005))
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
 def test_declarative_image():
     """Test making an image plot."""
     data = xr.open_dataset(GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini')))
