@@ -2,6 +2,10 @@ language: python
 dist: bionic
 os: linux
 
+branches:
+  except:
+    - /^dependabot-.*$/
+
 addons:
   apt:
     packages:
