@@ -30,7 +30,7 @@ env:
     - EXTRA_PACKAGES="shapely<1.5.17.post1"
     - EXTRA_INSTALLS="test"
     - GH_PAGES_DIR="$HOME/gh-pages"
-    - VERSIONS="current.txt"
+    - VERSIONS="Current.txt"
   jobs:
     - TASK="coverage"
     - TASK="docs"
@@ -39,16 +39,16 @@ jobs:
   include:
     - python: 3.6
       env:
-        - VERSIONS="minimum.txt"
+        - VERSIONS="Minimum"
         - TASK="coverage"
     - python: "3.8-dev"
       env:
-        - VERSIONS="prerelease.txt"
+        - VERSIONS="Prerelease"
         - GIT_VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
     - python: "3.8-dev"
       env:
         - TASK="docs"
-        - VERSIONS="prerelease.txt"
+        - VERSIONS="Prerelease"
         - GIT_VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
   allow_failures:
     - python: "3.8-dev"
