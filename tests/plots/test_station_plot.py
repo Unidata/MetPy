@@ -17,6 +17,9 @@ from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
+MPL_VERSION = matplotlib.__version__[:3]
+
+
 @pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationplot_api():
     """Test the StationPlot API."""
@@ -258,7 +261,8 @@ def wind_plot():
     return u, v, x, y
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00434, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0423}.get(MPL_VERSION, 0.00434),
+                               remove_text=True)
 def test_barb_projection(wind_plot):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
@@ -273,7 +277,8 @@ def test_barb_projection(wind_plot):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00382, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0693}.get(MPL_VERSION, 0.00382),
+                               remove_text=True)
 def test_arrow_projection(wind_plot):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot
