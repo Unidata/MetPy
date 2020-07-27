@@ -5,7 +5,7 @@ updates:
     directory: "/ci"
     schedule:
       interval: daily
-      time: "23:00"
+      time: "6:00"
       timezone: "America/Denver"
 
     allow:
@@ -17,7 +17,7 @@ updates:
     labels:
       - "Type: Maintenance"
     commit-message:
-      prefix: "MNT:"
+      prefix: "MNT: "
       include: "scope"
 
   - package-ecosystem: "github-actions"
@@ -36,5 +36,5 @@ updates:
     labels:
       - "Type: Maintenance"
     commit-message:
-      prefix: "MNT:"
+      prefix: "MNT: "
       include: "scope"
