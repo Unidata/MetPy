@@ -53,7 +53,7 @@ jobs:
         use-only-tar-bz2: true
 
     - name: Install dependencies
-      run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/current.txt
+      run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
 
     - name: Install
       # For some reason on Windows 3.7 building the wheel fails to properly include our extra
@@ -96,16 +96,16 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.6, 3.7, 3.8]
-        dep-versions: [current.txt]
+        dep-versions: [Current.txt]
         git-versions: ['']
         experimental: [false]
         include:
           - python-version: 3.6
-            dep-versions: minimum.txt
+            dep-versions: Minimum
             git-versions: ''
             experimental: false
           - python-version: 3.8
-            dep-versions: prerelease.txt
+            dep-versions: Prerelease
             git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'
             experimental: true
 
@@ -154,7 +154,7 @@ jobs:
         python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests --cov-report=xml
 
     - name: Run doctests
-      if: ${{ matrix.dep-versions == 'current.txt' }}
+      if: ${{ matrix.dep-versions == 'Current.txt' }}
       env:
         PY_IGNORE_IMPORTMISMATCH: 1
       run: python -m pytest --doctest-modules -k "not test" src;
@@ -181,18 +181,18 @@ jobs:
       matrix:
         python-version: [3.6, 3.7]
         linkcheck: ['']
-        dep-versions: [current.txt]
+        dep-versions: [Current.txt]
         git-versions: ['']
         experimental: [false]
         include:
           - python-version: 3.8
             linkcheck: linkcheck
-            dep-versions: current.txt
+            dep-versions: Current.txt
             git-versions: ''
             experimental: false
           - python-version: 3.8
             linkcheck: ''
-            dep-versions: prerelease.txt
+            dep-versions: Prerelease
             git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'
             experimental: true
 
