@@ -61,7 +61,7 @@ jobs:
       # deep in territory where googling for answers helps not at all.
       run: |
         python setup.py egg_info
-        python -m pip install -v --no-deps .
+        python -m pip install --no-deps .
 
     - name: Run tests
       run: |
@@ -145,7 +145,7 @@ jobs:
         python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
 
     - name: Install
-      run: python -m pip install -v -c ci/${{ matrix.dep-versions }} .
+      run: python -m pip install -c ci/${{ matrix.dep-versions }} .
 
     - name: Run tests
       run: |
