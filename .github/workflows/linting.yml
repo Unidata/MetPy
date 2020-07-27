@@ -1,5 +1,8 @@
 name: Linting
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
 
 jobs:
   flake8:
