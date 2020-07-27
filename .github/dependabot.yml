@@ -5,7 +5,7 @@ updates:
     directory: "/ci"
     schedule:
       interval: daily
-      time: "6:00"
+      time: "06:00"
       timezone: "America/Denver"
 
     allow:
