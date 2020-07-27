@@ -52,6 +52,10 @@ jobs:
         # Needed for caching
         use-only-tar-bz2: true
 
+    - name: Adjust dependencies for Windows
+      if: ${{ runner.os == 'Windows' }}
+      run: sed -e "s/scipy==.*/scipy==1.5.0/" -i'' ci/Current.txt
+
     - name: Install dependencies
       run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
 
