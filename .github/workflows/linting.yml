@@ -29,3 +29,11 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           flake8 | reviewdog -f=pep8 -name=flake8 -reporter=github-check -filter-mode=nofilter
+
+      - name: Run doc8
+        # Don't skip doc8 if flake8 fails
+        if: ${{ always() }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          doc8 docs | reviewdog -efm='%f:%l: %m' -name=doc8 -reporter=github-check -filter-mode=nofilter
