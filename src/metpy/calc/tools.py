@@ -928,10 +928,7 @@ def xarray_derivative_wrap(func):
 
             # Calculate and return result as a DataArray
             result = func(f.metpy.unit_array, **new_kwargs)
-            return xr.DataArray(result.magnitude,
-                                coords=f.coords,
-                                dims=f.dims,
-                                attrs={'units': str(result.units)})
+            return xr.DataArray(result, coords=f.coords, dims=f.dims)
         else:
             # Error
             raise ValueError('Must specify either "x" or "delta" for value positions when "f" '
@@ -1218,11 +1215,7 @@ def laplacian(f, **kwargs):
     pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
     derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
               for ind, axis in enumerate(axes)]
-    laplac = sum(derivs)
-    if isinstance(derivs[0], xr.DataArray):
-        # Patch in the units that are dropped
-        laplac.attrs['units'] = derivs[0].attrs['units']
-    return laplac
+    return sum(derivs)
 
 
 def _broadcast_to_axis(arr, axis, ndim):
