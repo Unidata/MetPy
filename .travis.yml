@@ -54,6 +54,8 @@ before_install:
   # version chooser
   - python -m pip install --upgrade pip setuptools
   - python -m pip install --no-binary ":all:" shapely
+  # Needed in order to build CartoPy--it needs it installed first
+  - python -m pip install -c ci/${VERSIONS} numpy
   - if [[ $TASK == "docs" ]]; then
       python -m pip install -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html sphinx_rtd_theme==0.2.5b1.post1 -c ci/${VERSIONS};
       python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${VERSIONS} ${GIT_VERSIONS};
