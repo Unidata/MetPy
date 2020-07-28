@@ -790,6 +790,14 @@ class Plots2D(HasTraits):
     plotting using the MetPy Units module.
     """
 
+    scale = Float(default_value=1e0)
+    scale.__doc__ = """Scale the field to be plotted by the value given.
+
+    This attribute will scale the field by multiplying by the scale. For example, to
+    scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
+    the data values will be scaled by 10^5.
+    """
+
     @property
     def _cmap_obj(self):
         """Return the colormap object.
@@ -929,7 +937,7 @@ class PlotScalar(Plots2D):
 
             if self.plot_units is not None:
                 data_subset = data_subset.metpy.convert_units(self.plot_units)
-            self._griddata = data_subset
+            self._griddata = data_subset * self.scale
 
         return self._griddata
 
