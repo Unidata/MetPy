@@ -106,13 +106,13 @@ class CodePointMapping(object):
                 font_point += 1
 
     @staticmethod
-    def _safe_pop(l):
+    def _safe_pop(lst):
         """Safely pop from a list.
 
         Returns None if list empty.
 
         """
-        return l.pop(0) if l else None
+        return lst.pop(0) if lst else None
 
     def __call__(self, code):
         """Return the Unicode code point corresponding to `code`."""
