@@ -51,7 +51,7 @@ class TestDataTypes:
 
 
     def test_dask_array(self, func, args, truth, decimal):
-        pytest.xfail("Dask Arrays not fully supported")
+        # pytest.xfail("Dask Arrays not fully supported")
         dask_arrays(func, args, truth, decimal)
 
 
