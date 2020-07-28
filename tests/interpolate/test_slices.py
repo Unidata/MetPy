@@ -197,8 +197,8 @@ def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
     data_cross = cross_section(test_ds_lonlat, start, end, steps=7, interp_type='nearest')
     nearest_values = test_ds_lonlat.isel(lat=xr.DataArray([0, 1, 2, 3, 3, 4, 5], dims='index'),
                                          lon=xr.DataArray(range(7), dims='index'))
-    truth_temp = nearest_values['temperature'].values
-    truth_rh = nearest_values['relative_humidity'].values
+    truth_temp = nearest_values['temperature'].metpy.unit_array
+    truth_rh = nearest_values['relative_humidity'].metpy.unit_array
     truth_values_lon = np.array([255.5, 258.20305939, 261.06299342, 264.10041516,
                                  267.3372208, 270.7961498, 274.5])
     truth_values_lat = np.array([30.5, 33.02800969, 35.49306226, 37.88512911, 40.19271688,

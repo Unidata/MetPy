@@ -713,10 +713,10 @@ def test_smooth_window_1d_dataarray():
     smoothed = smooth_window(temperature, window=np.ones(3) / 3, normalize_weights=False)
     truth = xr.DataArray(
         [37., 34.33333333, 31.66666667, 30.33333333, 27., 26., 24.66666667,
-         25.66666667, 27., 30.],
+         25.66666667, 27., 30.] * units.degF,
         dims=('time',),
-        coords={'time': pd.date_range('2020-01-01', periods=10, freq='H')},
-        attrs={'units': 'degF'})
+        coords={'time': pd.date_range('2020-01-01', periods=10, freq='H')}
+    )
     xr.testing.assert_allclose(smoothed, truth)
 
 

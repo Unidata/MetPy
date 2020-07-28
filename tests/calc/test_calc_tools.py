@@ -1087,7 +1087,7 @@ def test_first_derivative_xarray_lonlat(test_da_lonlat):
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['crs'] = test_da_lonlat['crs']
     truth.attrs['units'] = 'kelvin / meter'
-    truth.metpy.quantify()
+    truth = truth.metpy.quantify()
 
     # Assert result matches expectation
     xr.testing.assert_allclose(deriv, truth)
@@ -1103,7 +1103,7 @@ def test_first_derivative_xarray_time_and_default_axis(test_da_xy):
     deriv = first_derivative(test_da_xy)
     truth = xr.full_like(test_da_xy, -0.000777000777)
     truth.attrs['units'] = 'kelvin / second'
-    truth.metpy.quantify()
+    truth = truth.metpy.quantify()
 
     xr.testing.assert_allclose(deriv, truth)
     assert deriv.metpy.units == truth.metpy.units
@@ -1123,7 +1123,7 @@ def test_first_derivative_xarray_time_subsecond_precision():
 
     truth = xr.full_like(test_da, 5.)
     truth.attrs['units'] = 'kelvin / second'
-    truth.metpy.quantify()
+    truth = truth.metpy.quantify()
 
     xr.testing.assert_allclose(deriv, truth)
     assert deriv.metpy.units == truth.metpy.units
@@ -1141,7 +1141,7 @@ def test_second_derivative_xarray_lonlat(test_da_lonlat):
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['crs'] = test_da_lonlat['crs']
     truth.attrs['units'] = 'kelvin / meter^2'
-    truth.metpy.quantify()
+    truth = truth.metpy.quantify()
 
     xr.testing.assert_allclose(deriv, truth)
     assert deriv.metpy.units == truth.metpy.units
@@ -1156,11 +1156,11 @@ def test_gradient_xarray(test_da_xy):
 
     truth_x = xr.full_like(test_da_xy, -6.993007e-07)
     truth_x.attrs['units'] = 'kelvin / meter'
-    truth_x.metpy.quantify()
+    truth_x = truth_x.metpy.quantify()
 
     truth_y = xr.full_like(test_da_xy, -2.797203e-06)
     truth_y.attrs['units'] = 'kelvin / meter'
-    truth_y.metpy.quantify()
+    truth_y = truth_y.metpy.quantify()
 
     partial = xr.DataArray(
         np.array([0.04129204, 0.03330003, 0.02264402]),
@@ -1169,7 +1169,7 @@ def test_gradient_xarray(test_da_xy):
     _, truth_p = xr.broadcast(test_da_xy, partial)
     truth_p.coords['crs'] = test_da_xy['crs']
     truth_p.attrs['units'] = 'kelvin / hectopascal'
-    truth_p.metpy.quantify()
+    truth_p = truth_p.metpy.quantify()
 
     # Assert results match expectations
     xr.testing.assert_allclose(deriv_x, truth_x)
@@ -1195,11 +1195,11 @@ def test_gradient_xarray_implicit_axes(test_da_xy):
 
     truth_x = xr.full_like(data, -6.993007e-07)
     truth_x.attrs['units'] = 'kelvin / meter'
-    truth_x.metpy.quantify()
+    truth_x = truth_x.metpy.quantify()
 
     truth_y = xr.full_like(data, -2.797203e-06)
     truth_y.attrs['units'] = 'kelvin / meter'
-    truth_y.metpy.quantify()
+    truth_y = truth_y.metpy.quantify()
 
     xr.testing.assert_allclose(deriv_x, truth_x)
     assert deriv_x.metpy.units == truth_x.metpy.units
@@ -1253,7 +1253,7 @@ def test_laplacian_xarray_lonlat(test_da_lonlat):
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['crs'] = test_da_lonlat['crs']
     truth.attrs['units'] = 'kelvin / meter^2'
-    truth.metpy.quantify()
+    truth = truth.metpy.quantify()
 
     xr.testing.assert_allclose(laplac, truth)
     assert laplac.metpy.units == truth.metpy.units
