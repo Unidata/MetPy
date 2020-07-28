@@ -808,6 +808,7 @@ def test_most_unstable_parcel():
     assert_almost_equal(ret[2], 19.0 * units.degC, 6)
 
 
+@pytest.mark.filterwarnings('ignore:invalid value:RuntimeWarning')
 def test_isentropic_pressure():
     """Test calculation of isentropic pressure function."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
@@ -819,8 +820,7 @@ def test_isentropic_pressure():
     tmp[:, :, -1] = np.nan
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
-    with pytest.warns(RuntimeWarning, match='invalid value'):
-        isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
     trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
     trueprs[:, :, -1] = np.nan
     assert isentprs[0].shape == (1, 5, 5)

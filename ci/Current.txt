@@ -1,5 +1,5 @@
 matplotlib==3.2.1
-numpy==1.18.5
+numpy==1.19.1
 scipy==1.5.2
 pint==0.14
 xarray==0.15.1
