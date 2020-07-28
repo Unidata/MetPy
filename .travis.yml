@@ -63,7 +63,7 @@ before_install:
       python -m pip install -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html sphinx_rtd_theme==0.2.5b1.post1 -c ci/${VERSIONS};
       python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${VERSIONS} ${GIT_VERSIONS};
     else
-      python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -r ci/linting_requirements.txt -c ci/${VERSIONS} ${GIT_VERSIONS};
+      python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -c ci/${VERSIONS} ${GIT_VERSIONS};
     fi;
 
 install:
@@ -81,8 +81,7 @@ script:
         false;
       fi;
     else
-      flake8 --version;
-      python -m pytest --flake8 --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests;
+      python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests;
     fi
 
 after_script:
