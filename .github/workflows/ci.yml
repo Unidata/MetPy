@@ -37,7 +37,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/conda_pkgs_dir
-        key: ${{ runner.os }}-${{ matrix.python-version}}-conda-tests-${{ hashFiles('ci/*.txt') }}
+        key: ${{ runner.os }}-${{ matrix.python-version}}-conda-tests-${{ hashFiles('ci/*') }}
         restore-keys: ${{ runner.os }}-${{ matrix.python-version}}-conda-tests
 
     - name: Set up Python ${{ matrix.python-version }}
@@ -137,7 +137,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-tests-${{ hashFiles('ci/*.txt') }}
+        key: ${{ runner.os }}-pip-tests-${{ hashFiles('ci/*') }}
         restore-keys: ${{ runner.os }}-pip-tests
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
@@ -226,7 +226,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-docs-${{ hashFiles('ci/*.txt') }}
+        key: ${{ runner.os }}-pip-docs-${{ hashFiles('ci/*') }}
         restore-keys: ${{ runner.os }}-pip-docs
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
