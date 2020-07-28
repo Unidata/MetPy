@@ -988,7 +988,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     th_l = t * (1000 / (p - e)) ** mpconsts.kappa * (t / t_l) ** (0.28 * r)
     th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
 
-    return th_e * units.kelvin
+    return units.Quantity(th_e, units.kelvin)
 
 
 @exporter.export
@@ -1055,7 +1055,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     th_l = t * (1000 / (p - e)) ** mpconsts.kappa
     th_es = th_l * np.exp((3036. / t - 1.78) * r * (1 + 0.448 * r))
 
-    return th_es * units.kelvin
+    return units.Quantity(th_es, units.kelvin)
 
 
 @exporter.export
