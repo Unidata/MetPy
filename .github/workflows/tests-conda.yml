@@ -37,8 +37,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/conda_pkgs_dir
-        key: ${{ runner.os }}-${{ matrix.python-version}}-conda-tests-${{ hashFiles('ci/*') }}
-        restore-keys: ${{ runner.os }}-${{ matrix.python-version}}-conda-tests
+        key: conda-tests-${{ runner.os }}-${{ matrix.python-version}}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          conda-tests-${{ runner.os }}-${{ matrix.python-version}}
+          conda-tests-${{ runner.os }}
+          conda-tests-
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: goanpeca/setup-miniconda@v1
