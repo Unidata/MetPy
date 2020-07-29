@@ -56,8 +56,12 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-tests-${{ hashFiles('ci/*') }}
-        restore-keys: ${{ runner.os }}-pip-tests
+        key: pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-
+          pip-tests-${{ runner.os }}-
+          pip-tests-
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     # Need to install numpy first to make CartoPy happy.
