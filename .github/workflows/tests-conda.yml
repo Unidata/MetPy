@@ -33,7 +33,7 @@ jobs:
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-    - name: Setup caching
+    - name: Setup conda caching
       uses: actions/cache@v2
       with:
         path: ~/conda_pkgs_dir
@@ -58,6 +58,21 @@ jobs:
 
     - name: Install dependencies
       run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      uses: actions/cache@v2
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: cartopy-
 
     - name: Install
       # For some reason on Windows 3.7 building the wheel fails to properly include our extra
