@@ -1,4 +1,4 @@
-pytest==5.4.3
+pytest==6.0.0
 pytest-cov==2.10.0
 pytest-mpl==0.11
 netCDF4==1.5.3
