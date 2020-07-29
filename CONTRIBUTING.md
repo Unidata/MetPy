@@ -225,6 +225,80 @@ to run only the test you just created for this step.
 
 For more information, see the [docs for pytest-mpl](https://github.com/astrofrog/pytest-mpl).
 
+### Systematic Data Type Testing
+To reduce bugs related to function behavior with specific data types, an automated test
+suite is under active development.
+
+> This interface is highly subject to change and tests are not yet comprehensive.
+
+Tests for a new function can be automated to test against all of the data types that MetPy
+supports. This is powered by
+[testscenarios](https://docs.pytest.org/en/latest/example/parametrize.html#a-quick-port-of-testscenarios),
+but it isn't necessary to understand the details to make use of its implementation in
+MetPy. Instead, an entry can be added to a nested dictionary in a test module such as
+`tests/calc/data_basic.py`. As an example, let's look at a truncated version of this file:
+
+```python
+import numpy as np
+from metpy.units import units
+
+s2 = np.sqrt(2.)
+
+function_test_data = {
+    'wind_speed': {                                               # Function name
+        'u': np.array([4., 2., 0., 0.]) * units('m/s'),           # First argument
+        'v': np.array([0., 2., 4., 0.]) * units('m/s'),           # Second argument
+        'speed': np.array([4., 2 * s2, 4., 0.]) * units('m/s'),   # Truth
+    },
+}
+```
+
+The dictionary `function_test_data` contains entries that are dictionaries themselves.
+Each of these nested dictionaries is named after the function to be tested, which is
+`wind_speed` in this case. Entries in this dictionary include the named arguments to
+the function, `u` and `v`, and a truth value, `speed`, to test against function output.
+To test your new function against all supported data types, you would provide a similar
+dictionary within `function_test_data`.
+
+**Providing multiple truth values**
+
+If a function has multiple return values, its dictionary simply needs a truth value for each return value *in the same order that they are returned from the function*. A good example of
+this is seen with the `wind_components` function:
+
+```python
+function_test_data = {
+    'wind_components': {
+        'speed': np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph,                     # First argument
+        'wind_direction': np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg,    # Second argument
+        'u': np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph,     # First truth
+        'v': np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph,   # Second truth
+    },
+}
+```
+
+Any entries following the arguments to the function are assumed to be truth values to test
+against the return values of the function. Here, `u` and `v` would be tested against the
+first and second return values from `wind_components`.
+
+**Specifying precision**
+
+There is one exception to entries that follow function arguments, `decimal`. This entry
+specifies the precision with which to test the function output against the provided truth.
+By default, `decimal` = 4. An example of a function tested with lower precision is `windchill`:
+
+```python
+function_test_data = {
+    'windchill': {
+        'temperature': np.array([40, -10, -45, 20]) * units.degF,
+        'speed': np.array([5, 55, 25, 15]) * units.mph,
+        'windchill': np.array([36, -46, -84, 6]) * units.degF,
+        'decimal': 0,
+    },
+}
+```
+
+Here, the output of the function `windchill` will be tested against the truth entry
+`windchill` with 0 decimal precision.
 
 ## Cached Data Files
 MetPy keeps some test data, as well as things like shape files for US counties in a data cache
