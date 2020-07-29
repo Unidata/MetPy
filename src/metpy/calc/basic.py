@@ -1181,7 +1181,7 @@ def _check_radians(value, max_radians=2 * np.pi):
         value = value.to('radians').m
     except AttributeError:
         pass
-    if np.greater(np.nanmax(np.abs(value)), max_radians):
+    if np.any(np.greater(np.abs(value), max_radians)):
         warnings.warn('Input over {} radians. '
-                      'Ensure proper units are given.'.format(max_radians))
+                      'Ensure proper units are given.'.format(np.nanmax(max_radians)))
     return value
