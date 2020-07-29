@@ -48,7 +48,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     # This uses pip to find the right cache dir and then sets up caching for it
-    - name: Get cache dir
+    - name: Get pip cache dir
       id: pip-cache
       run: echo "::set-output name=dir::$(pip cache dir)"
 
@@ -68,6 +68,21 @@ jobs:
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      uses: actions/cache@v2
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: cartopy-
 
     - name: Install
       run: python -m pip install -c ci/${{ matrix.dep-versions }} .
