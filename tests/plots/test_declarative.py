@@ -468,7 +468,7 @@ def test_declarative_gridded_scale():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.347)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 def test_declarative_barb_gfs():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
@@ -496,7 +496,7 @@ def test_declarative_barb_gfs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.346)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.466)
 def test_declarative_barb_gfs_knots():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
