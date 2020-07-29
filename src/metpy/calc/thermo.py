@@ -986,7 +986,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
     t_l = 56 + 1. / (1. / (td - 56) + np.log(t / td) / 800.)
     th_l = t * (1000 / (p - e)) ** mpconsts.kappa * (t / t_l) ** (0.28 * r)
-    th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
+    th_e = th_l * np.exp(r * (1 + 0.448 * r) * (3036. / t_l - 1.78))
 
     return units.Quantity(th_e, units.kelvin)
 
