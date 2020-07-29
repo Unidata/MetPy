@@ -13,7 +13,7 @@ years. For Python itself, that means supporting the last two minor releases.
 * scipy >= 1.0.0
 * pint >= 0.10.1
 * pandas >= 0.22.0
-* xarray >= 0.13.0
+* xarray >= 0.14.1
 * traitlets >= 4.3.0
 * pooch >= 0.1
 

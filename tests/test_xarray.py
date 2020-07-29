@@ -151,13 +151,37 @@ def test_quantify(test_ds_generic):
     np.testing.assert_array_almost_equal(result.data, units.Quantity(original))
 
 
-def test_dequantify(test_var):
+def test_dequantify():
     """Test dequantify method for converting data away from Quantity."""
-    original = test_var.data
-    result = test_var.metpy.dequantify()
+    original = xr.DataArray(units.Quantity([280, 290, 300], 'K'))
+    result = original.metpy.dequantify()
     assert isinstance(result.data, np.ndarray)
     assert result.attrs['units'] == 'kelvin'
-    np.testing.assert_array_almost_equal(result.data, original.magnitude)
+    np.testing.assert_array_almost_equal(result.data, original.data.magnitude)
+
+
+def test_dataset_quantify(test_ds_generic):
+    """Test quantify method for converting data to Quantity on Datasets."""
+    result = test_ds_generic.metpy.quantify()
+    assert isinstance(result['test'].data, units.Quantity)
+    assert result['test'].data.units == units.dimensionless
+    assert 'units' not in result['test'].attrs
+    np.testing.assert_array_almost_equal(
+        result['test'].data,
+        units.Quantity(test_ds_generic['test'].data)
+    )
+
+
+def test_dataset_dequantify():
+    """Test dequantify method for converting data away from Quantity on Datasets."""
+    original = xr.Dataset({
+        'test': ('x', units.Quantity([280, 290, 300], 'K')),
+        'x': np.arange(3)
+    })
+    result = original.metpy.dequantify()
+    assert isinstance(result['test'].data, np.ndarray)
+    assert result['test'].attrs['units'] == 'kelvin'
+    np.testing.assert_array_almost_equal(result['test'].data, original['test'].data.magnitude)
 
 
 def test_radian_projection_coords():
@@ -278,7 +302,7 @@ def test_assign_coordinates_not_overwrite(test_ds_generic):
     """Test that assign_coordinates does not overwrite past axis attributes."""
     data = test_ds_generic.copy()
     data['c'].attrs['axis'] = 'X'
-    data['test'].metpy.assign_coordinates({'y': data['c']})
+    data['test'] = data['test'].metpy.assign_coordinates({'y': data['c']})
     assert data['c'].identical(data['test'].metpy.y)
     assert data['c'].attrs['axis'] == 'X'
 
@@ -598,9 +622,12 @@ def test_data_array_sel_dict_with_units(test_var):
 def test_data_array_sel_kwargs_with_units(test_var):
     """Test .sel on the metpy accessor with kwargs and axis type."""
     truth = test_var.loc[:, 500.][..., 122]
-    selection = test_var.metpy.sel(vertical=5e4 * units.Pa, x=-16.569 * units.km,
-                                   tolerance=1., method='nearest')
-    selection.metpy.assign_coordinates(None)  # truth was not parsed for coordinates
+    selection = (
+        test_var.metpy
+        .sel(vertical=5e4 * units.Pa, x=-16.569 * units.km, tolerance=1., method='nearest')
+        .metpy
+        .assign_coordinates(None)
+    )
     assert truth.identical(selection)
 
 
@@ -959,13 +986,19 @@ def test_update_attribute_dictionary(test_ds_generic):
         'test': 'Filler data',
         'c': 'The third coordinate'
     }
-    test_ds_generic.metpy.update_attribute('description', descriptions)
-    assert 'description' not in test_ds_generic['a'].attrs
-    assert 'description' not in test_ds_generic['b'].attrs
-    assert test_ds_generic['c'].attrs['description'] == 'The third coordinate'
-    assert 'description' not in test_ds_generic['d'].attrs
-    assert 'description' not in test_ds_generic['e'].attrs
-    assert test_ds_generic['test'].attrs['description'] == 'Filler data'
+    result = test_ds_generic.metpy.update_attribute('description', descriptions)
+
+    # Test attribute updates
+    assert 'description' not in result['a'].attrs
+    assert 'description' not in result['b'].attrs
+    assert result['c'].attrs['description'] == 'The third coordinate'
+    assert 'description' not in result['d'].attrs
+    assert 'description' not in result['e'].attrs
+    assert result['test'].attrs['description'] == 'Filler data'
+
+    # Test for no side effects
+    assert 'description' not in test_ds_generic['c'].attrs
+    assert 'description' not in test_ds_generic['test'].attrs
 
 
 def test_update_attribute_callable(test_ds_generic):
@@ -973,10 +1006,17 @@ def test_update_attribute_callable(test_ds_generic):
     def even_ascii(varname, **kwargs):
         if ord(varname[0]) % 2 == 0:
             return 'yes'
-    test_ds_generic.metpy.update_attribute('even', even_ascii)
-    assert 'even' not in test_ds_generic['a'].attrs
-    assert test_ds_generic['b'].attrs['even'] == 'yes'
-    assert 'even' not in test_ds_generic['c'].attrs
-    assert test_ds_generic['d'].attrs['even'] == 'yes'
-    assert 'even' not in test_ds_generic['e'].attrs
-    assert test_ds_generic['test'].attrs['even'] == 'yes'
+    result = test_ds_generic.metpy.update_attribute('even', even_ascii)
+
+    # Test attribute updates
+    assert 'even' not in result['a'].attrs
+    assert result['b'].attrs['even'] == 'yes'
+    assert 'even' not in result['c'].attrs
+    assert result['d'].attrs['even'] == 'yes'
+    assert 'even' not in result['e'].attrs
+    assert result['test'].attrs['even'] == 'yes'
+
+    # Test for no side effects
+    assert 'even' not in test_ds_generic['b'].attrs
+    assert 'even' not in test_ds_generic['d'].attrs
+    assert 'even' not in test_ds_generic['test'].attrs
