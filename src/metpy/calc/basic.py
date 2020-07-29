@@ -293,17 +293,19 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     sel = ((relative_humidity <= 13. * units.percent) & (temperature >= 80. * units.degF)
            & (temperature <= 112. * units.degF))
     if np.any(sel):
-        rh15adj = ((13. - relative_humidity * 100.) / 4.
-                   * ((17. * units.delta_degF - np.abs(delta - 95. * units.delta_degF))
-                      / 17. * units.delta_degF) ** 0.5)
-        hi[sel] = hi[sel] - rh15adj[sel]
+        rh15adj = ((13. - relative_humidity[sel] * 100.) / 4.
+                   * np.sqrt((17. * units.delta_degF
+                              - np.abs(delta[sel] - 95. * units.delta_degF))
+                             / 17. * units.delta_degF))
+        hi[sel] = hi[sel] - rh15adj
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
     sel = ((relative_humidity > 85. * units.percent) & (temperature >= 80. * units.degF)
            & (temperature <= 87. * units.degF))
     if np.any(sel):
-        rh85adj = 0.02 * (relative_humidity * 100. - 85.) * (87. * units.delta_degF - delta)
-        hi[sel] = hi[sel] + rh85adj[sel]
+        rh85adj = 0.02 * (relative_humidity[sel] * 100. - 85.) * (87. * units.delta_degF
+                                                                  - delta[sel])
+        hi[sel] = hi[sel] + rh85adj
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -1181,7 +1183,7 @@ def _check_radians(value, max_radians=2 * np.pi):
         value = value.to('radians').m
     except AttributeError:
         pass
-    if np.greater(np.nanmax(np.abs(value)), max_radians):
+    if np.any(np.greater(np.abs(value), max_radians)):
         warnings.warn('Input over {} radians. '
-                      'Ensure proper units are given.'.format(max_radians))
+                      'Ensure proper units are given.'.format(np.nanmax(max_radians)))
     return value

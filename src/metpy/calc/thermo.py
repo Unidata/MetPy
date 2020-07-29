@@ -980,15 +980,12 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     """
     t = temperature.to('kelvin').magnitude
     td = dewpoint.to('kelvin').magnitude
-    p = pressure.to('hPa').magnitude
-    e = saturation_vapor_pressure(dewpoint).to('hPa').magnitude
     r = saturation_mixing_ratio(pressure, dewpoint).magnitude
+    e = saturation_vapor_pressure(dewpoint)
 
     t_l = 56 + 1. / (1. / (td - 56) + np.log(t / td) / 800.)
-    th_l = t * (1000 / (p - e)) ** mpconsts.kappa * (t / t_l) ** (0.28 * r)
-    th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
-
-    return units.Quantity(th_e, units.kelvin)
+    th_l = potential_temperature(pressure - e, temperature) * (t / t_l) ** (0.28 * r)
+    return th_l * np.exp(r * (1 + 0.448 * r) * (3036. / t_l - 1.78))
 
 
 @exporter.export

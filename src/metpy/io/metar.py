@@ -16,12 +16,9 @@ from .station_data import station_info
 from ..calc import altimeter_to_sea_level_pressure, wind_components
 from ..package_tools import Exporter
 from ..plots.wx_symbols import wx_code_map
-from ..units import pandas_dataframe_to_unit_arrays, units
+from ..units import units
 
 exporter = Exporter(globals())
-
-# Ignore the pandas warning
-warnings.filterwarnings('ignore', "Pandas doesn't allow columns to be created", UserWarning)
 
 # Configure the named tuple used for storing METAR data
 Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
@@ -171,13 +168,11 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     df['altimeter'] = df.altimeter.round(2)
     df['air_pressure_at_sea_level'] = df.air_pressure_at_sea_level.round(2)
 
-    # Set the units for the dataframe
-    df.units = col_units
+    # Set the units for the dataframe--filter out warning from pandas
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        df.units = col_units
 
-    # Add the array for units to the dataframe
-    pandas_dataframe_to_unit_arrays(df)
-
-    # Return the dataframe
     return df
 
 
@@ -623,8 +618,9 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
     df['altimeter'] = df.altimeter.round(2)
     df['air_pressure_at_sea_level'] = df.air_pressure_at_sea_level.round(2)
 
-    # Set the units for the dataframe
-    df.units = col_units
-    pandas_dataframe_to_unit_arrays(df)
+    # Set the units for the dataframe--filter out warning from Pandas
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        df.units = col_units
 
     return df
