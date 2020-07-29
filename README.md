@@ -5,14 +5,15 @@ MetPy
 [![Gitter](https://badges.gitter.im/Unidata/MetPy.svg)](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square)](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
-[![Latest Docs](https://img.shields.io/badge/docs-stable-brightgreen.svg)](http://unidata.github.io/MetPy)
+[![Latest Docs](https://github.com/Unidata/MetPy/workflows/Build%20Docs/badge.svg)](http://unidata.github.io/MetPy)
 [![PyPI Package](https://img.shields.io/pypi/v/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Package](https://anaconda.org/conda-forge/metpy/badges/version.svg)](https://anaconda.org/conda-forge/metpy)
 
 [![PyPI Downloads](https://img.shields.io/pypi/dm/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Downloads](https://anaconda.org/conda-forge/metpy/badges/downloads.svg)](https://anaconda.org/conda-forge/metpy)
 
-[![CI](https://github.com/Unidata/MetPy/workflows/CI/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3ACI)
+[![PyPI Tests](https://github.com/Unidata/MetPy/workflows/PyPI%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22PyPI+Tests%22)
+[![Conda Tests](https://github.com/Unidata/MetPy/workflows/Conda%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22Conda+Tests%22)
 [![Travis Build Status](https://travis-ci.com/Unidata/MetPy.svg?branch=master)](https://travis-ci.com/Unidata/MetPy)
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=master)](https://codecov.io/github/Unidata/MetPy?branch=master)
 
