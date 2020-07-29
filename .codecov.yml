@@ -10,7 +10,7 @@ coverage:
     project:
       library:
         target: auto
-        threshold: 0.25%
+        threshold: 0.1%
         paths:
           - "src/metpy/.*"
 
