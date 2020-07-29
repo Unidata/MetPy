@@ -481,7 +481,8 @@ def test_hodograph_wind_vectors():
     return fig
 
 
-@pytest.mark.xfail
+@pytest.mark.skipif(matplotlib.__version__ < '3.0.1',
+                    reason="Earlier Matplotlib versions don't have a required fix.")
 def test_united_hodograph_range():
     """Tests making a hodograph with a united ranged."""
     fig = plt.figure(figsize=(6, 6))
