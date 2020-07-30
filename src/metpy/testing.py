@@ -243,3 +243,20 @@ def check_and_silence_warning(warn_type):
 
 
 check_and_silence_deprecation = check_and_silence_warning(MetpyDeprecationWarning)
+
+
+# Utility tests for test_data_type_testing.py
+def inc(x):
+    return x + 1 * units('dimensionless')
+
+def add(x, y):
+    return x + y
+
+def subt(x, y):
+    return x - y, y - x
+
+def div(x):
+    return x / (2 * units('dimensionless')), x / (5 * units('dimensionless'))
+
+def decimal(x):
+    return div(x)
