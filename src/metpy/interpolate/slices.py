@@ -152,8 +152,8 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
     """
     if isinstance(data, xr.Dataset):
         # Recursively apply to dataset
-        return data.apply(cross_section, True, (start, end), steps=steps,
-                          interp_type=interp_type)
+        return data.map(cross_section, True, (start, end), steps=steps,
+                        interp_type=interp_type)
     elif data.ndim == 0:
         # This has no dimensions, so it is likely a projection variable. In any case, there
         # are no data here to take the cross section with. Therefore, do nothing.
