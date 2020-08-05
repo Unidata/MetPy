@@ -3,9 +3,8 @@ name: Conda Tests
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   push:
-    branches: [ master ]
+    branches: [ 0.12.x ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   #

@@ -2,10 +2,8 @@ name: "Code Analysis"
 
 on:
   push:
-    branches: [master, ]
+    branches: [0.12.x]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [master]
   schedule:
     - cron: '0 8 * * 6'
 
