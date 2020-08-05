@@ -100,6 +100,12 @@ if not hasattr(Axes, 'scattertext'):
 
         # Add it to the axes and update range
         self.add_artist(text_obj)
+
+        # Matplotlib at least up to 3.2.2 does not properly clip text with paths, so
+        # work-around by setting to the bounding box of the Axes
+        # TODO: Remove when fixed in our minimum supported version of matplotlib
+        text_obj.clipbox = self.bbox
+
         self.update_datalim(text_obj.get_datalim(self.transData))
         self.autoscale_view()
         return text_obj
@@ -219,8 +225,9 @@ if not hasattr(Axes, 'scattertext'):
                     if renderer.flipy():
                         y = canvash - y
 
-                    # Can simplify next two lines once support for matplotlib<3.1 is dropped
-                    check_line = getattr(self, '_preprocess_math', self.is_math_text)
+                    # Can simplify next three lines once support for matplotlib<3.1 is dropped
+                    is_math_text = getattr(self, 'is_math_text', False)
+                    check_line = getattr(self, '_preprocess_math', is_math_text)
                     clean_line, ismath = check_line(line)
 
                     if self.get_path_effects():

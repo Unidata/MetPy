@@ -1,0 +1,40 @@
+version: 2
+
+updates:
+  - package-ecosystem: pip
+    directory: "/ci"
+    schedule:
+      interval: daily
+      time: "06:00"
+      timezone: "America/Denver"
+
+    allow:
+      - dependency-type: all
+
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+    commit-message:
+      prefix: "MNT: "
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the
+    # default location of `.github/workflows`
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+    allow:
+      - dependency-type: all
+
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    labels:
+      - "Type: Maintenance"
+    commit-message:
+      prefix: "MNT: "
+      include: "scope"

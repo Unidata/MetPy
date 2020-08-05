@@ -125,7 +125,7 @@ def potential_temperature(pressure, temperature):
     --------
     >>> from metpy.units import units
     >>> metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)
-    <Quantity(290.9665329591884, 'kelvin')>
+    <Quantity(290.966533, 'kelvin')>
 
     """
     return temperature / exner_function(pressure)
@@ -999,7 +999,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     th_l = t * (1000 / (p - e)) ** mpconsts.kappa * (t / t_l) ** (0.28 * r)
     th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
 
-    return th_e * units.kelvin
+    return units.Quantity(th_e, units.kelvin)
 
 
 @exporter.export
@@ -1066,7 +1066,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     th_l = t * (1000 / (p - e)) ** mpconsts.kappa
     th_es = th_l * np.exp((3036. / t - 1.78) * r * (1 + 0.448 * r))
 
-    return th_es * units.kelvin
+    return units.Quantity(th_es, units.kelvin)
 
 
 @exporter.export
@@ -1183,7 +1183,7 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
                                         pressure, **kwargs):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
-    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
+    This uses a psychrometric relationship as outlined in [WMO8]_, with
     coefficients from [Fan1987]_.
 
     Parameters
@@ -1225,7 +1225,7 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
-    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
+    This uses a psychrometric relationship as outlined in [WMO8]_, with
     coefficients from [Fan1987]_.
 
     Parameters

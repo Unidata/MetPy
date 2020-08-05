@@ -1,0 +1,113 @@
+name: PyPI Tests
+
+# We don't want pushes (or PRs) to gh-pages to kick anything off
+on:
+  push:
+    branches: [ 0.12.x ]
+  pull_request:
+
+jobs:
+  #
+  # Run all tests on Linux using standard PyPI packages, including min and pre-releases
+  #
+  PyPITests:
+    name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+        dep-versions: [Current.txt]
+        git-versions: ['']
+        experimental: [false]
+        include:
+          - python-version: 3.6
+            dep-versions: Minimum
+            git-versions: ''
+            experimental: false
+          - python-version: 3.8
+            dep-versions: Prerelease
+            git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'
+            experimental: true
+
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # This uses pip to find the right cache dir and then sets up caching for it
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+
+    - name: Setup caching
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-
+          pip-tests-${{ runner.os }}-
+          pip-tests-
+
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # Need to install numpy first to make CartoPy happy.
+    - name: Install dependencies
+      run: |
+        sudo apt-get install libgeos-dev libproj-dev
+        python -m pip install --upgrade pip setuptools
+        python -m pip install --no-binary :all: shapely
+        python -m pip install -c ci/${{ matrix.dep-versions }} numpy
+        python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      uses: actions/cache@v2
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: cartopy-
+
+    - name: Install
+      run: python -m pip install -c ci/${{ matrix.dep-versions }} .
+
+    - name: Run tests
+      run: |
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
+        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests --cov-report=xml
+
+    - name: Run doctests
+      if: ${{ matrix.dep-versions == 'Current.txt' }}
+      env:
+        PY_IGNORE_IMPORTMISMATCH: 1
+      run: python -m pytest --doctest-modules -k "not test" src;
+
+    - name: Upload test images
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-images
+        path: test_output/
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1

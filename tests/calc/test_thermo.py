@@ -487,6 +487,24 @@ def test_equivalent_potential_temperature():
     assert_almost_equal(ept, 311.18586467284007 * units.kelvin, 3)
 
 
+def test_equivalent_potential_temperature_masked():
+    """Test equivalent potential temperature calculation with masked arrays."""
+    p = 1000 * units.mbar
+    t = units.Quantity(np.ma.array([293., 294., 295.]), units.kelvin)
+    td = units.Quantity(
+        np.ma.array([280., 281., 282.], mask=[False, True, False]),
+        units.kelvin
+    )
+    ept = equivalent_potential_temperature(p, t, td)
+    expected = units.Quantity(
+        np.ma.array([311.18586, 313.51781, 315.93971], mask=[False, True, False]),
+        units.kelvin
+    )
+    assert isinstance(ept, units.Quantity)
+    assert isinstance(ept.m, np.ma.MaskedArray)
+    assert_array_almost_equal(ept, expected, 3)
+
+
 def test_saturation_equivalent_potential_temperature():
     """Test saturation equivalent potential temperature calculation."""
     p = 700 * units.mbar
@@ -495,6 +513,20 @@ def test_saturation_equivalent_potential_temperature():
     # 299.096584 comes from equivalent_potential_temperature(p,t,t)
     # where dewpoint and temperature are equal, which means saturations.
     assert_almost_equal(s_ept, 299.096584 * units.kelvin, 3)
+
+
+def test_saturation_equivalent_potential_temperature_masked():
+    """Test saturation equivalent potential temperature calculation with masked arrays."""
+    p = 1000 * units.mbar
+    t = units.Quantity(np.ma.array([293., 294., 295.]), units.kelvin)
+    s_ept = saturation_equivalent_potential_temperature(p, t)
+    expected = units.Quantity(
+        np.ma.array([335.02750, 338.95813, 343.08740]),
+        units.kelvin
+    )
+    assert isinstance(s_ept, units.Quantity)
+    assert isinstance(s_ept.m, np.ma.MaskedArray)
+    assert_array_almost_equal(s_ept, expected, 3)
 
 
 def test_virtual_temperature():
@@ -819,6 +851,7 @@ def test_most_unstable_parcel():
     assert_almost_equal(ret[2], 19.0 * units.degC, 6)
 
 
+@pytest.mark.filterwarnings('ignore:invalid value:RuntimeWarning')
 def test_isentropic_pressure():
     """Test calculation of isentropic pressure function."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
@@ -830,8 +863,7 @@ def test_isentropic_pressure():
     tmp[:, :, -1] = np.nan
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
-    with pytest.warns(RuntimeWarning, match='invalid value'):
-        isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
     trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
     trueprs[:, :, -1] = np.nan
     assert isentprs[0].shape == (1, 5, 5)

@@ -96,7 +96,9 @@ def wind_direction(u, v, convention='from'):
     elif convention not in ('to', 'from'):
         raise ValueError('Invalid kwarg for "convention". Valid options are "from" or "to".')
 
-    wdir[wdir <= 0] += 360. * units.deg
+    mask = wdir <= 0
+    if np.any(mask):
+        wdir[mask] += 360. * units.deg
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude
     calm_mask = (np.asarray(u.magnitude) == 0.) & (np.asarray(v.magnitude) == 0.)
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
@@ -134,8 +136,7 @@ def wind_components(speed, wdir):
     --------
     >>> from metpy.units import units
     >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
-    (<Quantity(7.071067811865475, 'meter / second')>,
-     <Quantity(7.071067811865477, 'meter / second')>)
+     (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
 
     """
     wdir = _check_radians(wdir, max_radians=4 * np.pi)

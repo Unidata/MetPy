@@ -10,6 +10,7 @@ import warnings
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib
+import numpy as np
 import pandas as pd
 import pytest
 from traitlets import TraitError
@@ -27,8 +28,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.0': 3.09}.get(MPL_VERSION, 0.005))
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
 def test_declarative_image():
     """Test making an image plot."""
     data = xr.open_dataset(GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini')))
@@ -50,7 +50,8 @@ def test_declarative_image():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.256}.get(MPL_VERSION, 0.022))
 def test_declarative_contour():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -77,8 +78,23 @@ def test_declarative_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.035)
-def test_declarative_contour_options():
+@pytest.fixture
+def fix_is_closed_polygon(monkeypatch):
+    """Fix matplotlib.contour._is_closed_polygons for tests.
+
+    Needed because for Matplotlib<3.3, the internal matplotlib.contour._is_closed_polygon
+    uses strict floating point equality. This causes the test below to yield different
+    results for macOS vs. Linux/Windows.
+
+    """
+    monkeypatch.setattr(matplotlib.contour, '_is_closed_polygon',
+                        lambda X: np.allclose(X[0], X[-1], rtol=1e-10, atol=1e-13),
+                        raising=False)
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 5.477}.get(MPL_VERSION, 0.035))
+def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
@@ -245,7 +261,8 @@ def test_colorfill_horiz_colorbar():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.355}.get(MPL_VERSION, 0.016))
 def test_colorfill_no_colorbar():
     """Test that we can use ContourFillPlot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -322,7 +339,8 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.418}.get(MPL_VERSION, 0.37))
 def test_declarative_barb_options():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -350,7 +368,8 @@ def test_declarative_barb_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.612)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.819}.get(MPL_VERSION, 0.612))
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
     import numpy as np
@@ -389,7 +408,7 @@ def test_declarative_barb_earth_relative():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.346)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 def test_declarative_barb_gfs():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
@@ -417,7 +436,8 @@ def test_declarative_barb_gfs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs():
     """Test making a surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -449,7 +469,8 @@ def test_declarative_sfc_obs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs_changes():
     """Test making a surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -486,7 +507,8 @@ def test_declarative_sfc_obs_changes():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.1': 9.771, '2.1': 9.771}.get(MPL_VERSION, 0.))
+                               tolerance={'3.1': 9.771,
+                                          '2.1': 9.785}.get(MPL_VERSION, 0.00651))
 def test_declarative_sfc_obs_full():
     """Test making a full surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),

@@ -128,7 +128,11 @@ class SkewXAxis(maxis.XAxis):
     """
 
     def _get_tick(self, major):
-        return SkewXTick(self.axes, None, '', major=major)
+        # Warning stuff can go away when we only support Matplotlib >=3.3
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', getattr(
+                matplotlib, 'MatplotlibDeprecationWarning', DeprecationWarning))
+            return SkewXTick(self.axes, None, label=None, major=major)
 
     # Needed to properly handle tight bbox
     def _get_tick_bboxes(self, ticks, renderer):

@@ -73,8 +73,8 @@ References
            doi:`10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2>`_.
 
-.. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
-           Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
+.. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report
+           on Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
            `FCM-R19-2003 <_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
@@ -110,8 +110,8 @@ References
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
 
-.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
-           Division, NWS Southern Region Headquarters, 1990.
+.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific
+           Services Division, NWS Southern Region Headquarters, 1990.
            `SR90-23 <https://www.weather.gov/media/ffc/ta_htindx.PDF>`_, 2 pp.
 
 .. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
@@ -122,9 +122,9 @@ References
            doi:`10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2>`_.
 
-.. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951: `Smithsonian
-           meteorological tables <_static/Smithsonian1951.pdf>`  *Smithsonian Miscellaneous
-           Collections*, **144**, 151 pp.
+.. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951:
+           `Smithsonian meteorological tables <_static/Smithsonian1951.pdf>`_ *Smithsonian
+           Miscellaneous Collections*, **144**, 151 pp.
 
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
@@ -145,5 +145,5 @@ References
            694-703, doi:`10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
-.. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=4147>`_.
+.. [WMO8] WMO, 2018: Guide to Meteorological Instruments and Methods of Observation.
+           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=10179>`_.
