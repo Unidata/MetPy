@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Unit Support &mdash; MetPy 0.12.1</title>
+  <title>Unit Support &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="index.html"/>
+    <link rel="top" title="MetPy 0.12" href="index.html"/>
         <link rel="next" title="Examples" href="examples/index.html"/>
         <link rel="prev" title="Getting Started with MetPy" href="startingguide.html"/> 
 
@@ -84,7 +84,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -129,8 +129,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#conversion">Conversion</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
@@ -224,7 +224,7 @@ for <a class="reference external" href="https://pint.readthedocs.io/en/latest/no
 <p>The unit registry encapsulates all of the available units, as well as any pertinent settings.
 The registry also understands unit prefixes and suffixes; this allows the registry to
 understand <code class="docutils literal notranslate"><span class="pre">'kilometer'</span></code> and <code class="docutils literal notranslate"><span class="pre">'meters'</span></code> in addition to the base <code class="docutils literal notranslate"><span class="pre">'meter'</span></code> unit.</p>
-<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> object.
+<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> object.
 The easiest way to attach units to an array is to multiply by the units:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
 </pre></div>
@@ -326,7 +326,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -342,9 +342,6 @@ converts a quantity to SI units, performing any needed cancellation:</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -363,7 +360,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

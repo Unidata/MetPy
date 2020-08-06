@@ -61,6 +61,15 @@ University Department of Geography and Meteorology.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/build/Unidata/MetPy/examples/sigma_to_pressure_interpolation.py:35: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.
+      vtimes = num2date(time[:], time.units)
+
 
 
 
@@ -103,7 +112,7 @@ variable for plotting.
 
  .. code-block:: none
 
-    /Users/rmay/repos/metpy/src/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
+    /home/travis/virtualenv/python3.7.6/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -158,6 +167,7 @@ variable for plotting.
 
 
 .. image:: /examples/images/sphx_glr_sigma_to_pressure_interpolation_001.png
+    :alt: WRF-ARW Forecast VALID: 1980-06-03 13:00:00 UTC, 700 hPa Heights (m) and Temperature (C)
     :class: sphx-glr-single-img
 
 
@@ -167,8 +177,8 @@ variable for plotting.
 
  .. code-block:: none
 
-    /Users/rmay/repos/metpy/examples/sigma_to_pressure_interpolation.py:97: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
+    /home/travis/build/Unidata/MetPy/examples/sigma_to_pressure_interpolation.py:84: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
+      pad=0.05, extendrect='True')
 
 
 
@@ -176,7 +186,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.679 seconds)
+   **Total running time of the script:** ( 0 minutes  5.300 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.thermo &mdash; MetPy 0.12.1</title>
+  <title>metpy.calc.thermo &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -83,7 +83,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -123,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
@@ -324,7 +324,7 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from metpy.units import units</span>
 <span class="sd">    &gt;&gt;&gt; metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)</span>
-<span class="sd">    &lt;Quantity(290.9665329591884, &#39;kelvin&#39;)&gt;</span>
+<span class="sd">    &lt;Quantity(290.966533, &#39;kelvin&#39;)&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">temperature</span> <span class="o">/</span> <span class="n">exner_function</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span></div>
@@ -1198,7 +1198,7 @@
     <span class="n">th_l</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1000</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="n">e</span><span class="p">))</span> <span class="o">**</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">kappa</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="n">t_l</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.28</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span>
     <span class="n">th_e</span> <span class="o">=</span> <span class="n">th_l</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">3036.</span> <span class="o">/</span> <span class="n">t_l</span> <span class="o">-</span> <span class="mf">1.78</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.448</span> <span class="o">*</span> <span class="n">r</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">th_e</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span></div>
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">th_e</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="saturation_equivalent_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1265,7 +1265,7 @@
     <span class="n">th_l</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1000</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="n">e</span><span class="p">))</span> <span class="o">**</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">kappa</span>
     <span class="n">th_es</span> <span class="o">=</span> <span class="n">th_l</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">3036.</span> <span class="o">/</span> <span class="n">t</span> <span class="o">-</span> <span class="mf">1.78</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.448</span> <span class="o">*</span> <span class="n">r</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">th_es</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span></div>
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">th_es</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="virtual_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1382,7 +1382,7 @@
                                         <span class="n">pressure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity with wet bulb and dry bulb temperatures.</span>
 
-<span class="sd">    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with</span>
+<span class="sd">    This uses a psychrometric relationship as outlined in [WMO8]_, with</span>
 <span class="sd">    coefficients from [Fan1987]_.</span>
 
 <span class="sd">    Parameters</span>
@@ -1424,7 +1424,7 @@
                                      <span class="n">psychrometer_coefficient</span><span class="o">=</span><span class="mf">6.21e-4</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the vapor pressure with wet bulb and dry bulb temperatures.</span>
 
-<span class="sd">    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with</span>
+<span class="sd">    This uses a psychrometric relationship as outlined in [WMO8]_, with</span>
 <span class="sd">    coefficients from [Fan1987]_.</span>
 
 <span class="sd">    Parameters</span>
@@ -2809,7 +2809,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -2825,9 +2825,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -2846,7 +2843,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

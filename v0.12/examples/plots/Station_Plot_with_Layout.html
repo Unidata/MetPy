@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Station Plot with Layout &mdash; MetPy 0.12.1</title>
+  <title>Station Plot with Layout &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Tutorials" href="../../tutorials/index.html"/>
         <link rel="prev" title="Station Plot" href="Station_Plot.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,7 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference/API Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
@@ -150,7 +150,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
@@ -261,8 +261,8 @@ of a station plot.</p>
 </div>
 <div class="section" id="the-setup">
 <h2>The setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">¶</a></h2>
-<p>First read in the data. We use <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="(in NumPy v1.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code></a> to read in the data and use a structured
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a> to allow different types for the various columns. This allows us to handle
+<p>First read in the data. We use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="(in NumPy v1.19)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.loadtxt</span></code></a> to read in the data and use a structured
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.19)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a> to allow different types for the various columns. This allows us to handle
 the columns with string data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;station_data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
     <span class="n">data_arr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
@@ -381,12 +381,7 @@ Set up the map projection and set up a cartopy feature for state borders</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Station_Plot_with_Layout_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_with_Layout_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/examples/plots/Station_Plot_with_Layout.py:151: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
+<img alt="Station Plot with Layout" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_with_Layout_001.png" />
 <p>or instead, a custom layout can be used:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just winds, temps, and dewpoint, with colors. Dewpoint and temp will be plotted</span>
 <span class="c1"># out to Farenheit tenths. Extra data will be ignored</span>
@@ -432,13 +427,8 @@ Set up the map projection and set up a cartopy feature for state borders</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Station_Plot_with_Layout_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_with_Layout_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/examples/plots/Station_Plot_with_Layout.py:197: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.532 seconds)</p>
+<img alt="Station Plot with Layout" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_with_Layout_002.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.207 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-with-layout-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/aedfcde5d540d021d02883dc8627add4/Station_Plot_with_Layout.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot_with_Layout.py</span></code></a></p>
@@ -474,7 +464,7 @@ Set up the map projection and set up a cartopy feature for state borders</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -490,9 +480,6 @@ Set up the map projection and set up a cartopy feature for state borders</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -511,7 +498,7 @@ Set up the map projection and set up a cartopy feature for state borders</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

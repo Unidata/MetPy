@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pkg_resources &mdash; MetPy 0.12.1</title>
+  <title>pkg_resources &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/> 
 
   
@@ -83,7 +83,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -123,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
@@ -254,7 +254,7 @@
     <span class="ne">FileExistsError</span> <span class="o">=</span> <span class="ne">OSError</span>
 
 <span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="kn">import</span> <span class="n">six</span>
-<span class="kn">from</span> <span class="nn">pkg_resources.extern.six.moves</span> <span class="kn">import</span> <span class="n">urllib</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="nb">filter</span>
+<span class="kn">from</span> <span class="nn">pkg_resources.extern.six.moves</span> <span class="kn">import</span> <span class="nb">map</span><span class="p">,</span> <span class="nb">filter</span>
 
 <span class="c1"># capture these to bypass sandboxing</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">utime</span>
@@ -275,14 +275,12 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">importlib_machinery</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">py31compat</span>
 <span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="kn">import</span> <span class="n">appdirs</span>
 <span class="kn">from</span> <span class="nn">pkg_resources.extern</span> <span class="kn">import</span> <span class="n">packaging</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.version&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.specifiers&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.requirements&#39;</span><span class="p">)</span>
 <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.extern.packaging.markers&#39;</span><span class="p">)</span>
-<span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pkg_resources.py2_warn&#39;</span><span class="p">)</span>
 
 
 <span class="n">__metaclass__</span> <span class="o">=</span> <span class="nb">type</span>
@@ -378,10 +376,10 @@
     <span class="sd">&quot;&quot;&quot;Return this platform&#39;s maximum compatible version.</span>
 
 <span class="sd">    distutils.util.get_platform() normally reports the minimum version</span>
-<span class="sd">    of Mac OS X that would be required to *use* extensions produced by</span>
+<span class="sd">    of macOS that would be required to *use* extensions produced by</span>
 <span class="sd">    distutils.  But what we want when checking compatibility is to know the</span>
-<span class="sd">    version of Mac OS X that we are *running*.  To allow usage of packages that</span>
-<span class="sd">    explicitly require a newer version of Mac OS X, we must also know the</span>
+<span class="sd">    version of macOS that we are *running*.  To allow usage of packages that</span>
+<span class="sd">    explicitly require a newer version of macOS, we must also know the</span>
 <span class="sd">    current version of the OS.</span>
 
 <span class="sd">    If this condition occurs for any other platform with a version in its</span>
@@ -391,9 +389,9 @@
     <span class="n">m</span> <span class="o">=</span> <span class="n">macosVersionString</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">plat</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">plat</span> <span class="o">=</span> <span class="s1">&#39;macosx-</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_macosx_vers</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]),</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">plat</span> <span class="o">=</span> <span class="s1">&#39;macosx-</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_macos_vers</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]),</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="c1"># not Mac OS X</span>
+            <span class="c1"># not macOS</span>
             <span class="k">pass</span>
     <span class="k">return</span> <span class="n">plat</span>
 
@@ -564,7 +562,7 @@
     <span class="k">return</span> <span class="n">_find_adapter</span><span class="p">(</span><span class="n">_provider_factories</span><span class="p">,</span> <span class="n">loader</span><span class="p">)(</span><span class="n">module</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_macosx_vers</span><span class="p">(</span><span class="n">_cache</span><span class="o">=</span><span class="p">[]):</span>
+<span class="k">def</span> <span class="nf">_macos_vers</span><span class="p">(</span><span class="n">_cache</span><span class="o">=</span><span class="p">[]):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_cache</span><span class="p">:</span>
         <span class="n">version</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">mac_ver</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># fallback for MacPorts</span>
@@ -580,7 +578,7 @@
     <span class="k">return</span> <span class="n">_cache</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_macosx_arch</span><span class="p">(</span><span class="n">machine</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_macos_arch</span><span class="p">(</span><span class="n">machine</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;PowerPC&#39;</span><span class="p">:</span> <span class="s1">&#39;ppc&#39;</span><span class="p">,</span> <span class="s1">&#39;Power_Macintosh&#39;</span><span class="p">:</span> <span class="s1">&#39;ppc&#39;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">machine</span><span class="p">,</span> <span class="n">machine</span><span class="p">)</span>
 
 
@@ -588,18 +586,18 @@
     <span class="sd">&quot;&quot;&quot;Return this platform&#39;s string for platform-specific distributions</span>
 
 <span class="sd">    XXX Currently this is the same as ``distutils.util.get_platform()``, but it</span>
-<span class="sd">    needs some hacks for Linux and Mac OS X.</span>
+<span class="sd">    needs some hacks for Linux and macOS.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">sysconfig</span> <span class="kn">import</span> <span class="n">get_platform</span>
 
     <span class="n">plat</span> <span class="o">=</span> <span class="n">get_platform</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">plat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;macosx-&#39;</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">version</span> <span class="o">=</span> <span class="n">_macosx_vers</span><span class="p">()</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">_macos_vers</span><span class="p">()</span>
             <span class="n">machine</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">uname</span><span class="p">()[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="s2">&quot;macosx-</span><span class="si">%d</span><span class="s2">.</span><span class="si">%d</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="nb">int</span><span class="p">(</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="n">_macosx_arch</span><span class="p">(</span><span class="n">machine</span><span class="p">),</span>
+                <span class="n">_macos_arch</span><span class="p">(</span><span class="n">machine</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="c1"># if someone is running a non-Mac darwin system, this will fall</span>
@@ -625,7 +623,7 @@
         <span class="c1"># easy case</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="c1"># Mac OS X special cases</span>
+    <span class="c1"># macOS special cases</span>
     <span class="n">reqMac</span> <span class="o">=</span> <span class="n">macosVersionString</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">required</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">reqMac</span><span class="p">:</span>
         <span class="n">provMac</span> <span class="o">=</span> <span class="n">macosVersionString</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">provided</span><span class="p">)</span>
@@ -634,7 +632,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">provMac</span><span class="p">:</span>
             <span class="c1"># this is backwards compatibility for packages built before</span>
             <span class="c1"># setuptools 0.6. All packages built after this point will</span>
-            <span class="c1"># use the new macosx designation.</span>
+            <span class="c1"># use the new macOS designation.</span>
             <span class="n">provDarwin</span> <span class="o">=</span> <span class="n">darwinVersionString</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">provided</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">provDarwin</span><span class="p">:</span>
                 <span class="n">dversion</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">provDarwin</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
@@ -642,7 +640,7 @@
                 <span class="k">if</span> <span class="n">dversion</span> <span class="o">==</span> <span class="mi">7</span> <span class="ow">and</span> <span class="n">macosversion</span> <span class="o">&gt;=</span> <span class="s2">&quot;10.3&quot;</span> <span class="ow">or</span> \
                         <span class="n">dversion</span> <span class="o">==</span> <span class="mi">8</span> <span class="ow">and</span> <span class="n">macosversion</span> <span class="o">&gt;=</span> <span class="s2">&quot;10.4&quot;</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">True</span>
-            <span class="c1"># egg isn&#39;t macosx or legacy darwin</span>
+            <span class="c1"># egg isn&#39;t macOS or legacy darwin</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="c1"># are they the same major version and machine type?</span>
@@ -1578,7 +1576,7 @@
         <span class="n">marker</span> <span class="o">=</span> <span class="n">packaging</span><span class="o">.</span><span class="n">markers</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">marker</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">packaging</span><span class="o">.</span><span class="n">markers</span><span class="o">.</span><span class="n">InvalidMarker</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
 
 <span class="k">class</span> <span class="nc">NullProvider</span><span class="p">:</span>
@@ -1658,7 +1656,8 @@
         <span class="n">script_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">egg_info</span><span class="p">,</span> <span class="n">script</span><span class="p">)</span>
         <span class="n">namespace</span><span class="p">[</span><span class="s1">&#39;__file__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">script_filename</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">script_filename</span><span class="p">):</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">script_filename</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">script_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fid</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">fid</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">script_filename</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">)</span>
             <span class="n">exec</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1776,6 +1775,17 @@
 <span class="n">register_loader_type</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">NullProvider</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_parents</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    yield all parents of path including path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">while</span> <span class="n">path</span> <span class="o">!=</span> <span class="n">last</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">path</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
 <span class="k">class</span> <span class="nc">EggProvider</span><span class="p">(</span><span class="n">NullProvider</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Provider based on a virtual filesystem&quot;&quot;&quot;</span>
 
@@ -1784,18 +1794,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_prefix</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_setup_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># we assume here that our metadata may be nested inside a &quot;basket&quot;</span>
-        <span class="c1"># of multiple eggs; that&#39;s why we use module_path instead of .archive</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_path</span>
-        <span class="n">old</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">while</span> <span class="n">path</span> <span class="o">!=</span> <span class="n">old</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">_is_egg_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">egg_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">egg_info</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;EGG-INFO&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">egg_root</span> <span class="o">=</span> <span class="n">path</span>
-                <span class="k">break</span>
-            <span class="n">old</span> <span class="o">=</span> <span class="n">path</span>
-            <span class="n">path</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="c1"># Assume that metadata may be nested inside a &quot;basket&quot;</span>
+        <span class="c1"># of multiple eggs and use module_path instead of .archive.</span>
+        <span class="n">eggs</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">_is_egg_path</span><span class="p">,</span> <span class="n">_parents</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_path</span><span class="p">))</span>
+        <span class="n">egg</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">eggs</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">egg</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_egg</span><span class="p">(</span><span class="n">egg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">egg_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">egg_info</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;EGG-INFO&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">egg_root</span> <span class="o">=</span> <span class="n">path</span>
 
 
 <span class="k">class</span> <span class="nc">DefaultProvider</span><span class="p">(</span><span class="n">EggProvider</span><span class="p">):</span>
@@ -2268,11 +2276,14 @@
 
 
 <span class="k">def</span> <span class="nf">dist_factory</span><span class="p">(</span><span class="n">path_item</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">only</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return a dist_factory for a path_item and entry</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Return a dist_factory for the given entry.&quot;&quot;&quot;</span>
     <span class="n">lower</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="n">is_meta</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">lower</span><span class="o">.</span><span class="n">endswith</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;.egg-info&#39;</span><span class="p">,</span> <span class="s1">&#39;.dist-info&#39;</span><span class="p">)))</span>
+    <span class="n">is_egg_info</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.egg-info&#39;</span><span class="p">)</span>
+    <span class="n">is_dist_info</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">lower</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dist-info&#39;</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_item</span><span class="p">,</span> <span class="n">entry</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">is_meta</span> <span class="o">=</span> <span class="n">is_egg_info</span> <span class="ow">or</span> <span class="n">is_dist_info</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">distributions_from_metadata</span>
         <span class="k">if</span> <span class="n">is_meta</span> <span class="k">else</span>
@@ -2475,8 +2486,8 @@
                 <span class="nb">__import__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">__path__</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Not a package:&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Not a package:&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
         <span class="c1"># Track what packages are namespaces, so when new path items are added,</span>
         <span class="c1"># they can be updated</span>
@@ -2656,7 +2667,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="nb">getattr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">exc</span>
 
     <span class="k">def</span> <span class="nf">require</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">installer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist</span><span class="p">:</span>
@@ -2742,15 +2753,6 @@
         <span class="k">return</span> <span class="n">maps</span>
 
 
-<span class="k">def</span> <span class="nf">_remove_md5_fragment</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">location</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">parsed</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">parsed</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;md5=&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlunparse</span><span class="p">(</span><span class="n">parsed</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,))</span>
-    <span class="k">return</span> <span class="n">location</span>
-
-
 <span class="k">def</span> <span class="nf">_version_from_file</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given an iterable of lines from a Metadata file, return</span>
@@ -2807,7 +2809,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">parsed_version</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">precedence</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-            <span class="n">_remove_md5_fragment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">py_version</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">platform</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="p">)</span>
@@ -2885,14 +2887,14 @@
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_version</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">version</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_metadata_path_for_display</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PKG_INFO</span><span class="p">)</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">&quot;Missing &#39;Version:&#39; header and/or </span><span class="si">{}</span><span class="s2"> file at path: </span><span class="si">{}</span><span class="s2">&quot;</span>
                 <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PKG_INFO</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
             <span class="k">return</span> <span class="n">version</span>
 
@@ -2945,10 +2947,10 @@
         <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">extras</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">deps</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">dm</span><span class="p">[</span><span class="n">safe_extra</span><span class="p">(</span><span class="n">ext</span><span class="p">)])</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">UnknownExtra</span><span class="p">(</span>
                     <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> has no such extra feature </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
-                <span class="p">)</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
         <span class="k">return</span> <span class="n">deps</span>
 
     <span class="k">def</span> <span class="nf">_get_metadata_path_for_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -3273,11 +3275,6 @@
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">stacklevel</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">RequirementParseError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
-
-
 <span class="k">def</span> <span class="nf">parse_requirements</span><span class="p">(</span><span class="n">strs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Yield ``Requirement`` objects for each specification in `strs`</span>
 
@@ -3300,13 +3297,14 @@
         <span class="k">yield</span> <span class="n">Requirement</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
 
+<span class="k">class</span> <span class="nc">RequirementParseError</span><span class="p">(</span><span class="n">packaging</span><span class="o">.</span><span class="n">requirements</span><span class="o">.</span><span class="n">InvalidRequirement</span><span class="p">):</span>
+    <span class="s2">&quot;Compatibility wrapper for InvalidRequirement&quot;</span>
+
+
 <span class="k">class</span> <span class="nc">Requirement</span><span class="p">(</span><span class="n">packaging</span><span class="o">.</span><span class="n">requirements</span><span class="o">.</span><span class="n">Requirement</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requirement_string</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;DO NOT CALL THIS UNDOCUMENTED METHOD; use Requirement.parse()!&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">Requirement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">requirement_string</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">packaging</span><span class="o">.</span><span class="n">requirements</span><span class="o">.</span><span class="n">InvalidRequirement</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">RequirementParseError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Requirement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">requirement_string</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unsafe_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="n">project_name</span> <span class="o">=</span> <span class="n">safe_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">project_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -3376,7 +3374,7 @@
 <span class="k">def</span> <span class="nf">ensure_directory</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ensure that the parent directory of `path` exists&quot;&quot;&quot;</span>
     <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">py31compat</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_bypass_ensure_directory</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -3516,7 +3514,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -3532,9 +3530,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -3553,7 +3548,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

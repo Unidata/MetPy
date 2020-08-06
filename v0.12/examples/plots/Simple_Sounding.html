@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Simple Sounding &mdash; MetPy 0.12.1</title>
+  <title>Simple Sounding &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Mesonet Station Plot" href="Mesonet_Stationplot.html"/>
         <link rel="prev" title="Hodograph Inset" href="Hodograph_Inset.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,7 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference/API Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
@@ -146,7 +146,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
@@ -291,9 +291,9 @@ assign units.</p>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Simple_Sounding_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Simple_Sounding_001.png" />
+<img alt="Simple Sounding" class="sphx-glr-single-img" src="../../_images/sphx_glr_Simple_Sounding_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.FigureImage object at 0x1195c7ca0&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.FigureImage object at 0x7fa27179e0d0&gt;
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of defining your own vertical barb spacing</span>
@@ -305,7 +305,7 @@ assign units.</p>
 <a href="../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">skew</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
 
 <span class="c1"># Set spacing interval--Every 50 mb from 1000 to 100 mb</span>
-<span class="n">my_interval</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;mbar&#39;</span><span class="p">)</span>
+<span class="n">my_interval</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;mbar&#39;</span><span class="p">)</span>
 
 <span class="c1"># Get indexes of values closest to defined interval</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ix</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.calc.resample_nn_1d.html#metpy.calc.resample_nn_1d" title="metpy.calc.resample_nn_1d" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">resample_nn_1d</span></a><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">my_interval</span><span class="p">)</span>
@@ -327,13 +327,8 @@ assign units.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Simple_Sounding_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Simple_Sounding_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/examples/plots/Simple_Sounding.py:101: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.190 seconds)</p>
+<img alt="Simple Sounding" class="sphx-glr-single-img" src="../../_images/sphx_glr_Simple_Sounding_002.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.335 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-simple-sounding-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5d499b01a6d5ae71915e8f1e1c082361/Simple_Sounding.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simple_Sounding.py</span></code></a></p>
@@ -368,7 +363,7 @@ assign units.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -384,9 +379,6 @@ assign units.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -405,7 +397,7 @@ assign units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -122,6 +122,7 @@ Scipy.interpolate linear
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_001.png
+    :alt: Linear
     :class: sphx-glr-single-img
 
 
@@ -132,7 +133,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x11937ac10>
+    <matplotlib.colorbar.Colorbar object at 0x7fa27151d6d0>
 
 
 
@@ -153,6 +154,7 @@ Natural neighbor interpolation (MetPy implementation)
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_002.png
+    :alt: Natural Neighbor
     :class: sphx-glr-single-img
 
 
@@ -163,7 +165,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x122762040>
+    <matplotlib.colorbar.Colorbar object at 0x7fa271714e10>
 
 
 
@@ -189,6 +191,7 @@ min_neighbors = 1
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_003.png
+    :alt: Cressman
     :class: sphx-glr-single-img
 
 
@@ -199,7 +202,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x11d1cce50>
+    <matplotlib.colorbar.Colorbar object at 0x7fa2717a1b50>
 
 
 
@@ -223,6 +226,7 @@ min_neighbors = 3
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_004.png
+    :alt: Barnes
     :class: sphx-glr-single-img
 
 
@@ -233,7 +237,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x121d02280>
+    <matplotlib.colorbar.Colorbar object at 0x7fa271762410>
 
 
 
@@ -256,17 +260,9 @@ linear
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_005.png
+    :alt: Radial Basis Function
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/gridding/Point_Interpolation.py:141: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
 
 
 
@@ -274,7 +270,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  13.738 seconds)
+   **Total running time of the script:** ( 0 minutes  5.451 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:

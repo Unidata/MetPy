@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>xarray with MetPy Tutorial &mdash; MetPy 0.12.1</title>
+  <title>xarray with MetPy Tutorial &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="Reference Guide" href="../api/index.html"/>
         <link rel="prev" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="unit_tutorial.html">Units Tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
@@ -266,7 +266,7 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
 Dimensions:                              (isobaric1: 21, isobaric3: 31, latitude: 81, longitude: 131, time1: 9)
 Coordinates:
-  * time1                                (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
+  * time1                                (time1) datetime64[ns] 2017-09-05T12...
     reftime                              datetime64[ns] ...
   * latitude                             (latitude) float32 50.0 49.5 ... 10.0
   * isobaric3                            (isobaric3) float64 100.0 ... 1e+05
@@ -430,7 +430,7 @@ array([[[1593.8025, 1594.1064, ..., 1453.2264, 1458.3625],
         [1507.6505, 1507.2025, ..., 1538.3385, 1537.8905],
         [1508.5625, 1508.0505, ..., 1538.8185, 1538.6105]]], dtype=float32)
 Coordinates:
-  * time1      (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
+  * time1      (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:0...
     reftime    datetime64[ns] 2017-09-05T12:00:00
   * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
   * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
@@ -462,7 +462,7 @@ straightforward as using the <code class="docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x12297dcc0&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7fa25c152230&gt;
 </pre></div>
 </div>
 <p>The cartopy <code class="docutils literal notranslate"><span class="pre">Globe</span></code> can similarly be accessed via the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_globe</span></code>
@@ -472,7 +472,7 @@ property:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x11d207790&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7fa2714bd210&gt;
 </pre></div>
 </div>
 </div>
@@ -497,8 +497,8 @@ dimensions by order, not name</p></li>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398006794 6.251403116856027 3.2825541563213423 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.8162967285510536 4.388776144480824 4.325234764565967 ...  31.008031569492758 30.75375118168766 30.530908511630987] [5.127333709607048 4.839104240492895 5.800602961393702 ...  29.19382513917348 29.03383238414735 28.584732853227813] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
-[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.60970778243941 3.1007692883802775 2.0210959055900948 ...  2.4259734241357735 3.63896013620366 3.3723334776636142] [4.799363905542013 4.237167486865887 2.5436801152342685 ...  1.5555250602976798 2.9679142225845174 3.8129333795048903]] meter / second
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398031156 6.251403116857854 3.2825541563237786 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.816296728549826 4.388776144480824 4.325234764565967 ...  31.008031569492147 30.753751181686432 30.53090851162976] [5.127333709607048 4.839104240493513 5.800602961394321 ...  29.193825139174717 29.033832384148585 28.58473285322843] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
+[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.609707782452212 3.1007692883802775 2.0210959055875346 ...  2.4259734241357735 3.63896013620366 3.3723334776431315] [4.799363905563508 4.2371674868632 2.5436801152315818 ...  1.5555250602976798 2.9679142225845174 3.812933379494143]] meter / second
 </pre></div>
 </div>
 <p>Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
@@ -540,8 +540,8 @@ rewrite the above geostrophic wind example using this helper function as follows
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398006794 6.251403116856027 3.2825541563213423 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.8162967285510536 4.388776144480824 4.325234764565967 ...  31.008031569492758 30.75375118168766 30.530908511630987] [5.127333709607048 4.839104240492895 5.800602961393702 ...  29.19382513917348 29.03383238414735 28.584732853227813] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
-[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.60970778243941 3.1007692883802775 2.0210959055900948 ...  2.4259734241357735 3.63896013620366 3.3723334776636142] [4.799363905542013 4.237167486865887 2.5436801152342685 ...  1.5555250602976798 2.9679142225845174 3.8129333795048903]] meter / second
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[2.2725555398031156 6.251403116857854 3.2825541563237786 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.816296728549826 4.388776144480824 4.325234764565967 ...  31.008031569492147 30.753751181686432 30.53090851162976] [5.127333709607048 4.839104240493513 5.800602961394321 ...  29.193825139174717 29.033832384148585 28.58473285322843] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
+[[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.609707782452212 3.1007692883802775 2.0210959055875346 ...  2.4259734241357735 3.63896013620366 3.3723334776431315] [4.799363905563508 4.2371674868632 2.5436801152315818 ...  1.5555250602976798 2.9679142225845174 3.812933379494143]] meter / second
 </pre></div>
 </div>
 </div>
@@ -557,12 +557,7 @@ the data.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_xarray_tutorial_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:242: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
+<img alt="time1 = 2017-09-05T12:00:00, reftime = 2017-09-..." class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_001.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s add a projection and coastlines to it</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">())</span>
 <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -571,12 +566,7 @@ the data.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_xarray_tutorial_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:251: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
+<img alt="time1 = 2017-09-05T12:00:00, reftime = 2017-09-..." class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_002.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Or, let&#39;s make a full 500 hPa map with heights, temperature, winds, and humidity</span>
 
 <span class="c1"># Select the data for this time and level</span>
@@ -586,7 +576,7 @@ the data.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">data_crs</span><span class="p">})</span>
 
 <span class="c1"># Plot RH as filled contours</span>
-<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="matplotlib.contour.QuadContourSet" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;relative_humidity&#39;</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+<span class="n">rh</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;relative_humidity&#39;</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
                  <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#99ff00&#39;</span><span class="p">,</span> <span class="s1">&#39;#00ff00&#39;</span><span class="p">,</span> <span class="s1">&#39;#00cc00&#39;</span><span class="p">])</span>
 
 <span class="c1"># Plot wind barbs, but not all of them</span>
@@ -597,10 +587,10 @@ the data.</p>
          <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 
 <span class="c1"># Plot heights and temperature as contours</span>
-<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="matplotlib.contour.QuadContourSet" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">h_contour</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5400</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+<span class="n">h_contour</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5400</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
 <a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">h_contour</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
                  <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="matplotlib.contour.QuadContourSet" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t_contour</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span>
+<span class="n">t_contour</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span>
                        <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">t_contour</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
                  <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -618,12 +608,7 @@ the data.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_xarray_tutorial_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_003.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:293: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
+<img alt="500 hPa Heights (m), Temperature (°C), Humidity (%) at 2017-09-05 12:00Z" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_003.png" />
 </div>
 <div class="section" id="what-could-go-wrong">
 <h2>What Could Go Wrong?<a class="headerlink" href="#what-could-go-wrong" title="Permalink to this headline">¶</a></h2>
@@ -713,7 +698,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.945 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.995 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-xarray-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fdf887129bd8090f4be24127e43a5148/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></p>
@@ -749,7 +734,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -765,9 +750,6 @@ coordinates match with which. And so, we must do some manipulations.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -786,7 +768,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -69,17 +69,9 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 
 .. image:: /examples/formats/images/sphx_glr_NEXRAD_Level_3_File_001.png
+    :alt: NEXRAD Level 3 File
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/formats/NEXRAD_Level_3_File.py:48: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
 
 
 
@@ -87,7 +79,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.491 seconds)
+   **Total running time of the script:** ( 0 minutes  0.529 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py:

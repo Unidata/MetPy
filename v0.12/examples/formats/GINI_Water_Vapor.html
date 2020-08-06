@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GINI Water Vapor Imagery &mdash; MetPy 0.12.1</title>
+  <title>GINI Water Vapor Imagery &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="NEXRAD Level 3 File" href="NEXRAD_Level_3_File.html"/>
         <link rel="prev" title="Gradient" href="../calculations/Gradient.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,7 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference/API Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#file-formats">File Formats</a><ul class="current">
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
@@ -271,18 +271,13 @@ the projection information.</p>
 <a href="https://matplotlib.org/api/image_api.html#matplotlib.image.AxesImage" title="matplotlib.image.AxesImage" class="sphx-glr-backref-module-matplotlib-image sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">im</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.imshow.html#matplotlib.axes.Axes.imshow" title="matplotlib.axes.Axes.imshow" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dat</span></a><span class="p">[:],</span> <span class="n">cmap</span><span class="o">=</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="matplotlib.colors.ListedColormap" class="sphx-glr-backref-module-matplotlib-colors sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wv_cmap</span></a><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="matplotlib.colors.BoundaryNorm" class="sphx-glr-backref-module-matplotlib-colors sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wv_norm</span></a><span class="p">,</span>
                <span class="n">extent</span><span class="o">=</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.IndexVariable.min.html#xarray.IndexVariable.min" title="xarray.IndexVariable.min" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">x</span><span class="o">.</span><span class="n">min</span></a><span class="p">(),</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.IndexVariable.max.html#xarray.IndexVariable.max" title="xarray.IndexVariable.max" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">x</span><span class="o">.</span><span class="n">max</span></a><span class="p">(),</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.IndexVariable.min.html#xarray.IndexVariable.min" title="xarray.IndexVariable.min" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">y</span><span class="o">.</span><span class="n">min</span></a><span class="p">(),</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.IndexVariable.max.html#xarray.IndexVariable.max" title="xarray.IndexVariable.max" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">y</span><span class="o">.</span><span class="n">max</span></a><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
-<a href="../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="datetime.datetime" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">datetime</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.IndexVariable.html#xarray.IndexVariable" title="xarray.IndexVariable" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile" class="sphx-glr-backref-module-metpy-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.IndexVariable.html#xarray.IndexVariable" title="xarray.IndexVariable" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_GINI_Water_Vapor_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_GINI_Water_Vapor_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/examples/formats/GINI_Water_Vapor.py:48: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-  plt.show()
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.756 seconds)</p>
+<img alt="GINI Water Vapor" class="sphx-glr-single-img" src="../../_images/sphx_glr_GINI_Water_Vapor_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.804 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-formats-gini-water-vapor-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/de92980ba106a56ee23a09ae59eaeb1d/GINI_Water_Vapor.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">GINI_Water_Vapor.py</span></code></a></p>
@@ -317,7 +312,7 @@ the projection information.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -333,9 +328,6 @@ the projection information.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -354,7 +346,7 @@ the projection information.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

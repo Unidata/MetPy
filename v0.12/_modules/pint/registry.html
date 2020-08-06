@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pint.registry &mdash; MetPy 0.12.1</title>
+  <title>pint.registry &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -83,7 +83,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -123,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
@@ -364,6 +364,8 @@
 <span class="sd">        string</span>
 <span class="sd">    fmt_locale :</span>
 <span class="sd">        locale identifier string, used in `format_babel`</span>
+<span class="sd">    non_int_type : type</span>
+<span class="sd">        numerical type used for non integer values. (Default: float)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -374,25 +376,6 @@
     <span class="c1">#: Babel.Locale instance or None</span>
     <span class="n">fmt_locale</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: List to be used in addition of units when dir(registry) is called.</span>
-    <span class="c1">#: Also used for autocompletion in IPython.</span>
-    <span class="n">_dir</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;Quantity&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Unit&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Measurement&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;define&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;load_definitions&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;get_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;get_symbol&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;get_dimensionality&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;get_base_units&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;get_root_units&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;parse_unit_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;parse_units&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;parse_expression&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;convert&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -402,6 +385,7 @@
         <span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">preprocessors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">fmt_locale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">non_int_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_register_parsers</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_dynamic_classes</span><span class="p">()</span>
@@ -419,6 +403,9 @@
 
         <span class="c1">#: Default locale identifier string, used when calling format_babel without explicit locale.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_fmt_locale</span><span class="p">(</span><span class="n">fmt_locale</span><span class="p">)</span>
+
+        <span class="c1">#: Numerical type used for non integer values.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span> <span class="o">=</span> <span class="n">non_int_type</span>
 
         <span class="c1">#: Map between name (string) and value (string) of defaults stored in the</span>
         <span class="c1">#: definitions file.</span>
@@ -501,8 +488,28 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_expression</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Support checking prefixed units with the `in` operator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">UndefinedUnitError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
     <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dir</span>
+        <span class="c1">#: Calling dir(registry) gives all units, methods, and attributes.</span>
+        <span class="c1">#: Also used for autocompletion in IPython.</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allows for listing all units in registry with `list(ureg)`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Iterator over names of all units in registry, ordered alphabetically.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 
     <span class="k">def</span> <span class="nf">set_fmt_locale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Change the locale used by default by `format_babel`.</span>
@@ -520,6 +527,9 @@
             <span class="n">babel_parse</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fmt_locale</span> <span class="o">=</span> <span class="n">loc</span>
+
+    <span class="k">def</span> <span class="nf">UnitsContainer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">UnitsContainer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">non_int_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">default_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -542,7 +552,7 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">definition</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_define</span><span class="p">(</span><span class="n">Definition</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_define</span><span class="p">(</span><span class="n">Definition</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_define</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
 
@@ -613,7 +623,7 @@
                 <span class="s2">&quot;delta_&quot;</span> <span class="o">+</span> <span class="n">alias</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">definition</span><span class="o">.</span><span class="n">aliases</span>
             <span class="p">)</span>
 
-            <span class="n">d_reference</span> <span class="o">=</span> <span class="n">UnitsContainer</span><span class="p">(</span>
+            <span class="n">d_reference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">(</span>
                 <span class="p">{</span><span class="n">ref</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">ref</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">definition</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="p">)</span>
 
@@ -763,7 +773,7 @@
                         <span class="k">raise</span> <span class="n">ex</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">Definition</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">Definition</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">))</span>
                 <span class="k">except</span> <span class="n">DefinitionSyntaxError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">lineno</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">ex</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="n">no</span>
@@ -791,7 +801,7 @@
                     <span class="n">prefix</span><span class="p">,</span> <span class="n">base_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">unit_name</span>
 
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">uc</span> <span class="o">=</span> <span class="n">ParserHelper</span><span class="o">.</span><span class="n">from_word</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
+                    <span class="n">uc</span> <span class="o">=</span> <span class="n">ParserHelper</span><span class="o">.</span><span class="n">from_word</span><span class="p">(</span><span class="n">base_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">)</span>
 
                     <span class="n">bu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_root_units</span><span class="p">(</span><span class="n">uc</span><span class="p">)</span>
                     <span class="n">di</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dimensionality</span><span class="p">(</span><span class="n">uc</span><span class="p">)</span>
@@ -837,7 +847,11 @@
             <span class="n">symbol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="n">prefix_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">UnitDefinition</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="p">(),</span> <span class="n">prefix_def</span><span class="o">.</span><span class="n">converter</span><span class="p">,</span> <span class="n">UnitsContainer</span><span class="p">({</span><span class="n">unit_name</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">symbol</span><span class="p">,</span>
+                <span class="p">(),</span>
+                <span class="n">prefix_def</span><span class="o">.</span><span class="n">converter</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">({</span><span class="n">unit_name</span><span class="p">:</span> <span class="mi">1</span><span class="p">}),</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">unit_name</span>
 
@@ -867,6 +881,9 @@
         <span class="sd">&quot;&quot;&quot;Convert unit or dict of units or dimensions to a dict of base dimensions</span>
 <span class="sd">        dimensions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: This should be to_units_container(input_units, self)</span>
+        <span class="c1"># but this tries to reparse and fail for dimensions.</span>
         <span class="n">input_units</span> <span class="o">=</span> <span class="n">to_units_container</span><span class="p">(</span><span class="n">input_units</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dimensionality</span><span class="p">(</span><span class="n">input_units</span><span class="p">)</span>
@@ -875,7 +892,7 @@
         <span class="sd">&quot;&quot;&quot;Convert a UnitsContainer to base dimensions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_units</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">UnitsContainer</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">()</span>
 
         <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">dimensionality</span>
 
@@ -890,7 +907,7 @@
         <span class="k">if</span> <span class="s2">&quot;[]&quot;</span> <span class="ow">in</span> <span class="n">accumulator</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">accumulator</span><span class="p">[</span><span class="s2">&quot;[]&quot;</span><span class="p">]</span>
 
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">UnitsContainer</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">})</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">})</span>
 
         <span class="n">cache</span><span class="p">[</span><span class="n">input_units</span><span class="p">]</span> <span class="o">=</span> <span class="n">dims</span>
 
@@ -961,7 +978,7 @@
 <span class="sd">            multiplicative factor, base units</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">input_units</span> <span class="o">=</span> <span class="n">to_units_container</span><span class="p">(</span><span class="n">input_units</span><span class="p">)</span>
+        <span class="n">input_units</span> <span class="o">=</span> <span class="n">to_units_container</span><span class="p">(</span><span class="n">input_units</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
         <span class="n">f</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_root_units</span><span class="p">(</span><span class="n">input_units</span><span class="p">,</span> <span class="n">check_nonmult</span><span class="p">)</span>
 
@@ -989,7 +1006,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_units</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="n">UnitsContainer</span><span class="p">()</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">()</span>
 
         <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">root_units</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1001,7 +1018,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_root_units_recurse</span><span class="p">(</span><span class="n">input_units</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">accumulators</span><span class="p">)</span>
 
         <span class="n">factor</span> <span class="o">=</span> <span class="n">accumulators</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">units</span> <span class="o">=</span> <span class="n">UnitsContainer</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">accumulators</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">})</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">accumulators</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="p">)</span>
 
         <span class="c1"># Check if any of the final units is non multiplicative and return None instead.</span>
         <span class="k">if</span> <span class="n">check_nonmult</span><span class="p">:</span>
@@ -1270,19 +1289,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">parse_unit</span>
-        <span class="k">if</span> <span class="n">as_delta</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">input_string</span><span class="p">]</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="k">pass</span>
+        <span class="c1"># Issue #1097: it is possible, when a unit was defined while a different context</span>
+        <span class="c1"># was active, that the unit is in self._cache.parse_unit but not in self._units.</span>
+        <span class="c1"># If this is the case, force self._units to be repopulated.</span>
+        <span class="k">if</span> <span class="n">as_delta</span> <span class="ow">and</span> <span class="n">input_string</span> <span class="ow">in</span> <span class="n">cache</span> <span class="ow">and</span> <span class="n">input_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">input_string</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_string</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">UnitsContainer</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">()</span>
 
         <span class="c1"># Sanitize input_string with whitespaces.</span>
         <span class="n">input_string</span> <span class="o">=</span> <span class="n">input_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-        <span class="n">units</span> <span class="o">=</span> <span class="n">ParserHelper</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">ParserHelper</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">scale</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unit expression cannot have a scaling factor.&quot;</span><span class="p">)</span>
 
@@ -1299,7 +1318,7 @@
                     <span class="n">cname</span> <span class="o">=</span> <span class="s2">&quot;delta_&quot;</span> <span class="o">+</span> <span class="n">cname</span>
             <span class="n">ret</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">UnitsContainer</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">as_delta</span><span class="p">:</span>
             <span class="n">cache</span><span class="p">[</span><span class="n">input_string</span><span class="p">]</span> <span class="o">=</span> <span class="n">ret</span>
@@ -1307,6 +1326,15 @@
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">def</span> <span class="nf">_eval_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">):</span>
+
+        <span class="c1"># TODO: remove this code when use_decimal is deprecated</span>
+        <span class="k">if</span> <span class="n">use_decimal</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span>
+                <span class="s2">&quot;`use_decimal` is deprecated, use `non_int_type` keyword argument when instantiating the registry.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&gt;&gt;&gt; from decimal import Decimal</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&gt;&gt;&gt; ureg = UnitRegistry(non_int_type=Decimal)&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">token_type</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">token_text</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">NAME</span><span class="p">:</span>
@@ -1317,12 +1345,12 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span>
                     <span class="mi">1</span><span class="p">,</span>
-                    <span class="n">UnitsContainer</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">(</span>
                         <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">token_text</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">NUMBER</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ParserHelper</span><span class="o">.</span><span class="n">eval_token</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="n">use_decimal</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ParserHelper</span><span class="o">.</span><span class="n">eval_token</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">non_int_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;unknown token type&quot;</span><span class="p">)</span>
 
@@ -1352,7 +1380,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_string</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">many</span> <span class="k">else</span> <span class="kc">None</span>
 
         <span class="c1"># Parse string</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern_to_regex</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
@@ -1406,6 +1434,14 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># TODO: remove this code when use_decimal is deprecated</span>
+        <span class="k">if</span> <span class="n">use_decimal</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span>
+                <span class="s2">&quot;`use_decimal` is deprecated, use `non_int_type` keyword argument when instantiating the registry.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&gt;&gt;&gt; from decimal import Decimal</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&gt;&gt;&gt; ureg = UnitRegistry(non_int_type=Decimal)&quot;</span>
+            <span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_string</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
@@ -1415,9 +1451,7 @@
         <span class="n">gen</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">build_eval_tree</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_token</span><span class="p">(</span>
-                <span class="n">x</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="n">use_decimal</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span>
-            <span class="p">)</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_token</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="fm">__call__</span> <span class="o">=</span> <span class="n">parse_expression</span>
@@ -1639,7 +1673,11 @@
     <span class="k">def</span> <span class="nf">_parse_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifile</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span>
-                <span class="n">Context</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">ifile</span><span class="o">.</span><span class="n">block_iter</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dimensionality</span><span class="p">)</span>
+                <span class="n">Context</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span>
+                    <span class="n">ifile</span><span class="o">.</span><span class="n">block_iter</span><span class="p">(),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_dimensionality</span><span class="p">,</span>
+                    <span class="n">non_int_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DefinitionSyntaxError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown dimension </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> in context&quot;</span><span class="p">)</span>
@@ -1716,7 +1754,7 @@
         <span class="n">on_redefinition_backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_redefinition</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_redefinition</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_active_ctx</span><span class="o">.</span><span class="n">contexts</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_active_ctx</span><span class="o">.</span><span class="n">contexts</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">redefinitions</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_redefine</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -1836,12 +1874,16 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        Context can be called by their name::</span>
+<span class="sd">        Context can be called by their name:</span>
 
+<span class="sd">          &gt;&gt;&gt; import pint</span>
+<span class="sd">          &gt;&gt;&gt; ureg = pint.UnitRegistry()</span>
+<span class="sd">          &gt;&gt;&gt; ureg.add_context(pint.Context(&#39;one&#39;))</span>
+<span class="sd">          &gt;&gt;&gt; ureg.add_context(pint.Context(&#39;two&#39;))</span>
 <span class="sd">          &gt;&gt;&gt; with ureg.context(&#39;one&#39;):</span>
 <span class="sd">          ...     pass</span>
 
-<span class="sd">        If a context has an argument, you can specify its value as a keyword argument::</span>
+<span class="sd">        If a context has an argument, you can specify its value as a keyword argument:</span>
 
 <span class="sd">          &gt;&gt;&gt; with ureg.context(&#39;one&#39;, n=1):</span>
 <span class="sd">          ...     pass</span>
@@ -1851,13 +1893,13 @@
 <span class="sd">          &gt;&gt;&gt; with ureg.context(&#39;one&#39;, &#39;two&#39;, n=1):</span>
 <span class="sd">          ...     pass</span>
 
-<span class="sd">        Or nested allowing you to give different values to the same keyword argument::</span>
+<span class="sd">        Or nested allowing you to give different values to the same keyword argument:</span>
 
 <span class="sd">          &gt;&gt;&gt; with ureg.context(&#39;one&#39;, n=1):</span>
 <span class="sd">          ...     with ureg.context(&#39;two&#39;, n=2):</span>
 <span class="sd">          ...         pass</span>
 
-<span class="sd">        A nested context inherits the defaults from the containing context::</span>
+<span class="sd">        A nested context inherits the defaults from the containing context:</span>
 
 <span class="sd">          &gt;&gt;&gt; with ureg.context(&#39;one&#39;, n=1):</span>
 <span class="sd">          ...     # Here n takes the value of the outer context</span>
@@ -1897,9 +1939,9 @@
 
 <span class="sd">        Example</span>
 <span class="sd">        -------</span>
-<span class="sd">        &gt;&gt;&gt; @ureg.with_context(&#39;sp&#39;)</span>
-<span class="sd">            ... def my_cool_fun(wavelenght):</span>
-<span class="sd">            ...     print(&#39;This wavelength is equivalent to: %s&#39;, wavelength.to(&#39;terahertz&#39;))</span>
+<span class="sd">          &gt;&gt;&gt; @ureg.with_context(&#39;sp&#39;)</span>
+<span class="sd">          ... def my_cool_fun(wavelength):</span>
+<span class="sd">          ...     print(&#39;This wavelength is equivalent to: %s&#39;, wavelength.to(&#39;terahertz&#39;))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -2044,10 +2086,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_register_parser</span><span class="p">(</span><span class="s2">&quot;@system&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_system</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parse_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifile</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Group</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">ifile</span><span class="o">.</span><span class="n">block_iter</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">define</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Group</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">ifile</span><span class="o">.</span><span class="n">block_iter</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">define</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parse_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifile</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">ifile</span><span class="o">.</span><span class="n">block_iter</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root_units</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span>
+            <span class="n">ifile</span><span class="o">.</span><span class="n">block_iter</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root_units</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">create_if_needed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a Group.</span>
@@ -2184,7 +2228,7 @@
         <span class="c1"># as it has a UnitsContainer intermediate</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">to_units_container</span><span class="p">(</span><span class="n">units</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
-        <span class="n">destination_units</span> <span class="o">=</span> <span class="n">UnitsContainer</span><span class="p">()</span>
+        <span class="n">destination_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">()</span>
 
         <span class="n">bu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_system</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">base_units</span>
 
@@ -2194,7 +2238,7 @@
                 <span class="n">new_unit</span> <span class="o">=</span> <span class="n">to_units_container</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
                 <span class="n">destination_units</span> <span class="o">*=</span> <span class="n">new_unit</span> <span class="o">**</span> <span class="n">value</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">destination_units</span> <span class="o">*=</span> <span class="n">UnitsContainer</span><span class="p">({</span><span class="n">unit</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+                <span class="n">destination_units</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitsContainer</span><span class="p">({</span><span class="n">unit</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
 
         <span class="n">base_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">destination_units</span><span class="p">)</span>
 
@@ -2268,6 +2312,7 @@
         <span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">preprocessors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">fmt_locale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">non_int_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -2281,6 +2326,7 @@
             <span class="n">auto_reduce_dimensions</span><span class="o">=</span><span class="n">auto_reduce_dimensions</span><span class="p">,</span>
             <span class="n">preprocessors</span><span class="o">=</span><span class="n">preprocessors</span><span class="p">,</span>
             <span class="n">fmt_locale</span><span class="o">=</span><span class="n">fmt_locale</span><span class="p">,</span>
+            <span class="n">non_int_type</span><span class="o">=</span><span class="n">non_int_type</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">pi_theorem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">):</span>
@@ -2364,7 +2410,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -2380,9 +2426,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -2401,7 +2444,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

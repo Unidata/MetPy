@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>StationPlotLayout &mdash; MetPy 0.12.1</title>
+  <title>StationPlotLayout &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.12" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="ctables" href="metpy.plots.ctables.html"/>
         <link rel="prev" title="StationPlot" href="metpy.plots.StationPlot.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -304,8 +304,8 @@ up of arrays based on a name) to be passed to <a class="reference internal" href
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.pop" title="metpy.plots.StationPlotLayout.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</p></td>
 <td><p>If key is not found, d is returned if given, otherwise KeyError is raised</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.popitem" title="metpy.plots.StationPlotLayout.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a></p></td>
-<td><p>Remove and return a (key, value) pair as a 2-tuple.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.popitem" title="metpy.plots.StationPlotLayout.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a>()</p></td>
+<td><p>2-tuple; but raise KeyError if D is empty.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.setdefault" title="metpy.plots.StationPlotLayout.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a></p></td>
 <td><p>Insert key with a value of default if key is not in the dictionary.</p></td>
@@ -345,7 +345,7 @@ a key to pull data out of the data container passed to <a class="reference inter
 <li><p><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.2.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
 </ul>
 </dd>
 </dl>
@@ -516,10 +516,8 @@ will be used to fill out the station plot.</p></li>
 
 <dl class="method">
 <dt id="metpy.plots.StationPlotLayout.popitem">
-<code class="sig-name descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.popitem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
-<p>Pairs are returned in LIFO (last-in, first-out) order.
-Raises KeyError if the dict is empty.</p>
+<code class="sig-name descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; (k, v), remove and return some (key, value) pair as a<a class="headerlink" href="#metpy.plots.StationPlotLayout.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>2-tuple; but raise KeyError if D is empty.</p>
 </dd></dl>
 
 <dl class="method">
@@ -547,7 +545,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <div class="section" id="examples-using-metpy-plots-stationplotlayout">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.StationPlotLayout</span></code><a class="headerlink" href="#examples-using-metpy-plots-stationplotlayout" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
+<img alt="Station Plot with Layout" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
@@ -576,7 +574,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -592,9 +590,6 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -613,7 +608,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

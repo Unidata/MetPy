@@ -323,6 +323,7 @@ Now, we can make the plot.
 
 
 .. image:: /examples/images/sphx_glr_cross_section_001.png
+    :alt: NARR Cross-Section – (37.0, -105.0) to (35.5, -65.0) – Valid: 1987-04-04 18:00Z Potential Temperature (K), Tangential/Normal Winds (knots), Relative Humidity (dimensionless) Inset: Cross-Section Path and 500 hPa Geopotential Height
     :class: sphx-glr-single-img
 
 
@@ -332,8 +333,8 @@ Now, we can make the plot.
 
  .. code-block:: none
 
-    /Users/rmay/repos/metpy/examples/cross_section.py:137: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
+    /home/travis/build/Unidata/MetPy/examples/cross_section.py:104: UserWarning: FixedFormatter should only be used together with FixedLocator
+      ax.set_yticklabels(np.arange(1000, 50, -100))
 
 
 
@@ -345,7 +346,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.807 seconds)
+   **Total running time of the script:** ( 0 minutes  1.660 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:

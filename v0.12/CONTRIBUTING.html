@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributors Guide &mdash; MetPy 0.12.1</title>
+  <title>Contributors Guide &mdash; MetPy 0.12</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="index.html"/>
+    <link rel="top" title="MetPy 0.12" href="index.html"/>
         <link rel="next" title="Infrastructure Guide" href="infrastructureguide.html"/>
         <link rel="prev" title="Support" href="SUPPORT.html"/> 
 
@@ -84,7 +84,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>0.12</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -124,8 +124,8 @@
 <li class="toctree-l1"><a class="reference internal" href="installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
@@ -309,10 +309,10 @@ GUI on Windows) in the location you’d like to keep it. We are partial to creat
 <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">metpy</span></code></p></li>
 <li><p>Connect your repository to the upstream (main project).
 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">unidata</span> <span class="pre">https://github.com/unidata/metpy.git</span></code></p></li>
-<li><p>Create the development environment by running <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span></code>. This will install
-all of the packages in the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file.</p></li>
-<li><p>Activate our new development environment <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">devel</span></code> on Mac/Linux or
-<code class="docutils literal notranslate"><span class="pre">activate</span> <span class="pre">devel</span></code> on Windows.</p></li>
+<li><p>Create the development environment by running
+<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">devel</span> <span class="pre">--file</span> <span class="pre">ci/Current.txt</span> <span class="pre">--file</span> <span class="pre">ci/extra-requirements</span> <span class="pre">--file</span> <span class="pre">ci/test_requirements.txt</span></code>.
+This will install all the necessary packages for development.</p></li>
+<li><p>Activate our new development environment by running <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">devel</span></code></p></li>
 <li><p>Make an editable install of MetPy by running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p></li>
 </ul>
 <p>Now you’re all set! You have an environment called <code class="docutils literal notranslate"><span class="pre">devel</span></code> that you can work in. You’ll need
@@ -478,8 +478,8 @@ What now?</p>
 <h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Permalink to this headline">¶</a></h3>
 <p>First, our army of never sleeping robots will begin a series of automated checks.
 The test suite, documentation, style, and more will be checked on various versions of Python
-with current and legacy packages. Travis CI will run testing on Linux and Mac, Appveyor will
-run tests on Windows. Other services will kick in and check if there is a drop in code coverage
+with current and legacy packages. Travis CI and GitHub Actions will run testing on Linux, and
+Mac, and Windows. Other services will kick in and check if there is a drop in code coverage
 or any style variations that should be corrected. If you see a red mark by a service, something
 failed and clicking the “Details” link will give you more information. We’re happy to help if
 you are stuck.</p>
@@ -554,7 +554,7 @@ importance of writing tested and maintainable software.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 18:52:46.
+      Last updated on Aug 06, 2020 at 20:22:57.
 
     </p>
   </div>
@@ -570,9 +570,6 @@ importance of writing tested and maintainable software.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -591,7 +588,7 @@ importance of writing tested and maintainable software.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.12.1.post2+gc3df3bc6',
+            VERSION:'0.12.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

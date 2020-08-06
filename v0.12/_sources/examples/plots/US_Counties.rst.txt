@@ -47,6 +47,7 @@ Demonstrate how to plot US counties at all three available resolutions.
 
 
 .. image:: /examples/plots/images/sphx_glr_US_Counties_001.png
+    :alt: US Counties
     :class: sphx-glr-single-img
 
 
@@ -56,7 +57,7 @@ Demonstrate how to plot US counties at all three available resolutions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  7.471 seconds)
+   **Total running time of the script:** ( 0 minutes  1.199 seconds)
 
 
 .. _sphx_glr_download_examples_plots_US_Counties.py:
