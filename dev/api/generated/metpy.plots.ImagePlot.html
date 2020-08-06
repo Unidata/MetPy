@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ImagePlot &mdash; MetPy 0.12.1</title>
+  <title>ImagePlot &mdash; MetPy 1.0.0rc1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="MapPanel" href="metpy.plots.MapPanel.html"/>
         <link rel="prev" title="Hodograph" href="metpy.plots.Hodograph.html"/> 
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>1.0.0rc1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,8 +125,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -247,7 +247,7 @@
 <dl class="class">
 <dt id="metpy.plots.ImagePlot">
 <em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">ImagePlot</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#ImagePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ImagePlot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make raster image using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p>
+<dd><p>Make raster image using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p>
 <p class="rubric">Attributes Summary</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -285,8 +285,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.parent" title="metpy.plots.ImagePlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.plotdata" title="metpy.plots.ImagePlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.plot_units" title="metpy.plots.ImagePlot.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<td><p>The desired units to plot the field in.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.plotdata" title="metpy.plots.ImagePlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
 <td><p>Return the data for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.scale" title="metpy.plots.ImagePlot.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<td><p>Scale the field to be plotted by the value given.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.time" title="metpy.plots.ImagePlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
@@ -427,7 +433,7 @@ variables with the following command assuming the dataset was read using xarray 
 <dd><p>A tuple of min and max values that represent the range of values
 to color the rasterized image.</p>
 <p>The min and max values entered as a tuple will be converted to a
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -453,10 +459,27 @@ to color the rasterized image.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="metpy.plots.ImagePlot.plot_units">
+<code class="sig-name descname">plot_units</code><a class="headerlink" href="#metpy.plots.ImagePlot.plot_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>The desired units to plot the field in.</p>
+<p>Setting this attribute will convert the units of the field variable to the given units for
+plotting using the MetPy Units module.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="metpy.plots.ImagePlot.plotdata">
 <code class="sig-name descname">plotdata</code><a class="headerlink" href="#metpy.plots.ImagePlot.plotdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data for plotting.</p>
 <p>The data array, x coordinates, and y coordinates.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.plots.ImagePlot.scale">
+<code class="sig-name descname">scale</code><a class="headerlink" href="#metpy.plots.ImagePlot.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the field to be plotted by the value given.</p>
+<p>This attribute will scale the field by multiplying by the scale. For example, to
+scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
+the data values will be scaled by 10^5.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -706,11 +729,11 @@ If name is not specified, removes all trait notifiers.</p>
 <div class="section" id="examples-using-metpy-plots-imageplot">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.ImagePlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-imageplot" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" src="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" />
+<img alt="Simple Plotting" src="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots."><div class="figure align-default" id="id2">
-<img alt="../../_images/sphx_glr_Combined_plotting_thumb.png" src="../../_images/sphx_glr_Combined_plotting_thumb.png" />
+<img alt="Combined Plotting" src="../../_images/sphx_glr_Combined_plotting_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
@@ -739,7 +762,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 20:03:06.
+      Last updated on Aug 06, 2020 at 08:45:11.
 
     </p>
   </div>
@@ -755,9 +778,6 @@ If name is not specified, removes all trait notifiers.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -776,7 +796,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc',
+            VERSION:'1.0.0rc1.post184+g1c29164',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

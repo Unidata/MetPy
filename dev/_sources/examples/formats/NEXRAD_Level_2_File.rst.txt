@@ -111,8 +111,18 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 
 .. image:: /examples/formats/images/sphx_glr_NEXRAD_Level_2_File_001.png
+    :alt: NEXRAD Level 2 File
     :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/build/Unidata/MetPy/examples/formats/NEXRAD_Level_2_File.py:56: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
+      ax.pcolormesh(xlocs, ylocs, data, cmap='viridis')
 
 
 
@@ -120,7 +130,7 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.771 seconds)
+   **Total running time of the script:** ( 0 minutes  3.674 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_2_File.py:

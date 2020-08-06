@@ -159,6 +159,7 @@ Create the figure
 
 
 .. image:: /examples/plots/images/sphx_glr_Mesonet_Stationplot_001.png
+    :alt: Oklahoma Mesonet Observations, Time: 2100 UTC 09 September 2019
     :class: sphx-glr-single-img
 
 
@@ -168,7 +169,7 @@ Create the figure
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.455 seconds)
+   **Total running time of the script:** ( 0 minutes  5.239 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Mesonet_Stationplot.py:

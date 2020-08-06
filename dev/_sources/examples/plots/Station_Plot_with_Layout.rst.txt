@@ -232,6 +232,7 @@ The payoff
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_with_Layout_001.png
+    :alt: Station Plot with Layout
     :class: sphx-glr-single-img
 
 
@@ -290,6 +291,7 @@ or instead, a custom layout can be used:
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_with_Layout_002.png
+    :alt: Station Plot with Layout
     :class: sphx-glr-single-img
 
 
@@ -299,7 +301,7 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.452 seconds)
+   **Total running time of the script:** ( 0 minutes  2.148 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:

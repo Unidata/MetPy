@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>units &mdash; MetPy 0.12.1</title>
+  <title>units &mdash; MetPy 1.0.0rc1</title>
   
 
   
@@ -47,9 +47,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
+    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
         <link rel="up" title="Reference Guide" href="../index.html"/>
-        <link rel="next" title="atleast_1d" href="metpy.units.atleast_1d.html"/>
+        <link rel="next" title="check_units" href="metpy.units.check_units.html"/>
         <link rel="prev" title="constants" href="metpy.constants.html"/> 
 
   
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>1.0.0rc1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,17 +125,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">units</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.atleast_1d.html">atleast_1d</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.atleast_2d.html">atleast_2d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.check_units.html">check_units</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.concatenate.html">concatenate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.diff.html">diff</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.signature.html">signature</a></li>
@@ -252,28 +249,19 @@ import this registry and use it to grab units.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.atleast_1d.html#metpy.units.atleast_1d" title="metpy.units.atleast_1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atleast_1d</span></code></a>(*arrs)</p></td>
-<td><p>Convert inputs to arrays with at least one dimension.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.atleast_2d.html#metpy.units.atleast_2d" title="metpy.units.atleast_2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atleast_2d</span></code></a>(*arrs)</p></td>
-<td><p>Convert inputs to arrays with at least two dimensions.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.check_units.html#metpy.units.check_units" title="metpy.units.check_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_units</span></code></a>(*units_by_pos, **units_by_name)</p></td>
 <td><p>Create a decorator to check units of function arguments.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.units.concatenate.html#metpy.units.concatenate" title="metpy.units.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(arrs[, axis])</p></td>
 <td><p>Concatenate multiple values into a new unitized object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.diff.html#metpy.units.diff" title="metpy.units.diff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff</span></code></a>(x, **kwargs)</p></td>
-<td><p>Calculate the n-th discrete difference along given axis.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.masked_array.html#metpy.units.masked_array" title="metpy.units.masked_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">masked_array</span></code></a>(data[, data_units])</p></td>
+<td><p>Create a <a class="reference external" href="https://numpy.org/doc/stable/reference/maskedarray.baseclass.html#numpy.ma.MaskedArray" title="(in NumPy v1.19)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ma.MaskedArray</span></code></a> with units attached.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.masked_array.html#metpy.units.masked_array" title="metpy.units.masked_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">masked_array</span></code></a>(data[, data_units])</p></td>
-<td><p>Create a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/maskedarray.baseclass.html#numpy.ma.MaskedArray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ma.MaskedArray</span></code></a> with units attached.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays" title="metpy.units.pandas_dataframe_to_unit_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas_dataframe_to_unit_arrays</span></code></a>(df[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays" title="metpy.units.pandas_dataframe_to_unit_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas_dataframe_to_unit_arrays</span></code></a>(df[, …])</p></td>
 <td><p>Attach units to data in pandas dataframes and return united arrays.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.signature.html#metpy.units.signature" title="metpy.units.signature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signature</span></code></a>(obj, *[, follow_wrapped])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.signature.html#metpy.units.signature" title="metpy.units.signature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signature</span></code></a>(obj, *[, follow_wrapped])</p></td>
 <td><p>Get a signature object for the passed callable.</p></td>
 </tr>
 </tbody>
@@ -317,7 +305,7 @@ import this registry and use it to grab units.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.units.atleast_1d.html" class="btn btn-neutral float-right" title="atleast_1d" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.units.check_units.html" class="btn btn-neutral float-right" title="check_units" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.constants.html" class="btn btn-neutral" title="constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -330,7 +318,7 @@ import this registry and use it to grab units.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 20:03:06.
+      Last updated on Aug 06, 2020 at 08:45:11.
 
     </p>
   </div>
@@ -346,9 +334,6 @@ import this registry and use it to grab units.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -367,7 +352,7 @@ import this registry and use it to grab units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc',
+            VERSION:'1.0.0rc1.post184+g1c29164',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

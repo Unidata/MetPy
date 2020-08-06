@@ -148,9 +148,9 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
     # Do unit conversions to what we wish to plot
     vort_500 = vort_500 * 1e5
-    surface_temp.metpy.convert_units('degF')
-    precip_water.metpy.convert_units('inches')
-    winds_300.metpy.convert_units('knots')
+    surface_temp = surface_temp.metpy.convert_units('degF')
+    precip_water = precip_water.metpy.convert_units('inches')
+    winds_300 = winds_300.metpy.convert_units('knots')
 
 
 
@@ -231,6 +231,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 .. image:: /examples/images/sphx_glr_Four_Panel_Map_001.png
+    :alt: 28 February 2017 21:00Z, 300-hPa Wind Speeds and Heights, 500-hPa Absolute Vorticity and Heights, Surface Temperatures, Precipitable Water
     :class: sphx-glr-single-img
 
 
@@ -240,7 +241,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  7.264 seconds)
+   **Total running time of the script:** ( 0 minutes  6.771 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:

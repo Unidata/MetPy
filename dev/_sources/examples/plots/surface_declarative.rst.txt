@@ -97,6 +97,7 @@ Georgia.
 
 
 .. image:: /examples/plots/images/sphx_glr_surface_declarative_001.png
+    :alt: tmpf and dwpf and emsl and cloud_cover and wxsym
     :class: sphx-glr-single-img
 
 
@@ -106,9 +107,7 @@ Georgia.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_boundary_lines_land.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_1_states_provinces_lakes.zip
+    /home/travis/virtualenv/python3.7.6/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_boundary_lines_land.zip
       warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 
 
@@ -117,7 +116,7 @@ Georgia.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  24.012 seconds)
+   **Total running time of the script:** ( 0 minutes  2.265 seconds)
 
 
 .. _sphx_glr_download_examples_plots_surface_declarative.py:

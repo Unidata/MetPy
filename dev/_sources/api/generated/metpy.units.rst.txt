@@ -13,11 +13,8 @@ units
       :toctree: ./
 
    
-      atleast_1d
-      atleast_2d
       check_units
       concatenate
-      diff
       masked_array
       pandas_dataframe_to_unit_arrays
       signature

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.declarative &mdash; MetPy 0.12.1</title>
+  <title>metpy.plots.declarative &mdash; MetPy 1.0.0rc1</title>
   
 
   
@@ -47,7 +47,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../../index.html"/>
+    <link rel="top" title="MetPy 1.0.0rc1" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -83,7 +83,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>1.0.0rc1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -123,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
@@ -829,12 +829,12 @@
 
     <span class="n">layers</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Instance</span><span class="p">(</span><span class="s1">&#39;cartopy.feature.Feature&#39;</span><span class="p">)]),</span>
                   <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coastline&#39;</span><span class="p">])</span>
-    <span class="n">layers</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string for a pre-defined feature layer or a Cartopy Feature object.</span>
+    <span class="n">layers</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of strings for a pre-defined feature layer or a Cartopy Feature object.</span>
 
 <span class="s2">    Like the projection, there are a couple of pre-defined feature layers that can be called</span>
 <span class="s2">    using a short name. The pre-defined layers are: &#39;coastline&#39;, &#39;states&#39;, &#39;borders&#39;, &#39;lakes&#39;,</span>
-<span class="s2">    &#39;land&#39;, &#39;ocean&#39;, &#39;rivers&#39;, &#39;usstates&#39;, and &#39;uscounties&#39;. Additionally, this trait can be</span>
-<span class="s2">    set using a Cartopy Feature object.</span>
+<span class="s2">    &#39;land&#39;, &#39;ocean&#39;, &#39;rivers&#39;, &#39;usstates&#39;, and &#39;uscounties&#39;. Additionally, this can accept</span>
+<span class="s2">    Cartopy Feature objects.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">title</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">()</span>
@@ -935,7 +935,7 @@
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Try to look up if we have a string</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">area</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">]</span>
+                    <span class="n">area</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
                 <span class="c1"># Otherwise, assume we have a tuple to use as the extent</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span>
@@ -980,6 +980,21 @@
 <span class="s2">    If a forecast hour is to be plotted the time should be set to the valid future time, which</span>
 <span class="s2">    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects</span>
 <span class="s2">    from the Python standard library.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">plot_units</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">plot_units</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The desired units to plot the field in.</span>
+
+<span class="s2">    Setting this attribute will convert the units of the field variable to the given units for</span>
+<span class="s2">    plotting using the MetPy Units module.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="mf">1e0</span><span class="p">)</span>
+    <span class="n">scale</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Scale the field to be plotted by the value given.</span>
+
+<span class="s2">    This attribute will scale the field by multiplying by the scale. For example, to</span>
+<span class="s2">    scale vorticity to be whole values for contouring you could set the scale to 1e5, such that</span>
+<span class="s2">    the data values will be scaled by 10^5.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -1117,7 +1132,11 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">subset</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span> <span class="o">=</span> <span class="n">data_subset</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span>
 
@@ -1390,8 +1409,14 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">subset</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">data_subset_u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">data_subset_v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">data_subset_u</span> <span class="o">=</span> <span class="n">data_subset_u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
+                <span class="n">data_subset_v</span> <span class="o">=</span> <span class="n">data_subset_v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span> <span class="o">=</span> <span class="n">data_subset_u</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span> <span class="o">=</span> <span class="n">data_subset_v</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span><span class="p">)</span>
 
@@ -1484,6 +1509,7 @@
 <span class="sd">      * colors (optional)</span>
 <span class="sd">      * vector_field (optional)</span>
 <span class="sd">      * vector_field_color (optional)</span>
+<span class="sd">      * vector_field_length (optional)</span>
 <span class="sd">      * reduce_points (optional)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1555,6 +1581,11 @@
 
     <span class="n">vector_field_color</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">vector_field_color</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;String color name to plot the vector. (optional)&quot;&quot;&quot;</span>
+
+    <span class="n">vector_field_length</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vector_field_length</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Integer value to set the length of the plotted vector.</span>
+<span class="s2">    (optional)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">reduce_points</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">reduce_points</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Float to reduce number of points plotted. (optional)&quot;&quot;&quot;</span>
@@ -1693,8 +1724,12 @@
                 <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">mapper</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wx_symbols</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">formats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">formats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mapper</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wx_symbols</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">formats</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_symbol</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
                                             <span class="n">mapper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
@@ -1704,8 +1739,11 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_color</span><span class="p">}</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">subset</span><span class="p">],</span>
-                                  <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">])</span></div>
+                                  <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -1721,7 +1759,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 20:03:06.
+      Last updated on Aug 06, 2020 at 08:45:11.
 
     </p>
   </div>
@@ -1737,9 +1775,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -1758,7 +1793,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.12.1.post2+gc3df3bc',
+            VERSION:'1.0.0rc1.post184+g1c29164',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -57,15 +57,6 @@ https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalo
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/io/metar.py:627: UserWarning: Pandas doesn't allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
-      df.units = col_units
-
 
 
 
@@ -162,19 +153,9 @@ The payoff
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_001.png
+    :alt: Station Plot
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in less
-      u, v = self.projection.transform_vectors(t, x, y, u, v)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py:1833: RuntimeWarning: invalid value encountered in greater
-      u, v = self.projection.transform_vectors(t, x, y, u, v)
 
 
 
@@ -182,7 +163,7 @@ The payoff
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  11.757 seconds)
+   **Total running time of the script:** ( 0 minutes  12.432 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot.py:

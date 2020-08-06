@@ -21,7 +21,7 @@ import xarray as xr
 
 # Any import of metpy will activate the accessors
 import metpy.calc as mpcalc
-from metpy.testing import get_test_data
+from metpy.cbook import get_test_data
 from metpy.units import units
 
 #########################################################################
@@ -78,23 +78,11 @@ data = data.rename({
 # -----
 #
 # MetPy's DataArray accessor has a ``unit_array`` property to obtain a ``pint.Quantity`` array
-# of just the data from the DataArray (metadata other than units is removed) and a
-# ``convert_units`` method to convert the the data from one unit to another (keeping it as a
-# DataArray). For now, we'll just use ``convert_units`` to convert our temperature to
-# ``degC``.
+# of just the data from the DataArray (metadata is removed) and a ``convert_units`` method to
+# convert the the data from one unit to another (keeping it as a DataArray). For now, we'll
+# just use ``convert_units`` to convert our temperature to ``degC``.
 
-data['temperature'].metpy.convert_units('degC')
-
-#########################################################################
-# WARNING: Versions of MetPy prior to 1.0 (including 0.12) require units to be in the
-# attributes of your xarray DataArray. If you attempt to use a DataArray containing a
-# ``pint.Quantity`` instead, incorrect results are likely to occur, since these earlier
-# versions of MetPy will ignore the ``pint.Quantity`` and still just rely upon the units
-# attribute. See `GitHub Issue #1358 <https://github.com/Unidata/MetPy/issues/1358>`_ for more
-# details.
-#
-# Note that this changes in newer versions of MetPy as of 1.0, when Quantities-in-xarray
-# became the default behavior.
+data['temperature'] = data['temperature'].metpy.convert_units('degC')
 
 #########################################################################
 # Coordinates
@@ -208,6 +196,12 @@ print(v_geo)
 #     - ``normal_component``
 #     - ``tangential_component``
 #     - ``absolute_momentum``
+# - Smoothing functions
+#     - ``smooth_gaussian``
+#     - ``smooth_n_point``
+#     - ``smooth_window``
+#     - ``smooth_rectangular``
+#     - ``smooth_circular``
 #
 # More details can be found by looking at the documentation for the specific function of
 # interest.

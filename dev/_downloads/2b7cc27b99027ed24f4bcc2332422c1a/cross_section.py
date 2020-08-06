@@ -54,7 +54,7 @@ temperature, pressure, specific_humidity = xr.broadcast(cross['Temperature'],
                                                         cross['Specific_humidity'])
 
 theta = mpcalc.potential_temperature(pressure, temperature)
-rh = mpcalc.relative_humidity_from_specific_humidity(specific_humidity, temperature, pressure)
+rh = mpcalc.relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity)
 
 # These calculations return unit arrays, so put those back into DataArrays in our Dataset
 cross['Potential_temperature'] = xr.DataArray(theta,
@@ -66,8 +66,8 @@ cross['Relative_humidity'] = xr.DataArray(rh,
                                           dims=specific_humidity.dims,
                                           attrs={'units': rh.units})
 
-cross['u_wind'].metpy.convert_units('knots')
-cross['v_wind'].metpy.convert_units('knots')
+cross['u_wind'] = cross['u_wind'].metpy.convert_units('knots')
+cross['v_wind'] = cross['v_wind'].metpy.convert_units('knots')
 cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(cross['u_wind'],
                                                                    cross['v_wind'])
 

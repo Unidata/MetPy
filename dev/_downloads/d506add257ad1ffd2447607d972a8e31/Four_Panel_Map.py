@@ -63,9 +63,9 @@ winds_300 = ds['winds_300'][0]
 
 # Do unit conversions to what we wish to plot
 vort_500 = vort_500 * 1e5
-surface_temp.metpy.convert_units('degF')
-precip_water.metpy.convert_units('inches')
-winds_300.metpy.convert_units('knots')
+surface_temp = surface_temp.metpy.convert_units('degF')
+precip_water = precip_water.metpy.convert_units('inches')
+winds_300 = winds_300.metpy.convert_units('knots')
 
 ###########################################
 

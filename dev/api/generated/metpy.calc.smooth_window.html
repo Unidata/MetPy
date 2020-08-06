@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>diff &mdash; MetPy 0.12.1</title>
+  <title>smooth_window &mdash; MetPy 1.0.0rc1</title>
   
 
   
@@ -17,7 +17,7 @@
   
   
   
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.units.diff.html"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.smooth_window.html"/>
   
 
   
@@ -47,10 +47,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.12.1" href="../../index.html"/>
-        <link rel="up" title="units" href="metpy.units.html"/>
-        <link rel="next" title="masked_array" href="metpy.units.masked_array.html"/>
-        <link rel="prev" title="concatenate" href="metpy.units.concatenate.html"/> 
+    <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
+        <link rel="up" title="calc" href="metpy.calc.html"/>
+        <link rel="next" title="smooth_rectangular" href="metpy.calc.smooth_rectangular.html"/>
+        <link rel="prev" title="smooth_gaussian" href="metpy.calc.smooth_gaussian.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -85,7 +85,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.12.1</option>
+                      <option value=''>1.0.0rc1</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,27 +125,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="metpy.units.html">units</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.atleast_1d.html">atleast_1d</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.atleast_2d.html">atleast_2d</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.check_units.html">check_units</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.concatenate.html">concatenate</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">diff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.signature.html">signature</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.Parameter.html">Parameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.DimensionalityError.html">DimensionalityError</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.UndefinedUnitError.html">UndefinedUnitError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#soundings">Soundings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dynamic-kinematic">Dynamic/Kinematic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#smoothing">Smoothing</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">smooth_window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_rectangular.html">smooth_rectangular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_circular.html">smooth_circular</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
@@ -206,9 +212,9 @@
         
           <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
-          <li><a href="metpy.units.html">units</a> &raquo;</li>
+          <li><a href="metpy.calc.html">calc</a> &raquo;</li>
         
-      <li>diff</li>
+      <li>smooth_window</li>
     
     
     <li class="source-link">
@@ -216,7 +222,7 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.units.diff&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.calc.smooth_window&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -230,34 +236,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="diff">
-<h1>diff<a class="headerlink" href="#diff" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="smooth-window">
+<h1>smooth_window<a class="headerlink" href="#smooth-window" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="metpy.units.diff">
-<code class="sig-prename descclassname">metpy.units.</code><code class="sig-name descname">diff</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#diff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.diff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the n-th discrete difference along given axis.</p>
-<p>Wraps <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.17)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diff()</span></code></a> to handle units.</p>
+<dt id="metpy.calc.smooth_window">
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">smooth_window</code><span class="sig-paren">(</span><em class="sig-param">scalar_grid</em>, <em class="sig-param">window</em>, <em class="sig-param">passes=1</em>, <em class="sig-param">normalize_weights=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#smooth_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.smooth_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter with an arbitrary window smoother.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array-like</em>) – Input data</p></li>
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The number of times values are differenced.</p></li>
-<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis along which the difference is taken, default is the last axis.</p></li>
+<li><p><strong>scalar_grid</strong> (<em>array-like</em>) – N-dimensional scalar grid to be smoothed.</p></li>
+<li><p><strong>window</strong> (<em>ndarray</em>) – The window to use in smoothing. Can have dimension less than or equal to N. If
+dimension less than N, the scalar grid will be smoothed along its trailing dimensions.
+Shape along each dimension must be odd.</p></li>
+<li><p><strong>passes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of times to apply the filter to the grid. Defaults to 1.</p></li>
+<li><p><strong>normalize_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If true, divide the values in window by the sum of all values in the window to obtain
+the normalized smoothing weights. If false, use supplied values directly as the
+weights.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>diff</strong> (<em>ndarray</em>) – The n-th differences. The shape of the output is the same as <em class="xref py py-obj">a</em>
-except along <em class="xref py py-obj">axis</em> where the dimension is smaller by <em class="xref py py-obj">n</em>. The
-type of the output is the same as that of the input.</p>
+<dd class="field-even"><p><em>array-like</em> – The filtered scalar grid.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function can be applied multiple times to create a more smoothed field and will only
+smooth the interior points, leaving the end points with their original values (this
+function will leave an unsmoothed edge of size <em class="xref py py-obj">(n - 1) / 2</em> for each <em class="xref py py-obj">n</em> in the shape of
+<em class="xref py py-obj">window</em> around the data). If a masked value or NaN values exists in the array, it will
+propagate to any point that uses that particular grid point in the smoothing calculation.
+Applying the smoothing function multiple times will propogate NaNs further throughout the
+domain.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.17)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diff()</span></code></a></p>
+<p><a class="reference internal" href="metpy.calc.smooth_rectangular.html#metpy.calc.smooth_rectangular" title="metpy.calc.smooth_rectangular"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_rectangular()</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_circular.html#metpy.calc.smooth_circular" title="metpy.calc.smooth_circular"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_circular()</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_n_point()</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-func docutils literal notranslate"><span class="pre">smooth_gaussian()</span></code></a></p>
 </div>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div class="section" id="examples-using-metpy-calc-smooth-window">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.smooth_window</span></code><a class="headerlink" href="#examples-using-metpy-calc-smooth-window" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions."><div class="figure align-default" id="id1">
+<img alt="Smoothing" src="../../_images/sphx_glr_Smoothing_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/calculations/Smoothing.html#sphx-glr-examples-calculations-smoothing-py"><span class="std std-ref">Smoothing</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -269,10 +292,10 @@ type of the output is the same as that of the input.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.units.masked_array.html" class="btn btn-neutral float-right" title="masked_array" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.calc.smooth_rectangular.html" class="btn btn-neutral float-right" title="smooth_rectangular" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.units.concatenate.html" class="btn btn-neutral" title="concatenate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.smooth_gaussian.html" class="btn btn-neutral" title="smooth_gaussian" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -282,7 +305,7 @@ type of the output is the same as that of the input.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Apr 20, 2020 at 20:03:06.
+      Last updated on Aug 06, 2020 at 08:45:11.
 
     </p>
   </div>
@@ -298,9 +321,6 @@ type of the output is the same as that of the input.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -319,7 +339,7 @@ type of the output is the same as that of the input.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.12.1.post2+gc3df3bc',
+            VERSION:'1.0.0rc1.post184+g1c29164',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

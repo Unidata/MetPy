@@ -14,7 +14,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from metpy.calc import dewpoint_rh
+from metpy.calc import dewpoint_from_relative_humidity
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo
 from metpy.units import units
@@ -80,10 +80,10 @@ class Meteogram(object):
         ax7.set_ylabel('Wind\nDirection\n(degrees)', multialignment='center')
         ax7.set_ylim(0, 360)
         ax7.set_yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
-        lns = ln1 + ln2 + ln3
-        labs = [l.get_label() for l in lns]
+        lines = ln1 + ln2 + ln3
+        labs = [line.get_label() for line in lines]
         ax7.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
-        ax7.legend(lns, labs, loc='upper center',
+        ax7.legend(lines, labs, loc='upper center',
                    bbox_to_anchor=(0.5, 1.2), ncol=3, prop={'size': 12})
 
     def plot_thermo(self, t, td, plot_range=None):
@@ -111,11 +111,11 @@ class Meteogram(object):
 
         ax_twin = self.ax2.twinx()
         ax_twin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        lns = ln4 + ln5
-        labs = [l.get_label() for l in lns]
+        lines = ln4 + ln5
+        labs = [line.get_label() for line in lines]
         ax_twin.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
 
-        self.ax2.legend(lns, labs, loc='upper center',
+        self.ax2.legend(lines, labs, loc='upper center',
                         bbox_to_anchor=(0.5, 1.2), ncol=2, prop={'size': 12})
 
     def plot_rh(self, rh, plot_range=None):
@@ -201,8 +201,8 @@ probe_id = '0102A'
 data = {'wind_speed': (np.array(ws) * units('m/s')).to(units('knots')),
         'wind_speed_max': (np.array(wsmax) * units('m/s')).to(units('knots')),
         'wind_direction': np.array(wd) * units('degrees'),
-        'dewpoint': dewpoint_rh((np.array(temp) * units('degC')).to(units('K')),
-                                np.array(rh) / 100.).to(units('degF')),
+        'dewpoint': dewpoint_from_relative_humidity((np.array(temp) * units.degC).to(units.K),
+                                                    np.array(rh) / 100.).to(units('degF')),
         'air_temperature': (np.array(temp) * units('degC')).to(units('degF')),
         'mean_slp': calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa'),
         'relative_humidity': np.array(rh), 'times': np.array(date)}
