@@ -14,8 +14,6 @@ ctables
 
       convert_gempak_table
       read_colortable
-      resource_listdir
-      resource_stream
 
    .. rubric:: Classes
 
