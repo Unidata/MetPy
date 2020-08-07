@@ -40,7 +40,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
     'matplotlib.sphinxext.plot_directive',
-    'm2r'
+    'myst_parser'
 ]
 
 sphinx_gallery_conf = {
