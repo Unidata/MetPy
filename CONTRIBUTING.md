@@ -85,7 +85,7 @@ environments. Our recommended setup for contributing is:
 * Connect your repository to the upstream (main project).
   ``git remote add unidata https://github.com/unidata/metpy.git``
 * Create the development environment by running
-``conda env create -n devel --file ci/Current.txt --file ci/extra-requirements --file ci/test_requirements.txt``.
+``conda env create -n devel --file ci/Current.txt --file ci/extra_requirements.txt --file ci/test_requirements.txt``.
 This will install all the necessary packages for development.
 * Activate our new development environment by running ``conda activate devel``
 * Make an editable install of MetPy by running ``pip install -e .``
