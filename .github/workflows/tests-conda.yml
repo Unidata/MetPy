@@ -46,7 +46,6 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       uses: goanpeca/setup-miniconda@v1
       with:
-        auto-update-conda: true
         miniconda-version: "latest"
         python-version: ${{ matrix.python-version }}
         channel-priority: strict
