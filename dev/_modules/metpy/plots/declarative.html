@@ -1504,12 +1504,14 @@
 <span class="sd">      * time</span>
 <span class="sd">      * fields</span>
 <span class="sd">      * locations (optional)</span>
-<span class="sd">      * time_range (optional)</span>
+<span class="sd">      * time_window (optional)</span>
 <span class="sd">      * formats (optional)</span>
 <span class="sd">      * colors (optional)</span>
+<span class="sd">      * plot_units (optional)</span>
 <span class="sd">      * vector_field (optional)</span>
 <span class="sd">      * vector_field_color (optional)</span>
 <span class="sd">      * vector_field_length (optional)</span>
+<span class="sd">      * vector_plot_units (optional)</span>
 <span class="sd">      * reduce_points (optional)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1555,7 +1557,7 @@
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">formats</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span>
-    <span class="n">formats</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;List of the scalar and symbol field data formats. (optional)</span>
+    <span class="n">formats</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;List of the scalar, symbol, and text field data formats. (optional)</span>
 
 <span class="s2">    List of scalar parameters formmaters or mapping values (if symbol) for plotting text and/or</span>
 <span class="s2">    symbols around the station plot (e.g., for pressure variable</span>
@@ -1563,6 +1565,8 @@
 
 <span class="s2">    For symbol mapping the following options are available to be put in as a string:</span>
 <span class="s2">    current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.</span>
+
+<span class="s2">    For plotting text, use the format setting of &#39;text&#39;.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">colors</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">])</span>
@@ -1589,6 +1593,20 @@
 
     <span class="n">reduce_points</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">reduce_points</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Float to reduce number of points plotted. (optional)&quot;&quot;&quot;</span>
+
+    <span class="n">plot_units</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plot_units</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of the desired units to plot the fields in.</span>
+
+<span class="s2">    Setting this attribute will convert the units of the field variable to the given units for</span>
+<span class="s2">    plotting using the MetPy Units module, provided that units are attached to the DataFrame.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">vector_plot_units</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vector_plot_units</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The desired units to plot the vector field in.</span>
+
+<span class="s2">    Setting this attribute will convert the units of the field variable to the given units for</span>
+<span class="s2">    plotting using the MetPy Units module, provided that units are attached to the DataFrame.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PlotObs.clear"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the plot.</span>
@@ -1716,34 +1734,60 @@
                                   <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ob_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">):</span>
+            <span class="n">field_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">formats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;formatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">formats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">formats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">mapper</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wx_symbols</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">formats</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;formatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;plot_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;plot_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;plot_units&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">parameter</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="n">ob_type</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parameter</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;formatter&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mapper</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wx_symbols</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;formatter&#39;</span><span class="p">]),</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_symbol</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
-                                            <span class="n">mapper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+                    <span class="n">field_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;formatter&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_symbol</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span>
+                                            <span class="n">mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">field_kwargs</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
-                                               <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
+                                              <span class="n">color</span><span class="o">=</span><span class="n">field_kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span>
+                                                   <span class="o">**</span><span class="n">field_kwargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">ob_type</span><span class="p">][</span><span class="n">subset</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+                <span class="n">field_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;formatter&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="o">**</span><span class="n">field_kwargs</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_color</span><span class="p">}</span>
+            <span class="n">vector_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">vector_kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_color</span>
+            <span class="n">vector_kwargs</span><span class="p">[</span><span class="s1">&#39;plot_units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_plot_units</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">vector_kwargs</span><span class="p">[</span><span class="s1">&#39;plot_units&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">subset</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                     <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                     <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vector_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_units&#39;</span><span class="p">)</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">subset</span><span class="p">]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">subset</span><span class="p">],</span>
-                                  <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+                <span class="n">vector_kwargs</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">vector_kwargs</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -1759,7 +1803,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 06, 2020 at 08:45:11.
+      Last updated on Aug 08, 2020 at 22:03:51.
 
     </p>
   </div>
@@ -1793,7 +1837,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post184+g1c29164',
+            VERSION:'1.0.0rc1.post214+g8a893ad',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1806,7 +1850,7 @@
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

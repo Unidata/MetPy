@@ -131,7 +131,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">metpy.io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -244,9 +244,9 @@
             
   <div class="section" id="plotobs">
 <h1>PlotObs<a class="headerlink" href="#plotobs" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="metpy.plots.PlotObs">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">PlotObs</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PlotObs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PlotObs" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">PlotObs</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PlotObs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PlotObs" title="Permalink to this definition">¶</a></dt>
 <dd><p>The highest level class related to plotting observed surface and upperair data.</p>
 <p>This class collects all common methods no matter whether plotting a upper-level or
 surface data using station plots.</p>
@@ -256,12 +256,14 @@ surface data using station plots.</p>
 <li><p>time</p></li>
 <li><p>fields</p></li>
 <li><p>locations (optional)</p></li>
-<li><p>time_range (optional)</p></li>
+<li><p>time_window (optional)</p></li>
 <li><p>formats (optional)</p></li>
 <li><p>colors (optional)</p></li>
+<li><p>plot_units (optional)</p></li>
 <li><p>vector_field (optional)</p></li>
 <li><p>vector_field_color (optional)</p></li>
 <li><p>vector_field_length (optional)</p></li>
+<li><p>vector_plot_units (optional)</p></li>
 <li><p>reduce_points (optional)</p></li>
 </ul>
 </dd>
@@ -286,7 +288,7 @@ surface data using station plots.</p>
 <td><p>Name of the scalar or symbol fields to be plotted.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.formats" title="metpy.plots.PlotObs.formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formats</span></code></a></p></td>
-<td><p>List of the scalar and symbol field data formats.</p></td>
+<td><p>List of the scalar, symbol, and text field data formats.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.level" title="metpy.plots.PlotObs.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
 <td><p>The level of the field to be plotted.</p></td>
@@ -303,26 +305,32 @@ surface data using station plots.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.parent" title="metpy.plots.PlotObs.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plotdata" title="metpy.plots.PlotObs.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plot_units" title="metpy.plots.PlotObs.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<td><p>A list of the desired units to plot the fields in.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plotdata" title="metpy.plots.PlotObs.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
 <td><p>Return the data for plotting.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.reduce_points" title="metpy.plots.PlotObs.reduce_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_points</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.reduce_points" title="metpy.plots.PlotObs.reduce_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_points</span></code></a></p></td>
 <td><p>Float to reduce number of points plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time" title="metpy.plots.PlotObs.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time" title="metpy.plots.PlotObs.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time_window" title="metpy.plots.PlotObs.time_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time_window" title="metpy.plots.PlotObs.time_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
 <td><p>Set a range to look for data to plot as a timedelta object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field" title="metpy.plots.PlotObs.vector_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field" title="metpy.plots.PlotObs.vector_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field</span></code></a></p></td>
 <td><p>List of the vector field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_color" title="metpy.plots.PlotObs.vector_field_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_color</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_color" title="metpy.plots.PlotObs.vector_field_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_color</span></code></a></p></td>
 <td><p>String color name to plot the vector.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_length" title="metpy.plots.PlotObs.vector_field_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_length" title="metpy.plots.PlotObs.vector_field_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_length</span></code></a></p></td>
 <td><p>Integer value to set the length of the plotted vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_plot_units" title="metpy.plots.PlotObs.vector_plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_plot_units</span></code></a></p></td>
+<td><p>The desired units to plot the vector field in.</p></td>
 </tr>
 </tbody>
 </table>
@@ -399,7 +407,7 @@ surface data using station plots.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.colors">
 <code class="sig-name descname">colors</code><a class="headerlink" href="#metpy.plots.PlotObs.colors" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of the scalar and symbol field colors.</p>
@@ -407,7 +415,7 @@ surface data using station plots.</p>
 (optional)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.cross_validation_lock">
 <code class="sig-name descname">cross_validation_lock</code><a class="headerlink" href="#metpy.plots.PlotObs.cross_validation_lock" title="Permalink to this definition">¶</a></dt>
 <dd><p>A contextmanager for running a block with our cross validation lock set
@@ -416,31 +424,32 @@ to True.</p>
 prior to entering the block.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.data">
 <code class="sig-name descname">data</code><a class="headerlink" href="#metpy.plots.PlotObs.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pandas dataframe that contains the fields to be plotted.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.fields">
 <code class="sig-name descname">fields</code><a class="headerlink" href="#metpy.plots.PlotObs.fields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the scalar or symbol fields to be plotted.</p>
 <p>List of parameters to be plotted around station plot (e.g., temperature, dewpoint, skyc).</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.formats">
 <code class="sig-name descname">formats</code><a class="headerlink" href="#metpy.plots.PlotObs.formats" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of the scalar and symbol field data formats. (optional)</p>
+<dd><p>List of the scalar, symbol, and text field data formats. (optional)</p>
 <p>List of scalar parameters formmaters or mapping values (if symbol) for plotting text and/or
 symbols around the station plot (e.g., for pressure variable
 <code class="docutils literal notranslate"><span class="pre">`lambda</span> <span class="pre">v:</span> <span class="pre">format(10</span> <span class="pre">*</span> <span class="pre">v,</span> <span class="pre">'.0f')[-3:]`</span></code>).</p>
 <p>For symbol mapping the following options are available to be put in as a string:
 current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.</p>
+<p>For plotting text, use the format setting of ‘text’.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.level">
 <code class="sig-name descname">level</code><a class="headerlink" href="#metpy.plots.PlotObs.level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of the field to be plotted.</p>
@@ -449,7 +458,7 @@ current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_te
 must be set to <em class="xref py py-obj">None</em>.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.locations">
 <code class="sig-name descname">locations</code><a class="headerlink" href="#metpy.plots.PlotObs.locations" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of strings for scalar or symbol field plotting locations.</p>
@@ -457,19 +466,19 @@ must be set to <em class="xref py py-obj">None</em>.</p>
 NW, NE, SW, SE, W, C). (optional)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#metpy.plots.PlotObs.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.obsdata">
 <code class="sig-name descname">obsdata</code><a class="headerlink" href="#metpy.plots.PlotObs.obsdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the internal cached data.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#metpy.plots.PlotObs.parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>A trait whose value must be an instance of a specified class.</p>
@@ -477,20 +486,28 @@ NW, NE, SW, SE, W, C). (optional)</p>
 <p>Subclasses can declare default classes by overriding the klass attribute</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
+<dt id="metpy.plots.PlotObs.plot_units">
+<code class="sig-name descname">plot_units</code><a class="headerlink" href="#metpy.plots.PlotObs.plot_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of the desired units to plot the fields in.</p>
+<p>Setting this attribute will convert the units of the field variable to the given units for
+plotting using the MetPy Units module, provided that units are attached to the DataFrame.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.plotdata">
 <code class="sig-name descname">plotdata</code><a class="headerlink" href="#metpy.plots.PlotObs.plotdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data for plotting.</p>
 <p>The data arrays, x coordinates, and y coordinates.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.reduce_points">
 <code class="sig-name descname">reduce_points</code><a class="headerlink" href="#metpy.plots.PlotObs.reduce_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Float to reduce number of points plotted. (optional)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.time">
 <code class="sig-name descname">time</code><a class="headerlink" href="#metpy.plots.PlotObs.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
@@ -499,7 +516,7 @@ can be done using the <a class="reference external" href="https://docs.python.or
 from the Python standard library.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.time_window">
 <code class="sig-name descname">time_window</code><a class="headerlink" href="#metpy.plots.PlotObs.time_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a range to look for data to plot as a timedelta object.</p>
@@ -509,7 +526,7 @@ then it will keep only the most recent one for plotting purposes. Default value 
 no range. (optional)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.vector_field">
 <code class="sig-name descname">vector_field</code><a class="headerlink" href="#metpy.plots.PlotObs.vector_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of the vector field to be plotted.</p>
@@ -517,57 +534,65 @@ no range. (optional)</p>
 (e.g., wind components). (optional)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.vector_field_color">
 <code class="sig-name descname">vector_field_color</code><a class="headerlink" href="#metpy.plots.PlotObs.vector_field_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>String color name to plot the vector. (optional)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.PlotObs.vector_field_length">
 <code class="sig-name descname">vector_field_length</code><a class="headerlink" href="#metpy.plots.PlotObs.vector_field_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integer value to set the length of the plotted vector.
 (optional)</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="metpy.plots.PlotObs.vector_plot_units">
+<code class="sig-name descname">vector_plot_units</code><a class="headerlink" href="#metpy.plots.PlotObs.vector_plot_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>The desired units to plot the vector field in.</p>
+<p>Setting this attribute will convert the units of the field variable to the given units for
+plotting using the MetPy Units module, provided that units are attached to the DataFrame.</p>
+</dd></dl>
+
 <p class="rubric">Methods Documentation</p>
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.add_traits">
-<code class="sig-name descname">add_traits</code><span class="sig-paren">(</span><em class="sig-param">**traits</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.add_traits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_traits</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">traits</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.add_traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dynamically add trait attributes to the HasTraits instance.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.class_own_trait_events">
-<em class="property">classmethod </em><code class="sig-name descname">class_own_trait_events</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_own_trait_events" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_own_trait_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_own_trait_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a dict of all event handlers defined on this class, not a parent.</p>
 <p>Works like <code class="docutils literal notranslate"><span class="pre">event_handlers</span></code>, except for excluding traits from parents.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.class_own_traits">
-<em class="property">classmethod </em><code class="sig-name descname">class_own_traits</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_own_traits" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_own_traits</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_own_traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a dict of all the traitlets defined on this class, not a parent.</p>
 <p>Works like <a class="reference internal" href="#metpy.plots.PlotObs.class_traits" title="metpy.plots.PlotObs.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>, except for excluding traits from parents.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.class_trait_names">
-<em class="property">classmethod </em><code class="sig-name descname">class_trait_names</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_trait_names" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_trait_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_trait_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.PlotObs.trait_names" title="metpy.plots.PlotObs.trait_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trait_names()</span></code></a> method,
 but is unbound.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.class_traits">
-<em class="property">classmethod </em><code class="sig-name descname">class_traits</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_traits" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_traits</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.class_traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.PlotObs.traits" title="metpy.plots.PlotObs.traits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">traits()</span></code></a> method, but is unbound.</p>
@@ -581,26 +606,26 @@ the output.  If a metadata key doesn’t exist, None will be passed
 to the function.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.clear">
 <code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PlotObs.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PlotObs.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.draw">
 <code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PlotObs.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PlotObs.draw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw the plot.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.has_trait">
-<code class="sig-name descname">has_trait</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.has_trait" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">has_trait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.has_trait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the object has a trait with the specified name.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.hold_trait_notifications">
 <code class="sig-name descname">hold_trait_notifications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.hold_trait_notifications" title="Permalink to this definition">¶</a></dt>
 <dd><p>Context manager for bundling trait change notifications and cross
@@ -610,14 +635,14 @@ race conditions in trait notifiers requesting other trait values.
 All trait notifications will fire after all values have been assigned.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.notify_change">
-<code class="sig-name descname">notify_change</code><span class="sig-paren">(</span><em class="sig-param">change</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.notify_change" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">notify_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">change</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.notify_change" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.observe">
-<code class="sig-name descname">observe</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">names=traitlets.All</em>, <em class="sig-param">type='change'</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.observe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">observe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handler</span></em>, <em class="sig-param"><span class="n">names</span><span class="o">=</span><span class="default_value">traitlets.All</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">'change'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.observe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <dl class="field-list simple">
@@ -643,9 +668,9 @@ notifications are passed to the observe handler.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.on_trait_change">
-<code class="sig-name descname">on_trait_change</code><span class="sig-paren">(</span><em class="sig-param">handler=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">remove=False</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.on_trait_change" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">on_trait_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">remove</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.on_trait_change" title="Permalink to this definition">¶</a></dt>
 <dd><p>DEPRECATED: Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <p>Static handlers can be created by creating methods on a HasTraits
@@ -671,21 +696,21 @@ then unintall it.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.set_trait">
-<code class="sig-name descname">set_trait</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.set_trait" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_trait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.set_trait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forcibly sets trait attribute, including read-only attributes.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.setup_instance">
-<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.setup_instance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.setup_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.trait_events">
-<em class="property">classmethod </em><code class="sig-name descname">trait_events</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.trait_events" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">trait_events</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.trait_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -698,21 +723,21 @@ the event handlers of this class will be returned instead.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.trait_metadata">
-<code class="sig-name descname">trait_metadata</code><span class="sig-paren">(</span><em class="sig-param">traitname</em>, <em class="sig-param">key</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.trait_metadata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">trait_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">traitname</span></em>, <em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.trait_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get metadata values for trait by key.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.trait_names">
-<code class="sig-name descname">trait_names</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.trait_names" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">trait_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.trait_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.traits">
-<code class="sig-name descname">traits</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.traits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">traits</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>The TraitTypes returned don’t know anything about the values
@@ -725,9 +750,9 @@ the output.  If a metadata key doesn’t exist, None will be passed
 to the function.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.unobserve">
-<code class="sig-name descname">unobserve</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">names=traitlets.All</em>, <em class="sig-param">type='change'</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.unobserve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unobserve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handler</span></em>, <em class="sig-param"><span class="n">names</span><span class="o">=</span><span class="default_value">traitlets.All</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">'change'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.unobserve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a trait change handler.</p>
 <p>This is used to unregister handlers to trait change notifications.</p>
 <dl class="field-list simple">
@@ -744,9 +769,9 @@ is uninstalled from the list of notifiers corresponding to all types.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.PlotObs.unobserve_all">
-<code class="sig-name descname">unobserve_all</code><span class="sig-paren">(</span><em class="sig-param">name=traitlets.All</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.unobserve_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unobserve_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">traitlets.All</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotObs.unobserve_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove trait change handlers of any type for the specified name.
 If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
@@ -789,7 +814,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 06, 2020 at 08:45:11.
+      Last updated on Aug 08, 2020 at 22:03:51.
 
     </p>
   </div>
@@ -823,7 +848,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post184+g1c29164',
+            VERSION:'1.0.0rc1.post214+g8a893ad',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -836,7 +861,7 @@ If name is not specified, removes all trait notifiers.</p>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

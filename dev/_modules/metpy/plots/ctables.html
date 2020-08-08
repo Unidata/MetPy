@@ -245,7 +245,6 @@
 <span class="kn">import</span> <span class="nn">posixpath</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
-<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_listdir</span><span class="p">,</span> <span class="n">resource_stream</span>
 
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 
@@ -335,6 +334,7 @@
 <span class="sd">            The path to the directory with the color tables</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_listdir</span><span class="p">,</span> <span class="n">resource_stream</span>
         <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">resource_listdir</span><span class="p">(</span><span class="n">pkg</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">TABLE_EXT</span><span class="p">):</span>
                 <span class="n">table_path</span> <span class="o">=</span> <span class="n">posixpath</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
@@ -492,7 +492,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 06, 2020 at 08:45:11.
+      Last updated on Aug 08, 2020 at 22:03:51.
 
     </p>
   </div>
@@ -526,7 +526,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post184+g1c29164',
+            VERSION:'1.0.0rc1.post214+g8a893ad',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -539,7 +539,7 @@
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

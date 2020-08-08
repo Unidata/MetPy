@@ -131,7 +131,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">metpy.io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -244,15 +244,15 @@
             
   <div class="section" id="hodograph">
 <h1>Hodograph<a class="headerlink" href="#hodograph" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="metpy.plots.Hodograph">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">Hodograph</code><span class="sig-paren">(</span><em class="sig-param">ax=None</em>, <em class="sig-param">component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">Hodograph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">component_range</span><span class="o">=</span><span class="default_value">80</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a hodograph of wind data.</p>
 <p>Plots the u and v components of the wind along the x and y axes, respectively.</p>
 <p>This class simplifies the process of creating a hodograph using matplotlib.
 It provides helpers for creating a circular grid and for plotting the wind as a line
 colored by another value (such as wind speed).</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="metpy.plots.Hodograph.ax">
 <code class="sig-name descname">ax</code><a class="headerlink" href="#metpy.plots.Hodograph.ax" title="Permalink to this definition">¶</a></dt>
 <dd><p>The underlying Axes instance used for all plotting</p>
@@ -298,9 +298,9 @@ number of grid rings needed.</p></li>
 </tbody>
 </table>
 <p class="rubric">Methods Documentation</p>
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.Hodograph.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">ax=None</em>, <em class="sig-param">component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">component_range</span><span class="o">=</span><span class="default_value">80</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Hodograph instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -313,9 +313,9 @@ number of grid rings needed.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.Hodograph.add_grid">
-<code class="sig-name descname">add_grid</code><span class="sig-paren">(</span><em class="sig-param">increment=10.0</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.add_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.add_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">increment</span><span class="o">=</span><span class="default_value">10.0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.add_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.add_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add grid lines to hodograph.</p>
 <p>Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</p>
 <dl class="field-list simple">
@@ -332,9 +332,9 @@ number of grid rings needed.</p></li>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.Hodograph.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot u, v data.</p>
 <p>Plots the wind data on the hodograph.</p>
 <dl class="field-list simple">
@@ -355,9 +355,9 @@ number of grid rings needed.</p></li>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.Hodograph.plot_colormapped">
-<code class="sig-name descname">plot_colormapped</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">c</em>, <em class="sig-param">intervals=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot_colormapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot_colormapped" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_colormapped</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">intervals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot_colormapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot_colormapped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot u, v data, with line colored based on a third set of data.</p>
 <p>Plots the wind data on the hodograph, but with a colormapped line. Takes a third
 variable besides the winds (e.g. heights or pressure levels) and either a colormap to
@@ -388,9 +388,9 @@ provided heights.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.plots.Hodograph.wind_vectors">
-<code class="sig-name descname">wind_vectors</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.wind_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.wind_vectors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wind_vectors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.wind_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.wind_vectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot u, v data as wind vectors.</p>
 <p>Plot the wind data as vectors for each level, beginning at the origin.</p>
 <dl class="field-list simple">
@@ -449,7 +449,7 @@ provided heights.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 06, 2020 at 08:45:11.
+      Last updated on Aug 08, 2020 at 22:03:51.
 
     </p>
   </div>
@@ -483,7 +483,7 @@ provided heights.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post184+g1c29164',
+            VERSION:'1.0.0rc1.post214+g8a893ad',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -496,7 +496,7 @@ provided heights.</p>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

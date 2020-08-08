@@ -22,6 +22,7 @@ PlotObs
       ~PlotObs.name
       ~PlotObs.obsdata
       ~PlotObs.parent
+      ~PlotObs.plot_units
       ~PlotObs.plotdata
       ~PlotObs.reduce_points
       ~PlotObs.time
@@ -29,6 +30,7 @@ PlotObs
       ~PlotObs.vector_field
       ~PlotObs.vector_field_color
       ~PlotObs.vector_field_length
+      ~PlotObs.vector_plot_units
 
    
    
@@ -81,6 +83,7 @@ PlotObs
    .. autoattribute:: name
    .. autoattribute:: obsdata
    .. autoattribute:: parent
+   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: reduce_points
    .. autoattribute:: time
@@ -88,6 +91,7 @@ PlotObs
    .. autoattribute:: vector_field
    .. autoattribute:: vector_field_color
    .. autoattribute:: vector_field_length
+   .. autoattribute:: vector_plot_units
 
    
    
