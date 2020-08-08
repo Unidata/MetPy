@@ -185,6 +185,8 @@ class StationPlot(object):
             How to format the data as a string for plotting. If a string, it should be
             compatible with the :func:`format` builtin. If a callable, this should take a
             value and return a string. Defaults to '0.f'.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.
 
@@ -194,6 +196,9 @@ class StationPlot(object):
         plot_barb, plot_symbol, plot_text
 
         """
+        # If plot_units specified, convert the data to those units
+        plotting_units = kwargs.pop('plot_units', None)
+        parameter = self._scalar_plotting_units(parameter, plotting_units)
         if hasattr(parameter, 'units'):
             parameter = parameter.magnitude
         text = self._to_string_list(parameter, formatter)
@@ -266,7 +271,7 @@ class StationPlot(object):
 
         # If plot_units specified, convert the data to those units
         plotting_units = kwargs.pop('plot_units', None)
-        u, v = self._plotting_units(u, v, plotting_units)
+        u, v = self._vector_plotting_units(u, v, plotting_units)
 
         # Empirically determined
         pivot = 0.51 * np.sqrt(self.fontsize)
@@ -309,7 +314,7 @@ class StationPlot(object):
 
         # If plot_units specified, convert the data to those units
         plotting_units = kwargs.pop('plot_units', None)
-        u, v = self._plotting_units(u, v, plotting_units)
+        u, v = self._vector_plotting_units(u, v, plotting_units)
 
         defaults = {'pivot': 'tail', 'scale': 20, 'scale_units': 'inches', 'width': 0.002}
         defaults.update(kwargs)
@@ -321,7 +326,7 @@ class StationPlot(object):
         self.arrows = self.ax.quiver(self.x, self.y, u, v, **defaults)
 
     @staticmethod
-    def _plotting_units(u, v, plotting_units):
+    def _vector_plotting_units(u, v, plotting_units):
         """Handle conversion to plotting units for barbs and arrows."""
         if plotting_units:
             if hasattr(u, 'units') and hasattr(v, 'units'):
@@ -335,6 +340,17 @@ class StationPlot(object):
         u = np.array(u)
         v = np.array(v)
         return u, v
+
+    @staticmethod
+    def _scalar_plotting_units(scalar_value, plotting_units):
+        """Handle conversion to plotting units for barbs and arrows."""
+        if plotting_units:
+            if hasattr(scalar_value, 'units'):
+                scalar_value = scalar_value.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'scalar value being converted.')
+        return scalar_value
 
     def _make_kwargs(self, kwargs):
         """Assemble kwargs as necessary.

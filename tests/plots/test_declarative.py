@@ -18,6 +18,7 @@ import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
+from metpy.io.metar import parse_metar_file
 from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
                          PanelContainer, PlotObs)
 # Fixtures to make sure we have the right backend
@@ -736,6 +737,48 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
+def test_declarative_upa_obs_convert_barb_units():
+    """Test making a full upperair observation plot."""
+    data = pd.read_csv(get_test_data('UPA_obs.csv', as_file_obj=False))
+    data.units = ''
+    data.units = {'pressure': 'hPa', 'height': 'meters', 'temperature': 'degC',
+                  'dewpoint': 'degC', 'direction': 'degrees', 'speed': 'knots',
+                  'station': None, 'time': None, 'u_wind': 'knots', 'v_wind': 'knots',
+                  'latitude': 'degrees', 'longitude': 'degrees'}
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 14, 0)
+    obs.level = 500 * units.hPa
+    obs.fields = ['temperature', 'dewpoint', 'height']
+    obs.locations = ['NW', 'SW', 'NE']
+    obs.formats = [None, None, lambda v: format(v, '.0f')[:3]]
+    obs.vector_field = ('u_wind', 'v_wind')
+    obs.vector_field_length = 7
+    obs.vector_plot_units = 'm/s'
+    obs.reduce_points = 0
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'states', 'land']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (15, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    obs.level = 300 * units.hPa
+
+    return pc.figure
+
+
 def test_attribute_error_time():
     """Make sure we get a useful error when the time variable is not found."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -796,6 +839,76 @@ def test_attribute_error_station():
 
     with pytest.raises(AttributeError):
         pc.draw()
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
+def test_declarative_sfc_obs_change_units():
+    """Test making a surface observation plot."""
+    data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
+                            year=2019, month=7)
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(2019, 7, 1, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['air_temperature']
+    obs.color = ['black']
+    obs.plot_units = ['degF']
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.09}.get(MPL_VERSION, 0.022))
+def test_declarative_multiple_sfc_obs_change_units():
+    """Test making a surface observation plot."""
+    data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
+                            year=2019, month=7)
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(2019, 7, 1, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['air_temperature', 'dew_point_temperature', 'air_pressure_at_sea_level']
+    obs.locations = ['NW', 'W', 'NE']
+    obs.colors = ['red', 'green', 'black']
+    obs.reduce_points = 0.75
+    obs.plot_units = ['degF', 'degF', None]
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (12, 12)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
 
 
 def test_save():
