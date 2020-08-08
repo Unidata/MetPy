@@ -91,28 +91,3 @@ after_script:
       codecov -X gcov -f coverage.xml -e TRAVIS_PYTHON_VERSION;
       python-codacy-coverage -r coverage.xml;
     fi
-
-before_deploy:
-  # Remove unused, unminified javascript from sphinx
-  - if [[ $TASK == "docs" ]]; then
-      rm -f docs/build/html/_static/jquery-*.js;
-      rm -f docs/build/html/_static/underscore-*.js;
-      rm -f docs/build/html/.buildinfo;
-    fi
-
-deploy:
-  - provider: pypi
-    username: __token__
-    distributions: sdist bdist_wheel
-    on:
-      repo: Unidata/MetPy
-      python: 3.7
-      condition: '$TASK != "docs"'
-      tags: true
-  - provider: script
-    script: ci/deploy_docs.sh
-    skip_cleanup: true
-    on:
-      all_branches: true
-      python: 3.7
-      condition: '$TASK == "docs"'
