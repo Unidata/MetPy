@@ -1,0 +1,102 @@
+name: Build Docs (Conda)
+
+# We don't want pushes (or PRs) to gh-pages to kick anything off
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  #
+  # Build our docs on macOS and Windows on Python 3.6 and 3.7, respectively.
+  #
+  Docs:
+    name: ${{ matrix.os }} ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: 3.6
+            os: macOS
+          - python-version: 3.7
+            os: Windows
+
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Setup conda caching
+      uses: actions/cache@v2
+      with:
+        path: ~/conda_pkgs_dir
+        key: conda-docs-${{ runner.os }}-${{ matrix.python-version}}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          conda-docs-${{ runner.os }}-${{ matrix.python-version}}
+          conda-docs-${{ runner.os }}
+          conda-docs-
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: goanpeca/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+        miniconda-version: "latest"
+        python-version: ${{ matrix.python-version }}
+        channel-priority: strict
+        channels: conda-forge
+        show-channel-urls: true
+        # Needed for caching
+        use-only-tar-bz2: true
+
+    - name: Adjust dependencies for Windows
+      if: ${{ runner.os == 'Windows' }}
+      run: sed -e "s/scipy==.*/scipy==1.5.0/" -i'' ci/Current.txt
+
+    - name: Install dependencies
+      run: conda install --quiet --yes --file ci/doc_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      uses: actions/cache@v2
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: docs-cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: docs-cartopy-
+
+    - name: Install
+      # For some reason on Windows 3.7 building the wheel fails to properly include our extra
+      # stuff. Executing the egg_info beforehand for some reason fixes it. No idea why. We're
+      # deep in territory where googling for answers helps not at all.
+      run: |
+        python setup.py egg_info
+        python -m pip install --no-deps .
+
+    - name: Build docs
+      run: |
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        pushd docs
+        make overridecheck html O=-W
+        popd
+
+    - name: Upload docs as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}-${{ matrix.python-version }}-docs
+        path: |
+          docs/build/html
+          !docs/_static/*.pdf
