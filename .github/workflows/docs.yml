@@ -120,10 +120,11 @@ jobs:
 
     - name: Upload to GitHub Pages
       if: ${{ github.event_name != 'pull_request' && matrix.experimental == false }}
-      uses: peaceiris/actions-gh-pages@v3.7.0-6
+      uses: peaceiris/actions-gh-pages@v3.7.0-8
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/build/html/
-        exclude_assets: ''
-        destination_dir: ${{ env.DOC_VERSION }}/
-        full_commit_message: Deploy ${{ steps.doc-version.outputs.version }} to GitHub Pages
+        publish_dir: ./docs/build/html
+        exclude_assets: '.buildinfo,_static/jquery-*.js,_static/underscore-*.js'
+        destination_dir: ./${{ env.DOC_VERSION }}
+        keep_files: false
+        full_commit_message: Deploy ${{ env.DOC_VERSION }} to GitHub Pages
