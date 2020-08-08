@@ -85,8 +85,8 @@ jobs:
         CACHE_NUMBER: 0
       with:
         path: ${{ steps.cartopy-cache.outputs.dir }}
-        key: cartopy-${{ env.CACHE_NUMBER }}
-        restore-keys: cartopy-
+        key: docs-cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: docs-cartopy-
 
     - name: Install self
       run: python -m pip install -c ci/${{ matrix.dep-versions }} .
