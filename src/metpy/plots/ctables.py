@@ -46,7 +46,6 @@ import os.path
 import posixpath
 
 import matplotlib.colors as mcolors
-from pkg_resources import resource_listdir, resource_stream
 
 from ..package_tools import Exporter
 
@@ -136,6 +135,7 @@ class ColortableRegistry(dict):
             The path to the directory with the color tables
 
         """
+        from pkg_resources import resource_listdir, resource_stream
         for fname in resource_listdir(pkg, path):
             if fname.endswith(TABLE_EXT):
                 table_path = posixpath.join(path, fname)

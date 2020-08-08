@@ -71,7 +71,10 @@ script:
   - export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1;
   - if [[ $TASK == "docs" ]]; then
       pushd docs;
-      make clean overridecheck html linkcheck O=-W;
+      if [[ $TRAVIS_PYTHON_VERSION == "3.8" ]]; then
+        export LINKCHECK="linkcheck";
+      fi;
+      make clean overridecheck html $LINKCHECK O=-W;
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $DOC_BUILD_RESULT -ne 0 ]]; then
