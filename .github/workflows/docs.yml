@@ -3,9 +3,12 @@ name: Build Docs
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - '[0-9]+.[0-9]+.x'
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
   pull_request:
-    branches: [ master ]
 
 jobs:
   #
@@ -15,6 +18,8 @@ jobs:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
+    env:
+      DOC_VERSION: dev
     strategy:
       fail-fast: false
       matrix:
@@ -99,9 +104,26 @@ jobs:
         popd
 
     - name: Upload docs as artifact
+      if: ${{ github.event_name == 'pull_request' }}
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.python-version }}-docs
+        name: ${{ matrix.python-version }}-${{ matrix.dep-versions }}-docs
         path: |
           docs/build/html
           !docs/_static/*.pdf
+
+    # This overrides the version "dev" with the proper version if we're building off a
+    # branch that's not master (which is confined to n.nn.x above) or on a tag.
+    - name: Set doc version
+      if: ${{ github.event_name != 'push' || !contains(github.ref, 'master') }}
+      run: echo "::set-env name=DOC_VERSION::v$(python -c 'import metpy; print(metpy.__version__.rsplit(".", maxsplit=2)[0])')"
+
+    - name: Upload to GitHub Pages
+      if: ${{ github.event_name != 'pull_request' && matrix.experimental == false }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/
+        exclude_assets: docs/build/html/_static/jquery-*.js,docs/build/html/_static/underscore-*.js,docs/build/html/.buildinfo
+        destination_dir: ${{ env.DOC_VERSION }}/
+        full_commit_message: Deploy ${{ steps.doc-version.outputs.version }} to GitHub Pages
