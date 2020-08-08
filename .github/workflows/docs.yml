@@ -124,6 +124,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/build/html/
-        exclude_assets: _static/jquery-*.js,_static/underscore-*.js,.buildinfo
+        exclude_assets: '_static/jquery-*.js,_static/underscore-*.js,.buildinfo'
         destination_dir: ${{ env.DOC_VERSION }}/
         full_commit_message: Deploy ${{ steps.doc-version.outputs.version }} to GitHub Pages
