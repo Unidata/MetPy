@@ -12,11 +12,12 @@ from metpy.calc import (absolute_momentum, cross_section_components, normal_comp
 from metpy.calc.cross_sections import (distances_from_cross_section,
                                        latitude_from_cross_section)
 from metpy.interpolate import cross_section
-from metpy.testing import assert_array_almost_equal, assert_xarray_allclose
+from metpy.testing import assert_array_almost_equal, assert_xarray_allclose, needs_cartopy
 from metpy.units import units
 
 
 @pytest.fixture()
+@needs_cartopy
 def test_cross_lonlat():
     """Return cross section on a lon/lat grid with no time coordinate for use in tests."""
     data_u = np.linspace(-40, 40, 5 * 6 * 7).reshape((5, 6, 7)) * units.knots
@@ -53,6 +54,7 @@ def test_cross_lonlat():
 
 
 @pytest.fixture()
+@needs_cartopy
 def test_cross_xy():
     """Return cross section on a x/y grid with a time coordinate for use in tests."""
     data_u = np.linspace(-25, 25, 5 * 6 * 7).reshape((1, 5, 6, 7)) * units('m/s')

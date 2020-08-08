@@ -3,13 +3,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the cartopy utilities."""
 
-import cartopy.crs as ccrs
 import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
-from metpy.plots import USCOUNTIES, USSTATES
-# Fixtures to make sure we have the right backend and consistent round
+try:
+    from metpy.plots import USCOUNTIES, USSTATES
+except ImportError:
+    pass  # No CartoPy
+# Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 MPL_VERSION = matplotlib.__version__[:3]
@@ -17,7 +19,7 @@ MPL_VERSION = matplotlib.__version__[:3]
 
 @pytest.mark.mpl_image_compare(tolerance={'2.1': 0.161}.get(MPL_VERSION, 0.053),
                                remove_text=True)
-def test_us_county_defaults():
+def test_us_county_defaults(ccrs):
     """Test the default US county plotting."""
     proj = ccrs.LambertConformal(central_longitude=-85.0, central_latitude=45.0)
 
@@ -30,7 +32,7 @@ def test_us_county_defaults():
 
 @pytest.mark.mpl_image_compare(tolerance={'2.1': 0.1994}.get(MPL_VERSION, 0.092),
                                remove_text=True)
-def test_us_county_scales():
+def test_us_county_scales(ccrs):
     """Test US county plotting with all scales."""
     proj = ccrs.LambertConformal(central_longitude=-85.0, central_latitude=45.0)
 
@@ -46,7 +48,7 @@ def test_us_county_scales():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.053, remove_text=True)
-def test_us_states_defaults():
+def test_us_states_defaults(ccrs):
     """Test the default US States plotting."""
     proj = ccrs.LambertConformal(central_longitude=-85.0, central_latitude=45.0)
 
@@ -59,7 +61,7 @@ def test_us_states_defaults():
 
 @pytest.mark.mpl_image_compare(tolerance={'2.1': 0.991}.get(MPL_VERSION, 0.092),
                                remove_text=True)
-def test_us_states_scales():
+def test_us_states_scales(ccrs):
     """Test the default US States plotting with all scales."""
     proj = ccrs.LambertConformal(central_longitude=-85.0, central_latitude=45.0)
 

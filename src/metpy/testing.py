@@ -21,6 +21,19 @@ from metpy.deprecation import MetpyDeprecationWarning
 from .units import units
 
 
+def needs_cartopy(test_func):
+    """Decorate a test function or fixture as requiring CartoPy.
+
+    Will skip the decorated test, or any test using the decorated fixture, if ``cartopy`` is
+    unable to be imported.
+    """
+    @functools.wraps(test_func)
+    def wrapped(*args, **kwargs):
+        pytest.importorskip('cartopy')
+        return test_func(*args, **kwargs)
+    return wrapped
+
+
 def get_upper_air_data(date, station):
     """Get upper air observations from the test data cache.
 

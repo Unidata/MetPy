@@ -3,10 +3,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the handling of various mapping tasks."""
 
-import cartopy.crs as ccrs
 import pytest
 
-from metpy.plots.mapping import CFProjection
+ccrs = pytest.importorskip('cartopy.crs')
+
+from metpy.plots.mapping import CFProjection  # noqa: E402
 
 
 def test_cfprojection_arg_mapping():

@@ -5,7 +5,6 @@
 
 from collections import namedtuple
 
-import cartopy.crs as ccrs
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
@@ -21,7 +20,8 @@ from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
                               DIR_STRS, UND, wrap_output_like)
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           needs_cartopy)
 from metpy.units import DimensionalityError, units
 
 
@@ -963,6 +963,8 @@ def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
 @pytest.fixture()
 def test_da_lonlat():
     """Return a DataArray with a lon/lat grid and no time coordinate for use in tests."""
+    pytest.importorskip('cartopy')
+
     data = np.linspace(300, 250, 3 * 4 * 4).reshape((3, 4, 4))
     ds = xr.Dataset(
         {'temperature': (['isobaric', 'lat', 'lon'], data)},
@@ -995,6 +997,8 @@ def test_da_lonlat():
 @pytest.fixture()
 def test_da_xy():
     """Return a DataArray with a x/y grid and a time coordinate for use in tests."""
+    pytest.importorskip('cartopy')
+
     data = np.linspace(300, 250, 3 * 3 * 4 * 4).reshape((3, 3, 4, 4))
     ds = xr.Dataset(
         {'temperature': (['time', 'isobaric', 'y', 'x'], data),
@@ -1067,7 +1071,7 @@ def test_grid_deltas_from_dataarray_xy(test_da_xy):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
-def test_grid_deltas_from_dataarray_actual_xy(test_da_xy):
+def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
     # Construct lon/lat coordinates
     y, x = xr.broadcast(*test_da_xy.metpy.coordinates('y', 'x'))
@@ -1101,6 +1105,7 @@ def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
+@needs_cartopy
 def test_grid_deltas_from_dataarray_lonlat_assumed_order():
     """Test grid_deltas_from_dataarray when dim order must be assumed."""
     # Create test dataarray

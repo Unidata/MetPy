@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `station_plot` module."""
 
-import cartopy.crs as ccrs
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -284,7 +283,7 @@ def wind_plot():
 
 @pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0423}.get(MPL_VERSION, 0.00434),
                                remove_text=True)
-def test_barb_projection(wind_plot):
+def test_barb_projection(wind_plot, ccrs):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
 
@@ -300,7 +299,7 @@ def test_barb_projection(wind_plot):
 
 @pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0693}.get(MPL_VERSION, 0.00382),
                                remove_text=True)
-def test_arrow_projection(wind_plot):
+def test_arrow_projection(wind_plot, ccrs):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot
 

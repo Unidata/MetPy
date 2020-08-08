@@ -37,3 +37,23 @@ def doctest_available_modules(doctest_namespace):
     doctest_namespace['metpy'] = metpy
     doctest_namespace['metpy.calc'] = metpy.calc
     doctest_namespace['plt'] = matplotlib.pyplot
+
+
+@pytest.fixture()
+def ccrs():
+    """Provide access to the ``cartopy.crs`` module through a global fixture.
+
+    Any testing function/fixture that needs access to ``cartopy.crs`` can simply add this to
+    their parameter list.
+    """
+    return pytest.importorskip('cartopy.crs')
+
+
+@pytest.fixture
+def cfeature():
+    """Provide access to the ``cartopy.feature`` module through a global fixture.
+
+    Any testing function/fixture that needs access to ``cartopy.feature`` can simply add this
+    to their parameter list.
+    """
+    return pytest.importorskip('cartopy.feature')
