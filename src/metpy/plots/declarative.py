@@ -1356,7 +1356,7 @@ class PlotObs(HasTraits):
     """
 
     formats = List(default_value=[None])
-    formats.__doc__ = """List of the scalar and symbol field data formats. (optional)
+    formats.__doc__ = """List of the scalar, symbol, and text field data formats. (optional)
 
     List of scalar parameters formmaters or mapping values (if symbol) for plotting text and/or
     symbols around the station plot (e.g., for pressure variable
@@ -1364,6 +1364,8 @@ class PlotObs(HasTraits):
 
     For symbol mapping the following options are available to be put in as a string:
     current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.
+
+    For plotting text, use the format setting of 'text'.
     """
 
     colors = List(Unicode(), default_value=['black'])
@@ -1535,8 +1537,11 @@ class PlotObs(HasTraits):
                     self.handle.plot_symbol(location, data[ob_type][subset],
                                             mapper, color=color)
                 else:
-                    self.handle.plot_parameter(location, data[ob_type][subset],
-                                               color=color, formatter=self.formats[i])
+                    if formats == 'text':
+                        self.handle.plot_text(location, data[ob_type][subset], color=color)
+                    else:
+                        self.handle.plot_parameter(location, data[ob_type][subset],
+                                                   color=color, formatter=self.formats[i])
             else:
                 self.handle.plot_parameter(location, data[ob_type][subset], color=color)
         if self.vector_field[0] is not None:
