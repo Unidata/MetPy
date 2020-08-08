@@ -16,10 +16,6 @@ from metpy.units import units
 from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
 
 
-# Seed RandomState for deterministic tests
-np.random.seed(81964262)
-
-
 @pytest.fixture
 def test_ds():
     """Provide an xarray dataset for testing."""
@@ -29,7 +25,7 @@ def test_ds():
 @pytest.fixture
 def test_ds_generic():
     """Provide a generic-coordinate dataset for testing."""
-    return xr.DataArray(np.random.random((1, 3, 3, 5, 5)),
+    return xr.DataArray(np.zeros((1, 3, 3, 5, 5)),
                         coords={
                             'a': xr.DataArray(np.arange(1), dims='a'),
                             'b': xr.DataArray(np.arange(3), dims='b'),
