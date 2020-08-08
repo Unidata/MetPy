@@ -1,17 +1,15 @@
-name: Conda Tests
+name: Build Docs (Conda)
 
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
 jobs:
   #
-  # Run all tests on Conda on both Windows and macOS
+  # Build our docs on macOS and Windows on Python 3.6 and 3.7, respectively.
   #
-  CondaTests:
+  Docs:
     name: ${{ matrix.os }} ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
     defaults:
@@ -20,8 +18,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8]
-        os: [macOS, Windows]
+        include:
+          - python-version: 3.6
+            os: macOS
+          - python-version: 3.7
+            os: Windows
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -37,11 +38,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/conda_pkgs_dir
-        key: conda-tests-${{ runner.os }}-${{ matrix.python-version}}-${{ hashFiles('ci/*') }}
+        key: conda-docs-${{ runner.os }}-${{ matrix.python-version}}-${{ hashFiles('ci/*') }}
         restore-keys: |
-          conda-tests-${{ runner.os }}-${{ matrix.python-version}}
-          conda-tests-${{ runner.os }}
-          conda-tests-
+          conda-docs-${{ runner.os }}-${{ matrix.python-version}}
+          conda-docs-${{ runner.os }}
+          conda-docs-
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: goanpeca/setup-miniconda@v1
@@ -49,7 +50,7 @@ jobs:
         miniconda-version: "latest"
         python-version: ${{ matrix.python-version }}
         channel-priority: strict
-        channels: conda-forge/label/testing,conda-forge
+        channels: conda-forge
         show-channel-urls: true
         # Needed for caching
         use-only-tar-bz2: true
@@ -59,7 +60,7 @@ jobs:
       run: sed -e "s/scipy==.*/scipy==1.5.0/" -i'' ci/Current.txt
 
     - name: Install dependencies
-      run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
+      run: conda install --quiet --yes --file ci/doc_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir
@@ -73,8 +74,8 @@ jobs:
         CACHE_NUMBER: 0
       with:
         path: ${{ steps.cartopy-cache.outputs.dir }}
-        key: cartopy-${{ env.CACHE_NUMBER }}
-        restore-keys: cartopy-
+        key: docs-cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: docs-cartopy-
 
     - name: Install
       # For some reason on Windows 3.7 building the wheel fails to properly include our extra
@@ -84,24 +85,17 @@ jobs:
         python setup.py egg_info
         python -m pip install --no-deps .
 
-    - name: Run tests
+    - name: Build docs
       run: |
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests --cov-report=xml
+        pushd docs
+        make overridecheck html O=-W
+        popd
 
-    - name: Run doctests
-      # Windows produces some slightly different types that causes doctests to fail
-      if: ${{ runner.os != 'Windows' }}
-      env:
-        PY_IGNORE_IMPORTMISMATCH: 1
-      run: python -m pytest --doctest-modules -k "not test" src;
-
-    - name: Upload test images
-      if: ${{ failure() }}
+    - name: Upload docs as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: conda-${{ matrix.python-version }}-${{ runner.os }}-images
-        path: test_output/
-
-    - name: Upload coverage
-      uses: codecov/codecov-action@v1
+        name: ${{ matrix.os }}-${{ matrix.python-version }}-docs
+        path: |
+          docs/build/html
+          !docs/_static/*.pdf
