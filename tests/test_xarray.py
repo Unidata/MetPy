@@ -81,6 +81,13 @@ def test_globe(test_var):
     assert isinstance(globe, ccrs.Globe)
 
 
+def test_geodetic(test_var):
+    """Test getting the Geodetic CRS for the projection."""
+    geodetic = test_var.metpy.cartopy_geodetic
+
+    assert isinstance(geodetic, ccrs.Geodetic)
+
+
 def test_unit_array(test_var):
     """Test unit handling through the accessor."""
     arr = test_var.metpy.unit_array

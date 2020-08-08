@@ -60,6 +60,11 @@ class CFProjection:
 
         return ccrs.Globe(**kwargs)
 
+    @property
+    def cartopy_geodetic(self):
+        """Make a `cartopy.crs.Geodetic` instance from the appropriate `cartopy.crs.Globe`."""
+        return ccrs.Geodetic(self.cartopy_globe)
+
     def to_cartopy(self):
         """Convert to a CartoPy projection."""
         globe = self.cartopy_globe
