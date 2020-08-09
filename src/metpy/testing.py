@@ -34,6 +34,19 @@ def needs_cartopy(test_func):
     return wrapped
 
 
+def needs_pyproj(test_func):
+    """Decorate a test function or fixture as requiring PyProj.
+
+    Will skip the decorated test, or any test using the decorated fixture, if ``pyproj`` is
+    unable to be imported.
+    """
+    @functools.wraps(test_func)
+    def wrapped(*args, **kwargs):
+        pytest.importorskip('pyproj')
+        return test_func(*args, **kwargs)
+    return wrapped
+
+
 def get_upper_air_data(date, station):
     """Get upper air observations from the test data cache.
 

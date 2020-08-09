@@ -21,7 +21,7 @@ from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
                               DIR_STRS, UND, wrap_output_like)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           needs_cartopy)
+                           needs_cartopy, needs_pyproj)
 from metpy.units import DimensionalityError, units
 
 
@@ -421,6 +421,7 @@ def test_get_layer_heights_agl_bottom_no_interp():
     assert_array_almost_equal(data_true, data, 6)
 
 
+@needs_pyproj
 def test_lat_lon_grid_deltas_1d():
     """Test for lat_lon_grid_deltas for variable grid."""
     lat = np.arange(40, 50, 2.5)
@@ -438,6 +439,7 @@ def test_lat_lon_grid_deltas_1d():
 
 
 @pytest.mark.parametrize('flip_order', [(False, True)])
+@needs_pyproj
 def test_lat_lon_grid_deltas_2d(flip_order):
     """Test for lat_lon_grid_deltas for variable grid with negative delta distances."""
     lat = np.arange(40, 50, 2.5)
@@ -461,6 +463,7 @@ def test_lat_lon_grid_deltas_2d(flip_order):
     assert_almost_equal(dy, dy_truth, 4)
 
 
+@needs_pyproj
 def test_lat_lon_grid_deltas_extra_dimensions():
     """Test for lat_lon_grid_deltas with extra leading dimensions."""
     lon, lat = np.meshgrid(np.arange(-100, -90, 2.5), np.arange(40, 50, 2.5))
@@ -479,6 +482,7 @@ def test_lat_lon_grid_deltas_extra_dimensions():
     assert_almost_equal(dy, dy_truth, 4)
 
 
+@needs_pyproj
 def test_lat_lon_grid_deltas_mismatched_shape():
     """Test for lat_lon_grid_deltas for variable grid."""
     lat = np.arange(40, 50, 2.5)
@@ -488,6 +492,24 @@ def test_lat_lon_grid_deltas_mismatched_shape():
                     [-100., -97.5, -95., -92.5]])
     with pytest.raises(ValueError):
         lat_lon_grid_deltas(lon, lat)
+
+
+@needs_pyproj
+def test_lat_lon_grid_deltas_geod_kwargs():
+    """Test that geod kwargs are overridden by users #774."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.arange(-100, -90, 2.5)
+    dx, dy = lat_lon_grid_deltas(lon, lat, a=4370997)
+    dx_truth = np.array([[146095.76101984, 146095.76101984, 146095.76101984],
+                         [140608.9751528, 140608.9751528, 140608.9751528],
+                         [134854.56713287, 134854.56713287, 134854.56713287],
+                         [128843.49645823, 128843.49645823, 128843.49645823]]) * units.meter
+    dy_truth = np.array([[190720.72311199, 190720.72311199, 190720.72311199, 190720.72311199],
+                         [190720.72311199, 190720.72311199, 190720.72311199, 190720.72311199],
+                         [190720.72311199, 190720.72311199, 190720.72311199,
+                          190720.72311199]]) * units.meter
+    assert_almost_equal(dx, dx_truth, 4)
+    assert_almost_equal(dy, dy_truth, 4)
 
 
 @pytest.fixture()
@@ -852,6 +874,7 @@ def test_angle_to_direction_level_1():
     assert_array_equal(output_dirs, expected_dirs)
 
 
+@needs_pyproj
 def test_azimuth_range_to_lat_lon():
     """Test converstion of azimuth and range to lat/lon grid."""
     az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
@@ -883,6 +906,7 @@ def test_azimuth_range_to_lat_lon():
     assert_array_almost_equal(output_lat, true_lat, 6)
 
 
+@needs_pyproj
 def test_azimuth_range_to_lat_lon_diff_ellps():
     """Test converstion of azimuth and range to lat/lon grid."""
     az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
