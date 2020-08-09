@@ -59,6 +59,7 @@ sphinx_gallery_conf = {
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
 plot_html_show_formats = False
+plot_formats = ['png']
 
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
