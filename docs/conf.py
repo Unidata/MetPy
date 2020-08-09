@@ -160,20 +160,23 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-# html_theme = 'default'
-try:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-except ImportError:
-    pass
+html_theme = 'pydata_sphinx_theme'
+html_theme_options = {
+    'github_url': 'https://github.com/Unidata/MetPy',
+    'twitter_url': 'https://twitter.com/MetPy',
+    'external_links': [
+        {'name': 'Release Notes', 'url': 'https://github.com/Unidata/MetPy/releases'},
+    ],
+    'use_edit_page_button': False,
+    'google_analytics_id': 'UA-92978945-1',
+    'search_bar_position': 'navbar',
+#    'navbar_align': 'left'  # Coming in next release of theme
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'}
-if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.post1':
-    html_theme_options['versions'] = {'latest': '../latest', 'dev': '../dev'}
+# html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'}
 
 # Extra variables that will be available to the templates. Used to create the
 # links to the Github repository sources and issues
@@ -183,7 +186,8 @@ html_context = {
     'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
                             sphinx_gallery_conf['examples_dirs'])),
     'api_dir': 'api/generated',
-    'github_repo': 'Unidata/MetPy',
+    'github_user': 'Unidata',
+    'github_repo': 'MetPy',
     'github_version': 'master',  # Make changes to the master branch
 }
 
@@ -211,7 +215,7 @@ html_favicon = os.path.join('_static', 'metpy_32x32.ico')
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = ['theme_override.css']
+html_css_files = ['theme-unidata.css']
 html_js_files = ['pop_ver.js']
 
 # Add any extra paths that contain custom files (such as robots.txt or
