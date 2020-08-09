@@ -152,7 +152,7 @@ and v wind components) will be linearly interpolated to isentropic space.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.6/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
+    /opt/hostedtoolcache/Python/3.8.5/x64/lib/python3.8/site-packages/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -288,8 +288,8 @@ have to be calculated after the interpolation to isentropic space.
 
  .. code-block:: none
 
-    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:136: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
-      extendrect='True')
+    /home/runner/work/MetPy/MetPy/examples/isentropic_example.py:135: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
+      cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
 
 
 
@@ -358,8 +358,8 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
  .. code-block:: none
 
-    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:182: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
-      extendrect='True')
+    /home/runner/work/MetPy/MetPy/examples/isentropic_example.py:181: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
+      cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
 
 
 
@@ -367,7 +367,7 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  11.406 seconds)
+   **Total running time of the script:** ( 0 minutes  12.717 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:
