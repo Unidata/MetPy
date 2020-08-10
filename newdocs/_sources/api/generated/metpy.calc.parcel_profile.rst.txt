@@ -1,0 +1,12 @@
+parcel_profile
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: parcel_profile
+
+.. include:: metpy.calc.parcel_profile.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

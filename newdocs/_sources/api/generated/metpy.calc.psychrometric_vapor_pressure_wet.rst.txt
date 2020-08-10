@@ -1,0 +1,12 @@
+psychrometric_vapor_pressure_wet
+===========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: psychrometric_vapor_pressure_wet
+
+.. include:: metpy.calc.psychrometric_vapor_pressure_wet.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

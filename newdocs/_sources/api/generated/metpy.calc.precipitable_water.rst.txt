@@ -1,0 +1,12 @@
+precipitable_water
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: precipitable_water
+
+.. include:: metpy.calc.precipitable_water.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

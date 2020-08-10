@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cross Section Analysis &#8212; MetPy 1.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/doc_shared.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Isentropic Analysis" href="isentropic_example.html" />
+    <link rel="prev" title="Four Panel Map" href="Four_Panel_Map.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+    
+    <a class="navbar-brand" href="../index.html">
+      <img src="../_static/metpy_150x150.png" class="logo" alt="logo">
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Examples</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api/index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+  
+
+  <ul class="nav bd-sidenav">
+      
+      
+      
+      
+        
+          
+              <li class="">
+                  <a href="XArray_Projections.html">XArray Projection Handling</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="Advanced_Sounding.html">Advanced Sounding</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="Four_Panel_Map.html">Four Panel Map</a>
+              </li>
+          
+        
+          
+              <li class="active">
+                  <a href="">Cross Section Analysis</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="isentropic_example.html">Isentropic Analysis</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="meteogram_metpy.html">Meteogram</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="calculations/Parse_Angles.html">Parse angles</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="calculations/Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="calculations/Angle_to_Direction.html">Angle to Direction</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="calculations/Gradient.html">Gradient</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="calculations/Smoothing.html">Smoothing</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="gridding/Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="gridding/Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="gridding/Point_Interpolation.html">Point Interpolation</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="gridding/Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="gridding/Natural_Neighbor_Verification.html">Natural Neighbor Verification</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Simplified_Image_Plot.html">Simple Plotting</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/US_Counties.html">US Counties</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Combined_plotting.html">Combined Plotting</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/surface_declarative.html">Surface Analysis using Declarative Syntax</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Skew-T_Layout.html">Skew-T with Complex Layout</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Hodograph_Inset.html">Hodograph Inset</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Simple_Sounding.html">Simple Sounding</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Mesonet_Stationplot.html">Mesonet Station Plot</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Station_Plot.html">Station Plot</a>
+              </li>
+          
+        
+          
+              <li class="">
+                  <a href="plots/Station_Plot_with_Layout.html">Station Plot with Layout</a>
+              </li>
+          
+        
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/Unidata/MetPy/edit/master/docs/examples/cross_section.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-cross-section-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="cross-section-analysis">
+<span id="sphx-glr-examples-cross-section-py"></span><h1>Cross Section Analysis<a class="headerlink" href="#cross-section-analysis" title="Permalink to this headline">¶</a></h1>
+<p>The MetPy function <a class="reference internal" href="../api/generated/metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a> can obtain a cross-sectional slice through
+gridded data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.interpolate</span> <span class="kn">import</span> <a href="../api/generated/metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section" class="sphx-glr-backref-module-metpy-interpolate sphx-glr-backref-type-py-function"><span class="n">cross_section</span></a>
+</pre></div>
+</div>
+<p><strong>Getting the data</strong></p>
+<p>This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
+(<a class="reference external" href="https://www.ncdc.noaa.gov/data-access/model-data">https://www.ncdc.noaa.gov/data-access/model-data</a>).</p>
+<p>We use MetPy’s CF parsing to get the data ready for use, and squeeze down the size-one time
+dimension.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="xarray.open_dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
+Dimensions:              (isobaric: 29, x: 292, y: 118)
+Coordinates:
+    time                 datetime64[ns] 1987-04-04T18:00:00
+  * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
+  * y                    (y) float64 -3.087e+06 -3.054e+06 ... 7.114e+05
+  * x                    (x) float64 -3.977e+06 -3.945e+06 ... 5.47e+06
+    crs                  object Projection: lambert_conformal_conic
+Data variables:
+    Temperature          (isobaric, y, x) float32 ...
+    Lambert_Conformal    |S1 b&#39;d&#39;
+    lat                  (y, x) float64 ...
+    lon                  (y, x) float64 -140.0 -139.7 -139.5 ... -42.28 -42.07
+    u_wind               (isobaric, y, x) float32 ...
+    v_wind               (isobaric, y, x) float32 ...
+    Geopotential_height  (isobaric, y, x) float32 ...
+    Specific_humidity    (isobaric, y, x) float32 ...
+Attributes:
+    Conventions:              CF-1.0
+    Originating_center:       US National Weather Service - NCEP(WMC) (7)
+    Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+    Generating_Model:         North American Regional Reanalysis (NARR)
+    Product_Type:             Forecast/Uninitialized Analysis/Image Product
+    title:                    US National Weather Service - NCEP(WMC) North A...
+    institution:              Center US National Weather Service - NCEP(WMC) ...
+    source:                   Forecast/Uninitialized Analysis/Image Product
+    history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+    CF:feature_type:          GRID
+    file_format:              GRIB-1
+    location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+    _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+    History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+</pre></div>
+</div>
+<p>Define start and end points:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start</span></a> <span class="o">=</span> <span class="p">(</span><span class="mf">37.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">105.0</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">end</span></a> <span class="o">=</span> <span class="p">(</span><span class="mf">35.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get the cross section, and convert lat/lon to supplementary coordinates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a> <span class="o">=</span> <a href="../api/generated/metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section" class="sphx-glr-backref-module-metpy-interpolate sphx-glr-backref-type-py-function"><span class="n">cross_section</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">end</span></a><span class="p">)</span><span class="o">.</span><span class="n">set_coords</span><span class="p">((</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
+Dimensions:              (index: 100, isobaric: 29)
+Coordinates:
+    time                 datetime64[ns] 1987-04-04T18:00:00
+  * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
+    crs                  object Projection: lambert_conformal_conic
+    x                    (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
+    y                    (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
+  * index                (index) int64 0 1 2 3 4 5 6 7 ... 93 94 95 96 97 98 99
+    lat                  (index) float64 37.0 37.05 37.11 ... 35.66 35.58 35.5
+    lon                  (index) float64 -105.0 -104.6 -104.2 ... -65.39 -65.0
+Data variables:
+    Temperature          (isobaric, index) float64 287.7 286.9 ... 211.4 211.4
+    Lambert_Conformal    |S1 b&#39;d&#39;
+    u_wind               (isobaric, index) float64 -2.729 0.4776 ... 24.6 23.68
+    v_wind               (isobaric, index) float64 8.473 5.723 ... -1.082
+    Geopotential_height  (isobaric, index) float64 118.6 127.4 ... 1.636e+04
+    Specific_humidity    (isobaric, index) float64 0.006367 ... 4.223e-06
+Attributes:
+    Conventions:              CF-1.0
+    Originating_center:       US National Weather Service - NCEP(WMC) (7)
+    Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+    Generating_Model:         North American Regional Reanalysis (NARR)
+    Product_Type:             Forecast/Uninitialized Analysis/Image Product
+    title:                    US National Weather Service - NCEP(WMC) North A...
+    institution:              Center US National Weather Service - NCEP(WMC) ...
+    source:                   Forecast/Uninitialized Analysis/Image Product
+    history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+    CF:feature_type:          GRID
+    file_format:              GRIB-1
+    location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+    _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+    History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+</pre></div>
+</div>
+<p>For this example, we will be plotting potential temperature, relative humidity, and
+tangential/normal winds. And so, we need to calculate those, and add them to the dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pressure</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">specific_humidity</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="xarray.broadcast" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">],</span>
+                                                        <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">],</span>
+                                                        <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;Specific_humidity&#39;</span><span class="p">])</span>
+
+<span class="n">theta</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">potential_temperature</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pressure</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature</span></a><span class="p">)</span>
+<span class="n">rh</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="metpy.calc.relative_humidity_from_specific_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">relative_humidity_from_specific_humidity</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pressure</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temperature</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">specific_humidity</span></a><span class="p">)</span>
+
+<span class="c1"># These calculations return unit arrays, so put those back into DataArrays in our Dataset</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;Potential_temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class"><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span></a><span class="p">(</span><span class="n">theta</span><span class="p">,</span>
+                                              <span class="n">coords</span><span class="o">=</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.coords.html#xarray.DataArray.coords" title="xarray.DataArray.coords" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">temperature</span><span class="o">.</span><span class="n">coords</span></a><span class="p">,</span>
+                                              <span class="n">dims</span><span class="o">=</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.dims.html#xarray.DataArray.dims" title="xarray.DataArray.dims" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">temperature</span><span class="o">.</span><span class="n">dims</span></a><span class="p">,</span>
+                                              <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">theta</span><span class="o">.</span><span class="n">units</span><span class="p">})</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;Relative_humidity&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class"><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span></a><span class="p">(</span><span class="n">rh</span><span class="p">,</span>
+                                          <span class="n">coords</span><span class="o">=</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.coords.html#xarray.DataArray.coords" title="xarray.DataArray.coords" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">specific_humidity</span><span class="o">.</span><span class="n">coords</span></a><span class="p">,</span>
+                                          <span class="n">dims</span><span class="o">=</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.dims.html#xarray.DataArray.dims" title="xarray.DataArray.dims" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">specific_humidity</span><span class="o">.</span><span class="n">dims</span></a><span class="p">,</span>
+                                          <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">rh</span><span class="o">.</span><span class="n">units</span><span class="p">})</span>
+
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)</span>
+<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;t_wind&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;n_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.cross_section_components.html#metpy.calc.cross_section_components" title="metpy.calc.cross_section_components" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">cross_section_components</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">],</span>
+                                                                   <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
+Dimensions:                (index: 100, isobaric: 29)
+Coordinates:
+    time                   datetime64[ns] 1987-04-04T18:00:00
+  * isobaric               (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
+    crs                    object Projection: lambert_conformal_conic
+    x                      (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
+    y                      (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
+  * index                  (index) int64 0 1 2 3 4 5 6 ... 93 94 95 96 97 98 99
+    lat                    (index) float64 37.0 37.05 37.11 ... 35.66 35.58 35.5
+    lon                    (index) float64 -105.0 -104.6 -104.2 ... -65.39 -65.0
+Data variables:
+    Temperature            (isobaric, index) float64 287.7 286.9 ... 211.4 211.4
+    Lambert_Conformal      |S1 b&#39;d&#39;
+    u_wind                 (isobaric, index) float64 &lt;Quantity([[ -5.30445235...
+    v_wind                 (isobaric, index) float64 &lt;Quantity([[16.47047637 ...
+    Geopotential_height    (isobaric, index) float64 118.6 127.4 ... 1.636e+04
+    Specific_humidity      (isobaric, index) float64 0.006367 ... 4.223e-06
+    Potential_temperature  (isobaric, index) float64 &lt;Quantity([[287.71705253...
+    Relative_humidity      (isobaric, index) float64 &lt;Quantity([[0.61136026 0...
+    t_wind                 (isobaric, index) float64 &lt;Quantity([[-2.02660106 ...
+    n_wind                 (isobaric, index) float64 &lt;Quantity([[ 17.18448995...
+Attributes:
+    Conventions:              CF-1.0
+    Originating_center:       US National Weather Service - NCEP(WMC) (7)
+    Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+    Generating_Model:         North American Regional Reanalysis (NARR)
+    Product_Type:             Forecast/Uninitialized Analysis/Image Product
+    title:                    US National Weather Service - NCEP(WMC) North A...
+    institution:              Center US National Weather Service - NCEP(WMC) ...
+    source:                   Forecast/Uninitialized Analysis/Image Product
+    history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+    CF:feature_type:          GRID
+    file_format:              GRIB-1
+    location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+    _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+    History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+</pre></div>
+</div>
+<p>Now, we can make the plot.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the figure object and primary axes</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">16.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">()</span>
+
+<span class="c1"># Plot RH using contourf</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="matplotlib.contour.QuadContourSet" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_contour</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;Relative_humidity&#39;</span><span class="p">],</span>
+                         <span class="n">levels</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="o">.</span><span class="mi">05</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlGnBu&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_colorbar</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.colorbar" title="matplotlib.figure.Figure.colorbar" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="matplotlib.contour.QuadContourSet" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rh_contour</span></a><span class="p">)</span>
+
+<span class="c1"># Plot potential temperature using contour, with some custom labeling</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.QuadContourSet" title="matplotlib.contour.QuadContourSet" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">theta_contour</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;Potential_temperature&#39;</span><span class="p">],</span>
+                           <span class="n">levels</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">theta_contour</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">theta_contour</span><span class="o">.</span><span class="n">levels</span></a><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot winds using the axes interface directly, with some custom indexing to make the barbs</span>
+<span class="c1"># less crowded</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_vert</span></a> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">29</span><span class="p">))</span>
+<a href="https://docs.python.org/3/library/functions.html#slice" title="builtins.slice" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_horz</span></a> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="matplotlib.axes.Axes.barbs" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><a href="https://docs.python.org/3/library/functions.html#slice" title="builtins.slice" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_horz</span></a><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">][</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_vert</span></a><span class="p">],</span>
+         <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;t_wind&#39;</span><span class="p">][</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_vert</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#slice" title="builtins.slice" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_horz</span></a><span class="p">],</span>
+         <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;n_wind&#39;</span><span class="p">][</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_vert</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#slice" title="builtins.slice" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_slc_horz</span></a><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+<span class="c1"># Adjust the y-axis to be logarithmic</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_yscale.html#matplotlib.axes.Axes.set_yscale" title="matplotlib.axes.Axes.set_yscale" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span></a><span class="p">(</span><span class="s1">&#39;symlog&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_yticklabels.html#matplotlib.axes.Axes.set_yticklabels" title="matplotlib.axes.Axes.set_yticklabels" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_ylim.html#matplotlib.axes.Axes.set_ylim" title="matplotlib.axes.Axes.set_ylim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_yticks.html#matplotlib.axes.Axes.set_yticks" title="matplotlib.axes.Axes.set_yticks" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span>
+
+<span class="c1"># Define the CRS and inset axes</span>
+<span class="n">data_crs</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;Geopotential_height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+<span class="n">ax_inset</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.add_axes" title="matplotlib.figure.Figure.add_axes" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span></a><span class="p">([</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.665</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">data_crs</span><span class="p">)</span>
+
+<span class="c1"># Plot geopotential height at 500 hPa using xarray&#39;s contour wrapper</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax_inset</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;Geopotential_height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">isobaric</span><span class="o">=</span><span class="mf">500.</span><span class="p">),</span>
+                 <span class="n">levels</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">5100</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;inferno&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the path of the cross section</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">endpoints</span></a> <span class="o">=</span> <span class="n">data_crs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">(),</span>
+                                      <span class="o">*</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.vstack.html#numpy.vstack" title="numpy.vstack" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">vstack</span></a><span class="p">([</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">end</span></a><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.scatter.html#matplotlib.axes.Axes.scatter" title="matplotlib.axes.Axes.scatter" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax_inset</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">endpoints</span></a><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">endpoints</span></a><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="matplotlib.axes.Axes.plot" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax_inset</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Add geographic features</span>
+<span class="n">ax_inset</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">ax_inset</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Set the titles and axes labels</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax_inset</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s1">&#39;NARR Cross-Section </span><span class="se">\u2013</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1"> </span><span class="se">\u2013</span><span class="s1"> Valid: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>
+             <span class="s1">&#39;Potential Temperature (K), Tangential/Normal Winds (knots), &#39;</span>
+             <span class="s1">&#39;Relative Humidity (dimensionless)</span><span class="se">\n</span><span class="s1">&#39;</span>
+             <span class="s1">&#39;Inset: Cross-Section Path and 500 hPa Geopotential Height&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                 <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">end</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cross</span></a><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%MZ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_ylabel.html#matplotlib.axes.Axes.set_ylabel" title="matplotlib.axes.Axes.set_ylabel" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span></a><span class="p">(</span><span class="s1">&#39;Pressure (hPa)&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_xlabel.html#matplotlib.axes.Axes.set_xlabel" title="matplotlib.axes.Axes.set_xlabel" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span></a><span class="p">(</span><span class="s1">&#39;Longitude (degrees east)&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase.set_label" title="matplotlib.colorbar.ColorbarBase.set_label" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-method"><span class="n">rh_colorbar</span><span class="o">.</span><span class="n">set_label</span></a><span class="p">(</span><span class="s1">&#39;Relative Humidity (dimensionless)&#39;</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="NARR Cross-Section – (37.0, -105.0) to (35.5, -65.0) – Valid: 1987-04-04 18:00Z Potential Temperature (K), Tangential/Normal Winds (knots), Relative Humidity (dimensionless) Inset: Cross-Section Path and 500 hPa Geopotential Height" class="sphx-glr-single-img" src="../_images/sphx_glr_cross_section_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/examples/cross_section.py:104: UserWarning: FixedFormatter should only be used together with FixedLocator
+  ax.set_yticklabels(np.arange(1000, 50, -100))
+/Users/rmay/repos/metpy/examples/cross_section.py:137: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+</pre></div>
+</div>
+<p>Note: The x-axis can display any variable that is the same length as the
+plotted variables, including latitude. Additionally, arguments can be provided
+to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabels</span></code> to label lat/lon pairs, similar to the default NCL output.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.463 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cross-section-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/2b7cc27b99027ed24f4bcc2332422c1a/cross_section.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cross_section.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/7fd39302ff9f3fa4a7870d3c31b04722/cross_section.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cross_section.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="Four_Panel_Map.html" title="previous page">Four Panel Map</a>
+    <a class='right-next' id="next-link" href="isentropic_example.html" title="next page">Isentropic Analysis</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    <script src="../_static/js/index.js"></script>
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Aug 11, 2020 at 21:45:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

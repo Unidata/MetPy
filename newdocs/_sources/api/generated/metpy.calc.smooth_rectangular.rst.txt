@@ -1,0 +1,12 @@
+smooth_rectangular
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: smooth_rectangular
+
+.. include:: metpy.calc.smooth_rectangular.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

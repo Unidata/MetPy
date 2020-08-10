@@ -1,0 +1,12 @@
+smooth_n_point
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: smooth_n_point
+
+.. include:: metpy.calc.smooth_n_point.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

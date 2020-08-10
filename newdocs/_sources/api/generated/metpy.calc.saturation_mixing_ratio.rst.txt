@@ -1,0 +1,12 @@
+saturation_mixing_ratio
+==================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: saturation_mixing_ratio
+
+.. include:: metpy.calc.saturation_mixing_ratio.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

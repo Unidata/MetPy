@@ -1,0 +1,12 @@
+storm_relative_helicity
+==================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: storm_relative_helicity
+
+.. include:: metpy.calc.storm_relative_helicity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
