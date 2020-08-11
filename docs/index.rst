@@ -1,41 +1,26 @@
-.. image:: _static/sounding.png
-   :width: 150 px
-   :align: left
-
-.. image:: _static/radar.png
-   :width: 150 px
-   :align: left
-
-.. image:: _static/NSF.jpg
-   :width: 100 px
-   :align: right
-
 .. toctree::
-   :maxdepth: 1
+   :titlesonly:
+   :maxdepth: 3
    :hidden:
 
    installguide
-   startingguide
-   units
+   userguide/index
    examples/index
-   Python Gallery (separate site) <https://unidata.github.io/python-training/gallery/gallery-home>
-   tutorials/index
    api/index
-   roadmap
-   gempak
+   devel/index
    SUPPORT
-   CONTRIBUTING
-   infrastructureguide
-   citing
-   references
 
 =====
 MetPy
 =====
 
+.. image:: _static/NSF.jpg
+   :width: 100 px
+   :align: right
+
 MetPy is a collection of tools in Python for reading, visualizing, and
 performing calculations with weather data. If you're new to MetPy, check
-out our :doc:`Getting Started <startingguide>` guide. Development is
+out our :doc:`Getting Started <userguide/startingguide>` guide. Development is
 supported by the National Science Foundation through grants AGS-1344155,
 OAC-1740315, AGS-1901712.
 
@@ -43,6 +28,12 @@ For additional MetPy examples not included in this repository, please see the `U
 Gallery`_.
 
 We support Python >= 3.6. Support for Python 2.7 was dropped with the release of 0.12.
+
+.. image:: _static/sounding.png
+   :width: 150 px
+
+.. image:: _static/radar.png
+   :width: 150 px
 
 ----------
 Contact Us

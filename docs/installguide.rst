@@ -1,6 +1,6 @@
-==================
-Installation Guide
-==================
+=======
+Install
+=======
 
 ------------
 Requirements
