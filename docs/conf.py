@@ -220,7 +220,7 @@ html_favicon = os.path.join('_static', 'metpy_32x32.ico')
 html_static_path = ['_static']
 
 html_css_files = ['theme-unidata.css']
-html_js_files = ['pop_ver.js']
+html_js_files = ['doc_shared.js']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
