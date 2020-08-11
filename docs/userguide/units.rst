@@ -1,5 +1,5 @@
-Unit Support
-============
+Working with Units
+==================
 
 To ensure correct calculations, MetPy relies upon the :mod:`pint` library to enforce
 unit-correctness. This simplifies the MetPy API by eliminating the need to specify units

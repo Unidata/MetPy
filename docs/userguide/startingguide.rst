@@ -13,7 +13,7 @@ discussion and examples of the Scientific Python ecosystem.
 Installation
 ------------
 
-For installation instructions, please see our :doc:`Installation Guide <../installguide>`.
+For installation instructions, please see our :doc:`Installation Guide <installguide>`.
 MetPy Monday videos `#1`_, `#2`_, and `#3`_ demonstrate how to install the conda package
 manager and Python packages, and how to work with conda environments.
 
