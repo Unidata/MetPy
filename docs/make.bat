@@ -18,6 +18,11 @@ if "%1" == "" goto help
 
 if "%1" == "clean" (
 	for /d %%i in (%BUILDDIR%\*) do rmdir /q /s %%i
+	goto end
+)
+
+if "%1" == "cleanall" (
+	for /d %%i in (%BUILDDIR%\*) do rmdir /q /s %%i
 	rmdir /q /s %SOURCEDIR%\examples\ %SOURCEDIR%\tutorials\ %SOURCEDIR%\api\generated\
 	goto end
 )
