@@ -1,112 +1,17 @@
-.summary {
-    color: #808080;
-    border-left: 5px solid #ED1951;
-    font-size:16px;
-}
+/* UCAR style heading towards use of Poppins font */
+ .header-style, h1, h2, h3, h4, h5, h6 {
+   font-family: Poppins, sans-serif;
+ }
 
-
-h3 {color: #ED1951; }
-h4 {color: #808080; }
-
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    background-color: #06778F; /* was #248ec2 */
-    color: white;
-}
-
-.nav > li.active > a {
-    background-color: #034250; /* was #347DBE */
-}
-
-.nav > li > a:hover {
-    background-color: #06778F; /* was #248ec2 */
-}
-
-div.navbar-collapse .dropdown-menu > li > a:hover {
-    background-color: #034250; /* was #347DBE */
-}
-
-.nav li.thirdlevel > a {
-    background-color: #FAFAFA !important;
-    color: #06778F; /* was #248ec2 */
-    font-weight: bold;
-}
-
-a[data-toggle="tooltip"] {
-    color: #649345;
-    font-style: italic;
-    cursor: default;
-}
-
-.navbar-inverse {
+ /* Unidata header color */
+.bg-unidata {
     background-color: #06778F;
-    border-color: #034250;
 }
 
-.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-    color: #034250;
-}
-
-.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-    background-color: #034250;
-    color: #ffffff;
-}
-
-/* not sure if using this ...*/
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-    border-color: #248ec2 !important;
-}
-
-.btn-primary {
-    color: #ffffff;
-    background-color: #034250; /* was #347DBE */
-    border-color: #034250; /* was #347DBE */
-}
-
-.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
-    background-color: #034250; /* was #347DBE */
-}
-
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
-.open .dropdown-toggle.btn-primary {
-    background-color: #06778F; /* was #248ec2 */
-    border-color: #034250; /* was #347DBE */
-}
-
-.printTitle {
-    color: #034250 !important;
-}
-
-body.print h1 {color: #034250 !important; font-size:28px !important;}
-body.print h2 {color: #595959 !important; font-size:20px !important;}
-body.print h3 {color: #E50E51 !important; font-size:14px !important;}
-body.print h4 {color: #679DCE !important; font-size:14px; font-style: italic !important;}
-
-.anchorjs-link:hover {
-    color: #216f9b;
-}
-
-div.sidebarTitle {
-    color: #034250;
-}
-
-li.sidebarTitle {
-    margin-top:40px;
-    font-weight:normal;
-    font-size:130%;
-    color: #ED1951;
-    margin-bottom:10px;
-    margin-left: 5px;
-
-}
-/* left-floated version menu */ /* DD 2020_04 */
-@media (min-width: 768px) {
-  ul.navbar-left > li#vermenu > a {
-    font-size: 18px;
-    font-weight: 600;
-  }
+/* Override the default color set in the original theme */
+.navbar-nav>.active>.nav-link {
+    color: #fff !important;
+    font-weight: 400 !important;
 }
 
 /* Enhance the links to function docs in the gallery examples */
@@ -115,28 +20,23 @@ div[class^="highlight"] a {
 }
 
 /* Control the appearance of the version alert banner */
-#banner .version-alert {
-    background-color: #D95B43;
-    padding: 1em;
-    color: #fff;
+#banner .alert-version, .alert-news {
+    margin: 1em;
+    padding: 0.5em;
     font-family: "Work Sans", sans-serif;
     font-weight: 600; font-size: 16px;
 }
 
-.version-alert a {
-    text-decoration: underline;
-    color: #ddd;
+/* Tweaks to the appearance of the sidebars */
+.bd-sidebar {
+    flex: 0 0 20%;
+    border-right: none;
 }
 
-/* Control the appearance of the news alert banner */
-#banner .news-alert {
-    background-color: #ECD078;
-    padding: 1em;
-    font-family: "Work Sans", sans-serif;
-    font-weight: 600; font-size: 16px;
+.bd-toc .tocsection {
+    border-left: none;
 }
 
-.news-alert a {
-    text-decoration: underline;
-    color: #444;
+.bd-toc .section-nav {
+    border-left: none;
 }

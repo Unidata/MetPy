@@ -16,8 +16,8 @@ $(document).ready(function() {
             } else {
                 msg = 'previous';
             }
-            content = $('<div class="version-alert">This documentation page is for a ' + msg +
-                        ' version. For the latest release version, go to <a href="https://unidata.github.io/MetPy/latest/">https://unidata.github.io/MetPy/latest/</a>');
+            content = $('<div class="alert alert-warning alert-version" role="alert">This documentation page is for a ' + msg +
+                        ' version. For the latest release version, go to <a class="alert-link" href="https://unidata.github.io/MetPy/latest/">https://unidata.github.io/MetPy/latest/</a>');
             $('#banner').append(content);
         }
 
@@ -36,7 +36,7 @@ $(document).ready(function() {
 $(document).ready(function () {
     $.get('/' + proj + '/alert.html', function (data) {
        if (data.length > 0) {
-         content = $('<div class="news-alert">' + data + '</div>')
+         content = $('<div class="alert alert-primary alert-news" role="alert">' + data + '</div>')
          $('#banner').prepend(content);
        }
     })
