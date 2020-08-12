@@ -23,8 +23,9 @@ from metpy.interpolate import cross_section
 ##############################
 # **Getting the data**
 #
-# This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
-# (https://www.ncdc.noaa.gov/data-access/model-data).
+# This example uses [NARR reanalysis data](
+# https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+# for 18 UTC 04 April 1987 from NCEI.
 #
 # We use MetPy's CF parsing to get the data ready for use, and squeeze down the size-one time
 # dimension.
