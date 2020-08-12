@@ -81,7 +81,6 @@ jobs:
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
-        python -m pip install -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html sphinx_rtd_theme==0.2.5b1.post1
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir

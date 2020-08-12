@@ -42,7 +42,7 @@ The documentation is hosted on `GitHub Pages <https://unidata.github.io/MetPy>`_
 built automatically from ``master`` with every build on Travis-CI; every merged PR will
 have the built docs upload to GitHub Pages. As part of the build, the documentation is also
 checked with ``doc8``. To see what the docs will look like, you also need to install the
-``sphinx-rtd-theme`` package.
+``pydata-sphinx-theme`` package.
 
 -----------
 Other Tools
