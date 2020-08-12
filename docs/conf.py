@@ -344,3 +344,5 @@ linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     r'https://youtu\.be/[\d\w\-_]+',
     # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
     r'https://doi.org/10.1175/.*']
+
+linkcheck_request_headers = {'https://www.ncdc.noaa.gov/': {'Accept-Encoding': 'deflate'}}
