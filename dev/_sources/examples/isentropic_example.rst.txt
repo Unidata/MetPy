@@ -39,9 +39,10 @@ analysis data in isobaric coordinates.
 
 **Getting the data**
 
-In this example, NARR reanalysis data for 18 UTC 04 April 1987 from the National Centers
-for Environmental Information (https://www.ncdc.noaa.gov/data-access/model-data)
-will be used.
+In this example, [NARR reanalysis data](
+https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+for 18 UTC 04 April 1987 from the National Centers for Environmental Information will be
+used.
 
 
 .. code-block:: default
@@ -288,7 +289,7 @@ have to be calculated after the interpolation to isentropic space.
 
  .. code-block:: none
 
-    /home/runner/work/MetPy/MetPy/examples/isentropic_example.py:135: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
+    /home/runner/work/MetPy/MetPy/examples/isentropic_example.py:136: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
       cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
 
 
@@ -358,7 +359,7 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
  .. code-block:: none
 
-    /home/runner/work/MetPy/MetPy/examples/isentropic_example.py:181: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
+    /home/runner/work/MetPy/MetPy/examples/isentropic_example.py:182: MatplotlibDeprecationWarning: The 'extend' parameter to Colorbar has no effect because it is overridden by the mappable; it is deprecated since 3.3 and will be removed two minor releases later.
       cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
 
 
@@ -367,7 +368,7 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.717 seconds)
+   **Total running time of the script:** ( 0 minutes  12.553 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:

@@ -264,13 +264,13 @@ given atmospheric layer.</p>
 <li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric pressure profile</p></li>
 <li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric temperature profile</p></li>
 <li><p><strong>dewpoint</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric dewpoint profile</p></li>
-<li><p><strong>parcel_start_pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – Pressure at which the mixed parcel should begin (default None)</p></li>
-<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – Atmospheric heights corresponding to the given pressures (default None)</p></li>
-<li><p><strong>bottom</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The bottom of the layer as a pressure or height above the surface pressure
+<li><p><strong>parcel_start_pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – Pressure at which the mixed parcel should begin (default None)</p></li>
+<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – Atmospheric heights corresponding to the given pressures (default None)</p></li>
+<li><p><strong>bottom</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – The bottom of the layer as a pressure or height above the surface pressure
 (default None)</p></li>
-<li><p><strong>depth</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The thickness of the layer as a pressure or height above the bottom of the layer
+<li><p><strong>depth</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – The thickness of the layer as a pressure or height above the bottom of the layer
 (default 100 hPa)</p></li>
-<li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – Interpolate the top and bottom points if they are not in the given data</p></li>
+<li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) – Interpolate the top and bottom points if they are not in the given data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -309,7 +309,7 @@ given atmospheric layer.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 09, 2020 at 04:30:10.
+      Last updated on Aug 12, 2020 at 08:46:35.
 
     </p>
   </div>
@@ -343,7 +343,7 @@ given atmospheric layer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post217+g06dd809',
+            VERSION:'1.0.0rc1.post222+gceaa8a3',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

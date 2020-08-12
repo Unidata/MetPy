@@ -39,8 +39,9 @@ gridded data.
 
 **Getting the data**
 
-This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
-(https://www.ncdc.noaa.gov/data-access/model-data).
+This example uses [NARR reanalysis data](
+https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+for 18 UTC 04 April 1987 from NCEI.
 
 We use MetPy's CF parsing to get the data ready for use, and squeeze down the size-one time
 dimension.
@@ -333,7 +334,7 @@ Now, we can make the plot.
 
  .. code-block:: none
 
-    /home/runner/work/MetPy/MetPy/examples/cross_section.py:104: UserWarning: FixedFormatter should only be used together with FixedLocator
+    /home/runner/work/MetPy/MetPy/examples/cross_section.py:105: UserWarning: FixedFormatter should only be used together with FixedLocator
       ax.set_yticklabels(np.arange(1000, 50, -100))
 
 
@@ -346,7 +347,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.178 seconds)
+   **Total running time of the script:** ( 0 minutes  2.191 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:

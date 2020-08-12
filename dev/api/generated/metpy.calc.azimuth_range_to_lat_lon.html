@@ -253,16 +253,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>azimuths</strong> (<em>array_like</em>) – array of azimuths defining the grid. If not a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>,
+<li><p><strong>azimuths</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – array of azimuths defining the grid. If not a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>,
 assumed to be in degrees.</p></li>
-<li><p><strong>ranges</strong> (<em>array_like</em>) – array of range distances from the pole. Typically in meters.</p></li>
-<li><p><strong>center_lat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The latitude of the pole in decimal degrees</p></li>
-<li><p><strong>center_lon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The longitude of the pole in decimal degrees</p></li>
+<li><p><strong>ranges</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – array of range distances from the pole. Typically in meters.</p></li>
+<li><p><strong>center_lat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – The latitude of the pole in decimal degrees</p></li>
+<li><p><strong>center_lon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – The longitude of the pole in decimal degrees</p></li>
 <li><p><strong>kwargs</strong> – arbitrary keyword arguments to pass to pyproj.Geod (e.g. ‘ellps’)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>lon, lat</strong> (<em>2D arrays of longitudes and latitudes corresponding to original locations</em>)</p>
+<dd class="field-even"><p><strong>lon, lat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">2D</span> <span class="pre">arrays</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">longitudes</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">latitudes</span> <span class="pre">corresponding</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">original</span> <span class="pre">locations</span></code>)</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -294,7 +294,7 @@ assumed to be in degrees.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 09, 2020 at 04:30:10.
+      Last updated on Aug 12, 2020 at 08:46:35.
 
     </p>
   </div>
@@ -328,7 +328,7 @@ assumed to be in degrees.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post217+g06dd809',
+            VERSION:'1.0.0rc1.post222+gceaa8a3',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
