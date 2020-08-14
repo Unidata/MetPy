@@ -248,10 +248,10 @@ and optionally y, velocity components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The wind component along the x-axis</p></li>
-<li><p><strong>w</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The wind component along the z-axis</p></li>
-<li><p><strong>v</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>, <em>optional</em>) – The wind component along the y-axis.</p></li>
-<li><p><strong>perturbation</strong> (<code class="docutils literal notranslate"><span class="pre">{False,</span> <span class="pre">True}</span></code>, <em>optional</em>) – True if the <em class="xref py py-obj">u</em>, <em class="xref py py-obj">w</em>, and <em class="xref py py-obj">v</em> components of wind speed
+<li><p><strong>u</strong> (<em>array_like</em>) – The wind component along the x-axis</p></li>
+<li><p><strong>w</strong> (<em>array_like</em>) – The wind component along the z-axis</p></li>
+<li><p><strong>v</strong> (<em>array_like</em><em>, </em><em>optional</em>) – The wind component along the y-axis.</p></li>
+<li><p><strong>perturbation</strong> (<em>{False</em><em>, </em><em>True}</em><em>, </em><em>optional</em>) – True if the <em class="xref py py-obj">u</em>, <em class="xref py py-obj">w</em>, and <em class="xref py py-obj">v</em> components of wind speed
 supplied to the function are perturbation velocities.
 If False, perturbation velocities will be calculated by
 removing the mean value from each component.</p></li>
@@ -261,7 +261,7 @@ removing the mean value from each component.</p></li>
 <dd class="field-even"><p><em>array_like</em> – The corresponding friction velocity</p>
 </dd>
 <dt class="field-odd">Other Parameters</dt>
-<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The index of the time axis. Default is -1</p>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em>) – The index of the time axis. Default is -1</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -312,7 +312,7 @@ reduced to</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -346,7 +346,7 @@ reduced to</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

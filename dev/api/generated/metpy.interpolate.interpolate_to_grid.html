@@ -247,37 +247,37 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – x coordinate, can have units of linear distance or degrees</p></li>
-<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – y coordinate, can have units of linear distance or degrees</p></li>
-<li><p><strong>z</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – observation value</p></li>
-<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – What type of interpolation to use. Available options include:
+<li><p><strong>x</strong> (<em>array_like</em>) – x coordinate, can have units of linear distance or degrees</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – y coordinate, can have units of linear distance or degrees</p></li>
+<li><p><strong>z</strong> (<em>array_like</em>) – observation value</p></li>
+<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – What type of interpolation to use. Available options include:
 1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.5.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</p></li>
-<li><p><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – The horizontal resolution of the generated grid, given in the same units as the
+<li><p><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The horizontal resolution of the generated grid, given in the same units as the
 x and y parameters. Default 50000.</p></li>
-<li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
+<li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
 point. Default is 3.</p></li>
-<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
-<li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Response parameter for barnes interpolation, specified nondimensionally
+<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
+<li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Response parameter for barnes interpolation, specified nondimensionally
 in terms of the Nyquist. Default 5.052</p></li>
-<li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – A search radius to use for the barnes and cressman interpolation schemes.
+<li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – A search radius to use for the barnes and cressman interpolation schemes.
 If search_radius is not specified, it will default to the average spacing of
 observations.</p></li>
-<li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Specifies which function to use for Rbf interpolation.
+<li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
 ‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.5.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</p></li>
-<li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
-<li><p><strong>boundary_coords</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dictionary</span></code>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
+<li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
+<li><p><strong>boundary_coords</strong> (<em>dictionary</em>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
 should be in format: {‘west’: west, ‘south’: south, ‘east’: east, ‘north’: north}</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>grid_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">2)</span> <span class="pre">ndarray</span></code>) – Meshgrid for the resulting interpolation in the x dimension</p></li>
-<li><p><strong>grid_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">2)</span> <span class="pre">ndarray</span></code>) – Meshgrid for the resulting interpolation in the y dimension ndarray</p></li>
-<li><p><strong>img</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">N)</span> <span class="pre">ndarray</span></code>) – 2-dimensional array representing the interpolated values for each grid.</p></li>
+<li><p><strong>grid_x</strong> (<em>(N, 2) ndarray</em>) – Meshgrid for the resulting interpolation in the x dimension</p></li>
+<li><p><strong>grid_y</strong> (<em>(N, 2) ndarray</em>) – Meshgrid for the resulting interpolation in the y dimension ndarray</p></li>
+<li><p><strong>img</strong> (<em>(M, N) ndarray</em>) – 2-dimensional array representing the interpolated values for each grid.</p></li>
 </ul>
 </p>
 </dd>
@@ -329,7 +329,7 @@ are provided.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -363,7 +363,7 @@ are provided.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

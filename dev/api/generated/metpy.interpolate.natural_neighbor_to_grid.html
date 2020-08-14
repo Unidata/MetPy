@@ -246,16 +246,16 @@ approach.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">)</span> <span class="pre">ndarray</span></code>) – x-coordinates of observations</p></li>
-<li><p><strong>yp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">)</span> <span class="pre">ndarray</span></code>) – y-coordinates of observations</p></li>
-<li><p><strong>variable</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">)</span> <span class="pre">ndarray</span></code>) – observation values associated with (xp, yp) pairs.
+<li><p><strong>xp</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – x-coordinates of observations</p></li>
+<li><p><strong>yp</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – y-coordinates of observations</p></li>
+<li><p><strong>variable</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – observation values associated with (xp, yp) pairs.
 IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
-<li><p><strong>grid_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">2)</span> <span class="pre">ndarray</span></code>) – Meshgrid associated with x dimension</p></li>
-<li><p><strong>grid_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">2)</span> <span class="pre">ndarray</span></code>) – Meshgrid associated with y dimension</p></li>
+<li><p><strong>grid_x</strong> (<em>(</em><em>M</em><em>, </em><em>2</em><em>) </em><em>ndarray</em>) – Meshgrid associated with x dimension</p></li>
+<li><p><strong>grid_y</strong> (<em>(</em><em>M</em><em>, </em><em>2</em><em>) </em><em>ndarray</em>) – Meshgrid associated with y dimension</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>img</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">N)</span> <span class="pre">ndarray</span></code>) – Interpolated values on a 2-dimensional grid</p>
+<dd class="field-even"><p><strong>img</strong> (<em>(M, N) ndarray</em>) – Interpolated values on a 2-dimensional grid</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -289,7 +289,7 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -323,7 +323,7 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

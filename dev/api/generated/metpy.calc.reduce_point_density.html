@@ -258,9 +258,9 @@ specified with units. If none are provided, meters are assumed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">K)</span> <span class="pre">array-like</span></code>) – N locations of the points in K dimensional space</p></li>
-<li><p><strong>radius</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Minimum radius allowed between points. If units are not provided, meters is assumed.</p></li>
-<li><p><strong>priority</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(N</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">K)</span> <span class="pre">array-like</span></code>, <em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
+<li><p><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em>) – N locations of the points in K dimensional space</p></li>
+<li><p><strong>radius</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or float) – Minimum radius allowed between points. If units are not provided, meters is assumed.</p></li>
+<li><p><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
 be used to control selection priority for points.</p></li>
 </ul>
 </dd>
@@ -318,7 +318,7 @@ be used to control selection priority for points.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -352,7 +352,7 @@ be used to control selection priority for points.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

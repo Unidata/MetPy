@@ -266,12 +266,12 @@ rows, not columns).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scalar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">N-dimensional</span> <span class="pre">array</span></code>) – Array (with N-dimensions) with the quantity to be advected.</p></li>
-<li><p><strong>wind</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sequence</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">arrays</span></code>) – Length M sequence of N-dimensional arrays.  Represents the flow,
+<li><p><strong>scalar</strong> (<em>N-dimensional array</em>) – Array (with N-dimensions) with the quantity to be advected.</p></li>
+<li><p><strong>wind</strong> (<em>sequence of arrays</em>) – Length M sequence of N-dimensional arrays.  Represents the flow,
 with a component of the wind in each dimension.  For example, for
 horizontal advection, this could be a list: [u, v], where u and v
 are each a 2-dimensional array.</p></li>
-<li><p><strong>deltas</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sequence</span></code> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – A (length M) sequence containing the grid spacing(s) in each dimension. If using
+<li><p><strong>deltas</strong> (<em>sequence of float</em><em> or </em><em>ndarray</em>) – A (length M) sequence containing the grid spacing(s) in each dimension. If using
 arrays, in each array there should be one item less than the size of <em class="xref py py-obj">scalar</em> along the
 applicable axis.</p></li>
 </ul>
@@ -307,7 +307,7 @@ applicable axis.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -341,7 +341,7 @@ applicable axis.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

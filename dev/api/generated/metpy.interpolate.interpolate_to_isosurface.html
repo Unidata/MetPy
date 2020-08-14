@@ -247,17 +247,17 @@ dynamic tropopause (2 PVU surface).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>level_var</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span> <span class="pre">(P</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">N)</span></code>) – Level values in 3D grid on common vertical coordinate (e.g., PV values on
+<li><p><strong>level_var</strong> (<em>array_like</em><em> (</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>)</em>) – Level values in 3D grid on common vertical coordinate (e.g., PV values on
 isobaric levels). Assumes height dimension is highest to lowest in atmosphere.</p></li>
-<li><p><strong>interp_var</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span> <span class="pre">(P</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">N)</span></code>) – Variable on 3D grid with same vertical coordinate as level_var to interpolate to
+<li><p><strong>interp_var</strong> (<em>array_like</em><em> (</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>)</em>) – Variable on 3D grid with same vertical coordinate as level_var to interpolate to
 given level (e.g., potential temperature on isobaric levels)</p></li>
-<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Desired interpolated level (e.g., 2 PVU surface)</p></li>
-<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) – Controls whether to search for levels bottom-up, or top-down. Defaults to
+<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Desired interpolated level (e.g., 2 PVU surface)</p></li>
+<li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for levels bottom-up, or top-down. Defaults to
 True, which is bottom-up search.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>interp_level</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">(M</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">N)</span> <span class="pre">ndarray</span></code>) – The interpolated variable (e.g., potential temperature) on the desired level (e.g.,
+<dd class="field-even"><p><strong>interp_level</strong> (<em>(M, N) ndarray</em>) – The interpolated variable (e.g., potential temperature) on the desired level (e.g.,
 2 PVU surface)</p>
 </dd>
 </dl>
@@ -292,7 +292,7 @@ tropopause (e.g., 2 PVU surface)</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -326,7 +326,7 @@ tropopause (e.g., 2 PVU surface)</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

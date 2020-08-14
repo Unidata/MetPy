@@ -521,7 +521,7 @@ All trait notifications will fire after all values have been assigned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>) – A callable that is called when a trait changes. Its
+<li><p><strong>handler</strong> (<em>callable</em>) – A callable that is called when a trait changes. Its
 signature should be <code class="docutils literal notranslate"><span class="pre">handler(change)</span></code>, where <code class="docutils literal notranslate"><span class="pre">change</span></code> is a
 dictionary. The change dictionary at least holds a ‘type’ key.
 * <code class="docutils literal notranslate"><span class="pre">type</span></code>: the type of notification.
@@ -531,10 +531,10 @@ case where type is ‘change’, we also have the following keys:
 * <code class="docutils literal notranslate"><span class="pre">old</span></code> : the old value of the modified trait attribute
 * <code class="docutils literal notranslate"><span class="pre">new</span></code> : the new value of the modified trait attribute
 * <code class="docutils literal notranslate"><span class="pre">name</span></code> : the name of the modified trait attribute.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span></code>) – If names is All, the handler will apply to all traits.  If a list
+<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>All</em>) – If names is All, the handler will apply to all traits.  If a list
 of str, handler will apply to all names in the list.  If a
 str, the handler will apply just to that name.</p></li>
-<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span> <span class="pre">(default</span></code>: <code class="docutils literal notranslate"><span class="pre">'change'</span></code><code class="xref py py-class docutils literal notranslate"><span class="pre">)</span></code>) – The type of notification to filter by. If equal to All, then all
+<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If equal to All, then all
 notifications are passed to the observe handler.</p></li>
 </ul>
 </dd>
@@ -556,13 +556,13 @@ handlers for the specified name are uninstalled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – A callable that is called when a trait changes.  Its
+<li><p><strong>handler</strong> (<em>callable</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – A callable that is called when a trait changes.  Its
 signature can be handler(), handler(name), handler(name, new),
 handler(name, old, new), or handler(name, old, new, self).</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – If None, the handler will apply to all traits.  If a list
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If None, the handler will apply to all traits.  If a list
 of str, handler will apply to all names in the list.  If a
 str, the handler will apply just to that name.</p></li>
-<li><p><strong>remove</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If False (the default), then install the handler.  If True
+<li><p><strong>remove</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If False (the default), then install the handler.  If True
 then unintall it.</p></li>
 </ul>
 </dd>
@@ -587,7 +587,7 @@ then unintall it.</p></li>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">(default</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">None)</span></code>) – The name of a trait of this class. If name is <code class="docutils literal notranslate"><span class="pre">None</span></code> then all
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> (</em><em>default: None</em><em>)</em>) – The name of a trait of this class. If name is <code class="docutils literal notranslate"><span class="pre">None</span></code> then all
 the event handlers of this class will be returned instead.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -631,11 +631,11 @@ to the function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>) – The callable called when a trait attribute changes.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span> <span class="pre">(default</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">All)</span></code>) – The names of the traits for which the specified handler should be
+<li><p><strong>handler</strong> (<em>callable</em>) – The callable called when a trait attribute changes.</p></li>
+<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: All</em><em>)</em>) – The names of the traits for which the specified handler should be
 uninstalled. If names is All, the specified handler is uninstalled
 from the list of notifiers corresponding to all changes.</p></li>
-<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span> <span class="pre">(default</span></code>: <code class="docutils literal notranslate"><span class="pre">'change'</span></code><code class="xref py py-class docutils literal notranslate"><span class="pre">)</span></code>) – The type of notification to filter by. If All, the specified handler
+<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If All, the specified handler
 is uninstalled from the list of notifiers corresponding to all types.</p></li>
 </ul>
 </dd>
@@ -687,7 +687,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 13, 2020 at 17:07:22.
+      Last updated on Aug 14, 2020 at 17:53:00.
 
     </p>
   </div>
@@ -721,7 +721,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post226+g50c2dd4',
+            VERSION:'1.0.0rc1.post228+g51a4172',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
