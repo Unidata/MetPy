@@ -9,17 +9,16 @@ These include:
 * heat index
 * windchill
 """
-from itertools import product
 import warnings
 
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
-from .tools import wrap_output_like
 from .. import constants as mpconsts
 from ..package_tools import Exporter
-from ..units import check_units, masked_array, units
+from ..units import atleast_1d, check_units, masked_array, units
 from ..xarray import preprocess_xarray
+import pint
 
 exporter = Exporter(globals())
 
@@ -90,7 +89,7 @@ def wind_direction(u, v, convention='from'):
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
-    wdir = np.atleast_1d(wdir)
+    wdir = atleast_1d(wdir)
 
     # Handle oceanographic convection
     if convention == 'to':
@@ -112,14 +111,14 @@ def wind_direction(u, v, convention='from'):
 @exporter.export
 @preprocess_xarray
 @check_units('[speed]')
-def wind_components(speed, wind_direction):
+def wind_components(speed, wdir):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
     ----------
     speed : `pint.Quantity`
         The wind speed (magnitude)
-    wind_direction : `pint.Quantity`
+    wdir : `pint.Quantity`
         The wind direction, specified as the direction from which the wind is
         blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
@@ -141,9 +140,9 @@ def wind_components(speed, wind_direction):
      (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
 
     """
-    wind_direction = _check_radians(wind_direction, max_radians=4 * np.pi)
-    u = -speed * np.sin(wind_direction)
-    v = -speed * np.cos(wind_direction)
+    wdir = _check_radians(wdir, max_radians=4 * np.pi)
+    u = -speed * np.sin(wdir)
+    v = -speed * np.cos(wdir)
     return u, v
 
 
@@ -212,7 +211,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]')
-def heat_index(temperature, relative_humidity, mask_undefined=True):
+def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
     The implementation uses the formula outlined in [Rothfusz1990]_, which is a
@@ -225,7 +224,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     ----------
     temperature : `pint.Quantity`
         Air temperature
-    relative_humidity : `pint.Quantity`
+    rh : `pint.Quantity`
         The relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
 
@@ -245,26 +244,26 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     windchill
 
     """
-    temperature = np.atleast_1d(temperature)
-    relative_humidity = np.atleast_1d(relative_humidity)
-    # assign units to relative_humidity if they currently are not present
-    if not hasattr(relative_humidity, 'units'):
-        relative_humidity = relative_humidity * units.dimensionless
+    temperature = atleast_1d(temperature)
+    rh = atleast_1d(rh)
+    # assign units to rh if they currently are not present
+    if not hasattr(rh, 'units'):
+        rh = rh * units.dimensionless
     delta = temperature.to(units.degF) - 0. * units.degF
-    rh2 = relative_humidity * relative_humidity
+    rh2 = rh * rh
     delta2 = delta * delta
 
-    # Simplifed Heat Index -- constants converted for relative_humidity in [0, 1]
-    a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * relative_humidity
+    # Simplifed Heat Index -- constants converted for RH in [0, 1]
+    a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * rh
 
-    # More refined Heat Index -- constants converted for relative_humidity in [0, 1]
+    # More refined Heat Index -- constants converted for RH in [0, 1]
     b = (-42.379 * units.degF
          + 2.04901523 * delta
-         + 1014.333127 * units.delta_degF * relative_humidity
-         - 22.475541 * delta * relative_humidity
+         + 1014.333127 * units.delta_degF * rh
+         - 22.475541 * delta * rh
          - 6.83783e-3 / units.delta_degF * delta2
          - 5.481717e2 * units.delta_degF * rh2
-         + 1.22874e-1 / units.delta_degF * delta2 * relative_humidity
+         + 1.22874e-1 / units.delta_degF * delta2 * rh
          + 8.5282 * delta * rh2
          - 1.99e-2 / units.delta_degF * delta2 * rh2)
 
@@ -290,22 +289,20 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         hi[sel] = b[sel]
 
     # Adjustment for RH <= 13% and 80F <= T <= 112F
-    sel = ((relative_humidity <= 13. * units.percent) & (temperature >= 80. * units.degF)
+    sel = ((rh <= 13. * units.percent) & (temperature >= 80. * units.degF)
            & (temperature <= 112. * units.degF))
     if np.any(sel):
-        rh15adj = ((13. - relative_humidity[sel] * 100.) / 4.
-                   * np.sqrt((17. * units.delta_degF
-                              - np.abs(delta[sel] - 95. * units.delta_degF))
-                             / 17. * units.delta_degF))
-        hi[sel] = hi[sel] - rh15adj
+        rh15adj = ((13. - rh * 100.) / 4.
+                   * ((17. * units.delta_degF - np.abs(delta - 95. * units.delta_degF))
+                      / 17. * units.delta_degF) ** 0.5)
+        hi[sel] = hi[sel] - rh15adj[sel]
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
-    sel = ((relative_humidity > 85. * units.percent) & (temperature >= 80. * units.degF)
+    sel = ((rh > 85. * units.percent) & (temperature >= 80. * units.degF)
            & (temperature <= 87. * units.degF))
     if np.any(sel):
-        rh85adj = 0.02 * (relative_humidity[sel] * 100. - 85.) * (87. * units.delta_degF
-                                                                  - delta[sel])
-        hi[sel] = hi[sel] + rh85adj
+        rh85adj = 0.02 * (rh * 100. - 85.) * (87. * units.delta_degF - delta)
+        hi[sel] = hi[sel] + rh85adj[sel]
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -318,8 +315,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
 @exporter.export
 @preprocess_xarray
 @check_units(temperature='[temperature]', speed='[speed]')
-def apparent_temperature(temperature, relative_humidity, speed, face_level_winds=False,
-                         mask_undefined=True):
+def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the current apparent temperature.
 
     Calculates the current apparent temperature based on the wind chill or heat index
@@ -329,7 +325,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     ----------
     temperature : `pint.Quantity`
         The air temperature
-    relative_humidity : `pint.Quantity`
+    rh : `pint.Quantity`
         The relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
     speed : `pint.Quantity`
@@ -360,15 +356,15 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     """
     is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
 
-    temperature = np.atleast_1d(temperature)
-    relative_humidity = np.atleast_1d(relative_humidity)
-    speed = np.atleast_1d(speed)
+    temperature = atleast_1d(temperature)
+    rh = atleast_1d(rh)
+    speed = atleast_1d(speed)
 
     # NB: mask_defined=True is needed to know where computed values exist
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
                                        mask_undefined=True).to(temperature.units)
 
-    heat_index_temperature = heat_index(temperature, relative_humidity,
+    heat_index_temperature = heat_index(temperature, rh,
                                         mask_undefined=True).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
@@ -391,14 +387,14 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     if is_not_scalar:
         return app_temperature
     else:
-        return np.atleast_1d(app_temperature)[0]
+        return atleast_1d(app_temperature)[0]
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
-    r"""Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.
+    r"""Convert pressure data to heights using the U.S. standard atmosphere [NOAA1976]_.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
 
@@ -481,7 +477,7 @@ def height_to_geopotential(height):
 
 @exporter.export
 @preprocess_xarray
-def geopotential_to_height(geopotential):
+def geopotential_to_height(geopot):
     r"""Compute height above sea level from a given geopotential.
 
     Calculates the height above mean sea level from geopotential using the following formula,
@@ -536,7 +532,7 @@ def geopotential_to_height(geopotential):
     height_to_geopotential
 
     """
-    return (geopotential * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopotential)
+    return (geopot * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopot)
 
 
 @exporter.export
@@ -585,7 +581,8 @@ def coriolis_parameter(latitude):
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
-    return (2. * mpconsts.omega * np.sin(latitude)).to('1/s')
+    f = 2. * mpconsts.omega * np.sin(latitude)
+    return f.data.to('1/sec')
 
 
 @exporter.export
@@ -649,7 +646,7 @@ def add_pressure_to_height(height, pressure):
 @exporter.export
 @preprocess_xarray
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
-def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
+def sigma_to_pressure(sigma, psfc, ptop):
     r"""Calculate pressure from sigma values.
 
     Parameters
@@ -657,10 +654,10 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     sigma : ndarray
         The sigma levels to be converted to pressure levels.
 
-    pressure_sfc : `pint.Quantity`
+    psfc : `pint.Quantity`
         The surface pressure value.
 
-    pressure_top : `pint.Quantity`
+    ptop : `pint.Quantity`
         The pressure value at the top of the model domain.
 
     Returns
@@ -683,14 +680,15 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     if np.any(sigma < 0) or np.any(sigma > 1):
         raise ValueError('Sigma values should be bounded by 0 and 1')
 
-    if pressure_sfc.magnitude < 0 or pressure_top.magnitude < 0:
+    if psfc.magnitude < 0 or ptop.magnitude < 0:
         raise ValueError('Pressure input should be non-negative')
 
-    return sigma * (pressure_sfc - pressure_top) + pressure_top
+    return sigma * (psfc - ptop) + ptop
 
 
 @exporter.export
-@wrap_output_like(argument='scalar_grid', match_unit=True)
+@preprocess_xarray
+@units.wraps('=A', ('=A', None))
 def smooth_gaussian(scalar_grid, n):
     """Filter with normal distribution of weights.
 
@@ -782,189 +780,15 @@ def smooth_gaussian(scalar_grid, n):
 
 
 @exporter.export
-@wrap_output_like(argument='scalar_grid', match_unit=True)
-def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
-    """Filter with an arbitrary window smoother.
-
-    Parameters
-    ----------
-    scalar_grid : array-like
-        N-dimensional scalar grid to be smoothed.
-
-    window : ndarray
-        The window to use in smoothing. Can have dimension less than or equal to N. If
-        dimension less than N, the scalar grid will be smoothed along its trailing dimensions.
-        Shape along each dimension must be odd.
-
-    passes : int
-        The number of times to apply the filter to the grid. Defaults to 1.
-
-    normalize_weights : bool
-        If true, divide the values in window by the sum of all values in the window to obtain
-        the normalized smoothing weights. If false, use supplied values directly as the
-        weights.
-
-    Returns
-    -------
-    array-like
-        The filtered scalar grid.
-
-    Notes
-    -----
-    This function can be applied multiple times to create a more smoothed field and will only
-    smooth the interior points, leaving the end points with their original values (this
-    function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in the shape of
-    `window` around the data). If a masked value or NaN values exists in the array, it will
-    propagate to any point that uses that particular grid point in the smoothing calculation.
-    Applying the smoothing function multiple times will propogate NaNs further throughout the
-    domain.
-
-    See Also
-    --------
-    smooth_rectangular, smooth_circular, smooth_n_point, smooth_gaussian
-
-    """
-    def _pad(n):
-        # Return number of entries to pad given length along dimension.
-        return (n - 1) // 2
-
-    def _zero_to_none(x):
-        # Convert zero values to None, otherwise return what is given.
-        return x if x != 0 else None
-
-    def _offset(pad, k):
-        # Return padded slice offset by k entries
-        return slice(_zero_to_none(pad + k), _zero_to_none(-pad + k))
-
-    def _trailing_dims(indexer):
-        # Add ... to the front of an indexer, since we are working with trailing dimensions.
-        return (Ellipsis,) + tuple(indexer)
-
-    # Verify that shape in all dimensions is odd (need to have a neighboorhood around a
-    # central point)
-    if any((size % 2 == 0) for size in window.shape):
-        raise ValueError('The shape of the smoothing window must be odd in all dimensions.')
-
-    # Optionally normalize the supplied weighting window
-    if normalize_weights:
-        weights = window / np.sum(window)
-    else:
-        weights = window
-
-    # Set indexes
-    # Inner index for the centered array elements that are affected by the smoothing
-    inner_full_index = _trailing_dims(_offset(_pad(n), 0) for n in weights.shape)
-    # Indexes to iterate over each weight
-    weight_indexes = tuple(product(*(range(n) for n in weights.shape)))
-
-    # Index for full array elements, offset by the weight index
-    def offset_full_index(weight_index):
-        return _trailing_dims(_offset(_pad(n), weight_index[i] - _pad(n))
-                              for i, n in enumerate(weights.shape))
-
-    # TODO: this is not lazy-loading/dask compatible, as it "densifies" the data
-    data = np.array(scalar_grid)
-    for _ in range(passes):
-        # Set values corresponding to smoothing weights by summing over each weight and
-        # applying offsets in needed dimensions
-        data[inner_full_index] = sum(weights[index] * data[offset_full_index(index)]
-                                     for index in weight_indexes)
-
-    return data
-
-
-@exporter.export
-def smooth_rectangular(scalar_grid, size, passes=1):
-    """Filter with a rectangular window smoother.
-
-    Parameters
-    ----------
-    scalar_grid : array-like
-        N-dimensional scalar grid to be smoothed.
-
-    size : int or sequence of ints
-        Shape of rectangle along the trailing dimension(s) of the scalar grid.
-
-    passes : int
-        The number of times to apply the filter to the grid. Defaults to 1.
-
-    Returns
-    -------
-    array-like
-        The filtered scalar grid.
-
-    Notes
-    -----
-    This function can be applied multiple times to create a more smoothed field and will only
-    smooth the interior points, leaving the end points with their original values (this
-    function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in `size` around
-    the data). If a masked value or NaN values exists in the array, it will propagate to any
-    point that uses that particular grid point in the smoothing calculation. Applying the
-    smoothing function multiple times will propogate NaNs further throughout the domain.
-
-    See Also
-    --------
-    smooth_window, smooth_circular, smooth_n_point, smooth_gaussian
-
-    """
-    return smooth_window(scalar_grid, np.ones(size), passes=passes)
-
-
-@exporter.export
-def smooth_circular(scalar_grid, radius, passes=1):
-    """Filter with a circular window smoother.
-
-    Parameters
-    ----------
-    scalar_grid : array-like
-        N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only
-        done along the last two.
-
-    radius : int
-        Radius of the circular smoothing window. The "diameter" of the circle (width of
-        smoothing window) is 2 * radius + 1 to provide a smoothing window with odd shape.
-
-    passes : int
-        The number of times to apply the filter to the grid. Defaults to 1.
-
-    Returns
-    -------
-    array-like
-        The filtered scalar grid.
-
-    Notes
-    -----
-    This function can be applied multiple times to create a more smoothed field and will only
-    smooth the interior points, leaving the end points with their original values (this
-    function will leave an unsmoothed edge of size `radius` around the data). If a masked
-    value or NaN values exists in the array, it will propagate to any point that uses that
-    particular grid point in the smoothing calculation. Applying the smoothing function
-    multiple times will propogate NaNs further throughout the domain.
-
-    See Also
-    --------
-    smooth_window, smooth_rectangular, smooth_n_point, smooth_gaussian
-
-    """
-    # Generate the circle
-    size = 2 * radius + 1
-    x, y = np.mgrid[:size, :size]
-    distance = np.sqrt((x - radius) ** 2 + (y - radius) ** 2)
-    circle = distance <= radius
-
-    # Apply smoother
-    return smooth_window(scalar_grid, circle, passes=passes)
-
-
-@exporter.export
+@preprocess_xarray
+@units.wraps('=A', ('=A', None, None))
 def smooth_n_point(scalar_grid, n=5, passes=1):
-    """Filter with an n-point smoother.
+    """Filter with normal distribution of weights.
 
     Parameters
     ----------
     scalar_grid : array-like or `pint.Quantity`
-        N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only
-        done along the last two.
+        Some 2D scalar grid to be smoothed.
 
     n: int
         The number of points to use in smoothing, only valid inputs
@@ -976,37 +800,41 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     Returns
     -------
     array-like or `pint.Quantity`
-        The filtered scalar grid.
+        The filtered 2D scalar grid.
 
     Notes
     -----
-    This function is a close replication of the GEMPAK function SM5S and SM9S depending on the
-    choice of the number of points to use for smoothing. This function can be applied multiple
-    times to create a more smoothed field and will only smooth the interior points, leaving
-    the end points with their original values (this function will leave an unsmoothed edge of
-    size 1 around the data). If a masked value or NaN values exists in the array, it will
-    propagate to any point that uses that particular grid point in the smoothing calculation.
-    Applying the smoothing function multiple times will propogate NaNs further throughout the
-    domain.
-
-    See Also
-    --------
-    smooth_window, smooth_rectangular, smooth_circular, smooth_gaussian
+    This function is a close replication of the GEMPAK function SM5S
+    and SM9S depending on the choice of the number of points to use
+    for smoothing. This function can be applied multiple times to
+    create a more smoothed field and will only smooth the interior
+    points, leaving the end points with their original values. If a
+    masked value or NaN values exists in the array, it will propagate
+    to any point that uses that particular grid point in the smoothing
+    calculation. Applying the smoothing function multiple times will
+    propagate NaNs further throughout the domain.
 
     """
     if n == 9:
-        weights = np.array([[0.0625, 0.125, 0.0625],
-                            [0.125, 0.25, 0.125],
-                            [0.0625, 0.125, 0.0625]])
+        p = 0.25
+        q = 0.125
+        r = 0.0625
     elif n == 5:
-        weights = np.array([[0., 0.125, 0.],
-                            [0.125, 0.5, 0.125],
-                            [0., 0.125, 0.]])
+        p = 0.5
+        q = 0.125
+        r = 0.0
     else:
         raise ValueError('The number of points to use in the smoothing '
                          'calculation must be either 5 or 9.')
 
-    return smooth_window(scalar_grid, window=weights, passes=passes, normalize_weights=False)
+    smooth_grid = scalar_grid[:].copy()
+    for _i in range(passes):
+        smooth_grid[1:-1, 1:-1] = (p * smooth_grid[1:-1, 1:-1]
+                                   + q * (smooth_grid[2:, 1:-1] + smooth_grid[1:-1, 2:]
+                                          + smooth_grid[:-2, 1:-1] + smooth_grid[1:-1, :-2])
+                                   + r * (smooth_grid[2:, 2:] + smooth_grid[2:, :-2] +
+                                          + smooth_grid[:-2, 2:] + smooth_grid[:-2, :-2]))
+    return smooth_grid
 
 
 @exporter.export
@@ -1183,7 +1011,7 @@ def _check_radians(value, max_radians=2 * np.pi):
         value = value.to('radians').m
     except AttributeError:
         pass
-    if np.any(np.greater(np.abs(value), max_radians)):
+    if np.greater(np.nanmax(np.abs(value)), max_radians):
         warnings.warn('Input over {} radians. '
-                      'Ensure proper units are given.'.format(np.nanmax(max_radians)))
+                      'Ensure proper units are given.'.format(max_radians))
     return value
