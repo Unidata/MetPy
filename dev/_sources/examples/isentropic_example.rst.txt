@@ -368,7 +368,7 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.565 seconds)
+   **Total running time of the script:** ( 0 minutes  12.526 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:
