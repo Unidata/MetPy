@@ -113,7 +113,7 @@ BAD_DATA = 0x20
 
 
 @exporter.export
-class Level2File(object):
+class Level2File:
     r"""Handle reading the NEXRAD Level 2 data and its various messages.
 
     This class attempts to decode every byte that is in a given data file.
@@ -756,7 +756,7 @@ def low_byte(ind):
 # Default is to use numpy array indexing to use LUT to change data bytes
 # into physical values. Can also have a 'labels' attribute to give
 # categorical labels
-class DataMapper(object):
+class DataMapper:
     """Convert packed integer data into physical units."""
 
     # Need to find way to handle range folded
@@ -985,7 +985,7 @@ class LegacyMapper(DataMapper):
 
 
 @exporter.export
-class Level3File(object):
+class Level3File:
     r"""Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.
 
     This class attempts to decode every byte that is in a given product file.

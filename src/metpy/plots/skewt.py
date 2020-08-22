@@ -248,7 +248,7 @@ register_projection(SkewXAxes)
 
 
 @exporter.export
-class SkewT(object):
+class SkewT:
     r"""Make Skew-T log-P plots of data.
 
     This class simplifies the process of creating Skew-T log-P plots in
@@ -742,7 +742,7 @@ class SkewT(object):
 
 
 @exporter.export
-class Hodograph(object):
+class Hodograph:
     r"""Make a hodograph of wind data.
 
     Plots the u and v components of the wind along the x and y axes, respectively.

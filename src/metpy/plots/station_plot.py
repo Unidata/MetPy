@@ -15,7 +15,7 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-class StationPlot(object):
+class StationPlot:
     """Make a standard meteorological station plot.
 
     Plots values, symbols, or text spaced around a central location. Can also plot wind

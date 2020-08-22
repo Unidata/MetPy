@@ -11,7 +11,7 @@ import cartopy.crs as ccrs
 from ..cbook import Registry
 
 
-class CFProjection(object):
+class CFProjection:
     """Handle parsing CF projection metadata."""
 
     # mapping from Cartopy to CF vocabulary

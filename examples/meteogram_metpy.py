@@ -25,7 +25,7 @@ def calc_mslp(t, p, h):
 
 
 # Make meteogram plot
-class Meteogram(object):
+class Meteogram:
     """ Plot a time series of meteorological data from a particular station as a
     meteogram with standard variables to visualize, including thermodynamic,
     kinematic, and pressure. The functions below control the plotting of each
