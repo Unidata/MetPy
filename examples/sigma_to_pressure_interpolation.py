@@ -74,14 +74,14 @@ ax.add_feature(cfeature.STATES, linewidth=0.5)
 # Plot the heights
 cs = ax.contour(lon, lat, height[FH, 0, :, :], transform=ccrs.PlateCarree(),
                 colors='k', linewidths=1.0, linestyles='solid')
-ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-          fmt='%i', rightside_up=True, use_clabeltext=True)
+cs.clabel(fontsize=10, inline=1, inline_spacing=7, fmt='%i', rightside_up=True,
+          use_clabeltext=True)
 
 # Contour the temperature
 cf = ax.contourf(lon, lat, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r,
                  transform=ccrs.PlateCarree())
-cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
-                  pad=0.05, extendrect='True')
+cb = fig.colorbar(cf, orientation='horizontal', aspect=65, shrink=0.5, pad=0.05,
+                  extendrect='True')
 cb.set_label('Celsius', size='x-large')
 
 ax.set_extent([-106.5, -90.4, 34.5, 46.75], crs=ccrs.PlateCarree())
