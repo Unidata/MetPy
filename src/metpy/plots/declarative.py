@@ -879,7 +879,7 @@ class Plots2D(HasTraits):
         else:
             ret = self.field
         if self.level is not None:
-            ret += '@{:d}'.format(self.level)
+            ret += f'@{self.level:d}'
         return ret
 
 
@@ -1453,7 +1453,7 @@ class PlotObs(HasTraits):
         ret = ''
         ret += ' and '.join(f for f in self.fields)
         if self.level is not None:
-            ret += '@{:d}'.format(self.level)
+            ret += f'@{self.level:d}'
         return ret
 
     @property

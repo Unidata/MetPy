@@ -67,7 +67,7 @@ class CFProjection:
         try:
             proj_handler = self.projection_registry[proj_name]
         except KeyError:
-            raise ValueError('Unhandled projection: {}'.format(proj_name))
+            raise ValueError(f'Unhandled projection: {proj_name}')
 
         return proj_handler(self._attrs, globe)
 

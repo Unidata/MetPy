@@ -109,7 +109,7 @@ def result_type(value):
         elif hasattr(value, 'magnitude'):
             return np.result_type(value.magnitude)
         else:
-            raise TypeError('Cannot determine dtype for type {}'.format(type(value)))
+            raise TypeError(f'Cannot determine dtype for type {type(value)}')
 
 
 __all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'iterable', 'result_type')

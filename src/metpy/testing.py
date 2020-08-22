@@ -37,7 +37,7 @@ def get_upper_air_data(date, station):
         dict : upper air data
 
     """
-    sounding_key = '{:%Y-%m-%dT%HZ}_{}'.format(date, station)
+    sounding_key = f'{date:%Y-%m-%dT%HZ}_{station}'
     sounding_files = {'2016-05-22T00Z_DDC': 'may22_sounding.txt',
                       '2013-01-20T12Z_OUN': 'jan20_sounding.txt',
                       '1999-05-04T00Z_OUN': 'may4_sounding.txt',

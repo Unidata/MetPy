@@ -51,7 +51,7 @@ class Meteogram:
         self.axis_num = 0
         self.dates = mpl.dates.date2num(dates)
         self.time = time.strftime('%Y-%m-%d %H:%M UTC')
-        self.title = 'Latest Ob Time: {0}\nProbe ID: {1}'.format(self.time, probeid)
+        self.title = f'Latest Ob Time: {self.time}\nProbe ID: {probeid}'
 
     def plot_winds(self, ws, wd, wsmax, plot_range=None):
         """

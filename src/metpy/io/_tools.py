@@ -114,7 +114,7 @@ class Enum:
 
     def __call__(self, val):
         """Map an integer to the string representation."""
-        return self.val_map.get(val, 'Unknown ({})'.format(val))
+        return self.val_map.get(val, f'Unknown ({val})')
 
 
 class Bits:

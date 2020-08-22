@@ -264,7 +264,7 @@ def test_interpolate_to_grid(method, test_coords, boundary_coords):
 
     _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
 
-    with get_test_data('{0}_test.npz'.format(method)) as fobj:
+    with get_test_data(f'{method}_test.npz') as fobj:
         truth = np.load(fobj)['img']
 
     assert_array_almost_equal(truth, img)

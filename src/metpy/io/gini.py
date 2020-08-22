@@ -269,7 +269,7 @@ class GiniFile(AbstractDataStore):
             attrs['standard_parallel'] = prod_desc2.lat_in
         else:
             raise NotImplementedError(
-                'Unhandled GINI Projection: {}'.format(self.prod_desc.projection))
+                f'Unhandled GINI Projection: {self.prod_desc.projection}')
 
         return 'projection', Variable((), 0, attrs)
 

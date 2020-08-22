@@ -134,7 +134,7 @@ class StationLookup:
         for table in self._sources:
             if stid in table:
                 return table[stid]
-        raise KeyError('No station information for {}'.format(stid))
+        raise KeyError(f'No station information for {stid}')
 
 
 with exporter:

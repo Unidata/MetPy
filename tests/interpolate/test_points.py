@@ -177,7 +177,7 @@ def test_interpolate_to_points(method, test_data):
 
     img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
 
-    with get_test_data('{}_test.npz'.format(method)) as fobj:
+    with get_test_data(f'{method}_test.npz') as fobj:
         truth = np.load(fobj)['img'].reshape(-1)
 
     assert_array_almost_equal(truth, img)

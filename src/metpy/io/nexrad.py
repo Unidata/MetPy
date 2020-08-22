@@ -31,7 +31,7 @@ def version(val):
         ver = val / 100.
     else:
         ver = val / 10.
-    return '{:.1f}'.format(ver)
+    return f'{ver:.1f}'
 
 
 def scaler(scale):
@@ -246,7 +246,7 @@ class Level2File:
 
                 # Try to handle the message. If we don't handle it, skipping
                 # past it is handled at the end anyway.
-                decoder = '_decode_msg{:d}'.format(msg_hdr.msg_type)
+                decoder = f'_decode_msg{msg_hdr.msg_type:d}'
                 if hasattr(self, decoder):
                     getattr(self, decoder)(msg_hdr)
                 else:
@@ -957,13 +957,13 @@ class LegacyMapper(DataMapper):
 
             elif codes >> 6:
                 val *= 0.01
-                label = '{:.2f}'.format(val)
+                label = f'{val:.2f}'
             elif codes >> 5:
                 val *= 0.05
-                label = '{:.2f}'.format(val)
+                label = f'{val:.2f}'
             elif codes >> 4:
                 val *= 0.1
-                label = '{:.1f}'.format(val)
+                label = f'{val:.1f}'
 
             if codes & 0x1:
                 val *= -1
@@ -1973,7 +1973,7 @@ class Level3File:
                 if kind not in point_feature_map:
                     log.warning('%s: Unknown graphic symbol point kind %d/%x.',
                                 self.filename, kind, kind)
-                    ret['type'].append('Unknown ({:d})'.format(kind))
+                    ret['type'].append(f'Unknown ({kind:d})')
                 else:
                     ret['type'].append(point_feature_map[kind])
 
@@ -2142,7 +2142,7 @@ class Level3File:
                 scale = 1
             vals = self._read_trends()
             if code in (1, 2):
-                ret['{} Limited'.format(key)] = [True if v > 700 else False for v in vals]
+                ret[f'{key} Limited'] = [True if v > 700 else False for v in vals]
                 vals = [v - 1000 if v > 700 else v for v in vals]
             ret[key] = [v * scale for v in vals]
 

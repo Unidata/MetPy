@@ -44,7 +44,7 @@ def interpolate_nans_1d(x, y, kind='linear'):
     elif kind == 'log':
         y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
     else:
-        raise ValueError('Unknown option for kind: {0}'.format(str(kind)))
+        raise ValueError(f'Unknown option for kind: {kind}')
     return y[x_sort_args]
 
 

@@ -142,8 +142,8 @@ ax.barbs(lon.values, lat.values, isentu[level, :, :].m, isentv[level, :, :].m, l
          regrid_shape=20, transform=ccrs.PlateCarree())
 
 # Make some titles
-ax.set_title('{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (percent)'
-             .format(isentlevs[level].m), loc='left')
+ax.set_title(f'{isentlevs[level]:~.0f} Isentropic Pressure (hPa), Wind (kt), '
+             'Relative Humidity (percent)', loc='left')
 add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
               y=0.02, high_contrast=True)
 fig.tight_layout()
@@ -188,8 +188,8 @@ ax.barbs(lon.values, lat.values, isentu[level, :, :].m, isentv[level, :, :].m, l
          regrid_shape=20, transform=ccrs.PlateCarree())
 
 # Make some titles
-ax.set_title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m)
-             + r'($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)', loc='left')
+ax.set_title(f'{isentlevs[level]:~.0f} Montgomery Streamfunction '
+             r'($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)', loc='left')
 add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
               y=0.02, pretext='Valid: ', high_contrast=True)
 
