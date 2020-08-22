@@ -2,20 +2,19 @@ from collections import defaultdict
 import re
 
 
-class TreeNode(object):
+class TreeNode:
     def __init__(self, text, offset, elements=None):
         self.text = text
         self.offset = offset
         self.elements = elements or []
 
     def __iter__(self):
-        for el in self.elements:
-            yield el
+        yield from self.elements
 
 
 class TreeNode1(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode1, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.metar = elements[0]
         self.siteid = elements[1]
         self.datetime = elements[2]
@@ -33,56 +32,56 @@ class TreeNode1(TreeNode):
 
 class TreeNode2(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode2, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode3(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode3, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode4(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode4, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.wind_dir = elements[1]
         self.wind_spd = elements[2]
 
 
 class TreeNode5(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode5, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode6(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode6, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode7(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode7, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode8(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode8, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode9(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode9, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
 
 
 class TreeNode10(TreeNode):
     def __init__(self, text, offset, elements):
-        super(TreeNode10, self).__init__(text, offset, elements)
+        super().__init__(text, offset, elements)
         self.sep = elements[0]
         self.temp = elements[2]
         self.dewp = elements[4]
@@ -95,7 +94,7 @@ class ParseError(SyntaxError):
 FAILURE = object()
 
 
-class Grammar(object):
+class Grammar:
     REGEX_1 = re.compile('^[0-9A-Z]')
     REGEX_2 = re.compile('^[0-9A-Z]')
     REGEX_3 = re.compile('^[0-9A-Z]')
