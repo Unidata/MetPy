@@ -154,7 +154,7 @@ class ColortableRegistry(dict):
         """
         for fname in glob.glob(os.path.join(path, '*' + TABLE_EXT)):
             if os.path.isfile(fname):
-                with open(fname, 'r') as fobj:
+                with open(fname) as fobj:
                     try:
                         self.add_colortable(fobj, os.path.splitext(os.path.basename(fname))[0])
                         log.debug('Added colortable from file: %s', fname)

@@ -65,7 +65,7 @@ def bzip_blocks_decompress_all(data):
         try:
             frames.extend(bz2.decompress(data[offset:offset + block_cmp_bytes]))
             offset += block_cmp_bytes
-        except IOError:
+        except OSError:
             # If we've decompressed any frames, this is an error mid-stream, so warn, stop
             # trying to decompress and let processing proceed
             if frames:
@@ -1658,7 +1658,7 @@ class Level3File:
                 decomp_data = self._buffer.read_func(bz2.decompress)
                 self._buffer.splice(comp_start, decomp_data)
                 assert self._buffer.check_remains(self.metadata['uncompressed_size'])
-            except IOError:
+            except OSError:
                 pass
 
         # Unpack the various blocks, if present. The factor of 2 converts from

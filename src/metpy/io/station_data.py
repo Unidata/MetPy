@@ -34,7 +34,7 @@ def _read_station_table(input_file=None):
     """
     if input_file is None:
         input_file = get_test_data('sfstns.tbl', as_file_obj=False)
-    with open(input_file, 'rt') as station_file:
+    with open(input_file) as station_file:
         for line in station_file:
             stid = line[:9].strip()
             synop_id = int(line[9:16].strip())
@@ -56,7 +56,7 @@ def _read_master_text_file(input_file=None):
     """
     if input_file is None:
         input_file = get_test_data('master.txt', as_file_obj=False)
-    with open(input_file, 'rt') as station_file:
+    with open(input_file) as station_file:
         station_file.readline()
         for line in station_file:
             state = line[:3].strip()
@@ -85,7 +85,7 @@ def _read_station_text_file(input_file=None):
     """
     if input_file is None:
         input_file = get_test_data('stations.txt', as_file_obj=False)
-    with open(input_file, 'rt') as station_file:
+    with open(input_file) as station_file:
         for line in station_file:
             if line[0] == '!':
                 continue
