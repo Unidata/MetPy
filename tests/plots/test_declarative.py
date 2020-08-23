@@ -29,6 +29,7 @@ MPL_VERSION = matplotlib.__version__[:3]
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
 @needs_pyproj
+@needs_cartopy
 def test_declarative_image():
     """Test making an image plot."""
     data = xr.open_dataset(GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini')))
@@ -324,6 +325,7 @@ def test_colorfill_no_colorbar(cfeature):
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.23)
 @needs_pyproj
+@needs_cartopy
 def test_global():
     """Test that we can set global extent."""
     data = xr.open_dataset(GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini')))
