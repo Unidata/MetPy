@@ -524,6 +524,97 @@ def test_declarative_barb_gfs_knots():
     return pc.figure
 
 
+@pytest.fixture()
+def sample_obs():
+    """Generate sample observational data for testing."""
+    return pd.DataFrame([('2020-08-05 12:00', 'KDEN', 1000, 1, 9),
+                         ('2020-08-05 12:01', 'KOKC', 1000, 2, 10),
+                         ('2020-08-05 12:00', 'KDEN', 500, 3, 11),
+                         ('2020-08-05 12:01', 'KOKC', 500, 4, 12),
+                         ('2020-08-06 13:00', 'KDEN', 1000, 5, 13),
+                         ('2020-08-06 12:59', 'KOKC', 1000, 6, 14),
+                         ('2020-08-06 13:00', 'KDEN', 500, 7, 15),
+                         ('2020-08-06 12:59', 'KOKC', 500, 8, 16)],
+                        columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'])
+
+
+def test_plotobs_subset_default_nolevel(sample_obs):
+    """Test PlotObs subsetting with minimal config."""
+    obs = PlotObs()
+    obs.data = sample_obs
+    obs.level = None
+
+    truth = pd.DataFrame([('2020-08-06 13:00', 'KDEN', 500, 7, 15),
+                          ('2020-08-06 12:59', 'KOKC', 500, 8, 16)],
+                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'],
+                         index=[6, 7])
+    pd.testing.assert_frame_equal(obs.obsdata, truth)
+
+
+def test_plotobs_subset_level(sample_obs):
+    """Test PlotObs subsetting based on level."""
+    obs = PlotObs()
+    obs.data = sample_obs
+    obs.level = 1000 * units.hPa
+
+    truth = pd.DataFrame([('2020-08-06 13:00', 'KDEN', 1000, 5, 13),
+                          ('2020-08-06 12:59', 'KOKC', 1000, 6, 14)],
+                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'],
+                         index=[4, 5])
+    pd.testing.assert_frame_equal(obs.obsdata, truth)
+
+
+def test_plotobs_subset_time(sample_obs):
+    """Test PlotObs subsetting for a particular time."""
+    obs = PlotObs()
+    obs.data = sample_obs
+    obs.level = None
+    obs.time = datetime(2020, 8, 6, 13)
+
+    truth = pd.DataFrame([('2020-08-06 13:00', 'KDEN', 500, 7, 15)],
+                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'])
+    truth = truth.set_index(pd.to_datetime(truth['time']))
+    pd.testing.assert_frame_equal(obs.obsdata, truth)
+
+
+def test_plotobs_subset_time_window(sample_obs):
+    """Test PlotObs subsetting for a particular time with a window."""
+    # Test also using an existing index
+    sample_obs['time'] = pd.to_datetime(sample_obs['time'])
+    sample_obs.set_index('time')
+
+    obs = PlotObs()
+    obs.data = sample_obs
+    obs.level = None
+    obs.time = datetime(2020, 8, 5, 12)
+    obs.time_window = timedelta(minutes=30)
+
+    truth = pd.DataFrame([(datetime(2020, 8, 5, 12), 'KDEN', 500, 3, 11),
+                          (datetime(2020, 8, 5, 12, 1), 'KOKC', 500, 4, 12)],
+                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'])
+    truth = truth.set_index('time')
+    pd.testing.assert_frame_equal(obs.obsdata, truth)
+
+
+def test_plotobs_subset_time_window_level(sample_obs):
+    """Test PlotObs subsetting for a particular time with a window and a level."""
+    # Test also using an existing index
+    sample_obs['time'] = pd.to_datetime(sample_obs['time'])
+    sample_obs.set_index('time')
+
+    obs = PlotObs()
+    obs.data = sample_obs
+    obs.level = 1000 * units.hPa
+    obs.time = datetime(2020, 8, 5, 12)
+    obs.time_window = timedelta(minutes=30)
+
+    truth = pd.DataFrame([(datetime(2020, 8, 5, 12), 'KDEN', 1000, 1, 9),
+                          (datetime(2020, 8, 5, 12, 1), 'KOKC', 1000, 2, 10)],
+                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'])
+    truth = truth.set_index('time')
+    pd.testing.assert_frame_equal(obs.obsdata, truth)
+
+
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs():

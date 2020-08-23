@@ -12,6 +12,7 @@ except ImportError:
     DEFAULT_LAT_LON = None
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, Tuple,
                        Unicode, Union)
 
@@ -1459,32 +1460,56 @@ class PlotObs(HasTraits):
     @property
     def obsdata(self):
         """Return the internal cached data."""
-        time_vars = ['valid', 'time', 'valid_time', 'date_time', 'date']
-        stn_vars = ['station', 'stn', 'station_id', 'stid']
         if getattr(self, '_obsdata', None) is None:
-            dim_times = [time_var for time_var in time_vars if time_var in list(self.data)]
+            # Use a copy of data so we retain all of the original data passed in unmodified
+            data = self.data
+
+            # Subset for a particular level if given
+            if self.level is not None:
+                data = data[data.pressure == self.level.m]
+
+            # Subset for our particular time
+            if self.time is not None:
+                # If data are not currently indexed by time, we need to do so choosing one of
+                # the columns we're looking for
+                if not isinstance(data.index, pd.DatetimeIndex):
+                    time_vars = ['valid', 'time', 'valid_time', 'date_time', 'date']
+                    dim_times = [time_var for time_var in time_vars if
+                                 time_var in list(self.data)]
+                    if not dim_times:
+                        raise AttributeError(
+                            'Time variable not found. Valid variable names are:'
+                            f'{time_vars}')
+
+                    data = data.set_index(dim_times[0])
+                    if not isinstance(data.index, pd.DatetimeIndex):
+                        # Convert our column of interest to a datetime
+                        data = data.reset_index()
+                        time_index = pd.to_datetime(data[dim_times[0]])
+                        data = data.set_index(time_index)
+
+                # Works around the fact that traitlets 4.3 insists on sending us None by
+                # default because timedelta(0) is Falsey.
+                window = timedelta(minutes=0) if self.time_window is None else self.time_window
+
+                # Indexes need to be properly sorted for the slicing below to work; the
+                # error you get if that's not the case really convoluted, which is why
+                # we don't rely on users doing it.
+                data = data.sort_index()
+                data = data[self.time - window:self.time + window]
+
+            # Look for the station column
+            stn_vars = ['station', 'stn', 'station_id', 'stid']
             dim_stns = [stn_var for stn_var in stn_vars if stn_var in list(self.data)]
-            if not dim_times:
-                raise AttributeError('Time variable not found. Valid variable names are:'
-                                     f'{time_vars}')
-            else:
-                dim_time = dim_times[0]
             if not dim_stns:
                 raise AttributeError('Station variable not found. Valid variable names are: '
                                      f'{stn_vars}')
             else:
                 dim_stn = dim_stns[0]
-            if self.level is not None:
-                level_subset = self.data.pressure == self.level.m
-                self._obsdata = self.data[level_subset]
-            else:
-                if self.time_window is not None:
-                    time_slice = ((self.data[dim_time] >= (self.time - self.time_window))
-                                  & (self.data[dim_time] <= (self.time + self.time_window)))
-                    data = self.data[time_slice].groupby(dim_stn).tail(1)
-                else:
-                    data = self.data.groupby(dim_stn).tail(1)
-                self._obsdata = data
+
+            # Make sure we only use one observation per station
+            self._obsdata = data.groupby(dim_stn).tail(1)
+
         return self._obsdata
 
     @property
