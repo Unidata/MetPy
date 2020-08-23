@@ -1,6 +1,6 @@
 sphinx==3.2.1
 sphinx-gallery==0.7
 myst-parser==0.11.2
-netCDF4==1.5.3
+netCDF4==1.5.4
 # Needed for sphinx-gallery, which refuses to list dependencies
 pillow==7.2.0
