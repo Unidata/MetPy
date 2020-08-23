@@ -330,7 +330,7 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x7f670777ed10>
+    <cartopy.crs.PlateCarree object at 0x7f3ef27d3ae0>
 
 
 
@@ -355,7 +355,7 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x7f6702bc06a0>
+    <cartopy._crs.Globe object at 0x7f3ef24ae580>
 
 
 
@@ -688,7 +688,7 @@ Fix 2 (unit array broadcasting):
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.950 seconds)
+   **Total running time of the script:** ( 0 minutes  1.937 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:

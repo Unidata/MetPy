@@ -192,7 +192,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f671188f7c0>
+    <matplotlib.legend.Legend object at 0x7f3ef28337f0>
 
 
 
@@ -463,7 +463,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.745 seconds)
+   **Total running time of the script:** ( 0 minutes  0.744 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:
