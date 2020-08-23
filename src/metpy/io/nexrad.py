@@ -1097,12 +1097,14 @@ class Level3File:
                                       ('el23', 'h', scaler(0.1)),
                                       ('el24', 'h', scaler(0.1)),
                                       ('el25', 'h', scaler(0.1)),
-                                      ('vcp_supplemental', 'H', BitField('AVSET',
-                                                                         'SAILS',
-                                                                         'site_vcp',
-                                                                         'RxR Noise',
-                                                                         'CBT')),
-                                      ('spare', '84s')], '>', 'GSM')
+                                      ('vcp_supplemental', 'H',
+                                       BitField('AVSET', 'SAILS', 'Site VCP', 'RxR Noise',
+                                                'CBT', 'VCP Sequence', 'SPRT', 'MRLE',
+                                                'Base Tilt', 'MPDA')),
+                                      ('supplemental_cut_map', 'H', Bits(16)),
+                                      ('supplemental_cut_count', 'B'),
+                                      ('supplemental_cut_map2', 'B', Bits(8)),
+                                      ('spare', '80s')], '>', 'GSM')
     prod_desc_fmt = NamedStruct([('divider', 'h'), ('lat', 'l'), ('lon', 'l'),
                                  ('height', 'h'), ('prod_code', 'h'),
                                  ('op_mode', 'h'), ('vcp', 'h'), ('seq_num', 'h'),
@@ -1613,15 +1615,23 @@ class Level3File:
         # Handle GSM and jump out
         if self.header.code == 2:
             self.gsm = self._buffer.read_struct(self.gsm_fmt)
+            self.product_name = 'General Status Message'
             assert self.gsm.divider == -1
             if self.gsm.block_len > 82:
-                self.gsm_additional = self._buffer.read_struct(self.additional_gsm_fmt)
+                # Due to the way the structures read it in, one bit from the count needs
+                # to be popped off and added as the supplemental cut status for the 25th
+                # elevation cut.
+                more = self._buffer.read_struct(self.additional_gsm_fmt)
+                cut_count = more.supplemental_cut_count
+                more.supplemental_cut_map2.append(bool(cut_count & 0x1))
+                self.gsm_additional = more._replace(supplemental_cut_count=cut_count >> 1)
                 assert self.gsm.block_len == 178
             else:
                 assert self.gsm.block_len == 82
             return
 
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
+        log.debug('Product description block: %s', self.prod_desc)
 
         # Convert thresholds and dependent values to lists of values
         self.thresholds = [getattr(self.prod_desc, 'thr' + str(i)) for i in range(1, 17)]
@@ -1840,9 +1850,10 @@ class Level3File:
 
     def __repr__(self):
         """Return the string representation of the product."""
-        items = [self.product_name, self.header, self.prod_desc, self.thresholds,
-                 self.depVals, self.metadata, self.siteID]
-        return self.filename + ': ' + '\n'.join(map(str, items))
+        attrs = ('product_name', 'header', 'prod_desc', 'thresholds', 'depVals', 'metadata',
+                 'gsm', 'gsm_additional', 'siteID')
+        blocks = [str(getattr(self, name)) for name in attrs if hasattr(self, name)]
+        return self.filename + ': ' + '\n'.join(blocks)
 
     def _unpack_packet_radial_data(self, code, in_sym_block):
         hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),

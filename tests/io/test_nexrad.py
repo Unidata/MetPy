@@ -115,6 +115,22 @@ def test_basic():
     assert str(f)
 
 
+def test_new_gsm():
+    """Test parsing recent mods to the GSM product."""
+    f = Level3File(get_test_data('nids/KDDC-gsm.nids'))
+
+    assert f.gsm_additional.vcp_supplemental == ['AVSET', 'SAILS', 'RxR Noise', 'CBT']
+    assert f.gsm_additional.supplemental_cut_count == 2
+    truth = [False] * 16
+    truth[2] = True
+    truth[5] = True
+    assert f.gsm_additional.supplemental_cut_map == truth
+    assert f.gsm_additional.supplemental_cut_map2 == [False] * 9
+
+    # Check that str() doesn't error out
+    assert str(f)
+
+
 def test_bad_length(caplog):
     """Test reading a product with too many bytes produces a log message."""
     fname = get_test_data('nids/KOUN_SDUS84_DAATLX_201305202016', as_file_obj=False)
