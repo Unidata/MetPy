@@ -6,9 +6,10 @@
 Currently this includes tools for working with CartoPy projections.
 
 """
-import cartopy.crs as ccrs
-
 from ..cbook import Registry
+from ..plots.cartopy_utils import import_cartopy
+
+ccrs = import_cartopy()
 
 
 class CFProjection:

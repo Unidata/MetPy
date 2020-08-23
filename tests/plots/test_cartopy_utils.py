@@ -11,6 +11,7 @@ try:
     from metpy.plots import USCOUNTIES, USSTATES
 except ImportError:
     pass  # No CartoPy
+from metpy.plots.cartopy_utils import import_cartopy
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
@@ -74,3 +75,14 @@ def test_us_states_scales(ccrs):
         axis.set_extent([270, 280, 28, 39], ccrs.Geodetic())
         axis.add_feature(USSTATES.with_scale(scale))
     return fig
+
+
+def test_cartopy_stub(monkeypatch):
+    """Test that the CartoPy stub will issue an error if CartoPy is not present."""
+    import sys
+    # This makes sure that cartopy is not found
+    monkeypatch.setitem(sys.modules, 'cartopy.crs', None)
+
+    ccrs = import_cartopy()
+    with pytest.raises(RuntimeError, match='CartoPy is required'):
+        ccrs.PlateCarree()

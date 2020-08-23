@@ -55,3 +55,23 @@ try:
     USSTATES = MetPyMapFeature('us_states', '20m', facecolor='None', edgecolor='black')
 except ImportError:
     pass
+
+
+def import_cartopy():
+    """Import CartoPy; return a stub if unable.
+
+    This allows code requiring CartoPy to fail at use time rather than import time.
+    """
+    try:
+        import cartopy.crs as ccrs
+        return ccrs
+    except ImportError:
+        return CartopyStub()
+
+
+class CartopyStub:
+    """Fail if a CartoPy attribute is accessed."""
+
+    def __getattr__(self, item):
+        """Raise an error on any attribute access."""
+        raise RuntimeError(f'CartoPy is required to use this feature ({item}).')
