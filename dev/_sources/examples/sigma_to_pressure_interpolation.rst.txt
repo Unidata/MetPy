@@ -61,15 +61,6 @@ University Department of Geography and Meteorology.
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/runner/work/MetPy/MetPy/examples/sigma_to_pressure_interpolation.py:35: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.
-      vtimes = num2date(time[:], time.units)
-
 
 
 
@@ -186,7 +177,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  7.840 seconds)
+   **Total running time of the script:** ( 0 minutes  4.360 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
