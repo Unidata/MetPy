@@ -9,8 +9,10 @@ import matplotlib
 import matplotlib.pyplot
 import numpy
 import pandas
+import pooch
 import pytest
 import scipy
+import traitlets
 import xarray
 
 import metpy.calc
@@ -22,11 +24,11 @@ import pint  # noqa: I100, E402
 
 def pytest_report_header(config, startdir):
     """Add dependency information to pytest output."""
-    return ('Dependencies: Matplotlib ({}), NumPy ({}), Pandas ({}), '
-            'Pint ({}), SciPy ({}), Xarray ({})'.format(matplotlib.__version__,
-                                                        numpy.__version__, pandas.__version__,
-                                                        pint.__version__, scipy.__version__,
-                                                        xarray.__version__))
+    return (f'Dep Versions: Matplotlib {matplotlib.__version__}, '
+            f'NumPy {numpy.__version__}, SciPy {scipy.__version__}, '
+            f'Xarray {xarray.__version__}, Pint {pint.__version__}, '
+            f'Pandas {pandas.__version__}, Traitlets {traitlets.__version__}, '
+            f'Pooch {pooch.version.full_version}')
 
 
 @pytest.fixture(autouse=True)
