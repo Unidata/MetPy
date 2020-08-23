@@ -6,6 +6,7 @@
 from datetime import datetime
 from io import BytesIO
 import logging
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -147,6 +148,13 @@ def test_nwstg():
 def test_fobj():
     """Test reading a specific NEXRAD NIDS files from a file object."""
     Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
+
+
+def test_level3_pathlib():
+    """Test that reading with Level3File properly sets the filename from a Path."""
+    fname = Path(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
+    f = Level3File(fname)
+    assert f.filename == str(fname)
 
 
 def test21_precip():

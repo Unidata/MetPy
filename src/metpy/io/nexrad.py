@@ -8,6 +8,7 @@ from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
 import datetime
 import logging
+import pathlib
 import re
 import struct
 from struct import Struct
@@ -1558,7 +1559,12 @@ class Level3File:
 
         """
         fobj = open_as_needed(filename)
-        self.filename = filename if isinstance(filename, str) else 'No File'
+        if isinstance(filename, str):
+            self.filename = filename
+        elif isinstance(filename, pathlib.Path):
+            self.filename = str(filename)
+        else:
+            self.filename = 'No File'
 
         # Just read in the entire set of data at once
         with contextlib.closing(fobj):
