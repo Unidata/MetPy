@@ -114,7 +114,8 @@ def test_level3_files(fname):
 
 
 tdwr_nids_files = [get_test_data(fname, as_file_obj=False)
-                   for fname in POOCH.registry if fname.startswith('nids/Level3_MCI_')]
+                   for fname in POOCH.registry if (fname.startswith('nids/Level3_MCI_')
+                                                   or fname.startswith('nids/Level3_DEN_'))]
 
 
 @pytest.mark.parametrize('fname', tdwr_nids_files)
