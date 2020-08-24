@@ -17,8 +17,8 @@ from xdrlib import Unpacker
 import numpy as np
 from scipy.constants import day, milli
 
-from ._tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
-                     NamedStruct, open_as_needed, zlib_decompress_all_frames)
+from ._tools import (Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct,
+                     open_as_needed, zlib_decompress_all_frames)
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -321,7 +321,7 @@ class Level2File:
         for ptr, data_hdr in read_info:
             # Jump and read
             self._buffer.jump_to(msg_start, ptr)
-            vals = np.array(self._buffer.read_binary(data_hdr.num_gates, 'B'))
+            vals = self._buffer.read_array(data_hdr.num_gates, 'B')
 
             # Scale and flag data
             scaled_vals = (vals - data_hdr.offset) / data_hdr.scale
@@ -545,9 +545,7 @@ class Level2File:
                                       ('spot_blanking', 'B', BitField('Radial', 'Elevation',
                                                                       'Volume')),
                                       ('az_index_mode', 'B', scaler(0.01)),
-                                      ('num_data_blks', 'H'),
-                                      ('vol_const_ptr', 'L'), ('el_const_ptr', 'L'),
-                                      ('rad_const_ptr', 'L')], '>', 'Msg31DataHdr')
+                                      ('num_data_blks', 'H')], '>', 'Msg31DataHdr')
 
     msg31_vol_const_fmt = NamedStruct([('type', 's'), ('name', '3s'),
                                        ('size', 'H'), ('major', 'B'),
@@ -583,55 +581,55 @@ class Level2File:
                                   ('tover', 'H', scaler(0.1)),
                                   ('snr_thresh', 'h', scaler(0.1)),
                                   ('recombined', 'B', BitField('Azimuths', 'Gates')),
-                                  ('data_size', 'B', bits_to_code),
+                                  ('data_size', 'B'),
                                   ('scale', 'f'), ('offset', 'f')], '>', 'DataBlockHdr')
+
+    Radial = namedtuple('Radial', 'header vol_consts elev_consts radial_consts moments')
 
     def _decode_msg31(self, msg_hdr):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
-
-        # Read all the data block pointers separately. This makes it easy to loop and to
-        # handle the arbitrary numbers. We subtract 3 for the VOL, ELV, and RAD blocks that
-        # are required to be present (and can't be read like the data)
-        ptrs = self._buffer.read_binary(data_hdr.num_data_blks - 3, '>L')
-
         if data_hdr.compression:
             log.warning('Compressed message 31 not supported!')
 
-        self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
-        vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
-
-        self._buffer.jump_to(msg_start, data_hdr.el_const_ptr)
-        el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
-
-        self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
-
-        # Look ahead to figure out how big the block is
-        jmp = self._buffer.set_mark()
-        size = self._buffer.read_binary(3, '>H')[-1]
-        self._buffer.jump_to(jmp)
-        if size == self.rad_const_fmt_v2.size:
-            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
-        else:
-            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
-
-        data = {}
-        block_count = 3
-        for ptr in ptrs:
+        # Read all the block pointers. While the ICD specifies that at least the vol, el, rad
+        # constant blocks as well as REF moment block are present, it says "the pointers are
+        # not order or location dependent."
+        radial = self.Radial(data_hdr, None, None, None, {})
+        block_count = 0
+        for ptr in self._buffer.read_binary(data_hdr.num_data_blks, '>L'):
             if ptr:
                 block_count += 1
                 self._buffer.jump_to(msg_start, ptr)
-                hdr = self._buffer.read_struct(self.data_block_fmt)
-                vals = np.array(self._buffer.read_binary(hdr.num_gates,
-                                                         '>' + hdr.data_size))
-                scaled_vals = (vals - hdr.offset) / hdr.scale
-                scaled_vals[vals == 0] = self.MISSING
-                scaled_vals[vals == 1] = self.RANGE_FOLD
-                data[hdr.name.strip()] = (hdr, scaled_vals)
+                info = self._buffer.get_next(6)
+                if info.startswith(b'RVOL'):
+                    radial = radial._replace(
+                        vol_consts=self._buffer.read_struct(self.msg31_vol_const_fmt))
+                elif info.startswith(b'RELV'):
+                    radial = radial._replace(
+                        elev_consts=self._buffer.read_struct(self.msg31_el_const_fmt))
+                elif info.startswith(b'RRAD'):
+                    # Relies on the fact that the struct is small enough for its size
+                    # to fit in a single byte
+                    if int(info[-1]) == self.rad_const_fmt_v2.size:
+                        rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
+                    else:
+                        rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
+                    radial = radial._replace(radial_consts=rad_consts)
+                elif info.startswith(b'D'):
+                    hdr = self._buffer.read_struct(self.data_block_fmt)
+                    # TODO: The correctness of this code is not tested
+                    vals = self._buffer.read_array(count=hdr.num_gates,
+                                                   dtype=f'>u{hdr.data_size // 8}')
+                    scaled_vals = (vals - hdr.offset) / hdr.scale
+                    scaled_vals[vals == 0] = self.MISSING
+                    scaled_vals[vals == 1] = self.RANGE_FOLD
+                    radial.moments[hdr.name.strip()] = (hdr, scaled_vals)
+                else:
+                    log.warning('Unknown Message 31 block type: %s', str(info[:4]))
 
         self._add_sweep(data_hdr)
-
-        self.sweeps[-1].append((data_hdr, vol_consts, el_consts, rad_consts, data))
+        self.sweeps[-1].append(radial)
 
         if data_hdr.num_data_blks != block_count:
             log.warning('Incorrect number of blocks detected -- Got %d'

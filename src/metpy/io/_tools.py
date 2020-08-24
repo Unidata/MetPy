@@ -10,6 +10,8 @@ import logging
 from struct import Struct
 import zlib
 
+import numpy as np
+
 log = logging.getLogger(__name__)
 
 
@@ -96,7 +98,7 @@ class DictStruct(Struct):
         return dict(zip(self._names, items))
 
     def unpack(self, s):
-        """Parse bytes and return a namedtuple."""
+        """Parse bytes and return a dict."""
         return self._create(super().unpack(s))
 
     def unpack_from(self, buff, offset=0):
@@ -241,6 +243,12 @@ class IOBuffer:
     def read_int(self, code):
         """Parse the current buffer offset as the specified integer code."""
         return self.read_struct(Struct(code))[0]
+
+    def read_array(self, count, dtype):
+        """Read an array of values from the buffer."""
+        ret = np.frombuffer(self._data, offset=self._offset, dtype=dtype, count=count)
+        self.skip(ret.nbytes)
+        return ret
 
     def read(self, num_bytes=None):
         """Read and return the specified bytes from the buffer."""
