@@ -232,3 +232,15 @@ def test_vector_packet():
                 assert len(x2)
                 assert len(y1)
                 assert len(y2)
+
+
+@pytest.mark.parametrize('fname,truth',
+                         [('nids/KEAX_N0Q_20200817_0401.nids', (0, 'MRLE scan')),
+                          ('nids/KEAX_N0Q_20200817_0405.nids', (0, 'Non-supplemental scan')),
+                          ('nids/KDDC_N0Q_20200817_0501.nids', (16, 'Non-supplemental scan')),
+                          ('nids/KDDC_N0Q_20200817_0503.nids', (143, 'SAILS scan'))])
+def test_nids_supplemental(fname, truth):
+    """Checks decoding of supplemental scan fields for some nids products."""
+    f = Level3File(get_test_data(fname))
+    assert f.metadata['delta_time'] == truth[0]
+    assert f.metadata['supplemental_scan'] == truth[1]

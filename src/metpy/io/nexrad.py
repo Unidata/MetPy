@@ -761,6 +761,23 @@ def low_byte(ind):
     return inner
 
 
+def delta_time(ind):
+    """Create a function to return the delta time from a product-specific block."""
+    def inner(seq):
+        return seq[ind] >> 5
+    return inner
+
+
+def supplemental_scan(ind):
+    """Create a function to return the supplement scan type from a product-specific block."""
+    def inner(seq):
+        # ICD says 1->SAILS, 2->MRLE, but testing on 2020-08-17 makes this seem inverted
+        # given what's being reported by sites in the GSM.
+        return {0: 'Non-supplemental scan',
+                2: 'SAILS scan', 1: 'MRLE scan'}.get(seq[ind] & 0x001F, 'Unknown')
+    return inner
+
+
 # Data mappers used to take packed data and turn into physical units
 # Default is to use numpy array indexing to use LUT to change data bytes
 # into physical values. Can also have a 'labels' attribute to give
@@ -1155,10 +1172,14 @@ class Level3File:
                      19: ('Base Reflectivity', 230., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('calib_const', float_elem(7, 8)))),
                      20: ('Base Reflectivity', 460., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('calib_const', float_elem(7, 8)))),
                      21: ('Base Reflectivity', 460., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
@@ -1181,7 +1202,9 @@ class Level3File:
                            ('min', 3), ('max', 4))),
                      27: ('Base Velocity', 230., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
-                           ('min', 3), ('max', 4))),
+                           ('min', 3), ('max', 4),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)))),
                      28: ('Base Spectrum Width', 60., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3))),
@@ -1190,7 +1213,9 @@ class Level3File:
                            ('max', 3))),
                      30: ('Base Spectrum Width', 230., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
-                           ('max', 3))),
+                           ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)))),
                      31: ('User Selectable Storm Total Precipitation', 230., LegacyMapper,
                           (('end_hour', 0),
                            ('hour_span', 1),
@@ -1235,6 +1260,16 @@ class Level3File:
                           (('max', 3),
                            ('dir_max', 4),
                            ('alt_max', scaled_elem(5, 10)))),  # Max in ft
+                     50: ('Cross Section Reflectivity', 230., LegacyMapper,
+                          (('azimuth1', scaled_elem(0, 0.1)),
+                           ('range1', scaled_elem(1, 0.1)),
+                           ('azimuth2', scaled_elem(2, 0.1)),
+                           ('range2', scaled_elem(3, 0.1)))),
+                     51: ('Cross Section Velocity', 230., LegacyMapper,
+                          (('azimuth1', scaled_elem(0, 0.1)),
+                           ('range1', scaled_elem(1, 0.1)),
+                           ('azimuth2', scaled_elem(2, 0.1)),
+                           ('range2', scaled_elem(3, 0.1)))),
                      55: ('Storm Relative Mean Radial Velocity', 50., LegacyMapper,
                           (('window_az', scaled_elem(0, 0.1)),
                            ('window_range', scaled_elem(1, 0.1)),
@@ -1331,6 +1366,8 @@ class Level3File:
                      94: ('Base Reflectivity Data Array', 460., DigitalRefMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('compression', 7),
                            ('uncompressed_size', combine_elem(8, 9)))),
                      95: ('Composite Reflectivity Edited for AP', 230., LegacyMapper,
@@ -1353,12 +1390,16 @@ class Level3File:
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('min', 3),
                            ('max', 4),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('compression', 7),
                            ('uncompressed_size', combine_elem(8, 9)))),
                      132: ('Clutter Likelihood Reflectivity', 230., LegacyMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),)),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)),)),
                      133: ('Clutter Likelihood Doppler', 230., LegacyMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),)),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)),)),
                      134: ('High Resolution VIL', 460., DigitalVILMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('max', 3),
@@ -1390,19 +1431,19 @@ class Level3File:
                             ('uncompressed_size', combine_elem(8, 9)))),
                      153: ('Super Resolution Reflectivity Data Array', 460., DigitalRefMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
-                            ('max', 3),
-                            ('compression', 7),
+                            ('max', 3), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      154: ('Super Resolution Velocity Data Array', 300., DigitalVelMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
-                            ('max', 3),
-                            ('compression', 7),
+                            ('min', 3), ('max', 4), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      155: ('Super Resolution Spectrum Width Data Array', 300.,
                            DigitalSPWMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
-                            ('max', 3),
-                            ('compression', 7),
+                            ('max', 3), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      156: ('Turbulence Detection (Eddy Dissipation Rate)', 230., EDRMapper,
                            (('el_start_time', 0),
@@ -1426,8 +1467,8 @@ class Level3File:
                      159: ('Digital Differential Reflectivity', 300., GenericDigitalMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', scaled_elem(3, 0.1)),
-                            ('max', scaled_elem(4, 0.1)),
-                            ('compression', 7),
+                            ('max', scaled_elem(4, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      160: ('Correlation Coefficient', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
@@ -1436,8 +1477,8 @@ class Level3File:
                      161: ('Digital Correlation Coefficient', 300., GenericDigitalMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', scaled_elem(3, 0.00333)),
-                            ('max', scaled_elem(4, 0.00333)),
-                            ('compression', 7),
+                            ('max', scaled_elem(4, 0.00333)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      162: ('Specific Differential Phase', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
@@ -1446,17 +1487,18 @@ class Level3File:
                      163: ('Digital Specific Differential Phase', 300., GenericDigitalMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', scaled_elem(3, 0.05)),
-                            ('max', scaled_elem(4, 0.05)),
-                            ('compression', 7),
+                            ('max', scaled_elem(4, 0.05)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      164: ('Hydrometeor Classification', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)),)),
                      165: ('Digital Hydrometeor Classification', 300., DigitalHMCMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),
-                            ('compression', 7),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      166: ('Melting Layer', 230., LegacyMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),)),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)),)),
                      169: ('One Hour Accumulation', 230., LegacyMapper,
                            (('null_product', low_byte(2)),
                             ('max', scaled_elem(3, 0.1)),
@@ -1477,7 +1519,7 @@ class Level3File:
                             ('rainfall_end', date_elem(4, 5)),
                             ('bias', scaled_elem(6, 0.01)),
                             ('gr_pairs', scaled_elem(7, 0.01)))),
-                     172: ('Digital Storm total Accumulation', 230., GenericDigitalMapper,
+                     172: ('Digital Storm Total Accumulation', 230., GenericDigitalMapper,
                            (('rainfall_begin', date_elem(0, 1)),
                             ('null_product', low_byte(2)),
                             ('max', scaled_elem(3, 0.1)),
@@ -1664,6 +1706,9 @@ class Level3File:
                     ('uncompressed_size', combine_elem(8, 9)), ('defaultVals', 0)))
         self.product_name, self.max_range, mapper, meta = self.prod_spec_map.get(
             self.header.code, default)
+        log.debug('Product info--name: %s max_range: %f mapper: %s metadata: %s',
+                  self.product_name, self.max_range, mapper, meta)
+
         for name, block in meta:
             if callable(block):
                 self.metadata[name] = block(self.depVals)
@@ -1763,6 +1808,7 @@ class Level3File:
     def _unpack_symblock(self, start, offset):
         self._buffer.jump_to(start, offset)
         blk = self._buffer.read_struct(self.sym_block_fmt)
+        log.debug('Symbology block info: %s', blk)
 
         self.sym_block = []
         assert blk.divider == -1, ('Bad divider for symbology block: {:d} should be -1'
