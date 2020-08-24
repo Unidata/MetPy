@@ -790,6 +790,9 @@ class DataMapper:
     RANGE_FOLD = float('nan')
     MISSING = float('nan')
 
+    def __init__(self, num=256):
+        self.lut = np.full(num, self.MISSING, dtype=np.float)
+
     def __call__(self, data):
         """Convert the values."""
         return self.lut[data]
@@ -806,10 +809,10 @@ class DigitalMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper and the lookup table."""
+        super().__init__()
         min_val = two_comp16(prod.thresholds[0]) * self._min_scale
         inc = prod.thresholds[1] * self._inc_scale
         num_levels = prod.thresholds[2]
-        self.lut = [self.MISSING] * 256
 
         # Generate lookup table -- sanity check on num_levels handles
         # the fact that DHR advertises 256 levels, which *includes*
@@ -817,8 +820,6 @@ class DigitalMapper(DataMapper):
         num_levels = min(num_levels, self._max_data - self._min_data + 1)
         for i in range(num_levels):
             self.lut[i + self._min_data] = min_val + i * inc
-
-        self.lut = np.array(self.lut)
 
 
 class DigitalRefMapper(DigitalMapper):
@@ -862,13 +863,12 @@ class DigitalVILMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the VIL mapper."""
+        super().__init__()
         lin_scale = float16(prod.thresholds[0])
         lin_offset = float16(prod.thresholds[1])
         log_start = prod.thresholds[2]
         log_scale = float16(prod.thresholds[3])
         log_offset = float16(prod.thresholds[4])
-        self.lut = np.empty((256,), dtype=np.float)
-        self.lut.fill(self.MISSING)
 
         # VIL is allowed to use 2 through 254 inclusive. 0 is thresholded,
         # 1 is flagged, and 255 is reserved
@@ -882,17 +882,16 @@ class DigitalEETMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper."""
+        super().__init__()
         data_mask = prod.thresholds[0]
         scale = prod.thresholds[1]
         offset = prod.thresholds[2]
         topped_mask = prod.thresholds[3]
-        self.lut = [self.MISSING] * 256
         self.topped_lut = [False] * 256
         for i in range(2, 256):
             self.lut[i] = ((i & data_mask) - offset) / scale
             self.topped_lut[i] = bool(i & topped_mask)
 
-        self.lut = np.array(self.lut)
         self.topped_lut = np.array(self.topped_lut)
 
     def __call__(self, data_vals):
@@ -908,14 +907,14 @@ class GenericDigitalMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper by pulling out all the information from the product."""
+        # Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.
+        max_data_val = prod.thresholds[5]
+        super().__init__(max_data_val + 1)
+
         scale = float32(prod.thresholds[0], prod.thresholds[1])
         offset = float32(prod.thresholds[2], prod.thresholds[3])
-        max_data_val = prod.thresholds[5]
         leading_flags = prod.thresholds[6]
         trailing_flags = prod.thresholds[7]
-
-        # Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.
-        self.lut = [self.MISSING] * (max_data_val + 1)
 
         if leading_flags > 1:
             self.lut[1] = self.RANGE_FOLD
@@ -923,8 +922,6 @@ class GenericDigitalMapper(DataMapper):
         # Need to add 1 to the end of the range so that it's inclusive
         for i in range(leading_flags, max_data_val - trailing_flags + 1):
             self.lut[i] = (i - offset) / scale
-
-        self.lut = np.array(self.lut)
 
 
 class DigitalHMCMapper(DataMapper):
@@ -938,11 +935,10 @@ class DigitalHMCMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper."""
-        self.lut = [self.MISSING] * 256
+        super().__init__()
         for i in range(10, 256):
             self.lut[i] = i // 10
         self.lut[150] = self.RANGE_FOLD
-        self.lut = np.array(self.lut)
 
 
 # 156, 157
@@ -951,14 +947,13 @@ class EDRMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper based on the product."""
+        data_levels = prod.thresholds[2]
+        super().__init__(data_levels)
         scale = prod.thresholds[0] / 1000.
         offset = prod.thresholds[1] / 1000.
-        data_levels = prod.thresholds[2]
         leading_flags = prod.thresholds[3]
-        self.lut = [self.MISSING] * data_levels
         for i in range(leading_flags, data_levels):
             self.lut = scale * i + offset
-        self.lut = np.array(self.lut)
 
 
 class LegacyMapper(DataMapper):
@@ -969,6 +964,7 @@ class LegacyMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the values and labels from the product."""
+        # Don't worry about super() since we're using our own lut assembled sequentially
         self.labels = []
         self.lut = []
         for t in prod.thresholds:
