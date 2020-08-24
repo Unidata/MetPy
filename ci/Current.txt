@@ -1,7 +1,7 @@
 matplotlib==3.3.0
 numpy==1.19.1
 scipy==1.5.2
-pint==0.14
+pint==0.15
 xarray==0.16.0
 traitlets==4.3.3
 pooch==1.1.1
