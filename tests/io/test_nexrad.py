@@ -91,6 +91,13 @@ def test_single_chunk(caplog):
     assert 'Unable to read volume header' not in caplog.text
 
 
+def test_build19_level2_additions():
+    """Test handling of new additions in Build 19 level2 data."""
+    f = Level2File(get_test_data('Level2_KDDC_20200823_204121.ar2v'))
+    assert f.vcp_info.vcp_version == 1
+    assert f.sweeps[0][0].header.az_spacing == 0.5
+
+
 #
 # NIDS/Level 3 Tests
 #

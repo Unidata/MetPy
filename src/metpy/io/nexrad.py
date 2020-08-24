@@ -405,10 +405,13 @@ class Level2File:
         self._check_size(msg_hdr, msg_fmt.size)
 
     vcp_fmt = NamedStruct([('size_hw', 'H'), ('pattern_type', 'H'),
-                           ('num', 'H'), ('num_el_cuts', 'H'), ('clutter_map_group', 'H'),
+                           ('num', 'H'), ('num_el_cuts', 'H'),
+                           ('vcp_version', 'B'), ('clutter_map_group', 'B'),
                            ('dop_res', 'B', BitField(None, 0.5, 1.0)),
                            ('pulse_width', 'B', BitField('None', 'Short', 'Long')),
-                           (None, '10x'), ('els', None)], '>', 'VCPFmt')
+                           (None, '4x'), ('vcp_sequencing', 'H'),
+                           ('vcp_supplemental_info', 'H'), (None, '2x'),
+                           ('els', None)], '>', 'VCPFmt')
 
     vcp_el_fmt = NamedStruct([('el_angle', 'H', angle),
                               ('channel_config', 'B', Enum('Constant Phase', 'Random Phase',
@@ -431,10 +434,10 @@ class Level2File:
                               ('rhohv_thresh', 'h', scaler(0.125)),
                               ('sector1_edge', 'H', angle),
                               ('sector1_doppler_prf_num', 'H'),
-                              ('sector1_pulse_count', 'H'), (None, '2x'),
+                              ('sector1_pulse_count', 'H'), ('supplemental_data', 'H'),
                               ('sector2_edge', 'H', angle),
                               ('sector2_doppler_prf_num', 'H'),
-                              ('sector2_pulse_count', 'H'), (None, '2x'),
+                              ('sector2_pulse_count', 'H'), ('ebc_angle', 'H', angle),
                               ('sector3_edge', 'H', angle),
                               ('sector3_doppler_prf_num', 'H'),
                               ('sector3_pulse_count', 'H'), (None, '2x')], '>', 'VCPEl')
@@ -538,7 +541,7 @@ class Level2File:
                                       ('date', 'H'), ('az_num', 'H'),
                                       ('az_angle', 'f'), ('compression', 'B'),
                                       (None, 'x'), ('rad_length', 'H'),
-                                      ('az_spacing', 'B'),
+                                      ('az_spacing', 'B', Enum(0, 0.5, 1.0)),
                                       ('rad_status', 'B', remap_status),
                                       ('el_num', 'B'), ('sector_num', 'B'),
                                       ('el_angle', 'f'),
