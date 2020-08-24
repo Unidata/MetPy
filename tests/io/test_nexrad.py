@@ -69,6 +69,28 @@ def test_conditional_radconst(fname, has_v2):
     assert hasattr(f.sweeps[0][0][3], 'calib_dbz0_v') == has_v2
 
 
+def test_msg15():
+    """Check proper decoding of message type 15."""
+    f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
+    data = f.clutter_filter_map['data']
+    assert isinstance(data[0][0], list)
+    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
+
+
+def test_single_chunk(caplog):
+    """Check that Level2File copes with reading a file containing a single chunk."""
+    # Need to override the test level set above
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    f = Level2File(get_test_data('Level2_KLBB_single_chunk'))
+    assert len(f.sweeps) == 1
+    assert 'Unable to read volume header' in caplog.text
+
+    # Make sure the warning is not present if we pass the right kwarg.
+    caplog.clear()
+    Level2File(get_test_data('Level2_KLBB_single_chunk'), has_volume_header=False)
+    assert 'Unable to read volume header' not in caplog.text
+
+
 #
 # NIDS/Level 3 Tests
 #
@@ -186,14 +208,6 @@ def test11_precip():
 def test31_clear_air():
     """Test checking whether VCP 31 is clear air mode."""
     assert not is_precip_mode(31), 'VCP 31 is not precip'
-
-
-def test_msg15():
-    """Check proper decoding of message type 15."""
-    f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
-    data = f.clutter_filter_map['data']
-    assert isinstance(data[0][0], list)
-    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
 
 
 def test_tracks():

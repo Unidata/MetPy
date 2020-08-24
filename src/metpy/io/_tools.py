@@ -174,13 +174,17 @@ class IOBuffer:
     def __init__(self, source):
         """Initialize the IOBuffer with the source data."""
         self._data = bytearray(source)
-        self._offset = 0
-        self.clear_marks()
+        self.reset()
 
     @classmethod
     def fromfile(cls, fobj):
         """Initialize the IOBuffer with the contents of the file object."""
         return cls(fobj.read())
+
+    def reset(self):
+        """Reset buffer back to initial state."""
+        self._offset = 0
+        self.clear_marks()
 
     def set_mark(self):
         """Mark the current location and return its id so that the buffer can return later."""

@@ -160,7 +160,7 @@ class Level2File:
     MISSING = float('nan')
     RANGE_FOLD = float('nan')  # TODO: Need to separate from missing
 
-    def __init__(self, filename):
+    def __init__(self, filename, *, has_volume_header=True):
         r"""Create instance of `Level2File`.
 
         Parameters
@@ -177,10 +177,18 @@ class Level2File:
         with contextlib.closing(fobj):
             self._buffer = IOBuffer.fromfile(fobj)
 
-        self._read_volume_header()
-        start = self._buffer.set_mark()
+        # Try to read the volume header. If this fails, or we're told we don't have one
+        # then we fall back and try to just read messages, assuming we have e.g. one of
+        # the real-time chunks.
+        try:
+            if has_volume_header:
+                self._read_volume_header()
+        except (OSError, ValueError):
+            log.warning('Unable to read volume header. Attempting to read messages.')
+            self._buffer.reset()
 
         # See if we need to apply bz2 decompression
+        start = self._buffer.set_mark()
         try:
             self._buffer = IOBuffer(self._buffer.read_func(bzip_blocks_decompress_all))
         except ValueError:
