@@ -932,7 +932,7 @@ class DigitalHMCMapper(DataMapper):
     """
 
     labels = ['ND', 'BI', 'GC', 'IC', 'DS', 'WS', 'RA', 'HR',
-              'BD', 'GR', 'HA', 'UK', 'RF']
+              'BD', 'GR', 'HA', 'LH', 'GH', 'UK', 'RF']
 
     def __init__(self, prod):
         """Initialize the mapper."""
