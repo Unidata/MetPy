@@ -196,6 +196,13 @@ def test_level3_pathlib():
     assert f.filename == str(fname)
 
 
+def test_nids_super_res_width():
+    """Test decoding a super resolution spectrum width product."""
+    f = Level3File(get_test_data('nids/KLZK_H0W_20200812_1305'))
+    width = f.map_data(f.sym_block[0][0]['data'])
+    assert np.nanmax(width) == 15
+
+
 def test21_precip():
     """Test checking whether VCP 21 is precipitation mode."""
     assert is_precip_mode(21), 'VCP 21 is precip'

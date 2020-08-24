@@ -839,7 +839,8 @@ class DigitalSPWMapper(DigitalVelMapper):
     """Mapper for digital spectrum width products."""
 
     _min_data = 129
-    _max_data = 149
+    # ICD says up to 152, but also says max value is 19, which implies 129 + 19/0.5 -> 167
+    _max_data = 167
 
 
 class PrecipArrayMapper(DigitalMapper):
@@ -1495,6 +1496,18 @@ class Level3File:
                      166: ('Melting Layer', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
                             ('supplemental_scan', supplemental_scan(6)),)),
+                     167: ('Super Res Digital Correlation Coefficient', 300.,
+                           GenericDigitalMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('min', scaled_elem(3, 0.00333)),
+                            ('max', scaled_elem(4, 0.00333)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
+                            ('uncompressed_size', combine_elem(8, 9)))),
+                     168: ('Super Res Digital Phi', 300., GenericDigitalMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('min', 3), ('max', 4), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
+                            ('uncompressed_size', combine_elem(8, 9)))),
                      169: ('One Hour Accumulation', 230., LegacyMapper,
                            (('null_product', low_byte(2)),
                             ('max', scaled_elem(3, 0.1)),
