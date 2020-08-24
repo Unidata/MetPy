@@ -1391,6 +1391,14 @@ class Level3File:
                            ('supplemental_scan', supplemental_scan(6)),
                            ('compression', 7),
                            ('uncompressed_size', combine_elem(8, 9)))),
+                     113: ('Power Removed Control', 300., LegacyMapper,
+                           (('rpg_cut_num', 0), ('cmd_generated', 1),
+                            ('el_angle', scaled_elem(2, 0.1)),
+                            ('clutter_filter_map_dt', date_elem(4, 3)),
+                            # While the 2620001Y ICD doesn't talk about using these
+                            # product-specific blocks for this product, they have data in them
+                            # and the compression info is necessary for proper decoding.
+                            ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
                      132: ('Clutter Likelihood Reflectivity', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
                             ('supplemental_scan', supplemental_scan(6)),)),

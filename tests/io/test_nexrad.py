@@ -203,6 +203,18 @@ def test_nids_super_res_width():
     assert np.nanmax(width) == 15
 
 
+def test_power_removed_control():
+    """Test decoding new PRC product."""
+    f = Level3File(get_test_data('nids/KGJX_NXF_20200817_0600.nids'))
+    assert f.prod_desc.prod_code == 113
+    assert f.metadata['rpg_cut_num'] == 1
+    assert f.metadata['cmd_generated'] == 0
+    assert f.metadata['el_angle'] == -0.2
+    assert f.metadata['clutter_filter_map_dt'] == datetime(2020, 8, 17, 4, 16)
+    assert f.metadata['compression'] == 1
+    assert f.sym_block[0][0]
+
+
 def test21_precip():
     """Test checking whether VCP 21 is precipitation mode."""
     assert is_precip_mode(21), 'VCP 21 is precip'
