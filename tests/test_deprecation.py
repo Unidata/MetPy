@@ -8,7 +8,7 @@ import pytest
 from metpy import deprecation
 
 
-class FakeyMcFakeface(object):
+class FakeyMcFakeface:
     """Our faked object for testing."""
 
     @classmethod

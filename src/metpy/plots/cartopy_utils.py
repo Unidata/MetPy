@@ -25,7 +25,7 @@ class MetPyMapFeature(cfeature.Feature):
         """Return an iterator of (shapely) geometries for this feature."""
         import cartopy.io.shapereader as shapereader
         # Ensure that the associated files are in the cache
-        fname = '{}_{}'.format(self.name, self.scaler.scale)
+        fname = f'{self.name}_{self.scaler.scale}'
         for extension in ['.dbf', '.shx']:
             get_test_data(fname + extension)
         path = get_test_data(fname + '.shp', as_file_obj=False)

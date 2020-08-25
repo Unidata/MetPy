@@ -127,13 +127,13 @@ ax.add_feature(cfeature.STATES, linewidth=0.5)
 clevisent = np.arange(0, 1000, 25)
 cs = ax.contour(lon, lat, isentprs[level, :, :], clevisent,
                 colors='k', linewidths=1.0, linestyles='solid', transform=ccrs.PlateCarree())
-ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-          fmt='%i', rightside_up=True, use_clabeltext=True)
+cs.clabel(fontsize=10, inline=1, inline_spacing=7, fmt='%i', rightside_up=True,
+          use_clabeltext=True)
 
 # Plot RH
 cf = ax.contourf(lon, lat, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r, transform=ccrs.PlateCarree())
-cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
+cb = fig.colorbar(cf, orientation='horizontal', aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 
@@ -142,8 +142,8 @@ ax.barbs(lon.values, lat.values, isentu[level, :, :].m, isentv[level, :, :].m, l
          regrid_shape=20, transform=ccrs.PlateCarree())
 
 # Make some titles
-ax.set_title('{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (percent)'
-             .format(isentlevs[level].m), loc='left')
+ax.set_title(f'{isentlevs[level]:~.0f} Isentropic Pressure (hPa), Wind (kt), '
+             'Relative Humidity (percent)', loc='left')
 add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
               y=0.02, high_contrast=True)
 fig.tight_layout()
@@ -173,13 +173,13 @@ ax.add_feature(cfeature.STATES.with_scale('50m'), linewidth=0.5)
 clevmsf = np.arange(0, 4000, 5)
 cs = ax.contour(lon, lat, msf[level, :, :], clevmsf,
                 colors='k', linewidths=1.0, linestyles='solid', transform=ccrs.PlateCarree())
-ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-          fmt='%i', rightside_up=True, use_clabeltext=True)
+cs.clabel(fontsize=10, inline=1, inline_spacing=7, fmt='%i', rightside_up=True,
+          use_clabeltext=True)
 
 # Plot RH
 cf = ax.contourf(lon, lat, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r, transform=ccrs.PlateCarree())
-cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
+cb = fig.colorbar(cf, orientation='horizontal', aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 
@@ -188,8 +188,8 @@ ax.barbs(lon.values, lat.values, isentu[level, :, :].m, isentv[level, :, :].m, l
          regrid_shape=20, transform=ccrs.PlateCarree())
 
 # Make some titles
-ax.set_title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m)
-             + r'($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)', loc='left')
+ax.set_title(f'{isentlevs[level]:~.0f} Montgomery Streamfunction '
+             r'($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)', loc='left')
 add_timestamp(ax, times[0].values.astype('datetime64[ms]').astype('O'),
               y=0.02, pretext='Valid: ', high_contrast=True)
 

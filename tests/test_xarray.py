@@ -2,8 +2,6 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the operation of MetPy's XArray accessors."""
-from __future__ import absolute_import
-
 from collections import OrderedDict
 
 import cartopy.crs as ccrs

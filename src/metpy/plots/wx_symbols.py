@@ -62,7 +62,7 @@ def wx_code_to_numeric(codes):
     return np.array(wx_sym_list)
 
 
-class CodePointMapping(object):
+class CodePointMapping:
     """Map integer values to font code points."""
 
     def __init__(self, num, font_start, font_jumps=None, char_jumps=None):

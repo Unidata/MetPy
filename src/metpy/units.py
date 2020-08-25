@@ -222,10 +222,9 @@ def check_units(*units_by_pos, **units_by_name):
             # If there are any bad units, emit a proper error message making it clear
             # what went wrong.
             if bad:
-                msg = '`{}` given arguments with incorrect units: {}.'.format(
-                    func.__name__,
-                    ', '.join('`{}` requires "{}" but given "{}"'.format(arg, req, given)
-                              for arg, given, req in bad))
+                msg = f'`{func.__name__}` given arguments with incorrect units: '
+                msg += ', '.join(f'`{arg}` requires "{req}" but given "{given}"'
+                                 for arg, given, req in bad)
                 if 'none' in msg:
                     msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
                             '    from metpy.units import units\n'

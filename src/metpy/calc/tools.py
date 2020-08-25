@@ -176,7 +176,7 @@ def find_intersections(x, a, b, direction='all', log_x=False):
     elif direction == 'all':
         return intersect_x[duplicate_mask], intersect_y[duplicate_mask]
     else:
-        raise ValueError('Unknown option for direction: {0}'.format(str(direction)))
+        raise ValueError(f'Unknown option for direction: {direction}')
 
     return intersect_x[mask & duplicate_mask], intersect_y[mask & duplicate_mask]
 

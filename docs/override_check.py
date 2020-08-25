@@ -4,9 +4,6 @@
 #
 # Verifies that any modules present in the _templates/overrides directory have all of their
 # their exported functions included in the doc file.
-
-from __future__ import print_function
-
 import glob
 import importlib
 import os

@@ -31,7 +31,7 @@ def version(val):
         ver = val / 100.
     else:
         ver = val / 10.
-    return '{:.1f}'.format(ver)
+    return f'{ver:.1f}'
 
 
 def scaler(scale):
@@ -65,7 +65,7 @@ def bzip_blocks_decompress_all(data):
         try:
             frames.extend(bz2.decompress(data[offset:offset + block_cmp_bytes]))
             offset += block_cmp_bytes
-        except IOError:
+        except OSError:
             # If we've decompressed any frames, this is an error mid-stream, so warn, stop
             # trying to decompress and let processing proceed
             if frames:
@@ -113,7 +113,7 @@ BAD_DATA = 0x20
 
 
 @exporter.export
-class Level2File(object):
+class Level2File:
     r"""Handle reading the NEXRAD Level 2 data and its various messages.
 
     This class attempts to decode every byte that is in a given data file.
@@ -246,7 +246,7 @@ class Level2File(object):
 
                 # Try to handle the message. If we don't handle it, skipping
                 # past it is handled at the end anyway.
-                decoder = '_decode_msg{:d}'.format(msg_hdr.msg_type)
+                decoder = f'_decode_msg{msg_hdr.msg_type:d}'
                 if hasattr(self, decoder):
                     getattr(self, decoder)(msg_hdr)
                 else:
@@ -756,7 +756,7 @@ def low_byte(ind):
 # Default is to use numpy array indexing to use LUT to change data bytes
 # into physical values. Can also have a 'labels' attribute to give
 # categorical labels
-class DataMapper(object):
+class DataMapper:
     """Convert packed integer data into physical units."""
 
     # Need to find way to handle range folded
@@ -957,13 +957,13 @@ class LegacyMapper(DataMapper):
 
             elif codes >> 6:
                 val *= 0.01
-                label = '{:.2f}'.format(val)
+                label = f'{val:.2f}'
             elif codes >> 5:
                 val *= 0.05
-                label = '{:.2f}'.format(val)
+                label = f'{val:.2f}'
             elif codes >> 4:
                 val *= 0.1
-                label = '{:.1f}'.format(val)
+                label = f'{val:.1f}'
 
             if codes & 0x1:
                 val *= -1
@@ -985,7 +985,7 @@ class LegacyMapper(DataMapper):
 
 
 @exporter.export
-class Level3File(object):
+class Level3File:
     r"""Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.
 
     This class attempts to decode every byte that is in a given product file.
@@ -1658,7 +1658,7 @@ class Level3File(object):
                 decomp_data = self._buffer.read_func(bz2.decompress)
                 self._buffer.splice(comp_start, decomp_data)
                 assert self._buffer.check_remains(self.metadata['uncompressed_size'])
-            except IOError:
+            except OSError:
                 pass
 
         # Unpack the various blocks, if present. The factor of 2 converts from
@@ -1973,7 +1973,7 @@ class Level3File(object):
                 if kind not in point_feature_map:
                     log.warning('%s: Unknown graphic symbol point kind %d/%x.',
                                 self.filename, kind, kind)
-                    ret['type'].append('Unknown ({:d})'.format(kind))
+                    ret['type'].append(f'Unknown ({kind:d})')
                 else:
                     ret['type'].append(point_feature_map[kind])
 
@@ -2142,7 +2142,7 @@ class Level3File(object):
                 scale = 1
             vals = self._read_trends()
             if code in (1, 2):
-                ret['{} Limited'.format(key)] = [True if v > 700 else False for v in vals]
+                ret[f'{key} Limited'] = [True if v > 700 else False for v in vals]
                 vals = [v - 1000 if v > 700 else v for v in vals]
             ret[key] = [v * scale for v in vals]
 

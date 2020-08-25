@@ -101,7 +101,7 @@ class DictStruct(Struct):
         return self._create(super().unpack_from(buff, offset))
 
 
-class Enum(object):
+class Enum:
     """Map values to specific strings."""
 
     def __init__(self, *args, **kwargs):
@@ -114,10 +114,10 @@ class Enum(object):
 
     def __call__(self, val):
         """Map an integer to the string representation."""
-        return self.val_map.get(val, 'Unknown ({})'.format(val))
+        return self.val_map.get(val, f'Unknown ({val})')
 
 
-class Bits(object):
+class Bits:
     """Breaks an integer into a specified number of True/False bits."""
 
     def __init__(self, num_bits):
@@ -129,7 +129,7 @@ class Bits(object):
         return [bool((val >> i) & 0x1) for i in self._bits]
 
 
-class BitField(object):
+class BitField:
     """Convert an integer to a string for each bit."""
 
     def __init__(self, *names):
@@ -153,7 +153,7 @@ class BitField(object):
         return bits[0] if len(bits) == 1 else bits
 
 
-class Array(object):
+class Array:
     """Use a Struct as a callable to unpack a bunch of bytes as a list."""
 
     def __init__(self, fmt):
@@ -165,7 +165,7 @@ class Array(object):
         return list(self._struct.unpack(buf))
 
 
-class IOBuffer(object):
+class IOBuffer:
     """Holds bytes from a buffer to simplify parsing and random access."""
 
     def __init__(self, source):

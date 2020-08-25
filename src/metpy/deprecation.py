@@ -140,7 +140,7 @@ def _generate_deprecation_message(since, message='', name='',
 
     altmessage = ''
     if alternative:
-        altmessage = ' Use {} instead.'.format(alternative)
+        altmessage = f' Use {alternative} instead.'
 
     message = message + altmessage
 
