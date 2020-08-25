@@ -210,7 +210,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
                              transform=ccrs.PlateCarree(), zorder=0)
     axlist[2].set_title('Surface Temperatures', fontsize=16)
     cb3 = fig.colorbar(cf3, ax=axlist[2], orientation='horizontal', shrink=0.74, pad=0)
-    cb3.set_label(u'\N{DEGREE FAHRENHEIT}', size='x-large')
+    cb3.set_label('\N{DEGREE FAHRENHEIT}', size='x-large')
 
     # Lower right plot - precipitable water entire atmosphere
     cf4 = axlist[3].contourf(lon_2d, lat_2d, precip_water, cmap='Greens',
@@ -241,7 +241,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  7.807 seconds)
+   **Total running time of the script:** ( 0 minutes  6.712 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:

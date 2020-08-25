@@ -313,7 +313,7 @@
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
-            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;(</span><span class="si">{0:f}</span><span class="s1">, </span><span class="si">{1:f}</span><span class="s1">, </span><span class="si">{2:f}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="p">))</span></div>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;(</span><span class="si">{:f}</span><span class="s1">, </span><span class="si">{:f}</span><span class="s1">, </span><span class="si">{:f}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ColortableRegistry"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry">[docs]</a><span class="k">class</span> <span class="nc">ColortableRegistry</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -353,7 +353,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">TABLE_EXT</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fobj</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fobj</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">add_colortable</span><span class="p">(</span><span class="n">fobj</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fname</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
                         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Added colortable from file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
@@ -492,7 +492,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Aug 24, 2020 at 22:04:33.
+      Last updated on Aug 25, 2020 at 18:23:44.
 
     </p>
   </div>
@@ -526,7 +526,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post241+ga9b5427',
+            VERSION:'1.0.0rc1.post248+g931c114',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

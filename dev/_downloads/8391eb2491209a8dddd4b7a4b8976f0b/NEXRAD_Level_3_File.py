@@ -21,7 +21,7 @@ ctables = (('NWSStormClearReflectivity', -20, 0.5),  # dBZ
            ('NWS8bitVel', -100, 1.0))  # m/s
 for v, ctable, ax in zip(('N0Q', 'N0U'), ctables, axes):
     # Open the file
-    name = get_test_data('nids/KOUN_SDUS54_{}TLX_201305202016'.format(v), as_file_obj=False)
+    name = get_test_data(f'nids/KOUN_SDUS54_{v}TLX_201305202016', as_file_obj=False)
     f = Level3File(name)
 
     # Pull the data out of the file object

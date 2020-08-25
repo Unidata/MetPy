@@ -74,24 +74,23 @@ ax.add_feature(cfeature.STATES, linewidth=0.5)
 # Plot the heights
 cs = ax.contour(lon, lat, height[FH, 0, :, :], transform=ccrs.PlateCarree(),
                 colors='k', linewidths=1.0, linestyles='solid')
-ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-          fmt='%i', rightside_up=True, use_clabeltext=True)
+cs.clabel(fontsize=10, inline=1, inline_spacing=7, fmt='%i', rightside_up=True,
+          use_clabeltext=True)
 
 # Contour the temperature
 cf = ax.contourf(lon, lat, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r,
                  transform=ccrs.PlateCarree())
-cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
-                  pad=0.05, extendrect='True')
+cb = fig.colorbar(cf, orientation='horizontal', aspect=65, shrink=0.5, pad=0.05,
+                  extendrect='True')
 cb.set_label('Celsius', size='x-large')
 
 ax.set_extent([-106.5, -90.4, 34.5, 46.75], crs=ccrs.PlateCarree())
 
 # Make the axis title
-ax.set_title('{:.0f} hPa Heights (m) and Temperature (C)'.format(plevs[0].m), loc='center',
-             fontsize=10)
+ax.set_title(f'{plevs[0]:~.0f} Heights (m) and Temperature (C)', loc='center', fontsize=10)
 
 # Set the figure title
-fig.suptitle('WRF-ARW Forecast VALID: {:s} UTC'.format(str(vtimes[FH])), fontsize=14)
+fig.suptitle(f'WRF-ARW Forecast VALID: {vtimes[FH]} UTC', fontsize=14)
 add_timestamp(ax, vtimes[FH], y=0.02, high_contrast=True)
 
 plt.show()

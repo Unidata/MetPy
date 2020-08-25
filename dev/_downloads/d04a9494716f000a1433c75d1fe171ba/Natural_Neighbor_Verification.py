@@ -80,7 +80,7 @@ ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
 delaunay_plot_2d(tri, ax=ax)
 
 for i, zval in enumerate(zp):
-    ax.annotate('{} F'.format(zval), xy=(pts[i, 0] + 2, pts[i, 1]))
+    ax.annotate(f'{zval} F', xy=(pts[i, 0] + 2, pts[i, 1]))
 
 sim_gridx = [30., 60.]
 sim_gridy = [30., 60.]
@@ -94,11 +94,11 @@ members, circumcenters = geometry.find_natural_neighbors(tri, list(zip(sim_gridx
 
 val = natural_neighbor_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri, members[0],
                              circumcenters)
-ax.annotate('grid 0: {:.3f}'.format(val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
+ax.annotate(f'grid 0: {val:.3f}', xy=(sim_gridx[0] + 2, sim_gridy[0]))
 
 val = natural_neighbor_point(xp, yp, zp, (sim_gridx[1], sim_gridy[1]), tri, members[1],
                              circumcenters)
-ax.annotate('grid 1: {:.3f}'.format(val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
+ax.annotate(f'grid 1: {val:.3f}', xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
 
 ###########################################
@@ -173,16 +173,15 @@ x_0 = xp[nn_ind]
 y_0 = yp[nn_ind]
 
 for x, y, z in zip(x_0, y_0, z_0):
-    ax.annotate('{}, {}: {:.3f} F'.format(x, y, z), xy=(x, y))
+    ax.annotate(f'{x}, {y}: {z:.3f} F', xy=(x, y))
 
 ax.plot(sim_gridx[0], sim_gridy[0], 'k+', markersize=10)
-ax.annotate('{}, {}'.format(sim_gridx[0], sim_gridy[0]), xy=(sim_gridx[0] + 2, sim_gridy[0]))
+ax.annotate(f'{sim_gridx[0]}, {sim_gridy[0]}', xy=(sim_gridx[0] + 2, sim_gridy[0]))
 ax.plot(cc[:, 0], cc[:, 1], 'ks', markersize=15, fillstyle='none',
         label='natural neighbor\ncircumcenters')
 
 for center in cc:
-    ax.annotate('{:.3f}, {:.3f}'.format(center[0], center[1]),
-                xy=(center[0] + 1, center[1] + 1))
+    ax.annotate(f'{center[0]:.3f}, {center[1]:.3f}', xy=(center[0] + 1, center[1] + 1))
 
 tris = tri.points[tri.simplices[members[0]]]
 for triangle in tris:
@@ -202,7 +201,7 @@ def draw_polygon_with_info(ax, polygon, off_x=0, off_y=0):
                 [pt[1], pts[(i + 1) % len(pts)][1]], 'k-')
 
     avex, avey = np.mean(pts, axis=0)
-    ax.annotate('area: {:.3f}'.format(geometry.area(pts)), xy=(avex + off_x, avey + off_y),
+    ax.annotate(f'area: {geometry.area(pts):.3f}', xy=(avex + off_x, avey + off_y),
                 fontsize=12)
 
 
