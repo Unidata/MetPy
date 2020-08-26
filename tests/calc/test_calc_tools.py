@@ -498,9 +498,11 @@ def test_lat_lon_grid_deltas_mismatched_shape():
 @needs_pyproj
 def test_lat_lon_grid_deltas_geod_kwargs():
     """Test that geod kwargs are overridden by users #774."""
+    from pyproj import Geod
+
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
-    dx, dy = lat_lon_grid_deltas(lon, lat, a=4370997)
+    dx, dy = lat_lon_grid_deltas(lon, lat, geod=Geod(a=4370997))
     dx_truth = np.array([[146095.76101984, 146095.76101984, 146095.76101984],
                          [140608.9751528, 140608.9751528, 140608.9751528],
                          [134854.56713287, 134854.56713287, 134854.56713287],
@@ -997,7 +999,7 @@ def test_first_derivative_xarray_lonlat(test_da_lonlat):
         coords=(('lat', test_da_lonlat['lat']),)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
-    truth.coords['crs'] = test_da_lonlat['crs']
+    truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
     truth.attrs['units'] = 'kelvin / meter'
     truth = truth.metpy.quantify()
 
@@ -1051,7 +1053,7 @@ def test_second_derivative_xarray_lonlat(test_da_lonlat):
         coords=(('lat', test_da_lonlat['lat']),)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
-    truth.coords['crs'] = test_da_lonlat['crs']
+    truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
     truth.attrs['units'] = 'kelvin / meter^2'
     truth = truth.metpy.quantify()
 
@@ -1079,7 +1081,7 @@ def test_gradient_xarray(test_da_xy):
         coords=(('isobaric', test_da_xy['isobaric']),)
     )
     _, truth_p = xr.broadcast(test_da_xy, partial)
-    truth_p.coords['crs'] = test_da_xy['crs']
+    truth_p.coords['metpy_crs'] = test_da_xy['metpy_crs']
     truth_p.attrs['units'] = 'kelvin / hectopascal'
     truth_p = truth_p.metpy.quantify()
 
@@ -1163,7 +1165,7 @@ def test_laplacian_xarray_lonlat(test_da_lonlat):
         coords=(('lat', test_da_lonlat['lat']),)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
-    truth.coords['crs'] = test_da_lonlat['crs']
+    truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
     truth.attrs['units'] = 'kelvin / meter^2'
     truth = truth.metpy.quantify()
 

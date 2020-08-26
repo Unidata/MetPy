@@ -16,7 +16,7 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         total_deformation, vorticity, wind_components)
 from metpy.constants import g, Re
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data, needs_cartopy, needs_pyproj)
+                           get_test_data, needs_pyproj)
 from metpy.units import concatenate, units
 
 
@@ -1057,7 +1057,7 @@ def test_q_vector_with_static_stability(q_vector_data):
 
 
 @pytest.fixture
-@needs_cartopy
+@needs_pyproj
 def data_4d():
     """Define 4D data (extracted from Irma GFS example) for testing kinematics functions."""
     data = xr.open_dataset(get_test_data('irma_gfs_example.nc', False))

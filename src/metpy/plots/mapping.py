@@ -77,6 +77,12 @@ class CFProjection:
 
         return proj_handler(self._attrs, globe)
 
+    def to_pyproj(self):
+        """Convert to a PyProj CRS."""
+        import pyproj
+
+        return pyproj.CRS.from_cf(self._attrs)
+
     def to_dict(self):
         """Get the dictionary of metadata attributes."""
         return self._attrs.copy()

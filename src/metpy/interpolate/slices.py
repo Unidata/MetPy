@@ -74,8 +74,8 @@ def geodesic(crs, start, end, steps):
 
     Parameters
     ----------
-    crs: `cartopy.crs`
-        Cartopy Coordinate Reference System to use for the output
+    crs: `pyproj.CRS`
+        PyProj Coordinate Reference System to use for the output
     start: (2, ) array_like
         A latitude-longitude pair designating the start point of the geodesic (units are
         degrees north and degrees east).
@@ -96,18 +96,19 @@ def geodesic(crs, start, end, steps):
     cross_section
 
     """
-    import cartopy.crs as ccrs
-    from pyproj import Geod
+    from pyproj import Proj
+
+    g = crs.get_geod()
+    p = Proj(crs)
 
     # Geod.npts only gives points *in between* the start and end, and we want to include
     # the endpoints.
-    g = Geod(crs.proj4_init)
     geodesic = np.concatenate([
         np.array(start[::-1])[None],
         np.array(g.npts(start[1], start[0], end[1], end[0], steps - 2)),
         np.array(end[::-1])[None]
     ]).transpose()
-    points = crs.transform_points(ccrs.Geodetic(), *geodesic)[:, :2]
+    points = np.stack(p(geodesic[0], geodesic[1], inverse=False, radians=False), axis=-1)
 
     return points
 
@@ -162,7 +163,7 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
 
         # Get the projection and coordinates
         try:
-            crs_data = data.metpy.cartopy_crs
+            crs_data = data.metpy.pyproj_crs
             x = data.metpy.x
         except AttributeError:
             raise ValueError('Data missing required coordinate information. Verify that '

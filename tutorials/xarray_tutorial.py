@@ -151,15 +151,21 @@ print(data['height'].metpy.sel(vertical=850 * units.hPa))
 # Getting the cartopy coordinate reference system (CRS) of the projection of a DataArray is as
 # straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
-data_crs = data['temperature'].metpy.cartopy_crs
-print(data_crs)
+cartopy_crs = data['temperature'].metpy.cartopy_crs
+print(cartopy_crs)
+
+#########################################################################
+# Likewise, the PyProj CRS can be obtained with the ``.pyproj_crs`` property:
+
+pyproj_crs = data['temperature'].metpy.pyproj_crs
+print(pyproj_crs)
 
 #########################################################################
 # The cartopy ``Globe`` can similarly be accessed via the ``data_var.metpy.cartopy_globe``
 # property:
 
-data_globe = data['temperature'].metpy.cartopy_globe
-print(data_globe)
+cartopy_globe = data['temperature'].metpy.cartopy_globe
+print(cartopy_globe)
 
 #########################################################################
 # Calculations
@@ -179,7 +185,7 @@ print(data_globe)
 # As an example, we calculate geostropic wind at 500 hPa below:
 
 lat, lon = xr.broadcast(y, x)
-dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, initstring=data_crs.proj4_init)
+dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, geod=pyproj_crs.get_geod())
 heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
 print(u_geo)
@@ -242,7 +248,7 @@ plt.show()
 # Let's add a projection and coastlines to it
 ax = plt.axes(projection=ccrs.LambertConformal())
 data['height'].metpy.loc[{'time': time[0],
-                          'vertical': 500. * units.hPa}].plot(ax=ax, transform=data_crs)
+                          'vertical': 500. * units.hPa}].plot(ax=ax, transform=cartopy_crs)
 ax.coastlines()
 plt.show()
 
@@ -254,7 +260,7 @@ plt.show()
 data_level = data.metpy.loc[{time.name: time[0], vertical.name: 500. * units.hPa}]
 
 # Create the matplotlib figure and axis
-fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': data_crs})
+fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': cartopy_crs})
 
 # Plot RH as filled contours
 rh = ax.contourf(x, y, data_level['relative_humidity'], levels=[70, 80, 90, 100],

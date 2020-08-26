@@ -763,7 +763,7 @@ def make_take(ndims, slice_dim):
 
 @exporter.export
 @preprocess_and_wrap()
-def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
+def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
     Parameters
@@ -778,8 +778,9 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
         axis number for the x dimension, defaults to -1.
     y_dim : int
         axis number for the y dimesion, defaults to -2.
-    kwargs
-        Other keyword arguments to pass to :class:`~pyproj.Geod`
+    geod : pyproj.Geod or None
+        PyProj Geod to use for forward azimuth and distance calculations. If None, use a
+        default spherical ellipsoid.
 
     Returns
     -------
@@ -819,11 +820,10 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
     take_y = make_take(latitude.ndim, y_dim)
     take_x = make_take(latitude.ndim, x_dim)
 
-    geod_args = {'ellps': 'sphere'}
-    if kwargs:
-        geod_args = kwargs
-
-    g = Geod(**geod_args)
+    if geod is None:
+        g = Geod(ellps='sphere')
+    else:
+        g = geod
 
     forward_az, _, dy = g.inv(longitude[take_y(slice(None, -1))],
                               latitude[take_y(slice(None, -1))],

@@ -62,7 +62,7 @@ def cfeature():
 @pytest.fixture()
 def test_da_lonlat():
     """Return a DataArray with a lon/lat grid and no time coordinate for use in tests."""
-    pytest.importorskip('cartopy')
+    pytest.importorskip('pyproj')
 
     data = numpy.linspace(300, 250, 3 * 4 * 4).reshape((3, 4, 4))
     ds = xarray.Dataset(
@@ -96,7 +96,7 @@ def test_da_lonlat():
 @pytest.fixture()
 def test_da_xy():
     """Return a DataArray with a x/y grid and a time coordinate for use in tests."""
-    pytest.importorskip('cartopy')
+    pytest.importorskip('pyproj')
 
     data = numpy.linspace(300, 250, 3 * 3 * 4 * 4).reshape((3, 3, 4, 4))
     ds = xarray.Dataset(
