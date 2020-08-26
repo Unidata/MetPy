@@ -1840,7 +1840,7 @@ class Level3File:
             self.sym_block.append(layer)
             layer_start = self._buffer.set_mark()
             while self._buffer.offset_from(layer_start) < layer_hdr.length:
-                packet_code = self._buffer.read_int('>H')
+                packet_code = self._buffer.read_int(2, 'big', signed=False)
                 if packet_code in self.packet_map:
                     layer.append(self.packet_map[packet_code](self, packet_code, True))
                 else:
@@ -1858,13 +1858,13 @@ class Level3File:
                                    .format(hdr.block_id))
         self.graph_pages = []
         for page in range(hdr.num_pages):
-            page_num = self._buffer.read_int('>H')
+            page_num = self._buffer.read_int(2, 'big', signed=False)
             assert page + 1 == page_num
-            page_size = self._buffer.read_int('>H')
+            page_size = self._buffer.read_int(2, 'big', signed=False)
             page_start = self._buffer.set_mark()
             packets = []
             while self._buffer.offset_from(page_start) < page_size:
-                packet_code = self._buffer.read_int('>H')
+                packet_code = self._buffer.read_int(2, 'big', signed=False)
                 if packet_code in self.packet_map:
                     packets.append(self.packet_map[packet_code](self, packet_code, False))
                 else:
@@ -1877,14 +1877,14 @@ class Level3File:
         self._buffer.jump_to(start, offset)
         packets = []
         while not self._buffer.at_end():
-            packet_code = self._buffer.read_int('>H')
+            packet_code = self._buffer.read_int(2, 'big', signed=False)
             if packet_code in self.packet_map:
                 packets.append(self.packet_map[packet_code](self, packet_code, False))
             else:
                 log.warning('%s: Unknown standalone graphical packet type %d/%x.',
                             self.filename, packet_code, packet_code)
                 # Assume next 2 bytes is packet length and try skipping
-                num_bytes = self._buffer.read_int('>H')
+                num_bytes = self._buffer.read_int(2, 'big', signed=False)
                 self._buffer.skip(num_bytes)
         self.graph_pages = [packets]
 
@@ -1911,10 +1911,10 @@ class Level3File:
         self.tab_pages = []
         for _ in range(blk.num_pages):
             lines = []
-            num_chars = self._buffer.read_int('>h')
+            num_chars = self._buffer.read_int(2, 'big', signed=True)
             while num_chars != -1:
                 lines.append(''.join(self._buffer.read_ascii(num_chars)))
-                num_chars = self._buffer.read_int('>h')
+                num_chars = self._buffer.read_int(2, 'big', signed=True)
             self.tab_pages.append('\n'.join(lines))
 
         if have_header:
@@ -1980,22 +1980,22 @@ class Level3File:
         assert hdr.packing == 2
         rows = []
         for _ in range(hdr.num_rows):
-            num_bytes = self._buffer.read_int('>H')
+            num_bytes = self._buffer.read_int(2, 'big', signed=False)
             rows.append(self._unpack_rle_data(self._buffer.read_binary(num_bytes)))
         return {'start_x': hdr.i_start * hdr.xscale_int,
                 'start_y': hdr.j_start * hdr.yscale_int, 'data': rows}
 
     def _unpack_packet_uniform_text(self, code, in_sym_block):
         # By not using a struct, we can handle multiple codes
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         if code == 8:
-            value = self._buffer.read_int('>H')
+            value = self._buffer.read_int(2, 'big', signed=False)
             read_bytes = 6
         else:
             value = None
             read_bytes = 4
-        i_start = self._buffer.read_int('>h')
-        j_start = self._buffer.read_int('>h')
+        i_start = self._buffer.read_int(2, 'big', signed=True)
+        j_start = self._buffer.read_int(2, 'big', signed=True)
 
         # Text is what remains beyond what's been read, not including byte count
         text = ''.join(self._buffer.read_ascii(num_bytes - read_bytes))
@@ -2032,7 +2032,7 @@ class Level3File:
                              8: 'ETVS', 9: 'MDA', 10: 'MDA (Elev.)', 11: 'MDA (Weak)'}
 
         # Read the number of bytes and set a mark for sanity checking
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         packet_data_start = self._buffer.set_mark()
 
         scale = self.pos_scale(in_sym_block)
@@ -2041,21 +2041,21 @@ class Level3File:
         ret = defaultdict(list)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             # Read position
-            ret['x'].append(self._buffer.read_int('>h') * scale)
-            ret['y'].append(self._buffer.read_int('>h') * scale)
+            ret['x'].append(self._buffer.read_int(2, 'big', signed=True) * scale)
+            ret['y'].append(self._buffer.read_int(2, 'big', signed=True) * scale)
 
             # Handle any types that have additional info
             if code in (3, 11, 25):
-                ret['radius'].append(self._buffer.read_int('>h') * scale)
+                ret['radius'].append(self._buffer.read_int(2, 'big', signed=True) * scale)
             elif code == 15:
                 ret['id'].append(''.join(self._buffer.read_ascii(2)))
             elif code == 19:
-                ret['POH'].append(self._buffer.read_int('>h'))
-                ret['POSH'].append(self._buffer.read_int('>h'))
-                ret['Max Size'].append(self._buffer.read_int('>H'))
+                ret['POH'].append(self._buffer.read_int(2, 'big', signed=True))
+                ret['POSH'].append(self._buffer.read_int(2, 'big', signed=True))
+                ret['Max Size'].append(self._buffer.read_int(2, 'big', signed=False))
             elif code == 20:
-                kind = self._buffer.read_int('>H')
-                attr = self._buffer.read_int('>H')
+                kind = self._buffer.read_int(2, 'big', signed=False)
+                attr = self._buffer.read_int(2, 'big', signed=False)
                 if kind < 5 or kind > 8:
                     ret['radius'].append(attr * scale)
 
@@ -2084,11 +2084,11 @@ class Level3File:
         return ret
 
     def _unpack_packet_scit(self, code, in_sym_block):
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         packet_data_start = self._buffer.set_mark()
         ret = defaultdict(list)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            next_code = self._buffer.read_int('>H')
+            next_code = self._buffer.read_int(2, 'big', signed=False)
             if next_code not in self.packet_map:
                 log.warning('%s: Unknown packet in SCIT %d/%x.',
                             self.filename, next_code, next_code)
@@ -2111,17 +2111,17 @@ class Level3File:
 
     def _unpack_packet_digital_precipitation(self, code, in_sym_block):
         # Read off a couple of unused spares
-        self._buffer.read_int('>H')
-        self._buffer.read_int('>H')
+        self._buffer.read_int(2, 'big', signed=False)
+        self._buffer.read_int(2, 'big', signed=False)
 
         # Get the size of the grid
-        lfm_boxes = self._buffer.read_int('>H')
-        num_rows = self._buffer.read_int('>H')
+        lfm_boxes = self._buffer.read_int(2, 'big', signed=False)
+        num_rows = self._buffer.read_int(2, 'big', signed=False)
         rows = []
 
         # Read off each row and decode the RLE data
         for _ in range(num_rows):
-            row_num_bytes = self._buffer.read_int('>H')
+            row_num_bytes = self._buffer.read_int(2, 'big', signed=False)
             row_bytes = self._buffer.read_binary(row_num_bytes)
             if code == 18:
                 row = self._unpack_rle_data(row_bytes)
@@ -2135,9 +2135,9 @@ class Level3File:
         return {'data': rows}
 
     def _unpack_packet_linked_vector(self, code, in_sym_block):
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         if code == 9:
-            value = self._buffer.read_int('>h')
+            value = self._buffer.read_int(2, 'big', signed=True)
             num_bytes -= 2
         else:
             value = None
@@ -2147,9 +2147,9 @@ class Level3File:
         return {'vectors': vectors, 'color': value}
 
     def _unpack_packet_vector(self, code, in_sym_block):
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         if code == 10:
-            value = self._buffer.read_int('>h')
+            value = self._buffer.read_int(2, 'big', signed=True)
             num_bytes -= 2
         else:
             value = None
@@ -2160,51 +2160,53 @@ class Level3File:
 
     def _unpack_packet_contour_color(self, code, in_sym_block):
         # Check for color value indicator
-        assert self._buffer.read_int('>H') == 0x0002
+        assert self._buffer.read_int(2, 'big', signed=False) == 0x0002
 
         # Read and return value (level) of contour
-        return {'color': self._buffer.read_int('>H')}
+        return {'color': self._buffer.read_int(2, 'big', signed=False)}
 
     def _unpack_packet_linked_contour(self, code, in_sym_block):
         # Check for initial point indicator
-        assert self._buffer.read_int('>H') == 0x8000
+        assert self._buffer.read_int(2, 'big', signed=False) == 0x8000
 
         scale = self.pos_scale(in_sym_block)
-        startx = self._buffer.read_int('>h') * scale
-        starty = self._buffer.read_int('>h') * scale
+        startx = self._buffer.read_int(2, 'big', signed=True) * scale
+        starty = self._buffer.read_int(2, 'big', signed=True) * scale
         vectors = [(startx, starty)]
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
         vectors.extend(zip(pos[::2], pos[1::2]))
         return {'vectors': vectors}
 
     def _unpack_packet_wind_barbs(self, code, in_sym_block):
         # Figure out how much to read
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         packet_data_start = self._buffer.set_mark()
         ret = defaultdict(list)
 
         # Read while we have data, then return
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            ret['color'].append(self._buffer.read_int('>h'))
-            ret['x'].append(self._buffer.read_int('>h') * self.pos_scale(in_sym_block))
-            ret['y'].append(self._buffer.read_int('>h') * self.pos_scale(in_sym_block))
-            ret['direc'].append(self._buffer.read_int('>h'))
-            ret['speed'].append(self._buffer.read_int('>h'))
+            ret['color'].append(self._buffer.read_int(2, 'big', signed=True))
+            ret['x'].append(self._buffer.read_int(2, 'big', signed=True)
+                            * self.pos_scale(in_sym_block))
+            ret['y'].append(self._buffer.read_int(2, 'big', signed=True)
+                            * self.pos_scale(in_sym_block))
+            ret['direc'].append(self._buffer.read_int(2, 'big', signed=True))
+            ret['speed'].append(self._buffer.read_int(2, 'big', signed=True))
         return ret
 
     def _unpack_packet_generic(self, code, in_sym_block):
         # Reserved HW
-        assert self._buffer.read_int('>h') == 0
+        assert self._buffer.read_int(2, 'big', signed=True) == 0
 
         # Read number of bytes (2 HW) and return
-        num_bytes = self._buffer.read_int('>l')
+        num_bytes = self._buffer.read_int(4, 'big', signed=True)
         hunk = self._buffer.read(num_bytes)
         xdrparser = Level3XDRParser(hunk)
         return xdrparser(code)
 
     def _unpack_packet_trend_times(self, code, in_sym_block):
-        self._buffer.read_int('>h')  # number of bytes, not needed to process
+        self._buffer.read_int(2, 'big', signed=True)  # number of bytes, not needed to process
         return {'times': self._read_trends()}
 
     def _unpack_packet_cell_trend(self, code, in_sym_block):
@@ -2213,14 +2215,14 @@ class Level3File:
                     'Cell-based VIL', 'Maximum Reflectivity',
                     'Centroid Height']
         code_scales = [100, 100, 100, 1, 1, 1, 1, 100]
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         packet_data_start = self._buffer.set_mark()
         cell_id = ''.join(self._buffer.read_ascii(2))
-        x = self._buffer.read_int('>h') * self.pos_scale(in_sym_block)
-        y = self._buffer.read_int('>h') * self.pos_scale(in_sym_block)
+        x = self._buffer.read_int(2, 'big', signed=True) * self.pos_scale(in_sym_block)
+        y = self._buffer.read_int(2, 'big', signed=True) * self.pos_scale(in_sym_block)
         ret = {'id': cell_id, 'x': x, 'y': y}
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            code = self._buffer.read_int('>h')
+            code = self._buffer.read_int(2, 'big', signed=True)
             try:
                 ind = code - 1
                 key = code_map[ind]
@@ -2238,9 +2240,8 @@ class Level3File:
         return ret
 
     def _read_trends(self):
-        num_vols = self._buffer.read_int('b')
-        latest = self._buffer.read_int('b')
-        vals = [self._buffer.read_int('>h') for _ in range(num_vols)]
+        num_vols, latest = self._buffer.read(2)
+        vals = [self._buffer.read_int(2, 'big', signed=True) for _ in range(num_vols)]
 
         # Wrap the circular buffer so that latest is last
         vals = vals[latest:] + vals[:latest]

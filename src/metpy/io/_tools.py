@@ -240,9 +240,9 @@ class IOBuffer:
 
         return list(self.read_struct(Struct(order + '{:d}'.format(int(num)) + item_type)))
 
-    def read_int(self, code):
+    def read_int(self, size, endian, signed):
         """Parse the current buffer offset as the specified integer code."""
-        return self.read_struct(Struct(code))[0]
+        return int.from_bytes(self.read(size), endian, signed=signed)
 
     def read_array(self, count, dtype):
         """Read an array of values from the buffer."""
