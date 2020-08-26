@@ -6,9 +6,10 @@
 Currently this includes tools for working with CartoPy projections.
 
 """
-import cartopy.crs as ccrs
-
 from ..cbook import Registry
+from ..plots.cartopy_utils import import_cartopy
+
+ccrs = import_cartopy()
 
 
 class CFProjection:
@@ -59,6 +60,11 @@ class CFProjection:
             kwargs['ellipse'] = None if kwargs else 'sphere'
 
         return ccrs.Globe(**kwargs)
+
+    @property
+    def cartopy_geodetic(self):
+        """Make a `cartopy.crs.Geodetic` instance from the appropriate `cartopy.crs.Globe`."""
+        return ccrs.Geodetic(self.cartopy_globe)
 
     def to_cartopy(self):
         """Convert to a CartoPy projection."""

@@ -4,20 +4,15 @@
 """Test the operation of MetPy's XArray accessors."""
 from collections import OrderedDict
 
-import cartopy.crs as ccrs
 import numpy as np
 import pytest
 import xarray as xr
 
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data)
+                           get_test_data, needs_cartopy)
 from metpy.units import units
 from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
-
-
-# Seed RandomState for deterministic tests
-np.random.seed(81964262)
 
 
 @pytest.fixture
@@ -29,7 +24,7 @@ def test_ds():
 @pytest.fixture
 def test_ds_generic():
     """Provide a generic-coordinate dataset for testing."""
-    return xr.DataArray(np.random.random((1, 3, 3, 5, 5)),
+    return xr.DataArray(np.zeros((1, 3, 3, 5, 5)),
                         coords={
                             'a': xr.DataArray(np.arange(1), dims='a'),
                             'b': xr.DataArray(np.arange(3), dims='b'),
@@ -58,7 +53,7 @@ def test_var_multidim_no_xy(test_var_multidim_full):
     return test_var_multidim_full.drop_vars(['y', 'x'])
 
 
-def test_projection(test_var):
+def test_projection(test_var, ccrs):
     """Test getting the proper projection out of the variable."""
     crs = test_var.metpy.crs
     assert crs['grid_mapping_name'] == 'lambert_conformal_conic'
@@ -75,7 +70,7 @@ def test_no_projection(test_ds):
     assert 'not available' in str(exc.value)
 
 
-def test_globe(test_var):
+def test_globe(test_var, ccrs):
     """Test getting the globe belonging to the projection."""
     globe = test_var.metpy.cartopy_globe
 
@@ -83,6 +78,13 @@ def test_globe(test_var):
                                                    ('a', 6367470.21484375),
                                                    ('b', 6367470.21484375)])
     assert isinstance(globe, ccrs.Globe)
+
+
+def test_geodetic(test_var, ccrs):
+    """Test getting the Geodetic CRS for the projection."""
+    geodetic = test_var.metpy.cartopy_geodetic
+
+    assert isinstance(geodetic, ccrs.Geodetic)
 
 
 def test_unit_array(test_var):
@@ -768,7 +770,7 @@ sample_cf_attrs = {
 }
 
 
-def test_assign_crs_dataarray_by_argument(test_ds_generic):
+def test_assign_crs_dataarray_by_argument(test_ds_generic, ccrs):
     """Test assigning CRS to DataArray by projection dict."""
     da = test_ds_generic['test']
     new_da = da.metpy.assign_crs(sample_cf_attrs)
@@ -776,7 +778,7 @@ def test_assign_crs_dataarray_by_argument(test_ds_generic):
     assert new_da['crs'] == CFProjection(sample_cf_attrs)
 
 
-def test_assign_crs_dataarray_by_kwargs(test_ds_generic):
+def test_assign_crs_dataarray_by_kwargs(test_ds_generic, ccrs):
     """Test assigning CRS to DataArray by projection kwargs."""
     da = test_ds_generic['test']
     new_da = da.metpy.assign_crs(**sample_cf_attrs)
@@ -784,14 +786,14 @@ def test_assign_crs_dataarray_by_kwargs(test_ds_generic):
     assert new_da['crs'] == CFProjection(sample_cf_attrs)
 
 
-def test_assign_crs_dataset_by_argument(test_ds_generic):
+def test_assign_crs_dataset_by_argument(test_ds_generic, ccrs):
     """Test assigning CRS to Dataset by projection dict."""
     new_ds = test_ds_generic.metpy.assign_crs(sample_cf_attrs)
     assert isinstance(new_ds['test'].metpy.cartopy_crs, ccrs.LambertConformal)
     assert new_ds['crs'] == CFProjection(sample_cf_attrs)
 
 
-def test_assign_crs_dataset_by_kwargs(test_ds_generic):
+def test_assign_crs_dataset_by_kwargs(test_ds_generic, ccrs):
     """Test assigning CRS to Dataset by projection kwargs."""
     new_ds = test_ds_generic.metpy.assign_crs(**sample_cf_attrs)
     assert isinstance(new_ds['test'].metpy.cartopy_crs, ccrs.LambertConformal)
@@ -876,6 +878,7 @@ def test_coord_helper_da_dummy_yx(test_coord_helper_da_latlon):
     return test_coord_helper_da_latlon.assign_coords(y=range(3), x=range(3))
 
 
+@needs_cartopy
 def test_assign_latitude_longitude_basic_dataarray(test_coord_helper_da_yx,
                                                    test_coord_helper_da_latlon):
     """Test assign_latitude_longitude in basic usage on DataArray."""
@@ -895,6 +898,7 @@ def test_assign_latitude_longitude_error_existing_dataarray(
     assert 'Latitude/longitude coordinate(s) are present' in str(exc)
 
 
+@needs_cartopy
 def test_assign_latitude_longitude_force_existing_dataarray(
         test_coord_helper_da_dummy_latlon, test_coord_helper_da_latlon):
     """Test assign_latitude_longitude with existing coordinates forcing new."""
@@ -906,6 +910,7 @@ def test_assign_latitude_longitude_force_existing_dataarray(
                                          lon.values, 3)
 
 
+@needs_cartopy
 def test_assign_latitude_longitude_basic_dataset(test_coord_helper_da_yx,
                                                  test_coord_helper_da_latlon):
     """Test assign_latitude_longitude in basic usage on Dataset."""
@@ -917,6 +922,7 @@ def test_assign_latitude_longitude_basic_dataset(test_coord_helper_da_yx,
                                          lon.values, 3)
 
 
+@needs_cartopy
 def test_assign_y_x_basic_dataarray(test_coord_helper_da_yx, test_coord_helper_da_latlon):
     """Test assign_y_x in basic usage on DataArray."""
     new_da = test_coord_helper_da_latlon.metpy.assign_y_x()
@@ -933,6 +939,7 @@ def test_assign_y_x_error_existing_dataarray(
     assert 'y/x coordinate(s) are present' in str(exc)
 
 
+@needs_cartopy
 def test_assign_y_x_force_existing_dataarray(
         test_coord_helper_da_dummy_yx, test_coord_helper_da_yx):
     """Test assign_y_x with existing coordinates forcing new."""
@@ -942,6 +949,7 @@ def test_assign_y_x_force_existing_dataarray(
     np.testing.assert_array_almost_equal(test_coord_helper_da_yx['x'].values, x.values, 3)
 
 
+@needs_cartopy
 def test_assign_y_x_dataarray_outside_tolerance(test_coord_helper_da_latlon):
     """Test assign_y_x raises ValueError when tolerance is exceeded on DataArray."""
     with pytest.raises(ValueError) as exc:
@@ -949,6 +957,7 @@ def test_assign_y_x_dataarray_outside_tolerance(test_coord_helper_da_latlon):
     assert 'cannot be collapsed to 1D within tolerance' in str(exc)
 
 
+@needs_cartopy
 def test_assign_y_x_dataarray_transposed(test_coord_helper_da_yx, test_coord_helper_da_latlon):
     """Test assign_y_x on DataArray with transposed order."""
     new_da = test_coord_helper_da_latlon.transpose(transpose_coords=True).metpy.assign_y_x()
@@ -957,6 +966,7 @@ def test_assign_y_x_dataarray_transposed(test_coord_helper_da_yx, test_coord_hel
     np.testing.assert_array_almost_equal(test_coord_helper_da_yx['x'].values, x.values, 3)
 
 
+@needs_cartopy
 def test_assign_y_x_dataset_assumed_order(test_coord_helper_da_yx,
                                           test_coord_helper_da_latlon):
     """Test assign_y_x on Dataset where order must be assumed."""

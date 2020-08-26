@@ -5,11 +5,6 @@
 
 from datetime import datetime, timedelta
 
-try:
-    import cartopy.crs as ccrs
-    DEFAULT_LAT_LON = ccrs.PlateCarree()
-except ImportError:
-    DEFAULT_LAT_LON = None
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -18,11 +13,13 @@ from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe
 
 from . import ctables
 from . import wx_symbols
+from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density
 from ..package_tools import Exporter
 from ..units import units
 
+ccrs = import_cartopy()
 exporter = Exporter(globals())
 
 _areas = {
@@ -741,7 +738,7 @@ class MapPanel(Panel):
                 # Otherwise, assume we have a tuple to use as the extent
                 else:
                     area = self.area
-                self.ax.set_extent(area, DEFAULT_LAT_LON)
+                self.ax.set_extent(area, ccrs.PlateCarree())
 
             # Draw all of the plots.
             for p in self.plots:
@@ -953,7 +950,7 @@ class PlotScalar(Plots2D):
         y = self.griddata.metpy.y
 
         if 'degree' in x.units:
-            x, y, _ = self.griddata.metpy.cartopy_crs.transform_points(DEFAULT_LAT_LON,
+            x, y, _ = self.griddata.metpy.cartopy_crs.transform_points(ccrs.PlateCarree(),
                                                                        *np.meshgrid(x, y)).T
             x = x[:, 0] % 360
             y = y[0, :]
@@ -1233,14 +1230,14 @@ class PlotVector(Plots2D):
         y = self.griddata[0].metpy.y
 
         if self.earth_relative:
-            x, y, _ = DEFAULT_LAT_LON.transform_points(self.griddata[0].metpy.cartopy_crs,
-                                                       *np.meshgrid(x, y)).T
+            x, y, _ = ccrs.PlateCarree().transform_points(self.griddata[0].metpy.cartopy_crs,
+                                                          *np.meshgrid(x, y)).T
             x = x.T
             y = y.T
         else:
             if 'degree' in x.units:
                 x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
-                    DEFAULT_LAT_LON, *np.meshgrid(x, y)).T
+                    ccrs.PlateCarree(), *np.meshgrid(x, y)).T
                 x = x.T % 360
                 y = y.T
 
@@ -1281,7 +1278,7 @@ class BarbPlot(PlotVector):
         """Build the plot by calling needed plotting methods as necessary."""
         x, y, u, v = self.plotdata
         if self.earth_relative:
-            transform = DEFAULT_LAT_LON
+            transform = ccrs.PlateCarree()
         else:
             transform = u.metpy.cartopy_crs
 

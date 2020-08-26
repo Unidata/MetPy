@@ -12,25 +12,25 @@ jobs:
   # Run all tests on Linux using standard PyPI packages, including min and pre-releases
   #
   PyPITests:
-    name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
+    name: ${{ matrix.python-version }} ${{ matrix.dep-versions }} ${{ matrix.no-extras }}
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.dep-versions == 'Prerelease' }}
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.6, 3.7, 3.8]
         dep-versions: [Current.txt]
-        git-versions: ['']
-        experimental: [false]
+        no-extras: ['']
         include:
           - python-version: 3.6
             dep-versions: Minimum
-            git-versions: ''
-            experimental: false
+            no-extras: ''
+          - python-version: 3.8
+            dep-versions: Current.txt
+            no-extras: 'No Extras'
           - python-version: 3.8
             dep-versions: Prerelease
-            git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'
-            experimental: true
+            no-extras: ''
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -63,6 +63,16 @@ jobs:
           pip-tests-${{ runner.os }}-
           pip-tests-
 
+    - name: Add extras to requirements
+      if: ${{ matrix.no-extras != 'No Extras' }}
+      run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
+
+    - name: Add git versions to requirements
+      if: ${{ matrix.dep-versions == 'Prerelease' }}
+      run: |
+        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
+        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/test_requirements.txt
+
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     # Need to install numpy first to make CartoPy happy.
     - name: Install dependencies
@@ -71,14 +81,16 @@ jobs:
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
-        python -m pip install -r ci/test_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
+        python -m pip install -r ci/test_requirements.txt -c ci/${{ matrix.dep-versions }}
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir
+      if: ${{ matrix.no-extras != 'No Extras' }}
       id: cartopy-cache
       run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
 
     - name: Setup mapdata caching
+      if: ${{ steps.cartopy-cache.outputs.dir != '' }}
       uses: actions/cache@v2
       env:
         # Increase to reset cache of map data
@@ -98,7 +110,7 @@ jobs:
         python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests --cov-report=xml
 
     - name: Run doctests
-      if: ${{ matrix.dep-versions == 'Current.txt' }}
+      if: ${{ matrix.dep-versions == 'Current.txt' && matrix.no-extras != 'No Extras' }}
       env:
         PY_IGNORE_IMPORTMISMATCH: 1
       run: python -m pytest --doctest-modules -k "not test" src;

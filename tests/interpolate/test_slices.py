@@ -8,7 +8,7 @@ import pytest
 import xarray as xr
 
 from metpy.interpolate import cross_section, geodesic, interpolate_to_slice
-from metpy.testing import assert_array_almost_equal
+from metpy.testing import assert_array_almost_equal, needs_cartopy
 from metpy.units import units
 
 
@@ -107,6 +107,7 @@ def test_interpolate_to_slice_against_selection(test_ds_lonlat):
     assert_array_almost_equal(true_slice.metpy.unit_array, test_slice.metpy.unit_array, 5)
 
 
+@needs_cartopy
 def test_geodesic(test_ds_xy):
     """Test the geodesic construction."""
     crs = test_ds_xy['temperature'].metpy.cartopy_crs
@@ -121,6 +122,7 @@ def test_geodesic(test_ds_xy):
     assert_array_almost_equal(path, truth, 0)
 
 
+@needs_cartopy
 def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
     """Test the cross_section function with a data array and linear interpolation."""
     data = test_ds_xy['temperature']
@@ -191,6 +193,7 @@ def test_cross_section_dataarray_projection_noop(test_ds_xy):
     xr.testing.assert_identical(data, data_cross)
 
 
+@needs_cartopy
 def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
     """Test the cross_section function with a dataset and nearest interpolation."""
     start, end = (30.5, 255.5), (44.5, 274.5)

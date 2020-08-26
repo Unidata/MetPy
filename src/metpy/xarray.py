@@ -20,7 +20,6 @@ import logging
 import re
 import warnings
 
-import cartopy.crs as ccrs
 import numpy as np
 import xarray as xr
 
@@ -226,6 +225,11 @@ class MetPyDataArrayAccessor:
     def cartopy_globe(self):
         """Return the globe belonging to the coordinate reference system (CRS)."""
         return self.crs.cartopy_globe
+
+    @property
+    def cartopy_geodetic(self):
+        """Return the Geodetic CRS associated with the native CRS globe."""
+        return self.crs.cartopy_geodetic
 
     def _fixup_coordinate_map(self, coord_map):
         """Ensure sure we have coordinate variables in map, not coordinate names."""
@@ -997,8 +1001,7 @@ def _build_latitude_longitude(da):
     """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
     y, x = da.metpy.coordinates('y', 'x')
     xx, yy = np.meshgrid(x.values, y.values)
-    lonlats = ccrs.Geodetic(globe=da.metpy.cartopy_globe).transform_points(
-        da.metpy.cartopy_crs, xx, yy)
+    lonlats = da.metpy.cartopy_geodetic.transform_points(da.metpy.cartopy_crs, xx, yy)
     longitude = xr.DataArray(lonlats[..., 0], dims=(y.name, x.name),
                              coords={y.name: y, x.name: x},
                              attrs={'units': 'degrees_east', 'standard_name': 'longitude'})
@@ -1019,7 +1022,7 @@ def _build_y_x(da, tolerance):
                          'must be 2D')
 
     # Convert to projected y/x
-    xxyy = da.metpy.cartopy_crs.transform_points(ccrs.Geodetic(da.metpy.cartopy_globe),
+    xxyy = da.metpy.cartopy_crs.transform_points(da.metpy.cartopy_geodetic,
                                                  longitude.values,
                                                  latitude.values)
 
