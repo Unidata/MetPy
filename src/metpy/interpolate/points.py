@@ -154,7 +154,7 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, circumcen
         except (ZeroDivisionError, qhull.QhullError) as e:
             message = ('Error during processing of a grid. '
                        'Interpolation will continue but be mindful '
-                       'of errors in output. ') + str(e)
+                       f'of errors in output. {e}')
 
             log.warning(message)
             return np.nan
@@ -270,7 +270,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
                 img[idx] = barnes_point(dists, values_subset, kappa, gamma)
 
             else:
-                raise ValueError(str(kind) + ' interpolation not supported.')
+                raise ValueError(f'{kind} interpolation not supported.')
 
     return img
 

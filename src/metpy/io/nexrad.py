@@ -527,7 +527,7 @@ class Level2File:
             msg_fmt = DictStruct(fields, '>')
             self.rda = msg_fmt.unpack(data)
             for num in (11, 21, 31, 32, 300, 301):
-                attr = 'VCPAT' + str(num)
+                attr = f'VCPAT{num}'
                 dat = self.rda[attr]
                 vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
                 off = self.vcp_fmt.size
@@ -1702,8 +1702,8 @@ class Level3File:
         log.debug('Product description block: %s', self.prod_desc)
 
         # Convert thresholds and dependent values to lists of values
-        self.thresholds = [getattr(self.prod_desc, 'thr' + str(i)) for i in range(1, 17)]
-        self.depVals = [getattr(self.prod_desc, 'dep' + str(i)) for i in range(1, 11)]
+        self.thresholds = [getattr(self.prod_desc, f'thr{i}') for i in range(1, 17)]
+        self.depVals = [getattr(self.prod_desc, f'dep{i}') for i in range(1, 11)]
 
         # Set up some time/location metadata
         self.metadata['msg_time'] = nexrad_to_datetime(self.header.date,
