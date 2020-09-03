@@ -1091,13 +1091,26 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                 arg_names_to_broadcast = tuple(
                     arg_name for arg_name in broadcast
                     if arg_name in bound_args.arguments
-                    and isinstance(bound_args.arguments[arg_name], xr.DataArray)
+                    and isinstance(
+                        bound_args.arguments[arg_name],
+                        (xr.DataArray, xr.Variable)
+                    )
                 )
                 broadcasted_args = xr.broadcast(
                     *(bound_args.arguments[arg_name] for arg_name in arg_names_to_broadcast)
                 )
                 for i, arg_name in enumerate(arg_names_to_broadcast):
                     bound_args.arguments[arg_name] = broadcasted_args[i]
+
+            # Cast all Variables to their data and warn
+            # (need to do before match finding, since we don't want to rewrap as Variable)
+            for arg_name in bound_args.arguments:
+                if isinstance(bound_args.arguments[arg_name], xr.Variable):
+                    warnings.warn(
+                        f'Argument {arg_name} given as xarray Variable...casting to its data. '
+                        'xarray DataArrays are recommended instead.'
+                    )
+                    bound_args.arguments[arg_name] = bound_args.arguments[arg_name].data
 
             # Obtain proper match if referencing an input
             match = list(wrap_like) if isinstance(wrap_like, tuple) else wrap_like
