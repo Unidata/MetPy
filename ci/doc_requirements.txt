@@ -1,5 +1,5 @@
 sphinx==3.2.1
-sphinx-gallery==0.7
+sphinx-gallery==0.8.0
 myst-parser==0.12.6
 netCDF4==1.5.4
 # Needed for sphinx-gallery, which refuses to list dependencies
