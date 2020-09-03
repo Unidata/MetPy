@@ -764,7 +764,7 @@ def make_take(ndims, slice_dim):
 
 @exporter.export
 @preprocess_and_wrap()
-def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
+def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
     r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
     Parameters
@@ -775,10 +775,10 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
     latitude : array_like
         array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
-    y_dim : int
-        axis number for the y dimesion, defaults to -2.
     x_dim: int
         axis number for the x dimension, defaults to -1.
+    y_dim : int
+        axis number for the y dimesion, defaults to -2.
     kwargs
         Other keyword arguments to pass to :class:`~pyproj.Geod`
 
@@ -937,7 +937,7 @@ def grid_deltas_from_dataarray(f, kind='default'):
         # Obtain grid deltas as xarray Variables
         (dx_var, dx_units), (dy_var, dy_units) = (
             (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
-            for deltas in lat_lon_grid_deltas(longitude, latitude, y_dim=y_dim, x_dim=x_dim,
+            for deltas in lat_lon_grid_deltas(longitude, latitude, x_dim=x_dim, y_dim=y_dim,
                                               initstring=f.metpy.cartopy_crs.proj4_init))
     else:
         # Obtain y/x coordinate differences
