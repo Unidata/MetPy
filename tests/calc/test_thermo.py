@@ -1027,7 +1027,7 @@ def test_isentropic_pressure_4d():
     rh[:, 3, :] = 20.
     relh = rh * units.percent
     isentlev = [296., 297., 300.] * units.kelvin
-    isentprs = isentropic_interpolation(isentlev, lev, tmpk, relh, axis=1)
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, relh, vertical_dim=1)
     trueprs = 1000. * units.hPa
     trueprs2 = 936.18057 * units.hPa
     trueprs3 = 879.446 * units.hPa
@@ -1304,7 +1304,7 @@ def test_static_stability_cross_section():
     temperatures = [[17., 11., -10.],
                     [16., 10., -11.],
                     [11., 6., -12.]] * units.degC
-    sigma = static_stability(pressures, temperatures, axis=1)
+    sigma = static_stability(pressures, temperatures, vertical_dim=1)
     truth = [[0.02819452, 0.02016804, 0.00305262],
              [0.02808841, 0.01999462, 0.00274956],
              [0.02840196, 0.02366708, 0.0131604]] * units('J kg^-1 hPa^-2')
