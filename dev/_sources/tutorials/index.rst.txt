@@ -90,13 +90,13 @@ common meteorological tasks.
 
   .. container:: sphx-glr-download sphx-glr-download-python
 
-    :download:`Download all examples in Python source code: tutorials_python.zip <//home/runner/work/MetPy/MetPy/docs/tutorials/tutorials_python.zip>`
+    :download:`Download all examples in Python source code: tutorials_python.zip </tutorials/tutorials_python.zip>`
 
 
 
   .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-    :download:`Download all examples in Jupyter notebooks: tutorials_jupyter.zip <//home/runner/work/MetPy/MetPy/docs/tutorials/tutorials_jupyter.zip>`
+    :download:`Download all examples in Jupyter notebooks: tutorials_jupyter.zip </tutorials/tutorials_jupyter.zip>`
 
 
 .. only:: html
