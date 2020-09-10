@@ -4,5 +4,5 @@ scipy==1.5.2
 pint==0.15
 xarray==0.16.0
 traitlets==4.3.3
-pooch==1.1.1
+pooch==1.2.0
 pandas==1.0.5
