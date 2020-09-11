@@ -12,9 +12,9 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
                         apparent_temperature, coriolis_parameter, geopotential_to_height,
                         heat_index, height_to_geopotential, height_to_pressure_std,
-                        pressure_to_height_std, sigma_to_pressure, smooth_circular,
-                        smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
-                        wind_components, wind_direction, wind_speed, windchill)
+                        mean_sea_level_pressure, pressure_to_height_std, sigma_to_pressure,
+                        smooth_circular, smooth_gaussian, smooth_n_point, smooth_rectangular,
+                        smooth_window, wind_components, wind_direction, wind_speed, windchill)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import units
 
@@ -796,3 +796,23 @@ def test_altimeter_to_sea_level_pressure_hpa():
     res = altimeter_to_sea_level_pressure(altim, elev, temp)
     truth = 1016.246 * units.hectopascal
     assert_almost_equal(res, truth, 3)
+
+
+def test_mean_sea_level_pressure():
+    """Test mean sea level pressure."""
+    p = 1013.25 * units('hPa')
+    T = 20. * units.degC
+    es = 3 * units('hPa')
+    z = 0. * units.meter
+    p0 = mean_sea_level_pressure(p, T, z, es)
+    assert_almost_equal(p, p0, 7)
+
+
+def test_mean_sea_level_pressure_1000m():
+    """Test mean sea level pressure with height above sea level."""
+    p = 920. * units('hPa')
+    T = 20. * units.degC
+    es = 1 * units('hPa')
+    z = 3270. * units.feet
+    p0 = mean_sea_level_pressure(p, T, z, es)
+    assert_almost_equal(1011.9606088890467 * units('hPa'), p0, 7)

@@ -1205,7 +1205,7 @@ def _check_radians(value, max_radians=2 * np.pi):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[length]', '[pressure]')
 def mean_sea_level_pressure(pressure, temperature, geopotential_height, vapor_pressure):
     """Reduce surface pressure to mean sea level.
@@ -1231,15 +1231,15 @@ def mean_sea_level_pressure(pressure, temperature, geopotential_height, vapor_pr
 
     Notes
     -----
-    This function is an implementation of the method used in [NWS1963]_, Ch. 7. The humidity correction term has been
-    fitted to be continuous and the local station correction has been ignored. See also [Pauley1998]_.
+    This function is an implementation of the method used in [NWS1963]_, Ch. 7. The humidity
+    correction term has been fitted to be continuous and the local station correction has been
+    ignored. See also [Pauley1998]_.
     """
     # define function for empirical humidity correction
     def humidity_correction(height):
-        """
-        Calculate humidity correction term
+        """Calculate humidity correction term.
 
-        Fitted from table of empirically derived values found in NWS Manual of Barometry, Ch. 7.
+        Fitted from table of empirically derived values found in NWS Manual of Barometry.
         """
         const = np.array([5.04969979e-6, 1.30236277, 1.96926239e-1])
         return (const[0] * (height.to('meter').m**const[1]) + const[2]) * units('degF / hPa')
@@ -1249,8 +1249,9 @@ def mean_sea_level_pressure(pressure, temperature, geopotential_height, vapor_pr
     lapse_rate = 6.5 * units('kelvin / kilometer')
 
     # calculate mean temperature for extrapolation
-    mean_temp = (temperature.to('kelvin') + ((lapse_rate * geopotential_height) / 2.).to('kelvin') +
-                 (vapor_pressure * humidity_correction(geopotential_height)).to('kelvin'))
+    mean_temp = temperature.to('kelvin') + \
+        ((lapse_rate * geopotential_height) / 2.).to('kelvin') + \
+        (vapor_pressure * humidity_correction(geopotential_height)).to('kelvin')
 
     # calculate mslp from hypsometric equation
     return pressure * np.exp(geopotential_height / (k * mean_temp))
