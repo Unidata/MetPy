@@ -1202,3 +1202,55 @@ def _check_radians(value, max_radians=2 * np.pi):
         warnings.warn('Input over {} radians. '
                       'Ensure proper units are given.'.format(np.nanmax(max_radians)))
     return value
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]', '[temperature]', '[length]', '[pressure]')
+def mean_sea_level_pressure(pressure, temperature, geopotential_height, vapor_pressure):
+    """Reduce surface pressure to mean sea level.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Station pressure.
+
+    temperature : `pint.Quantity`
+        Station temperature.
+
+    geopotential_height : `pint.Quantity`
+        Station geopotential height.
+
+    vapor_pressure : `pint.Quantity`
+        Station water vapor pressure.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Pressure reduced to mean sea level.
+
+    Notes
+    -----
+    This function is an implementation of the method used in [NWS1963]_, Ch. 7. The humidity correction term has been
+    fitted to be continuous and the local station correction has been ignored. See also [Pauley1998]_.
+    """
+    # define function for empirical humidity correction
+    def humidity_correction(height):
+        """
+        Calculate humidity correction term
+
+        Fitted from table of empirically derived values found in NWS Manual of Barometry, Ch. 7.
+        """
+        const = np.array([5.04969979e-6, 1.30236277, 1.96926239e-1])
+        return (const[0] * (height**const[1]) + const[2]) * units('degF / hPa')
+
+    # define constants
+    k = 29.28980 * units('meter / kelvin')
+    lapse_rate = 6.5 * units('kelvin / kilometer')
+
+    # calculate mean temperature for extrapolation
+    mean_temp = (temperature + ((lapse_rate * geopotential_height) / 2.) +
+                 vapor_pressure * humidity_correction(geopotential_height))
+
+    # calculate mslp from hypsometric equation
+    return pressure * np.exp(geopotential_height / (k * mean_temp))
