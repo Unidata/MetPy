@@ -1242,15 +1242,15 @@ def mean_sea_level_pressure(pressure, temperature, geopotential_height, vapor_pr
         Fitted from table of empirically derived values found in NWS Manual of Barometry, Ch. 7.
         """
         const = np.array([5.04969979e-6, 1.30236277, 1.96926239e-1])
-        return (const[0] * (height**const[1]) + const[2]) * units('degF / hPa')
+        return (const[0] * (height.to('meter').m**const[1]) + const[2]) * units('degF / hPa')
 
     # define constants
     k = 29.28980 * units('meter / kelvin')
     lapse_rate = 6.5 * units('kelvin / kilometer')
 
     # calculate mean temperature for extrapolation
-    mean_temp = (temperature + ((lapse_rate * geopotential_height) / 2.) +
-                 vapor_pressure * humidity_correction(geopotential_height))
+    mean_temp = (temperature.to('kelvin') + ((lapse_rate * geopotential_height) / 2.).to('kelvin') +
+                 (vapor_pressure * humidity_correction(geopotential_height)).to('kelvin'))
 
     # calculate mslp from hypsometric equation
     return pressure * np.exp(geopotential_height / (k * mean_temp))

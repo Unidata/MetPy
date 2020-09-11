@@ -142,6 +142,12 @@ References
 
 .. [NWS10201] 2017: `National Weather Service Instruction 10-201 <../_static/NWS_10-201.pdf>`_.
 
+
+.. [Pauley1998] Pauley, P., 1998: An example of uncertainty in sea level pressure reduction.
+           *Wea. Forecasting.*, 13, 833–850,
+           doi: `10.1175/1520-0434(1998)013%3C0833:AEOUIS%3E2.0.CO;2
+           <https://doi.org/10.1175/1520-0434(1998)013%3C0833:AEOUIS%3E2.0.CO;2>`_.
+
 .. [Philips1957] Philips, N. A., 1957: A coordinate system having some special
            advantages for numerical forecasting. *J. Meteor.*, **14**, 184-185,
            doi:`10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2
