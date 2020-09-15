@@ -29,7 +29,7 @@ except:
     dask = None
 
 
-def build_scenarios(test_data, module_ext='metpy.calc'):
+def build_scenarios(test_data, module_ext='metpy.calc.'):
     """Build scenarios for pytest_generate_tests from a test data dictionary.
     See https://docs.pytest.org/en/latest/example/parametrize.html#paramexamples
     """
