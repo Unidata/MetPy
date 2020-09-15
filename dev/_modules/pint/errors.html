@@ -207,6 +207,9 @@
 <span class="sd">    :license: BSD, see LICENSE for more details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="n">OFFSET_ERROR_DOCS_HTML</span> <span class="o">=</span> <span class="s2">&quot;https://pint.readthedocs.io/en/latest/nonmult.html&quot;</span>
+<span class="n">LOG_ERROR_DOCS_HTML</span> <span class="o">=</span> <span class="s2">&quot;https://pint.readthedocs.io/en/latest/nonmult.html&quot;</span>
+
 
 <span class="k">def</span> <span class="nf">_file_prefix</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">filename</span> <span class="ow">and</span> <span class="n">lineno</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -310,7 +313,22 @@
         <span class="k">return</span> <span class="p">(</span>
             <span class="s2">&quot;Ambiguous operation with offset unit (</span><span class="si">%s</span><span class="s2">).&quot;</span>
             <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot; See https://pint.readthedocs.io/en/latest/nonmult.html for guidance.&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot; See &quot;</span>
+            <span class="o">+</span> <span class="n">OFFSET_ERROR_DOCS_HTML</span>
+            <span class="o">+</span> <span class="s2">&quot; for guidance.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">LogarithmicUnitCalculusError</span><span class="p">(</span><span class="n">PintTypeError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raised on inappropriate operations with logarithmic units.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;Ambiguous operation with logarithmic unit (</span><span class="si">%s</span><span class="s2">).&quot;</span>
+            <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot; See &quot;</span>
+            <span class="o">+</span> <span class="n">LOG_ERROR_DOCS_HTML</span>
+            <span class="o">+</span> <span class="s2">&quot; for guidance.&quot;</span>
         <span class="p">)</span>
 
 
@@ -331,7 +349,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 14, 2020 at 16:10:56.
+      Last updated on Sep 15, 2020 at 22:46:39.
 
     </p>
   </div>
@@ -365,7 +383,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post272+g86883d4',
+            VERSION:'1.0.0rc1.post274+g2c2d442',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
