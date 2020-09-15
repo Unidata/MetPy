@@ -139,8 +139,8 @@ def test_build_scenarios(scenarios, data):
             assert truthkey == testkey
 
             if (
-                isinstance(truthdict[truthkey], list) and
-                isinstance(testdict[testkey], list)
+                isinstance(truthdict[truthkey], list)
+                and isinstance(testdict[testkey], list)
             ):
                 for trutharr, testarr in zip(truthdict[truthkey], testdict[testkey]):
                     assert_array_equal(trutharr, testarr)

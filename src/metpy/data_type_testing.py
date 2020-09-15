@@ -132,10 +132,10 @@ def dask_arrays(func, args, truth, decimal):
     dask = pytest.importorskip("dask", reason="Dask is not available")
 
     args_dask = [units.Quantity(dask.array.from_array(a.m), a.units) for a in args]
-    truth_dask = [units.Quantity(dask.array.from_array(t.m), t.units) for t in truth]
+    # truth_dask = [units.Quantity(dask.array.from_array(t.m), t.units) for t in truth]
 
     # Remove for actual testing with Pint > 0.14
-    truth_dask_unitless = [t.m for t in truth_dask]
+    # truth_dask_unitless = [t.m for t in truth_dask]
     truth_unitless = [t.m for t in truth]
 
     results = func(*args_dask)

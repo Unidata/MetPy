@@ -28,24 +28,19 @@ class TestDataTypes:
     def test_scalars(self, func, args, truth, decimal):
         scalar(func, args, truth, decimal)
 
-
     def test_arrays(self, func, args, truth, decimal):
         array(func, args, truth, decimal)
-
 
     def test_masked(self, func, args, truth, decimal):
         if func == wind_direction:
             pytest.xfail("Issue #1390")
         masked(func, args, truth, decimal)
 
-
     def test_nans(self, func, args, truth, decimal):
         nans(func, args, truth, decimal)
 
-
     def test_data_array(self, func, args, truth, decimal):
         data_array(func, args, truth, decimal)
-
 
     def test_dask_array(self, func, args, truth, decimal):
         # pytest.xfail("Dask Arrays not fully supported")
