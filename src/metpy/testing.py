@@ -15,7 +15,6 @@ from pint import DimensionalityError
 import pytest
 import xarray as xr
 
-import metpy.calc
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.deprecation import MetpyDeprecationWarning

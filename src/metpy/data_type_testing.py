@@ -14,38 +14,34 @@ Planned support:
 * Dask Array
 """
 import inspect
+import importlib
 
 import pytest
 import numpy as np
 import xarray as xr
 
-import metpy.calc
 from metpy.units import units
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
 
-try:
-    import dask
-except:
-    dask = None
 
-
-def build_scenarios(test_data, module_ext='metpy.calc.'):
+def build_scenarios(test_data, module_ext):
     """Build scenarios for pytest_generate_tests from a test data dictionary.
     See https://docs.pytest.org/en/latest/example/parametrize.html#paramexamples
     """
 
-    def build(id, values):
+    def build(funcname, values):
 
         # Set number of decimal places to pass to almost equal assertions
         decimal = values.pop('decimal', 4)
 
-        func = eval(module_ext + id)
+        module = importlib.import_module(module_ext)
+        func = getattr(module, funcname)
         params = inspect.signature(func).parameters
         args = [v for key, v in values.items() if key in params]
         truth = [v for key, v in values.items() if key not in params]
 
         scenario = (
-            id,
+            funcname,
             {
                 'func': func,
                 'args': args,
@@ -56,7 +52,7 @@ def build_scenarios(test_data, module_ext='metpy.calc.'):
 
         return scenario
 
-    scenarios = [build(id, values) for id, values in test_data.items()]
+    scenarios = [build(funcname, values) for funcname, values in test_data.items()]
 
     return scenarios
 
@@ -133,8 +129,7 @@ def data_array(func, args, truth, decimal):
 
 def dask_arrays(func, args, truth, decimal):
     """Test a function using dask arrays."""
-    if not dask:
-        pytest.skip("Dask is not available")
+    dask = pytest.importorskip("dask", reason="Dask is not available")
 
     args_dask = [units.Quantity(dask.array.from_array(a.m), a.units) for a in args]
     truth_dask = [units.Quantity(dask.array.from_array(t.m), t.units) for t in truth]

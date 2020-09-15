@@ -3,20 +3,17 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `basic` module."""
 
-import sys
-
 import numpy as np
 import pandas as pd
 import pytest
 import xarray as xr
 
-from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
-                        altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
+from metpy.calc import (altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
                         apparent_temperature, coriolis_parameter, geopotential_to_height,
-                        heat_index, height_to_geopotential, height_to_pressure_std,
-                        pressure_to_height_std, sigma_to_pressure, smooth_circular,
-                        smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
-                        wind_components, wind_direction, wind_speed, windchill)
+                        heat_index, height_to_geopotential, pressure_to_height_std,
+                        sigma_to_pressure, smooth_circular, smooth_gaussian, smooth_n_point,
+                        smooth_rectangular, smooth_window, wind_components, wind_direction,
+                        wind_speed, windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.data_type_testing import (build_scenarios, scalar, array, masked, nans,
                                      data_array, dask_arrays)
@@ -26,7 +23,7 @@ from data_basic import function_test_data
 
 class TestDataTypes:
     """Test all functions against supported data types."""
-    scenarios = build_scenarios(function_test_data)
+    scenarios = build_scenarios(function_test_data, "metpy.calc")
 
     def test_scalars(self, func, args, truth, decimal):
         scalar(func, args, truth, decimal)

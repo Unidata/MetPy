@@ -126,7 +126,7 @@ def scenarios():
 def test_build_scenarios(scenarios, data):
     """Test that scenarios are built correctly from test data dictionaries."""
 
-    scenarios_test = build_scenarios(data, module_ext='metpy.testing.')
+    scenarios_test = build_scenarios(data, module_ext='metpy.testing')
 
     assert isinstance(scenarios_test, list)
 
