@@ -348,7 +348,7 @@ def advection(
     v=None,
     w=None,
     *,
-    dx=None,
+    dx=None,  # noqa: RST213
     dy=None,
     dz=None,
     x_dim=-1,
@@ -367,8 +367,8 @@ def advection(
         N-dimensional arrays with units of velocity representing the flow, with a component of
         the wind in each dimension. For 1D advection, use 1 positional argument (with `dx` for
         grid spacing and `x_dim` to specify axis if not the default of -1) or use 1 applicable
-        keyword argument (u, v, or w) for proper physical dimension (with corresponding `d*`
-        for grid spacing and `*_dim` to specify axis). For 2D/horizontal advection, use 2
+        keyword argument (u, v, or w) for proper physical dimension (with corresponding `d\*`
+        for grid spacing and `\*_dim` to specify axis). For 2D/horizontal advection, use 2
         positional arguments in order for u and v winds respectively (with `dx` and `dy` for
         grid spacings and `x_dim` and `y_dim` keyword arguments to specify axes), or specify u
         and v as keyword arguments (grid spacings and axes likewise). For 3D advection,

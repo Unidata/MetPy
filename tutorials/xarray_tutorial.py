@@ -164,6 +164,9 @@ print(data_globe)
 # Calculations
 # ------------
 #
+# TODO: The below section is out of date as of PR #1490. Updates are needed as a part of the
+# 1.0 Upgrade Guide and Doc Update (Issue #1385).
+#
 # Most of the calculations in `metpy.calc` will accept DataArrays by converting them
 # into their corresponding unit arrays. While this may often work without any issues, we must
 # keep in mind that because the calculations are working with unit arrays and not DataArrays:
@@ -175,10 +178,9 @@ print(data_globe)
 # As an example, we calculate geostropic wind at 500 hPa below:
 
 lat, lon = xr.broadcast(y, x)
-f = mpcalc.coriolis_parameter(lat)
 dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, initstring=data_crs.proj4_init)
 heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
-u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
+u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
 print(u_geo)
 print(v_geo)
 
@@ -213,9 +215,8 @@ print(v_geo)
 
 heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
 lat, lon = xr.broadcast(y, x)
-f = mpcalc.coriolis_parameter(lat)
 dx, dy = mpcalc.grid_deltas_from_dataarray(heights)
-u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
+u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
 print(u_geo)
 print(v_geo)
 

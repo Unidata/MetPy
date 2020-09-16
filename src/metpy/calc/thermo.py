@@ -1824,8 +1824,8 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
 
 
 @exporter.export
-@preprocess_and_wrap()
 @add_vertical_dim_from_xarray
+@preprocess_and_wrap()
 @check_units('[temperature]', '[pressure]', '[temperature]')
 def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=0,
                              temperature_out=False, max_iters=50, eps=1e-6,
@@ -2047,7 +2047,7 @@ def isentropic_interpolation_as_dataset(
         'isentropic_level': xr.DataArray(
             levels.m,
             dims=('isentropic_level',),
-            coords=levels.m,
+            coords={'isentropic_level': levels.m},
             name='isentropic_level',
             attrs={
                 'units': str(levels.units),
@@ -2056,7 +2056,7 @@ def isentropic_interpolation_as_dataset(
         ),
         **{
             key: value
-            for key, value in all_args[0].coords
+            for key, value in all_args[0].coords.items()
             if key != vertical_dim
         }
     }
@@ -2074,11 +2074,11 @@ def isentropic_interpolation_as_dataset(
             ),
             'temperature': (
                 new_dims,
-                ret[-1],
+                ret[1],
                 {'standard_name': 'air_temperature'}
             ),
             **{
-                all_args[i].name: (new_dims, ret[i], all_args[i].attrs)
+                all_args[i].name: (new_dims, ret[i + 1], all_args[i].attrs)
                 for i in range(1, len(all_args))
             }
         },
