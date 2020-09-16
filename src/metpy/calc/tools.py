@@ -842,7 +842,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs):
     """Convert azimuth and range locations in a polar coordinate system to lat/lon coordinates.
 

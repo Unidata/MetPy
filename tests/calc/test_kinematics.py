@@ -147,7 +147,7 @@ def test_advection_uniform():
     """Test advection calculation for a uniform 1D field."""
     u = np.ones((3,)) * units('m/s')
     s = np.ones_like(u) * units.kelvin
-    a = advection(s.T, u.T, (1 * units.meter,))
+    a = advection(s.T, u.T, dx=1 * units.meter)
     truth = np.zeros_like(u) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -156,7 +156,7 @@ def test_advection_1d_uniform_wind():
     """Test advection for simple 1D case with uniform wind."""
     u = np.ones((3,)) * units('m/s')
     s = np.array([1, 2, 3]) * units('kg')
-    a = advection(s.T, u.T, (1 * units.meter,))
+    a = advection(s.T, u.T, dx=1 * units.meter)
     truth = -np.ones_like(u) * units('kg/sec')
     assert_array_equal(a, truth)
 
@@ -165,7 +165,7 @@ def test_advection_1d():
     """Test advection calculation with varying wind and field."""
     u = np.array([1, 2, 3]) * units('m/s')
     s = np.array([1, 2, 3]) * units('Pa')
-    a = advection(s.T, u.T, (1 * units.meter,))
+    a = advection(s.T, u.T, dx=1 * units.meter)
     truth = np.array([-1, -2, -3]) * units('Pa/sec')
     assert_array_equal(a, truth)
 
@@ -174,7 +174,7 @@ def test_advection_2d_uniform():
     """Test advection for uniform 2D field."""
     u = np.ones((3, 3)) * units('m/s')
     s = np.ones_like(u) * units.kelvin
-    a = advection(s.T, [u.T, u.T], (1 * units.meter, 1 * units.meter))
+    a = advection(s.T, u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
     truth = np.zeros_like(u) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -184,7 +184,7 @@ def test_advection_2d():
     u = np.ones((3, 3)) * units('m/s')
     v = 2 * np.ones((3, 3)) * units('m/s')
     s = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]]) * units.kelvin
-    a = advection(s.T, [v.T, u.T], (1 * units.meter, 1 * units.meter))
+    a = advection(s.T, v.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
     truth = np.array([[-6, -4, 2], [-8, 0, 8], [-2, 4, 6]]) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -194,7 +194,7 @@ def test_advection_2d_asym():
     u = np.arange(9).reshape(3, 3) * units('m/s')
     v = 2 * u
     s = np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * units.kelvin
-    a = advection(s, [u, v], (2 * units.meter, 1 * units.meter))
+    a = advection(s, u, v, dx=2 * units.meter, dy=1 * units.meter)
     truth = np.array([[0, -20.75, -2.5], [-33., -16., 20.], [-48, 91., 8]]) * units('K/sec')
     assert_array_equal(a, truth)
 

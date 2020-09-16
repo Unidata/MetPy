@@ -2658,7 +2658,7 @@ def brunt_vaisala_frequency(height, potential_temperature, vertical_dim=0):
 
     """
     bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
-                                                      axis=vertical_dim)
+                                                      vertical_dim=vertical_dim)
     bv_freq_squared[bv_freq_squared.magnitude < 0] = np.nan
 
     return np.sqrt(bv_freq_squared)
@@ -2703,7 +2703,7 @@ def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
 
     """
     bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
-                                                      axis=vertical_dim)
+                                                      vertical_dim=vertical_dim)
     bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
 
     return 2 * np.pi / np.sqrt(bv_freq_squared)

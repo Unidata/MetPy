@@ -402,7 +402,7 @@ def advection(
         An N-dimensional array containing the advection at all grid points.
 
     """
-    return sum(
+    return -sum(
         wind * first_derivative(scalar, axis=axis, delta=delta)
         for wind, delta, axis in (
             (u, dx, x_dim),
