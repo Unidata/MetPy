@@ -116,16 +116,6 @@ def add_grid_arguments_from_xarray(func):
                 raise ValueError('Must provide latitude argument or input DataArray with '
                                  'latitude/longitude coordinates.')
 
-        # Fill in Coriolis parameter
-        if 'f' in bound_args.arguments and bound_args.arguments['f'] is None:
-            if grid_prototype is not None:
-                bound_args.arguments['f'] = coriolis_parameter(
-                    grid_prototype.metpy.latitude.metpy.unit_array
-                )
-            else:
-                raise ValueError('Must provide f argument or input DataArray with'
-                                 'latitude/longitude coordinates.')
-
         return func(*bound_args.args, **bound_args.kwargs)
     return wrapper
 
@@ -492,19 +482,15 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'f'))
-@check_units(f='[frequency]', dx='[length]', dy='[length]')
-def geostrophic_wind(height, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'latitude'))
+@check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
+def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     r"""Calculate the geostrophic wind given from the height or geopotential.
 
     Parameters
     ----------
     height : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The height or geopotential field.
-    f : `pint.Quantity`, optional
-        The Coriolis parameter. This can be a scalar to be applied everywhere or an array of
-        values. Optional if `xarray.DataArray` with latitude/longitude coordinates used as
-        input for height.
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -513,6 +499,11 @@ def geostrophic_wind(height, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input.
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        The latitude, which is used to calculate the Coriolis parameter. Its dimensions must
+        be broadcastable with those of height. Optional if `xarray.DataArray` with latitude
+        coordinate used as input. Note that an argument without units is treated as
+        dimensionless, which is equivalent to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
@@ -526,6 +517,7 @@ def geostrophic_wind(height, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
         A tuple of the u-component and v-component of the geostrophic wind.
 
     """
+    f = coriolis_parameter(latitude)
     if height.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f
     else:
@@ -538,9 +530,18 @@ def geostrophic_wind(height, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'u', 'v', 'f'))
-@check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
-def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(
+    wrap_like=('height', 'height'),
+    broadcast=('height', 'u', 'v', 'latitude')
+)
+@check_units(
+    u='[speed]',
+    v='[speed]',
+    dx='[length]',
+    dy='[length]',
+    latitude='[dimensionless]'
+)
+def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
 
     Parameters
@@ -551,10 +552,6 @@ def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2
         The u wind field.
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.
-    f : `pint.Quantity`, optional
-        The Coriolis parameter. This can be a scalar to be applied everywhere or an array of
-        values. Optional if `xarray.DataArray` with latitude/longitude coordinates used as
-        input for height.
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
@@ -563,6 +560,11 @@ def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input.
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        The latitude, which is used to calculate the Coriolis parameter. Its dimensions must
+        be broadcastable with those of height. Optional if `xarray.DataArray` with latitude
+        coordinate used as input. Note that an argument without units is treated as
+        dimensionless, which is equivalent to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
@@ -576,7 +578,14 @@ def ageostrophic_wind(height, u, v, f=None, dx=None, dy=None, x_dim=-1, y_dim=-2
         A tuple of the u-component and v-component of the ageostrophic wind.
 
     """
-    u_geostrophic, v_geostrophic = geostrophic_wind(height, f, dx, dy)
+    u_geostrophic, v_geostrophic = geostrophic_wind(
+        height,
+        dx,
+        dy,
+        latitude,
+        x_dim=x_dim,
+        y_dim=y_dim
+    )
     return u - u_geostrophic, v - v_geostrophic
 
 

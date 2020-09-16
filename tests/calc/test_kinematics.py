@@ -9,14 +9,14 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriolis_parameter,
+from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         divergence, frontogenesis, geostrophic_wind, inertial_advective_wind,
                         lat_lon_grid_deltas, montgomery_streamfunction,
                         potential_temperature, potential_vorticity_baroclinic,
                         potential_vorticity_barotropic, q_vector, shearing_deformation,
                         static_stability, storm_relative_helicity, stretching_deformation,
                         total_deformation, vorticity, wind_components)
-from metpy.constants import g, omega, Re
+from metpy.constants import g, Re
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data, needs_cartopy, needs_pyproj)
 from metpy.units import concatenate, units
@@ -201,52 +201,74 @@ def test_advection_2d_asym():
 
 def test_geostrophic_wind():
     """Test geostrophic wind calculation with basic conditions."""
-    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units.meter
-    # Using g as the value for f allows it to cancel out
-    ug, vg = geostrophic_wind(z.T, g.magnitude / units.sec,
-                              100. * units.meter, 100. * units.meter)
-    true_u = np.array([[-2, 0, 2]] * 3) * units('m/s')
+    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 10. * units.meter
+    latitude = 30 * units.degrees
+    ug, vg = geostrophic_wind(
+        z.T,
+        100. * units.kilometer,
+        100. * units.kilometer,
+        latitude
+    )
+    true_u = np.array([[-26.897, 0, 26.897]] * 3) * units('m/s')
     true_v = -true_u.T
-    assert_array_equal(ug, true_u.T)
-    assert_array_equal(vg, true_v.T)
+    assert_array_almost_equal(ug, true_u.T, 2)
+    assert_array_almost_equal(vg, true_v.T, 2)
 
 
 def test_geostrophic_wind_asym():
     """Test geostrophic wind calculation with a complicated field."""
-    z = np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * 200. * units.meter
-    # Using g as the value for f allows it to cancel out
-    ug, vg = geostrophic_wind(z, g.magnitude / units.sec,
-                              200. * units.meter, 100. * units.meter)
-    true_u = -np.array([[5, 20, 0], [7, 4, 0], [9, -12, 0]]) * units('m/s')
-    true_v = np.array([[0.5, 1.5, 2.5], [8, 0, -8], [-2, -2, -2]]) * units('m/s')
-    assert_array_equal(ug, true_u)
-    assert_array_equal(vg, true_v)
+    z = np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * 20. * units.meter
+    latitude = 30 * units.degrees
+    ug, vg = geostrophic_wind(
+        z,
+        2000. * units.kilometer,
+        1000. * units.kilometer,
+        latitude
+    )
+    true_u = np.array(
+        [[-6.724, -26.897, 0], [-9.414, -5.379, 0], [-12.103, 16.138, 0]]
+    ) * units('m/s')
+    true_v = np.array(
+        [[0.672, 2.017, 3.362], [10.759, 0, -10.759], [-2.690, -2.690, -2.690]]
+    ) * units('m/s')
+    assert_array_almost_equal(ug, true_u, 2)
+    assert_array_almost_equal(vg, true_v, 2)
 
 
 def test_geostrophic_geopotential():
     """Test geostrophic wind calculation with geopotential."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
-    ug, vg = geostrophic_wind(z.T, 1 / units.sec, 100. * units.meter, 100. * units.meter)
-    true_u = np.array([[-2, 0, 2]] * 3) * units('m/s')
+    latitude = 30 * units.degrees
+    ug, vg = geostrophic_wind(
+        z.T,
+        100. * units.kilometer,
+        100. * units.kilometer,
+        latitude
+    )
+    true_u = np.array([[-27.427, 0, 27.427]] * 3) * units('m/s')
     true_v = -true_u.T
-    assert_array_equal(ug, true_u.T)
-    assert_array_equal(vg, true_v.T)
+    assert_array_almost_equal(ug, true_u.T, 2)
+    assert_array_almost_equal(vg, true_v.T, 2)
 
 
 def test_geostrophic_3d():
     """Test geostrophic wind calculation with 3D array."""
-    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.
-    # Using g as the value for f allows it to cancel out
+    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 10.
+    latitude = 30 * units.degrees
     z3d = np.dstack((z, z)) * units.meter
-    ug, vg = geostrophic_wind(z3d.T, g.magnitude / units.sec,
-                              100. * units.meter, 100. * units.meter)
-    true_u = np.array([[-2, 0, 2]] * 3) * units('m/s')
+    ug, vg = geostrophic_wind(
+        z3d.T,
+        100. * units.kilometer,
+        100. * units.kilometer,
+        latitude
+    )
+    true_u = np.array([[-26.897, 0, 26.897]] * 3) * units('m/s')
     true_v = -true_u.T
 
     true_u = concatenate((true_u[..., None], true_u[..., None]), axis=2)
     true_v = concatenate((true_v[..., None], true_v[..., None]), axis=2)
-    assert_array_equal(ug, true_u.T)
-    assert_array_equal(vg, true_v.T)
+    assert_array_almost_equal(ug, true_u.T, 2)
+    assert_array_almost_equal(vg, true_v.T, 2)
 
 
 def test_geostrophic_gempak():
@@ -256,10 +278,9 @@ def test_geostrophic_gempak():
                   [5604707.50, 5603247.50, 5602527.50]]).T \
         * (9.80616 * units('m/s^2')) * 1e-3
     dx = np.deg2rad(0.25) * Re * np.cos(np.deg2rad(44))
-    # Inverting dy since latitudes in array increase as you go up
     dy = -np.deg2rad(0.25) * Re
-    f = (2 * omega * np.sin(np.deg2rad(44))).to('1/s')
-    ug, vg = geostrophic_wind(z.T * units.m, f, dx.T, dy.T)
+    lat = 44 * units.degrees
+    ug, vg = geostrophic_wind(z.T * units.m, dx.T, dy.T, lat)
     true_u = np.array([[21.97512, 21.97512, 22.08005],
                        [31.89402, 32.69477, 33.73863],
                        [38.43922, 40.18805, 42.14609]])
@@ -273,25 +294,27 @@ def test_geostrophic_gempak():
 def test_no_ageostrophic_geopotential():
     """Test the updated ageostrophic wind function."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
-    u = np.array([[-2, 0, 2]] * 3) * units('m/s')
+    u = np.array([[-27.427, 0, 27.427]] * 3) * units('m/s')
     v = -u.T
-    uag, vag = ageostrophic_wind(z.T, u.T, v.T, 1 / units.sec, 100. * units.meter,
-                                 100. * units.meter)
+    latitude = 30 * units.degrees
+    uag, vag = ageostrophic_wind(z.T, u.T, v.T, 100. * units.kilometer,
+                                 100. * units.kilometer, latitude)
     true = np.array([[0, 0, 0]] * 3) * units('m/s')
-    assert_array_equal(uag, true.T)
-    assert_array_equal(vag, true.T)
+    assert_array_almost_equal(uag, true.T, 2)
+    assert_array_almost_equal(vag, true.T, 2)
 
 
 def test_ageostrophic_geopotential():
     """Test ageostrophic wind calculation with future input variable order."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
-    uag, vag = ageostrophic_wind(z.T, u.T, v.T, 1 / units.sec, 100. * units.meter,
-                                 100. * units.meter)
-    u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
+    latitude = 30 * units.degrees
+    uag, vag = ageostrophic_wind(z.T, u.T, v.T, 100. * units.kilometer,
+                                 100. * units.kilometer, latitude)
+    u_true = np.array([[27.427, 0, -27.427]] * 3) * units('m/s')
     v_true = -u_true.T
-    assert_array_equal(uag, u_true.T)
-    assert_array_equal(vag, v_true.T)
+    assert_array_almost_equal(uag, u_true.T, 2)
+    assert_array_almost_equal(vag, v_true.T, 2)
 
 
 def test_streamfunc():
@@ -1310,8 +1333,7 @@ def test_frontogenesis_4d(data_4d):
 
 def test_geostrophic_wind_4d(data_4d):
     """Test geostrophic_wind on a 4D (time, pressure, y, x) grid."""
-    f = coriolis_parameter(data_4d.latitude)
-    u_g, v_g = geostrophic_wind(data_4d.height, f, data_4d.dx, data_4d.dy)
+    u_g, v_g = geostrophic_wind(data_4d.height, data_4d.dx, data_4d.dy, data_4d.latitude)
     u_g_truth = np.array([[[[4.40351577, 12.52087174, 20.6458988, 3.17057524],
                             [14.11461945, 17.13672114, 22.06686549, 28.28270102],
                             [24.47454294, 22.86342357, 31.74065923, 41.48130088],
@@ -1427,8 +1449,7 @@ def test_geostrophic_wind_4d(data_4d):
 
 def test_inertial_advective_wind_4d(data_4d):
     """Test inertial_advective_wind on a 4D (time, pressure, y, x) grid."""
-    f = coriolis_parameter(data_4d.latitude)
-    u_g, v_g = geostrophic_wind(data_4d.height, f, data_4d.dx, data_4d.dy)
+    u_g, v_g = geostrophic_wind(data_4d.height, data_4d.dx, data_4d.dy, data_4d.latitude)
     u_i, v_i = inertial_advective_wind(u_g, v_g, u_g, v_g, data_4d.dx, data_4d.dy,
                                        data_4d.latitude)
     u_i_truth = np.array([[[[-4.74579332, -6.36486064, -7.20354171, -11.08307751],
@@ -1546,8 +1567,7 @@ def test_inertial_advective_wind_4d(data_4d):
 
 def test_q_vector_4d(data_4d):
     """Test q_vector on a 4D (time, pressure, y, x) grid."""
-    f = coriolis_parameter(data_4d.latitude)
-    u_g, v_g = geostrophic_wind(data_4d.height, f, data_4d.dx, data_4d.dy)
+    u_g, v_g = geostrophic_wind(data_4d.height, data_4d.dx, data_4d.dy, data_4d.latitude)
     q1, q2 = q_vector(u_g, v_g, data_4d.temperature, data_4d.pressure, data_4d.dx, data_4d.dy)
     q1_truth = np.array([[[[-8.98245364e-13, 2.03803219e-13, 2.88874668e-12, 2.18043424e-12],
                            [4.37446820e-13, 1.21145200e-13, 1.51859353e-12, 3.82803347e-12],
