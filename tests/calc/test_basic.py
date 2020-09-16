@@ -32,8 +32,6 @@ class TestDataTypes:
         array(func, args, truth, decimal)
 
     def test_masked(self, func, args, truth, decimal):
-        if func == wind_direction:
-            pytest.xfail("Issue #1390")
         masked(func, args, truth, decimal)
 
     def test_nans(self, func, args, truth, decimal):
@@ -43,7 +41,12 @@ class TestDataTypes:
         data_array(func, args, truth, decimal)
 
     def test_dask_array(self, func, args, truth, decimal):
-        # pytest.xfail("Dask Arrays not fully supported")
+        if (
+            func == wind_direction
+            or func == heat_index
+            or func == apparent_temperature
+        ):
+            pytest.xfail(f"Function {func} has known compatibility issues with Dask Arrays")
         dask_arrays(func, args, truth, decimal)
 
 

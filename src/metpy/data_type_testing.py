@@ -160,13 +160,17 @@ def data_array(func, args, truth, decimal):
 def dask_arrays(func, args, truth, decimal):
     """Test a function using dask arrays."""
     dask = pytest.importorskip("dask", reason="Dask is not available")
+    dask_array = pytest.importorskip(
+        "dask.array", reason="Module dask.array is not available"
+    )
+    pint = pytest.importorskip(
+        "pint",
+        minversion="0.15",
+        reason="Pint >=0.15 needed for Quantity wrapped Dask Arrays"
+    )
 
-    args_dask = [units.Quantity(dask.array.from_array(a.m), a.units) for a in args]
-    # truth_dask = [units.Quantity(dask.array.from_array(t.m), t.units) for t in truth]
-
-    # Remove for actual testing with Pint > 0.14
-    # truth_dask_unitless = [t.m for t in truth_dask]
-    truth_unitless = [t.m for t in truth]
+    args_dask = [dask_array.from_array(a.m) * a.units for a in args]
+    truth_dask = [dask_array.from_array(t.m) * t.units for t in truth]
 
     results = func(*args_dask)
 
@@ -174,15 +178,14 @@ def dask_arrays(func, args, truth, decimal):
 
     if isinstance(results, tuple):
         computed = dask.compute(*results)
-        # persisted = dask.persist(*results)
+        persisted = dask.persist(*results)
     else:
         computed = results.compute()
-        # persisted = results.persist()
+        persisted = results.persist()
 
-    # _unpack_and_assert(truth_dask, results, decimal)
-    # _unpack_and_assert(truth_dask, persisted, decimal)
-    # _unpack_and_assert(truth, computed, decimal)
-    _unpack_and_assert(truth_unitless, computed, decimal)
+    _unpack_and_assert(truth_dask, results, decimal)
+    _unpack_and_assert(truth, computed, decimal)
+    _unpack_and_assert(truth_dask, persisted, decimal)
 
 
 def _unpack_and_assert(truth, results, decimal):
