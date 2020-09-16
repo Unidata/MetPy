@@ -482,10 +482,11 @@ class MetPyDataArrayAccessor:
                 name = self._axis(axis).name
                 return self._data_array.dims.index(name)
             except AttributeError as exc:
-                # If x or y requested, but x or y not available, attempt to interpret dim
+                # If x, y, or vertical requested, but not available, attempt to interpret dim
                 # names using regular expressions from coordinate parsing to allow for
-                # multidimensional lat/lon without y/x dimension coordinates
-                if axis in ('y', 'x'):
+                # multidimensional lat/lon without y/x dimension coordinates, and basic
+                # vertical dim recognition
+                if axis in ('vertical', 'y', 'x'):
                     for i, dim in enumerate(self._data_array.dims):
                         if re.match(coordinate_criteria['regular_expression'][axis],
                                     dim.lower()):

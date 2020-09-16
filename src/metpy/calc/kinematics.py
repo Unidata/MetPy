@@ -110,7 +110,7 @@ def add_grid_arguments_from_xarray(func):
         if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
             if grid_prototype is not None:
                 bound_args.arguments['latitude'] = (
-                    grid_prototype.metpy.latitude.metpy.unit_array
+                    grid_prototype.metpy.latitude
                 )
             else:
                 raise ValueError('Must provide latitude argument or input DataArray with '

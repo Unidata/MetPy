@@ -32,8 +32,7 @@ def add_vertical_dim_from_xarray(func):
         bound_args = signature(func).bind(*args, **kwargs)
         bound_args.apply_defaults()
 
-        # Search for DataArray with valid latitude and longitude coordinates to find grid
-        # deltas and any other needed parameter
+        # Search for DataArray in arguments
         dataarray_arguments = [
             value for value in bound_args.arguments.values()
             if isinstance(value, xr.DataArray)

@@ -11,13 +11,14 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, gradient_richardson_number,
-                        isentropic_interpolation, lcl, lfc, lifted_index, mixed_layer,
-                        mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
+                        exner_function, gradient_richardson_number, isentropic_interpolation,
+                        isentropic_interpolation_as_dataset, lcl, lfc, lifted_index,
+                        mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
-                        parcel_profile, parcel_profile_with_lcl, potential_temperature,
+                        parcel_profile, parcel_profile_with_lcl,
+                        parcel_profile_with_lcl_as_dataset, potential_temperature,
                         psychrometric_vapor_pressure_wet,
                         relative_humidity_from_dewpoint,
                         relative_humidity_from_mixing_ratio,
@@ -34,7 +35,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vertical_velocity, vertical_velocity_pressure,
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
-from metpy.calc.thermo import _find_append_zero_crossings
+from metpy.calc.thermo import _find_append_zero_crossings, add_vertical_dim_from_xarray
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
 
@@ -167,6 +168,53 @@ def test_parcel_profile_lcl():
     assert_almost_equal(temp, true_t, 3)
     assert_almost_equal(dewp, true_td, 3)
     assert_array_almost_equal(prof, true_prof, 2)
+
+
+def test_parcel_profile_with_lcl_as_dataset():
+    """Test parcel profile with lcl calculation with xarray."""
+    p = np.array([1004., 1000., 943., 928., 925., 850., 839., 749., 700., 699.]) * units.hPa
+    t = np.array([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2, 13.]) * units.degC
+    td = np.array([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8, -3.0]) * units.degC
+
+    result = parcel_profile_with_lcl_as_dataset(p, t, td)
+
+    expected = xr.Dataset(
+        {
+            'ambient_temperature': (
+                ('isobaric',),
+                np.insert(t.m, 2, 22.047) * units.degC,
+                {'standard_name': 'air_temperature'}
+            ),
+            'ambient_dew_point': (
+                ('isobaric',),
+                np.insert(td.m, 2, 20.609) * units.degC,
+                {'standard_name': 'dew_point_temperature'}
+            ),
+            'parcel_temperature': (
+                ('isobaric',),
+                [
+                    297.35, 297.01, 294.5, 293.48, 292.92, 292.81, 289.79, 289.32, 285.15,
+                    282.59, 282.53
+                ] * units.kelvin,
+                {'long_name': 'air_temperature_of_lifted_parcel'}
+            )
+        },
+        coords={
+            'isobaric': (
+                'isobaric',
+                np.insert(p.m, 2, 970.699),
+                {'units': 'hectopascal', 'standard_name': 'air_pressure'}
+            )
+        }
+    )
+    xr.testing.assert_allclose(result, expected, atol=1e-2)
+    for field in (
+        'ambient_temperature',
+        'ambient_dew_point',
+        'parcel_temperature',
+        'isobaric'
+    ):
+        assert result[field].attrs == expected[field].attrs
 
 
 def test_parcel_profile_saturated():
@@ -465,6 +513,26 @@ def test_saturation_mixing_ratio():
     p = 999. * units.mbar
     t = 288. * units.kelvin
     assert_almost_equal(saturation_mixing_ratio(p, t), .01068, 3)
+
+
+def test_saturation_mixing_ratio_with_xarray():
+    """Test saturation mixing ratio calculation with xarray."""
+    temperature = xr.DataArray(
+        np.arange(10, 18).reshape((2, 2, 2)) * units.degC,
+        dims=('isobaric', 'y', 'x'),
+        coords={
+            'isobaric': (('isobaric',), [700., 850.], {'units': 'hPa'}),
+            'y': (('y',), [0., 100.], {'units': 'kilometer'}),
+            'x': (('x',), [0., 100.], {'units': 'kilometer'})
+        }
+    )
+    result = saturation_mixing_ratio(temperature.metpy.vertical, temperature)
+    expected_values = [[[0.011098, 0.011879], [0.012708, 0.013589]],
+                       [[0.011913, 0.012724], [0.013586, 0.014499]]]
+    assert_array_almost_equal(result.data, expected_values, 5)
+    xr.testing.assert_identical(result['isobaric'], temperature['isobaric'])
+    xr.testing.assert_identical(result['y'], temperature['y'])
+    xr.testing.assert_identical(result['x'], temperature['x'])
 
 
 def test_equivalent_potential_temperature():
@@ -1039,12 +1107,88 @@ def test_isentropic_pressure_4d():
     assert_almost_equal(isentprs[1][:, 1, ], truerh, 3)
 
 
+def test_isentropic_interpolation_as_dataset():
+    """Test calculation of isentropic interpolation with xarray."""
+    data = xr.Dataset(
+        {
+            'temperature': (
+                ('isobaric', 'y', 'x'),
+                [[[296.]], [[292.]], [[290.]], [[288.]]] * units.K
+            ),
+            'rh': (
+                ('isobaric', 'y', 'x'),
+                [[[100.]], [[80.]], [[40.]], [[20.]]] * units.percent
+            )
+        },
+        coords={
+            'isobaric': (('isobaric',), [1000., 950., 900., 850.], {'units': 'hPa'}),
+            'time': '2020-01-01T00:00Z'
+        }
+    )
+    isentlev = [296., 297.] * units.kelvin
+    result = isentropic_interpolation_as_dataset(isentlev, data['temperature'], data['rh'])
+    expected = xr.Dataset(
+        {
+            'pressure': (
+                ('isentropic_level', 'y', 'x'),
+                [[[1000.]], [[936.18057]]] * units.hPa,
+                {'standard_name': 'air_pressure'}
+            ),
+            'temperature': (
+                ('isentropic_level', 'y', 'x'),
+                [[[296.]], [[291.4579]]] * units.K,
+                {'standard_name': 'air_temperature'}
+            ),
+            'rh': (
+                ('isentropic_level', 'y', 'x'),
+                [[[100.]], [[69.171]]] * units.percent
+            )
+        },
+        coords={
+            'isentropic_level': (
+                ('isentropic_level',),
+                [296., 297.],
+                {'units': 'kelvin', 'positive': 'up'}
+            ),
+            'time': '2020-01-01T00:00Z'
+        }
+    )
+    xr.testing.assert_allclose(result, expected)
+    assert result['pressure'].attrs == expected['pressure'].attrs
+    assert result['temperature'].attrs == expected['temperature'].attrs
+    assert result['isentropic_level'].attrs == expected['isentropic_level'].attrs
+
+
 def test_surface_based_cape_cin():
     """Test the surface-based CAPE and CIN calculation."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
+    assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, -136.607809 * units('joule / kilogram'), 2)
+
+
+def test_surface_based_cape_cin_with_xarray():
+    """Test the surface-based CAPE and CIN calculation with xarray."""
+    data = xr.Dataset(
+        {
+            'temperature': (('isobaric',), [22.2, 14.6, 12., 9.4, 7., -38.] * units.degC),
+            'dewpoint': (('isobaric',), [19., -11.2, -10.8, -10.4, -10., -53.2] * units.degC)
+        },
+        coords={
+            'isobaric': (
+                ('isobaric',),
+                [959., 779.2, 751.3, 724.3, 700., 269.],
+                {'units': 'hPa'}
+            )
+        }
+    )
+    cape, cin = surface_based_cape_cin(
+        data['isobaric'],
+        data['temperature'],
+        data['dewpoint']
+    )
     assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 2)
     assert_almost_equal(cin, -136.607809 * units('joule / kilogram'), 2)
 
@@ -1628,3 +1772,34 @@ def test_gradient_richardson_number():
     expected = np.asarray([24.2503551, 13.6242603, 8.4673744])
 
     assert_array_almost_equal(result, expected, 4)
+
+
+def test_gradient_richardson_number_with_xarray():
+    """Test gradient Richardson number calculation using xarray."""
+    data = xr.Dataset(
+        {
+            'theta': (('height',), [254.5, 258.3, 262.2] * units.K),
+            'u_wind': (('height',), [-2., -1.1, 0.23] * units('m/s')),
+            'v_wind': (('height',), [3.3, 4.2, 5.2] * units('m/s')),
+            'Ri_g': (('height',), [24.2503551, 13.6242603, 8.4673744])
+        },
+        coords={'height': (('height',), [0.2, 0.4, 0.6], {'units': 'kilometer'})}
+    )
+
+    result = gradient_richardson_number(
+        data['height'],
+        data['theta'],
+        data['u_wind'],
+        data['v_wind']
+    )
+
+    xr.testing.assert_allclose(result, data['Ri_g'])
+
+
+def test_add_vertical_dim_from_xarray():
+    """Test decorator for automatically determining the vertical dimension number."""
+    @add_vertical_dim_from_xarray
+    def return_vertical_dim(data, vertical_dim=None):
+        return vertical_dim
+    test_da = xr.DataArray(np.zeros((2, 2, 2, 2)), dims=('time', 'isobaric', 'y', 'x'))
+    assert return_vertical_dim(test_da) == 1

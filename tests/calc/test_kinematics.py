@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `kinematics` module."""
 
-from collections import namedtuple
-
 import numpy as np
 import pytest
 import xarray as xr
@@ -16,6 +14,7 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         potential_vorticity_barotropic, q_vector, shearing_deformation,
                         static_stability, storm_relative_helicity, stretching_deformation,
                         total_deformation, vorticity, wind_components)
+from metpy.calc.kinematics import add_grid_arguments_from_xarray
 from metpy.constants import g, Re
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data, needs_cartopy, needs_pyproj)
@@ -1056,25 +1055,18 @@ def data_4d():
         longitude=[262., 267., 272., 277.],
         isobaric3=[50000., 70000., 85000.]
     ).isel(time1=[0, 1, 2])
-    dx, dy = lat_lon_grid_deltas(subset['longitude'].values,
-                                 subset['latitude'].values,
-                                 initstring=subset['longitude'].metpy.cartopy_crs.proj4_init)
-    return namedtuple('D_4D_Test_Data',
-                      'height temperature pressure u v dx dy latitude')(
-        subset['Geopotential_height_isobaric'].metpy.unit_array,
-        subset['Temperature_isobaric'].metpy.unit_array,
-        subset['isobaric3'].metpy.unit_array[None, :, None, None],
-        subset['u-component_of_wind_isobaric'].metpy.unit_array,
-        subset['v-component_of_wind_isobaric'].metpy.unit_array,
-        dx[None, None],
-        dy[None, None],
-        subset['latitude'].values[None, None, :, None] * units('degrees')
-    )
+    return subset.rename({
+        'Geopotential_height_isobaric': 'height',
+        'Temperature_isobaric': 'temperature',
+        'isobaric3': 'pressure',
+        'u-component_of_wind_isobaric': 'u',
+        'v-component_of_wind_isobaric': 'v'
+    })
 
 
 def test_vorticity_4d(data_4d):
     """Test vorticity on a 4D (time, pressure, y, x) grid."""
-    vort = vorticity(data_4d.u, data_4d.v, data_4d.dx, data_4d.dy)
+    vort = vorticity(data_4d.u, data_4d.v)
     truth = np.array([[[[-5.83650490e-05, 3.17327814e-05, 4.57268332e-05, 2.00732350e-05],
                         [2.14368312e-05, 1.95623237e-05, 4.15790182e-05, 6.90274641e-05],
                         [6.18610861e-05, 6.93600880e-05, 8.36201998e-05, 8.25922654e-05],
@@ -1112,12 +1104,12 @@ def test_vorticity_4d(data_4d):
                         [-5.97302093e-06, -6.76058488e-07, 5.89633276e-06, 1.82494546e-05],
                         [-2.96985363e-06, 3.86098537e-06, 5.24525482e-06,
                          2.72933874e-05]]]]) * units('s^-1')
-    assert_array_almost_equal(vort, truth, 12)
+    assert_array_almost_equal(vort.data, truth, 12)
 
 
 def test_divergence_4d(data_4d):
     """Test divergence on a 4D (time, pressure, y, x) grid."""
-    div = divergence(data_4d.u, data_4d.v, data_4d.dx, data_4d.dy)
+    div = divergence(data_4d.u, data_4d.v)
     truth = np.array([[[[-8.43705083e-06, -5.42243991e-06, 1.42553766e-05, 2.81311077e-05],
                         [2.95334911e-05, -8.91904163e-06, 1.18532270e-05, -6.26196756e-06],
                         [-4.63583096e-05, -2.10525265e-05, 1.32571075e-05, 4.76118929e-05],
@@ -1155,12 +1147,12 @@ def test_divergence_4d(data_4d):
                         [1.74820166e-06, -4.85659616e-07, 6.34687163e-06, -9.27089944e-06],
                         [9.23766788e-07, -2.85241737e-06, 1.68475020e-05,
                          -5.70982211e-06]]]]) * units('s^-1')
-    assert_array_almost_equal(div, truth, 12)
+    assert_array_almost_equal(div.data, truth, 12)
 
 
 def test_shearing_deformation_4d(data_4d):
     """Test shearing_deformation on a 4D (time, pressure, y, x) grid."""
-    shdef = shearing_deformation(data_4d.u, data_4d.v, data_4d.dx, data_4d.dy)
+    shdef = shearing_deformation(data_4d.u, data_4d.v)
     truth = np.array([[[[-2.32353766e-05, 3.38638896e-06, 2.68355706e-05, 1.06560395e-05],
                         [-6.40834716e-05, 1.01157390e-05, 1.72783215e-05, -2.41362735e-05],
                         [6.69848680e-07, -1.89007571e-05, -1.40877214e-05, 3.71581119e-05],
@@ -1198,12 +1190,12 @@ def test_shearing_deformation_4d(data_4d):
                         [5.73158894e-06, 1.05747791e-05, 1.53497021e-05, 1.55510561e-05],
                         [1.23394357e-05, -1.98706807e-06, 1.56020711e-05,
                          3.89964205e-05]]]]) * units('s^-1')
-    assert_array_almost_equal(shdef, truth, 12)
+    assert_array_almost_equal(shdef.data, truth, 12)
 
 
 def test_stretching_deformation_4d(data_4d):
     """Test stretching_deformation on a 4D (time, pressure, y, x) grid."""
-    stdef = stretching_deformation(data_4d.u, data_4d.v, data_4d.dx, data_4d.dy)
+    stdef = stretching_deformation(data_4d.u, data_4d.v)
     truth = np.array([[[[3.47764258e-05, 2.24655678e-05, -5.99204286e-06, -2.81311151e-05],
                         [-1.00806414e-05, 2.43815624e-05, 5.10566770e-06, 3.02039392e-05],
                         [-5.93889988e-05, 4.15227142e-06, 3.93751112e-05, 5.52382202e-05],
@@ -1241,12 +1233,12 @@ def test_stretching_deformation_4d(data_4d):
                         [6.70192818e-06, 9.41865112e-06, -1.75966046e-06, 4.68368828e-06],
                         [1.75811596e-05, 1.24562416e-05, -1.28654291e-05,
                          7.34949445e-06]]]]) * units('s^-1')
-    assert_array_almost_equal(stdef, truth, 12)
+    assert_array_almost_equal(stdef.data, truth, 12)
 
 
 def test_total_deformation_4d(data_4d):
     """Test total_deformation on a 4D (time, pressure, y, x) grid."""
-    totdef = total_deformation(data_4d.u, data_4d.v, data_4d.dx, data_4d.dy)
+    totdef = total_deformation(data_4d.u, data_4d.v)
     truth = np.array([[[[4.18244250e-05, 2.27193611e-05, 2.74964075e-05, 3.00817356e-05],
                         [6.48714934e-05, 2.63967566e-05, 1.80168876e-05, 3.86631303e-05],
                         [5.93927763e-05, 1.93514851e-05, 4.18194127e-05, 6.65731647e-05],
@@ -1284,13 +1276,18 @@ def test_total_deformation_4d(data_4d):
                         [8.81855731e-06, 1.41611066e-05, 1.54502349e-05, 1.62410677e-05],
                         [2.14792655e-05, 1.26137383e-05, 2.02223611e-05,
                          3.96829419e-05]]]]) * units('s^-1')
-    assert_array_almost_equal(totdef, truth, 12)
+    assert_array_almost_equal(totdef.data, truth, 12)
 
 
 def test_frontogenesis_4d(data_4d):
     """Test frontogenesis on a 4D (time, pressure, y, x) grid."""
     thta = potential_temperature(data_4d.pressure, data_4d.temperature)
-    frnt = frontogenesis(thta, data_4d.u, data_4d.v, data_4d.dx, data_4d.dy)
+    frnt = frontogenesis(thta, data_4d.u, data_4d.v).transpose(
+        'time1',
+        'pressure',
+        'latitude',
+        'longitude'
+    )
     truth = np.array([[[[4.23682195e-10, -6.42818314e-12, -2.16491106e-10, -3.81845902e-10],
                         [-5.28632893e-10, -6.99413155e-12, -4.77775880e-11, 2.95949984e-10],
                         [7.82193227e-10, 3.55234312e-10, 2.14592821e-11, -5.20704165e-10],
@@ -1328,12 +1325,12 @@ def test_frontogenesis_4d(data_4d):
                         [-5.82285173e-11, 1.03267739e-12, 9.19171693e-12, 1.73823741e-10],
                         [-2.33302976e-11, 1.01795295e-10, 4.19754683e-12,
                          5.18286088e-10]]]]) * units('K/m/s')
-    assert_array_almost_equal(frnt, truth, 16)
+    assert_array_almost_equal(frnt.data, truth, 16)
 
 
 def test_geostrophic_wind_4d(data_4d):
     """Test geostrophic_wind on a 4D (time, pressure, y, x) grid."""
-    u_g, v_g = geostrophic_wind(data_4d.height, data_4d.dx, data_4d.dy, data_4d.latitude)
+    u_g, v_g = geostrophic_wind(data_4d.height)
     u_g_truth = np.array([[[[4.40351577, 12.52087174, 20.6458988, 3.17057524],
                             [14.11461945, 17.13672114, 22.06686549, 28.28270102],
                             [24.47454294, 22.86342357, 31.74065923, 41.48130088],
@@ -1443,15 +1440,14 @@ def test_geostrophic_wind_4d(data_4d):
                              -2.44749477e+00],
                             [-1.08991833e+01, -1.03581717e+01, -7.35501458e+00,
                              -1.88971184e+00]]]]) * units('m/s')
-    assert_array_almost_equal(u_g, u_g_truth, 6)
-    assert_array_almost_equal(v_g, v_g_truth, 6)
+    assert_array_almost_equal(u_g.data, u_g_truth, 6)
+    assert_array_almost_equal(v_g.data, v_g_truth, 6)
 
 
 def test_inertial_advective_wind_4d(data_4d):
     """Test inertial_advective_wind on a 4D (time, pressure, y, x) grid."""
-    u_g, v_g = geostrophic_wind(data_4d.height, data_4d.dx, data_4d.dy, data_4d.latitude)
-    u_i, v_i = inertial_advective_wind(u_g, v_g, u_g, v_g, data_4d.dx, data_4d.dy,
-                                       data_4d.latitude)
+    u_g, v_g = geostrophic_wind(data_4d.height)
+    u_i, v_i = inertial_advective_wind(u_g, v_g, u_g, v_g)
     u_i_truth = np.array([[[[-4.74579332, -6.36486064, -7.20354171, -11.08307751],
                             [-1.88515129, -4.33855679, -6.82871465, -9.38096911],
                             [2.308649, -6.93391208, -14.06293133, -20.60786775],
@@ -1561,14 +1557,14 @@ def test_inertial_advective_wind_4d(data_4d):
                              3.76288542e-02],
                             [-2.10896883e-01, 5.17706856e-01, -4.13562541e-01,
                              6.96975860e-01]]]]) * units('m/s')
-    assert_array_almost_equal(u_i, u_i_truth, 6)
-    assert_array_almost_equal(v_i, v_i_truth, 6)
+    assert_array_almost_equal(u_i.data, u_i_truth, 6)
+    assert_array_almost_equal(v_i.data, v_i_truth, 6)
 
 
 def test_q_vector_4d(data_4d):
     """Test q_vector on a 4D (time, pressure, y, x) grid."""
-    u_g, v_g = geostrophic_wind(data_4d.height, data_4d.dx, data_4d.dy, data_4d.latitude)
-    q1, q2 = q_vector(u_g, v_g, data_4d.temperature, data_4d.pressure, data_4d.dx, data_4d.dy)
+    u_g, v_g = geostrophic_wind(data_4d.height)
+    q1, q2 = q_vector(u_g, v_g, data_4d.temperature, data_4d.pressure)
     q1_truth = np.array([[[[-8.98245364e-13, 2.03803219e-13, 2.88874668e-12, 2.18043424e-12],
                            [4.37446820e-13, 1.21145200e-13, 1.51859353e-12, 3.82803347e-12],
                            [-1.20538030e-12, 2.27477298e-12, 3.47570178e-12, 3.03123012e-12],
@@ -1651,5 +1647,54 @@ def test_q_vector_4d(data_4d):
                            [-1.06658890e-13, -2.19817426e-13, -8.35968065e-14, 1.88190788e-13],
                            [-2.27182863e-13, -2.74607819e-13, -1.10587309e-13,
                             -3.88915866e-13]]]]) * units('m^2 kg^-1 s^-1')
-    assert_array_almost_equal(q1, q1_truth, 18)
-    assert_array_almost_equal(q2, q2_truth, 18)
+    assert_array_almost_equal(q1.data, q1_truth, 18)
+    assert_array_almost_equal(q2.data, q2_truth, 18)
+
+
+def test_add_grid_arguments_from_dataarray():
+    """Test the grid argument decorator for adding in arguments from xarray."""
+    @add_grid_arguments_from_xarray
+    def return_the_kwargs(
+        da,
+        dz=None,
+        dy=None,
+        dx=None,
+        vertical_dim=None,
+        y_dim=None,
+        x_dim=None,
+        latitude=None
+    ):
+        return {
+            'dz': dz,
+            'dy': dy,
+            'dx': dx,
+            'vertical_dim': vertical_dim,
+            'y_dim': y_dim,
+            'x_dim': x_dim,
+            'latitude': latitude
+        }
+
+    data = xr.DataArray(
+        np.zeros((1, 2, 2, 2)),
+        dims=('time', 'isobaric', 'lat', 'lon'),
+        coords={
+            'time': ['2020-01-01T00:00Z'],
+            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
+            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
+            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
+        }
+    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
+    result = return_the_kwargs(data)
+    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
+    assert_array_almost_equal(result['dy'], [[[[1109415.632] * 2]]] * units.meter, 2)
+    assert_array_almost_equal(result['dx'], [[[[964555.967], [853490.014]]]] * units.meter, 2)
+    assert result['vertical_dim'] == 1
+    assert result['y_dim'] == 2
+    assert result['x_dim'] == 3
+    assert_array_almost_equal(
+        result['latitude'].metpy.unit_array,
+        [30., 40.] * units.degrees_north
+    )
+    # Verify latitude is xarray so can be broadcast,
+    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
+    assert isinstance(result['latitude'], xr.DataArray)
