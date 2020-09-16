@@ -52,9 +52,29 @@ def build_scenarios(test_data, module_ext):
 
         return scenario
 
-    scenarios = [build(funcname, values) for funcname, values in test_data.items()]
+    scenarios = [build(fname, values) for fname, values in test_data.items()]
 
     return scenarios
+
+
+class IncorrectReturnsError(Exception):
+    pass
+
+
+def _check_length_results_and_truth(func, returns, truths):
+    """Raise an exception if the number of return values from the tested function
+    does not match the provided number of truth values
+    """
+
+    nreturn = len(returns) if isinstance(returns, tuple) else 1
+    ntruth = len(truths)
+    if nreturn != ntruth:
+        msg = (
+            f"Function {func.__module__}.{func.__name__} returned {nreturn} value(s),"
+            f" but {ntruth} value(s) was/were provided as truth for testing"
+        )
+
+        raise IncorrectReturnsError(msg)
 
 
 def scalar(func, args, truth, decimal):
@@ -66,6 +86,8 @@ def scalar(func, args, truth, decimal):
 
     results = func(*args_scalar)
 
+    _check_length_results_and_truth(func, results, truths_scalar)
+
     if isinstance(results, tuple):
         for t, r in zip(truths_scalar, results):
             assert_almost_equal(t, r, decimal)
@@ -76,6 +98,8 @@ def scalar(func, args, truth, decimal):
 def array(func, args, truth, decimal):
     """Test a function using arrays."""
     results = func(*args)
+
+    _check_length_results_and_truth(func, results, truth)
 
     _unpack_and_assert(truth, results, decimal)
 
@@ -91,6 +115,8 @@ def masked(func, args, truth, decimal):
     truth_masked = [units.Quantity(np.ma.array(t.m, mask=mask), t.units) for t in truth]
 
     results = func(*args_masked)
+
+    _check_length_results_and_truth(func, results, truth)
 
     _unpack_and_assert(truth_masked, results, decimal)
 
@@ -113,6 +139,8 @@ def nans(func, args, truth, decimal):
 
     results = func(*args_nans)
 
+    _check_length_results_and_truth(func, results, truth)
+
     _unpack_and_assert(truth_nans, results, decimal)
 
 
@@ -123,6 +151,8 @@ def data_array(func, args, truth, decimal):
     truth_data_array = [xr.DataArray(t) for t in truth]
 
     results = func(*args_data_array)
+
+    _check_length_results_and_truth(func, results, truth)
 
     _unpack_and_assert(truth_data_array, results, decimal)
 
@@ -139,6 +169,8 @@ def dask_arrays(func, args, truth, decimal):
     truth_unitless = [t.m for t in truth]
 
     results = func(*args_dask)
+
+    _check_length_results_and_truth(func, results, truth)
 
     if isinstance(results, tuple):
         computed = dask.compute(*results)

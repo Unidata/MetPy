@@ -8,7 +8,7 @@ import numpy as np
 
 from metpy.units import units
 from metpy.data_type_testing import (
-    build_scenarios, scalar, array, masked, nans, data_array, dask_arrays
+    build_scenarios, IncorrectReturnsError, scalar, array, masked, nans, data_array, dask_arrays
 )
 from metpy.testing import inc, add, subt, div, decimal, assert_array_equal
 
@@ -146,6 +146,72 @@ def test_build_scenarios(scenarios, data):
                     assert_array_equal(trutharr, testarr)
             else:
                 assert truthdict[truthkey] == testdict[testkey]
+
+
+def test_build_scenarios_too_many_truths():
+    data = {
+        'inc': {
+            'x': np.arange(10) * units('dimensionless'),
+            'y': np.arange(10) * units('dimensionless'),
+            'res': np.arange(1, 11) * units('dimensionless'),
+        },
+    }
+
+    scenarios = build_scenarios(data, module_ext='metpy.testing')
+
+    exctruth = (
+        "Function metpy.testing.inc returned 1 value\\(s\\),"
+        " but 2 value\\(s\\) was/were provided as truth for testing"
+    )
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        scalar(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        nans(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        array(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        masked(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        data_array(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        dask_arrays(**scenarios[0][1])
+
+
+def test_build_scenarios_too_few_truths():
+    data = {
+        'inc': {
+            'x': np.arange(10) * units('dimensionless'),
+        },
+    }
+
+    scenarios = build_scenarios(data, module_ext='metpy.testing')
+
+    exctruth = (
+        "Function metpy.testing.inc returned 1 value\\(s\\),"
+        " but 0 value\\(s\\) was/were provided as truth for testing"
+    )
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        scalar(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        nans(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        array(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        masked(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        data_array(**scenarios[0][1])
+
+    with pytest.raises(IncorrectReturnsError, match=exctruth):
+        dask_arrays(**scenarios[0][1])
 
 
 def test_scalar(scenarios):
