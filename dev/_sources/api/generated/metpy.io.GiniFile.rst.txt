@@ -12,10 +12,8 @@ GiniFile
 
    .. autosummary::
    
-      ~GiniFile.attrs
       ~GiniFile.channels
       ~GiniFile.crafts
-      ~GiniFile.dimensions
       ~GiniFile.lc_ps_fmt
       ~GiniFile.mercator_fmt
       ~GiniFile.missing
@@ -23,7 +21,6 @@ GiniFile
       ~GiniFile.prod_desc2_fmt
       ~GiniFile.prod_desc_fmt
       ~GiniFile.sectors
-      ~GiniFile.variables
       ~GiniFile.wmo_finder
 
    
@@ -38,15 +35,11 @@ GiniFile
    
       ~GiniFile.__init__
       ~GiniFile.close
-      ~GiniFile.get
       ~GiniFile.get_attrs
       ~GiniFile.get_dimensions
       ~GiniFile.get_encoding
       ~GiniFile.get_variables
-      ~GiniFile.items
-      ~GiniFile.keys
       ~GiniFile.load
-      ~GiniFile.values
 
    
    
@@ -57,10 +50,8 @@ GiniFile
    .. rubric:: Attributes Documentation
 
    
-   .. autoattribute:: attrs
    .. autoattribute:: channels
    .. autoattribute:: crafts
-   .. autoattribute:: dimensions
    .. autoattribute:: lc_ps_fmt
    .. autoattribute:: mercator_fmt
    .. autoattribute:: missing
@@ -68,7 +59,6 @@ GiniFile
    .. autoattribute:: prod_desc2_fmt
    .. autoattribute:: prod_desc_fmt
    .. autoattribute:: sectors
-   .. autoattribute:: variables
    .. autoattribute:: wmo_finder
 
    
@@ -82,15 +72,11 @@ GiniFile
    
    .. automethod:: __init__
    .. automethod:: close
-   .. automethod:: get
    .. automethod:: get_attrs
    .. automethod:: get_dimensions
    .. automethod:: get_encoding
    .. automethod:: get_variables
-   .. automethod:: items
-   .. automethod:: keys
    .. automethod:: load
-   .. automethod:: values
 
    
    
