@@ -39,11 +39,9 @@ specific set of constraints (e.g. step size) for mapping.
 """
 
 import ast
-import contextlib
 import glob
 import logging
 import os.path
-import posixpath
 
 import matplotlib.colors as mcolors
 
@@ -135,13 +133,15 @@ class ColortableRegistry(dict):
             The path to the directory with the color tables
 
         """
-        from pkg_resources import resource_listdir, resource_stream
-        for fname in resource_listdir(pkg, path):
-            if fname.endswith(TABLE_EXT):
-                table_path = posixpath.join(path, fname)
-                with contextlib.closing(resource_stream(pkg, table_path)) as stream:
-                    self.add_colortable(stream,
-                                        posixpath.splitext(posixpath.basename(fname))[0])
+        try:
+            from importlib.resources import files as importlib_resources_files
+        except ImportError:  # Can remove when we require Python > 3.8
+            from importlib_resources import files as importlib_resources_files
+
+        for entry in (importlib_resources_files(pkg) / path).iterdir():
+            if entry.suffix == TABLE_EXT:
+                with entry.open() as stream:
+                    self.add_colortable(stream, entry.with_suffix('').name)
 
     def scan_dir(self, path):
         r"""Scan a directory on disk for color table files and add them to the registry.

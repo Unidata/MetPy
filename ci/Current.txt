@@ -7,3 +7,4 @@ traitlets==4.3.3
 pooch==1.2.0
 pandas==1.1.2
 importlib_metadata==1.7.0
+importlib_resources==3.0.0
