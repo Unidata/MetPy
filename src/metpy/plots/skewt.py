@@ -654,7 +654,7 @@ class SkewT:
             fill_args = fill_properties[which]
             fill_args.update(kwargs)
         except KeyError:
-            raise ValueError(f'Unknown option for which: {which}')
+            raise ValueError(f'Unknown option for which: {which}') from None
 
         arrs = y, x1, x2
 

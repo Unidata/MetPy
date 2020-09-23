@@ -96,7 +96,7 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
     try:
         fname = fname_prefix[which] + fname_suffix[size]
     except KeyError:
-        raise ValueError('Unknown logo size or selection')
+        raise ValueError('Unknown logo size or selection') from None
 
     with (importlib_resources_files('metpy.plots') / '_static' / fname).open('rb') as fobj:
         logo = imread(fobj)

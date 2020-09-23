@@ -91,8 +91,8 @@ def read_colortable(fobj):
             if literal:
                 ret.append(mcolors.colorConverter.to_rgb(literal))
         return ret
-    except (SyntaxError, ValueError):
-        raise RuntimeError(f'Malformed colortable (bad line: {line})')
+    except (SyntaxError, ValueError) as e:
+        raise RuntimeError(f'Malformed colortable (bad line: {line})') from e
 
 
 def convert_gempak_table(infile, outfile):
