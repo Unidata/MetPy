@@ -15,5 +15,12 @@ def get_version():
         return get_version(root='../..', relative_to=__file__,
                            version_scheme='post-release', local_scheme='dirty-tag')
     except (ImportError, LookupError):
-        from pkg_resources import get_distribution
-        return get_distribution(__package__).version
+        try:
+            from importlib.metadata import version, PackageNotFoundError
+        except ImportError:  # Can remove when we require Python > 3.7
+            from importlib_metadata import version, PackageNotFoundError
+
+        try:
+            return version(__package__)
+        except PackageNotFoundError:
+            return 'Unknown'

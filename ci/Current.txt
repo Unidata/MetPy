@@ -6,3 +6,4 @@ xarray==0.16.1
 traitlets==4.3.3
 pooch==1.2.0
 pandas==1.1.2
+importlib_metadata==1.7.0
