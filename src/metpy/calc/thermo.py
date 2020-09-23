@@ -258,7 +258,10 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
 @check_units('[pressure]', '[temperature]', '[pressure]')
 def moist_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
@@ -280,8 +283,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     Returns
     -------
     `pint.Quantity`
-       The temperature corresponding to the starting temperature and
-       pressure levels.
+       The resulting parcel temperature at levels given by `pressure`
 
     See Also
     --------
@@ -298,9 +300,8 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     This equation comes from [Bakhshaii2013]_.
 
-    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Since this function returns scalar values when given a profile, this will return Pint
-    Quantities even when given xarray DataArray profiles.
+    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or
+    grids).
 
     """
     def dt(t, p):

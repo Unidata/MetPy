@@ -1071,7 +1071,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
         with default of None.
     wrap_like : str or array-like or tuple of str or tuple of array-like or None
         Wrap the calculation output following a particular input argument (if str) or data
-        data object (if array-like). If tuple, will assume output is in the form of a tuple,
+        object (if array-like). If tuple, will assume output is in the form of a tuple,
         and wrap iteratively according to the str or array-like contained within. If None,
         will not wrap output.
     match_unit : bool
@@ -1182,11 +1182,11 @@ def _wrap_output_like_not_matching_units(result, match):
     else:
         # Determine if need to upcast to Quantity
         if (
-            (
+            not isinstance(result, units.Quantity)
+            and (
                 isinstance(match, units.Quantity)
                 or (output_xarray and isinstance(match.data, units.Quantity))
             )
-            and not isinstance(result, units.Quantity)
         ):
             result = units.Quantity(result)
         return (

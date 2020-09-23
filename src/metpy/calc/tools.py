@@ -1175,7 +1175,7 @@ def second_derivative(f, axis=None, x=None, delta=None):
 
 
 @exporter.export
-def gradient(f, coordinates=None, deltas=None, axes=None):
+def gradient(f, axes=None, coordinates=None, deltas=None):
     """Calculate the gradient of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
@@ -1191,13 +1191,6 @@ def gradient(f, coordinates=None, deltas=None, axes=None):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    coordinates : array-like, optional
-        Sequence of arrays containing the coordinate values corresponding to the
-        grid points in `f` in axis order.
-    deltas : array-like, optional
-        Sequence of arrays or scalars that specify the spacing between the grid points in `f`
-        in axis order. There should be one item less than the size of `f` along the applicable
-        axis.
     axes : sequence, optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
@@ -1206,6 +1199,13 @@ def gradient(f, coordinates=None, deltas=None, axes=None):
         `coordinates` or `deltas` given. In general, each axis can be an axis number
         (integer), dimension coordinate name (string) or a standard axis type (string). The
         current standard axis types are 'time', 'vertical', 'y', and 'x'.
+    coordinates : array-like, optional
+        Sequence of arrays containing the coordinate values corresponding to the
+        grid points in `f` in axis order.
+    deltas : array-like, optional
+        Sequence of arrays or scalars that specify the spacing between the grid points in `f`
+        in axis order. There should be one item less than the size of `f` along the applicable
+        axis.
 
     Returns
     -------
@@ -1228,7 +1228,7 @@ def gradient(f, coordinates=None, deltas=None, axes=None):
 
 
 @exporter.export
-def laplacian(f, coordinates=None, deltas=None, axes=None):
+def laplacian(f, axes=None, coordinates=None, deltas=None):
     """Calculate the laplacian of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
@@ -1244,11 +1244,6 @@ def laplacian(f, coordinates=None, deltas=None, axes=None):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    coordinates : array-like, optional
-        The coordinate values corresponding to the grid points in `f`
-    deltas : array-like, optional
-        Spacing between the grid points in `f`. There should be one item less than the size
-        of `f` along the applicable axis.
     axes : sequence, optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
@@ -1257,6 +1252,11 @@ def laplacian(f, coordinates=None, deltas=None, axes=None):
         `coordinates` or `deltas` given. In general, each axis can be an axis number
         (integer), dimension coordinate name (string) or a standard axis type (string). The
         current standard axis types are 'time', 'vertical', 'y', and 'x'.
+    coordinates : array-like, optional
+        The coordinate values corresponding to the grid points in `f`
+    deltas : array-like, optional
+        Spacing between the grid points in `f`. There should be one item less than the size
+        of `f` along the applicable axis.
 
     Returns
     -------

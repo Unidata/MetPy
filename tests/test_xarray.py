@@ -1256,3 +1256,28 @@ def test_preprocess_and_wrap_with_to_magnitude():
         return a * b
 
     np.testing.assert_array_equal(func(data, data2), np.array([0, 0, 1]))
+
+
+def test_preprocess_and_wrap_with_variable():
+    """Test preprocess and wrapping decorator when using an xarray Variable."""
+    data1 = xr.DataArray([1, 0, 1], dims=('x',), attrs={'units': 'meter'})
+    data2 = xr.Variable(data=[0, 1, 1], dims=('x',), attrs={'units': 'meter'})
+
+    @preprocess_and_wrap(wrap_like='a')
+    def func(a, b):
+        return a * b
+
+    # Note, expected units are meter, not meter**2, since attributes are stripped from
+    # Variables
+    expected_12 = xr.DataArray([0, 0, 1] * units.m, dims=('x',))
+    expected_21 = [0, 0, 1] * units.m
+
+    with pytest.warns(UserWarning, match='Argument b given as xarray Variable'):
+        result_12 = func(data1, data2)
+    with pytest.warns(UserWarning, match='Argument a given as xarray Variable'):
+        result_21 = func(data2, data1)
+
+    assert isinstance(result_12, xr.DataArray)
+    xr.testing.assert_identical(func(data1, data2), expected_12)
+    assert isinstance(result_21, units.Quantity)
+    assert_array_equal(func(data2, data1), expected_21)
