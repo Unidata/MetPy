@@ -205,17 +205,25 @@
 <span class="sd">See WMO manual 485 Vol 1 for more info on the symbols.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">importlib.resources</span> <span class="kn">import</span> <span class="p">(</span><span class="n">files</span> <span class="k">as</span> <span class="n">importlib_resources_files</span><span class="p">,</span>
+                                     <span class="n">as_file</span> <span class="k">as</span> <span class="n">importlib_resources_as_file</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Can remove when we require Python &gt; 3.8</span>
+    <span class="kn">from</span> <span class="nn">importlib_resources</span> <span class="kn">import</span> <span class="p">(</span><span class="n">files</span> <span class="k">as</span> <span class="n">importlib_resources_files</span><span class="p">,</span>
+                                     <span class="n">as_file</span> <span class="k">as</span> <span class="n">importlib_resources_as_file</span><span class="p">)</span>
+
 <span class="kn">import</span> <span class="nn">matplotlib.font_manager</span> <span class="k">as</span> <span class="nn">fm</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
 
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 <span class="c1"># Create a matplotlib font object pointing to our weather symbol font</span>
-<span class="n">wx_symbol_font</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;metpy.plots&#39;</span><span class="p">,</span>
-                                                           <span class="s1">&#39;fonts/wx_symbols.ttf&#39;</span><span class="p">))</span>
+<span class="n">fontfile</span> <span class="o">=</span> <span class="n">importlib_resources_files</span><span class="p">(</span><span class="s1">&#39;metpy.plots&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;fonts/wx_symbols.ttf&#39;</span>
+<span class="k">with</span> <span class="n">importlib_resources_as_file</span><span class="p">(</span><span class="n">fontfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">fname</span><span class="p">:</span>
+    <span class="c1"># Need to pass str, not Path, for older matplotlib</span>
+    <span class="n">wx_symbol_font</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="wx_code_to_numeric"><a class="viewcode-back" href="../../../api/generated/metpy.plots.wx_code_to_numeric.html#metpy.plots.wx_code_to_numeric">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -445,7 +453,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 28, 2020 at 18:56:57.
+      Last updated on Sep 28, 2020 at 19:53:20.
 
     </p>
   </div>
@@ -479,7 +487,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post288+gcc9c643',
+            VERSION:'1.0.0rc1.post295+gfc5b514',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
