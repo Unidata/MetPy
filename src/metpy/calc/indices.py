@@ -78,7 +78,7 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like=('pressure', 'pressure'))
+@preprocess_and_wrap()
 @check_units('[pressure]')
 def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
@@ -104,14 +104,14 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
     Returns
     -------
-    `pint.Quantity`
-        u_mean: u-component of layer mean wind.
-    `pint.Quantity`
-        v_mean: v-component of layer mean wind.
+    list of `pint.Quantity`
+        list of layer mean value for each profile in args
 
     Notes
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
     """
     ret = []  # Returned variable means in layer
