@@ -4,7 +4,6 @@
 """Contains a collection of generally useful calculation tools."""
 import functools
 from operator import itemgetter
-import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
@@ -16,7 +15,7 @@ from ..cbook import broadcast_indices, result_type
 from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
-from ..xarray import check_axis, preprocess_and_wrap
+from ..xarray import check_axis, grid_deltas_from_dataarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
@@ -884,76 +883,6 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs)
     lon, lat, _ = g.fwd(lons, lats, az2d, rng2d)
 
     return lon, lat
-
-
-@exporter.export
-def grid_deltas_from_dataarray(f, kind='default'):
-    """Calculate the horizontal deltas between grid points of a DataArray.
-
-    Calculate the signed delta distance between grid points of a DataArray in the horizontal
-    directions, using actual (real distance) or nominal (in projection space) deltas.
-
-    Parameters
-    ----------
-    f : `xarray.DataArray`
-        Parsed DataArray (MetPy's crs coordinate must be available for kind="actual")
-    kind : str
-        Type of grid delta to calculate. "actual" returns true distances as calculated from
-        longitude and latitude via `lat_lon_grid_deltas`. "nominal" returns horizontal
-        differences in the data's coordinate space, either in degrees (for lat/lon CRS) or
-        meters (for y/x CRS). "default" behaves like "actual" for datasets with a lat/lon CRS
-        and like "nominal" for all others. Defaults to "default".
-
-    Returns
-    -------
-    dx, dy:
-        arrays of signed deltas between grid points in the x and y directions with dimensions
-        matching those of `f`.
-
-    See Also
-    --------
-    lat_lon_grid_deltas
-
-    """
-    # Determine behavior
-    if kind == 'default' and f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
-        kind = 'actual'
-    elif kind == 'default':
-        kind = 'nominal'
-    elif kind not in ('actual', 'nominal'):
-        raise ValueError('"kind" argument must be specified as "default", "actual", or '
-                         '"nominal"')
-
-    if kind == 'actual':
-        # Get latitude/longitude coordinates and find dim order
-        latitude, longitude = xr.broadcast(*f.metpy.coordinates('latitude', 'longitude'))
-        try:
-            y_dim = latitude.metpy.find_axis_number('y')
-            x_dim = latitude.metpy.find_axis_number('x')
-        except AttributeError:
-            warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
-                          'dimension order.')
-            y_dim, x_dim = -2, -1
-        # Obtain grid deltas as xarray Variables
-        (dx_var, dx_units), (dy_var, dy_units) = (
-            (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
-            for deltas in lat_lon_grid_deltas(longitude, latitude, x_dim=x_dim, y_dim=y_dim,
-                                              initstring=f.metpy.cartopy_crs.proj4_init))
-    else:
-        # Obtain y/x coordinate differences
-        y, x = f.metpy.coordinates('y', 'x')
-        dx_var = x.diff(x.dims[0]).variable
-        dx_units = units(x.attrs.get('units'))
-        dy_var = y.diff(y.dims[0]).variable
-        dy_units = units(y.attrs.get('units'))
-
-    # Broadcast to input and attach units
-    dx = dx_var.set_dims(f.dims, shape=[dx_var.sizes[dim] if dim in dx_var.dims else 1
-                                        for dim in f.dims]).data * dx_units
-    dy = dy_var.set_dims(f.dims, shape=[dy_var.sizes[dim] if dim in dy_var.dims else 1
-                                        for dim in f.dims]).data * dy_units
-
-    return dx, dy
 
 
 def xarray_derivative_wrap(func):

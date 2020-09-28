@@ -35,7 +35,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vertical_velocity, vertical_velocity_pressure,
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
-from metpy.calc.thermo import _find_append_zero_crossings, add_vertical_dim_from_xarray
+from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
 
@@ -1793,13 +1793,6 @@ def test_gradient_richardson_number_with_xarray():
         data['v_wind']
     )
 
-    xr.testing.assert_allclose(result, data['Ri_g'])
-
-
-def test_add_vertical_dim_from_xarray():
-    """Test decorator for automatically determining the vertical dimension number."""
-    @add_vertical_dim_from_xarray
-    def return_vertical_dim(data, vertical_dim=None):
-        return vertical_dim
-    test_da = xr.DataArray(np.zeros((2, 2, 2, 2)), dims=('time', 'isobaric', 'y', 'x'))
-    assert return_vertical_dim(test_da) == 1
+    assert isinstance(result, xr.DataArray)
+    xr.testing.assert_identical(result['height'], data['Ri_g']['height'])
+    assert_array_almost_equal(result.data.m_as(''), data['Ri_g'].data)

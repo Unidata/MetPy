@@ -1241,4 +1241,203 @@ def _reassign_quantity_indexer(data, indexers):
     return reassigned_indexers
 
 
-__all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor')
+def grid_deltas_from_dataarray(f, kind='default'):
+    """Calculate the horizontal deltas between grid points of a DataArray.
+
+    Calculate the signed delta distance between grid points of a DataArray in the horizontal
+    directions, using actual (real distance) or nominal (in projection space) deltas.
+
+    Parameters
+    ----------
+    f : `xarray.DataArray`
+        Parsed DataArray (MetPy's crs coordinate must be available for kind="actual")
+    kind : str
+        Type of grid delta to calculate. "actual" returns true distances as calculated from
+        longitude and latitude via `lat_lon_grid_deltas`. "nominal" returns horizontal
+        differences in the data's coordinate space, either in degrees (for lat/lon CRS) or
+        meters (for y/x CRS). "default" behaves like "actual" for datasets with a lat/lon CRS
+        and like "nominal" for all others. Defaults to "default".
+
+    Returns
+    -------
+    dx, dy:
+        arrays of signed deltas between grid points in the x and y directions with dimensions
+        matching those of `f`.
+
+    See Also
+    --------
+    lat_lon_grid_deltas
+
+    """
+    from metpy.calc import lat_lon_grid_deltas
+
+    # Determine behavior
+    if kind == 'default' and f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
+        kind = 'actual'
+    elif kind == 'default':
+        kind = 'nominal'
+    elif kind not in ('actual', 'nominal'):
+        raise ValueError('"kind" argument must be specified as "default", "actual", or '
+                         '"nominal"')
+
+    if kind == 'actual':
+        # Get latitude/longitude coordinates and find dim order
+        latitude, longitude = xr.broadcast(*f.metpy.coordinates('latitude', 'longitude'))
+        try:
+            y_dim = latitude.metpy.find_axis_number('y')
+            x_dim = latitude.metpy.find_axis_number('x')
+        except AttributeError:
+            warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
+                          'dimension order.')
+            y_dim, x_dim = -2, -1
+        # Obtain grid deltas as xarray Variables
+        (dx_var, dx_units), (dy_var, dy_units) = (
+            (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
+            for deltas in lat_lon_grid_deltas(longitude, latitude, x_dim=x_dim, y_dim=y_dim,
+                                              initstring=f.metpy.cartopy_crs.proj4_init))
+    else:
+        # Obtain y/x coordinate differences
+        y, x = f.metpy.coordinates('y', 'x')
+        dx_var = x.diff(x.dims[0]).variable
+        dx_units = units(x.attrs.get('units'))
+        dy_var = y.diff(y.dims[0]).variable
+        dy_units = units(y.attrs.get('units'))
+
+    # Broadcast to input and attach units
+    dx = dx_var.set_dims(f.dims, shape=[dx_var.sizes[dim] if dim in dx_var.dims else 1
+                                        for dim in f.dims]).data * dx_units
+    dy = dy_var.set_dims(f.dims, shape=[dy_var.sizes[dim] if dim in dy_var.dims else 1
+                                        for dim in f.dims]).data * dy_units
+
+    return dx, dy
+
+
+def add_grid_arguments_from_xarray(func):
+    """Fill in optional arguments like dx/dy from DataArray arguments."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        bound_args = signature(func).bind(*args, **kwargs)
+        bound_args.apply_defaults()
+
+        # Search for DataArray with valid latitude and longitude coordinates to find grid
+        # deltas and any other needed parameter
+        dataarray_arguments = [
+            value for value in bound_args.arguments.values()
+            if isinstance(value, xr.DataArray)
+        ]
+        grid_prototype = None
+        for da in dataarray_arguments:
+            if hasattr(da.metpy, 'latitude') and hasattr(da.metpy, 'longitude'):
+                grid_prototype = da
+                break
+
+        # Fill in x_dim/y_dim
+        if (
+            grid_prototype is not None
+            and 'x_dim' in bound_args.arguments
+            and 'y_dim' in bound_args.arguments
+        ):
+            try:
+                bound_args.arguments['x_dim'] = grid_prototype.metpy.find_axis_number('x')
+                bound_args.arguments['y_dim'] = grid_prototype.metpy.find_axis_number('y')
+            except AttributeError:
+                # If axis number not found, fall back to default but warn.
+                warnings.warn('Horizontal dimension numbers not found. Defaulting to '
+                              '(..., Y, X) order.')
+
+        # Fill in vertical_dim
+        if (
+            grid_prototype is not None
+            and 'vertical_dim' in bound_args.arguments
+        ):
+            try:
+                bound_args.arguments['vertical_dim'] = (
+                    grid_prototype.metpy.find_axis_number('vertical')
+                )
+            except AttributeError:
+                # If axis number not found, fall back to default but warn.
+                warnings.warn(
+                    'Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.'
+                )
+
+        # Fill in dz
+        if (
+            grid_prototype is not None
+            and 'dz' in bound_args.arguments
+            and bound_args.arguments['dz'] is None
+        ):
+            try:
+                vertical_coord = grid_prototype.metpy.vertical
+                bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
+            except AttributeError:
+                # Skip, since this only comes up in advection, where dz is optional (may not
+                # need vertical at all)
+                pass
+
+        # Fill in dx/dy
+        if (
+            'dx' in bound_args.arguments and bound_args.arguments['dx'] is None
+            and 'dy' in bound_args.arguments and bound_args.arguments['dy'] is None
+        ):
+            if grid_prototype is not None:
+                bound_args.arguments['dx'], bound_args.arguments['dy'] = (
+                    grid_deltas_from_dataarray(grid_prototype, kind='actual')
+                )
+            elif 'dz' in bound_args.arguments:
+                # Handle advection case, allowing dx/dy to be None but dz to not be None
+                if bound_args.arguments['dz'] is None:
+                    raise ValueError(
+                        'Must provide dx, dy, and/or dz arguments or input DataArray with '
+                        'proper coordinates.'
+                    )
+            else:
+                raise ValueError('Must provide dx/dy arguments or input DataArray with '
+                                 'latitude/longitude coordinates.')
+
+        # Fill in latitude
+        if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
+            if grid_prototype is not None:
+                bound_args.arguments['latitude'] = (
+                    grid_prototype.metpy.latitude
+                )
+            else:
+                raise ValueError('Must provide latitude argument or input DataArray with '
+                                 'latitude/longitude coordinates.')
+
+        return func(*bound_args.args, **bound_args.kwargs)
+    return wrapper
+
+
+def add_vertical_dim_from_xarray(func):
+    """Fill in optional vertical_dim from DataArray argument."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        bound_args = signature(func).bind(*args, **kwargs)
+        bound_args.apply_defaults()
+
+        # Search for DataArray in arguments
+        dataarray_arguments = [
+            value for value in bound_args.arguments.values()
+            if isinstance(value, xr.DataArray)
+        ]
+
+        # Fill in vertical_dim
+        if (
+            len(dataarray_arguments) > 0
+            and 'vertical_dim' in bound_args.arguments
+        ):
+            try:
+                bound_args.arguments['vertical_dim'] = (
+                    dataarray_arguments[0].metpy.find_axis_number('vertical')
+                )
+            except AttributeError:
+                # If axis number not found, fall back to default but warn.
+                warnings.warn(
+                    'Vertical dimension number not found. Defaulting to initial dimension.'
+                )
+
+        return func(*bound_args.args, **bound_args.kwargs)
+    return wrapper
+
+
+__all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor', 'grid_deltas_from_dataarray')

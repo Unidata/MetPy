@@ -23,6 +23,7 @@ import xarray as xr
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.units import units
+from metpy.xarray import grid_deltas_from_dataarray
 
 #########################################################################
 # Getting Data
@@ -215,7 +216,7 @@ print(v_geo)
 
 heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
 lat, lon = xr.broadcast(y, x)
-dx, dy = mpcalc.grid_deltas_from_dataarray(heights)
+dx, dy = grid_deltas_from_dataarray(heights)
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
 print(u_geo)
 print(v_geo)

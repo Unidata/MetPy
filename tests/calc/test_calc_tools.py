@@ -13,16 +13,17 @@ import xarray as xr
 
 from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
                         first_derivative, get_layer, get_layer_heights, gradient,
-                        grid_deltas_from_dataarray, laplacian, lat_lon_grid_deltas,
-                        nearest_intersection_idx, parse_angle, pressure_to_height_std,
-                        reduce_point_density, resample_nn_1d, second_derivative)
+                        laplacian, lat_lon_grid_deltas, nearest_intersection_idx, parse_angle,
+                        pressure_to_height_std, reduce_point_density, resample_nn_1d,
+                        second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
                               DIR_STRS, UND)
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           needs_cartopy, needs_pyproj)
+                           needs_pyproj)
 from metpy.units import units
+from metpy.xarray import grid_deltas_from_dataarray
 
 
 FULL_CIRCLE_DEGREES = np.arange(0, 360, BASE_DEGREE_MULTIPLIER.m) * units.degree
@@ -982,187 +983,6 @@ def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
     with pytest.raises(ValueError) as exc:
         gradient(deriv_4d_data, deltas=(1, ), axes=(1, 2))
     assert 'cannot be less than that of "axes"' in str(exc.value)
-
-
-@pytest.fixture()
-def test_da_lonlat():
-    """Return a DataArray with a lon/lat grid and no time coordinate for use in tests."""
-    pytest.importorskip('cartopy')
-
-    data = np.linspace(300, 250, 3 * 4 * 4).reshape((3, 4, 4))
-    ds = xr.Dataset(
-        {'temperature': (['isobaric', 'lat', 'lon'], data)},
-        coords={
-            'isobaric': xr.DataArray(
-                np.array([850., 700., 500.]),
-                name='isobaric',
-                dims=['isobaric'],
-                attrs={'units': 'hPa'}
-            ),
-            'lat': xr.DataArray(
-                np.linspace(30, 40, 4),
-                name='lat',
-                dims=['lat'],
-                attrs={'units': 'degrees_north'}
-            ),
-            'lon': xr.DataArray(
-                np.linspace(260, 270, 4),
-                name='lon',
-                dims=['lon'],
-                attrs={'units': 'degrees_east'}
-            )
-        }
-    )
-    ds['temperature'].attrs['units'] = 'kelvin'
-
-    return ds.metpy.parse_cf('temperature')
-
-
-@pytest.fixture()
-def test_da_xy():
-    """Return a DataArray with a x/y grid and a time coordinate for use in tests."""
-    pytest.importorskip('cartopy')
-
-    data = np.linspace(300, 250, 3 * 3 * 4 * 4).reshape((3, 3, 4, 4))
-    ds = xr.Dataset(
-        {'temperature': (['time', 'isobaric', 'y', 'x'], data),
-         'lambert_conformal': ([], '')},
-        coords={
-            'time': xr.DataArray(
-                np.array([np.datetime64('2018-07-01T00:00'),
-                          np.datetime64('2018-07-01T06:00'),
-                          np.datetime64('2018-07-01T12:00')]),
-                name='time',
-                dims=['time']
-            ),
-            'isobaric': xr.DataArray(
-                np.array([850., 700., 500.]),
-                name='isobaric',
-                dims=['isobaric'],
-                attrs={'units': 'hPa'}
-            ),
-            'y': xr.DataArray(
-                np.linspace(-1000, 500, 4),
-                name='y',
-                dims=['y'],
-                attrs={'units': 'km'}
-            ),
-            'x': xr.DataArray(
-                np.linspace(0, 1500, 4),
-                name='x',
-                dims=['x'],
-                attrs={'units': 'km'}
-            )
-        }
-    )
-    ds['temperature'].attrs = {
-        'units': 'kelvin',
-        'grid_mapping': 'lambert_conformal'
-    }
-    ds['lambert_conformal'].attrs = {
-        'grid_mapping_name': 'lambert_conformal_conic',
-        'standard_parallel': 50.0,
-        'longitude_of_central_meridian': -107.0,
-        'latitude_of_projection_origin': 50.0,
-        'earth_shape': 'spherical',
-        'earth_radius': 6367470.21484375
-    }
-
-    return ds.metpy.parse_cf('temperature')
-
-
-def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
-    """Test grid_deltas_from_dataarray with a lonlat grid."""
-    dx, dy = grid_deltas_from_dataarray(test_da_lonlat)
-    true_dx = np.array([[[321609.59212064, 321609.59212065, 321609.59212064],
-                         [310320.85961483, 310320.85961483, 310320.85961483],
-                         [297980.72966733, 297980.72966733, 297980.72966733],
-                         [284629.6008561, 284629.6008561, 284629.6008561]]]) * units.m
-    true_dy = np.array([[[369603.78775948, 369603.78775948, 369603.78775948, 369603.78775948],
-                         [369802.28173967, 369802.28173967, 369802.28173967, 369802.28173967],
-                         [370009.56291098, 370009.56291098, 370009.56291098,
-                          370009.56291098]]]) * units.m
-    assert_array_almost_equal(dx, true_dx, 5)
-    assert_array_almost_equal(dy, true_dy, 5)
-
-
-def test_grid_deltas_from_dataarray_xy(test_da_xy):
-    """Test grid_deltas_from_dataarray with a xy grid."""
-    dx, dy = grid_deltas_from_dataarray(test_da_xy)
-    true_dx = np.array([[[[500] * 3]]]) * units('km')
-    true_dy = np.array([[[[500]] * 3]]) * units('km')
-    assert_array_almost_equal(dx, true_dx, 5)
-    assert_array_almost_equal(dy, true_dy, 5)
-
-
-def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
-    """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
-    # Construct lon/lat coordinates
-    y, x = xr.broadcast(*test_da_xy.metpy.coordinates('y', 'x'))
-    lonlat = (ccrs.Geodetic(test_da_xy.metpy.cartopy_globe)
-              .transform_points(test_da_xy.metpy.cartopy_crs, x.values, y.values))
-    lon = lonlat[..., 0]
-    lat = lonlat[..., 1]
-    test_da_xy = test_da_xy.assign_coords(
-        longitude=xr.DataArray(lon, dims=('y', 'x'), attrs={'units': 'degrees_east'}),
-        latitude=xr.DataArray(lat, dims=('y', 'x'), attrs={'units': 'degrees_north'}))
-
-    # Actually test calculation
-    dx, dy = grid_deltas_from_dataarray(test_da_xy, kind='actual')
-    true_dx = [[[[494426.3249766, 493977.6028005, 493044.0656467],
-                 [498740.2046073, 498474.9771064, 497891.6588559],
-                 [500276.2649627, 500256.3440237, 500139.9484845],
-                 [498740.6956936, 499045.0391707, 499542.7244501]]]] * units.m
-    true_dy = [[[[496862.4106337, 496685.4729999, 496132.0732114, 495137.8882404],
-                 [499774.9676486, 499706.3354977, 499467.5546773, 498965.2587818],
-                 [499750.8962991, 499826.2263137, 500004.4977747, 500150.9897759]]]] * units.m
-    assert_array_almost_equal(dx, true_dx, 3)
-    assert_array_almost_equal(dy, true_dy, 3)
-
-
-def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
-    """Test grid_deltas_from_dataarray with a lonlat grid and kind='nominal'."""
-    dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
-    true_dx = [[[3.333333] * 3]] * units.degrees
-    true_dy = [[[3.333333]] * 3] * units.degrees
-    assert_array_almost_equal(dx, true_dx, 5)
-    assert_array_almost_equal(dy, true_dy, 5)
-
-
-@needs_cartopy
-def test_grid_deltas_from_dataarray_lonlat_assumed_order():
-    """Test grid_deltas_from_dataarray when dim order must be assumed."""
-    # Create test dataarray
-    lat, lon = np.meshgrid(np.array([38., 40., 42]), np.array([263., 265., 267.]))
-    test_da = xr.DataArray(
-        np.linspace(300, 250, 3 * 3).reshape((3, 3)),
-        name='temperature',
-        dims=('dim_0', 'dim_1'),
-        coords={
-            'lat': xr.DataArray(lat, dims=('dim_0', 'dim_1'),
-                                attrs={'units': 'degrees_north'}),
-            'lon': xr.DataArray(lon, dims=('dim_0', 'dim_1'), attrs={'units': 'degrees_east'})
-        },
-        attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
-
-    # Run and check for warning
-    with pytest.warns(UserWarning, match=r'y and x dimensions unable to be identified.*'):
-        dx, dy = grid_deltas_from_dataarray(test_da)
-
-    # Check results
-    true_dx = [[222031.0111961, 222107.8492205],
-               [222031.0111961, 222107.8492205],
-               [222031.0111961, 222107.8492205]] * units.m
-    true_dy = [[175661.5413976, 170784.1311091, 165697.7563223],
-               [175661.5413976, 170784.1311091, 165697.7563223]] * units.m
-    assert_array_almost_equal(dx, true_dx, 5)
-    assert_array_almost_equal(dy, true_dy, 5)
-
-
-def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
-    """Test grid_deltas_from_dataarray when kind is invalid."""
-    with pytest.raises(ValueError):
-        grid_deltas_from_dataarray(test_da_xy, kind='invalid')
 
 
 def test_first_derivative_xarray_lonlat(test_da_lonlat):

@@ -141,7 +141,6 @@ Mathematical Functions
       cross_section_components
       first_derivative
       gradient
-      grid_deltas_from_dataarray
       laplacian
       lat_lon_grid_deltas
       normal_component

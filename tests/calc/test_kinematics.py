@@ -14,7 +14,6 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         potential_vorticity_barotropic, q_vector, shearing_deformation,
                         static_stability, storm_relative_helicity, stretching_deformation,
                         total_deformation, vorticity, wind_components)
-from metpy.calc.kinematics import add_grid_arguments_from_xarray
 from metpy.constants import g, Re
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data, needs_cartopy, needs_pyproj)
@@ -1649,52 +1648,3 @@ def test_q_vector_4d(data_4d):
                             -3.88915866e-13]]]]) * units('m^2 kg^-1 s^-1')
     assert_array_almost_equal(q1.data, q1_truth, 18)
     assert_array_almost_equal(q2.data, q2_truth, 18)
-
-
-def test_add_grid_arguments_from_dataarray():
-    """Test the grid argument decorator for adding in arguments from xarray."""
-    @add_grid_arguments_from_xarray
-    def return_the_kwargs(
-        da,
-        dz=None,
-        dy=None,
-        dx=None,
-        vertical_dim=None,
-        y_dim=None,
-        x_dim=None,
-        latitude=None
-    ):
-        return {
-            'dz': dz,
-            'dy': dy,
-            'dx': dx,
-            'vertical_dim': vertical_dim,
-            'y_dim': y_dim,
-            'x_dim': x_dim,
-            'latitude': latitude
-        }
-
-    data = xr.DataArray(
-        np.zeros((1, 2, 2, 2)),
-        dims=('time', 'isobaric', 'lat', 'lon'),
-        coords={
-            'time': ['2020-01-01T00:00Z'],
-            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
-            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
-            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
-        }
-    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
-    result = return_the_kwargs(data)
-    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
-    assert_array_almost_equal(result['dy'], [[[[1109415.632] * 2]]] * units.meter, 2)
-    assert_array_almost_equal(result['dx'], [[[[964555.967], [853490.014]]]] * units.meter, 2)
-    assert result['vertical_dim'] == 1
-    assert result['y_dim'] == 2
-    assert result['x_dim'] == 3
-    assert_array_almost_equal(
-        result['latitude'].metpy.unit_array,
-        [30., 40.] * units.degrees_north
-    )
-    # Verify latitude is xarray so can be broadcast,
-    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
-    assert isinstance(result['latitude'], xr.DataArray)

@@ -2,122 +2,21 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
-import functools
-from inspect import signature
-import warnings
-
 import numpy as np
-import xarray as xr
 
 from . import coriolis_parameter
-from .tools import first_derivative, get_layer_heights, gradient, grid_deltas_from_dataarray
+from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..cbook import iterable
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
-from ..xarray import preprocess_and_wrap
+from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
 
 def _stack(arrs):
     return concatenate([a[np.newaxis] if iterable(a) else a for a in arrs], axis=0)
-
-
-def add_grid_arguments_from_xarray(func):
-    """Fill in optional arguments like dx/dy from DataArray arguments."""
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        bound_args = signature(func).bind(*args, **kwargs)
-        bound_args.apply_defaults()
-
-        # Search for DataArray with valid latitude and longitude coordinates to find grid
-        # deltas and any other needed parameter
-        dataarray_arguments = [
-            value for value in bound_args.arguments.values()
-            if isinstance(value, xr.DataArray)
-        ]
-        grid_prototype = None
-        for da in dataarray_arguments:
-            if hasattr(da.metpy, 'latitude') and hasattr(da.metpy, 'longitude'):
-                grid_prototype = da
-                break
-
-        # Fill in x_dim/y_dim
-        if (
-            grid_prototype is not None
-            and 'x_dim' in bound_args.arguments
-            and 'y_dim' in bound_args.arguments
-        ):
-            try:
-                bound_args.arguments['x_dim'] = grid_prototype.metpy.find_axis_number('x')
-                bound_args.arguments['y_dim'] = grid_prototype.metpy.find_axis_number('y')
-            except AttributeError:
-                # If axis number not found, fall back to default but warn.
-                warnings.warn('Horizontal dimension numbers not found. Defaulting to '
-                              '(..., Y, X) order.')
-
-        # Fill in vertical_dim
-        if (
-            grid_prototype is not None
-            and 'vertical_dim' in bound_args.arguments
-        ):
-            try:
-                bound_args.arguments['vertical_dim'] = (
-                    grid_prototype.metpy.find_axis_number('vertical')
-                )
-            except AttributeError:
-                # If axis number not found, fall back to default but warn.
-                warnings.warn(
-                    'Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.'
-                )
-
-        # Fill in dz
-        if (
-            grid_prototype is not None
-            and 'dz' in bound_args.arguments
-            and bound_args.arguments['dz'] is None
-        ):
-            try:
-                vertical_coord = grid_prototype.metpy.vertical
-                bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
-            except AttributeError:
-                # Skip, since this only comes up in advection, where dz is optional (may not
-                # need vertical at all)
-                pass
-
-        # Fill in dx/dy
-        if (
-            'dx' in bound_args.arguments and bound_args.arguments['dx'] is None
-            and 'dy' in bound_args.arguments and bound_args.arguments['dy'] is None
-        ):
-            if grid_prototype is not None:
-                bound_args.arguments['dx'], bound_args.arguments['dy'] = (
-                    grid_deltas_from_dataarray(grid_prototype, kind='actual')
-                )
-            elif 'dz' in bound_args.arguments:
-                # Handle advection case, allowing dx/dy to be None but dz to not be None
-                if bound_args.arguments['dz'] is None:
-                    raise ValueError(
-                        'Must provide dx, dy, and/or dz arguments or input DataArray with '
-                        'proper coordinates.'
-                    )
-            else:
-                raise ValueError('Must provide dx/dy arguments or input DataArray with '
-                                 'latitude/longitude coordinates.')
-
-        # Fill in latitude
-        if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
-            if grid_prototype is not None:
-                bound_args.arguments['latitude'] = (
-                    grid_prototype.metpy.latitude
-                )
-            else:
-                raise ValueError('Must provide latitude argument or input DataArray with '
-                                 'latitude/longitude coordinates.')
-
-        return func(*bound_args.args, **bound_args.kwargs)
-    return wrapper
 
 
 @exporter.export
@@ -348,7 +247,7 @@ def advection(
     v=None,
     w=None,
     *,
-    dx=None,  # noqa: RST213
+    dx=None,
     dy=None,
     dz=None,
     x_dim=-1,
@@ -362,7 +261,7 @@ def advection(
     scalar : `pint.Quantity` or `xarray.DataArray`
         Array (with N-dimensions) with the quantity to be advected. Use `xarray.DataArray` to
         have dimension ordering automatically determined, otherwise, use default
-        [..., Z, Y, X] ordering or specify *_dim keyword arguments.
+        [..., Z, Y, X] ordering or specify \*_dim keyword arguments.
     u, v, w : `pint.Quantity` or `xarray.DataArray` or None
         N-dimensional arrays with units of velocity representing the flow, with a component of
         the wind in each dimension. For 1D advection, use 1 positional argument (with `dx` for
