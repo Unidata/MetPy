@@ -4,6 +4,7 @@
 """Collection of generally useful utility code from the cookbook."""
 
 import os
+from pathlib import Path
 
 import numpy as np
 import pooch
@@ -19,13 +20,11 @@ POOCH = pooch.create(
 # Check if we have the data available directly from a git checkout, either from the
 # TEST_DATA_DIR variable, or looking relative to the path of this module's file. Use this
 # to override Pooch's path.
-dev_data_path = os.environ.get('TEST_DATA_DIR',
-                               os.path.join(os.path.dirname(__file__),
-                                            '..', '..', 'staticdata'))
-if os.path.exists(dev_data_path):
+dev_data_path = os.environ.get('TEST_DATA_DIR', Path(__file__).parents[2] / 'staticdata')
+if Path(dev_data_path).exists():
     POOCH.path = dev_data_path
 
-POOCH.load_registry(os.path.join(os.path.dirname(__file__), 'static-data-manifest.txt'))
+POOCH.load_registry(Path(__file__).parent / 'static-data-manifest.txt')
 
 
 def get_test_data(fname, as_file_obj=True, mode='rb'):

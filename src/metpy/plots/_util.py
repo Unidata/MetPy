@@ -4,13 +4,11 @@
 """Utilities for use in making plots."""
 
 from datetime import datetime
-import posixpath
 
 from matplotlib.collections import LineCollection
 import matplotlib.patheffects as mpatheffects
 from matplotlib.pyplot import imread
 import numpy as np
-import pkg_resources
 
 from ..units import concatenate
 
@@ -86,17 +84,22 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
        The `matplotlib.image.FigureImage` instance created
 
     """
+    try:
+        from importlib.resources import files as importlib_resources_files
+    except ImportError:  # Can remove when we require Python > 3.8
+        from importlib_resources import files as importlib_resources_files
+
     fname_suffix = {'small': '_75x75.png',
                     'large': '_150x150.png'}
     fname_prefix = {'unidata': 'unidata',
                     'metpy': 'metpy'}
     try:
         fname = fname_prefix[which] + fname_suffix[size]
-        fpath = posixpath.join('_static', fname)
     except KeyError:
-        raise ValueError('Unknown logo size or selection')
+        raise ValueError('Unknown logo size or selection') from None
 
-    logo = imread(pkg_resources.resource_stream('metpy.plots', fpath))
+    with (importlib_resources_files('metpy.plots') / '_static' / fname).open('rb') as fobj:
+        logo = imread(fobj)
     return fig.figimage(logo, x, y, zorder=zorder, **kwargs)
 
 

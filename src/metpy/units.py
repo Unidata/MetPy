@@ -86,7 +86,7 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
             column_units = df.units
         except AttributeError:
             raise ValueError('No units attribute attached to pandas '
-                             'dataframe and col_units not given.')
+                             'dataframe and col_units not given.') from None
 
     # Iterate through columns attaching units if we have them, if not, don't touch it
     res = {}
