@@ -2,13 +2,13 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-r"""A collection of meteorologically significant constants.
+r"""A collection of meteorologically significant constant and thermophysical property values.
 
 Earth
 -----
-======================== =============== =========== ======================================= ========================================
+======================== =============== =========== ======================================= ===============================================================
 Name                     Symbol          Short Name  Units                                   Description
------------------------- --------------- ----------- --------------------------------------- ----------------------------------------
+------------------------ --------------- ----------- --------------------------------------- ---------------------------------------------------------------
 earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`                        Avg. radius of the Earth
 earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`                 Avg. gravity acceleration on Earth
 gravitational_constant   :math:`G`       G           :math:`\text{m}^{3} {kg}^{-1} {s}^{-2}` Gravitational constant
@@ -18,7 +18,7 @@ earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`    
 earth_max_declination    :math:`\delta`  delta       :math:`\text{degrees}`                  Max. solar declination angle of Earth
 earth_orbit_eccentricity :math:`e`                   :math:`\text{None}`                     Avg. eccentricity of Earth's orbit
 earth_mass               :math:`m_e`     me          :math:`\text{kg}`                       Total mass of the Earth (approx)
-======================== =============== =========== ======================================= ========================================
+======================== =============== =========== ======================================= ===============================================================
 
 Water
 -----
@@ -59,6 +59,8 @@ poisson_exponent         :math:`\kappa`    kappa       :math:`\text{None}`      
 dry_adiabatic_lapse_rate :math:`\gamma_d`  gamma_d     :math:`\text{K km}^{-1}`  The dry adiabatic lapse rate
 molecular_weight_ratio   :math:`\epsilon`  epsilon     :math:`\text{None}`       Ratio of molecular weight of water to that of dry air
 ======================== ================= =========== ========================= =======================================================
+
+
 """  # noqa: E501
 
 from .package_tools import Exporter
@@ -69,49 +71,50 @@ exporter = Exporter(globals())
 # Export all the variables defined in this block
 with exporter:
     # Earth
-    earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
-    # Taken from GEMPAK constants
-    Re = earth_avg_radius = 6.3712e6 * units.m
-    G = gravitational_constant = (units.Quantity(1, units.
-                                                 newtonian_constant_of_gravitation)
-                                  .to('m^3 / kg / s^2'))
-    omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
-    d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
-    S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
-    delta = earth_max_declination = 23.45 * units.deg
-    earth_orbit_eccentricity = 0.0167
-    earth_mass = me = 5.9722e24 * units.kg
+    earth_gravity = g = 9.80665 * units('m / s^2')                                  # TODO: doc: codata18, unc exact
+    Re = earth_avg_radius = 6371008.7714 * units('m')                               # TODO: doc: GRS80
+    G = gravitational_constant = 6.67430e-11 * units('m^3 / kg / s^2')              # TODO: doc: codata18, unc +-.00015e-11
+    GM = geocentric_gravitational_constant = 3986005e8 * units('m^3 / s^2')         # TODO: doc: GRS80
+    omega = earth_avg_angular_vel = 7292115e-11 * units('rad / s')                  # TODO: doc: GRS80
+    d = earth_sfc_avg_dist_sun = 149597870700. * units('m')                         # TODO: doc: IAU2012 https://www.iau.org/static/resolutions/IAU2012_English.pdf
+    S = earth_solar_irradiance = 1360.8 * units('W / m^2')                          # TODO: doc: kopp2011 https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2010GL045777
+    delta = earth_max_declination = 23.45 * units('degrees')
+    earth_orbit_eccentricity = 0.0167 * units('dimensionless')
+    earth_mass = me = geocentric_gravitational_constant / gravitational_constant    # TODO: doc: GRS80 / codata18 derived, "with atmo"
 
     # molar gas constant
-    R = units.Quantity(1.0, units.R).to('J / K / mol')
+    R = 8.314462618 * units('J / mol / K')                                          # TODO: doc: codata18, unc exact
 
-    #
+
     # Water
-    #
-    # From: https://pubchem.ncbi.nlm.nih.gov/compound/water
-    Mw = water_molecular_weight = units.Quantity(18.01528, 'g / mol')
+    Mw = water_molecular_weight = 18.015268 * units('g / mol')                      # TODO: doc: IAPWS const http://www.iapws.org/relguide/fundam.pdf
     Rv = water_gas_constant = R / Mw
-    # Nominal density of liquid water at 0C
-    rho_l = density_water = units.Quantity(1e3, 'kg / m^3')
-    Cp_v = wv_specific_heat_press = units.Quantity(1952., 'm^2 / s^2 / K')
-    Cv_v = wv_specific_heat_vol = units.Quantity(1463., 'm^2 / s^2 / K')
-    Cp_l = water_specific_heat = units.Quantity(4218., 'm^2 / s^2 / K')  # at 0C
-    Lv = water_heat_vaporization = units.Quantity(2.501e6, 'm^2 / s^2')  # at 0C
-    Lf = water_heat_fusion = units.Quantity(3.34e5, 'm^2 / s^2')  # at 0C
-    Cp_i = ice_specific_heat = units.Quantity(2106, 'm^2 / s^2 / K')  # at 0C
-    rho_i = density_ice = units.Quantity(917, 'kg / m^3')  # at 0C
+    rho_l = density_water = 999.97495 * units('kg / m^3')                           # TODO: doc: IAPWS const and update description, describe as max 
+    wv_specific_heat_ratio = 1.330 * units('dimensionless')                         # at ~25C from dof
+    Cp_v = wv_specific_heat_press = (
+        wv_specific_heat_ratio * Rv / (wv_specific_heat_ratio - 1)
+    )
+    Cv_v = wv_specific_heat_vol = Cp_v / wv_specific_heat_ratio
+    Cp_l = water_specific_heat = 4.2194 * units('kJ / kg / K')                      # TODO: doc iapws95 wagner2002?
+    Lv = water_heat_vaporization = 2.50084e6 * units('J / kg')                      # TODO: doc wmo1966
+    Lf = water_heat_fusion = 3.337e5 * units('J / kg')                              # TODO: doc wmo1966
+    Cp_i = ice_specific_heat = 2090 * units('J / kg / K')                           # TODO: doc wmo1966
+    rho_i = density_ice = 917 * units('kg / m^3')  # at 0C
 
-    # Dry air -- standard atmosphere
-    Md = dry_air_molecular_weight = units.Quantity(28.9644, 'g / mol')
+    # Dry air
+    Md = dry_air_molecular_weight = 28.96546e-3 * units('kg / mol')                 # TODO: doc: CIPM2007 https://www.nist.gov/system/files/documents/calibrations/CIPM-2007.pdf
     Rd = dry_air_gas_constant = R / Md
-    dry_air_spec_heat_ratio = 1.4
-    Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
+    dry_air_spec_heat_ratio = 1.4 * units('dimensionless')                          # at ~20C NEEDS CITATION
+    Cp_d = dry_air_spec_heat_press = (
+        dry_air_spec_heat_ratio * Rd / (dry_air_spec_heat_ratio - 1)
+    )
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
-    rho_d = dry_air_density_stp = ((1000. * units.mbar)
-                                   / (Rd * 273.15 * units.K)).to('kg / m^3')
+    rho_d = dry_air_density_stp = (
+        (1000. * units('mbar')) / (Rd * 273.15 * units('K'))
+    ).to('kg / m^3')
 
     # General meteorology constants
-    P0 = pot_temp_ref_press = 1000. * units.mbar
+    P0 = pot_temp_ref_press = 1000. * units('mbar')
     kappa = poisson_exponent = (Rd / Cp_d).to('dimensionless')
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
     epsilon = molecular_weight_ratio = (Mw / Md).to('dimensionless')
