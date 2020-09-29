@@ -837,7 +837,7 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
     # Pressure needs to be increasing for searchsorted, so flip it and then convert
     # the index back to the original array
     loc = pressure.size - pressure[::-1].searchsorted(lcl_pressure)
-    return np.insert(temperature.m, loc, interp_temp.m) * temperature.units
+    return temperature.units * np.insert(temperature.m, loc, interp_temp.m)
 
 
 @exporter.export
@@ -1720,7 +1720,7 @@ def _find_append_zero_crossings(x, y):
         y values of data
 
     """
-    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]) * y.units, log_x=True)
+    crossings = find_intersections(x[1:], y[1:], y.units * np.zeros_like(y[1:]), log_x=True)
     x = concatenate((x, crossings[0]))
     y = concatenate((y, crossings[1]))
 

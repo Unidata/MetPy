@@ -37,7 +37,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
-from metpy.units import units
+from metpy.units import masked_array, units
 
 
 def test_relative_humidity_from_dewpoint():
@@ -1159,11 +1159,12 @@ def test_isentropic_interpolation_as_dataset():
     assert result['isentropic_level'].attrs == expected['isentropic_level'].attrs
 
 
-def test_surface_based_cape_cin():
+@pytest.mark.parametrize('array_class', (units.Quantity, masked_array))
+def test_surface_based_cape_cin(array_class):
     """Test the surface-based CAPE and CIN calculation."""
-    p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
-    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
-    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    p = array_class([959., 779.2, 751.3, 724.3, 700., 269.], units.mbar)
+    temperature = array_class([22.2, 14.6, 12., 9.4, 7., -38.], units.celsius)
+    dewpoint = array_class([19., -11.2, -10.8, -10.4, -10., -53.2], units.celsius)
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
     assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 2)
     assert_almost_equal(cin, -136.607809 * units('joule / kilogram'), 2)
