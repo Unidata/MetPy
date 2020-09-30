@@ -11,8 +11,15 @@ import xarray as xr
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data, needs_cartopy)
-from metpy.units import units
-from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
+from metpy.units import DimensionalityError, units
+from metpy.xarray import (
+    add_grid_arguments_from_xarray,
+    add_vertical_dim_from_xarray,
+    check_axis,
+    check_matching_coordinates,
+    grid_deltas_from_dataarray,
+    preprocess_and_wrap
+)
 
 
 @pytest.fixture
@@ -232,12 +239,12 @@ def test_missing_grid_mapping_var(caplog):
     assert 'Could not find' in caplog.text
 
 
-def test_preprocess_xarray():
-    """Test xarray preprocessing decorator."""
+def test_preprocess_and_wrap_only_preprocessing():
+    """Test xarray preprocessing and wrapping decorator for only preprocessing."""
     data = xr.DataArray(np.ones(3), attrs={'units': 'km'})
     data2 = xr.DataArray(np.ones(3), attrs={'units': 'm'})
 
-    @preprocess_xarray
+    @preprocess_and_wrap()
     def func(a, b):
         return a.to('m') + b
 
@@ -1028,3 +1035,409 @@ def test_update_attribute_callable(test_ds_generic):
     assert 'even' not in test_ds_generic['b'].attrs
     assert 'even' not in test_ds_generic['d'].attrs
     assert 'even' not in test_ds_generic['test'].attrs
+    test_ds_generic.metpy.update_attribute('even', even_ascii)
+
+
+@pytest.mark.parametrize('test, other, match_unit, expected', [
+    (np.arange(4), np.arange(4), False, np.arange(4)),
+    (np.arange(4), np.arange(4), True, np.arange(4) * units('dimensionless')),
+    (np.arange(4), [0] * units.m, False, np.arange(4) * units('dimensionless')),
+    (np.arange(4), [0] * units.m, True, np.arange(4) * units.m),
+    (
+        np.arange(4),
+        xr.DataArray(
+            np.zeros(4) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'description': 'Just some zeros'}
+        ),
+        False,
+        xr.DataArray(
+            np.arange(4) * units.dimensionless,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)}
+        )
+    ),
+    (
+        np.arange(4),
+        xr.DataArray(
+            np.zeros(4) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)},
+            attrs={'description': 'Just some zeros'}
+        ),
+        True,
+        xr.DataArray(
+            np.arange(4) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 4)}
+        )
+    ),
+    ([2, 4, 8] * units.kg, [0] * units.m, False, [2, 4, 8] * units.kg),
+    ([2, 4, 8] * units.kg, [0] * units.g, True, [2000, 4000, 8000] * units.g),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        ),
+        False,
+        xr.DataArray(
+            [2, 4, 8] * units.kilogram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        )
+    ),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3) * units.gram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        ),
+        True,
+        xr.DataArray(
+            [2000, 4000, 8000] * units.gram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64),
+        False,
+        units.Quantity(np.linspace(0, 1, 5), 'meter')
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        [0] * units.kg,
+        False,
+        np.linspace(0, 1, 5) * units.m
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        [0] * units.cm,
+        True,
+        np.linspace(0, 100, 5) * units.cm
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        xr.DataArray(
+            np.zeros(5) * units.kilogram,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)},
+            attrs={'description': 'Alternative data'}
+        ),
+        False,
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        xr.DataArray(
+            np.zeros(5) * units.centimeter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)},
+            attrs={'description': 'Alternative data'}
+        ),
+        True,
+        xr.DataArray(
+            np.linspace(0, 100, 5) * units.centimeter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)}
+        )
+    ),
+])
+def test_wrap_with_wrap_like_kwarg(test, other, match_unit, expected):
+    """Test the preprocess and wrap decorator when using wrap_like."""
+    @preprocess_and_wrap(wrap_like=other, match_unit=match_unit)
+    def almost_identity(arg):
+        return arg
+
+    result = almost_identity(test)
+
+    if hasattr(expected, 'units'):
+        assert expected.units == result.units
+    if isinstance(expected, xr.DataArray):
+        xr.testing.assert_identical(result, expected)
+    else:
+        assert_array_equal(result, expected)
+
+
+@pytest.mark.parametrize('test, other', [
+    ([2, 4, 8] * units.kg, [0] * units.m),
+    (
+        [2, 4, 8] * units.kg,
+        xr.DataArray(
+            np.zeros(3) * units.meter,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 3)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter
+        ),
+        [0] * units.kg
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter
+        ),
+        xr.DataArray(
+            np.zeros(5) * units.kg,
+            dims=('x',),
+            coords={'x': np.linspace(0, 1, 5)}
+        )
+    ),
+    (
+        xr.DataArray(
+            np.linspace(0, 1, 5) * units.meter,
+            attrs={'description': 'A range of values'}
+        ),
+        np.arange(4, dtype=np.float64)
+    )
+])
+def test_wrap_with_wrap_like_kwarg_raising_dimensionality_error(test, other):
+    """Test the preprocess and wrap decorator when a dimensionality error is raised."""
+    @preprocess_and_wrap(wrap_like=other, match_unit=True)
+    def almost_identity(arg):
+        return arg
+
+    with pytest.raises(DimensionalityError):
+        almost_identity(test)
+
+
+def test_wrap_with_argument_kwarg():
+    """Test the preprocess and wrap decorator with signature recognition."""
+    @preprocess_and_wrap(wrap_like='a')
+    def double(a):
+        return units.Quantity(2) * a
+
+    test = xr.DataArray([1, 3, 5, 7] * units.m)
+    expected = xr.DataArray([2, 6, 10, 14] * units.m)
+
+    xr.testing.assert_identical(double(test), expected)
+
+
+def test_preprocess_and_wrap_with_broadcasting():
+    """Test preprocessing and wrapping decorator with arguments to broadcast specified."""
+    # Not quantified
+    data = xr.DataArray(np.arange(9).reshape((3, 3)), dims=('y', 'x'), attrs={'units': 'N'})
+    # Quantified
+    data2 = xr.DataArray([1, 0, 0] * units.m, dims=('y'))
+
+    @preprocess_and_wrap(broadcast=('a', 'b'))
+    def func(a, b):
+        return a * b
+
+    assert_array_equal(func(data, data2), [[0, 1, 2], [0, 0, 0], [0, 0, 0]] * units('N m'))
+
+
+def test_preprocess_and_wrap_with_to_magnitude():
+    """Test preprocessing and wrapping with casting to magnitude."""
+    data = xr.DataArray([1, 0, 1] * units.m)
+    data2 = [0, 1, 1] * units.cm
+
+    @preprocess_and_wrap(wrap_like='a', to_magnitude=True)
+    def func(a, b):
+        return a * b
+
+    np.testing.assert_array_equal(func(data, data2), np.array([0, 0, 1]))
+
+
+def test_preprocess_and_wrap_with_variable():
+    """Test preprocess and wrapping decorator when using an xarray Variable."""
+    data1 = xr.DataArray([1, 0, 1], dims=('x',), attrs={'units': 'meter'})
+    data2 = xr.Variable(data=[0, 1, 1], dims=('x',), attrs={'units': 'meter'})
+
+    @preprocess_and_wrap(wrap_like='a')
+    def func(a, b):
+        return a * b
+
+    # Note, expected units are meter, not meter**2, since attributes are stripped from
+    # Variables
+    expected_12 = xr.DataArray([0, 0, 1] * units.m, dims=('x',))
+    expected_21 = [0, 0, 1] * units.m
+
+    with pytest.warns(UserWarning, match='Argument b given as xarray Variable'):
+        result_12 = func(data1, data2)
+    with pytest.warns(UserWarning, match='Argument a given as xarray Variable'):
+        result_21 = func(data2, data1)
+
+    assert isinstance(result_12, xr.DataArray)
+    xr.testing.assert_identical(func(data1, data2), expected_12)
+    assert isinstance(result_21, units.Quantity)
+    assert_array_equal(func(data2, data1), expected_21)
+
+
+def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
+    """Test grid_deltas_from_dataarray with a lonlat grid."""
+    dx, dy = grid_deltas_from_dataarray(test_da_lonlat)
+    true_dx = np.array([[[321609.59212064, 321609.59212065, 321609.59212064],
+                         [310320.85961483, 310320.85961483, 310320.85961483],
+                         [297980.72966733, 297980.72966733, 297980.72966733],
+                         [284629.6008561, 284629.6008561, 284629.6008561]]]) * units.m
+    true_dy = np.array([[[369603.78775948, 369603.78775948, 369603.78775948, 369603.78775948],
+                         [369802.28173967, 369802.28173967, 369802.28173967, 369802.28173967],
+                         [370009.56291098, 370009.56291098, 370009.56291098,
+                          370009.56291098]]]) * units.m
+    assert_array_almost_equal(dx, true_dx, 5)
+    assert_array_almost_equal(dy, true_dy, 5)
+
+
+def test_grid_deltas_from_dataarray_xy(test_da_xy):
+    """Test grid_deltas_from_dataarray with a xy grid."""
+    dx, dy = grid_deltas_from_dataarray(test_da_xy)
+    true_dx = np.array([[[[500] * 3]]]) * units('km')
+    true_dy = np.array([[[[500]] * 3]]) * units('km')
+    assert_array_almost_equal(dx, true_dx, 5)
+    assert_array_almost_equal(dy, true_dy, 5)
+
+
+def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
+    """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
+    # Construct lon/lat coordinates
+    y, x = xr.broadcast(*test_da_xy.metpy.coordinates('y', 'x'))
+    lonlat = (ccrs.Geodetic(test_da_xy.metpy.cartopy_globe)
+              .transform_points(test_da_xy.metpy.cartopy_crs, x.values, y.values))
+    lon = lonlat[..., 0]
+    lat = lonlat[..., 1]
+    test_da_xy = test_da_xy.assign_coords(
+        longitude=xr.DataArray(lon, dims=('y', 'x'), attrs={'units': 'degrees_east'}),
+        latitude=xr.DataArray(lat, dims=('y', 'x'), attrs={'units': 'degrees_north'}))
+
+    # Actually test calculation
+    dx, dy = grid_deltas_from_dataarray(test_da_xy, kind='actual')
+    true_dx = [[[[494426.3249766, 493977.6028005, 493044.0656467],
+                 [498740.2046073, 498474.9771064, 497891.6588559],
+                 [500276.2649627, 500256.3440237, 500139.9484845],
+                 [498740.6956936, 499045.0391707, 499542.7244501]]]] * units.m
+    true_dy = [[[[496862.4106337, 496685.4729999, 496132.0732114, 495137.8882404],
+                 [499774.9676486, 499706.3354977, 499467.5546773, 498965.2587818],
+                 [499750.8962991, 499826.2263137, 500004.4977747, 500150.9897759]]]] * units.m
+    assert_array_almost_equal(dx, true_dx, 3)
+    assert_array_almost_equal(dy, true_dy, 3)
+
+
+def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
+    """Test grid_deltas_from_dataarray with a lonlat grid and kind='nominal'."""
+    dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
+    true_dx = [[[3.333333] * 3]] * units.degrees
+    true_dy = [[[3.333333]] * 3] * units.degrees
+    assert_array_almost_equal(dx, true_dx, 5)
+    assert_array_almost_equal(dy, true_dy, 5)
+
+
+@needs_cartopy
+def test_grid_deltas_from_dataarray_lonlat_assumed_order():
+    """Test grid_deltas_from_dataarray when dim order must be assumed."""
+    # Create test dataarray
+    lat, lon = np.meshgrid(np.array([38., 40., 42]), np.array([263., 265., 267.]))
+    test_da = xr.DataArray(
+        np.linspace(300, 250, 3 * 3).reshape((3, 3)),
+        name='temperature',
+        dims=('dim_0', 'dim_1'),
+        coords={
+            'lat': xr.DataArray(lat, dims=('dim_0', 'dim_1'),
+                                attrs={'units': 'degrees_north'}),
+            'lon': xr.DataArray(lon, dims=('dim_0', 'dim_1'), attrs={'units': 'degrees_east'})
+        },
+        attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
+
+    # Run and check for warning
+    with pytest.warns(UserWarning, match=r'y and x dimensions unable to be identified.*'):
+        dx, dy = grid_deltas_from_dataarray(test_da)
+
+    # Check results
+    true_dx = [[222031.0111961, 222107.8492205],
+               [222031.0111961, 222107.8492205],
+               [222031.0111961, 222107.8492205]] * units.m
+    true_dy = [[175661.5413976, 170784.1311091, 165697.7563223],
+               [175661.5413976, 170784.1311091, 165697.7563223]] * units.m
+    assert_array_almost_equal(dx, true_dx, 5)
+    assert_array_almost_equal(dy, true_dy, 5)
+
+
+def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
+    """Test grid_deltas_from_dataarray when kind is invalid."""
+    with pytest.raises(ValueError):
+        grid_deltas_from_dataarray(test_da_xy, kind='invalid')
+
+
+@needs_cartopy
+def test_add_grid_arguments_from_dataarray():
+    """Test the grid argument decorator for adding in arguments from xarray."""
+    @add_grid_arguments_from_xarray
+    def return_the_kwargs(
+        da,
+        dz=None,
+        dy=None,
+        dx=None,
+        vertical_dim=None,
+        y_dim=None,
+        x_dim=None,
+        latitude=None
+    ):
+        return {
+            'dz': dz,
+            'dy': dy,
+            'dx': dx,
+            'vertical_dim': vertical_dim,
+            'y_dim': y_dim,
+            'x_dim': x_dim,
+            'latitude': latitude
+        }
+
+    data = xr.DataArray(
+        np.zeros((1, 2, 2, 2)),
+        dims=('time', 'isobaric', 'lat', 'lon'),
+        coords={
+            'time': ['2020-01-01T00:00Z'],
+            'isobaric': (('isobaric',), [850., 700.], {'units': 'hPa'}),
+            'lat': (('lat',), [30., 40.], {'units': 'degrees_north'}),
+            'lon': (('lon',), [-100., -90.], {'units': 'degrees_east'})
+        }
+    ).to_dataset(name='zeros').metpy.parse_cf('zeros')
+    result = return_the_kwargs(data)
+    assert_array_almost_equal(result['dz'], [-150.] * units.hPa)
+    assert_array_almost_equal(result['dy'], [[[[1109415.632] * 2]]] * units.meter, 2)
+    assert_array_almost_equal(result['dx'], [[[[964555.967], [853490.014]]]] * units.meter, 2)
+    assert result['vertical_dim'] == 1
+    assert result['y_dim'] == 2
+    assert result['x_dim'] == 3
+    assert_array_almost_equal(
+        result['latitude'].metpy.unit_array,
+        [30., 40.] * units.degrees_north
+    )
+    # Verify latitude is xarray so can be broadcast,
+    # see https://github.com/Unidata/MetPy/pull/1490#discussion_r483198245
+    assert isinstance(result['latitude'], xr.DataArray)
+
+
+def test_add_vertical_dim_from_xarray():
+    """Test decorator for automatically determining the vertical dimension number."""
+    @add_vertical_dim_from_xarray
+    def return_vertical_dim(data, vertical_dim=None):
+        return vertical_dim
+    test_da = xr.DataArray(np.zeros((2, 2, 2, 2)), dims=('time', 'isobaric', 'y', 'x'))
+    assert return_vertical_dim(test_da) == 1

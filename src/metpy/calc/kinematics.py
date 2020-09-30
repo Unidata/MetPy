@@ -10,7 +10,7 @@ from .. import constants as mpconsts
 from ..cbook import iterable
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
-from ..xarray import preprocess_xarray
+from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
@@ -20,183 +20,208 @@ def _stack(arrs):
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def vorticity(u, v, dx, dy):
+def vorticity(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         vertical vorticity
 
     See Also
     --------
     divergence
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
-    dudy = first_derivative(u, delta=dy, axis=-2)
-    dvdx = first_derivative(v, delta=dx, axis=-1)
+    dudy = first_derivative(u, delta=dy, axis=y_dim)
+    dvdx = first_derivative(v, delta=dx, axis=x_dim)
     return dvdx - dudy
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u')
 @check_units(dx='[length]', dy='[length]')
-def divergence(u, v, dx, dy):
+def divergence(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the horizontal divergence of a vector.
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the vector
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the vector
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The horizontal divergence
 
     See Also
     --------
     vorticity
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
-    dudx = first_derivative(u, delta=dx, axis=-1)
-    dvdy = first_derivative(v, delta=dy, axis=-2)
+    dudx = first_derivative(u, delta=dx, axis=x_dim)
+    dvdy = first_derivative(v, delta=dy, axis=y_dim)
     return dudx + dvdy
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def shearing_deformation(u, v, dx, dy):
+def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the shearing deformation of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Shearing Deformation
 
     See Also
     --------
     stretching_deformation, total_deformation
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
-    dudy = first_derivative(u, delta=dy, axis=-2)
-    dvdx = first_derivative(v, delta=dx, axis=-1)
+    dudy = first_derivative(u, delta=dy, axis=y_dim)
+    dvdx = first_derivative(v, delta=dx, axis=x_dim)
     return dvdx + dudy
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def stretching_deformation(u, v, dx, dy):
+def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the stretching deformation of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Stretching Deformation
 
     See Also
     --------
     shearing_deformation, total_deformation
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
-    dudx = first_derivative(u, delta=dx, axis=-1)
-    dvdy = first_derivative(v, delta=dy, axis=-2)
+    dudx = first_derivative(u, delta=dx, axis=x_dim)
+    dvdy = first_derivative(v, delta=dy, axis=y_dim)
     return dudx - dvdy
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def total_deformation(u, v, dx, dy):
+def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the horizontal total deformation of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Total Deformation
 
     See Also
@@ -209,66 +234,82 @@ def total_deformation(u, v, dx, dy):
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
+    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
 @exporter.export
-@preprocess_xarray
-def advection(scalar, wind, deltas):
+@preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
+def advection(
+    scalar,
+    u=None,
+    v=None,
+    w=None,
+    *,
+    dx=None,
+    dy=None,
+    dz=None,
+    x_dim=-1,
+    y_dim=-2,
+    vertical_dim=-3
+):
     r"""Calculate the advection of a scalar field by the wind.
-
-    The order of the dimensions of the arrays must match the order in which
-    the wind components are given.  For example, if the winds are given [u, v],
-    then the scalar and wind arrays must be indexed as x,y (which puts x as the
-    rows, not columns).
 
     Parameters
     ----------
-    scalar : N-dimensional array
-        Array (with N-dimensions) with the quantity to be advected.
-    wind : sequence of arrays
-        Length M sequence of N-dimensional arrays.  Represents the flow,
-        with a component of the wind in each dimension.  For example, for
-        horizontal advection, this could be a list: [u, v], where u and v
-        are each a 2-dimensional array.
-    deltas : sequence of float or ndarray
-        A (length M) sequence containing the grid spacing(s) in each dimension. If using
-        arrays, in each array there should be one item less than the size of `scalar` along the
-        applicable axis.
+    scalar : `pint.Quantity` or `xarray.DataArray`
+        Array (with N-dimensions) with the quantity to be advected. Use `xarray.DataArray` to
+        have dimension ordering automatically determined, otherwise, use default
+        [..., Z, Y, X] ordering or specify \*_dim keyword arguments.
+    u, v, w : `pint.Quantity` or `xarray.DataArray` or None
+        N-dimensional arrays with units of velocity representing the flow, with a component of
+        the wind in each dimension. For 1D advection, use 1 positional argument (with `dx` for
+        grid spacing and `x_dim` to specify axis if not the default of -1) or use 1 applicable
+        keyword argument (u, v, or w) for proper physical dimension (with corresponding `d\*`
+        for grid spacing and `\*_dim` to specify axis). For 2D/horizontal advection, use 2
+        positional arguments in order for u and v winds respectively (with `dx` and `dy` for
+        grid spacings and `x_dim` and `y_dim` keyword arguments to specify axes), or specify u
+        and v as keyword arguments (grid spacings and axes likewise). For 3D advection,
+        likewise use 3 positional arguments in order for u, v, and w winds respectively or
+        specify u, v, and w as keyword arguments (either way, with `dx`, `dy`, `dz` for grid
+        spacings and `x_dim`, `y_dim`, and `vertical_dim` for axes).
+    dx, dy, dz: `pint.Quantity` or None, optional
+        Grid spacing in applicable dimension(s). If using arrays, each array should have one
+        item less than the size of `scalar` along the applicable axis. If `scalar` is an
+        `xarray.DataArray`, these are automatically determined from its coordinates, and are
+        therefore optional. Required if `scalar` is a `pint.Quantity`. These are keyword-only
+        arguments.
+    x_dim, y_dim, vertical_dim: int or None, optional
+        Axis number in applicable dimension(s). Defaults to -1, -2, and -3 respectively for
+        (..., Z, Y, X) dimension ordering. If `scalar` is an `xarray.DataArray`, these are
+        automatically determined from its coordinates. These are keyword-only arguments.
 
     Returns
     -------
-    N-dimensional array
+    `pint.Quantity` or `xarray.DataArray`
         An N-dimensional array containing the advection at all grid points.
 
     """
-    # This allows passing in a list of wind components or an array.
-    wind = _stack(wind)
-
-    # If we have more than one component, we need to reverse the order along the first
-    # dimension so that the wind components line up with the
-    # order of the gradients from the ..., y, x ordered array.
-    if wind.ndim > scalar.ndim:
-        wind = wind[::-1]
-
-    # Gradient returns a list of derivatives along each dimension. We convert
-    # this to an array with dimension as the first index. Reverse the deltas to line up
-    # with the order of the dimensions.
-    grad = _stack(gradient(scalar, deltas=deltas[::-1]))
-
-    # Make them be at least 2D (handling the 1D case) so that we can do the
-    # multiply and sum below
-    grad, wind = np.atleast_2d(grad, wind)
-
-    return (-grad * wind).sum(axis=0)
+    return -sum(
+        wind * first_derivative(scalar, axis=axis, delta=delta)
+        for wind, delta, axis in (
+            (u, dx, x_dim),
+            (v, dy, y_dim),
+            (w, dz, vertical_dim)
+        )
+        if wind is not None
+    )
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(
+    wrap_like='potential_temperature',
+    broadcast=('potential_temperature', 'u', 'v')
+)
 @check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(potential_temperature, u, v, dx, dy):
+def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -284,47 +325,52 @@ def frontogenesis(potential_temperature, u, v, dx, dy):
 
     Parameters
     ----------
-    potential_temperature : (M, N) `pint.Quantity`
+    potential_temperature : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Potential temperature
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         2D Frontogenesis in [temperature units]/m/s
 
     Notes
     -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
     :math:`1.08e4*1.e5`
 
     """
     # Get gradients of potential temperature in both x and y
-    ddy_thta = first_derivative(potential_temperature, delta=dy, axis=-2)
-    ddx_thta = first_derivative(potential_temperature, delta=dx, axis=-1)
+    ddy_thta = first_derivative(potential_temperature, delta=dy, axis=y_dim)
+    ddx_thta = first_derivative(potential_temperature, delta=dx, axis=x_dim)
 
     # Compute the magnitude of the potential temperature gradient
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd = shearing_deformation(u, v, dx, dy)
-    strd = stretching_deformation(u, v, dx, dy)
-    tdef = total_deformation(u, v, dx, dy)
+    shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
+    strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
+    tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
 
     # Get the divergence of the wind field
-    div = divergence(u, v, dx, dy)
+    div = divergence(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -334,92 +380,116 @@ def frontogenesis(potential_temperature, u, v, dx, dy):
 
 
 @exporter.export
-@preprocess_xarray
-@check_units(f='[frequency]', dx='[length]', dy='[length]')
-def geostrophic_wind(height, f, dx, dy):
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'latitude'))
+@check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
+def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     r"""Calculate the geostrophic wind given from the height or geopotential.
 
     Parameters
     ----------
-    height : (M, N) `pint.Quantity`
-        The height field, with either leading dimensions of (x, y) or trailing dimensions
-        of (y, x), depending on the value of ``dim_order``.
-    f : array_like
-        The coriolis parameter.  This can be a scalar to be applied
-        everywhere or an array of values.
-    dx : `pint.Quantity`
+    height : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        The height or geopotential field.
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `height` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `height` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        The latitude, which is used to calculate the Coriolis parameter. Its dimensions must
+        be broadcastable with those of height. Optional if `xarray.DataArray` with latitude
+        coordinate used as input. Note that an argument without units is treated as
+        dimensionless, which is equivalent to radians.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    A 2-item tuple of arrays, `pint.Quantity`
+    A 2-item tuple of arrays
         A tuple of the u-component and v-component of the geostrophic wind.
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
+    f = coriolis_parameter(latitude)
     if height.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f
     else:
         norm_factor = mpconsts.g / f
 
-    dhdy = first_derivative(height, delta=dy, axis=-2)
-    dhdx = first_derivative(height, delta=dx, axis=-1)
+    dhdy = first_derivative(height, delta=dy, axis=y_dim)
+    dhdx = first_derivative(height, delta=dx, axis=x_dim)
     return -norm_factor * dhdy, norm_factor * dhdx
 
 
 @exporter.export
-@preprocess_xarray
-@check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
-def ageostrophic_wind(height, u, v, f, dx, dy):
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(
+    wrap_like=('height', 'height'),
+    broadcast=('height', 'u', 'v', 'latitude')
+)
+@check_units(
+    u='[speed]',
+    v='[speed]',
+    dx='[length]',
+    dy='[length]',
+    latitude='[dimensionless]'
+)
+def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
 
     Parameters
     ----------
     height : (M, N) ndarray
         The height or geopotential field.
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.
-    f : array_like
-        The coriolis parameter.  This can be a scalar to be applied
-        everywhere or an array of values.
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `height` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `height` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        The latitude, which is used to calculate the Coriolis parameter. Its dimensions must
+        be broadcastable with those of height. Optional if `xarray.DataArray` with latitude
+        coordinate used as input. Note that an argument without units is treated as
+        dimensionless, which is equivalent to radians.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the ageostrophic wind.
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
-    This function contains an updated input variable order from the same function in the
-    kinematics module. This version will be fully implemented in 1.0 and moved from the
-    `future` module back to the `kinematics` module.
-
     """
-    u_geostrophic, v_geostrophic = geostrophic_wind(height, f, dx, dy)
+    u_geostrophic, v_geostrophic = geostrophic_wind(
+        height,
+        dx,
+        dy,
+        latitude,
+        x_dim=x_dim,
+        y_dim=y_dim
+    )
     return u - u_geostrophic, v - v_geostrophic
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'temperature'))
 @check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
@@ -431,14 +501,14 @@ def montgomery_streamfunction(height, temperature):
 
     Parameters
     ----------
-    height : `pint.Quantity`
+    height : `pint.Quantity` or `xarray.DataArray`
         Array of geopotential height of isentropic surfaces
-    temperature : `pint.Quantity`
+    temperature : `pint.Quantity` or `xarray.DataArray`
         Array of temperature on isentropic surfaces
 
     Returns
     -------
-    stream_func : `pint.Quantity`
+    stream_func : `pint.Quantity` or `xarray.DataArray`
 
     Notes
     -----
@@ -461,7 +531,7 @@ def montgomery_streamfunction(height, temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[length]', '[speed]', '[speed]', '[length]',
              bottom='[length]', storm_u='[speed]', storm_v='[speed]')
 def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
@@ -504,6 +574,12 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     `pint.Quantity`
         total storm-relative helicity
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     _, u, v = get_layer_heights(height, depth, u, v, with_agl=True, bottom=bottom)
 
@@ -528,35 +604,41 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
 @check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx, dy, latitude):
+def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    latitude : (M, N) ndarray
-        latitude of the wind data in radians or with appropriate unit information attached
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    latitude : `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         absolute vorticity
-
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     f = coriolis_parameter(latitude)
@@ -565,10 +647,25 @@ def absolute_vorticity(u, v, dx, dy, latitude):
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(
+    wrap_like='potential_temperature',
+    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude')
+)
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, latitude):
+def potential_vorticity_baroclinic(
+    potential_temperature,
+    pressure,
+    u,
+    v,
+    dx=None,
+    dy=None,
+    latitude=None,
+    x_dim=-1,
+    y_dim=-2,
+    vertical_dim=-3
+):
     r"""Calculate the baroclinic potential vorticity.
 
     .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
@@ -579,34 +676,43 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
     Parameters
     ----------
-    potential_temperature : (P, M, N) `pint.Quantity`
+    potential_temperature : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         potential temperature
-    pressure : (P, M, N) `pint.Quantity`
+    pressure : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         vertical pressures
-    u : (P, M, N) `pint.Quantity`
+    u : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (P, M, N) `pint.Quantity`
+    v : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    latitude : (M, N) ndarray
-        latitude of the wind data in radians or with appropriate unit information attached
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    latitude : `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Z, Y, X] order).
+        Automatically parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Z, Y, X] order).
+        Automatically parsed from input if using `xarray.DataArray`.
+    vertical_dim : int, optional
+        Axis number of vertical dimension. Defaults to -3 (implying [..., Z, Y, X] order).
+        Automatically parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (P, M, N) `pint.Quantity`
+    (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         baroclinic potential vorticity
 
     Notes
     -----
-    This function will only work with data that is in (P, Y, X) format. If your data
-    is in a different order you will need to re-order your data in order to get correct
-    results from this function.
-
     The same function can be used for isobaric and isentropic PV analysis. Provide winds
     for vorticity calculations on the desired isobaric or isentropic surface. At least three
     layers of pressure/potential temperature are required in order to calculate the vertical
@@ -616,26 +722,32 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
     This function expects pressure/isentropic level to increase with increasing array element
     (e.g., from higher in the atmosphere to closer to the surface. If the pressure array is
-    one-dimensional p[:, None, None] can be used to make it appear multi-dimensional.)
+    one-dimensional, and not given as `xarray.DataArray`, p[:, None, None] can be used to make
+    it appear multi-dimensional.)
 
     """
-    if ((np.shape(potential_temperature)[-3] < 3) or (np.shape(pressure)[-3] < 3)
-       or (np.shape(potential_temperature)[-3] != (np.shape(pressure)[-3]))):
-        raise ValueError('Length of potential temperature along the pressure axis '
-                         '{} must be at least 3.'.format(-3))
+    if (
+        np.shape(potential_temperature)[vertical_dim] < 3
+        or np.shape(pressure)[vertical_dim] < 3
+        or np.shape(potential_temperature)[vertical_dim] != np.shape(pressure)[vertical_dim]
+    ):
+        raise ValueError('Length of potential temperature along the vertical axis '
+                         '{} must be at least 3.'.format(vertical_dim))
 
-    avor = absolute_vorticity(u, v, dx, dy, latitude)
-    dthtadp = first_derivative(potential_temperature, x=pressure, axis=-3)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
+    dthtadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
 
-    if ((np.shape(potential_temperature)[-2] == 1)
-       and (np.shape(potential_temperature)[-1] == 1)):
-        dthtady = 0 * units.K / units.m  # axis=-2 only has one dimension
-        dthtadx = 0 * units.K / units.m  # axis=-1 only has one dimension
+    if (
+        (np.shape(potential_temperature)[y_dim] == 1)
+        and (np.shape(potential_temperature)[x_dim] == 1)
+    ):
+        dthtady = 0 * units.K / units.m  # axis=y_dim only has one dimension
+        dthtadx = 0 * units.K / units.m  # axis=x_dim only has one dimension
     else:
-        dthtady = first_derivative(potential_temperature, delta=dy, axis=-2)
-        dthtadx = first_derivative(potential_temperature, delta=dx, axis=-1)
-    dudp = first_derivative(u, x=pressure, axis=-3)
-    dvdp = first_derivative(v, x=pressure, axis=-3)
+        dthtady = first_derivative(potential_temperature, delta=dy, axis=y_dim)
+        dthtadx = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+    dudp = first_derivative(u, x=pressure, axis=vertical_dim)
+    dvdp = first_derivative(v, x=pressure, axis=vertical_dim)
 
     return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx
                            + avor * dthtadp)).to(units.kelvin * units.meter**2
@@ -643,9 +755,19 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v', 'latitude'))
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_barotropic(height, u, v, dx, dy, latitude):
+def potential_vorticity_barotropic(
+    height,
+    u,
+    v,
+    dx=None,
+    dy=None,
+    latitude=None,
+    x_dim=-1,
+    y_dim=-2
+):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
     .. math:: PV = \frac{f + \zeta}{H}
@@ -654,41 +776,60 @@ def potential_vorticity_barotropic(height, u, v, dx, dy, latitude):
 
     Parameters
     ----------
-    height : (M, N) `pint.Quantity`
+    height : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         atmospheric height
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    latitude : (M, N) ndarray
-        latitude of the wind data in radians or with appropriate unit information attached
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    latitude : `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         barotropic potential vorticity
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
-    avor = absolute_vorticity(u, v, dx, dy, latitude)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
     return (avor / height).to('meter**-1 * second**-1')
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(
+    wrap_like=('u', 'u'),
+    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude')
+)
 @check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
              '[dimensionless]')
-def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude):
+def inertial_advective_wind(
+    u,
+    v,
+    u_geostrophic,
+    v_geostrophic,
+    dx=None,
+    dy=None,
+    latitude=None,
+    x_dim=-1,
+    y_dim=-2
+):
     r"""Calculate the inertial advective wind.
 
     .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
@@ -706,28 +847,38 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the advecting wind
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the advecting wind
-    u_geostrophic : (M, N) `pint.Quantity`
+    u_geostrophic : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the geostrophic (advected) wind
-    v_geostrophic : (M, N) `pint.Quantity`
+    v_geostrophic : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the geostrophic (advected) wind
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    latitude : (M, N) ndarray
-        latitude of the wind data in radians or with appropriate unit information attached
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    latitude : `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of inertial advective wind
-    (M, N) `pint.Quantity`
+    (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of inertial advective wind
 
     Notes
@@ -736,14 +887,11 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude
     wind to both be the geostrophic wind. To do so, pass the x and y components
     of the geostrophic with for u and u_geostrophic/v and v_geostrophic.
 
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
     f = coriolis_parameter(latitude)
 
-    dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(-2, -1))
-    dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(-2, -1))
+    dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
 
     u_component = -(u * dvgdx + v * dvgdy) / f
     v_component = (u * dugdx + v * dugdy) / f
@@ -752,9 +900,23 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, latitude
 
 
 @exporter.export
-@preprocess_xarray
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(
+    wrap_like=('u', 'u'),
+    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
+)
 @check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
-def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
+def q_vector(
+    u,
+    v,
+    temperature,
+    pressure,
+    dx=None,
+    dy=None,
+    static_stability=1,
+    x_dim=-1,
+    y_dim=-2
+):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 
     .. math:: \vec{Q} = (Q_1, Q_2)
@@ -774,42 +936,45 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
 
     Parameters
     ----------
-    u : (M, N) `pint.Quantity`
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         x component of the wind (geostrophic in QG-theory)
-    v : (M, N) `pint.Quantity`
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind (geostrophic in QG-theory)
-    temperature : (M, N) `pint.Quantity`
+    temperature : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Array of temperature at pressure level
     pressure : `pint.Quantity`
         Pressure at level
-    dx : `pint.Quantity`
+    dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
-    dy : `pint.Quantity`
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
+    dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis.
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input.
     static_stability : `pint.Quantity`, optional
         The static stability at the pressure level. Defaults to 1 if not given to calculate
         the Q-vector without factoring in static stability.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`.
 
     Returns
     -------
-    tuple of (M, N) `pint.Quantity`
+    tuple of (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The components of the Q-vector in the u- and v-directions respectively
 
     See Also
     --------
     static_stability
 
-    Notes
-    -----
-    If inputs have more than two dimensions, they are assumed to have either leading dimensions
-    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
-
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
-    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(-2, -1))
+    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
+    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(y_dim, x_dim))
 
     q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)

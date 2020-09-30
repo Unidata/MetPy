@@ -11,3 +11,11 @@ Accessors
 
 .. autoclass:: MetPyDatasetAccessor()
     :members:
+
+Functions
+---------
+
+   .. autosummary::
+      :toctree: ./
+
+      grid_deltas_from_dataarray

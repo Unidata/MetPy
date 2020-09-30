@@ -9,13 +9,13 @@ from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
-from ..xarray import preprocess_xarray
+from ..xarray import preprocess_and_wrap
 
 exporter = Exporter(globals())
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='dewpoint')
 @check_units('[pressure]', '[temperature]', bottom='[pressure]', top='[pressure]')
 def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
@@ -48,6 +48,10 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     >>> dewpoint = np.array([20, 15, 10]) * units.degC
     >>> pw = precipitable_water(pressure, dewpoint)
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+
     """
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
@@ -74,7 +78,7 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]')
 def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
@@ -100,10 +104,14 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
     Returns
     -------
-    `pint.Quantity`
-        u_mean: u-component of layer mean wind.
-    `pint.Quantity`
-        v_mean: v-component of layer mean wind.
+    list of `pint.Quantity`
+        list of layer mean value for each profile in args
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
     """
     ret = []  # Returned variable means in layer
@@ -123,7 +131,7 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[speed]', '[speed]', '[length]')
 def bunkers_storm_motion(pressure, u, v, height):
     r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
@@ -149,6 +157,12 @@ def bunkers_storm_motion(pressure, u, v, height):
         U and v component of Bunkers LM storm motion
     wind_mean: `pint.Quantity`
         U and v component of sfc-6km mean flow
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
     """
     # mean wind from sfc-6km
@@ -183,7 +197,7 @@ def bunkers_storm_motion(pressure, u, v, height):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[speed]', '[speed]')
 def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     r"""Calculate bulk shear through a layer.
@@ -215,6 +229,12 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     v_shr: `pint.Quantity`
         v-component of layer bulk shear
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     _, u_layer, v_layer = get_layer(pressure, u, v, height=height,
                                     bottom=bottom, depth=depth)
@@ -226,7 +246,7 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='mucape')
 @check_units('[energy] / [mass]', '[speed] * [speed]', '[speed]')
 def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     r"""Calculate the supercell composite parameter.
@@ -268,7 +288,7 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='sbcape')
 @check_units('[energy] / [mass]', '[length]', '[speed] * [speed]', '[speed]')
 def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, shear_6km):
     r"""Calculate the significant tornado parameter (fixed layer).
@@ -322,7 +342,7 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[speed]', '[speed]', '[length]', '[speed]', '[speed]')
 def critical_angle(pressure, u, v, height, u_storm, v_storm):
     r"""Calculate the critical angle.
@@ -353,6 +373,12 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     -------
     `pint.Quantity`
         critical angle in degrees
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
     """
     # Convert everything to m/s

@@ -7,6 +7,7 @@ import warnings
 import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
+import xarray as xr
 
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
@@ -15,7 +16,7 @@ from ..cbook import broadcast_indices
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
-from ..xarray import preprocess_xarray
+from ..xarray import add_vertical_dim_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
@@ -23,13 +24,13 @@ sat_pressure_0c = 6.112 * units.millibar
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
 @check_units('[temperature]', '[temperature]')
 def relative_humidity_from_dewpoint(temperature, dewpoint):
     r"""Calculate the relative humidity.
 
-    Uses temperature and dewpoint in celsius to calculate relative
-    humidity using the ratio of vapor pressure to saturation vapor pressures.
+    Uses temperature and dewpoint to calculate relative humidity as the ratio of vapor
+    pressure to saturation vapor pressures.
 
     Parameters
     ----------
@@ -54,7 +55,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[pressure]')
 def exner_function(pressure, reference_pressure=mpconsts.P0):
     r"""Calculate the Exner function.
@@ -89,7 +90,7 @@ def exner_function(pressure, reference_pressure=mpconsts.P0):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
 @check_units('[pressure]', '[temperature]')
 def potential_temperature(pressure, temperature):
     r"""Calculate the potential temperature.
@@ -131,7 +132,10 @@ def potential_temperature(pressure, temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='potential_temperature',
+    broadcast=('pressure', 'potential_temperature')
+)
 @check_units('[pressure]', '[temperature]')
 def temperature_from_potential_temperature(pressure, potential_temperature):
     r"""Calculate the temperature from a given potential temperature.
@@ -176,9 +180,12 @@ def temperature_from_potential_temperature(pressure, potential_temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
 @check_units('[pressure]', '[temperature]', '[pressure]')
-def dry_lapse(pressure, temperature, reference_pressure=None):
+def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     r"""Calculate the temperature at a level assuming only dry processes.
 
     This function lifts a parcel starting at `temperature`, conserving
@@ -205,6 +212,11 @@ def dry_lapse(pressure, temperature, reference_pressure=None):
     parcel_profile : Calculate complete parcel profile
     potential_temperature
 
+    Notes
+    -----
+    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or
+    grids) unless reference_pressure is specified.
+
     """
     if reference_pressure is None:
         reference_pressure = pressure[0]
@@ -212,7 +224,10 @@ def dry_lapse(pressure, temperature, reference_pressure=None):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'reference_pressure')
+)
 @check_units('[pressure]', '[temperature]', '[pressure]')
 def moist_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
@@ -234,8 +249,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     Returns
     -------
     `pint.Quantity`
-       The temperature corresponding to the starting temperature and
-       pressure levels.
+       The resulting parcel temperature at levels given by `pressure`
 
     See Also
     --------
@@ -251,6 +265,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
                                 {C_{pd} + \frac{L_v^2 r_s \epsilon}{R_d T^2}}
 
     This equation comes from [Bakhshaii2013]_.
+
+    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or
+    grids).
 
     """
     def dt(t, p):
@@ -300,7 +317,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) using from the starting point.
@@ -347,6 +364,10 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     The function is guaranteed to finish by virtue of the `max_iters` counter.
 
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     def _lcl_iter(p, p0, w, t):
         td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
@@ -364,7 +385,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
         which='top'):
@@ -407,6 +428,12 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     See Also
     --------
     parcel_profile
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
@@ -539,7 +566,7 @@ def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dew
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
     r"""Calculate the equilibrium level.
@@ -577,6 +604,12 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     --------
     parcel_profile
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     # Default to surface parcel if no profile or starting pressure level is given
@@ -604,7 +637,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile(pressure, temperature, dewpoint):
     r"""Calculate the profile a parcel takes through the atmosphere.
@@ -632,13 +665,17 @@ def parcel_profile(pressure, temperature, dewpoint):
     --------
     lcl, moist_lapse, dry_lapse
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+
     """
     _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint)
     return concatenate((t_l, t_u))
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     r"""Calculate the profile a parcel takes through the atmosphere.
@@ -674,7 +711,13 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
 
     See Also
     --------
-    lcl, moist_lapse, dry_lapse, parcel_profile
+    lcl, moist_lapse, dry_lapse, parcel_profile, parcel_profile_with_lcl_as_dataset
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Also, will only return Pint Quantities, even when given xarray DataArray profiles. To
+    obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
 
     """
     p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
@@ -684,6 +727,76 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
     new_dewp = _insert_lcl_level(pressure, dewpoint, p_lcl)
     return new_press, new_temp, new_dewp, prof_temp
+
+
+@exporter.export
+def parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint):
+    r"""Calculate the profile a parcel takes through the atmosphere, returning a Dataset.
+
+    The parcel starts at `temperature`, and `dewpoint`, lifted up
+    dry adiabatically to the LCL, and then moist adiabatically from there.
+    `pressure` specifies the pressure levels for the profile. This function returns
+    a profile that includes the LCL.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest. This array must be from
+        high to low pressure.
+    temperature : `pint.Quantity`
+        The atmospheric temperature at the levels in `pressure`. The first entry should be at
+        the same level as the first `pressure` data point.
+    dewpoint : `pint.Quantity`
+        The atmospheric dewpoint at the levels in `pressure`. The first entry should be at
+        the same level as the first `pressure` data point.
+
+    Returns
+    -------
+    profile : `xarray.Dataset`
+        The interpolated profile with three data variables: ambient_temperature,
+        ambient_dew_point, and profile_temperature, all of which are on an isobaric
+        coordinate.
+
+    See Also
+    --------
+    lcl, moist_lapse, dry_lapse, parcel_profile, parcel_profile_with_lcl
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+
+    """
+    p, ambient_temperature, ambient_dew_point, profile_temperature = parcel_profile_with_lcl(
+        pressure,
+        temperature,
+        dewpoint
+    )
+    return xr.Dataset(
+        {
+            'ambient_temperature': (
+                ('isobaric',),
+                ambient_temperature,
+                {'standard_name': 'air_temperature'}
+            ),
+            'ambient_dew_point': (
+                ('isobaric',),
+                ambient_dew_point,
+                {'standard_name': 'dew_point_temperature'}
+            ),
+            'parcel_temperature': (
+                ('isobaric',),
+                profile_temperature,
+                {'long_name': 'air_temperature_of_lifted_parcel'}
+            )
+        },
+        coords={
+            'isobaric': (
+                'isobaric',
+                p.m,
+                {'units': str(p.units), 'standard_name': 'air_pressure'}
+            )
+        }
+    )
 
 
 def _parcel_profile_helper(pressure, temperature, dewpoint):
@@ -728,7 +841,7 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='mixing_ratio', broadcast=('pressure', 'mixing_ratio'))
 @check_units('[pressure]', '[dimensionless]')
 def vapor_pressure(pressure, mixing_ratio):
     r"""Calculate water vapor (partial) pressure.
@@ -765,7 +878,7 @@ def vapor_pressure(pressure, mixing_ratio):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature')
 @check_units('[temperature]')
 def saturation_vapor_pressure(temperature):
     r"""Calculate the saturation water vapor (partial) pressure.
@@ -801,7 +914,7 @@ def saturation_vapor_pressure(temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
 @check_units('[temperature]', '[dimensionless]')
 def dewpoint_from_relative_humidity(temperature, relative_humidity):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
@@ -829,7 +942,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='vapor_pressure')
 @check_units('[pressure]')
 def dewpoint(vapor_pressure):
     r"""Calculate the ambient dewpoint given the vapor pressure.
@@ -862,7 +975,7 @@ def dewpoint(vapor_pressure):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='partial_press', broadcast=('partial_press', 'total_press'))
 @check_units('[pressure]', '[pressure]', '[dimensionless]')
 def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate the mixing ratio of a gas.
@@ -904,7 +1017,7 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('total_press', 'temperature'))
 @check_units('[pressure]', '[temperature]')
 def saturation_mixing_ratio(total_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
@@ -935,7 +1048,10 @@ def saturation_mixing_ratio(total_press, temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'dewpoint')
+)
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
@@ -989,7 +1105,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
 @check_units('[pressure]', '[temperature]')
 def saturation_equivalent_potential_temperature(pressure, temperature):
     r"""Calculate saturation equivalent potential temperature.
@@ -1056,7 +1172,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
 def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual temperature.
@@ -1090,7 +1206,10 @@ def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpcons
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'mixing_ratio')
+)
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
 def virtual_potential_temperature(pressure, temperature, mixing_ratio,
                                   molecular_weight_ratio=mpconsts.epsilon):
@@ -1127,7 +1246,10 @@ def virtual_potential_temperature(pressure, temperature, mixing_ratio,
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'mixing_ratio')
+)
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
 def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate density.
@@ -1163,9 +1285,12 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='dry_bulb_temperature',
+    broadcast=('pressure', 'dry_bulb_temperature', 'wet_bulb_temperature')
+)
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb_temperature,
+def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb_temperature,
                                         **kwargs):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
@@ -1178,7 +1303,7 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb
         Total atmospheric pressure
     dry_bulb_temperature: `pint.Quantity`
         Dry bulb temperature
-    web_bulb_temperature: `pint.Quantity`
+    wet_bulb_temperature: `pint.Quantity`
         Wet bulb temperature
 
     Returns
@@ -1200,12 +1325,15 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, web_bulb
 
     """
     return (psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature,
-                                             web_bulb_temperature, **kwargs)
+                                             wet_bulb_temperature, **kwargs)
             / saturation_vapor_pressure(dry_bulb_temperature))
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='dry_bulb_temperature',
+    broadcast=('pressure', 'dry_bulb_temperature', 'wet_bulb_temperature')
+)
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_temperature,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
@@ -1255,7 +1383,10 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'relative_humidity')
+)
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
@@ -1295,7 +1426,10 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'mixing_ratio')
+)
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
@@ -1333,7 +1467,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='specific_humidity')
 @check_units('[dimensionless]')
 def mixing_ratio_from_specific_humidity(specific_humidity):
     r"""Calculate the mixing ratio from specific humidity.
@@ -1370,7 +1504,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='mixing_ratio')
 @check_units('[dimensionless]')
 def specific_humidity_from_mixing_ratio(mixing_ratio):
     r"""Calculate the specific humidity from the mixing ratio.
@@ -1407,7 +1541,10 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'specific_humidity')
+)
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
@@ -1446,7 +1583,7 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom',
              which_el='top'):
@@ -1501,6 +1638,10 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     * :math:`T_{parcel}` Parcel temperature
     * :math:`T_{env}` Environment temperature
     * :math:`p` Atmospheric pressure
+
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
 
     See Also
     --------
@@ -1596,7 +1737,7 @@ def _find_append_zero_crossings(x, y):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
                          bottom=None, depth=300 * units.hPa):
@@ -1634,6 +1775,12 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
     --------
     get_layer
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, height=height, interpolate=False)
@@ -1643,9 +1790,10 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
 
 
 @exporter.export
-@preprocess_xarray
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap()
 @check_units('[temperature]', '[pressure]', '[temperature]')
-def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
+def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=0,
                              temperature_out=False, max_iters=50, eps=1e-6,
                              bottom_up_search=True, **kwargs):
     r"""Interpolate data in isobaric coordinates to isentropic coordinates.
@@ -1658,7 +1806,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
         One-dimensional array of pressure levels
     temperature : array
         Array of temperature
-    axis : int, optional
+    vertical_dim : int, optional
         The axis corresponding to the vertical in the temperature array, defaults to 0.
     temperature_out : bool, optional
         If true, will calculate temperature and output as the last item in the output list.
@@ -1688,9 +1836,12 @@ def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
     [Ziv1994]_. Any additional arguments are assumed to vary linearly with temperature and will
     be linearly interpolated to the new isentropic levels.
 
+    Will only return Pint Quantities, even when given xarray DataArray profiles. To
+    obtain a xarray Dataset instead, use `isentropic_interpolation_as_dataset` instead.
+
     See Also
     --------
-    potential_temperature
+    potential_temperature, isentropic_interpolation_as_dataset
 
     """
     # iteration function to be used later
@@ -1711,14 +1862,14 @@ def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
     temperature = temperature.to('kelvin')
 
     slices = [np.newaxis] * ndim
-    slices[axis] = slice(None)
+    slices[vertical_dim] = slice(None)
     slices = tuple(slices)
     pres = np.broadcast_to(pres[slices].magnitude, temperature.shape) * pres.units
 
     # Sort input data
-    sort_pres = np.argsort(pres.m, axis=axis)
-    sort_pres = np.swapaxes(np.swapaxes(sort_pres, 0, axis)[::-1], 0, axis)
-    sorter = broadcast_indices(pres, sort_pres, ndim, axis)
+    sort_pres = np.argsort(pres.m, axis=vertical_dim)
+    sort_pres = np.swapaxes(np.swapaxes(sort_pres, 0, vertical_dim)[::-1], 0, vertical_dim)
+    sorter = broadcast_indices(pres, sort_pres, ndim, vertical_dim)
     levs = pres[sorter]
     tmpk = temperature[sorter]
 
@@ -1727,7 +1878,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
 
     # Make the desired isentropic levels the same shape as temperature
     shape = list(temperature.shape)
-    shape[axis] = isentlevels.size
+    shape[vertical_dim] = isentlevels.size
     isentlevs_nd = np.broadcast_to(isentlevels[slices], shape)
 
     # exponent to Poisson's Equation, which is imported above
@@ -1748,7 +1899,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
     pok = mpconsts.P0 ** ka
 
     # index values for each point for the pressure level nearest to the desired theta level
-    above, below, good = find_bounding_indices(pres_theta.m, levels, axis,
+    above, below, good = find_bounding_indices(pres_theta.m, levels, vertical_dim,
                                                from_below=bottom_up_search)
 
     # calculate constants for the interpolation
@@ -1783,14 +1934,126 @@ def isentropic_interpolation(levels, pressure, temperature, *args, axis=0,
     # do an interpolation for each additional argument
     if args:
         others = interpolate_1d(isentlevels, pres_theta.m, *(arr[sorter] for arr in args),
-                                axis=axis, return_list_always=True)
+                                axis=vertical_dim, return_list_always=True)
         ret.extend(others)
 
     return ret
 
 
 @exporter.export
-@preprocess_xarray
+def isentropic_interpolation_as_dataset(
+    levels,
+    temperature,
+    *args,
+    max_iters=50,
+    eps=1e-6,
+    bottom_up_search=True
+):
+    r"""Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.
+
+    Parameters
+    ----------
+    levels : `pint.Quantity`
+        One-dimensional array of desired potential temperature surfaces
+    temperature : `xarray.DataArray`
+        Array of temperature
+    args : `xarray.DataArray`, optional
+        Any other given variables will be interpolated to each isentropic level. Must have
+        names in order to have a well-formed output Dataset.
+    max_iters : int, optional
+        The maximum number of iterations to use in calculation, defaults to 50.
+    eps : float, optional
+        The desired absolute error in the calculated value, defaults to 1e-6.
+    bottom_up_search : bool, optional
+        Controls whether to search for levels bottom-up, or top-down. Defaults to
+        True, which is bottom-up search.
+
+    Returns
+    -------
+    xarray.Dataset
+        Dataset with pressure, temperature, and each additional argument, all on the specified
+        isentropic coordinates.
+
+    Notes
+    -----
+    Input variable arrays must have the same number of vertical levels as the pressure levels
+    array. Pressure is calculated on isentropic surfaces by assuming that temperature varies
+    linearly with the natural log of pressure. Linear interpolation is then used in the
+    vertical to find the pressure at each isentropic level. Interpolation method from
+    [Ziv1994]_. Any additional arguments are assumed to vary linearly with temperature and will
+    be linearly interpolated to the new isentropic levels.
+
+    This formulation relies upon xarray functionality. If using Pint Quantities, use
+    `isentropic_interpolation` instead.
+
+    See Also
+    --------
+    potential_temperature, isentropic_interpolation
+
+    """
+    # Ensure matching coordinates by broadcasting
+    all_args = xr.broadcast(temperature, *args)
+
+    # Obtain result as list of Quantities
+    ret = isentropic_interpolation(
+        levels,
+        all_args[0].metpy.vertical,
+        all_args[0].metpy.unit_array,
+        *(arg.metpy.unit_array for arg in all_args[1:]),
+        vertical_dim=all_args[0].metpy.find_axis_number('vertical'),
+        temperature_out=True,
+        max_iters=max_iters,
+        eps=eps,
+        bottom_up_search=bottom_up_search
+    )
+
+    # Reconstruct coordinates and dims (add isentropic levels, remove isobaric levels)
+    vertical_dim = all_args[0].metpy.find_axis_name('vertical')
+    new_coords = {
+        'isentropic_level': xr.DataArray(
+            levels.m,
+            dims=('isentropic_level',),
+            coords={'isentropic_level': levels.m},
+            name='isentropic_level',
+            attrs={
+                'units': str(levels.units),
+                'positive': 'up'
+            }
+        ),
+        **{
+            key: value
+            for key, value in all_args[0].coords.items()
+            if key != vertical_dim
+        }
+    }
+    new_dims = [
+        dim if dim != vertical_dim else 'isentropic_level' for dim in all_args[0].dims
+    ]
+
+    # Build final dataset from interpolated Quantities and original DataArrays
+    return xr.Dataset(
+        {
+            'pressure': (
+                new_dims,
+                ret[0],
+                {'standard_name': 'air_pressure'}
+            ),
+            'temperature': (
+                new_dims,
+                ret[1],
+                {'standard_name': 'air_temperature'}
+            ),
+            **{
+                all_args[i].name: (new_dims, ret[i + 1], all_args[i].attrs)
+                for i in range(1, len(all_args))
+            }
+        },
+        coords=new_coords
+    )
+
+
+@exporter.export
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def surface_based_cape_cin(pressure, temperature, dewpoint):
     r"""Calculate surface-based CAPE and CIN.
@@ -1822,6 +2085,12 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
     --------
     cape_cin, parcel_profile
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     p, t, td, profile = parcel_profile_with_lcl(pressure, temperature, dewpoint)
@@ -1829,7 +2098,7 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     r"""Calculate most unstable CAPE/CIN.
@@ -1862,6 +2131,12 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     --------
     cape_cin, most_unstable_parcel, parcel_profile
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     _, _, _, parcel_idx = most_unstable_parcel(pressure, temperature, dewpoint, **kwargs)
@@ -1872,7 +2147,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     r"""Calculate mixed-layer CAPE and CIN.
@@ -1905,6 +2180,13 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     See Also
     --------
     cape_cin, mixed_parcel, parcel_profile
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     depth = kwargs.get('depth', 100 * units.hPa)
     parcel_pressure, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
@@ -1923,7 +2205,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
                  height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
@@ -1962,6 +2244,12 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
     `pint.Quantity`
         The dewpoint of the mixed parcel
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     # If a parcel starting pressure is not provided, use the surface
     if not parcel_start_pressure:
@@ -1991,7 +2279,7 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]')
 def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
                 interpolate=True):
@@ -2022,6 +2310,12 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
     `pint.Quantity`
         The mixed value of the data variable.
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     layer = get_layer(pressure, *args, height=height, bottom=bottom,
                       depth=depth, interpolate=interpolate)
@@ -2037,7 +2331,7 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('height', 'temperature'))
 @check_units('[length]', '[temperature]')
 def dry_static_energy(height, temperature):
     r"""Calculate the dry static energy of parcels.
@@ -2069,7 +2363,10 @@ def dry_static_energy(height, temperature):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('height', 'temperature', 'specific_humidity')
+)
 @check_units('[length]', '[temperature]', '[dimensionless]')
 def moist_static_energy(height, temperature, specific_humidity):
     r"""Calculate the moist static energy of parcels.
@@ -2105,7 +2402,7 @@ def moist_static_energy(height, temperature, specific_humidity):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]')
 def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
                           molecular_weight_ratio=mpconsts.epsilon, bottom=None, depth=None):
@@ -2150,6 +2447,12 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     --------
     thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     # Get the data for the layer, conditional upon bottom/depth being specified and mixing
     # ratio being given
@@ -2175,7 +2478,7 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]')
 def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative_humidity,
                                                  bottom=None, depth=None):
@@ -2220,6 +2523,12 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     thickness_hydrostatic, pressure_to_height_std, virtual_temperature,
     mixing_ratio_from_relative_humidity
 
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
     """
     mixing = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
 
@@ -2228,9 +2537,10 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
 
 
 @exporter.export
-@preprocess_xarray
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'potential_temperature'))
 @check_units('[length]', '[temperature]')
-def brunt_vaisala_frequency_squared(height, potential_temperature, axis=0):
+def brunt_vaisala_frequency_squared(height, potential_temperature, vertical_dim=0):
     r"""Calculate the square of the Brunt-Vaisala frequency.
 
     Brunt-Vaisala frequency squared (a measure of atmospheric stability) is given by the
@@ -2242,17 +2552,21 @@ def brunt_vaisala_frequency_squared(height, potential_temperature, axis=0):
 
     Parameters
     ----------
-    height : `pint.Quantity`
-        One-dimensional profile of atmospheric height
-    potential_temperature : `pint.Quantity`
+    height : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric (geopotential) height
+    potential_temperature : `xarray.DataArray` or `pint.Quantity`
         Atmospheric potential temperature
-    axis : int, optional
-        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+    vertical_dim : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0,
+        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case
+        it is automatically determined from the coordinate metadata.
 
     Returns
     -------
-    `pint.Quantity`
-        The square of the Brunt-Vaisala frequency.
+    `pint.Quantity` or `xarray.DataArray`
+        The square of the Brunt-Vaisala frequency. Given as `pint.Quantity`, unless both
+        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in
+        which case will be `xarray.DataArray`.
 
     See Also
     --------
@@ -2263,14 +2577,18 @@ def brunt_vaisala_frequency_squared(height, potential_temperature, axis=0):
     potential_temperature = potential_temperature.to('K')
 
     # Calculate and return the square of Brunt-Vaisala frequency
-    return mpconsts.g / potential_temperature * first_derivative(potential_temperature,
-                                                                 x=height, axis=axis)
+    return mpconsts.g / potential_temperature * first_derivative(
+        potential_temperature,
+        x=height,
+        axis=vertical_dim
+    )
 
 
 @exporter.export
-@preprocess_xarray
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'potential_temperature'))
 @check_units('[length]', '[temperature]')
-def brunt_vaisala_frequency(height, potential_temperature, axis=0):
+def brunt_vaisala_frequency(height, potential_temperature, vertical_dim=0):
     r"""Calculate the Brunt-Vaisala frequency.
 
     This function will calculate the Brunt-Vaisala frequency as follows:
@@ -2284,17 +2602,21 @@ def brunt_vaisala_frequency(height, potential_temperature, axis=0):
 
     Parameters
     ----------
-    height : `pint.Quantity`
-        One-dimensional profile of atmospheric height
-    potential_temperature : `pint.Quantity`
+    height : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric (geopotential) height
+    potential_temperature : `xarray.DataArray` or `pint.Quantity`
         Atmospheric potential temperature
-    axis : int, optional
-        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+    vertical_dim : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0,
+        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case
+        it is automatically determined from the coordinate metadata.
 
     Returns
     -------
-    `pint.Quantity`
-        Brunt-Vaisala frequency.
+    `pint.Quantity` or `xarray.DataArray`
+        Brunt-Vaisala frequency. Given as `pint.Quantity`, unless both
+        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in
+        which case will be `xarray.DataArray`.
 
     See Also
     --------
@@ -2302,16 +2624,17 @@ def brunt_vaisala_frequency(height, potential_temperature, axis=0):
 
     """
     bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
-                                                      axis=axis)
+                                                      vertical_dim=vertical_dim)
     bv_freq_squared[bv_freq_squared.magnitude < 0] = np.nan
 
     return np.sqrt(bv_freq_squared)
 
 
 @exporter.export
-@preprocess_xarray
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'potential_temperature'))
 @check_units('[length]', '[temperature]')
-def brunt_vaisala_period(height, potential_temperature, axis=0):
+def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
     r"""Calculate the Brunt-Vaisala period.
 
     This function is a helper function for `brunt_vaisala_frequency` that calculates the
@@ -2323,17 +2646,22 @@ def brunt_vaisala_period(height, potential_temperature, axis=0):
 
     Parameters
     ----------
-    height : `pint.Quantity`
-        One-dimensional profile of atmospheric height
-    potential_temperature : pint.Quantity`
+    height : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric (geopotential) height
+    potential_temperature : `xarray.DataArray` or `pint.Quantity`
         Atmospheric potential temperature
-    axis : int, optional
-        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+    vertical_dim : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0,
+        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case
+        it is automatically determined from the coordinate metadata.
 
     Returns
     -------
-    `pint.Quantity`
-        Brunt-Vaisala period.
+    `pint.Quantity` or `xarray.DataArray`
+        Brunt-Vaisala period. Given as `pint.Quantity`, unless both
+        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in
+        which case will be `xarray.DataArray`.
+
 
     See Also
     --------
@@ -2341,14 +2669,17 @@ def brunt_vaisala_period(height, potential_temperature, axis=0):
 
     """
     bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
-                                                      axis=axis)
+                                                      vertical_dim=vertical_dim)
     bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
 
     return 2 * np.pi / np.sqrt(bv_freq_squared)
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'dewpoint')
+)
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def wet_bulb_temperature(pressure, temperature, dewpoint):
     """Calculate the wet-bulb temperature using Normand's rule.
@@ -2374,6 +2705,11 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     See Also
     --------
     lcl, moist_lapse
+
+    Notes
+    -----
+    Since this function iteratively applies a parcel calculation, it should be used with
+    caution on large arrays.
 
     """
     if not hasattr(pressure, 'shape'):
@@ -2401,9 +2737,10 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
 @check_units('[pressure]', '[temperature]')
-def static_stability(pressure, temperature, axis=0):
+def static_stability(pressure, temperature, vertical_dim=0):
     r"""Calculate the static stability within a vertical profile.
 
     .. math:: \sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}
@@ -2416,7 +2753,7 @@ def static_stability(pressure, temperature, axis=0):
         Profile of atmospheric pressure
     temperature : `pint.Quantity`
         Profile of temperature
-    axis : int, optional
+    vertical_dim : int, optional
         The axis corresponding to vertical in the pressure and temperature arrays, defaults
         to 0.
 
@@ -2428,12 +2765,18 @@ def static_stability(pressure, temperature, axis=0):
     """
     theta = potential_temperature(pressure, temperature)
 
-    return - mpconsts.Rd * temperature / pressure * first_derivative(np.log(theta.m_as('K')),
-                                                                     x=pressure, axis=axis)
+    return - mpconsts.Rd * temperature / pressure * first_derivative(
+        np.log(theta.m_as('K')),
+        x=pressure,
+        axis=vertical_dim
+    )
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='temperature',
+    broadcast=('pressure', 'temperature', 'specific_humdiity')
+)
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
 def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
@@ -2463,7 +2806,7 @@ def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='w', broadcast=('w', 'pressure', 'temperature'))
 @check_units('[length]/[time]', '[pressure]', '[temperature]')
 def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
     r"""Calculate omega from w assuming hydrostatic conditions.
@@ -2506,7 +2849,10 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(
+    wrap_like='omega',
+    broadcast=('omega', 'pressure', 'temperature', 'mixing_ratio')
+)
 @check_units('[pressure]/[time]', '[pressure]', '[temperature]')
 def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
     r"""Calculate w from omega assuming hydrostatic conditions.
@@ -2552,7 +2898,7 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='dewpoint', broadcast=('dewpoint', 'pressure'))
 @check_units('[pressure]', '[temperature]')
 def specific_humidity_from_dewpoint(pressure, dewpoint):
     r"""Calculate the specific humidity from the dewpoint temperature and pressure.
@@ -2580,7 +2926,7 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
@@ -2623,9 +2969,13 @@ def lifted_index(pressure, temperature, parcel_profile):
 
 
 @exporter.export
-@preprocess_xarray
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(
+    wrap_like='potential_temperature',
+    broadcast=('height', 'potential_temperature', 'u', 'v')
+)
 @check_units('[length]', '[temperature]', '[speed]', '[speed]')
-def gradient_richardson_number(height, potential_temperature, u, v, axis=0):
+def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim=0):
     r"""Calculate the gradient (or flux) Richardson number.
 
     .. math::   Ri = (g/\theta) * \frac{\left(\partial \theta/\partial z\)}
@@ -2644,16 +2994,17 @@ def gradient_richardson_number(height, potential_temperature, u, v, axis=0):
         x component of the wind
     v : `pint.Quantity`
         y component of the wind
-    axis : int, optional
-        The axis corresponding to vertical, defaults to 0.
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
 
     Returns
     -------
     `pint.Quantity`
         Gradient Richardson number
     """
-    dthetadz = first_derivative(potential_temperature, x=height, axis=axis)
-    dudz = first_derivative(u, x=height, axis=axis)
-    dvdz = first_derivative(v, x=height, axis=axis)
+    dthetadz = first_derivative(potential_temperature, x=height, axis=vertical_dim)
+    dudz = first_derivative(u, x=height, axis=vertical_dim)
+    dvdz = first_derivative(v, x=height, axis=vertical_dim)
 
     return (mpconsts.g / potential_temperature) * (dthetadz / (dudz ** 2 + dvdz ** 2))

@@ -3,9 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 import functools
-from inspect import signature
 from operator import itemgetter
-import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
@@ -17,7 +15,7 @@ from ..cbook import broadcast_indices, result_type
 from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
-from ..xarray import check_axis, preprocess_xarray
+from ..xarray import check_axis, grid_deltas_from_dataarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
@@ -39,21 +37,21 @@ DIR_DICT[UND] = np.nan
 
 
 @exporter.export
-@preprocess_xarray
 def resample_nn_1d(a, centers):
     """Return one-dimensional nearest-neighbor indexes based on user-specified centers.
 
     Parameters
     ----------
     a : array-like
-        1-dimensional array of numeric values from which to
-        extract indexes of nearest-neighbors
+        1-dimensional array of numeric values from which to extract indexes of
+        nearest-neighbors
     centers : array-like
         1-dimensional array of numeric values representing a subset of values to approximate
 
     Returns
     -------
-        An array of indexes representing values closest to given array values
+        A list of indexes (in type given by `array.argmin()`) representing values closest to
+        given array values.
 
     """
     ix = []
@@ -65,7 +63,6 @@ def resample_nn_1d(a, centers):
 
 
 @exporter.export
-@preprocess_xarray
 def nearest_intersection_idx(a, b):
     """Determine the index of the point just before two lines with common x values.
 
@@ -93,7 +90,7 @@ def nearest_intersection_idx(a, b):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @units.wraps(('=A', '=B'), ('=A', '=B', '=B', None, None))
 def find_intersections(x, a, b, direction='all', log_x=False):
     """Calculate the best estimate of intersection.
@@ -120,6 +117,11 @@ def find_intersections(x, a, b, direction='all', log_x=False):
     -------
         A tuple (x, y) of array-like with the x and y coordinates of the
         intersections of the lines.
+
+    Notes
+    -----
+    This function implicity converts `xarray.DataArray` to `pint.Quantity`, with the results
+    given as `pint.Quantity`.
 
     """
     # Change x to logarithmic if log_x=True
@@ -233,7 +235,7 @@ def _delete_masked_points(*arrs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def reduce_point_density(points, radius, priority=None):
     r"""Return a mask to reduce the density of points in irregularly-spaced data.
 
@@ -417,7 +419,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[length]')
 def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_agl=False):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
@@ -446,6 +448,11 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     -------
     `pint.Quantity, pint.Quantity`
         The height and data variables of the layer
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Also, this will return Pint Quantities even when given xarray DataArray profiles.
 
     """
     # Make sure pressure and datavars are the same length
@@ -507,7 +514,7 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 @check_units('[pressure]')
 def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
               interpolate=True):
@@ -542,6 +549,11 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     -------
     `pint.Quantity, pint.Quantity`
         The pressure and data variables of the layer
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Also, this will return Pint Quantities even when given xarray DataArray profiles.
 
     """
     # If we get the depth kwarg, but it's None, set it to the default as well
@@ -609,7 +621,7 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def find_bounding_indices(arr, values, axis, from_below=True):
     """Find the indices surrounding the values within arr along axis.
 
@@ -750,8 +762,8 @@ def make_take(ndims, slice_dim):
 
 
 @exporter.export
-@preprocess_xarray
-def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
+@preprocess_and_wrap()
+def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
     r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
     Parameters
@@ -762,10 +774,10 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
     latitude : array_like
         array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
-    y_dim : int
-        axis number for the y dimesion, defaults to -2.
     x_dim: int
         axis number for the x dimension, defaults to -1.
+    y_dim : int
+        axis number for the y dimesion, defaults to -2.
     kwargs
         Other keyword arguments to pass to :class:`~pyproj.Geod`
 
@@ -781,6 +793,9 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
     Assumes [..., Y, X] dimension order for input and output, unless keyword arguments `y_dim`
     and `x_dim` are otherwise specified.
 
+    This function will only return `pint.Quantity` arrays (not `xarray.DataArray` or another
+    array-like type). It will also "densify" your data if using Dask or lazy-loading.
+
     """
     from pyproj import Geod
 
@@ -794,8 +809,8 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
 
     # pyproj requires ndarrays, not Quantities
     try:
-        longitude = longitude.m_as('degrees')
-        latitude = latitude.m_as('degrees')
+        longitude = np.asarray(longitude.m_as('degrees'))
+        latitude = np.asarray(latitude.m_as('degrees'))
     except AttributeError:
         longitude = np.asarray(longitude)
         latitude = np.asarray(latitude)
@@ -826,7 +841,7 @@ def lat_lon_grid_deltas(longitude, latitude, y_dim=-2, x_dim=-1, **kwargs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs):
     """Convert azimuth and range locations in a polar coordinate system to lat/lon coordinates.
 
@@ -870,76 +885,6 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs)
     return lon, lat
 
 
-@exporter.export
-def grid_deltas_from_dataarray(f, kind='default'):
-    """Calculate the horizontal deltas between grid points of a DataArray.
-
-    Calculate the signed delta distance between grid points of a DataArray in the horizontal
-    directions, using actual (real distance) or nominal (in projection space) deltas.
-
-    Parameters
-    ----------
-    f : `xarray.DataArray`
-        Parsed DataArray (MetPy's crs coordinate must be available for kind="actual")
-    kind : str
-        Type of grid delta to calculate. "actual" returns true distances as calculated from
-        longitude and latitude via `lat_lon_grid_deltas`. "nominal" returns horizontal
-        differences in the data's coordinate space, either in degrees (for lat/lon CRS) or
-        meters (for y/x CRS). "default" behaves like "actual" for datasets with a lat/lon CRS
-        and like "nominal" for all others. Defaults to "default".
-
-    Returns
-    -------
-    dx, dy:
-        arrays of signed deltas between grid points in the x and y directions with dimensions
-        matching those of `f`.
-
-    See Also
-    --------
-    lat_lon_grid_deltas
-
-    """
-    # Determine behavior
-    if kind == 'default' and f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
-        kind = 'actual'
-    elif kind == 'default':
-        kind = 'nominal'
-    elif kind not in ('actual', 'nominal'):
-        raise ValueError('"kind" argument must be specified as "default", "actual", or '
-                         '"nominal"')
-
-    if kind == 'actual':
-        # Get latitude/longitude coordinates and find dim order
-        latitude, longitude = xr.broadcast(*f.metpy.coordinates('latitude', 'longitude'))
-        try:
-            y_dim = latitude.metpy.find_axis_number('y')
-            x_dim = latitude.metpy.find_axis_number('x')
-        except AttributeError:
-            warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
-                          'dimension order.')
-            y_dim, x_dim = -2, -1
-        # Obtain grid deltas as xarray Variables
-        (dx_var, dx_units), (dy_var, dy_units) = (
-            (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
-            for deltas in lat_lon_grid_deltas(longitude, latitude, y_dim=y_dim, x_dim=x_dim,
-                                              initstring=f.metpy.cartopy_crs.proj4_init))
-    else:
-        # Obtain y/x coordinate differences
-        y, x = f.metpy.coordinates('y', 'x')
-        dx_var = x.diff(x.dims[0]).variable
-        dx_units = units(x.attrs.get('units'))
-        dy_var = y.diff(y.dims[0]).variable
-        dy_units = units(y.attrs.get('units'))
-
-    # Broadcast to input and attach units
-    dx = dx_var.set_dims(f.dims, shape=[dx_var.sizes[dim] if dim in dx_var.dims else 1
-                                        for dim in f.dims]).data * dx_units
-    dy = dy_var.set_dims(f.dims, shape=[dy_var.sizes[dim] if dim in dy_var.dims else 1
-                                        for dim in f.dims]).data * dy_units
-
-    return dx, dy
-
-
 def xarray_derivative_wrap(func):
     """Decorate the derivative functions to make them work nicely with DataArrays.
 
@@ -950,7 +895,7 @@ def xarray_derivative_wrap(func):
     def wrapper(f, **kwargs):
         if 'x' in kwargs or 'delta' in kwargs:
             # Use the usual DataArray to pint.Quantity preprocessing wrapper
-            return preprocess_xarray(func)(f, **kwargs)
+            return preprocess_and_wrap()(func)(f, **kwargs)
         elif isinstance(f, xr.DataArray):
             # Get axis argument, defaulting to first dimension
             axis = f.metpy.find_axis_name(kwargs.get('axis', 0))
@@ -983,7 +928,7 @@ def xarray_derivative_wrap(func):
 
 @exporter.export
 @xarray_derivative_wrap
-def first_derivative(f, **kwargs):
+def first_derivative(f, axis=None, x=None, delta=None):
     """Calculate the first derivative of a grid of values.
 
     Works for both regularly-spaced data and grids with varying spacing.
@@ -1026,7 +971,7 @@ def first_derivative(f, **kwargs):
     second_derivative
 
     """
-    n, axis, delta = _process_deriv_args(f, kwargs)
+    n, axis, delta = _process_deriv_args(f, axis, x, delta)
     take = make_take(n, axis)
 
     # First handle centered case
@@ -1073,7 +1018,7 @@ def first_derivative(f, **kwargs):
 
 @exporter.export
 @xarray_derivative_wrap
-def second_derivative(f, **kwargs):
+def second_derivative(f, axis=None, x=None, delta=None):
     """Calculate the second derivative of a grid of values.
 
     Works for both regularly-spaced data and grids with varying spacing.
@@ -1116,7 +1061,7 @@ def second_derivative(f, **kwargs):
     first_derivative
 
     """
-    n, axis, delta = _process_deriv_args(f, kwargs)
+    n, axis, delta = _process_deriv_args(f, axis, x, delta)
     take = make_take(n, axis)
 
     # First handle centered case
@@ -1159,7 +1104,7 @@ def second_derivative(f, **kwargs):
 
 
 @exporter.export
-def gradient(f, **kwargs):
+def gradient(f, axes=None, coordinates=None, deltas=None):
     """Calculate the gradient of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
@@ -1175,13 +1120,6 @@ def gradient(f, **kwargs):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    coordinates : array-like, optional
-        Sequence of arrays containing the coordinate values corresponding to the
-        grid points in `f` in axis order.
-    deltas : array-like, optional
-        Sequence of arrays or scalars that specify the spacing between the grid points in `f`
-        in axis order. There should be one item less than the size of `f` along the applicable
-        axis.
     axes : sequence, optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
@@ -1190,6 +1128,13 @@ def gradient(f, **kwargs):
         `coordinates` or `deltas` given. In general, each axis can be an axis number
         (integer), dimension coordinate name (string) or a standard axis type (string). The
         current standard axis types are 'time', 'vertical', 'y', and 'x'.
+    coordinates : array-like, optional
+        Sequence of arrays containing the coordinate values corresponding to the
+        grid points in `f` in axis order.
+    deltas : array-like, optional
+        Sequence of arrays or scalars that specify the spacing between the grid points in `f`
+        in axis order. There should be one item less than the size of `f` along the applicable
+        axis.
 
     Returns
     -------
@@ -1206,13 +1151,13 @@ def gradient(f, **kwargs):
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
     """
-    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
     return tuple(first_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
                  for ind, axis in enumerate(axes))
 
 
 @exporter.export
-def laplacian(f, **kwargs):
+def laplacian(f, axes=None, coordinates=None, deltas=None):
     """Calculate the laplacian of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
@@ -1228,11 +1173,6 @@ def laplacian(f, **kwargs):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    coordinates : array-like, optional
-        The coordinate values corresponding to the grid points in `f`
-    deltas : array-like, optional
-        Spacing between the grid points in `f`. There should be one item less than the size
-        of `f` along the applicable axis.
     axes : sequence, optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
@@ -1241,6 +1181,11 @@ def laplacian(f, **kwargs):
         `coordinates` or `deltas` given. In general, each axis can be an axis number
         (integer), dimension coordinate name (string) or a standard axis type (string). The
         current standard axis types are 'time', 'vertical', 'y', and 'x'.
+    coordinates : array-like, optional
+        The coordinate values corresponding to the grid points in `f`
+    deltas : array-like, optional
+        Spacing between the grid points in `f`. There should be one item less than the size
+        of `f` along the applicable axis.
 
     Returns
     -------
@@ -1257,7 +1202,7 @@ def laplacian(f, **kwargs):
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
     """
-    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
     derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
               for ind, axis in enumerate(axes)]
     return sum(derivs)
@@ -1275,26 +1220,27 @@ def _broadcast_to_axis(arr, axis, ndim):
     return arr
 
 
-def _process_gradient_args(f, kwargs):
+def _process_gradient_args(f, axes, coordinates, deltas):
     """Handle common processing of arguments for gradient and gradient-like functions."""
-    axes = kwargs.get('axes', range(f.ndim))
+    axes_given = axes is not None
+    axes = axes if axes_given else range(f.ndim)
 
     def _check_length(positions):
-        if 'axes' in kwargs and len(positions) < len(axes):
+        if axes_given and len(positions) < len(axes):
             raise ValueError('Length of "coordinates" or "deltas" cannot be less than that '
                              'of "axes".')
-        elif 'axes' not in kwargs and len(positions) != len(axes):
+        elif not axes_given and len(positions) != len(axes):
             raise ValueError('Length of "coordinates" or "deltas" must match the number of '
                              'dimensions of "f" when "axes" is not given.')
 
-    if 'deltas' in kwargs:
-        if 'coordinates' in kwargs or 'x' in kwargs:
+    if deltas is not None:
+        if coordinates is not None:
             raise ValueError('Cannot specify both "coordinates" and "deltas".')
-        _check_length(kwargs['deltas'])
-        return 'delta', kwargs['deltas'], axes
-    elif 'coordinates' in kwargs:
-        _check_length(kwargs['coordinates'])
-        return 'x', kwargs['coordinates'], axes
+        _check_length(deltas)
+        return 'delta', deltas, axes
+    elif coordinates is not None:
+        _check_length(coordinates)
+        return 'x', coordinates, axes
     elif isinstance(f, xr.DataArray):
         return 'pass', axes, axes  # only the axis argument matters
     else:
@@ -1302,19 +1248,19 @@ def _process_gradient_args(f, kwargs):
                          'when "f" is not a DataArray.')
 
 
-def _process_deriv_args(f, kwargs):
+def _process_deriv_args(f, axis, x, delta):
     """Handle common processing of arguments for derivative functions."""
     n = f.ndim
-    axis = normalize_axis_index(kwargs.get('axis', 0), n)
+    axis = normalize_axis_index(axis if axis is not None else 0, n)
 
     if f.shape[axis] < 3:
         raise ValueError('f must have at least 3 point along the desired axis.')
 
-    if 'delta' in kwargs:
-        if 'x' in kwargs:
+    if delta is not None:
+        if x is not None:
             raise ValueError('Cannot specify both "x" and "delta".')
 
-        delta = np.atleast_1d(kwargs['delta'])
+        delta = np.atleast_1d(delta)
         if delta.size == 1:
             diff_size = list(f.shape)
             diff_size[axis] -= 1
@@ -1324,8 +1270,8 @@ def _process_deriv_args(f, kwargs):
                 delta = delta * delta_units
         else:
             delta = _broadcast_to_axis(delta, axis, n)
-    elif 'x' in kwargs:
-        x = _broadcast_to_axis(kwargs['x'], axis, n)
+    elif x is not None:
+        x = _broadcast_to_axis(x, axis, n)
         delta = np.diff(x, axis=axis)
     else:
         raise ValueError('Must specify either "x" or "delta" for value positions.')
@@ -1334,7 +1280,7 @@ def _process_deriv_args(f, kwargs):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap(wrap_like='input_dir')
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
@@ -1390,7 +1336,7 @@ def _abbrieviate_direction(ext_dir_str):
 
 
 @exporter.export
-@preprocess_xarray
+@preprocess_and_wrap()
 def angle_to_direction(input_angle, full=False, level=3):
     """Convert the meteorological angle to directional text.
 
@@ -1513,146 +1459,3 @@ def _remove_nans(*variables):
     for v in variables:
         ret.append(v[~mask])
     return ret
-
-
-def wrap_output_like(**wrap_kwargs):
-    """Wrap the output from a function to be like some other data object type.
-
-    Wraps given data to match the units/coordinates/object type of another array. Currently
-    supports:
-
-    - As input (output from wrapped function):
-
-        * ``pint.Quantity``
-        * ``xarray.DataArray``
-        * any type wrappable by ``pint.Quantity``
-
-    - As matched output (final returned value):
-
-        * ``pint.Quantity``
-        * ``xarray.DataArray`` wrapping a ``pint.Quantity``
-
-    (if matched output is not one of these types, we instead treat the match as if it was a
-    dimenionless Quantity.)
-
-    This wrapping/conversion follows the following rules:
-
-    - If match_unit is False, for output of Quantity or DataArary respectively,
-
-        * ndarray becomes dimensionless Quantity or unitless DataArray with matching coords
-        * Quantity is unchanged or becomes DataArray with input units and output coords
-        * DataArray is converted to Quantity by accessor or is unchanged
-
-    - If match_unit is True, for output of Quantity or DataArary respectively, with a given
-      unit,
-
-        * ndarray becomes Quantity or DataArray (with matching coords) with output unit
-        * Quantity is converted to output unit, then returned or converted to DataArray with
-          matching coords
-        * DataArray is has units converted via the accessor, then converted to Quantity via
-          the accessor or returned
-
-    The output to match can be specified two ways:
-
-    - Using the `argument` keyword argument, the output is taken from argument of that name
-      from the wrapped function's signature
-    - Using the `other` keyword argument, the output is given directly
-
-    Parameters
-    ----------
-    argument : str
-        specify the name of a single argument from the function signature from which
-        to take the other data object
-    other : `numpy.ndarray` or `pint.Quantity` or `xarray.DataArray`
-        specify the other data object directly
-    match_unit : bool
-        if True and other data object has units, convert output to those units
-        (defaults to False)
-
-    Notes
-    -----
-    This can be extended in the future to support:
-
-    - ``units.wraps``-like behavior
-    - Python scalars vs. NumPy scalars (Issue #1209)
-    - dask (and other duck array) compatibility
-    - dimensionality reduction (particularly with xarray)
-
-    See Also
-    --------
-    preprocess_xarray
-
-    """
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            # Determine other
-            if 'other' in wrap_kwargs:
-                other = wrap_kwargs['other']
-            elif 'argument' in wrap_kwargs:
-                other = signature(func).bind(*args, **kwargs).arguments[
-                    wrap_kwargs['argument']]
-            else:
-                raise ValueError('Must specify keyword "other" or "argument".')
-
-            # Get result from wrapped function
-            result = func(*args, **kwargs)
-
-            # Proceed with wrapping rules
-            if wrap_kwargs.get('match_unit', False):
-                return _wrap_output_like_matching_units(result, other)
-            else:
-                return _wrap_output_like_not_matching_units(result, other)
-
-        return wrapper
-    return decorator
-
-
-def _wrap_output_like_matching_units(result, match):
-    """Convert result to be like match with matching units for output wrapper."""
-    if isinstance(match, xr.DataArray):
-        output_xarray = True
-        match_units = match.metpy.units
-    elif isinstance(match, units.Quantity):
-        output_xarray = False
-        match_units = match.units
-    else:
-        output_xarray = False
-        match_units = ''
-
-    if isinstance(result, xr.DataArray):
-        result = result.metpy.convert_units(match_units)
-        return result.metpy.quantify() if output_xarray else result.metpy.unit_array
-    else:
-        result = result.m_as(match_units) if isinstance(result, units.Quantity) else result
-        if output_xarray:
-            return xr.DataArray(
-                units.Quantity(result, match_units),
-                dims=match.dims,
-                coords=match.coords
-            )
-        else:
-            return units.Quantity(result, match_units)
-
-
-def _wrap_output_like_not_matching_units(result, match):
-    """Convert result to be like match without matching units for output wrapper."""
-    output_xarray = isinstance(match, xr.DataArray)
-    if isinstance(result, xr.DataArray):
-        return result.metpy.quantify() if output_xarray else result.metpy.unit_array
-    else:
-        if isinstance(result, units.Quantity):
-            result_magnitude = result.magnitude
-            result_units = str(result.units)
-        else:
-            result_magnitude = result
-            result_units = ''
-
-        if output_xarray:
-            return xr.DataArray(
-                units.Quantity(result_magnitude, result_units),
-                dims=match.dims,
-                coords=match.coords
-            )
-        else:
-            return units.Quantity(result_magnitude, result_units)
