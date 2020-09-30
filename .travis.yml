@@ -81,7 +81,10 @@ script:
         false;
       fi;
     else
-      python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests;
+      python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/;
+      python -m coverage combine;
+      python -m coverage report;
+      python -m coverage xml;
     fi
 
 after_script:

@@ -85,9 +85,13 @@ jobs:
         python -m pip install --no-deps .
 
     - name: Run tests
+      # By running coverage in "parallel" mode and "combining", we can clean up the path names
       run: |
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests --cov-report=xml
+        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
+        python -m coverage combine
+        python -m coverage report
+        python -m coverage xml
 
     - name: Run doctests
       # Windows produces some slightly different types that causes doctests to fail

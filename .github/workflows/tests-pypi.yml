@@ -107,7 +107,10 @@ jobs:
       run: |
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
-        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --cov=metpy --cov=tests --cov-report=xml
+        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
+        python -m coverage combine
+        python -m coverage report
+        python -m coverage xml
 
     - name: Run doctests
       if: ${{ matrix.dep-versions == 'Current.txt' && matrix.no-extras != 'No Extras' }}

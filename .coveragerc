@@ -1,0 +1,10 @@
+[paths]
+source =
+    src/
+    /*/site-packages
+
+[run]
+source = tests
+source_pkgs = metpy
+omit =
+    src/metpy/io/_nexrad_msgs/parse_spec.py
