@@ -257,28 +257,32 @@
 <h1>geostrophic_wind<a class="headerlink" href="#geostrophic-wind" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.calc.geostrophic_wind">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">geostrophic_wind</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#geostrophic_wind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.geostrophic_wind" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">geostrophic_wind</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">dx</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dy</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">latitude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x_dim</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">y_dim</span><span class="o">=</span><span class="default_value">- 2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#geostrophic_wind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.geostrophic_wind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the geostrophic wind given from the height or geopotential.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>height</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The height field, with either leading dimensions of (x, y) or trailing dimensions
-of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p></li>
-<li><p><strong>f</strong> (<em>array_like</em>) – The coriolis parameter.  This can be a scalar to be applied
-everywhere or an array of values.</p></li>
-<li><p><strong>dx</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">height</em> along the applicable axis.</p></li>
-<li><p><strong>dy</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">height</em> along the applicable axis.</p></li>
+<li><p><strong>height</strong> ((…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The height or geopotential field.</p></li>
+<li><p><strong>dx</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+latitude/longitude coordinates used as input.</p></li>
+<li><p><strong>dy</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+latitude/longitude coordinates used as input.</p></li>
+<li><p><strong>latitude</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The latitude, which is used to calculate the Coriolis parameter. Its dimensions must
+be broadcastable with those of height. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with latitude
+coordinate used as input. Note that an argument without units is treated as
+dimensionless, which is equivalent to radians.</p></li>
+<li><p><strong>x_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Axis number of x dimension. Defaults to -1 (implying […, Y, X] order). Automatically
+parsed from input if using <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p></li>
+<li><p><strong>y_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Axis number of y dimension. Defaults to -2 (implying […, Y, X] order). Automatically
+parsed from input if using <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A 2-item tuple of arrays, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – A tuple of the u-component and v-component of the geostrophic wind.</p>
+<dd class="field-even"><p><em>A 2-item tuple of arrays</em> – A tuple of the u-component and v-component of the geostrophic wind.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
-of (x, y) or trailing dimensions of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-geostrophic-wind">
@@ -313,7 +317,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -347,7 +351,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

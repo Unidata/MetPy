@@ -1,0 +1,12 @@
+isentropic_interpolation_as_dataset
+==============================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: isentropic_interpolation_as_dataset
+
+.. include:: metpy.calc.isentropic_interpolation_as_dataset.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

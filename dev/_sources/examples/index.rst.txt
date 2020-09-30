@@ -86,27 +86,6 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="By reading model output data from a netCDF file, we can create a four panel plot showing:">
-
-.. only:: html
-
- .. figure:: /examples/images/thumb/sphx_glr_Four_Panel_Map_thumb.png
-     :alt: Four Panel Map
-
-     :ref:`sphx_glr_examples_Four_Panel_Map.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/Four_Panel_Map
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function metpy.interpolate.cross_section can obtain a cross-sectional slice through g...">
 
 .. only:: html
@@ -125,6 +104,27 @@ Examples of using a variety of MetPy's functionality together.
    :hidden:
 
    /examples/cross_section
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="By reading model output data from a netCDF file, we can create a four panel plot showing:">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_Four_Panel_Map_thumb.png
+     :alt: Four Panel Map
+
+     :ref:`sphx_glr_examples_Four_Panel_Map.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/Four_Panel_Map
 
 .. raw:: html
 

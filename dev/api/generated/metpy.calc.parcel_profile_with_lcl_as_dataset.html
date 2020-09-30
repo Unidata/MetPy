@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>grid_deltas_from_dataarray &mdash; MetPy 1.0.0rc1</title>
+  <title>parcel_profile_with_lcl_as_dataset &mdash; MetPy 1.0.0rc1</title>
   
 
   
@@ -17,7 +17,7 @@
   
   
   
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.grid_deltas_from_dataarray.html"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.parcel_profile_with_lcl_as_dataset.html"/>
   
 
   
@@ -49,8 +49,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="MetPy 1.0.0rc1" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
-        <link rel="next" title="laplacian" href="metpy.calc.laplacian.html"/>
-        <link rel="prev" title="gradient" href="metpy.calc.gradient.html"/> 
+        <link rel="next" title="significant_tornado" href="metpy.calc.significant_tornado.html"/>
+        <link rel="prev" title="parcel_profile_with_lcl" href="metpy.calc.parcel_profile_with_lcl.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -135,22 +135,32 @@
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#soundings">Soundings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dynamic-kinematic">Dynamic/Kinematic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.cross_section_components.html">cross_section_components</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.first_derivative.html">first_derivative</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.gradient.html">gradient</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">grid_deltas_from_dataarray</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.laplacian.html">laplacian</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.normal_component.html">normal_component</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.second_derivative.html">second_derivative</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.tangential_component.html">tangential_component</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#soundings">Soundings</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.cape_cin.html">cape_cin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.critical_angle.html">critical_angle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.el.html">el</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lifted_index.html">lifted_index</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer.html">mixed_layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.parcel_profile.html">parcel_profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">parcel_profile_with_lcl_as_dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.significant_tornado.html">significant_tornado</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.supercell_composite.html">supercell_composite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dynamic-kinematic">Dynamic/Kinematic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#smoothing">Smoothing</a></li>
@@ -219,7 +229,7 @@
         
           <li><a href="metpy.calc.html">calc</a> &raquo;</li>
         
-      <li>grid_deltas_from_dataarray</li>
+      <li>parcel_profile_with_lcl_as_dataset</li>
     
     
     <li class="source-link">
@@ -227,7 +237,7 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.calc.grid_deltas_from_dataarray&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.calc.parcel_profile_with_lcl_as_dataset&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -241,44 +251,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="grid-deltas-from-dataarray">
-<h1>grid_deltas_from_dataarray<a class="headerlink" href="#grid-deltas-from-dataarray" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="parcel-profile-with-lcl-as-dataset">
+<h1>parcel_profile_with_lcl_as_dataset<a class="headerlink" href="#parcel-profile-with-lcl-as-dataset" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="metpy.calc.grid_deltas_from_dataarray">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">grid_deltas_from_dataarray</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#grid_deltas_from_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.grid_deltas_from_dataarray" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the horizontal deltas between grid points of a DataArray.</p>
-<p>Calculate the signed delta distance between grid points of a DataArray in the horizontal
-directions, using actual (real distance) or nominal (in projection space) deltas.</p>
+<dt id="metpy.calc.parcel_profile_with_lcl_as_dataset">
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">parcel_profile_with_lcl_as_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pressure</span></em>, <em class="sig-param"><span class="n">temperature</span></em>, <em class="sig-param"><span class="n">dewpoint</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#parcel_profile_with_lcl_as_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.parcel_profile_with_lcl_as_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the profile a parcel takes through the atmosphere, returning a Dataset.</p>
+<p>The parcel starts at <em class="xref py py-obj">temperature</em>, and <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dewpoint</span></code></a>, lifted up
+dry adiabatically to the LCL, and then moist adiabatically from there.
+<em class="xref py py-obj">pressure</em> specifies the pressure levels for the profile. This function returns
+a profile that includes the LCL.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Parsed DataArray (MetPy’s crs coordinate must be available for kind=”actual”)</p></li>
-<li><p><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Type of grid delta to calculate. “actual” returns true distances as calculated from
-longitude and latitude via <a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lat_lon_grid_deltas</span></code></a>. “nominal” returns horizontal
-differences in the data’s coordinate space, either in degrees (for lat/lon CRS) or
-meters (for y/x CRS). “default” behaves like “actual” for datasets with a lat/lon CRS
-and like “nominal” for all others. Defaults to “default”.</p></li>
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric pressure level(s) of interest. This array must be from
+high to low pressure.</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric temperature at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
+the same level as the first <em class="xref py py-obj">pressure</em> data point.</p></li>
+<li><p><strong>dewpoint</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric dewpoint at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be at
+the same level as the first <em class="xref py py-obj">pressure</em> data point.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dx, dy</em> – arrays of signed deltas between grid points in the x and y directions with dimensions
-matching those of <em class="xref py py-obj">f</em>.</p>
+<dd class="field-even"><p><strong>profile</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – The interpolated profile with three data variables: ambient_temperature,
+ambient_dew_point, and profile_temperature, all of which are on an isobaric
+coordinate.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas"><code class="xref py py-func docutils literal notranslate"><span class="pre">lat_lon_grid_deltas()</span></code></a></p>
+<p><a class="reference internal" href="metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-func docutils literal notranslate"><span class="pre">lcl()</span></code></a>, <a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_lapse()</span></code></a>, <a class="reference internal" href="metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">dry_lapse()</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl" title="metpy.calc.parcel_profile_with_lcl"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile_with_lcl()</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</p>
 </dd></dl>
 
-<div class="section" id="examples-using-metpy-calc-grid-deltas-from-dataarray">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.grid_deltas_from_dataarray</span></code><a class="headerlink" href="#examples-using-metpy-calc-grid-deltas-from-dataarray" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="`xarray &lt;http://xarray.pydata.org/&gt;`_ is a powerful Python package that provides N-dimensional ..."><div class="figure align-default" id="id1">
-<img alt="xarray with MetPy Tutorial" src="../../_images/sphx_glr_xarray_tutorial_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/xarray_tutorial.html#sphx-glr-tutorials-xarray-tutorial-py"><span class="std std-ref">xarray with MetPy Tutorial</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<div style='clear:both'></div></div>
 
 
            </div>
@@ -290,10 +298,10 @@ matching those of <em class="xref py py-obj">f</em>.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.calc.laplacian.html" class="btn btn-neutral float-right" title="laplacian" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.calc.significant_tornado.html" class="btn btn-neutral float-right" title="significant_tornado" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.gradient.html" class="btn btn-neutral" title="gradient" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.parcel_profile_with_lcl.html" class="btn btn-neutral" title="parcel_profile_with_lcl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -303,7 +311,7 @@ matching those of <em class="xref py py-obj">f</em>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -337,7 +345,7 @@ matching those of <em class="xref py py-obj">f</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

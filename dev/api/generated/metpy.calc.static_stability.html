@@ -248,7 +248,7 @@
 <h1>static_stability<a class="headerlink" href="#static-stability" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.calc.static_stability">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">static_stability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pressure</span></em>, <em class="sig-param"><span class="n">temperature</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#static_stability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.static_stability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">static_stability</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pressure</span></em>, <em class="sig-param"><span class="n">temperature</span></em>, <em class="sig-param"><span class="n">vertical_dim</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#static_stability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.static_stability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the static stability within a vertical profile.</p>
 <div class="math notranslate nohighlight">
 \[\sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}\]</div>
@@ -258,7 +258,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Profile of atmospheric pressure</p></li>
 <li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Profile of temperature</p></li>
-<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the pressure and temperature arrays, defaults
+<li><p><strong>vertical_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the pressure and temperature arrays, defaults
 to 0.</p></li>
 </ul>
 </dd>
@@ -293,7 +293,7 @@ to 0.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -327,7 +327,7 @@ to 0.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

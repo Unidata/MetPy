@@ -207,13 +207,13 @@
 
 <span class="kn">from</span> <span class="nn">..cbook</span> <span class="kn">import</span> <span class="n">broadcast_indices</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_and_wrap</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="interpolate_nans_1d"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_nans_1d.html#metpy.interpolate.interpolate_nans_1d">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">interpolate_nans_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Interpolate NaN values in y.</span>
 
@@ -248,7 +248,7 @@
 
 
 <div class="viewcode-block" id="interpolate_1d"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_1d.html#metpy.interpolate.interpolate_1d">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">interpolate_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">return_list_always</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolates data with any shape over a specified axis.</span>
 
@@ -373,7 +373,7 @@
 
 
 <div class="viewcode-block" id="log_interpolate_1d"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.log_interpolate_1d.html#metpy.interpolate.log_interpolate_1d">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">log_interpolate_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolates data with logarithmic x-scale over a specified axis.</span>
 
@@ -450,7 +450,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -484,7 +484,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -208,13 +208,13 @@
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">mpconsts</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_and_wrap</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="precipitable_water"><a class="viewcode-back" href="../../../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">precipitable_water</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate precipitable water through the depth of a sounding.</span>
@@ -247,6 +247,10 @@
 <span class="sd">    &gt;&gt;&gt; dewpoint = np.array([20, 15, 10]) * units.degC</span>
 <span class="sd">    &gt;&gt;&gt; pw = precipitable_water(pressure, dewpoint)</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Sort pressure and dewpoint to be in decreasing pressure order (increasing height)</span>
     <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -273,7 +277,7 @@
 
 
 <div class="viewcode-block" id="mean_pressure_weighted"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mean_pressure_weighted.html#metpy.calc.mean_pressure_weighted">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mean_pressure_weighted</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate pressure-weighted mean of an arbitrary variable through a layer.</span>
@@ -299,10 +303,14 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        u_mean: u-component of layer mean wind.</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        v_mean: v-component of layer mean wind.</span>
+<span class="sd">    list of `pint.Quantity`</span>
+<span class="sd">        list of layer mean value for each profile in args</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Returned variable means in layer</span>
@@ -322,7 +330,7 @@
 
 
 <div class="viewcode-block" id="bunkers_storm_motion"><a class="viewcode-back" href="../../../api/generated/metpy.calc.bunkers_storm_motion.html#metpy.calc.bunkers_storm_motion">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">bunkers_storm_motion</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.</span>
@@ -348,6 +356,12 @@
 <span class="sd">        U and v component of Bunkers LM storm motion</span>
 <span class="sd">    wind_mean: `pint.Quantity`</span>
 <span class="sd">        U and v component of sfc-6km mean flow</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># mean wind from sfc-6km</span>
@@ -382,7 +396,7 @@
 
 
 <div class="viewcode-block" id="bulk_shear"><a class="viewcode-back" href="../../../api/generated/metpy.calc.bulk_shear.html#metpy.calc.bulk_shear">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">bulk_shear</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate bulk shear through a layer.</span>
@@ -414,6 +428,12 @@
 <span class="sd">    v_shr: `pint.Quantity`</span>
 <span class="sd">        v-component of layer bulk shear</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">u_layer</span><span class="p">,</span> <span class="n">v_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
                                     <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
@@ -425,7 +445,7 @@
 
 
 <div class="viewcode-block" id="supercell_composite"><a class="viewcode-back" href="../../../api/generated/metpy.calc.supercell_composite.html#metpy.calc.supercell_composite">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;mucape&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">supercell_composite</span><span class="p">(</span><span class="n">mucape</span><span class="p">,</span> <span class="n">effective_storm_helicity</span><span class="p">,</span> <span class="n">effective_shear</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the supercell composite parameter.</span>
@@ -467,7 +487,7 @@
 
 
 <div class="viewcode-block" id="significant_tornado"><a class="viewcode-back" href="../../../api/generated/metpy.calc.significant_tornado.html#metpy.calc.significant_tornado">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;sbcape&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">significant_tornado</span><span class="p">(</span><span class="n">sbcape</span><span class="p">,</span> <span class="n">surface_based_lcl_height</span><span class="p">,</span> <span class="n">storm_helicity_1km</span><span class="p">,</span> <span class="n">shear_6km</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the significant tornado parameter (fixed layer).</span>
@@ -521,7 +541,7 @@
 
 
 <div class="viewcode-block" id="critical_angle"><a class="viewcode-back" href="../../../api/generated/metpy.calc.critical_angle.html#metpy.calc.critical_angle">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">critical_angle</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">u_storm</span><span class="p">,</span> <span class="n">v_storm</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the critical angle.</span>
@@ -552,6 +572,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        critical angle in degrees</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Convert everything to m/s</span>
@@ -594,7 +620,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -628,7 +654,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -248,7 +248,7 @@
 <h1>dry_lapse<a class="headerlink" href="#dry-lapse" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.calc.dry_lapse">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dry_lapse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pressure</span></em>, <em class="sig-param"><span class="n">temperature</span></em>, <em class="sig-param"><span class="n">reference_pressure</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dry_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dry_lapse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dry_lapse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pressure</span></em>, <em class="sig-param"><span class="n">temperature</span></em>, <em class="sig-param"><span class="n">reference_pressure</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vertical_dim</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dry_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dry_lapse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the temperature at a level assuming only dry processes.</p>
 <p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>, conserving
 potential temperature. The starting pressure can be given by <em class="xref py py-obj">reference_pressure</em>.</p>
@@ -275,6 +275,9 @@ pressure array.</p></li>
 </dl>
 <p><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or
+grids) unless reference_pressure is specified.</p>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -302,7 +305,7 @@ pressure array.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -336,7 +339,7 @@ pressure array.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

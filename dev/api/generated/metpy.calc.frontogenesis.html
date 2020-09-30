@@ -257,7 +257,7 @@
 <h1>frontogenesis<a class="headerlink" href="#frontogenesis" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.calc.frontogenesis">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">frontogenesis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">potential_temperature</span></em>, <em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">dy</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#frontogenesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.frontogenesis" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">frontogenesis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">potential_temperature</span></em>, <em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">dx</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dy</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x_dim</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">y_dim</span><span class="o">=</span><span class="default_value">- 2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#frontogenesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.frontogenesis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the 2D kinematic frontogenesis of a temperature field.</p>
 <p>The implementation is a form of the Petterssen Frontogenesis and uses the formula
 outlined in <a class="reference internal" href="../../references.html#bluestein1993" id="id1"><span>[Bluestein1993]</span></a> pg.248-253.</p>
@@ -273,22 +273,26 @@ outlined in <a class="reference internal" href="../../references.html#bluestein1
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>potential_temperature</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Potential temperature</p></li>
-<li><p><strong>u</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – x component of the wind</p></li>
-<li><p><strong>v</strong> ((M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – y component of the wind</p></li>
-<li><p><strong>dx</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
-<li><p><strong>dy</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>potential_temperature</strong> ((…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Potential temperature</p></li>
+<li><p><strong>u</strong> ((…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – x component of the wind</p></li>
+<li><p><strong>v</strong> ((…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – y component of the wind</p></li>
+<li><p><strong>dx</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+latitude/longitude coordinates used as input.</p></li>
+<li><p><strong>dy</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+latitude/longitude coordinates used as input.</p></li>
+<li><p><strong>x_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Axis number of x dimension. Defaults to -1 (implying […, Y, X] order). Automatically
+parsed from input if using <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p></li>
+<li><p><strong>y_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Axis number of y dimension. Defaults to -2 (implying […, Y, X] order). Automatically
+parsed from input if using <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(M, N) <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – 2D Frontogenesis in [temperature units]/m/s</p>
+<dd class="field-even"><p>(…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – 2D Frontogenesis in [temperature units]/m/s</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
-of (x, y) or trailing dimensions of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p>
 <p>Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
 <span class="math notranslate nohighlight">\(1.08e4*1.e5\)</span></p>
 </dd></dl>
@@ -318,7 +322,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -352,7 +356,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

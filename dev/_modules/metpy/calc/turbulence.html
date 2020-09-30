@@ -206,13 +206,13 @@
 
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="kn">import</span> <span class="n">make_take</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_and_wrap</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="get_perturbation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_perturbation.html#metpy.calc.get_perturbation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;ts&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_perturbation</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the perturbation from the mean of a time series.</span>
 
@@ -245,7 +245,7 @@
 
 
 <div class="viewcode-block" id="tke"><a class="viewcode-back" href="../../../api/generated/metpy.calc.tke.html#metpy.calc.tke">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">tke</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute turbulence kinetic energy.</span>
 
@@ -311,7 +311,7 @@
 
 
 <div class="viewcode-block" id="kinematic_flux"><a class="viewcode-back" href="../../../api/generated/metpy.calc.kinematic_flux.html#metpy.calc.kinematic_flux">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;vel&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">kinematic_flux</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the kinematic flux from two time series.</span>
 
@@ -380,7 +380,7 @@
 
 
 <div class="viewcode-block" id="friction_velocity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.friction_velocity.html#metpy.calc.friction_velocity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">friction_velocity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the friction velocity from the time series of velocity components.</span>
 
@@ -462,7 +462,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 29, 2020 at 17:05:02.
+      Last updated on Sep 30, 2020 at 04:30:46.
 
     </p>
   </div>
@@ -496,7 +496,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post297+ge6aec4e',
+            VERSION:'1.0.0rc1.post316+g0546a76',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
