@@ -14,10 +14,7 @@ import re
 import numpy as np
 from xarray import Variable
 from xarray.backends.common import AbstractDataStore
-try:
-    from xarray.core.utils import FrozenDict
-except ImportError:
-    from xarray.core.utils import FrozenOrderedDict as FrozenDict
+from xarray.core.utils import FrozenDict
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from ..package_tools import Exporter
@@ -405,11 +402,3 @@ class GiniFile(AbstractDataStore):
         """
         return FrozenDict(satellite=self.prod_desc.creating_entity,
                           sector=self.prod_desc.sector_id)
-
-    def get_dimensions(self):
-        """Get the file's dimensions.
-
-        This is used by `xarray.open_dataset`.
-
-        """
-        return FrozenDict(x=self.prod_desc.nx, y=self.prod_desc.ny)
