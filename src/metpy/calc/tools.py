@@ -11,7 +11,7 @@ import numpy.ma as ma
 from scipy.spatial import cKDTree
 import xarray as xr
 
-from ..cbook import broadcast_indices, result_type
+from ..cbook import broadcast_indices
 from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
@@ -385,7 +385,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
                     # 1.13 always returns float64. This can cause upstream users problems,
                     # resulting in something like np.append() to upcast.
                     bound_pressure = (np.interp(np.atleast_1d(bound.m), height.m,
-                                                pressure.m).astype(result_type(bound))
+                                                pressure.m).astype(np.result_type(bound))
                                       * pressure.units)
                 else:
                     idx = (np.abs(height - bound)).argmin()

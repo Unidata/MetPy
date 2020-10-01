@@ -90,25 +90,4 @@ def broadcast_indices(x, minv, ndim, axis):
     return tuple(ret)
 
 
-def iterable(value):
-    """Determine if value can be iterated over."""
-    # Special case for pint Quantities
-    if hasattr(value, 'magnitude'):
-        value = value.magnitude
-    return np.iterable(value)
-
-
-def result_type(value):
-    """Determine the type for numpy type casting in a pint-version-safe way."""
-    try:
-        return np.result_type(value)
-    except TypeError:
-        if hasattr(value, 'dtype'):
-            return value.dtype
-        elif hasattr(value, 'magnitude'):
-            return np.result_type(value.magnitude)
-        else:
-            raise TypeError(f'Cannot determine dtype for type {type(value)}')
-
-
-__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'iterable', 'result_type')
+__all__ = ('Registry', 'broadcast_indices', 'get_test_data')
