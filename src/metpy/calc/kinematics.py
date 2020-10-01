@@ -7,7 +7,6 @@ import numpy as np
 from . import coriolis_parameter
 from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
-from ..cbook import iterable
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
@@ -16,7 +15,7 @@ exporter = Exporter(globals())
 
 
 def _stack(arrs):
-    return concatenate([a[np.newaxis] if iterable(a) else a for a in arrs], axis=0)
+    return concatenate([a[np.newaxis] if np.iterable(a) else a for a in arrs], axis=0)
 
 
 @exporter.export

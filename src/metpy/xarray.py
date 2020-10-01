@@ -661,14 +661,13 @@ class MetPyDatasetAccessor:
             Parsed DataArray (if varname is a string) or Dataset
 
         """
-        from .cbook import iterable
         from .plots.mapping import CFProjection
 
         if varname is None:
             # If no varname is given, parse all variables in the dataset
             varname = list(self._dataset.data_vars)
 
-        if iterable(varname) and not isinstance(varname, str):
+        if np.iterable(varname) and not isinstance(varname, str):
             # If non-string iterable is given, apply recursively across the varnames
             subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
                                for single_varname in varname])
