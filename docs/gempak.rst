@@ -41,7 +41,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Absolute value</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.absolute.html#numpy.absolute">numpy.absolute</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -49,47 +49,47 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Arc cosine</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arccos.html#numpy.arccos">numpy.arccos</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">ASIN(S)</td>
         <td class="tg-implemented">Arc sine</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arcsin.html#numpy.arcsin">numpy.arcsin</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">ATAN(S)</td>
         <td class="tg-implemented">Arc tangent</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arctan.html#numpy.arctan">numpy.arctan</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">ATN2(S1, S2)</td>
         <td class="tg-implemented">Arc tangent</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arctan2.html#numpy.arctan2">numpy.arctan2</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">COS(S)</td>
         <td class="tg-implemented">Cosine</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.cos.html#numpy.cos">numpy.cos</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">EXP(S1, S2)</td>
         <td class="tg-implemented">Exponential to real</td>
         <td class="tg-implemented">S1**S2</td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -97,23 +97,23 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Exponential to integer (uses NINT)</td>
         <td class="tg-implemented">S1 ** S2.<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.chararray.astype.html#numpy.chararray.astype">astype(int)</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">INT(S)</td>
         <td class="tg-implemented">Convert to integer</td>
         <td class="tg-implemented">S.<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.chararray.astype.html#numpy.chararray.astype">astype(int)</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">LN(S)</td>
         <td class="tg-implemented">Natural logarithm</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log.html#numpy.log">numpy.log</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -121,7 +121,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Base 10 logarithm</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10">numpy.log10</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -129,7 +129,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Round to nearest integer</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.round_.html#numpy.round_">numpy.round</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -137,15 +137,15 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Sine</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sin.html#numpy.sin">numpy.sin</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SQRT(S)</td>
         <td class="tg-implemented">Square root</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html#numpy.sqrt">numpy.sqrt</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -153,8 +153,8 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Tangent</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.tan.html#numpy.tan">numpy.tan</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-info">NCDF(S1, S2, S3)</td>
@@ -200,33 +200,33 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">ADD(S1, S2)</td>
         <td class="tg-implemented">Addition</td>
         <td class="tg-implemented">S1 + S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">MUL(S1, S2)</td>
         <td class="tg-implemented">Multiplication</td>
         <td class="tg-implemented">S1 * S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">QUO(S1, S2)</td>
         <td class="tg-implemented">Division</td>
         <td class="tg-implemented">S1 / S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SUB(S1, S2)</td>
         <td class="tg-implemented">Subtraction</td>
         <td class="tg-implemented">S1 - S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>BOOL(S)</td>
@@ -240,41 +240,41 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">SLT(S1, S2)</td>
         <td class="tg-implemented">Less than function</td>
         <td class="tg-implemented">S1 &lt; S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SLE(S1, S2)</td>
         <td class="tg-implemented">Less than or equal to function</td>
         <td class="tg-implemented">S1 &lt;= S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SGT(S1, S2)</td>
         <td class="tg-implemented">Greater than function</td>
         <td class="tg-implemented">S1 &gt; S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SGE(S1, S2)</td>
         <td class="tg-implemented">Greater than or equal to function</td>
         <td class="tg-implemented">S1 &gt;= S2</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SBTW(S1, S2, S3)</td>
         <td class="tg-implemented">Between two values function</td>
         <td class="tg-implemented">S1 &gt; S2 and S1 &lt; S3</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>SMAX(S1, S2)</td>
@@ -312,49 +312,49 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">ADV(S, V)</td>
         <td class="tg-implemented">Advection</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.advection.html#metpy.calc.advection">metpy.calc.advection</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">AVG(S1, S2)</td>
         <td class="tg-implemented">Average</td>
-        <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean">numpy.mean</a>(<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html">np.array</a>([S1, S2]), axis=0)</td>
+        <td class="tg-implemented"><a href="http://xarray.pydata.org/en/stable/generated/xarray.concat.html#xarray-concat">xr.concat</a>([S1, S2], dim='new').mean(axis=0)</td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">AVOR(V)</td>
         <td class="tg-implemented">Absolute vorticity</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.absolute_vorticity.html">metpy.calc.absolute_vorticity</a></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">BVSQ(THTA)</td>
         <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (wrap with <a href="https://numpy.org/doc/1.18/reference/generated/numpy.average.html#numpy-average">np.average</a> to obtain layer average)</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">CROS(V1, V2)</td>
         <td class="tg-implemented">Vector cross product magnitude</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.cross.html#numpy.cross">numpy.cross</a>(V1, V2)</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-no">No</td>
-        <td></td>
       </tr>
       <tr>
         <td class="tg-implemented">DDEN(PRES, TMPC)</td>
         <td class="tg-implemented">Density of dry air</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.density.html#metpy.calc.density">metpy.calc.density(mixing=0)</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">DDR(S)</td>
@@ -376,25 +376,25 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">DDX(S)</td>
         <td class="tg-implemented">Partial derivative with respect to X</td>
         <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">DDY(S)</td>
         <td class="tg-implemented">Partial derivative with respect to Y</td>
         <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">DEF(V)</td>
         <td class="tg-implemented">Total deformation</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation">metpy.calc.total_deformation</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>DIRN(V)</td>
@@ -416,9 +416,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">DIV(V)</td>
         <td class="tg-implemented">Divergence</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.h_divergence.html#metpy.calc.h_divergence">metpy.calc.h_divergence</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>DIVT(S, V)</td>
@@ -431,10 +431,10 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DOT(V1, V2)</td>
         <td class="tg-implemented">Vector dot product</td>
-        <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html#numpy.dot">numpy.dot</a>(V1, V2)</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-implemented"><a href="http://xarray.pydata.org/en/stable/generated/xarray.dot.html#xarray-dot">xr.dot</a>(xr.concat([V1u, V1v], dim='component'), xr.concat([V2u, V2v], dim='component'), dims='component')</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">DTH(S)</td>
@@ -464,9 +464,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">FRNT(THETA, V)</td>
         <td class="tg-implemented">Frontogenesis</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis">metpy.calc.frontogenesis</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">GWFS(S, N)</td>
@@ -474,7 +474,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian">metpy.calc.smooth_gaussian</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>RDFS(S, DX)</td>
@@ -503,18 +503,18 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">KNTS(S)</td>
         <td class="tg-implemented">Convert m/s to knots</td>
-        <td class="tg-implemented">.to('knots')</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-implemented">.metpy.convert_units('knots')</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">LAP(S)</td>
         <td class="tg-implemented">Laplacian operator</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">metpy.calc.laplacian</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-no">Yes - Different Answer</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>LAV(S)</td>
@@ -544,9 +544,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">MAG(V)</td>
         <td class="tg-implemented">Magnitude of a vector</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.norm.html#numpy.linalg.norm">numpy.linalg.norm</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>MASS</td>
@@ -568,9 +568,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">MIXR(DWPC, PRES)</td>
         <td class="tg-implemented">Mixing ratio</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">metpy.calc.mixing_ratio</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">MRAD(V, LAT, LON, DIR, SPD)</td>
@@ -673,9 +673,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Potential vorticity in a layer</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic">metpy.calc.potential_vorticity_baroclinic</a>
                                    <br><a href="api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_barotropic">metpy.calc.potential_vorticity_barotropic</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">PVR3(S, V)</td>
@@ -689,9 +689,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">RELH(TMPC, DWPT)</td>
         <td class="tg-implemented">Relative humidity</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">RICH(V)</td>
@@ -713,17 +713,17 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-info">SAVG(S)</td>
         <td class="tg-info">Average over whole grid</td>
         <td class="tg-info"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean">numpy.mean</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-info">SAVS(S)</td>
         <td class="tg-info">Average over display subset area of grid</td>
         <td class="tg-info"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean">numpy.mean</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">SDIV(S, V)</td>
@@ -737,41 +737,41 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">SGMX(S)</td>
         <td class="tg-implemented">Maximum of S over GAREA</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.nanmax.html#numpy.nanmax">numpy.nanmax</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SGMN(S)</td>
         <td class="tg-implemented">Minimum of S over GAREA</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.nanmin.html#numpy.nanmin">numpy.nanmin</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SHR(V)</td>
         <td class="tg-implemented">Shearing deformation</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation">metpy.calc.shearing_deformation</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SM5S(S)</td>
         <td class="tg-implemented">5-point smoother</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">SM9S(S)</td>
         <td class="tg-implemented">9-point smoother</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>STAB(TMPC)</td>
@@ -785,9 +785,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">STR(V)</td>
         <td class="tg-implemented">Stretching deformation</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation">metpy.calc.stretching_deformation</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">TANG(V)</td>
@@ -817,41 +817,41 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">THES(PRES, TMPC)</td>
         <td class="tg-implemented">Saturated equivalent potential temperature</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature">metpy.calc.saturation_equivalent_potential_temperature</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">THTA(TMPC, PRES)</td>
         <td class="tg-implemented">Potential temperature</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature">metpy.calc.potential_temperature</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">THTE(PRES, TMPC, DWPC)</td>
         <td class="tg-implemented">Equivalent potential temperature</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.equivalent_potential_temperature.html">metpy.calc.equivalent_potential_temperature</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">THWC(PRES, TMPC, DWPC)</td>
         <td class="tg-implemented">Wet bulb temperature</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes for individual grid points</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">TLCL(TMPC, DWPC)</td>
         <td class="tg-implemented">Temperature of the lifting condensation level</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html">metpy.calc.lcl</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes for individual grid points</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">TMST(THTE, PRES)</td>
@@ -865,9 +865,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">TMWK(PRES, TMPK, RMIX)</td>
         <td class="tg-implemented">Web bulb temperature in Kelvin</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes for individual grid points</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>DSUB(V1, V2)</td>
@@ -905,9 +905,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">VOR(V)</td>
         <td class="tg-implemented">Vorticity</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.v_vorticity.html#metpy.calc.v_vorticity">metpy.calc.v_vorticity</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes* Still needs spherical correction terms</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>VR(V)</td>
@@ -938,7 +938,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Average along a display subset grid row</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean">numpy.mean(a, axis=1)</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -946,7 +946,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Sum along a display subset grid row</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html#numpy.sum">numpy.sum(a, axis=1)</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -954,7 +954,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Average along a display subset grid column</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean">numpy.mean(a, axis=0)</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
       <tr>
@@ -962,7 +962,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Sum along a display subset grid column</td>
         <td class="tg-implemented"><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html#numpy.sum">numpy.sum(a, axis=0)</a></td>
         <td class="tg-yes">Yes</td>
-        <td class="tg-no">No</td>
+        <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
       </tr>
     </table>
@@ -985,9 +985,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">AGE(S)</td>
         <td class="tg-implemented">Ageostrophic wind</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind">metpy.calc.ageostrophic_wind</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">CIRC(V, S)</td>
@@ -1001,17 +1001,17 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">DVDX(V)</td>
         <td class="tg-implemented">Partial x derivative of V</td>
         <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">DVDY(V)</td>
         <td class="tg-implemented">Partial y derivative of V</td>
         <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">GCIR(LAT, LON)</td>
@@ -1033,17 +1033,17 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">GEO(S)</td>
         <td class="tg-implemented">Geostrophic wind</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind">metpy.calc.geostrophic_wind</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">GRAD(S)</td>
         <td class="tg-implemented">Gradient of a scalar</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.gradient.html#metpy.calc.gradient">metpy.calc.gradient</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">GWFV(V, N)</td>
@@ -1065,9 +1065,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">INAD(V1, V2)</td>
         <td class="tg-implemented">Inertial advective wind</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.inertial_advective_wind.html">metpy.calc.inertial_advective_wind</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes, slightly different answer in some instances</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">ISAL(S)</td>
@@ -1088,10 +1088,10 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">KNTV(V)</td>
         <td class="tg-implemented">Convert m/s to knots</td>
-        <td class="tg-implemented">.to('knots')</td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-implemented">.metpy.convert_units('knots')</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-notimplemented">LTRN(S, V)</td>
@@ -1113,9 +1113,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">QVEC(S, V)</td>
         <td class="tg-implemented">Q-vector at a level</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html">metpy.calc.q_vector</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">QVCL(THTA, V)</td>
@@ -1153,9 +1153,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">SM5V(V)</td>
         <td class="tg-implemented">5-point smoother</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td>SQUO(S, V)</td>
