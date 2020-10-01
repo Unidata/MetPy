@@ -210,7 +210,7 @@
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-<span class="kn">from</span> <span class="nn">..cbook</span> <span class="kn">import</span> <span class="n">broadcast_indices</span><span class="p">,</span> <span class="n">result_type</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="kn">import</span> <span class="n">broadcast_indices</span>
 <span class="kn">from</span> <span class="nn">..interpolate</span> <span class="kn">import</span> <span class="n">interpolate_1d</span><span class="p">,</span> <span class="n">log_interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
@@ -584,7 +584,7 @@
                     <span class="c1"># 1.13 always returns float64. This can cause upstream users problems,</span>
                     <span class="c1"># resulting in something like np.append() to upcast.</span>
                     <span class="n">bound_pressure</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">bound</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">height</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
-                                                <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">result_type</span><span class="p">(</span><span class="n">bound</span><span class="p">))</span>
+                                                <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">result_type</span><span class="p">(</span><span class="n">bound</span><span class="p">))</span>
                                       <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="n">bound</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
@@ -1673,7 +1673,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 30, 2020 at 18:07:01.
+      Last updated on Oct 01, 2020 at 20:36:44.
 
     </p>
   </div>
@@ -1707,7 +1707,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post323+g6b966f8',
+            VERSION:'1.0.0rc1.post326+gb9c9d82',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

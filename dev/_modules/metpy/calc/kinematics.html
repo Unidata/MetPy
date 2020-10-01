@@ -206,7 +206,6 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">coriolis_parameter</span>
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="kn">import</span> <span class="n">first_derivative</span><span class="p">,</span> <span class="n">get_layer_heights</span><span class="p">,</span> <span class="n">gradient</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">mpconsts</span>
-<span class="kn">from</span> <span class="nn">..cbook</span> <span class="kn">import</span> <span class="n">iterable</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 <span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">add_grid_arguments_from_xarray</span><span class="p">,</span> <span class="n">preprocess_and_wrap</span>
@@ -215,7 +214,7 @@
 
 
 <span class="k">def</span> <span class="nf">_stack</span><span class="p">(</span><span class="n">arrs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">iterable</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">iterable</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="vorticity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vorticity.html#metpy.calc.vorticity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1194,7 +1193,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Sep 30, 2020 at 18:07:01.
+      Last updated on Oct 01, 2020 at 20:36:44.
 
     </p>
   </div>
@@ -1228,7 +1227,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post323+g6b966f8',
+            VERSION:'1.0.0rc1.post326+gb9c9d82',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
