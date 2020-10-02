@@ -57,6 +57,7 @@ def test_vorticity_asym():
 
 def test_vorticity_positional_grid_args_failure():
     """Test that old API of positional grid arguments to vorticity fails."""
+    # pylint: disable=too-many-function-args
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
     with pytest.raises(TypeError, match='too many positional arguments'):
@@ -110,6 +111,7 @@ def test_divergence_asym():
 
 def test_divergence_positional_grid_args_failure():
     """Test that old API of positional grid arguments to divergence fails."""
+    # pylint: disable=too-many-function-args
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
     with pytest.raises(TypeError, match='too many positional arguments'):
