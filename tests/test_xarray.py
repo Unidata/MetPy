@@ -10,7 +10,7 @@ import xarray as xr
 
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data, needs_pyproj)
+                           get_test_data)
 from metpy.units import DimensionalityError, units
 from metpy.xarray import (
     add_grid_arguments_from_xarray,
@@ -885,7 +885,6 @@ def test_coord_helper_da_dummy_yx(test_coord_helper_da_latlon):
     return test_coord_helper_da_latlon.assign_coords(y=range(3), x=range(3))
 
 
-@needs_pyproj
 def test_assign_latitude_longitude_basic_dataarray(test_coord_helper_da_yx,
                                                    test_coord_helper_da_latlon):
     """Test assign_latitude_longitude in basic usage on DataArray."""
@@ -905,7 +904,6 @@ def test_assign_latitude_longitude_error_existing_dataarray(
     assert 'Latitude/longitude coordinate(s) are present' in str(exc)
 
 
-@needs_pyproj
 def test_assign_latitude_longitude_force_existing_dataarray(
         test_coord_helper_da_dummy_latlon, test_coord_helper_da_latlon):
     """Test assign_latitude_longitude with existing coordinates forcing new."""
@@ -917,7 +915,6 @@ def test_assign_latitude_longitude_force_existing_dataarray(
                                          lon.values, 3)
 
 
-@needs_pyproj
 def test_assign_latitude_longitude_basic_dataset(test_coord_helper_da_yx,
                                                  test_coord_helper_da_latlon):
     """Test assign_latitude_longitude in basic usage on Dataset."""
@@ -929,7 +926,6 @@ def test_assign_latitude_longitude_basic_dataset(test_coord_helper_da_yx,
                                          lon.values, 3)
 
 
-@needs_pyproj
 def test_assign_y_x_basic_dataarray(test_coord_helper_da_yx, test_coord_helper_da_latlon):
     """Test assign_y_x in basic usage on DataArray."""
     new_da = test_coord_helper_da_latlon.metpy.assign_y_x()
@@ -946,7 +942,6 @@ def test_assign_y_x_error_existing_dataarray(
     assert 'y/x coordinate(s) are present' in str(exc)
 
 
-@needs_pyproj
 def test_assign_y_x_force_existing_dataarray(
         test_coord_helper_da_dummy_yx, test_coord_helper_da_yx):
     """Test assign_y_x with existing coordinates forcing new."""
@@ -956,7 +951,6 @@ def test_assign_y_x_force_existing_dataarray(
     np.testing.assert_array_almost_equal(test_coord_helper_da_yx['x'].values, x.values, 3)
 
 
-@needs_pyproj
 def test_assign_y_x_dataarray_outside_tolerance(test_coord_helper_da_latlon):
     """Test assign_y_x raises ValueError when tolerance is exceeded on DataArray."""
     with pytest.raises(ValueError) as exc:
@@ -964,7 +958,6 @@ def test_assign_y_x_dataarray_outside_tolerance(test_coord_helper_da_latlon):
     assert 'cannot be collapsed to 1D within tolerance' in str(exc)
 
 
-@needs_pyproj
 def test_assign_y_x_dataarray_transposed(test_coord_helper_da_yx, test_coord_helper_da_latlon):
     """Test assign_y_x on DataArray with transposed order."""
     new_da = test_coord_helper_da_latlon.transpose(transpose_coords=True).metpy.assign_y_x()
@@ -973,7 +966,6 @@ def test_assign_y_x_dataarray_transposed(test_coord_helper_da_yx, test_coord_hel
     np.testing.assert_array_almost_equal(test_coord_helper_da_yx['x'].values, x.values, 3)
 
 
-@needs_pyproj
 def test_assign_y_x_dataset_assumed_order(test_coord_helper_da_yx,
                                           test_coord_helper_da_latlon):
     """Test assign_y_x on Dataset where order must be assumed."""
@@ -1314,7 +1306,6 @@ def test_grid_deltas_from_dataarray_xy(test_da_xy):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
-@needs_pyproj
 def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
     # Construct lon/lat coordinates
@@ -1343,7 +1334,6 @@ def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     assert_array_almost_equal(dy, true_dy, 2)
 
 
-@needs_pyproj
 def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     """Test grid_deltas_from_dataarray with a lonlat grid and kind='nominal'."""
     dx, dy = grid_deltas_from_dataarray(test_da_lonlat, kind='nominal')
@@ -1353,7 +1343,6 @@ def test_grid_deltas_from_dataarray_nominal_lonlat(test_da_lonlat):
     assert_array_almost_equal(dy, true_dy, 5)
 
 
-@needs_pyproj
 def test_grid_deltas_from_dataarray_lonlat_assumed_order():
     """Test grid_deltas_from_dataarray when dim order must be assumed."""
     # Create test dataarray
@@ -1389,7 +1378,6 @@ def test_grid_deltas_from_dataarray_invalid_kind(test_da_xy):
         grid_deltas_from_dataarray(test_da_xy, kind='invalid')
 
 
-@needs_pyproj
 def test_add_grid_arguments_from_dataarray():
     """Test the grid argument decorator for adding in arguments from xarray."""
     @add_grid_arguments_from_xarray

@@ -20,7 +20,7 @@ from metpy.io.metar import parse_metar_file
 from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
                          PanelContainer, PlotObs)
 # Fixtures to make sure we have the right backend
-from metpy.testing import needs_cartopy, needs_pyproj, set_agg_backend  # noqa: F401, I202
+from metpy.testing import needs_cartopy, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
@@ -28,7 +28,6 @@ MPL_VERSION = matplotlib.__version__[:3]
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
-@needs_pyproj
 @needs_cartopy
 def test_declarative_image():
     """Test making an image plot."""
@@ -324,7 +323,6 @@ def test_colorfill_no_colorbar(cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.23)
-@needs_pyproj
 @needs_cartopy
 def test_global():
     """Test that we can set global extent."""

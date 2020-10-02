@@ -16,7 +16,7 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         total_deformation, vorticity, wind_components)
 from metpy.constants import g, Re
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data, needs_pyproj)
+                           get_test_data)
 from metpy.units import concatenate, units
 
 
@@ -466,7 +466,6 @@ def test_absolute_vorticity_asym():
 
 
 @pytest.fixture
-@needs_pyproj
 def pv_data():
     """Test data for all PV testing."""
     u = np.array([[[100, 90, 80, 70],
@@ -582,7 +581,6 @@ def test_potential_vorticity_baroclinic_wrong_number_of_levels_axis_0(pv_data):
                                        pressure[:1, :, :])
 
 
-@needs_pyproj
 def test_potential_vorticity_baroclinic_isentropic_real_data():
     """Test potential vorticity calculation with real isentropic data."""
     isentlevs = [328, 330, 332] * units.K
@@ -677,7 +675,6 @@ def test_potential_vorticity_baroclinic_isentropic_real_data():
     assert_almost_equal(pvor, true_pv, 14)
 
 
-@needs_pyproj
 def test_potential_vorticity_baroclinic_isobaric_real_data():
     """Test potential vorticity calculation with real isentropic data."""
     pres = [20000., 25000., 30000.] * units.Pa
@@ -786,7 +783,6 @@ def test_potential_vorticity_barotropic(pv_data):
     assert_almost_equal(pv, truth, 10)
 
 
-@needs_pyproj
 def test_inertial_advective_wind_diffluent():
     """Test inertial advective wind with a diffluent flow."""
     lats = np.array([[50., 50., 50., 50., 50., 50., 50., 50., 50., 50., 50.],
@@ -978,7 +974,6 @@ def test_inertial_advective_wind_diffluent():
 
 
 @pytest.fixture
-@needs_pyproj
 def q_vector_data():
     """Define data for use in Q-vector tests."""
     speed = np.ones((4, 4)) * 50. * units('knots')
@@ -1057,7 +1052,6 @@ def test_q_vector_with_static_stability(q_vector_data):
 
 
 @pytest.fixture
-@needs_pyproj
 def data_4d():
     """Define 4D data (extracted from Irma GFS example) for testing kinematics functions."""
     data = xr.open_dataset(get_test_data('irma_gfs_example.nc', False))

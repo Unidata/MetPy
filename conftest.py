@@ -10,6 +10,7 @@ import matplotlib.pyplot
 import numpy
 import pandas
 import pooch
+import pyproj
 import pytest
 import scipy
 import traitlets
@@ -25,10 +26,10 @@ import pint  # noqa: I100, E402
 def pytest_report_header(config, startdir):
     """Add dependency information to pytest output."""
     return (f'Dep Versions: Matplotlib {matplotlib.__version__}, '
-            f'NumPy {numpy.__version__}, SciPy {scipy.__version__}, '
-            f'Xarray {xarray.__version__}, Pint {pint.__version__}, '
-            f'Pandas {pandas.__version__}, Traitlets {traitlets.__version__}, '
-            f'Pooch {pooch.version.full_version}')
+            f'NumPy {numpy.__version__}, Pandas {pandas.__version__}, '
+            f'Pint {pint.__version__}, Pooch {pooch.version.full_version}\n'
+            f'\tPyProj {pyproj.__version__}, SciPy {scipy.__version__}, '
+            f'Traitlets {traitlets.__version__}, Xarray {xarray.__version__}')
 
 
 @pytest.fixture(autouse=True)
@@ -45,6 +46,7 @@ def ccrs():
 
     Any testing function/fixture that needs access to ``cartopy.crs`` can simply add this to
     their parameter list.
+
     """
     return pytest.importorskip('cartopy.crs')
 
@@ -55,6 +57,7 @@ def cfeature():
 
     Any testing function/fixture that needs access to ``cartopy.feature`` can simply add this
     to their parameter list.
+
     """
     return pytest.importorskip('cartopy.feature')
 
@@ -62,8 +65,6 @@ def cfeature():
 @pytest.fixture()
 def test_da_lonlat():
     """Return a DataArray with a lon/lat grid and no time coordinate for use in tests."""
-    pytest.importorskip('pyproj')
-
     data = numpy.linspace(300, 250, 3 * 4 * 4).reshape((3, 4, 4))
     ds = xarray.Dataset(
         {'temperature': (['isobaric', 'lat', 'lon'], data)},
@@ -96,8 +97,6 @@ def test_da_lonlat():
 @pytest.fixture()
 def test_da_xy():
     """Return a DataArray with a x/y grid and a time coordinate for use in tests."""
-    pytest.importorskip('pyproj')
-
     data = numpy.linspace(300, 250, 3 * 3 * 4 * 4).reshape((3, 3, 4, 4))
     ds = xarray.Dataset(
         {'temperature': (['time', 'isobaric', 'y', 'x'], data),

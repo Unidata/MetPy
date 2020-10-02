@@ -14,7 +14,6 @@ import xarray as xr
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.gini import GiniProjection
-from metpy.testing import needs_pyproj
 
 logging.getLogger('metpy.io.gini').setLevel(logging.ERROR)
 
@@ -98,7 +97,6 @@ gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
 
 @pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
-@needs_pyproj
 def test_gini_xarray(filename, bounds, data_var, proj_attrs, image, dt):
     """Test that GINIFile can be passed to XArray as a datastore."""
     f = GiniFile(get_test_data(filename))
@@ -134,7 +132,6 @@ def test_gini_xarray(filename, bounds, data_var, proj_attrs, image, dt):
     assert np.asarray(dt, dtype='datetime64[ms]') == ds.variables['time']
 
 
-@needs_pyproj
 def test_gini_mercator_upper_corner():
     """Test that the upper corner of the Mercator coordinates is correct."""
     f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))

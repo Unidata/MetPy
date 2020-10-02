@@ -22,6 +22,7 @@ import re
 import warnings
 
 import numpy as np
+from pyproj import Proj
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
@@ -1021,8 +1022,6 @@ def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
 
 def _build_latitude_longitude(da):
     """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
-    from pyproj import Proj
-
     y, x = da.metpy.coordinates('y', 'x')
     xx, yy = np.meshgrid(x.values, y.values)
     lonlats = np.stack(Proj(da.metpy.pyproj_crs)(xx, yy, inverse=True, radians=False), axis=-1)
@@ -1037,8 +1036,6 @@ def _build_latitude_longitude(da):
 
 def _build_y_x(da, tolerance):
     """Build y/x coordinates from DataArray's latitude/longitude coordinates."""
-    from pyproj import Proj
-
     # Initial sanity checks
     latitude, longitude = da.metpy.coordinates('latitude', 'longitude')
     if latitude.dims != longitude.dims:
