@@ -1949,17 +1949,18 @@ class Level3File:
                            hdr.j_center * self.pos_scale(in_sym_block)),
                 'gate_scale': hdr.scale_factor * 0.001, 'first': hdr.ind_first_bin}
 
+    digital_radial_hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
+                                          ('i_center', 'h'), ('j_center', 'h'),
+                                          ('scale_factor', 'h'), ('num_rad', 'H')],
+                                         '>', 'DigitalRadialHeader')
+    digital_radial_fmt = NamedStruct([('num_bytes', 'H'), ('start_angle', 'h'),
+                                      ('angle_delta', 'h')], '>', 'DigitalRadialData')
+
     def _unpack_packet_digital_radial(self, code, in_sym_block):
-        hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
-                               ('i_center', 'h'), ('j_center', 'h'),
-                               ('scale_factor', 'h'), ('num_rad', 'H')],
-                              '>', 'DigitalRadialHeader')
-        rad_fmt = NamedStruct([('num_bytes', 'H'), ('start_angle', 'h'),
-                               ('angle_delta', 'h')], '>', 'DigitalRadialData')
-        hdr = self._buffer.read_struct(hdr_fmt)
+        hdr = self._buffer.read_struct(self.digital_radial_hdr_fmt)
         rads = []
         for _ in range(hdr.num_rad):
-            rad = self._buffer.read_struct(rad_fmt)
+            rad = self._buffer.read_struct(self.digital_radial_fmt)
             start_az = rad.start_angle * 0.1
             end_az = start_az + rad.angle_delta * 0.1
             rads.append((start_az, end_az, self._buffer.read_binary(rad.num_bytes)))
