@@ -88,7 +88,7 @@ script:
     fi
 
 after_script:
-  - if [[ $TASK != "coverage" ]]; then
+  - if [[ $TASK == "coverage" ]]; then
       pip install codecov codacy-coverage;
       coverage xml;
       codecov -X gcov -f coverage.xml -e TRAVIS_PYTHON_VERSION;
