@@ -911,13 +911,14 @@ def test_azimuth_range_to_lat_lon():
 
 @needs_pyproj
 def test_azimuth_range_to_lat_lon_diff_ellps():
-    """Test converstion of azimuth and range to lat/lon grid."""
+    """Test conversion of azimuth and range to lat/lon grid."""
+    from pyproj import Geod
+
     az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
     rng = [2125., 64625., 127125., 189625., 252125., 314625.]
     clon = -89.98416666666667
     clat = 32.27972222222222
-    kwargs = {'ellps': 'WGS84'}
-    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat, **kwargs)
+    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat, Geod(ellps='WGS84'))
     true_lon = [[-89.9946749, -90.3055083, -90.6198256, -90.9377279, -91.2593193,
                 -91.5847066],
                 [-89.9938168, -90.279303, -90.5680603, -90.860187, -91.1557841,
