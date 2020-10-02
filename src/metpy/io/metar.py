@@ -61,7 +61,7 @@ col_units = {'station_id': None,
 
 
 @exporter.export
-def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetime.now().month):
+def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     """Parse a single METAR report into a Pandas DataFrame.
 
     Takes a METAR string in a text form, and creates a `pandas.DataFrame` including the
@@ -76,9 +76,9 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     metar_text : str
         The METAR report
     year : int, optional
-        Year in which observation was taken, defaults to the current year
+        Year in which observation was taken, defaults to current year. Keyword-only argument.
     month : int, optional
-        Month in which observation was taken, defaults to the current month
+        Month in which observation was taken, defaults to current month. Keyword-only argument.
 
     Returns
     -------
@@ -116,6 +116,12 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     and altimeter value, float
 
     """
+    # Defaults year and/or month to present reported date if not provided
+    if year is None or month is None:
+        now = datetime.now()
+        year = now.year if year is None else year
+        month = now.month if month is None else month
+
     # Use the named tuple parsing function to separate metar
     # Utilizes the station dictionary which contains elevation, latitude, and longitude
     metar_vars = parse_metar_to_named_tuple(metar_text, station_info, year, month)
@@ -176,8 +182,7 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     return df
 
 
-def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now().year,
-                               month=datetime.now().month):
+def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
     """Parse a METAR report in text form into a list of named tuples.
 
     Parameters
@@ -424,7 +429,7 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
 
 
 @exporter.export
-def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().month):
+def parse_metar_file(filename, *, year=None, month=None):
     """Parse a text file containing multiple METAR reports and/or text products.
 
     Parameters
@@ -433,9 +438,9 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
         If str, the name of the file to be opened. If `filename` is a file-like object,
         this will be read from directly.
     year : int, optional
-        Year in which observation was taken, defaults to the current year
+        Year in which observation was taken, defaults to current year. Keyword-only argument.
     month : int, optional
-        Month in which observation was taken, defaults to the current month
+        Month in which observation was taken, defaults to current month. Keyword-only argument.
 
     Returns
     -------
@@ -473,6 +478,12 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
     and altimeter value, float
 
     """
+    # Defaults year and/or month to present reported date if not provided
+    if year is None or month is None:
+        now = datetime.now()
+        year = now.year if year is None else year
+        month = now.month if month is None else month
+
     # Function to merge METARs
     def merge(x, key='     '):
         tmp = []

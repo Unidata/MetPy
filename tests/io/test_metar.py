@@ -6,6 +6,7 @@ from datetime import datetime
 
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_equal
+import pytest
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_metar_file, parse_metar_to_dataframe
@@ -98,6 +99,14 @@ def test_date_time_given():
     assert df.northward_wind.values == 0
 
 
+def test_parse_metar_df_positional_datetime_failure():
+    """Test that positional year, month arguments fail for parse_metar_to_dataframe."""
+    # pylint: disable=too-many-function-args
+    with pytest.raises(TypeError, match='takes 1 positional argument but 3 were given'):
+        parse_metar_to_dataframe('K6B0 261200Z AUTO 00000KT 10SM CLR 20/M17'
+                                 'A3002 RMK AO2 T01990165=', 2019, 6)
+
+
 def test_named_tuple_test1():
     """Test the named tuple parsing function."""
     df = parse_metar_to_dataframe('KDEN 012153Z 09010KT 10SM FEW060 BKN110 BKN220 27/13 '
@@ -116,6 +125,14 @@ def test_parse_file():
     test = df[df.station_id == 'KVPZ']
     assert test.air_temperature.values == 23
     assert test.air_pressure_at_sea_level.values == 1016.76
+
+
+def test_parse_file_positional_datetime_failure():
+    """Test that positional year, month arguments fail for parse_metar_file."""
+    # pylint: disable=too-many-function-args
+    input_file = get_test_data('metar_20190701_1200.txt', as_file_obj=False)
+    with pytest.raises(TypeError, match='takes 1 positional argument but 3 were given'):
+        parse_metar_file(input_file, 2016, 12)
 
 
 def test_parse_file_bad_encoding():
