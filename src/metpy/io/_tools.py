@@ -101,6 +101,11 @@ class NamedStruct(Struct):
         """Unpack the next bytes from a file object."""
         return self.unpack(fobj.read(self.size))
 
+    def pack(self, **kwargs):
+        """Pack the arguments into bytes using the structure."""
+        t = self.make_tuple(**kwargs)
+        return super().pack(*t)
+
 
 # This works around times when we have more than 255 items and can't use
 # NamedStruct. This is a CPython limit for arguments.
