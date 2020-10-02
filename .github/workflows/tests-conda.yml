@@ -108,6 +108,7 @@ jobs:
         path: test_output/
 
     - name: Upload coverage
+      if: ${{ always() }}
       uses: codecov/codecov-action@v1
       with:
         name: conda-${{ matrix.python-version }}-${{ runner.os }}

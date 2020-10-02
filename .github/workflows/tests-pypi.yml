@@ -126,6 +126,7 @@ jobs:
         path: test_output/
 
     - name: Upload coverage
+      if: ${{ always() }}
       uses: codecov/codecov-action@v1
       with:
         name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
