@@ -23,7 +23,7 @@ from metpy.units import concatenate, units
 def test_default_order():
     """Test using the default array ordering."""
     u = np.ones((3, 3)) * units('m/s')
-    v = vorticity(u, u, 1 * units.meter, 1 * units.meter)
+    v = vorticity(u, u, dx=1 * units.meter, dy=1 * units.meter)
     true_v = np.zeros_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -32,7 +32,7 @@ def test_zero_vorticity():
     """Test vorticity calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u.T, u, 1 * units.meter, 1 * units.meter)
+    v = vorticity(u.T, u, dx=1 * units.meter, dy=1 * units.meter)
     true_v = np.zeros_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -41,7 +41,7 @@ def test_vorticity():
     """Test vorticity for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u.T, u.T, 1 * units.meter, 1 * units.meter)
+    v = vorticity(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -50,16 +50,25 @@ def test_vorticity_asym():
     """Test vorticity calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    vort = vorticity(u, v, 1 * units.meters, 2 * units.meters)
+    vort = vorticity(u, v, dx=1 * units.meters, dy=2 * units.meters)
     true_vort = np.array([[-2.5, 3.5, 13.], [8.5, -1.5, -11.], [-5.5, -1.5, 0.]]) / units.sec
     assert_array_equal(vort, true_vort)
+
+
+def test_vorticity_positional_grid_args_failure():
+    """Test that old API of positional grid arguments to vorticity fails."""
+    # pylint: disable=too-many-function-args
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    with pytest.raises(TypeError, match='too many positional arguments'):
+        vorticity(u.T, u, 1 * units.meter, 1 * units.meter)
 
 
 def test_zero_divergence():
     """Test divergence calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = divergence(u.T, u, 1 * units.meter, 1 * units.meter)
+    c = divergence(u.T, u, dx=1 * units.meter, dy=1 * units.meter)
     true_c = 2. * np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
@@ -68,7 +77,7 @@ def test_divergence():
     """Test divergence for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = divergence(u.T, u.T, 1 * units.meter, 1 * units.meter)
+    c = divergence(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
     true_c = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
@@ -81,7 +90,7 @@ def test_horizontal_divergence():
                   [[0., 0., 0.],
                    [0., 1., 0.],
                    [0., 0., 0.]]]) * units('m/s')
-    c = divergence(u, u, 1 * units.meter, 1 * units.meter)
+    c = divergence(u, u, dx=1 * units.meter, dy=1 * units.meter)
     true_c = np.array([[[0., -2., 0.],
                         [-2., 0., 2.],
                         [0., 2., 0.]],
@@ -95,9 +104,18 @@ def test_divergence_asym():
     """Test divergence calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    c = divergence(u, v, 1 * units.meters, 2 * units.meters)
+    c = divergence(u, v, dx=1 * units.meters, dy=2 * units.meters)
     true_c = np.array([[-2, 5.5, -2.5], [2., 0.5, -1.5], [3., -1.5, 8.5]]) / units.sec
     assert_array_equal(c, true_c)
+
+
+def test_divergence_positional_grid_args_failure():
+    """Test that old API of positional grid arguments to divergence fails."""
+    # pylint: disable=too-many-function-args
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    with pytest.raises(TypeError, match='too many positional arguments'):
+        divergence(u, u, 1 * units.meter, 1 * units.meter)
 
 
 def test_shearing_deformation_asym():

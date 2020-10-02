@@ -8,21 +8,17 @@ from . import coriolis_parameter
 from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..package_tools import Exporter
-from ..units import check_units, concatenate, units
+from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
 
-def _stack(arrs):
-    return concatenate([a[np.newaxis] if np.iterable(a) else a for a in arrs], axis=0)
-
-
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def vorticity(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
+def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
@@ -34,17 +30,17 @@ def vorticity(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input.
+        latitude/longitude coordinates used as input. Keyword-only argument.
     dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input.
+        latitude/longitude coordinates used as input. Keyword-only argument.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`.
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`.
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
 
     Returns
     -------
@@ -65,7 +61,7 @@ def vorticity(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(wrap_like='u')
 @check_units(dx='[length]', dy='[length]')
-def divergence(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the horizontal divergence of a vector.
 
     Parameters
@@ -77,17 +73,17 @@ def divergence(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     dx : `pint.Quantity`, optional
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input.
+        latitude/longitude coordinates used as input. Keyword-only argument.
     dy : `pint.Quantity`, optional
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input.
+        latitude/longitude coordinates used as input. Keyword-only argument.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`.
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`.
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
 
     Returns
     -------
@@ -369,7 +365,7 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
 
     # Get the divergence of the wind field
-    div = divergence(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
+    div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -641,7 +637,7 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
     """
     f = coriolis_parameter(latitude)
-    relative_vorticity = vorticity(u, v, dx, dy)
+    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
     return relative_vorticity + f
 
 
