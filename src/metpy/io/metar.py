@@ -191,10 +191,15 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
         The METAR report
     station_metadata : dict
         Mapping of station identifiers to station metadata
+    year : int
+        Reported year of observation for constructing 'date_time'
+    month : int
+        Reported month of observation for constructing 'date_time'
 
     Returns
     -------
-    `pandas.DataFrame`
+    metar : namedtuple
+        Named tuple of parsed METAR fields
 
     Notes
     -----
