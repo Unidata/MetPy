@@ -1516,7 +1516,7 @@
     <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
     <span class="n">_need_redraw</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">level</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">level</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The level of the field to be plotted.</span>
 
 <span class="s2">    This is a value with units to choose the desired plot level. For example, selecting the</span>
@@ -1662,7 +1662,8 @@
 
             <span class="c1"># Subset for a particular level if given</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">pressure</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">m</span><span class="p">]</span>
+                <span class="n">mag</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;magnitude&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">pressure</span> <span class="o">==</span> <span class="n">mag</span><span class="p">]</span>
 
             <span class="c1"># Subset for our particular time</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1825,7 +1826,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 02, 2020 at 19:00:51.
+      Last updated on Oct 02, 2020 at 20:16:01.
 
     </p>
   </div>
@@ -1859,7 +1860,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post336+gdb2a433',
+            VERSION:'1.0.0rc1.post340+g89fd4c0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
