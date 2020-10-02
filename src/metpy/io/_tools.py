@@ -6,6 +6,7 @@
 import bz2
 from collections import namedtuple
 import gzip
+from io import BytesIO
 import logging
 from struct import Struct
 import zlib
@@ -21,7 +22,28 @@ def open_as_needed(filename, mode='rb'):
     Handles opening with the right class based on the file extension.
 
     """
+    # Handle file-like objects
     if hasattr(filename, 'read'):
+        # See if the file object is really gzipped or bzipped.
+        lead = filename.read(4)
+
+        # If we can seek, seek back to start, otherwise read all the data into an
+        # in-memory file-like object.
+        if hasattr(filename, 'seek'):
+            filename.seek(0)
+        else:
+            filename = BytesIO(lead + filename.read())
+
+        # If the leading bytes match one of the signatures, pass into the appropriate class.
+        try:
+            lead = lead.encode('ascii')
+        except AttributeError:
+            pass
+        if lead.startswith(b'\x1f\x8b'):
+            filename = gzip.GzipFile(fileobj=filename)
+        elif lead.startswith(b'BZh'):
+            filename = bz2.BZ2File(filename)
+
         return filename
 
     # This will convert pathlib.Path instances to strings

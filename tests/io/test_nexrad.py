@@ -47,9 +47,26 @@ def test_level2(fname, voltime, num_sweeps, mom_first, mom_last):
     assert len(f.sweeps[-1][0][-1]) == mom_last
 
 
-def test_level2_fobj():
+@pytest.mark.parametrize('filename', ['Level2_KFTG_20150430_1419.ar2v',
+                                      'TDAL20191021021543V08.raw.gz',
+                                      'KTLX20150530_000802_V06.bz2'])
+@pytest.mark.parametrize('use_seek', [True, False])
+def test_level2_fobj(filename, use_seek):
     """Test reading NEXRAD level2 data from a file object."""
-    Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
+    f = get_test_data(filename)
+    if not use_seek:
+        class SeeklessReader:
+            """Simulate file-like object access without seek."""
+
+            def __init__(self, f):
+                self._f = f
+
+            def read(self, n=None):
+                """Read bytes."""
+                return self._f.read(n)
+
+        f = SeeklessReader(f)
+    Level2File(f)
 
 
 def test_doubled_file():
