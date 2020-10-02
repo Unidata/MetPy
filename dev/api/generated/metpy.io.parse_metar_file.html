@@ -233,15 +233,15 @@
 <h1>parse_metar_file<a class="headerlink" href="#parse-metar-file" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.io.parse_metar_file">
-<code class="sig-prename descclassname">metpy.io.</code><code class="sig-name descname">parse_metar_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">2020</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/metar.html#parse_metar_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.parse_metar_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.io.</code><code class="sig-name descname">parse_metar_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/metar.html#parse_metar_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.parse_metar_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a text file containing multiple METAR reports and/or text products.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. If <em class="xref py py-obj">filename</em> is a file-like object,
 this will be read from directly.</p></li>
-<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Year in which observation was taken, defaults to the current year</p></li>
-<li><p><strong>month</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Month in which observation was taken, defaults to the current month</p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Year in which observation was taken, defaults to current year. Keyword-only argument.</p></li>
+<li><p><strong>month</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Month in which observation was taken, defaults to current month. Keyword-only argument.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -311,7 +311,7 @@ and altimeter value, float</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 01, 2020 at 20:44:19.
+      Last updated on Oct 02, 2020 at 18:58:36.
 
     </p>
   </div>
@@ -345,7 +345,7 @@ and altimeter value, float</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post328+g69f86f9',
+            VERSION:'1.0.0rc1.post331+gaa6b53d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
