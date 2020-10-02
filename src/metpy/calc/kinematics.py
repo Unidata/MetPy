@@ -37,10 +37,10 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
         latitude/longitude coordinates used as input. Keyword-only argument.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
     y_dim : int, optional
         Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
 
     Returns
     -------
