@@ -575,7 +575,7 @@ def test_plotobs_subset_level(sample_obs):
 
 
 def test_plotobs_subset_level_no_units(sample_obs):
-    """Test PlotObs subsetting based on level."""
+    """Test PlotObs subsetting based on unitless level."""
     obs = PlotObs()
     obs.data = sample_obs
     obs.level = 1000
