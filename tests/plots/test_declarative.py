@@ -553,7 +553,6 @@ def test_plotobs_subset_default_nolevel(sample_obs):
     """Test PlotObs subsetting with minimal config."""
     obs = PlotObs()
     obs.data = sample_obs
-    obs.level = None
 
     truth = pd.DataFrame([('2020-08-06 13:00', 'KDEN', 500, 7, 15),
                           ('2020-08-06 12:59', 'KOKC', 500, 8, 16)],

@@ -1317,7 +1317,7 @@ class PlotObs(HasTraits):
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
-    level = Union([Int(allow_none=True), Instance(units.Quantity)])
+    level = Union([Int(allow_none=True), Instance(units.Quantity)], default_value=None)
     level.__doc__ = """The level of the field to be plotted.
 
     This is a value with units to choose the desired plot level. For example, selecting the
