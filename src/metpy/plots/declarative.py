@@ -1317,7 +1317,7 @@ class PlotObs(HasTraits):
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
-    level = Union([Int(allow_none=True), Instance(units.Quantity)])
+    level = Union([Int(allow_none=True), Instance(units.Quantity)], default_value=None)
     level.__doc__ = """The level of the field to be plotted.
 
     This is a value with units to choose the desired plot level. For example, selecting the
@@ -1463,7 +1463,8 @@ class PlotObs(HasTraits):
 
             # Subset for a particular level if given
             if self.level is not None:
-                data = data[data.pressure == self.level.m]
+                mag = getattr(self.level, 'magnitude', self.level)
+                data = data[data.pressure == mag]
 
             # Subset for our particular time
             if self.time is not None:
