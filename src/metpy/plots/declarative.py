@@ -1463,7 +1463,8 @@ class PlotObs(HasTraits):
 
             # Subset for a particular level if given
             if self.level is not None:
-                data = data[data.pressure == self.level.m]
+                mag = getattr(self.level, 'magnitude', self.level)
+                data = data[data.pressure == mag]
 
             # Subset for our particular time
             if self.time is not None:

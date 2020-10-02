@@ -574,6 +574,19 @@ def test_plotobs_subset_level(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
+def test_plotobs_subset_level_no_units(sample_obs):
+    """Test PlotObs subsetting based on level."""
+    obs = PlotObs()
+    obs.data = sample_obs
+    obs.level = 1000
+
+    truth = pd.DataFrame([('2020-08-06 13:00', 'KDEN', 1000, 5, 13),
+                          ('2020-08-06 12:59', 'KOKC', 1000, 6, 14)],
+                         columns=['time', 'stid', 'pressure', 'temperature', 'dewpoint'],
+                         index=[4, 5])
+    pd.testing.assert_frame_equal(obs.obsdata, truth)
+
+
 def test_plotobs_subset_time(sample_obs):
     """Test PlotObs subsetting for a particular time."""
     obs = PlotObs()
