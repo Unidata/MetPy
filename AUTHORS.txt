@@ -9,16 +9,23 @@ Brian Mapes
 Bryan Guarente
 Claude Dicaire
 Dan Dawson
+Daniel Adriaansen
 Daryl Herzmann
+David Ahijevych
+David Lawrence
 Denis Sergeev
+Drew Camron
 Eric Bruning
+Joern Ungermann
 John Leeman
+John R. Leeman
 Jon Thielen
 Jonathan Helmus
 Joy Monteiro
 Kevin Goebbert
 Kishan Mehta
 Kristen Pozsonyi
+LProx2020
 Leonardo Uieda
 Lucas Sterzinger
 Matt Wilson
@@ -27,11 +34,14 @@ Michael James
 Nathan Wendt
 Patrick Marsh
 Raul Mendez
+Rich Signell
+Russell Manser
 Ryan May
 Sean Arms
 Shawn Murdzek
 Stefan Hofer
 Steven Decker
+TJ Turnage
 Tim Supinie
 Tyler Wixtrom
 Vardan Nadkarni
