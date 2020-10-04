@@ -47,6 +47,7 @@ Tyler Wixtrom
 Vardan Nadkarni
 Warren Pettee
 Will Holmgren
+William Minchin
 Zach Bruick
 kstilwell
 mmorello1
