@@ -5,6 +5,7 @@
 from collections import OrderedDict
 
 import numpy as np
+import pyproj
 import pytest
 import xarray as xr
 
@@ -63,9 +64,17 @@ def test_var_multidim_no_xy(test_var_multidim_full):
 def test_projection(test_var, ccrs):
     """Test getting the proper projection out of the variable."""
     crs = test_var.metpy.crs
-    assert crs['grid_mapping_name'] == 'lambert_conformal_conic'
 
+    assert crs['grid_mapping_name'] == 'lambert_conformal_conic'
     assert isinstance(test_var.metpy.cartopy_crs, ccrs.LambertConformal)
+
+
+def test_pyproj_projection(test_var):
+    """Test getting the proper pyproj projection out of the variable."""
+    proj = test_var.metpy.pyproj_crs
+
+    assert isinstance(proj, pyproj.CRS)
+    assert proj.coordinate_operation.method_name == 'Lambert Conic Conformal (1SP)'
 
 
 def test_no_projection(test_ds):
@@ -1309,9 +1318,8 @@ def test_grid_deltas_from_dataarray_xy(test_da_xy):
 def test_grid_deltas_from_dataarray_actual_xy(test_da_xy, ccrs):
     """Test grid_deltas_from_dataarray with a xy grid and kind='actual'."""
     # Construct lon/lat coordinates
-    from pyproj import Proj
     y, x = xr.broadcast(*test_da_xy.metpy.coordinates('y', 'x'))
-    lon, lat = Proj(test_da_xy.metpy.pyproj_crs)(
+    lon, lat = pyproj.Proj(test_da_xy.metpy.pyproj_crs)(
         x.values,
         y.values,
         inverse=True,
