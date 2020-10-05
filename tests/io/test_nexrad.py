@@ -6,6 +6,7 @@
 from datetime import datetime
 from io import BytesIO
 import logging
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -46,9 +47,26 @@ def test_level2(fname, voltime, num_sweeps, mom_first, mom_last):
     assert len(f.sweeps[-1][0][-1]) == mom_last
 
 
-def test_level2_fobj():
+@pytest.mark.parametrize('filename', ['Level2_KFTG_20150430_1419.ar2v',
+                                      'TDAL20191021021543V08.raw.gz',
+                                      'KTLX20150530_000802_V06.bz2'])
+@pytest.mark.parametrize('use_seek', [True, False])
+def test_level2_fobj(filename, use_seek):
     """Test reading NEXRAD level2 data from a file object."""
-    Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
+    f = get_test_data(filename)
+    if not use_seek:
+        class SeeklessReader:
+            """Simulate file-like object access without seek."""
+
+            def __init__(self, f):
+                self._f = f
+
+            def read(self, n=None):
+                """Read bytes."""
+                return self._f.read(n)
+
+        f = SeeklessReader(f)
+    Level2File(f)
 
 
 def test_doubled_file():
@@ -66,6 +84,35 @@ def test_conditional_radconst(fname, has_v2):
     """Test whether we're using the right volume constants."""
     f = Level2File(get_test_data(fname, as_file_obj=False))
     assert hasattr(f.sweeps[0][0][3], 'calib_dbz0_v') == has_v2
+
+
+def test_msg15():
+    """Check proper decoding of message type 15."""
+    f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
+    data = f.clutter_filter_map['data']
+    assert isinstance(data[0][0], list)
+    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
+
+
+def test_single_chunk(caplog):
+    """Check that Level2File copes with reading a file containing a single chunk."""
+    # Need to override the test level set above
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
+    f = Level2File(get_test_data('Level2_KLBB_single_chunk'))
+    assert len(f.sweeps) == 1
+    assert 'Unable to read volume header' in caplog.text
+
+    # Make sure the warning is not present if we pass the right kwarg.
+    caplog.clear()
+    Level2File(get_test_data('Level2_KLBB_single_chunk'), has_volume_header=False)
+    assert 'Unable to read volume header' not in caplog.text
+
+
+def test_build19_level2_additions():
+    """Test handling of new additions in Build 19 level2 data."""
+    f = Level2File(get_test_data('Level2_KDDC_20200823_204121.ar2v'))
+    assert f.vcp_info.vcp_version == 1
+    assert f.sweeps[0][0].header.az_spacing == 0.5
 
 
 #
@@ -91,7 +138,8 @@ def test_level3_files(fname):
 
 
 tdwr_nids_files = [get_test_data(fname, as_file_obj=False)
-                   for fname in POOCH.registry if fname.startswith('nids/Level3_MCI_')]
+                   for fname in POOCH.registry if (fname.startswith('nids/Level3_MCI_')
+                                                   or fname.startswith('nids/Level3_DEN_'))]
 
 
 @pytest.mark.parametrize('fname', tdwr_nids_files)
@@ -111,6 +159,22 @@ def test_basic():
 
     # At this point, really just want to make sure that __str__ is able to run and produce
     # something not empty, the format is still up for grabs.
+    assert str(f)
+
+
+def test_new_gsm():
+    """Test parsing recent mods to the GSM product."""
+    f = Level3File(get_test_data('nids/KDDC-gsm.nids'))
+
+    assert f.gsm_additional.vcp_supplemental == ['AVSET', 'SAILS', 'RxR Noise', 'CBT']
+    assert f.gsm_additional.supplemental_cut_count == 2
+    truth = [False] * 16
+    truth[2] = True
+    truth[5] = True
+    assert f.gsm_additional.supplemental_cut_map == truth
+    assert f.gsm_additional.supplemental_cut_map2 == [False] * 9
+
+    # Check that str() doesn't error out
     assert str(f)
 
 
@@ -149,6 +213,32 @@ def test_fobj():
     Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
 
+def test_level3_pathlib():
+    """Test that reading with Level3File properly sets the filename from a Path."""
+    fname = Path(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
+    f = Level3File(fname)
+    assert f.filename == str(fname)
+
+
+def test_nids_super_res_width():
+    """Test decoding a super resolution spectrum width product."""
+    f = Level3File(get_test_data('nids/KLZK_H0W_20200812_1305'))
+    width = f.map_data(f.sym_block[0][0]['data'])
+    assert np.nanmax(width) == 15
+
+
+def test_power_removed_control():
+    """Test decoding new PRC product."""
+    f = Level3File(get_test_data('nids/KGJX_NXF_20200817_0600.nids'))
+    assert f.prod_desc.prod_code == 113
+    assert f.metadata['rpg_cut_num'] == 1
+    assert f.metadata['cmd_generated'] == 0
+    assert f.metadata['el_angle'] == -0.2
+    assert f.metadata['clutter_filter_map_dt'] == datetime(2020, 8, 17, 4, 16)
+    assert f.metadata['compression'] == 1
+    assert f.sym_block[0][0]
+
+
 def test21_precip():
     """Test checking whether VCP 21 is precipitation mode."""
     assert is_precip_mode(21), 'VCP 21 is precip'
@@ -162,14 +252,6 @@ def test11_precip():
 def test31_clear_air():
     """Test checking whether VCP 31 is clear air mode."""
     assert not is_precip_mode(31), 'VCP 31 is not precip'
-
-
-def test_msg15():
-    """Check proper decoding of message type 15."""
-    f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
-    data = f.clutter_filter_map['data']
-    assert isinstance(data[0][0], list)
-    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
 
 
 def test_tracks():
@@ -193,3 +275,15 @@ def test_vector_packet():
                 assert len(x2)
                 assert len(y1)
                 assert len(y2)
+
+
+@pytest.mark.parametrize('fname,truth',
+                         [('nids/KEAX_N0Q_20200817_0401.nids', (0, 'MRLE scan')),
+                          ('nids/KEAX_N0Q_20200817_0405.nids', (0, 'Non-supplemental scan')),
+                          ('nids/KDDC_N0Q_20200817_0501.nids', (16, 'Non-supplemental scan')),
+                          ('nids/KDDC_N0Q_20200817_0503.nids', (143, 'SAILS scan'))])
+def test_nids_supplemental(fname, truth):
+    """Checks decoding of supplemental scan fields for some nids products."""
+    f = Level3File(get_test_data(fname))
+    assert f.metadata['delta_time'] == truth[0]
+    assert f.metadata['supplemental_scan'] == truth[1]

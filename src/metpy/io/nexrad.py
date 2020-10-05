@@ -8,6 +8,7 @@ from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
 import datetime
 import logging
+import pathlib
 import re
 import struct
 from struct import Struct
@@ -16,8 +17,8 @@ from xdrlib import Unpacker
 import numpy as np
 from scipy.constants import day, milli
 
-from ._tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
-                     NamedStruct, open_as_needed, zlib_decompress_all_frames)
+from ._tools import (Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct,
+                     open_as_needed, zlib_decompress_all_frames)
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -159,7 +160,7 @@ class Level2File:
     MISSING = float('nan')
     RANGE_FOLD = float('nan')  # TODO: Need to separate from missing
 
-    def __init__(self, filename):
+    def __init__(self, filename, *, has_volume_header=True):
         r"""Create instance of `Level2File`.
 
         Parameters
@@ -176,10 +177,18 @@ class Level2File:
         with contextlib.closing(fobj):
             self._buffer = IOBuffer.fromfile(fobj)
 
-        self._read_volume_header()
-        start = self._buffer.set_mark()
+        # Try to read the volume header. If this fails, or we're told we don't have one
+        # then we fall back and try to just read messages, assuming we have e.g. one of
+        # the real-time chunks.
+        try:
+            if has_volume_header:
+                self._read_volume_header()
+        except (OSError, ValueError):
+            log.warning('Unable to read volume header. Attempting to read messages.')
+            self._buffer.reset()
 
         # See if we need to apply bz2 decompression
+        start = self._buffer.set_mark()
         try:
             self._buffer = IOBuffer(self._buffer.read_func(bzip_blocks_decompress_all))
         except ValueError:
@@ -312,7 +321,7 @@ class Level2File:
         for ptr, data_hdr in read_info:
             # Jump and read
             self._buffer.jump_to(msg_start, ptr)
-            vals = np.array(self._buffer.read_binary(data_hdr.num_gates, 'B'))
+            vals = self._buffer.read_array(data_hdr.num_gates, 'B')
 
             # Scale and flag data
             scaled_vals = (vals - data_hdr.offset) / data_hdr.scale
@@ -396,10 +405,13 @@ class Level2File:
         self._check_size(msg_hdr, msg_fmt.size)
 
     vcp_fmt = NamedStruct([('size_hw', 'H'), ('pattern_type', 'H'),
-                           ('num', 'H'), ('num_el_cuts', 'H'), ('clutter_map_group', 'H'),
+                           ('num', 'H'), ('num_el_cuts', 'H'),
+                           ('vcp_version', 'B'), ('clutter_map_group', 'B'),
                            ('dop_res', 'B', BitField(None, 0.5, 1.0)),
                            ('pulse_width', 'B', BitField('None', 'Short', 'Long')),
-                           (None, '10x'), ('els', None)], '>', 'VCPFmt')
+                           (None, '4x'), ('vcp_sequencing', 'H'),
+                           ('vcp_supplemental_info', 'H'), (None, '2x'),
+                           ('els', None)], '>', 'VCPFmt')
 
     vcp_el_fmt = NamedStruct([('el_angle', 'H', angle),
                               ('channel_config', 'B', Enum('Constant Phase', 'Random Phase',
@@ -422,10 +434,10 @@ class Level2File:
                               ('rhohv_thresh', 'h', scaler(0.125)),
                               ('sector1_edge', 'H', angle),
                               ('sector1_doppler_prf_num', 'H'),
-                              ('sector1_pulse_count', 'H'), (None, '2x'),
+                              ('sector1_pulse_count', 'H'), ('supplemental_data', 'H'),
                               ('sector2_edge', 'H', angle),
                               ('sector2_doppler_prf_num', 'H'),
-                              ('sector2_pulse_count', 'H'), (None, '2x'),
+                              ('sector2_pulse_count', 'H'), ('ebc_angle', 'H', angle),
                               ('sector3_edge', 'H', angle),
                               ('sector3_doppler_prf_num', 'H'),
                               ('sector3_pulse_count', 'H'), (None, '2x')], '>', 'VCPEl')
@@ -515,7 +527,7 @@ class Level2File:
             msg_fmt = DictStruct(fields, '>')
             self.rda = msg_fmt.unpack(data)
             for num in (11, 21, 31, 32, 300, 301):
-                attr = 'VCPAT' + str(num)
+                attr = f'VCPAT{num}'
                 dat = self.rda[attr]
                 vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
                 off = self.vcp_fmt.size
@@ -529,16 +541,14 @@ class Level2File:
                                       ('date', 'H'), ('az_num', 'H'),
                                       ('az_angle', 'f'), ('compression', 'B'),
                                       (None, 'x'), ('rad_length', 'H'),
-                                      ('az_spacing', 'B'),
+                                      ('az_spacing', 'B', Enum(0, 0.5, 1.0)),
                                       ('rad_status', 'B', remap_status),
                                       ('el_num', 'B'), ('sector_num', 'B'),
                                       ('el_angle', 'f'),
                                       ('spot_blanking', 'B', BitField('Radial', 'Elevation',
                                                                       'Volume')),
                                       ('az_index_mode', 'B', scaler(0.01)),
-                                      ('num_data_blks', 'H'),
-                                      ('vol_const_ptr', 'L'), ('el_const_ptr', 'L'),
-                                      ('rad_const_ptr', 'L')], '>', 'Msg31DataHdr')
+                                      ('num_data_blks', 'H')], '>', 'Msg31DataHdr')
 
     msg31_vol_const_fmt = NamedStruct([('type', 's'), ('name', '3s'),
                                        ('size', 'H'), ('major', 'B'),
@@ -574,55 +584,55 @@ class Level2File:
                                   ('tover', 'H', scaler(0.1)),
                                   ('snr_thresh', 'h', scaler(0.1)),
                                   ('recombined', 'B', BitField('Azimuths', 'Gates')),
-                                  ('data_size', 'B', bits_to_code),
+                                  ('data_size', 'B'),
                                   ('scale', 'f'), ('offset', 'f')], '>', 'DataBlockHdr')
+
+    Radial = namedtuple('Radial', 'header vol_consts elev_consts radial_consts moments')
 
     def _decode_msg31(self, msg_hdr):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
-
-        # Read all the data block pointers separately. This makes it easy to loop and to
-        # handle the arbitrary numbers. We subtract 3 for the VOL, ELV, and RAD blocks that
-        # are required to be present (and can't be read like the data)
-        ptrs = self._buffer.read_binary(data_hdr.num_data_blks - 3, '>L')
-
         if data_hdr.compression:
             log.warning('Compressed message 31 not supported!')
 
-        self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
-        vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
-
-        self._buffer.jump_to(msg_start, data_hdr.el_const_ptr)
-        el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
-
-        self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
-
-        # Look ahead to figure out how big the block is
-        jmp = self._buffer.set_mark()
-        size = self._buffer.read_binary(3, '>H')[-1]
-        self._buffer.jump_to(jmp)
-        if size == self.rad_const_fmt_v2.size:
-            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
-        else:
-            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
-
-        data = {}
-        block_count = 3
-        for ptr in ptrs:
+        # Read all the block pointers. While the ICD specifies that at least the vol, el, rad
+        # constant blocks as well as REF moment block are present, it says "the pointers are
+        # not order or location dependent."
+        radial = self.Radial(data_hdr, None, None, None, {})
+        block_count = 0
+        for ptr in self._buffer.read_binary(data_hdr.num_data_blks, '>L'):
             if ptr:
                 block_count += 1
                 self._buffer.jump_to(msg_start, ptr)
-                hdr = self._buffer.read_struct(self.data_block_fmt)
-                vals = np.array(self._buffer.read_binary(hdr.num_gates,
-                                                         '>' + hdr.data_size))
-                scaled_vals = (vals - hdr.offset) / hdr.scale
-                scaled_vals[vals == 0] = self.MISSING
-                scaled_vals[vals == 1] = self.RANGE_FOLD
-                data[hdr.name.strip()] = (hdr, scaled_vals)
+                info = self._buffer.get_next(6)
+                if info.startswith(b'RVOL'):
+                    radial = radial._replace(
+                        vol_consts=self._buffer.read_struct(self.msg31_vol_const_fmt))
+                elif info.startswith(b'RELV'):
+                    radial = radial._replace(
+                        elev_consts=self._buffer.read_struct(self.msg31_el_const_fmt))
+                elif info.startswith(b'RRAD'):
+                    # Relies on the fact that the struct is small enough for its size
+                    # to fit in a single byte
+                    if int(info[-1]) == self.rad_const_fmt_v2.size:
+                        rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
+                    else:
+                        rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
+                    radial = radial._replace(radial_consts=rad_consts)
+                elif info.startswith(b'D'):
+                    hdr = self._buffer.read_struct(self.data_block_fmt)
+                    # TODO: The correctness of this code is not tested
+                    vals = self._buffer.read_array(count=hdr.num_gates,
+                                                   dtype=f'>u{hdr.data_size // 8}')
+                    scaled_vals = (vals - hdr.offset) / hdr.scale
+                    scaled_vals[vals == 0] = self.MISSING
+                    scaled_vals[vals == 1] = self.RANGE_FOLD
+                    radial.moments[hdr.name.strip()] = (hdr, scaled_vals)
+                else:
+                    log.warning('Unknown Message 31 block type: %s', str(info[:4]))
 
         self._add_sweep(data_hdr)
-
-        self.sweeps[-1].append((data_hdr, vol_consts, el_consts, rad_consts, data))
+        self.sweeps[-1].append(radial)
 
         if data_hdr.num_data_blks != block_count:
             log.warning('Incorrect number of blocks detected -- Got %d'
@@ -752,6 +762,23 @@ def low_byte(ind):
     return inner
 
 
+def delta_time(ind):
+    """Create a function to return the delta time from a product-specific block."""
+    def inner(seq):
+        return seq[ind] >> 5
+    return inner
+
+
+def supplemental_scan(ind):
+    """Create a function to return the supplement scan type from a product-specific block."""
+    def inner(seq):
+        # ICD says 1->SAILS, 2->MRLE, but testing on 2020-08-17 makes this seem inverted
+        # given what's being reported by sites in the GSM.
+        return {0: 'Non-supplemental scan',
+                2: 'SAILS scan', 1: 'MRLE scan'}.get(seq[ind] & 0x001F, 'Unknown')
+    return inner
+
+
 # Data mappers used to take packed data and turn into physical units
 # Default is to use numpy array indexing to use LUT to change data bytes
 # into physical values. Can also have a 'labels' attribute to give
@@ -763,6 +790,9 @@ class DataMapper:
     # RANGE_FOLD = -9999
     RANGE_FOLD = float('nan')
     MISSING = float('nan')
+
+    def __init__(self, num=256):
+        self.lut = np.full(num, self.MISSING, dtype=np.float)
 
     def __call__(self, data):
         """Convert the values."""
@@ -780,10 +810,10 @@ class DigitalMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper and the lookup table."""
+        super().__init__()
         min_val = two_comp16(prod.thresholds[0]) * self._min_scale
         inc = prod.thresholds[1] * self._inc_scale
         num_levels = prod.thresholds[2]
-        self.lut = [self.MISSING] * 256
 
         # Generate lookup table -- sanity check on num_levels handles
         # the fact that DHR advertises 256 levels, which *includes*
@@ -791,8 +821,6 @@ class DigitalMapper(DataMapper):
         num_levels = min(num_levels, self._max_data - self._min_data + 1)
         for i in range(num_levels):
             self.lut[i + self._min_data] = min_val + i * inc
-
-        self.lut = np.array(self.lut)
 
 
 class DigitalRefMapper(DigitalMapper):
@@ -812,7 +840,8 @@ class DigitalSPWMapper(DigitalVelMapper):
     """Mapper for digital spectrum width products."""
 
     _min_data = 129
-    _max_data = 149
+    # ICD says up to 152, but also says max value is 19, which implies 129 + 19/0.5 -> 167
+    _max_data = 167
 
 
 class PrecipArrayMapper(DigitalMapper):
@@ -836,13 +865,12 @@ class DigitalVILMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the VIL mapper."""
+        super().__init__()
         lin_scale = float16(prod.thresholds[0])
         lin_offset = float16(prod.thresholds[1])
         log_start = prod.thresholds[2]
         log_scale = float16(prod.thresholds[3])
         log_offset = float16(prod.thresholds[4])
-        self.lut = np.empty((256,), dtype=np.float)
-        self.lut.fill(self.MISSING)
 
         # VIL is allowed to use 2 through 254 inclusive. 0 is thresholded,
         # 1 is flagged, and 255 is reserved
@@ -856,17 +884,16 @@ class DigitalEETMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper."""
+        super().__init__()
         data_mask = prod.thresholds[0]
         scale = prod.thresholds[1]
         offset = prod.thresholds[2]
         topped_mask = prod.thresholds[3]
-        self.lut = [self.MISSING] * 256
         self.topped_lut = [False] * 256
         for i in range(2, 256):
             self.lut[i] = ((i & data_mask) - offset) / scale
             self.topped_lut[i] = bool(i & topped_mask)
 
-        self.lut = np.array(self.lut)
         self.topped_lut = np.array(self.topped_lut)
 
     def __call__(self, data_vals):
@@ -882,14 +909,14 @@ class GenericDigitalMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper by pulling out all the information from the product."""
+        # Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.
+        max_data_val = prod.thresholds[5]
+        super().__init__(max_data_val + 1)
+
         scale = float32(prod.thresholds[0], prod.thresholds[1])
         offset = float32(prod.thresholds[2], prod.thresholds[3])
-        max_data_val = prod.thresholds[5]
         leading_flags = prod.thresholds[6]
         trailing_flags = prod.thresholds[7]
-
-        # Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.
-        self.lut = [self.MISSING] * (max_data_val + 1)
 
         if leading_flags > 1:
             self.lut[1] = self.RANGE_FOLD
@@ -897,8 +924,6 @@ class GenericDigitalMapper(DataMapper):
         # Need to add 1 to the end of the range so that it's inclusive
         for i in range(leading_flags, max_data_val - trailing_flags + 1):
             self.lut[i] = (i - offset) / scale
-
-        self.lut = np.array(self.lut)
 
 
 class DigitalHMCMapper(DataMapper):
@@ -908,15 +933,14 @@ class DigitalHMCMapper(DataMapper):
     """
 
     labels = ['ND', 'BI', 'GC', 'IC', 'DS', 'WS', 'RA', 'HR',
-              'BD', 'GR', 'HA', 'UK', 'RF']
+              'BD', 'GR', 'HA', 'LH', 'GH', 'UK', 'RF']
 
     def __init__(self, prod):
         """Initialize the mapper."""
-        self.lut = [self.MISSING] * 256
+        super().__init__()
         for i in range(10, 256):
             self.lut[i] = i // 10
         self.lut[150] = self.RANGE_FOLD
-        self.lut = np.array(self.lut)
 
 
 # 156, 157
@@ -925,14 +949,13 @@ class EDRMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper based on the product."""
+        data_levels = prod.thresholds[2]
+        super().__init__(data_levels)
         scale = prod.thresholds[0] / 1000.
         offset = prod.thresholds[1] / 1000.
-        data_levels = prod.thresholds[2]
         leading_flags = prod.thresholds[3]
-        self.lut = [self.MISSING] * data_levels
         for i in range(leading_flags, data_levels):
             self.lut = scale * i + offset
-        self.lut = np.array(self.lut)
 
 
 class LegacyMapper(DataMapper):
@@ -943,6 +966,7 @@ class LegacyMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the values and labels from the product."""
+        # Don't worry about super() since we're using our own lut assembled sequentially
         self.labels = []
         self.lut = []
         for t in prod.thresholds:
@@ -1096,12 +1120,14 @@ class Level3File:
                                       ('el23', 'h', scaler(0.1)),
                                       ('el24', 'h', scaler(0.1)),
                                       ('el25', 'h', scaler(0.1)),
-                                      ('vcp_supplemental', 'H', BitField('AVSET',
-                                                                         'SAILS',
-                                                                         'site_vcp',
-                                                                         'RxR Noise',
-                                                                         'CBT')),
-                                      ('spare', '84s')], '>', 'GSM')
+                                      ('vcp_supplemental', 'H',
+                                       BitField('AVSET', 'SAILS', 'Site VCP', 'RxR Noise',
+                                                'CBT', 'VCP Sequence', 'SPRT', 'MRLE',
+                                                'Base Tilt', 'MPDA')),
+                                      ('supplemental_cut_map', 'H', Bits(16)),
+                                      ('supplemental_cut_count', 'B'),
+                                      ('supplemental_cut_map2', 'B', Bits(8)),
+                                      ('spare', '80s')], '>', 'GSM')
     prod_desc_fmt = NamedStruct([('divider', 'h'), ('lat', 'l'), ('lon', 'l'),
                                  ('height', 'h'), ('prod_code', 'h'),
                                  ('op_mode', 'h'), ('vcp', 'h'), ('seq_num', 'h'),
@@ -1144,10 +1170,14 @@ class Level3File:
                      19: ('Base Reflectivity', 230., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('calib_const', float_elem(7, 8)))),
                      20: ('Base Reflectivity', 460., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('calib_const', float_elem(7, 8)))),
                      21: ('Base Reflectivity', 460., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
@@ -1170,7 +1200,9 @@ class Level3File:
                            ('min', 3), ('max', 4))),
                      27: ('Base Velocity', 230., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
-                           ('min', 3), ('max', 4))),
+                           ('min', 3), ('max', 4),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)))),
                      28: ('Base Spectrum Width', 60., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3))),
@@ -1179,7 +1211,9 @@ class Level3File:
                            ('max', 3))),
                      30: ('Base Spectrum Width', 230., LegacyMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
-                           ('max', 3))),
+                           ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)))),
                      31: ('User Selectable Storm Total Precipitation', 230., LegacyMapper,
                           (('end_hour', 0),
                            ('hour_span', 1),
@@ -1224,6 +1258,16 @@ class Level3File:
                           (('max', 3),
                            ('dir_max', 4),
                            ('alt_max', scaled_elem(5, 10)))),  # Max in ft
+                     50: ('Cross Section Reflectivity', 230., LegacyMapper,
+                          (('azimuth1', scaled_elem(0, 0.1)),
+                           ('range1', scaled_elem(1, 0.1)),
+                           ('azimuth2', scaled_elem(2, 0.1)),
+                           ('range2', scaled_elem(3, 0.1)))),
+                     51: ('Cross Section Velocity', 230., LegacyMapper,
+                          (('azimuth1', scaled_elem(0, 0.1)),
+                           ('range1', scaled_elem(1, 0.1)),
+                           ('azimuth2', scaled_elem(2, 0.1)),
+                           ('range2', scaled_elem(3, 0.1)))),
                      55: ('Storm Relative Mean Radial Velocity', 50., LegacyMapper,
                           (('window_az', scaled_elem(0, 0.1)),
                            ('window_range', scaled_elem(1, 0.1)),
@@ -1320,6 +1364,8 @@ class Level3File:
                      94: ('Base Reflectivity Data Array', 460., DigitalRefMapper,
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('max', 3),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('compression', 7),
                            ('uncompressed_size', combine_elem(8, 9)))),
                      95: ('Composite Reflectivity Edited for AP', 230., LegacyMapper,
@@ -1342,12 +1388,24 @@ class Level3File:
                           (('el_angle', scaled_elem(2, 0.1)),
                            ('min', 3),
                            ('max', 4),
+                           ('delta_time', delta_time(6)),
+                           ('supplemental_scan', supplemental_scan(6)),
                            ('compression', 7),
                            ('uncompressed_size', combine_elem(8, 9)))),
+                     113: ('Power Removed Control', 300., LegacyMapper,
+                           (('rpg_cut_num', 0), ('cmd_generated', 1),
+                            ('el_angle', scaled_elem(2, 0.1)),
+                            ('clutter_filter_map_dt', date_elem(4, 3)),
+                            # While the 2620001Y ICD doesn't talk about using these
+                            # product-specific blocks for this product, they have data in them
+                            # and the compression info is necessary for proper decoding.
+                            ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
                      132: ('Clutter Likelihood Reflectivity', 230., LegacyMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),)),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)),)),
                      133: ('Clutter Likelihood Doppler', 230., LegacyMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),)),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)),)),
                      134: ('High Resolution VIL', 460., DigitalVILMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('max', 3),
@@ -1379,19 +1437,19 @@ class Level3File:
                             ('uncompressed_size', combine_elem(8, 9)))),
                      153: ('Super Resolution Reflectivity Data Array', 460., DigitalRefMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
-                            ('max', 3),
-                            ('compression', 7),
+                            ('max', 3), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      154: ('Super Resolution Velocity Data Array', 300., DigitalVelMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
-                            ('max', 3),
-                            ('compression', 7),
+                            ('min', 3), ('max', 4), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      155: ('Super Resolution Spectrum Width Data Array', 300.,
                            DigitalSPWMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
-                            ('max', 3),
-                            ('compression', 7),
+                            ('max', 3), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      156: ('Turbulence Detection (Eddy Dissipation Rate)', 230., EDRMapper,
                            (('el_start_time', 0),
@@ -1415,8 +1473,8 @@ class Level3File:
                      159: ('Digital Differential Reflectivity', 300., GenericDigitalMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', scaled_elem(3, 0.1)),
-                            ('max', scaled_elem(4, 0.1)),
-                            ('compression', 7),
+                            ('max', scaled_elem(4, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      160: ('Correlation Coefficient', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
@@ -1425,8 +1483,8 @@ class Level3File:
                      161: ('Digital Correlation Coefficient', 300., GenericDigitalMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', scaled_elem(3, 0.00333)),
-                            ('max', scaled_elem(4, 0.00333)),
-                            ('compression', 7),
+                            ('max', scaled_elem(4, 0.00333)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      162: ('Specific Differential Phase', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
@@ -1435,17 +1493,30 @@ class Level3File:
                      163: ('Digital Specific Differential Phase', 300., GenericDigitalMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', scaled_elem(3, 0.05)),
-                            ('max', scaled_elem(4, 0.05)),
-                            ('compression', 7),
+                            ('max', scaled_elem(4, 0.05)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      164: ('Hydrometeor Classification', 230., LegacyMapper,
                            (('el_angle', scaled_elem(2, 0.1)),)),
                      165: ('Digital Hydrometeor Classification', 300., DigitalHMCMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),
-                            ('compression', 7),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
                      166: ('Melting Layer', 230., LegacyMapper,
-                           (('el_angle', scaled_elem(2, 0.1)),)),
+                           (('el_angle', scaled_elem(2, 0.1)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)),)),
+                     167: ('Super Res Digital Correlation Coefficient', 300.,
+                           GenericDigitalMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('min', scaled_elem(3, 0.00333)),
+                            ('max', scaled_elem(4, 0.00333)), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
+                            ('uncompressed_size', combine_elem(8, 9)))),
+                     168: ('Super Res Digital Phi', 300., GenericDigitalMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('min', 3), ('max', 4), ('delta_time', delta_time(6)),
+                            ('supplemental_scan', supplemental_scan(6)), ('compression', 7),
+                            ('uncompressed_size', combine_elem(8, 9)))),
                      169: ('One Hour Accumulation', 230., LegacyMapper,
                            (('null_product', low_byte(2)),
                             ('max', scaled_elem(3, 0.1)),
@@ -1466,7 +1537,7 @@ class Level3File:
                             ('rainfall_end', date_elem(4, 5)),
                             ('bias', scaled_elem(6, 0.01)),
                             ('gr_pairs', scaled_elem(7, 0.01)))),
-                     172: ('Digital Storm total Accumulation', 230., GenericDigitalMapper,
+                     172: ('Digital Storm Total Accumulation', 230., GenericDigitalMapper,
                            (('rainfall_begin', date_elem(0, 1)),
                             ('null_product', low_byte(2)),
                             ('max', scaled_elem(3, 0.1)),
@@ -1558,7 +1629,12 @@ class Level3File:
 
         """
         fobj = open_as_needed(filename)
-        self.filename = filename if isinstance(filename, str) else 'No File'
+        if isinstance(filename, str):
+            self.filename = filename
+        elif isinstance(filename, pathlib.Path):
+            self.filename = str(filename)
+        else:
+            self.filename = 'No File'
 
         # Just read in the entire set of data at once
         with contextlib.closing(fobj):
@@ -1607,19 +1683,27 @@ class Level3File:
         # Handle GSM and jump out
         if self.header.code == 2:
             self.gsm = self._buffer.read_struct(self.gsm_fmt)
+            self.product_name = 'General Status Message'
             assert self.gsm.divider == -1
             if self.gsm.block_len > 82:
-                self.gsm_additional = self._buffer.read_struct(self.additional_gsm_fmt)
+                # Due to the way the structures read it in, one bit from the count needs
+                # to be popped off and added as the supplemental cut status for the 25th
+                # elevation cut.
+                more = self._buffer.read_struct(self.additional_gsm_fmt)
+                cut_count = more.supplemental_cut_count
+                more.supplemental_cut_map2.append(bool(cut_count & 0x1))
+                self.gsm_additional = more._replace(supplemental_cut_count=cut_count >> 1)
                 assert self.gsm.block_len == 178
             else:
                 assert self.gsm.block_len == 82
             return
 
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
+        log.debug('Product description block: %s', self.prod_desc)
 
         # Convert thresholds and dependent values to lists of values
-        self.thresholds = [getattr(self.prod_desc, 'thr' + str(i)) for i in range(1, 17)]
-        self.depVals = [getattr(self.prod_desc, 'dep' + str(i)) for i in range(1, 11)]
+        self.thresholds = [getattr(self.prod_desc, f'thr{i}') for i in range(1, 17)]
+        self.depVals = [getattr(self.prod_desc, f'dep{i}') for i in range(1, 11)]
 
         # Set up some time/location metadata
         self.metadata['msg_time'] = nexrad_to_datetime(self.header.date,
@@ -1640,6 +1724,9 @@ class Level3File:
                     ('uncompressed_size', combine_elem(8, 9)), ('defaultVals', 0)))
         self.product_name, self.max_range, mapper, meta = self.prod_spec_map.get(
             self.header.code, default)
+        log.debug('Product info--name: %s max_range: %f mapper: %s metadata: %s',
+                  self.product_name, self.max_range, mapper, meta)
+
         for name, block in meta:
             if callable(block):
                 self.metadata[name] = block(self.depVals)
@@ -1739,6 +1826,7 @@ class Level3File:
     def _unpack_symblock(self, start, offset):
         self._buffer.jump_to(start, offset)
         blk = self._buffer.read_struct(self.sym_block_fmt)
+        log.debug('Symbology block info: %s', blk)
 
         self.sym_block = []
         assert blk.divider == -1, ('Bad divider for symbology block: {:d} should be -1'
@@ -1752,7 +1840,7 @@ class Level3File:
             self.sym_block.append(layer)
             layer_start = self._buffer.set_mark()
             while self._buffer.offset_from(layer_start) < layer_hdr.length:
-                packet_code = self._buffer.read_int('>H')
+                packet_code = self._buffer.read_int(2, 'big', signed=False)
                 if packet_code in self.packet_map:
                     layer.append(self.packet_map[packet_code](self, packet_code, True))
                 else:
@@ -1770,13 +1858,13 @@ class Level3File:
                                    .format(hdr.block_id))
         self.graph_pages = []
         for page in range(hdr.num_pages):
-            page_num = self._buffer.read_int('>H')
+            page_num = self._buffer.read_int(2, 'big', signed=False)
             assert page + 1 == page_num
-            page_size = self._buffer.read_int('>H')
+            page_size = self._buffer.read_int(2, 'big', signed=False)
             page_start = self._buffer.set_mark()
             packets = []
             while self._buffer.offset_from(page_start) < page_size:
-                packet_code = self._buffer.read_int('>H')
+                packet_code = self._buffer.read_int(2, 'big', signed=False)
                 if packet_code in self.packet_map:
                     packets.append(self.packet_map[packet_code](self, packet_code, False))
                 else:
@@ -1789,14 +1877,14 @@ class Level3File:
         self._buffer.jump_to(start, offset)
         packets = []
         while not self._buffer.at_end():
-            packet_code = self._buffer.read_int('>H')
+            packet_code = self._buffer.read_int(2, 'big', signed=False)
             if packet_code in self.packet_map:
                 packets.append(self.packet_map[packet_code](self, packet_code, False))
             else:
                 log.warning('%s: Unknown standalone graphical packet type %d/%x.',
                             self.filename, packet_code, packet_code)
                 # Assume next 2 bytes is packet length and try skipping
-                num_bytes = self._buffer.read_int('>H')
+                num_bytes = self._buffer.read_int(2, 'big', signed=False)
                 self._buffer.skip(num_bytes)
         self.graph_pages = [packets]
 
@@ -1823,10 +1911,10 @@ class Level3File:
         self.tab_pages = []
         for _ in range(blk.num_pages):
             lines = []
-            num_chars = self._buffer.read_int('>h')
+            num_chars = self._buffer.read_int(2, 'big', signed=True)
             while num_chars != -1:
                 lines.append(''.join(self._buffer.read_ascii(num_chars)))
-                num_chars = self._buffer.read_int('>h')
+                num_chars = self._buffer.read_int(2, 'big', signed=True)
             self.tab_pages.append('\n'.join(lines))
 
         if have_header:
@@ -1834,9 +1922,10 @@ class Level3File:
 
     def __repr__(self):
         """Return the string representation of the product."""
-        items = [self.product_name, self.header, self.prod_desc, self.thresholds,
-                 self.depVals, self.metadata, self.siteID]
-        return self.filename + ': ' + '\n'.join(map(str, items))
+        attrs = ('product_name', 'header', 'prod_desc', 'thresholds', 'depVals', 'metadata',
+                 'gsm', 'gsm_additional', 'siteID')
+        blocks = [str(getattr(self, name)) for name in attrs if hasattr(self, name)]
+        return self.filename + ': ' + '\n'.join(blocks)
 
     def _unpack_packet_radial_data(self, code, in_sym_block):
         hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
@@ -1860,17 +1949,18 @@ class Level3File:
                            hdr.j_center * self.pos_scale(in_sym_block)),
                 'gate_scale': hdr.scale_factor * 0.001, 'first': hdr.ind_first_bin}
 
+    digital_radial_hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
+                                          ('i_center', 'h'), ('j_center', 'h'),
+                                          ('scale_factor', 'h'), ('num_rad', 'H')],
+                                         '>', 'DigitalRadialHeader')
+    digital_radial_fmt = NamedStruct([('num_bytes', 'H'), ('start_angle', 'h'),
+                                      ('angle_delta', 'h')], '>', 'DigitalRadialData')
+
     def _unpack_packet_digital_radial(self, code, in_sym_block):
-        hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
-                               ('i_center', 'h'), ('j_center', 'h'),
-                               ('scale_factor', 'h'), ('num_rad', 'H')],
-                              '>', 'DigitalRadialHeader')
-        rad_fmt = NamedStruct([('num_bytes', 'H'), ('start_angle', 'h'),
-                               ('angle_delta', 'h')], '>', 'DigitalRadialData')
-        hdr = self._buffer.read_struct(hdr_fmt)
+        hdr = self._buffer.read_struct(self.digital_radial_hdr_fmt)
         rads = []
         for _ in range(hdr.num_rad):
-            rad = self._buffer.read_struct(rad_fmt)
+            rad = self._buffer.read_struct(self.digital_radial_fmt)
             start_az = rad.start_angle * 0.1
             end_az = start_az + rad.angle_delta * 0.1
             rads.append((start_az, end_az, self._buffer.read_binary(rad.num_bytes)))
@@ -1891,22 +1981,22 @@ class Level3File:
         assert hdr.packing == 2
         rows = []
         for _ in range(hdr.num_rows):
-            num_bytes = self._buffer.read_int('>H')
+            num_bytes = self._buffer.read_int(2, 'big', signed=False)
             rows.append(self._unpack_rle_data(self._buffer.read_binary(num_bytes)))
         return {'start_x': hdr.i_start * hdr.xscale_int,
                 'start_y': hdr.j_start * hdr.yscale_int, 'data': rows}
 
     def _unpack_packet_uniform_text(self, code, in_sym_block):
         # By not using a struct, we can handle multiple codes
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         if code == 8:
-            value = self._buffer.read_int('>H')
+            value = self._buffer.read_int(2, 'big', signed=False)
             read_bytes = 6
         else:
             value = None
             read_bytes = 4
-        i_start = self._buffer.read_int('>h')
-        j_start = self._buffer.read_int('>h')
+        i_start = self._buffer.read_int(2, 'big', signed=True)
+        j_start = self._buffer.read_int(2, 'big', signed=True)
 
         # Text is what remains beyond what's been read, not including byte count
         text = ''.join(self._buffer.read_ascii(num_bytes - read_bytes))
@@ -1943,7 +2033,7 @@ class Level3File:
                              8: 'ETVS', 9: 'MDA', 10: 'MDA (Elev.)', 11: 'MDA (Weak)'}
 
         # Read the number of bytes and set a mark for sanity checking
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         packet_data_start = self._buffer.set_mark()
 
         scale = self.pos_scale(in_sym_block)
@@ -1952,21 +2042,21 @@ class Level3File:
         ret = defaultdict(list)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             # Read position
-            ret['x'].append(self._buffer.read_int('>h') * scale)
-            ret['y'].append(self._buffer.read_int('>h') * scale)
+            ret['x'].append(self._buffer.read_int(2, 'big', signed=True) * scale)
+            ret['y'].append(self._buffer.read_int(2, 'big', signed=True) * scale)
 
             # Handle any types that have additional info
             if code in (3, 11, 25):
-                ret['radius'].append(self._buffer.read_int('>h') * scale)
+                ret['radius'].append(self._buffer.read_int(2, 'big', signed=True) * scale)
             elif code == 15:
                 ret['id'].append(''.join(self._buffer.read_ascii(2)))
             elif code == 19:
-                ret['POH'].append(self._buffer.read_int('>h'))
-                ret['POSH'].append(self._buffer.read_int('>h'))
-                ret['Max Size'].append(self._buffer.read_int('>H'))
+                ret['POH'].append(self._buffer.read_int(2, 'big', signed=True))
+                ret['POSH'].append(self._buffer.read_int(2, 'big', signed=True))
+                ret['Max Size'].append(self._buffer.read_int(2, 'big', signed=False))
             elif code == 20:
-                kind = self._buffer.read_int('>H')
-                attr = self._buffer.read_int('>H')
+                kind = self._buffer.read_int(2, 'big', signed=False)
+                attr = self._buffer.read_int(2, 'big', signed=False)
                 if kind < 5 or kind > 8:
                     ret['radius'].append(attr * scale)
 
@@ -1995,11 +2085,11 @@ class Level3File:
         return ret
 
     def _unpack_packet_scit(self, code, in_sym_block):
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         packet_data_start = self._buffer.set_mark()
         ret = defaultdict(list)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            next_code = self._buffer.read_int('>H')
+            next_code = self._buffer.read_int(2, 'big', signed=False)
             if next_code not in self.packet_map:
                 log.warning('%s: Unknown packet in SCIT %d/%x.',
                             self.filename, next_code, next_code)
@@ -2022,17 +2112,17 @@ class Level3File:
 
     def _unpack_packet_digital_precipitation(self, code, in_sym_block):
         # Read off a couple of unused spares
-        self._buffer.read_int('>H')
-        self._buffer.read_int('>H')
+        self._buffer.read_int(2, 'big', signed=False)
+        self._buffer.read_int(2, 'big', signed=False)
 
         # Get the size of the grid
-        lfm_boxes = self._buffer.read_int('>H')
-        num_rows = self._buffer.read_int('>H')
+        lfm_boxes = self._buffer.read_int(2, 'big', signed=False)
+        num_rows = self._buffer.read_int(2, 'big', signed=False)
         rows = []
 
         # Read off each row and decode the RLE data
         for _ in range(num_rows):
-            row_num_bytes = self._buffer.read_int('>H')
+            row_num_bytes = self._buffer.read_int(2, 'big', signed=False)
             row_bytes = self._buffer.read_binary(row_num_bytes)
             if code == 18:
                 row = self._unpack_rle_data(row_bytes)
@@ -2046,9 +2136,9 @@ class Level3File:
         return {'data': rows}
 
     def _unpack_packet_linked_vector(self, code, in_sym_block):
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         if code == 9:
-            value = self._buffer.read_int('>h')
+            value = self._buffer.read_int(2, 'big', signed=True)
             num_bytes -= 2
         else:
             value = None
@@ -2058,9 +2148,9 @@ class Level3File:
         return {'vectors': vectors, 'color': value}
 
     def _unpack_packet_vector(self, code, in_sym_block):
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         if code == 10:
-            value = self._buffer.read_int('>h')
+            value = self._buffer.read_int(2, 'big', signed=True)
             num_bytes -= 2
         else:
             value = None
@@ -2071,51 +2161,53 @@ class Level3File:
 
     def _unpack_packet_contour_color(self, code, in_sym_block):
         # Check for color value indicator
-        assert self._buffer.read_int('>H') == 0x0002
+        assert self._buffer.read_int(2, 'big', signed=False) == 0x0002
 
         # Read and return value (level) of contour
-        return {'color': self._buffer.read_int('>H')}
+        return {'color': self._buffer.read_int(2, 'big', signed=False)}
 
     def _unpack_packet_linked_contour(self, code, in_sym_block):
         # Check for initial point indicator
-        assert self._buffer.read_int('>H') == 0x8000
+        assert self._buffer.read_int(2, 'big', signed=False) == 0x8000
 
         scale = self.pos_scale(in_sym_block)
-        startx = self._buffer.read_int('>h') * scale
-        starty = self._buffer.read_int('>h') * scale
+        startx = self._buffer.read_int(2, 'big', signed=True) * scale
+        starty = self._buffer.read_int(2, 'big', signed=True) * scale
         vectors = [(startx, starty)]
-        num_bytes = self._buffer.read_int('>H')
+        num_bytes = self._buffer.read_int(2, 'big', signed=False)
         pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
         vectors.extend(zip(pos[::2], pos[1::2]))
         return {'vectors': vectors}
 
     def _unpack_packet_wind_barbs(self, code, in_sym_block):
         # Figure out how much to read
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         packet_data_start = self._buffer.set_mark()
         ret = defaultdict(list)
 
         # Read while we have data, then return
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            ret['color'].append(self._buffer.read_int('>h'))
-            ret['x'].append(self._buffer.read_int('>h') * self.pos_scale(in_sym_block))
-            ret['y'].append(self._buffer.read_int('>h') * self.pos_scale(in_sym_block))
-            ret['direc'].append(self._buffer.read_int('>h'))
-            ret['speed'].append(self._buffer.read_int('>h'))
+            ret['color'].append(self._buffer.read_int(2, 'big', signed=True))
+            ret['x'].append(self._buffer.read_int(2, 'big', signed=True)
+                            * self.pos_scale(in_sym_block))
+            ret['y'].append(self._buffer.read_int(2, 'big', signed=True)
+                            * self.pos_scale(in_sym_block))
+            ret['direc'].append(self._buffer.read_int(2, 'big', signed=True))
+            ret['speed'].append(self._buffer.read_int(2, 'big', signed=True))
         return ret
 
     def _unpack_packet_generic(self, code, in_sym_block):
         # Reserved HW
-        assert self._buffer.read_int('>h') == 0
+        assert self._buffer.read_int(2, 'big', signed=True) == 0
 
         # Read number of bytes (2 HW) and return
-        num_bytes = self._buffer.read_int('>l')
+        num_bytes = self._buffer.read_int(4, 'big', signed=True)
         hunk = self._buffer.read(num_bytes)
         xdrparser = Level3XDRParser(hunk)
         return xdrparser(code)
 
     def _unpack_packet_trend_times(self, code, in_sym_block):
-        self._buffer.read_int('>h')  # number of bytes, not needed to process
+        self._buffer.read_int(2, 'big', signed=True)  # number of bytes, not needed to process
         return {'times': self._read_trends()}
 
     def _unpack_packet_cell_trend(self, code, in_sym_block):
@@ -2124,14 +2216,14 @@ class Level3File:
                     'Cell-based VIL', 'Maximum Reflectivity',
                     'Centroid Height']
         code_scales = [100, 100, 100, 1, 1, 1, 1, 100]
-        num_bytes = self._buffer.read_int('>h')
+        num_bytes = self._buffer.read_int(2, 'big', signed=True)
         packet_data_start = self._buffer.set_mark()
         cell_id = ''.join(self._buffer.read_ascii(2))
-        x = self._buffer.read_int('>h') * self.pos_scale(in_sym_block)
-        y = self._buffer.read_int('>h') * self.pos_scale(in_sym_block)
+        x = self._buffer.read_int(2, 'big', signed=True) * self.pos_scale(in_sym_block)
+        y = self._buffer.read_int(2, 'big', signed=True) * self.pos_scale(in_sym_block)
         ret = {'id': cell_id, 'x': x, 'y': y}
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            code = self._buffer.read_int('>h')
+            code = self._buffer.read_int(2, 'big', signed=True)
             try:
                 ind = code - 1
                 key = code_map[ind]
@@ -2149,9 +2241,8 @@ class Level3File:
         return ret
 
     def _read_trends(self):
-        num_vols = self._buffer.read_int('b')
-        latest = self._buffer.read_int('b')
-        vals = [self._buffer.read_int('>h') for _ in range(num_vols)]
+        num_vols, latest = self._buffer.read(2)
+        vals = [self._buffer.read_int(2, 'big', signed=True) for _ in range(num_vols)]
 
         # Wrap the circular buffer so that latest is last
         vals = vals[latest:] + vals[:latest]

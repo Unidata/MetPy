@@ -49,7 +49,7 @@ def _name_lookup(names):
     mapper = dict(zip(range(len(names)), names))
 
     def lookup(val):
-        return mapper.get(val, 'Unknown')
+        return mapper.get(val, 'UnknownValue')
     return lookup
 
 
@@ -101,7 +101,8 @@ class GiniFile(AbstractDataStore):
                 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)',
                 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)',
                 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)',
-                'Sounder (3.74 micron)', 'Sounder (Visible)']
+                # Percent Normal TPW found empirically from Service Change Notice 20-03
+                'Sounder (3.74 micron)', 'Sounder (Visible)', 'Percent Normal TPW']
 
     prod_desc_fmt = NamedStruct([('source', 'b'),
                                  ('creating_entity', 'b', _name_lookup(crafts)),
@@ -340,32 +341,6 @@ class GiniFile(AbstractDataStore):
                            attrs={'long_name': 'latitude', 'units': 'degrees_north'})
 
         return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var)]
-
-    # FIXME: Work around xarray <=0.10.3 docstring for load angering sphinx
-    # That's the only reason this exists.
-    def load(self):
-        """
-        Load the variables and attributes simultaneously.
-
-        A centralized loading function makes it easier to create
-        data stores that do automatic encoding/decoding.
-
-        For example::
-
-            class SuffixAppendingDataStore(AbstractDataStore):
-
-                def load(self):
-                    variables, attributes = AbstractDataStore.load(self)
-                    variables = {'%s_suffix' % k: v
-                                 for k, v in iteritems(variables)}
-                    attributes = {'%s_suffix' % k: v
-                                  for k, v in iteritems(attributes)}
-                    return variables, attributes
-
-        This function will be called anytime variables or attributes
-        are requested, so care should be taken to make sure its fast.
-        """
-        return super().load()
 
     def get_variables(self):
         """Get all variables in the file.
