@@ -248,7 +248,7 @@
     <span class="n">mapper</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)),</span> <span class="n">names</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;UnknownValue&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lookup</span>
 
 
@@ -300,7 +300,8 @@
                 <span class="s1">&#39;Sounder (9.71 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (7.43 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (7.02 micron)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Sounder (6.51 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.57 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.52 micron)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Sounder (4.45 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.13 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (3.98 micron)&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Sounder (3.74 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (Visible)&#39;</span><span class="p">]</span>
+                <span class="c1"># Percent Normal TPW found empirically from Service Change Notice 20-03</span>
+                <span class="s1">&#39;Sounder (3.74 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (Visible)&#39;</span><span class="p">,</span> <span class="s1">&#39;Percent Normal TPW&#39;</span><span class="p">]</span>
 
     <span class="n">prod_desc_fmt</span> <span class="o">=</span> <span class="n">NamedStruct</span><span class="p">([(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>
                                  <span class="p">(</span><span class="s1">&#39;creating_entity&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">_name_lookup</span><span class="p">(</span><span class="n">crafts</span><span class="p">)),</span>
@@ -540,32 +541,6 @@
 
         <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">y_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lon_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">lat_var</span><span class="p">)]</span>
 
-    <span class="c1"># FIXME: Work around xarray &lt;=0.10.3 docstring for load angering sphinx</span>
-    <span class="c1"># That&#39;s the only reason this exists.</span>
-<div class="viewcode-block" id="GiniFile.load"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Load the variables and attributes simultaneously.</span>
-
-<span class="sd">        A centralized loading function makes it easier to create</span>
-<span class="sd">        data stores that do automatic encoding/decoding.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">            class SuffixAppendingDataStore(AbstractDataStore):</span>
-
-<span class="sd">                def load(self):</span>
-<span class="sd">                    variables, attributes = AbstractDataStore.load(self)</span>
-<span class="sd">                    variables = {&#39;%s_suffix&#39; % k: v</span>
-<span class="sd">                                 for k, v in iteritems(variables)}</span>
-<span class="sd">                    attributes = {&#39;%s_suffix&#39; % k: v</span>
-<span class="sd">                                  for k, v in iteritems(attributes)}</span>
-<span class="sd">                    return variables, attributes</span>
-
-<span class="sd">        This function will be called anytime variables or attributes</span>
-<span class="sd">        are requested, so care should be taken to make sure its fast.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
 
@@ -616,7 +591,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 05, 2020 at 21:44:23.
+      Last updated on Oct 05, 2020 at 22:24:09.
 
     </p>
   </div>
@@ -650,7 +625,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post346+gade95ce',
+            VERSION:'1.0.0rc1.post367+gea2bf54',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

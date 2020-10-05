@@ -233,7 +233,7 @@
 <h1>Level2File<a class="headerlink" href="#level2file" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="metpy.io.Level2File">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.io.</code><code class="sig-name descname">Level2File</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.Level2File" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.io.</code><code class="sig-name descname">Level2File</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">has_volume_header</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.Level2File" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle reading the NEXRAD Level 2 data and its various messages.</p>
 <p>This class attempts to decode every byte that is in a given data file.
 It supports both external compression, as well as the internal BZ2
@@ -441,7 +441,7 @@ this will be read from directly.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.__init__" title="metpy.io.Level2File.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filename)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level2File.__init__" title="metpy.io.Level2File.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filename, *[, has_volume_header])</p></td>
 <td><p>Create instance of <a class="reference internal" href="#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level2File</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -540,7 +540,7 @@ this will be read from directly.</p>
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
 <dt id="metpy.io.Level2File.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.Level2File.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">has_volume_header</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.Level2File.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create instance of <a class="reference internal" href="#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level2File</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -586,7 +586,7 @@ this will be read from directly.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 05, 2020 at 21:44:23.
+      Last updated on Oct 05, 2020 at 22:24:09.
 
     </p>
   </div>
@@ -620,7 +620,7 @@ this will be read from directly.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post346+gade95ce',
+            VERSION:'1.0.0rc1.post367+gea2bf54',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -312,14 +312,14 @@ this will be read from directly.</p>
 <td><p>Get all variables in the file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.load" title="metpy.io.GiniFile.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
-<td><p>Load the variables and attributes simultaneously.</p></td>
+<td><p>This loads the variables and attributes simultaneously.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.channels">
-<code class="sig-name descname">channels</code><em class="property"> = ['Unknown', 'Visible', 'IR (3.9 micron)', 'WV (6.5/6.7 micron)', 'IR (11 micron)', 'IR (12 micron)', 'IR (13 micron)', 'IR (1.3 micron)', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'LI (Imager)', 'PW (Imager)', 'Surface Skin Temp (Imager)', 'LI (Sounder)', 'PW (Sounder)', 'Surface Skin Temp (Sounder)', 'CAPE', 'Land-sea Temp', 'WINDEX', 'Dry Microburst Potential Index', 'Microburst Day Potential Index', 'Convective Inhibition', 'Volcano Imagery', 'Scatterometer', 'Cloud Top', 'Cloud Amount', 'Rainfall Rate', 'Surface Wind Speed', 'Surface Wetness', 'Ice Concentration', 'Ice Type', 'Ice Edge', 'Cloud Water Content', 'Surface Type', 'Snow Indicator', 'Snow/Water Content', 'Volcano Imagery', 'Reserved', 'Sounder (14.71 micron)', 'Sounder (14.37 micron)', 'Sounder (14.06 micron)', 'Sounder (13.64 micron)', 'Sounder (13.37 micron)', 'Sounder (12.66 micron)', 'Sounder (12.02 micron)', 'Sounder (11.03 micron)', 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)', 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)', 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)', 'Sounder (3.74 micron)', 'Sounder (Visible)']</em><a class="headerlink" href="#metpy.io.GiniFile.channels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">channels</code><em class="property"> = ['Unknown', 'Visible', 'IR (3.9 micron)', 'WV (6.5/6.7 micron)', 'IR (11 micron)', 'IR (12 micron)', 'IR (13 micron)', 'IR (1.3 micron)', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'LI (Imager)', 'PW (Imager)', 'Surface Skin Temp (Imager)', 'LI (Sounder)', 'PW (Sounder)', 'Surface Skin Temp (Sounder)', 'CAPE', 'Land-sea Temp', 'WINDEX', 'Dry Microburst Potential Index', 'Microburst Day Potential Index', 'Convective Inhibition', 'Volcano Imagery', 'Scatterometer', 'Cloud Top', 'Cloud Amount', 'Rainfall Rate', 'Surface Wind Speed', 'Surface Wetness', 'Ice Concentration', 'Ice Type', 'Ice Edge', 'Cloud Water Content', 'Surface Type', 'Snow Indicator', 'Snow/Water Content', 'Volcano Imagery', 'Reserved', 'Sounder (14.71 micron)', 'Sounder (14.37 micron)', 'Sounder (14.06 micron)', 'Sounder (13.64 micron)', 'Sounder (13.37 micron)', 'Sounder (12.66 micron)', 'Sounder (12.02 micron)', 'Sounder (11.03 micron)', 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)', 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)', 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)', 'Sounder (3.74 micron)', 'Sounder (Visible)', 'Percent Normal TPW']</em><a class="headerlink" href="#metpy.io.GiniFile.channels" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -413,9 +413,9 @@ this will be read from directly.</p>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the variables and attributes simultaneously.</p>
-<p>A centralized loading function makes it easier to create
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>This loads the variables and attributes simultaneously.
+A centralized loading function makes it easier to create
 data stores that do automatic encoding/decoding.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuffixAppendingDataStore</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
@@ -423,9 +423,9 @@ data stores that do automatic encoding/decoding.</p>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">AbstractDataStore</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_suffix&#39;</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">variables</span><span class="p">)}</span>
+                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_suffix&#39;</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-                      <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">attributes</span><span class="p">)}</span>
+                      <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
 </pre></div>
 </div>
@@ -471,7 +471,7 @@ are requested, so care should be taken to make sure its fast.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 05, 2020 at 21:44:23.
+      Last updated on Oct 05, 2020 at 22:24:09.
 
     </p>
   </div>
@@ -505,7 +505,7 @@ are requested, so care should be taken to make sure its fast.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post346+gade95ce',
+            VERSION:'1.0.0rc1.post367+gea2bf54',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
