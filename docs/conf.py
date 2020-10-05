@@ -95,7 +95,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'MetPy'
 # noinspection PyShadowingBuiltins
-copyright = ('2019-2020, MetPy Developers. '
+copyright = ('2008-2020, MetPy Developers. '
              'Development supported by National Science Foundation grants '
              'AGS-1344155, OAC-1740315, and AGS-1901712.')
 
