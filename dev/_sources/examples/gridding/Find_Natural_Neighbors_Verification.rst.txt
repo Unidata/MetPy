@@ -122,7 +122,7 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.657 seconds)
+   **Total running time of the script:** ( 0 minutes  0.664 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:
