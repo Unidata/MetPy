@@ -23,7 +23,7 @@ inability to estimate time and level of effort, as well as because our prioritie
 and are informed by community feedback. The order of the following items reflects a rough
 prioritized order, but is by no means a strict ordering.
 
-Our plan is also to release MetPy 1.0 in 2019. Items in the roadmap relevant to the 1.0 release
+Our plan is also to release MetPy 1.0 in 2020. Items in the roadmap relevant to the 1.0 release
 are specifically called out below.
 
 We welcome input and discussion about these items over on MetPy’s
