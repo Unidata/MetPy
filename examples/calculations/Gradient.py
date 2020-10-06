@@ -17,6 +17,7 @@ import metpy.calc as mpcalc
 from metpy.units import units
 
 ###########################################
+# fmt: off
 # Create some test data to use for our example
 data = np.array([[23, 24, 23],
                  [25, 26, 25],
@@ -33,6 +34,7 @@ y = np.array([[1, 1, 1],
               [2, 2, 2],
               [3, 3, 3],
               [4, 4, 4]]) * units.kilometer
+# fmt: on
 
 ###########################################
 # Calculate the gradient using the coordinates of the data
