@@ -28,18 +28,18 @@ from metpy.units import units
 # University Department of Geography and Meteorology.
 
 
-data = Dataset(get_test_data('wrf_example.nc', False))
-lat = data.variables['lat'][:]
-lon = data.variables['lon'][:]
-time = data.variables['time']
+data = Dataset(get_test_data("wrf_example.nc", False))
+lat = data.variables["lat"][:]
+lon = data.variables["lon"][:]
+time = data.variables["time"]
 vtimes = num2date(time[:], time.units)
-temperature = units.Quantity(data.variables['temperature'][:], 'degC')
-pres = units.Quantity(data.variables['pressure'][:], 'Pa')
-hgt = units.Quantity(data.variables['height'][:], 'meter')
+temperature = units.Quantity(data.variables["temperature"][:], "degC")
+pres = units.Quantity(data.variables["pressure"][:], "Pa")
+hgt = units.Quantity(data.variables["height"][:], "meter")
 
 ####################################
 # Array of desired pressure levels
-plevs = [700.] * units.hPa
+plevs = [700.0] * units.hPa
 
 #####################################
 # **Interpolate The Data**
@@ -64,33 +64,48 @@ FH = 1
 
 # Create the figure and grid for subplots
 fig = plt.figure(figsize=(17, 12))
-add_metpy_logo(fig, 470, 320, size='large')
+add_metpy_logo(fig, 470, 320, size="large")
 
 # Plot 700 hPa
 ax = plt.subplot(111, projection=crs)
-ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+ax.add_feature(cfeature.COASTLINE.with_scale("50m"), linewidth=0.75)
 ax.add_feature(cfeature.STATES, linewidth=0.5)
 
 # Plot the heights
-cs = ax.contour(lon, lat, height[FH, 0, :, :], transform=ccrs.PlateCarree(),
-                colors='k', linewidths=1.0, linestyles='solid')
-cs.clabel(fontsize=10, inline=1, inline_spacing=7, fmt='%i', rightside_up=True,
-          use_clabeltext=True)
+cs = ax.contour(
+    lon,
+    lat,
+    height[FH, 0, :, :],
+    transform=ccrs.PlateCarree(),
+    colors="k",
+    linewidths=1.0,
+    linestyles="solid",
+)
+cs.clabel(
+    fontsize=10, inline=1, inline_spacing=7, fmt="%i", rightside_up=True, use_clabeltext=True
+)
 
 # Contour the temperature
-cf = ax.contourf(lon, lat, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r,
-                 transform=ccrs.PlateCarree())
-cb = fig.colorbar(cf, orientation='horizontal', aspect=65, shrink=0.5, pad=0.05,
-                  extendrect='True')
-cb.set_label('Celsius', size='x-large')
+cf = ax.contourf(
+    lon,
+    lat,
+    temp[FH, 0, :, :],
+    range(-20, 20, 1),
+    cmap=plt.cm.RdBu_r,
+    transform=ccrs.PlateCarree(),
+)
+cb = fig.colorbar(
+    cf, orientation="horizontal", aspect=65, shrink=0.5, pad=0.05, extendrect="True"
+)
+cb.set_label("Celsius", size="x-large")
 
 ax.set_extent([-106.5, -90.4, 34.5, 46.75], crs=ccrs.PlateCarree())
 
 # Make the axis title
-ax.set_title(f'{plevs[0]:~.0f} Heights (m) and Temperature (C)', loc='center', fontsize=10)
+ax.set_title(f"{plevs[0]:~.0f} Heights (m) and Temperature (C)", loc="center", fontsize=10)
 
 # Set the figure title
-fig.suptitle(f'WRF-ARW Forecast VALID: {vtimes[FH]} UTC', fontsize=14)
+fig.suptitle(f"WRF-ARW Forecast VALID: {vtimes[FH]} UTC", fontsize=14)
 add_timestamp(ax, vtimes[FH], y=0.02, high_contrast=True)
 
 plt.show()

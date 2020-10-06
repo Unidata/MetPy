@@ -29,11 +29,29 @@ class StationPlot:
     barbs as the center of the location.
     """
 
-    location_names = {'C': (0, 0), 'N': (0, 1), 'NE': (1, 1), 'E': (1, 0), 'SE': (1, -1),
-                      'S': (0, -1), 'SW': (-1, -1), 'W': (-1, 0), 'NW': (-1, 1),
-                      'N2': (0, 2), 'NNE': (1, 2), 'ENE': (2, 1), 'E2': (2, 0),
-                      'ESE': (2, -1), 'SSE': (1, -2), 'S2': (0, -2), 'SSW': (-1, -2),
-                      'WSW': (-2, -1), 'W2': (-2, 0), 'WNW': (-2, 1), 'NNW': (-1, 2)}
+    location_names = {
+        "C": (0, 0),
+        "N": (0, 1),
+        "NE": (1, 1),
+        "E": (1, 0),
+        "SE": (1, -1),
+        "S": (0, -1),
+        "SW": (-1, -1),
+        "W": (-1, 0),
+        "NW": (-1, 1),
+        "N2": (0, 2),
+        "NNE": (1, 2),
+        "ENE": (2, 1),
+        "E2": (2, 0),
+        "ESE": (2, -1),
+        "SSE": (1, -2),
+        "S2": (0, -2),
+        "SSW": (-1, -2),
+        "WSW": (-2, -1),
+        "W2": (-2, 0),
+        "WNW": (-2, 1),
+        "NNW": (-1, 2),
+    }
 
     def __init__(self, ax, x, y, fontsize=10, spacing=None, transform=None, **kwargs):
         """Initialize the StationPlot with items that do not change.
@@ -165,10 +183,10 @@ class StationPlot:
 
         """
         # Make sure we use our font for symbols
-        kwargs['fontproperties'] = wx_symbol_font.copy()
+        kwargs["fontproperties"] = wx_symbol_font.copy()
         return self.plot_parameter(location, codes, symbol_mapper, **kwargs)
 
-    def plot_parameter(self, location, parameter, formatter='.0f', **kwargs):
+    def plot_parameter(self, location, parameter, formatter=".0f", **kwargs):
         """At the specified location in the station model plot a set of values.
 
         This specifies that at the offset `location`, the data in `parameter` should be
@@ -204,9 +222,9 @@ class StationPlot:
 
         """
         # If plot_units specified, convert the data to those units
-        plotting_units = kwargs.pop('plot_units', None)
+        plotting_units = kwargs.pop("plot_units", None)
         parameter = self._scalar_plotting_units(parameter, plotting_units)
-        if hasattr(parameter, 'units'):
+        if hasattr(parameter, "units"):
             parameter = parameter.magnitude
         text = self._to_string_list(parameter, formatter)
         return self.plot_text(location, text, **kwargs)
@@ -242,9 +260,14 @@ class StationPlot:
         location = self._handle_location(location)
 
         kwargs = self._make_kwargs(kwargs)
-        text_collection = self.ax.scattertext(self.x, self.y, text, loc=location,
-                                              size=kwargs.pop('fontsize', self.fontsize),
-                                              **kwargs)
+        text_collection = self.ax.scattertext(
+            self.x,
+            self.y,
+            text,
+            loc=location,
+            size=kwargs.pop("fontsize", self.fontsize),
+            **kwargs
+        )
         if location in self.items:
             self.items[location].remove()
         self.items[location] = text_collection
@@ -277,14 +300,17 @@ class StationPlot:
         kwargs = self._make_kwargs(kwargs)
 
         # If plot_units specified, convert the data to those units
-        plotting_units = kwargs.pop('plot_units', None)
+        plotting_units = kwargs.pop("plot_units", None)
         u, v = self._vector_plotting_units(u, v, plotting_units)
 
         # Empirically determined
         pivot = 0.51 * np.sqrt(self.fontsize)
         length = 1.95 * np.sqrt(self.fontsize)
-        defaults = {'sizes': {'spacing': .15, 'height': 0.5, 'emptybarb': 0.35},
-                    'length': length, 'pivot': pivot}
+        defaults = {
+            "sizes": {"spacing": 0.15, "height": 0.5, "emptybarb": 0.35},
+            "length": length,
+            "pivot": pivot,
+        }
         defaults.update(kwargs)
 
         # Remove old barbs
@@ -320,10 +346,10 @@ class StationPlot:
         kwargs = self._make_kwargs(kwargs)
 
         # If plot_units specified, convert the data to those units
-        plotting_units = kwargs.pop('plot_units', None)
+        plotting_units = kwargs.pop("plot_units", None)
         u, v = self._vector_plotting_units(u, v, plotting_units)
 
-        defaults = {'pivot': 'tail', 'scale': 20, 'scale_units': 'inches', 'width': 0.002}
+        defaults = {"pivot": "tail", "scale": 20, "scale_units": "inches", "width": 0.002}
         defaults.update(kwargs)
 
         # Remove old arrows
@@ -336,12 +362,14 @@ class StationPlot:
     def _vector_plotting_units(u, v, plotting_units):
         """Handle conversion to plotting units for barbs and arrows."""
         if plotting_units:
-            if hasattr(u, 'units') and hasattr(v, 'units'):
+            if hasattr(u, "units") and hasattr(v, "units"):
                 u = u.to(plotting_units)
                 v = v.to(plotting_units)
             else:
-                raise ValueError('To convert to plotting units, units must be attached to '
-                                 'u and v wind components.')
+                raise ValueError(
+                    "To convert to plotting units, units must be attached to "
+                    "u and v wind components."
+                )
 
         # Strip units, CartoPy transform doesn't like
         u = np.array(u)
@@ -352,11 +380,13 @@ class StationPlot:
     def _scalar_plotting_units(scalar_value, plotting_units):
         """Handle conversion to plotting units for barbs and arrows."""
         if plotting_units:
-            if hasattr(scalar_value, 'units'):
+            if hasattr(scalar_value, "units"):
                 scalar_value = scalar_value.to(plotting_units)
             else:
-                raise ValueError('To convert to plotting units, units must be attached to '
-                                 'scalar value being converted.')
+                raise ValueError(
+                    "To convert to plotting units, units must be attached to "
+                    "scalar value being converted."
+                )
         return scalar_value
 
     def _make_kwargs(self, kwargs):
@@ -369,8 +399,8 @@ class StationPlot:
         all_kw.update(kwargs)
 
         # Pass transform if necessary
-        if 'transform' not in all_kw and self.transform:
-            all_kw['transform'] = self.transform
+        if "transform" not in all_kw and self.transform:
+            all_kw["transform"] = self.transform
 
         return all_kw
 
@@ -378,13 +408,15 @@ class StationPlot:
     def _to_string_list(vals, fmt):
         """Convert a sequence of values to a list of strings."""
         if not callable(fmt):
+
             def formatter(s):
                 """Turn a format string into a callable."""
                 return format(s, fmt)
+
         else:
             formatter = fmt
 
-        return [formatter(v) if np.isfinite(v) else '' for v in vals]
+        return [formatter(v) if np.isfinite(v) else "" for v in vals]
 
     def _handle_location(self, location):
         """Process locations to get a consistent set of tuples for location."""
@@ -419,7 +451,7 @@ class StationPlotLayout(dict):
         text = 3
         barb = 4
 
-    def add_value(self, location, name, fmt='.0f', units=None, **kwargs):
+    def add_value(self, location, name, fmt=".0f", units=None, **kwargs):
         r"""Add a numeric value to the station layout.
 
         This specifies that at the offset `location`, data should be pulled from the data
@@ -552,7 +584,7 @@ class StationPlotLayout(dict):
         """
         # Not sure if putting the v_name as a plot-specific option is appropriate,
         # but it seems simpler than making name code in plot handle tuples
-        self['barb'] = (self.PlotTypes.barb, (u_name, v_name), (units, kwargs))
+        self["barb"] = (self.PlotTypes.barb, (u_name, v_name), (units, kwargs))
 
     def names(self):
         """Get the list of names used by the layout.
@@ -588,6 +620,7 @@ class StationPlotLayout(dict):
             will be used to fill out the station plot.
 
         """
+
         def coerce_data(dat, u):
             try:
                 return dat.to(u).magnitude
@@ -605,8 +638,9 @@ class StationPlotLayout(dict):
                 # Plot if we have the data
                 if not (v_data is None or u_data is None):
                     units, kwargs = args
-                    plotter.plot_barb(coerce_data(u_data, units), coerce_data(v_data, units),
-                                      **kwargs)
+                    plotter.plot_barb(
+                        coerce_data(u_data, units), coerce_data(v_data, units), **kwargs
+                    )
             else:
                 # Check that we have the data for this location
                 data = data_dict.get(name)
@@ -623,41 +657,57 @@ class StationPlotLayout(dict):
 
     def __repr__(self):
         """Return string representation of layout."""
-        return ('{'
-                + ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
-                            for loc, info in sorted(self.items()))
-                + '}')
+        return (
+            "{"
+            + ", ".join(
+                "{0}: ({1[0].name}, {1[1]}, ...)".format(loc, info)
+                for loc, info in sorted(self.items())
+            )
+            + "}"
+        )
 
 
 with exporter:
     #: :desc: Simple station plot layout
     simple_layout = StationPlotLayout()
-    simple_layout.add_barb('eastward_wind', 'northward_wind', 'knots')
-    simple_layout.add_value('NW', 'air_temperature', units='degC')
-    simple_layout.add_value('SW', 'dew_point_temperature', units='degC')
-    simple_layout.add_value('NE', 'air_pressure_at_sea_level', units='mbar',
-                            fmt=lambda v: format(10 * v, '03.0f')[-3:])
-    simple_layout.add_symbol('C', 'cloud_coverage', sky_cover)
-    simple_layout.add_symbol('W', 'present_weather', current_weather)
+    simple_layout.add_barb("eastward_wind", "northward_wind", "knots")
+    simple_layout.add_value("NW", "air_temperature", units="degC")
+    simple_layout.add_value("SW", "dew_point_temperature", units="degC")
+    simple_layout.add_value(
+        "NE",
+        "air_pressure_at_sea_level",
+        units="mbar",
+        fmt=lambda v: format(10 * v, "03.0f")[-3:],
+    )
+    simple_layout.add_symbol("C", "cloud_coverage", sky_cover)
+    simple_layout.add_symbol("W", "present_weather", current_weather)
 
     #: Full NWS station plot `layout`__
     #:
     #: __ http://oceanservice.noaa.gov/education/yos/resource/JetStream/synoptic/wxmaps.htm
     nws_layout = StationPlotLayout()
-    nws_layout.add_value((-1, 1), 'air_temperature', units='degF')
-    nws_layout.add_symbol((0, 2), 'high_cloud_type', high_clouds)
-    nws_layout.add_symbol((0, 1), 'medium_cloud_type', mid_clouds)
-    nws_layout.add_symbol((0, -1), 'low_cloud_type', low_clouds)
-    nws_layout.add_value((1, 1), 'air_pressure_at_sea_level', units='mbar',
-                         fmt=lambda v: format(10 * v, '03.0f')[-3:])
-    nws_layout.add_value((-2, 0), 'visibility_in_air', fmt='.0f', units='miles')
-    nws_layout.add_symbol((-1, 0), 'present_weather', current_weather)
-    nws_layout.add_symbol((0, 0), 'cloud_coverage', sky_cover)
-    nws_layout.add_value((1, 0), 'tendency_of_air_pressure', units='mbar',
-                         fmt=lambda v: ('-' if v < 0 else '') + format(10 * abs(v), '02.0f'))
-    nws_layout.add_symbol((2, 0), 'tendency_of_air_pressure_symbol', pressure_tendency)
-    nws_layout.add_barb('eastward_wind', 'northward_wind', units='knots')
-    nws_layout.add_value((-1, -1), 'dew_point_temperature', units='degF')
+    nws_layout.add_value((-1, 1), "air_temperature", units="degF")
+    nws_layout.add_symbol((0, 2), "high_cloud_type", high_clouds)
+    nws_layout.add_symbol((0, 1), "medium_cloud_type", mid_clouds)
+    nws_layout.add_symbol((0, -1), "low_cloud_type", low_clouds)
+    nws_layout.add_value(
+        (1, 1),
+        "air_pressure_at_sea_level",
+        units="mbar",
+        fmt=lambda v: format(10 * v, "03.0f")[-3:],
+    )
+    nws_layout.add_value((-2, 0), "visibility_in_air", fmt=".0f", units="miles")
+    nws_layout.add_symbol((-1, 0), "present_weather", current_weather)
+    nws_layout.add_symbol((0, 0), "cloud_coverage", sky_cover)
+    nws_layout.add_value(
+        (1, 0),
+        "tendency_of_air_pressure",
+        units="mbar",
+        fmt=lambda v: ("-" if v < 0 else "") + format(10 * abs(v), "02.0f"),
+    )
+    nws_layout.add_symbol((2, 0), "tendency_of_air_pressure_symbol", pressure_tendency)
+    nws_layout.add_barb("eastward_wind", "northward_wind", units="knots")
+    nws_layout.add_value((-1, -1), "dew_point_temperature", units="degF")
 
     # TODO: Fix once we have the past weather symbols converted
-    nws_layout.add_symbol((1, -1), 'past_weather', current_weather)
+    nws_layout.add_symbol((1, -1), "past_weather", current_weather)

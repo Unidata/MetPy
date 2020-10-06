@@ -94,14 +94,16 @@ def test_barnes_weights():
 
     gamma = 0.5
 
-    dist = np.array([1000, 2000, 3000, 4000])**2
+    dist = np.array([1000, 2000, 3000, 4000]) ** 2
 
     weights = barnes_weights(dist, kappa, gamma) * 10000000
 
-    truth = [1353352.832366126918939,
-             3354.626279025118388,
-             .152299797447126,
-             .000000126641655]
+    truth = [
+        1353352.832366126918939,
+        3354.626279025118388,
+        0.152299797447126,
+        0.000000126641655,
+    ]
 
     assert_array_almost_equal(truth, weights)
 
@@ -110,25 +112,25 @@ def test_cressman_weights():
     r"""Test Cressman weights function."""
     r = 5000
 
-    dist = np.array([1000, 2000, 3000, 4000])**2
+    dist = np.array([1000, 2000, 3000, 4000]) ** 2
 
     weights = cressman_weights(dist, r)
 
-    truth = [0.923076923076923,
-             0.724137931034482,
-             0.470588235294117,
-             0.219512195121951]
+    truth = [0.923076923076923, 0.724137931034482, 0.470588235294117, 0.219512195121951]
 
     assert_array_almost_equal(truth, weights)
 
 
 def test_interpolate_to_grid_pandas():
     r"""Test whether this accepts a `pd.Series` without crashing."""
-    df = pd.DataFrame({
-        'lat': [38, 39, 31, 30, 41, 35],
-        'lon': [-106, -105, -86, -96, -74, -70],
-        'tmp': [-10, -16, 13, 16, 0, 3.5]
-    }, index=[1, 2, 3, 4, 5, 6])
+    df = pd.DataFrame(
+        {
+            "lat": [38, 39, 31, 30, 41, 35],
+            "lon": [-106, -105, -86, -96, -74, -70],
+            "tmp": [-10, -16, 13, 16, 0, 3.5],
+        },
+        index=[1, 2, 3, 4, 5, 6],
+    )
     interpolate_to_grid(
-        df['lon'], df['lat'], df['tmp'],
-        interp_type='natural_neighbor', hres=0.5)
+        df["lon"], df["lat"], df["tmp"], interp_type="natural_neighbor", hres=0.5
+    )

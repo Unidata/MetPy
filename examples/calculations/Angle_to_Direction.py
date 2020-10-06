@@ -15,7 +15,7 @@ from metpy.units import units
 
 ###########################################
 # Create a test value of an angle
-angle_deg = 70 * units('degree')
+angle_deg = 70 * units("degree")
 print(angle_deg)
 
 ###########################################

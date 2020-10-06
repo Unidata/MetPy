@@ -28,7 +28,7 @@ def test_interpolate_nans_1d_log():
     nan_indexes = [1, 5, 11, 12]
     y_with_nan = y.copy()
     y_with_nan[nan_indexes] = np.nan
-    assert_array_almost_equal(y, interpolate_nans_1d(x, y_with_nan, kind='log'), 2)
+    assert_array_almost_equal(y, interpolate_nans_1d(x, y_with_nan, kind="log"), 2)
 
 
 def test_interpolate_nans_1d_invalid():
@@ -36,7 +36,7 @@ def test_interpolate_nans_1d_invalid():
     x = np.logspace(1, 5, 15)
     y = 5 * np.log(x) + 3
     with pytest.raises(ValueError):
-        interpolate_nans_1d(x, y, kind='loog')
+        interpolate_nans_1d(x, y, kind="loog")
 
 
 def test_log_interpolate_1d():
@@ -134,7 +134,7 @@ def test_log_interpolate_set_nan_below():
 
 def test_interpolate_2args():
     """Test interpolation with 2 arguments."""
-    x = np.array([1., 2., 3., 4.])
+    x = np.array([1.0, 2.0, 3.0, 4.0])
     y = x
     y2 = x
     x_interp = np.array([2.5000000, 3.5000000])
@@ -146,7 +146,7 @@ def test_interpolate_2args():
 
 def test_interpolate_decrease():
     """Test interpolation with decreasing interpolation points."""
-    x = np.array([1., 2., 3., 4.])
+    x = np.array([1.0, 2.0, 3.0, 4.0])
     y = x
     x_interp = np.array([3.5000000, 2.5000000])
     y_interp_truth = np.array([3.5000000, 2.5000000])
@@ -156,7 +156,7 @@ def test_interpolate_decrease():
 
 def test_interpolate_decrease_xp():
     """Test interpolation with decreasing order."""
-    x = np.array([4., 3., 2., 1.])
+    x = np.array([4.0, 3.0, 2.0, 1.0])
     y = x
     x_interp = np.array([3.5000000, 2.5000000])
     y_interp_truth = np.array([3.5000000, 2.5000000])
@@ -166,7 +166,7 @@ def test_interpolate_decrease_xp():
 
 def test_interpolate_end_point():
     """Test interpolation with point at data endpoints."""
-    x = np.array([1., 2., 3., 4.])
+    x = np.array([1.0, 2.0, 3.0, 4.0])
     y = x
     x_interp = np.array([1.0, 4.0])
     y_interp_truth = np.array([1.0, 4.0])
@@ -176,9 +176,9 @@ def test_interpolate_end_point():
 
 def test_interpolate_masked_units():
     """Test interpolating with masked arrays with units."""
-    x = units.Quantity(np.ma.array([1., 2., 3., 4.]), units.m)
-    y = units.Quantity(np.ma.array([50., 60., 70., 80.]), units.degC)
-    x_interp = np.array([250., 350.]) * units.cm
-    y_interp_truth = np.array([65., 75.]) * units.degC
+    x = units.Quantity(np.ma.array([1.0, 2.0, 3.0, 4.0]), units.m)
+    y = units.Quantity(np.ma.array([50.0, 60.0, 70.0, 80.0]), units.degC)
+    x_interp = np.array([250.0, 350.0]) * units.cm
+    y_interp_truth = np.array([65.0, 75.0]) * units.degC
     y_interp = interpolate_1d(x_interp, x, y)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)

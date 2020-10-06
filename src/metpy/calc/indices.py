@@ -15,8 +15,8 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='dewpoint')
-@check_units('[pressure]', '[temperature]', bottom='[pressure]', top='[pressure]')
+@preprocess_and_wrap(wrap_like="dewpoint")
+@check_units("[pressure]", "[temperature]", bottom="[pressure]", top="[pressure]")
 def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
 
@@ -66,20 +66,24 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     if bottom is None:
         bottom = np.nanmax(pressure.magnitude) * pressure.units
 
-    pres_layer, dewpoint_layer = get_layer(pressure, dewpoint, bottom=bottom,
-                                           depth=bottom - top)
+    pres_layer, dewpoint_layer = get_layer(
+        pressure, dewpoint, bottom=bottom, depth=bottom - top
+    )
 
     w = mixing_ratio(saturation_vapor_pressure(dewpoint_layer), pres_layer)
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
-    pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units)
-                / (mpconsts.g * mpconsts.rho_l))
-    return pw.to('millimeters')
+    pw = -1.0 * (
+        np.trapz(w.magnitude, pres_layer.magnitude)
+        * (w.units * pres_layer.units)
+        / (mpconsts.g * mpconsts.rho_l)
+    )
+    return pw.to("millimeters")
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]')
+@check_units("[pressure]")
 def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
 
@@ -115,16 +119,14 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
     """
     ret = []  # Returned variable means in layer
-    layer_arg = get_layer(pressure, *args, height=height,
-                          bottom=bottom, depth=depth)
+    layer_arg = get_layer(pressure, *args, height=height, bottom=bottom, depth=depth)
     layer_p = layer_arg[0]
     layer_arg = layer_arg[1:]
     # Taking the integral of the weights (pressure) to feed into the weighting
     # function. Said integral works out to this function:
-    pres_int = 0.5 * (layer_p[-1].magnitude**2 - layer_p[0].magnitude**2)
+    pres_int = 0.5 * (layer_p[-1].magnitude ** 2 - layer_p[0].magnitude ** 2)
     for i, datavar in enumerate(args):
-        arg_mean = np.trapz((layer_arg[i] * layer_p).magnitude,
-                            x=layer_p.magnitude) / pres_int
+        arg_mean = np.trapz((layer_arg[i] * layer_p).magnitude, x=layer_p.magnitude) / pres_int
         ret.append(arg_mean * datavar.units)
 
     return ret
@@ -132,7 +134,7 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[speed]', '[speed]', '[length]')
+@check_units("[pressure]", "[speed]", "[speed]", "[length]")
 def bunkers_storm_motion(pressure, u, v, height):
     r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
 
@@ -166,17 +168,26 @@ def bunkers_storm_motion(pressure, u, v, height):
 
     """
     # mean wind from sfc-6km
-    wind_mean = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
-                                                   depth=6000 * units('meter')))
+    wind_mean = concatenate(
+        mean_pressure_weighted(pressure, u, v, height=height, depth=6000 * units("meter"))
+    )
 
     # mean wind from sfc-500m
-    wind_500m = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
-                                                   depth=500 * units('meter')))
+    wind_500m = concatenate(
+        mean_pressure_weighted(pressure, u, v, height=height, depth=500 * units("meter"))
+    )
 
     # mean wind from 5.5-6km
-    wind_5500m = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
-                                                    depth=500 * units('meter'),
-                                                    bottom=height[0] + 5500 * units('meter')))
+    wind_5500m = concatenate(
+        mean_pressure_weighted(
+            pressure,
+            u,
+            v,
+            height=height,
+            depth=500 * units("meter"),
+            bottom=height[0] + 5500 * units("meter"),
+        )
+    )
 
     # Calculate the shear vector from sfc-500m to 5.5-6km
     shear = wind_5500m - wind_500m
@@ -185,7 +196,7 @@ def bunkers_storm_motion(pressure, u, v, height):
     # multiply by the deviaton empirically calculated in Bunkers (2000) (7.5 m/s)
     shear_cross = concatenate([shear[1], -shear[0]])
     shear_mag = np.hypot(*(arg.magnitude for arg in shear)) * shear.units
-    rdev = shear_cross * (7.5 * units('m/s').to(u.units) / shear_mag)
+    rdev = shear_cross * (7.5 * units("m/s").to(u.units) / shear_mag)
 
     # Add the deviations to the layer average wind to get the RM motion
     right_mover = wind_mean + rdev
@@ -198,7 +209,7 @@ def bunkers_storm_motion(pressure, u, v, height):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[speed]', '[speed]')
+@check_units("[pressure]", "[speed]", "[speed]")
 def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     r"""Calculate bulk shear through a layer.
 
@@ -236,8 +247,7 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     Quantities even when given xarray DataArray profiles.
 
     """
-    _, u_layer, v_layer = get_layer(pressure, u, v, height=height,
-                                    bottom=bottom, depth=depth)
+    _, u_layer, v_layer = get_layer(pressure, u, v, height=height, bottom=bottom, depth=depth)
 
     u_shr = u_layer[-1] - u_layer[0]
     v_shr = v_layer[-1] - v_layer[0]
@@ -246,8 +256,8 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='mucape')
-@check_units('[energy] / [mass]', '[speed] * [speed]', '[speed]')
+@preprocess_and_wrap(wrap_like="mucape")
+@check_units("[energy] / [mass]", "[speed] * [speed]", "[speed]")
 def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     r"""Calculate the supercell composite parameter.
 
@@ -278,18 +288,20 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
         supercell composite
 
     """
-    effective_shear = np.clip(np.atleast_1d(effective_shear), None, 20 * units('m/s'))
-    effective_shear[effective_shear < 10 * units('m/s')] = 0 * units('m/s')
-    effective_shear = effective_shear / (20 * units('m/s'))
+    effective_shear = np.clip(np.atleast_1d(effective_shear), None, 20 * units("m/s"))
+    effective_shear[effective_shear < 10 * units("m/s")] = 0 * units("m/s")
+    effective_shear = effective_shear / (20 * units("m/s"))
 
-    return ((mucape / (1000 * units('J/kg')))
-            * (effective_storm_helicity / (50 * units('m^2/s^2')))
-            * effective_shear).to('dimensionless')
+    return (
+        (mucape / (1000 * units("J/kg")))
+        * (effective_storm_helicity / (50 * units("m^2/s^2")))
+        * effective_shear
+    ).to("dimensionless")
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='sbcape')
-@check_units('[energy] / [mass]', '[length]', '[speed] * [speed]', '[speed]')
+@preprocess_and_wrap(wrap_like="sbcape")
+@check_units("[energy] / [mass]", "[length]", "[speed] * [speed]", "[speed]")
 def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, shear_6km):
     r"""Calculate the significant tornado parameter (fixed layer).
 
@@ -326,24 +338,28 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
         significant tornado parameter
 
     """
-    surface_based_lcl_height = np.clip(np.atleast_1d(surface_based_lcl_height),
-                                       1000 * units.m, 2000 * units.m)
+    surface_based_lcl_height = np.clip(
+        np.atleast_1d(surface_based_lcl_height), 1000 * units.m, 2000 * units.m
+    )
     surface_based_lcl_height[surface_based_lcl_height > 2000 * units.m] = 0 * units.m
-    surface_based_lcl_height = ((2000. * units.m - surface_based_lcl_height)
-                                / (1000. * units.m))
-    shear_6km = np.clip(np.atleast_1d(shear_6km), None, 30 * units('m/s'))
-    shear_6km[shear_6km < 12.5 * units('m/s')] = 0 * units('m/s')
-    shear_6km /= 20 * units('m/s')
+    surface_based_lcl_height = (2000.0 * units.m - surface_based_lcl_height) / (
+        1000.0 * units.m
+    )
+    shear_6km = np.clip(np.atleast_1d(shear_6km), None, 30 * units("m/s"))
+    shear_6km[shear_6km < 12.5 * units("m/s")] = 0 * units("m/s")
+    shear_6km /= 20 * units("m/s")
 
-    return ((sbcape / (1500. * units('J/kg')))
-            * surface_based_lcl_height
-            * (storm_helicity_1km / (150. * units('m^2/s^2')))
-            * shear_6km)
+    return (
+        (sbcape / (1500.0 * units("J/kg")))
+        * surface_based_lcl_height
+        * (storm_helicity_1km / (150.0 * units("m^2/s^2")))
+        * shear_6km
+    )
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[speed]', '[speed]', '[length]', '[speed]', '[speed]')
+@check_units("[pressure]", "[speed]", "[speed]", "[length]", "[speed]", "[speed]")
 def critical_angle(pressure, u, v, height, u_storm, v_storm):
     r"""Calculate the critical angle.
 
@@ -382,10 +398,10 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
 
     """
     # Convert everything to m/s
-    u = u.to('m/s')
-    v = v.to('m/s')
-    u_storm = u_storm.to('m/s')
-    v_storm = v_storm.to('m/s')
+    u = u.to("m/s")
+    v = v.to("m/s")
+    u_storm = u_storm.to("m/s")
+    v_storm = v_storm.to("m/s")
 
     sort_inds = np.argsort(pressure[::-1])
     pressure = pressure[sort_inds]
@@ -394,7 +410,7 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     v = v[sort_inds]
 
     # Calculate sfc-500m shear vector
-    shr5 = bulk_shear(pressure, u, v, height=height, depth=500 * units('meter'))
+    shr5 = bulk_shear(pressure, u, v, height=height, depth=500 * units("meter"))
 
     # Make everything relative to the sfc wind orientation
     umn = u_storm - u[0]
@@ -403,6 +419,6 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     vshr = np.asarray([shr5[0].magnitude, shr5[1].magnitude])
     vsm = np.asarray([umn.magnitude, vmn.magnitude])
     angle_c = np.dot(vshr, vsm) / (np.linalg.norm(vshr) * np.linalg.norm(vsm))
-    critical_angle = np.arccos(angle_c) * units('radian')
+    critical_angle = np.arccos(angle_c) * units("radian")
 
-    return critical_angle.to('degrees')
+    return critical_angle.to("degrees")

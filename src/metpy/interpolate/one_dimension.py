@@ -15,7 +15,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 @preprocess_and_wrap()
-def interpolate_nans_1d(x, y, kind='linear'):
+def interpolate_nans_1d(x, y, kind="linear"):
     """Interpolate NaN values in y.
 
     Interpolate NaN values in the y dimension. Works with unsorted x values.
@@ -39,12 +39,12 @@ def interpolate_nans_1d(x, y, kind='linear'):
     x = x[x_sort_args]
     y = y[x_sort_args]
     nans = np.isnan(y)
-    if kind == 'linear':
+    if kind == "linear":
         y[nans] = np.interp(x[nans], x[~nans], y[~nans])
-    elif kind == 'log':
+    elif kind == "log":
         y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
     else:
-        raise ValueError(f'Unknown option for kind: {kind}')
+        raise ValueError(f"Unknown option for kind: {kind}")
     return y[x_sort_args]
 
 
@@ -129,12 +129,12 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
 
     # If fill_value is none and data is out of bounds, raise value error
     if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and fill_value is None:
-        raise ValueError('Interpolation point out of data bounds encountered')
+        raise ValueError("Interpolation point out of data bounds encountered")
 
     # Warn if interpolated values are outside data bounds, will make these the values
     # at end of data range.
     if np.max(minv) == xp.shape[axis]:
-        warnings.warn('Interpolation point out of data bounds encountered')
+        warnings.warn("Interpolation point out of data bounds encountered")
         minv2[minv == xp.shape[axis]] = xp.shape[axis] - 1
     if np.min(minv) == 0:
         minv2[minv == 0] = 1
@@ -144,7 +144,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     below = broadcast_indices(xp, minv2 - 1, ndim, axis)
 
     if np.any(x_array < xp[below]):
-        warnings.warn('Interpolation point out of data bounds encountered')
+        warnings.warn("Interpolation point out of data bounds encountered")
 
     # Create empty output list
     ret = []
@@ -154,8 +154,9 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
         # Var needs to be on the *left* of the multiply to ensure that if it's a pint
         # Quantity, it gets to control the operation--at least until we make sure
         # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
-        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below])
-                                                               / (xp[above] - xp[below]))
+        var_interp = var[below] + (var[above] - var[below]) * (
+            (x_array - xp[below]) / (xp[above] - xp[below])
+        )
 
         # Set points out of bounds to fill value.
         var_interp[minv == xp.shape[axis]] = fill_value
@@ -232,7 +233,7 @@ def _strip_matching_units(*args):
     Replaces `@units.wraps(None, ('=A', '=A'))`, which breaks with `*args` handling for
     pint>=0.9.
     """
-    if all(hasattr(arr, 'units') for arr in args):
+    if all(hasattr(arr, "units") for arr in args):
         return [arr.to(args[0].units).magnitude for arr in args]
     else:
         return args

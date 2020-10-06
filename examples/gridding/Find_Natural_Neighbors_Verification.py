@@ -31,8 +31,8 @@ for i, inds in enumerate(tri.simplices):
 test_points = np.array([[2, 2], [5, 10], [12, 13.4], [12, 8], [20, 20]])
 
 for i, (x, y) in enumerate(test_points):
-    ax.plot(x, y, 'k.', markersize=6)
-    ax.annotate('test ' + str(i), xy=(x, y))
+    ax.plot(x, y, "k.", markersize=6)
+    ax.annotate("test " + str(i), xy=(x, y))
 
 ###########################################
 # Since finding natural neighbors already calculates circumcenters, return
@@ -58,11 +58,16 @@ for i, inds in enumerate(tri.simplices):
 
 # Using circumcenters and calculated circumradii, plot the circumcircles
 for idx, cc in enumerate(circumcenters):
-    ax.plot(cc[0], cc[1], 'k.', markersize=5)
-    circ = plt.Circle(cc, circumcircle_radius(*tri.points[tri.simplices[idx]]),
-                      edgecolor='k', facecolor='none', transform=fig.axes[0].transData)
+    ax.plot(cc[0], cc[1], "k.", markersize=5)
+    circ = plt.Circle(
+        cc,
+        circumcircle_radius(*tri.points[tri.simplices[idx]]),
+        edgecolor="k",
+        facecolor="none",
+        transform=fig.axes[0].transData,
+    )
     ax.add_artist(circ)
 
-ax.set_aspect('equal', 'datalim')
+ax.set_aspect("equal", "datalim")
 
 plt.show()

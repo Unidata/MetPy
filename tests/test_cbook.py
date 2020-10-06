@@ -10,7 +10,7 @@ def test_registry():
     """Test that the registry properly registers things."""
     reg = Registry()
 
-    a = 'foo'
-    reg.register('mine')(a)
+    a = "foo"
+    reg.register("mine")(a)
 
-    assert reg['mine'] is a
+    assert reg["mine"] is a

@@ -25,11 +25,12 @@ if sys.version_info < (3,):
         - Install an older version of MetPy:
 
         $ pip install 'metpy=0.11.1'
-        """)
+        """
+    )
 
 # Must occur before below imports
-warnings.filterwarnings('ignore', 'numpy.dtype size changed')
-os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
+warnings.filterwarnings("ignore", "numpy.dtype size changed")
+os.environ["PINT_ARRAY_PROTOCOL_FALLBACK"] = "0"
 
 from ._version import get_version  # noqa: E402
 from .xarray import *  # noqa: F401, F403, E402

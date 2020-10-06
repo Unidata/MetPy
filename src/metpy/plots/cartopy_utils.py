@@ -14,6 +14,7 @@ try:
         def __init__(self, name, scale, **kwargs):
             """Create MetPyMapFeature instance."""
             import cartopy.crs as ccrs
+
             super().__init__(ccrs.PlateCarree(), **kwargs)
             self.name = name
 
@@ -26,10 +27,10 @@ try:
             import cartopy.io.shapereader as shapereader
 
             # Ensure that the associated files are in the cache
-            fname = f'{self.name}_{self.scaler.scale}'
-            for extension in ['.dbf', '.shx']:
+            fname = f"{self.name}_{self.scaler.scale}"
+            for extension in [".dbf", ".shx"]:
                 get_test_data(fname + extension)
-            path = get_test_data(fname + '.shp', as_file_obj=False)
+            path = get_test_data(fname + ".shp", as_file_obj=False)
             return iter(tuple(shapereader.Reader(path).geometries()))
 
         def intersecting_geometries(self, extent):
@@ -51,9 +52,9 @@ try:
             """
             return MetPyMapFeature(self.name, new_scale, **self.kwargs)
 
-    USCOUNTIES = MetPyMapFeature('us_counties', '20m', facecolor='None', edgecolor='black')
+    USCOUNTIES = MetPyMapFeature("us_counties", "20m", facecolor="None", edgecolor="black")
 
-    USSTATES = MetPyMapFeature('us_states', '20m', facecolor='None', edgecolor='black')
+    USSTATES = MetPyMapFeature("us_states", "20m", facecolor="None", edgecolor="black")
 except ImportError:
     pass
 
@@ -65,6 +66,7 @@ def import_cartopy():
     """
     try:
         import cartopy.crs as ccrs
+
         return ccrs
     except ImportError:
         return CartopyStub()
@@ -75,4 +77,4 @@ class CartopyStub:
 
     def __getattr__(self, item):
         """Raise an error on any attribute access."""
-        raise RuntimeError(f'CartoPy is required to use this feature ({item}).')
+        raise RuntimeError(f"CartoPy is required to use this feature ({item}).")

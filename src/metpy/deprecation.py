@@ -122,25 +122,30 @@ class MetpyDeprecationWarning(UserWarning):
 metpyDeprecation = MetpyDeprecationWarning  # noqa: N816
 
 
-def _generate_deprecation_message(since, message='', name='',
-                                  alternative='', pending=False,
-                                  obj_type='attribute',
-                                  addendum=''):
+def _generate_deprecation_message(
+    since,
+    message="",
+    name="",
+    alternative="",
+    pending=False,
+    obj_type="attribute",
+    addendum="",
+):
 
     if not message:
 
         if pending:
-            message = (
-                'The {} {} will be deprecated in a '
-                'future version.'.format(name, obj_type))
+            message = "The {} {} will be deprecated in a " "future version.".format(
+                name, obj_type
+            )
         else:
-            message = (
-                'The {} {} was deprecated in version '
-                '{}.'.format(name, obj_type, since))
+            message = "The {} {} was deprecated in version " "{}.".format(
+                name, obj_type, since
+            )
 
-    altmessage = ''
+    altmessage = ""
     if alternative:
-        altmessage = f' Use {alternative} instead.'
+        altmessage = f" Use {alternative} instead."
 
     message = message + altmessage
 
@@ -150,8 +155,15 @@ def _generate_deprecation_message(since, message='', name='',
     return message
 
 
-def warn_deprecated(since, message='', name='', alternative='', pending=False,
-                    obj_type='attribute', addendum=''):
+def warn_deprecated(
+    since,
+    message="",
+    name="",
+    alternative="",
+    pending=False,
+    obj_type="attribute",
+    addendum="",
+):
     """Display deprecation warning in a standard way.
 
     Parameters
@@ -194,14 +206,16 @@ def warn_deprecated(since, message='', name='', alternative='', pending=False,
                             obj_type='module')
 
     """
-    message = _generate_deprecation_message(since, message, name, alternative,
-                                            pending, obj_type)
+    message = _generate_deprecation_message(
+        since, message, name, alternative, pending, obj_type
+    )
 
     warnings.warn(message, metpyDeprecation, stacklevel=1)
 
 
-def deprecated(since, message='', name='', alternative='', pending=False,
-               obj_type=None, addendum=''):
+def deprecated(
+    since, message="", name="", alternative="", pending=False, obj_type=None, addendum=""
+):
     """Mark a function or a class as deprecated.
 
     Parameters
@@ -250,23 +264,31 @@ def deprecated(since, message='', name='', alternative='', pending=False,
                 pass
 
     """
-    def deprecate(obj, message=message, name=name, alternative=alternative,
-                  pending=pending, addendum=addendum):
+
+    def deprecate(
+        obj,
+        message=message,
+        name=name,
+        alternative=alternative,
+        pending=pending,
+        addendum=addendum,
+    ):
         import textwrap
 
         if not name:
             name = obj.__name__
 
         if isinstance(obj, type):
-            obj_type = 'class'
+            obj_type = "class"
             old_doc = obj.__doc__
             func = obj.__init__
 
             def finalize(wrapper, new_doc):
                 obj.__init__ = wrapper
                 return obj
+
         else:
-            obj_type = 'function'
+            obj_type = "function"
             func = obj
             old_doc = func.__doc__
 
@@ -275,22 +297,21 @@ def deprecated(since, message='', name='', alternative='', pending=False,
                 # wrapper.__doc__ = new_doc
                 return wrapper
 
-        message = _generate_deprecation_message(since, message, name,
-                                                alternative, pending,
-                                                obj_type, addendum)
+        message = _generate_deprecation_message(
+            since, message, name, alternative, pending, obj_type, addendum
+        )
 
         def wrapper(*args, **kwargs):
             warnings.warn(message, metpyDeprecation, stacklevel=2)
             return func(*args, **kwargs)
 
-        old_doc = textwrap.dedent(old_doc or '').strip('\n')
+        old_doc = textwrap.dedent(old_doc or "").strip("\n")
         message = message.strip()
-        new_doc = ('\n.. deprecated:: {}'
-                   '\n    {}\n\n'.format(since, message) + old_doc)
+        new_doc = "\n.. deprecated:: {}" "\n    {}\n\n".format(since, message) + old_doc
         if not old_doc:
             # This is to prevent a spurious 'unexected unindent' warning from
             # docutils when the original docstring was blank.
-            new_doc += r'\ '
+            new_doc += r"\ "
 
         return finalize(wrapper, new_doc)
 

@@ -14,7 +14,7 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-def interpolate_to_slice(data, points, interp_type='linear'):
+def interpolate_to_slice(data, points, interp_type="linear"):
     r"""Obtain an interpolated slice through data using xarray.
 
     Utilizing the interpolation functionality in `xarray`, this function takes a slice the
@@ -44,22 +44,26 @@ def interpolate_to_slice(data, points, interp_type='linear'):
 
     """
     try:
-        x, y = data.metpy.coordinates('x', 'y')
+        x, y = data.metpy.coordinates("x", "y")
     except AttributeError:
-        raise ValueError('Required coordinate information not available. Verify that '
-                         'your data has been parsed by MetPy with proper x and y '
-                         'dimension coordinates.')
+        raise ValueError(
+            "Required coordinate information not available. Verify that "
+            "your data has been parsed by MetPy with proper x and y "
+            "dimension coordinates."
+        )
 
-    data_sliced = data.interp({
-        x.name: xr.DataArray(points[:, 0], dims='index', attrs=x.attrs),
-        y.name: xr.DataArray(points[:, 1], dims='index', attrs=y.attrs)
-    }, method=interp_type)
-    data_sliced.coords['index'] = range(len(points))
+    data_sliced = data.interp(
+        {
+            x.name: xr.DataArray(points[:, 0], dims="index", attrs=x.attrs),
+            y.name: xr.DataArray(points[:, 1], dims="index", attrs=y.attrs),
+        },
+        method=interp_type,
+    )
+    data_sliced.coords["index"] = range(len(points))
 
     # Bug in xarray: interp strips units
-    if (
-        isinstance(data.data, units.Quantity)
-        and not isinstance(data_sliced.data, units.Quantity)
+    if isinstance(data.data, units.Quantity) and not isinstance(
+        data_sliced.data, units.Quantity
     ):
         data_sliced.data = units.Quantity(data_sliced.data, data.data.units)
 
@@ -102,18 +106,20 @@ def geodesic(crs, start, end, steps):
     # Geod.npts only gives points *in between* the start and end, and we want to include
     # the endpoints.
     g = Geod(crs.proj4_init)
-    geodesic = np.concatenate([
-        np.array(start[::-1])[None],
-        np.array(g.npts(start[1], start[0], end[1], end[0], steps - 2)),
-        np.array(end[::-1])[None]
-    ]).transpose()
+    geodesic = np.concatenate(
+        [
+            np.array(start[::-1])[None],
+            np.array(g.npts(start[1], start[0], end[1], end[0], steps - 2)),
+            np.array(end[::-1])[None],
+        ]
+    ).transpose()
     points = crs.transform_points(ccrs.Geodetic(), *geodesic)[:, :2]
 
     return points
 
 
 @exporter.export
-def cross_section(data, start, end, steps=100, interp_type='linear'):
+def cross_section(data, start, end, steps=100, interp_type="linear"):
     r"""Obtain an interpolated cross-sectional slice through gridded data.
 
     Utilizing the interpolation functionality in `xarray`, this function takes a vertical
@@ -152,8 +158,9 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
     """
     if isinstance(data, xr.Dataset):
         # Recursively apply to dataset
-        return data.map(cross_section, True, (start, end), steps=steps,
-                        interp_type=interp_type)
+        return data.map(
+            cross_section, True, (start, end), steps=steps, interp_type=interp_type
+        )
     elif data.ndim == 0:
         # This has no dimensions, so it is likely a projection variable. In any case, there
         # are no data here to take the cross section with. Therefore, do nothing.
@@ -165,17 +172,19 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
             crs_data = data.metpy.cartopy_crs
             x = data.metpy.x
         except AttributeError:
-            raise ValueError('Data missing required coordinate information. Verify that '
-                             'your data have been parsed by MetPy with proper x and y '
-                             'dimension coordinates and added crs coordinate of the '
-                             'correct projection for each variable.')
+            raise ValueError(
+                "Data missing required coordinate information. Verify that "
+                "your data have been parsed by MetPy with proper x and y "
+                "dimension coordinates and added crs coordinate of the "
+                "correct projection for each variable."
+            )
 
         # Get the geodesic
         points_cross = geodesic(crs_data, start, end, steps)
 
         # Patch points_cross to match given longitude range, whether [0, 360) or (-180,  180]
-        if check_axis(x, 'longitude') and (x > 180).any():
-            points_cross[points_cross[:, 0] < 0, 0] += 360.
+        if check_axis(x, "longitude") and (x > 180).any():
+            points_cross[points_cross[:, 0] < 0, 0] += 360.0
 
         # Return the interpolated data
         return interpolate_to_slice(data, points_cross, interp_type=interp_type)

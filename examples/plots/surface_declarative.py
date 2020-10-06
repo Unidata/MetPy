@@ -27,8 +27,11 @@ import metpy.plots as mpplots
 # Python script. The data are pre-processed to determine sky cover and weather symbols from
 # text output.
 
-data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
-                   infer_datetime_format=True, parse_dates=['valid'])
+data = pd.read_csv(
+    get_test_data("SFC_obs.csv", as_file_obj=False),
+    infer_datetime_format=True,
+    parse_dates=["valid"],
+)
 
 ########################################
 # **Plotting the data**
@@ -42,20 +45,25 @@ obs.data = data
 obs.time = datetime(1993, 3, 12, 13)
 obs.time_window = timedelta(minutes=15)
 obs.level = None
-obs.fields = ['tmpf', 'dwpf', 'emsl', 'cloud_cover', 'wxsym']
-obs.locations = ['NW', 'SW', 'NE', 'C', 'W']
-obs.colors = ['red', 'green', 'black', 'black', 'blue']
-obs.formats = [None, None, lambda v: format(10 * v, '.0f')[-3:], 'sky_cover',
-               'current_weather']
-obs.vector_field = ('uwind', 'vwind')
+obs.fields = ["tmpf", "dwpf", "emsl", "cloud_cover", "wxsym"]
+obs.locations = ["NW", "SW", "NE", "C", "W"]
+obs.colors = ["red", "green", "black", "black", "blue"]
+obs.formats = [
+    None,
+    None,
+    lambda v: format(10 * v, ".0f")[-3:],
+    "sky_cover",
+    "current_weather",
+]
+obs.vector_field = ("uwind", "vwind")
 obs.reduce_points = 1
 
 # Add map features for the particular panel
 panel = mpplots.MapPanel()
 panel.layout = (1, 1, 1)
-panel.area = 'ga'
+panel.area = "ga"
 panel.projection = ccrs.PlateCarree()
-panel.layers = ['coastline', 'borders', 'states']
+panel.layers = ["coastline", "borders", "states"]
 panel.plots = [obs]
 
 # Collecting panels for complete figure

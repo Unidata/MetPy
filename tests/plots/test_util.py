@@ -32,7 +32,7 @@ def test_add_timestamp_custom_format():
     """Test adding a timestamp to an axes object with custom time formatting."""
     fig = plt.figure(figsize=(9, 9))
     ax = plt.subplot(1, 1, 1)
-    add_timestamp(ax, time=datetime(2017, 1, 1), time_format='%H:%M:%S %Y/%m/%d')
+    add_timestamp(ax, time=datetime(2017, 1, 1), time_format="%H:%M:%S %Y/%m/%d")
     return fig
 
 
@@ -41,7 +41,7 @@ def test_add_timestamp_pretext():
     """Test adding a timestamp to an axes object with custom pre-text."""
     fig = plt.figure(figsize=(9, 9))
     ax = plt.subplot(1, 1, 1)
-    add_timestamp(ax, time=datetime(2017, 1, 1), pretext='Valid: ')
+    add_timestamp(ax, time=datetime(2017, 1, 1), pretext="Valid: ")
     return fig
 
 
@@ -66,7 +66,7 @@ def test_add_metpy_logo_small():
 def test_add_metpy_logo_large():
     """Test adding a large MetPy logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
-    add_metpy_logo(fig, size='large')
+    add_metpy_logo(fig, size="large")
     return fig
 
 
@@ -82,7 +82,7 @@ def test_add_logo_invalid_size():
     """Test adding a logo to a figure with an invalid size specification."""
     fig = plt.figure(figsize=(9, 9))
     with pytest.raises(ValueError):
-        add_metpy_logo(fig, size='jumbo')
+        add_metpy_logo(fig, size="jumbo")
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
@@ -94,8 +94,8 @@ def test_gempak_color_image_compare():
     delta = 0.025
     x = y = np.arange(-3.0, 3.01, delta)
     xx, yy = np.meshgrid(x, y)
-    z1 = np.exp(-xx**2 - yy**2)
-    z2 = np.exp(-(xx - 1)**2 - (yy - 1)**2)
+    z1 = np.exp(-(xx ** 2) - yy ** 2)
+    z2 = np.exp(-((xx - 1) ** 2) - (yy - 1) ** 2)
     z = (z1 - z2) * 2
 
     fig = plt.figure(figsize=(9, 9))
@@ -108,13 +108,13 @@ def test_gempak_color_image_compare():
 def test_gempak_color_xw_image_compare():
     """Test creating a plot with all the GEMPAK colors using xw style."""
     c = range(32)
-    mplc = convert_gempak_color(c, style='xw')
+    mplc = convert_gempak_color(c, style="xw")
 
     delta = 0.025
     x = y = np.arange(-3.0, 3.01, delta)
     xx, yy = np.meshgrid(x, y)
-    z1 = np.exp(-xx**2 - yy**2)
-    z2 = np.exp(-(xx - 1)**2 - (yy - 1)**2)
+    z1 = np.exp(-(xx ** 2) - yy ** 2)
+    z2 = np.exp(-((xx - 1) ** 2) - (yy - 1) ** 2)
     z = (z1 - z2) * 2
 
     fig = plt.figure(figsize=(9, 9))
@@ -127,19 +127,19 @@ def test_gempak_color_invalid_style():
     """Test converting a GEMPAK color with an invalid style parameter."""
     c = range(32)
     with pytest.raises(ValueError):
-        convert_gempak_color(c, style='plt')
+        convert_gempak_color(c, style="plt")
 
 
 def test_gempak_color_quirks():
     """Test converting some unusual GEMPAK colors."""
     c = [-5, 95, 101]
     mplc = convert_gempak_color(c)
-    truth = ['white', 'bisque', 'white']
+    truth = ["white", "bisque", "white"]
     assert mplc == truth
 
 
 def test_gempak_color_scalar():
     """Test converting a single GEMPAK color."""
     mplc = convert_gempak_color(6)
-    truth = 'cyan'
+    truth = "cyan"
     assert mplc == truth

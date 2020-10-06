@@ -16,32 +16,32 @@ import numpy as np
 log = logging.getLogger(__name__)
 
 
-def open_as_needed(filename, mode='rb'):
+def open_as_needed(filename, mode="rb"):
     """Return a file-object given either a filename or an object.
 
     Handles opening with the right class based on the file extension.
 
     """
     # Handle file-like objects
-    if hasattr(filename, 'read'):
+    if hasattr(filename, "read"):
         # See if the file object is really gzipped or bzipped.
         lead = filename.read(4)
 
         # If we can seek, seek back to start, otherwise read all the data into an
         # in-memory file-like object.
-        if hasattr(filename, 'seek'):
+        if hasattr(filename, "seek"):
             filename.seek(0)
         else:
             filename = BytesIO(lead + filename.read())
 
         # If the leading bytes match one of the signatures, pass into the appropriate class.
         try:
-            lead = lead.encode('ascii')
+            lead = lead.encode("ascii")
         except AttributeError:
             pass
-        if lead.startswith(b'\x1f\x8b'):
+        if lead.startswith(b"\x1f\x8b"):
             filename = gzip.GzipFile(fileobj=filename)
-        elif lead.startswith(b'BZh'):
+        elif lead.startswith(b"BZh"):
             filename = bz2.BZ2File(filename)
 
         return filename
@@ -49,22 +49,22 @@ def open_as_needed(filename, mode='rb'):
     # This will convert pathlib.Path instances to strings
     filename = str(filename)
 
-    if filename.endswith('.bz2'):
+    if filename.endswith(".bz2"):
         return bz2.BZ2File(filename, mode)
-    elif filename.endswith('.gz'):
+    elif filename.endswith(".gz"):
         return gzip.GzipFile(filename, mode)
     else:
-        kwargs = {'errors': 'surrogateescape'} if mode != 'rb' else {}
+        kwargs = {"errors": "surrogateescape"} if mode != "rb" else {}
         return open(filename, mode, **kwargs)
 
 
 class NamedStruct(Struct):
     """Parse bytes using :class:`Struct` but provide named fields."""
 
-    def __init__(self, info, prefmt='', tuple_name=None):
+    def __init__(self, info, prefmt="", tuple_name=None):
         """Initialize the NamedStruct."""
         if tuple_name is None:
-            tuple_name = 'NamedStruct'
+            tuple_name = "NamedStruct"
         names, fmts = zip(*info)
         self.converters = {}
         conv_off = 0
@@ -73,8 +73,8 @@ class NamedStruct(Struct):
                 self.converters[ind - conv_off] = i[-1]
             elif not i[0]:  # Skip items with no name
                 conv_off += 1
-        self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        super().__init__(prefmt + ''.join(f for f in fmts if f))
+        self._tuple = namedtuple(tuple_name, " ".join(n for n in names if n))
+        super().__init__(prefmt + "".join(f for f in fmts if f))
 
     def _create(self, items):
         if self.converters:
@@ -112,14 +112,14 @@ class NamedStruct(Struct):
 class DictStruct(Struct):
     """Parse bytes using :class:`Struct` but provide named fields using dictionary access."""
 
-    def __init__(self, info, prefmt=''):
+    def __init__(self, info, prefmt=""):
         """Initialize the DictStruct."""
         names, formats = zip(*info)
 
         # Remove empty names
         self._names = [n for n in names if n]
 
-        super().__init__(prefmt + ''.join(f for f in formats if f))
+        super().__init__(prefmt + "".join(f for f in formats if f))
 
     def _create(self, items):
         return dict(zip(self._names, items))
@@ -146,7 +146,7 @@ class Enum:
 
     def __call__(self, val):
         """Map an integer to the string representation."""
-        return self.val_map.get(val, f'Unknown ({val})')
+        return self.val_map.get(val, f"Unknown ({val})")
 
 
 class Bits:
@@ -235,7 +235,7 @@ class IOBuffer:
     def splice(self, mark, newdata):
         """Replace the data after the marked location with the specified data."""
         self.jump_to(mark)
-        self._data = self._data[:self._offset] + bytearray(newdata)
+        self._data = self._data[: self._offset] + bytearray(newdata)
 
     def read_struct(self, struct_class):
         """Parse and return a structure from the current buffer offset."""
@@ -252,20 +252,20 @@ class IOBuffer:
 
     def read_ascii(self, num_bytes=None):
         """Return the specified bytes as ascii-formatted text."""
-        return self.read(num_bytes).decode('ascii')
+        return self.read(num_bytes).decode("ascii")
 
-    def read_binary(self, num, item_type='B'):
+    def read_binary(self, num, item_type="B"):
         """Parse the current buffer offset as the specified code."""
-        if 'B' in item_type:
+        if "B" in item_type:
             return self.read(num)
 
-        if item_type[0] in ('@', '=', '<', '>', '!'):
+        if item_type[0] in ("@", "=", "<", ">", "!"):
             order = item_type[0]
             item_type = item_type[1:]
         else:
-            order = '@'
+            order = "@"
 
-        return list(self.read_struct(Struct(order + '{:d}'.format(int(num)) + item_type)))
+        return list(self.read_struct(Struct(order + "{:d}".format(int(num)) + item_type)))
 
     def read_int(self, size, endian, signed):
         """Parse the current buffer offset as the specified integer code."""
@@ -286,9 +286,9 @@ class IOBuffer:
     def get_next(self, num_bytes=None):
         """Get the next bytes in the buffer without modifying the offset."""
         if num_bytes is None:
-            return self._data[self._offset:]
+            return self._data[self._offset :]
         else:
-            return self._data[self._offset:self._offset + num_bytes]
+            return self._data[self._offset : self._offset + num_bytes]
 
     def skip(self, num_bytes):
         """Jump the ahead the specified bytes in the buffer."""
@@ -299,7 +299,7 @@ class IOBuffer:
 
     def check_remains(self, num_bytes):
         """Check that the number of bytes specified remains in the buffer."""
-        return len(self._data[self._offset:]) == num_bytes
+        return len(self._data[self._offset :]) == num_bytes
 
     def truncate(self, num_bytes):
         """Remove the specified number of bytes from the end of the buffer."""
@@ -315,7 +315,7 @@ class IOBuffer:
 
     def __str__(self):
         """Return a string representation of the IOBuffer."""
-        return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
+        return "Size: {} Offset: {}".format(len(self._data), self._offset)
 
     def __len__(self):
         """Return the amount of data in the buffer."""
@@ -346,9 +346,9 @@ def zlib_decompress_all_frames(data):
         try:
             frames.extend(decomp.decompress(data))
             data = decomp.unused_data
-            log.debug('Decompressed zlib frame. %d bytes remain.', len(data))
+            log.debug("Decompressed zlib frame. %d bytes remain.", len(data))
         except zlib.error:
-            log.debug('Remaining %d bytes are not zlib compressed.', len(data))
+            log.debug("Remaining %d bytes are not zlib compressed.", len(data))
             frames.extend(data)
             break
     return frames
@@ -357,9 +357,9 @@ def zlib_decompress_all_frames(data):
 def bits_to_code(val):
     """Convert the number of bits to the proper code for unpacking."""
     if val == 8:
-        return 'B'
+        return "B"
     elif val == 16:
-        return 'H'
+        return "H"
     else:
         log.warning('Unsupported bit size: %s. Returning "B"', val)
-        return 'B'
+        return "B"

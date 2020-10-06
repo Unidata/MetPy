@@ -18,41 +18,41 @@ import metpy
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))
+sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = '2.1'
+needs_sphinx = "2.1"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.coverage',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery',
-    'matplotlib.sphinxext.plot_directive',
-    'myst_parser'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.coverage",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx_gallery.gen_gallery",
+    "matplotlib.sphinxext.plot_directive",
+    "myst_parser",
 ]
 
 sphinx_gallery_conf = {
-    'doc_module': ('metpy',),
-    'reference_url': {
-        'metpy': None,
+    "doc_module": ("metpy",),
+    "reference_url": {
+        "metpy": None,
     },
-    'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
-    'gallery_dirs': ['examples', 'tutorials'],
-    'filename_pattern': r'\.py',
-    'backreferences_dir': os.path.join('api', 'generated'),
-    'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
-    'abort_on_example_error': True
+    "examples_dirs": [os.path.join("..", "examples"), os.path.join("..", "tutorials")],
+    "gallery_dirs": ["examples", "tutorials"],
+    "filename_pattern": r"\.py",
+    "backreferences_dir": os.path.join("api", "generated"),
+    "default_thumb_file": os.path.join("_static", "metpy_150x150_white_bg.png"),
+    "abort_on_example_error": True,
 }
 
 # Turn off code and image links for embedded mpl plots
@@ -61,25 +61,25 @@ plot_html_show_formats = False
 
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
-                       # 'pint': ('http://pint.readthedocs.io/en/stable/', None),
-                       'matplotlib': ('https://matplotlib.org/', None),
-                       'python': ('https://docs.python.org/3/', None),
-                       'numpy': ('https://numpy.org/doc/stable/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-                       'xarray': ('https://xarray.pydata.org/en/stable/', None)
-                       }
+    # 'pint': ('http://pint.readthedocs.io/en/stable/', None),
+    "matplotlib": ("https://matplotlib.org/", None),
+    "python": ("https://docs.python.org/3/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference/", None),
+    "xarray": ("https://xarray.pydata.org/en/stable/", None),
+}
 
 # Tweak how docs are formatted
 napoleon_use_rtype = False
 
 # Control main class documentation
-autoclass_content = 'both'
+autoclass_content = "both"
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = ['.rst', '.md']
+source_suffix = [".rst", ".md"]
 
 # Controlling automatically generating summary tables in the docs
 autosummary_generate = True
@@ -89,14 +89,16 @@ autosummary_imported_members = True
 # source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = 'MetPy'
+project = "MetPy"
 # noinspection PyShadowingBuiltins
-copyright = ('2008-2020, MetPy Developers. '
-             'Development supported by National Science Foundation grants '
-             'AGS-1344155, OAC-1740315, and AGS-1901712.')
+copyright = (
+    "2008-2020, MetPy Developers. "
+    "Development supported by National Science Foundation grants "
+    "AGS-1344155, OAC-1740315, and AGS-1901712."
+)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -104,16 +106,18 @@ copyright = ('2008-2020, MetPy Developers. '
 #
 # The short X.Y version.
 verinfo = metpy.__version__
-full_version = verinfo.split('+')[0]
-version = full_version.rsplit('.', 1)[0]
+full_version = verinfo.split("+")[0]
+version = full_version.rsplit(".", 1)[0]
 # The full version, including alpha/beta/rc tags.
 release = verinfo
 
-rst_prolog = '''
+rst_prolog = """
 .. |cite_version| replace:: {0}
 .. |cite_year| replace:: {1:%Y}
 .. |access_date| replace:: {1:%d %B %Y}
-'''.format(full_version, datetime.utcnow())
+""".format(
+    full_version, datetime.utcnow()
+)
 
 # The language for content autogenerated by Sphinx. Refer to documentation
 # for a list of supported languages.
@@ -123,7 +127,7 @@ rst_prolog = '''
 # non-false value, then it is used:
 # today = ''
 # Else, today_fmt is used as the format for a strftime call.
-today_fmt = '%B %d, %Y'
+today_fmt = "%B %d, %Y"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -131,7 +135,7 @@ exclude_patterns = []
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
-default_role = 'autolink'
+default_role = "autolink"
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 # add_function_parentheses = True
@@ -145,7 +149,7 @@ default_role = 'autolink'
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -161,7 +165,8 @@ pygments_style = 'sphinx'
 # html_theme = 'default'
 try:
     import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
+
+    html_theme = "sphinx_rtd_theme"
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 except ImportError:
     pass
@@ -169,20 +174,21 @@ except ImportError:
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'}
-if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.post1':
-    html_theme_options['versions'] = {'latest': '../latest', 'dev': '../dev'}
+html_theme_options = {"canonical_url": "https://unidata.github.io/MetPy/latest/"}
+if "sphinx_rtd_theme" in vars() and sphinx_rtd_theme.__version__ == "0.2.5b1.post1":
+    html_theme_options["versions"] = {"latest": "../latest", "dev": "../dev"}
 
 # Extra variables that will be available to the templates. Used to create the
 # links to the Github repository sources and issues
 html_context = {
-    'doc_path': 'docs',
-    'galleries': sphinx_gallery_conf['gallery_dirs'],
-    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
-                            sphinx_gallery_conf['examples_dirs'])),
-    'api_dir': 'api/generated',
-    'github_repo': 'Unidata/MetPy',
-    'github_version': 'master',  # Make changes to the master branch
+    "doc_path": "docs",
+    "galleries": sphinx_gallery_conf["gallery_dirs"],
+    "gallery_dir": dict(
+        zip(sphinx_gallery_conf["gallery_dirs"], sphinx_gallery_conf["examples_dirs"])
+    ),
+    "api_dir": "api/generated",
+    "github_repo": "Unidata/MetPy",
+    "github_version": "master",  # Make changes to the master branch
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -190,27 +196,27 @@ html_context = {
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = ' '.join((project, version))
+html_title = " ".join((project, version))
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 # html_short_title = None
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = os.path.join('_static', 'metpy_150x150.png')
+html_logo = os.path.join("_static", "metpy_150x150.png")
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = os.path.join('_static', 'metpy_32x32.ico')
+html_favicon = os.path.join("_static", "metpy_32x32.ico")
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
-html_css_files = ['theme_override.css']
-html_js_files = ['pop_ver.js']
+html_css_files = ["theme_override.css"]
+html_js_files = ["pop_ver.js"]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -219,7 +225,7 @@ html_js_files = ['pop_ver.js']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-html_last_updated_fmt = '%b %d, %Y at %H:%M:%S'
+html_last_updated_fmt = "%b %d, %Y at %H:%M:%S"
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -259,7 +265,7 @@ html_last_updated_fmt = '%b %d, %Y at %H:%M:%S'
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'MetPydoc'
+htmlhelp_basename = "MetPydoc"
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -267,10 +273,8 @@ htmlhelp_basename = 'MetPydoc'
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     # 'preamble': '',
 }
@@ -279,8 +283,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'MetPy.tex', 'MetPy Documentation',
-   'MetPy Developers', 'manual'),
+    ("index", "MetPy.tex", "MetPy Documentation", "MetPy Developers", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -308,10 +311,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ('index', 'metpy', 'MetPy Documentation',
-     ['MetPy Developers'], 1)
-]
+man_pages = [("index", "metpy", "MetPy Documentation", ["MetPy Developers"], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -322,9 +322,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'MetPy', 'MetPy Documentation',
-   'MetPy Developers', 'MetPy', 'One line description of project.',
-   'Miscellaneous'),
+    (
+        "index",
+        "MetPy",
+        "MetPy Documentation",
+        "MetPy Developers",
+        "MetPy",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -339,10 +345,12 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
-linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
-    r'https://codecov.io/github/Unidata/MetPy',
-    r'https://youtu\.be/[\d\w\-_]+',
+linkcheck_ignore = [
+    r"https://www\.youtube\.com/watch\?v=[\d\w\-_]+",
+    r"https://codecov.io/github/Unidata/MetPy",
+    r"https://youtu\.be/[\d\w\-_]+",
     # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
-    r'https://doi.org/10.1175/.*']
+    r"https://doi.org/10.1175/.*",
+]
 
-linkcheck_request_headers = {'https://www.ncdc.noaa.gov/': {'Accept-Encoding': 'deflate'}}
+linkcheck_request_headers = {"https://www.ncdc.noaa.gov/": {"Accept-Encoding": "deflate"}}

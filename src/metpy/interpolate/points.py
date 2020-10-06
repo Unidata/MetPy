@@ -152,9 +152,11 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, circumcen
             area_list.append(cur_area * value[0])
 
         except (ZeroDivisionError, qhull.QhullError) as e:
-            message = ('Error during processing of a grid. '
-                       'Interpolation will continue but be mindful '
-                       f'of errors in output. {e}')
+            message = (
+                "Error during processing of a grid. "
+                "Interpolation will continue but be mindful "
+                f"of errors in output. {e}"
+            )
 
             log.warning(message)
             return np.nan
@@ -204,15 +206,23 @@ def natural_neighbor_to_points(points, values, xi):
         if len(neighbors) > 0:
 
             points_transposed = np.array(points).transpose()
-            img[ind] = natural_neighbor_point(points_transposed[0], points_transposed[1],
-                                              values, xi[grid], tri, neighbors, circumcenters)
+            img[ind] = natural_neighbor_point(
+                points_transposed[0],
+                points_transposed[1],
+                values,
+                xi[grid],
+                tri,
+                neighbors,
+                circumcenters,
+            )
 
     return img
 
 
 @exporter.export
-def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, min_neighbors=3,
-                               kind='cressman'):
+def inverse_distance_to_points(
+    points, values, xi, r, gamma=None, kappa=None, min_neighbors=3, kind="cressman"
+):
     r"""Generate an inverse distance weighting interpolation to the given points.
 
     Values are assigned to the given interpolation points based on either [Cressman1959]_ or
@@ -264,21 +274,30 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
             values_subset = values[matches]
             dists = geometry.dist_2(grid[0], grid[1], x1, y1)
 
-            if kind == 'cressman':
+            if kind == "cressman":
                 img[idx] = cressman_point(dists, values_subset, r)
-            elif kind == 'barnes':
+            elif kind == "barnes":
                 img[idx] = barnes_point(dists, values_subset, kappa, gamma)
 
             else:
-                raise ValueError(f'{kind} interpolation not supported.')
+                raise ValueError(f"{kind} interpolation not supported.")
 
     return img
 
 
 @exporter.export
-def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neighbors=3,
-                          gamma=0.25, kappa_star=5.052, search_radius=None, rbf_func='linear',
-                          rbf_smooth=0):
+def interpolate_to_points(
+    points,
+    values,
+    xi,
+    interp_type="linear",
+    minimum_neighbors=3,
+    gamma=0.25,
+    kappa_star=5.052,
+    search_radius=None,
+    rbf_func="linear",
+    rbf_smooth=0,
+):
     r"""Interpolate unstructured point data to the given points.
 
     This function interpolates the given `values` valid at `points` to the points `xi`. This is
@@ -342,40 +361,59 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
 
     """
     # If this is a type that `griddata` handles, hand it along to `griddata`
-    if interp_type in ['linear', 'nearest', 'cubic']:
+    if interp_type in ["linear", "nearest", "cubic"]:
         return griddata(points, values, xi, method=interp_type)
 
     # If this is natural neighbor, hand it along to `natural_neighbor`
-    elif interp_type == 'natural_neighbor':
+    elif interp_type == "natural_neighbor":
         return natural_neighbor_to_points(points, values, xi)
 
     # If this is Barnes/Cressman, determine search_radios and hand it along to
     # `inverse_distance`
-    elif interp_type in ['cressman', 'barnes']:
+    elif interp_type in ["cressman", "barnes"]:
         ave_spacing = tools.average_spacing(points)
         if search_radius is None:
             search_radius = 5 * ave_spacing
 
-        if interp_type == 'cressman':
-            return inverse_distance_to_points(points, values, xi, search_radius,
-                                              min_neighbors=minimum_neighbors,
-                                              kind=interp_type)
+        if interp_type == "cressman":
+            return inverse_distance_to_points(
+                points,
+                values,
+                xi,
+                search_radius,
+                min_neighbors=minimum_neighbors,
+                kind=interp_type,
+            )
         else:
             kappa = tools.calc_kappa(ave_spacing, kappa_star)
-            return inverse_distance_to_points(points, values, xi, search_radius, gamma, kappa,
-                                              min_neighbors=minimum_neighbors,
-                                              kind=interp_type)
+            return inverse_distance_to_points(
+                points,
+                values,
+                xi,
+                search_radius,
+                gamma,
+                kappa,
+                min_neighbors=minimum_neighbors,
+                kind=interp_type,
+            )
 
     # If this is radial basis function, make the interpolator and apply it
-    elif interp_type == 'rbf':
+    elif interp_type == "rbf":
 
         points_transposed = np.array(points).transpose()
         xi_transposed = np.array(xi).transpose()
-        rbfi = Rbf(points_transposed[0], points_transposed[1], values, function=rbf_func,
-                   smooth=rbf_smooth)
+        rbfi = Rbf(
+            points_transposed[0],
+            points_transposed[1],
+            values,
+            function=rbf_func,
+            smooth=rbf_smooth,
+        )
         return rbfi(xi_transposed[0], xi_transposed[1])
 
     else:
-        raise ValueError('Interpolation option not available. '
-                         'Try: linear, nearest, cubic, natural_neighbor, '
-                         'barnes, cressman, rbf')
+        raise ValueError(
+            "Interpolation option not available. "
+            "Try: linear, nearest, cubic, natural_neighbor, "
+            "barnes, cressman, rbf"
+        )

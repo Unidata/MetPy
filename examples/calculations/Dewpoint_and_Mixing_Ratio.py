@@ -17,13 +17,13 @@ from metpy.units import units
 
 ###########################################
 # Create a test value of mixing ratio in grams per kilogram
-mixing = 10 * units('g/kg')
+mixing = 10 * units("g/kg")
 print(mixing)
 
 ###########################################
 # Now throw that value with units into the function to calculate
 # the corresponding vapor pressure, given a surface pressure of 1000 mb
-e = mpcalc.vapor_pressure(1000. * units.mbar, mixing)
+e = mpcalc.vapor_pressure(1000.0 * units.mbar, mixing)
 print(e)
 
 ###########################################
@@ -37,14 +37,14 @@ print(td)
 
 ###########################################
 # Which can of course be converted to Fahrenheit
-print(td.to('degF'))
+print(td.to("degF"))
 
 ###########################################
 # Now do the same thing for 850 mb, approximately the pressure of Denver
-e = mpcalc.vapor_pressure(850. * units.mbar, mixing)
+e = mpcalc.vapor_pressure(850.0 * units.mbar, mixing)
 print(e.to(units.mbar))
 
 ###########################################
 # And print the corresponding dewpoint
 td = mpcalc.dewpoint(e)
-print(td, td.to('degF'))
+print(td, td.to("degF"))

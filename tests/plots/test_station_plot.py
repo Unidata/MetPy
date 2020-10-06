@@ -26,7 +26,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_stationplot_api():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -38,9 +38,9 @@ def test_stationplot_api():
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16)
     sp.plot_barb([20, 0], [0, -50])
-    sp.plot_text('E', ['KOKC', 'ICT'], color='blue')
-    sp.plot_parameter('NW', [10.5, 15] * units.degC, color='red')
-    sp.plot_symbol('S', [5, 7], high_clouds, color='green')
+    sp.plot_text("E", ["KOKC", "ICT"], color="blue")
+    sp.plot_parameter("NW", [10.5, 15] * units.degC, color="red")
+    sp.plot_symbol("S", [5, 7], high_clouds, color="green")
 
     sp.ax.set_xlim(0, 6)
     sp.ax.set_ylim(0, 6)
@@ -48,7 +48,7 @@ def test_stationplot_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=1.976, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=1.976, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_stationplot_clipping():
     """Test the that clipping can be enabled as a default parameter."""
     fig = plt.figure(figsize=(9, 9))
@@ -60,9 +60,9 @@ def test_stationplot_clipping():
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16, clip_on=True)
     sp.plot_barb([20, 0], [0, -50])
-    sp.plot_text('E', ['KOKC', 'ICT'], color='blue')
-    sp.plot_parameter('NW', [10.5, 15] * units.degC, color='red')
-    sp.plot_symbol('S', [5, 7], high_clouds, color='green')
+    sp.plot_text("E", ["KOKC", "ICT"], color="blue")
+    sp.plot_parameter("NW", [10.5, 15] * units.degC, color="red")
+    sp.plot_symbol("S", [5, 7], high_clouds, color="green")
 
     sp.ax.set_xlim(1, 5)
     sp.ax.set_ylim(1.75, 4.25)
@@ -70,7 +70,7 @@ def test_stationplot_clipping():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.25, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.25, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
     fig = plt.figure(figsize=(3, 3))
@@ -83,8 +83,8 @@ def test_station_plot_replace():
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16)
     sp.plot_barb([20], [0])
     sp.plot_barb([5], [0])
-    sp.plot_parameter('NW', [10.5], color='red')
-    sp.plot_parameter('NW', [20], color='blue')
+    sp.plot_parameter("NW", [10.5], color="red")
+    sp.plot_parameter("NW", [20], color="blue")
 
     sp.ax.set_xlim(-3, 3)
     sp.ax.set_ylim(-3, 3)
@@ -92,13 +92,34 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.25, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.25, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_station_plot_locations():
     """Test that locations are properly replaced."""
     fig = plt.figure(figsize=(3, 3))
 
-    locations = ['C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N2', 'NNE', 'ENE', 'E2',
-                 'ESE', 'SSE', 'S2', 'SSW', 'WSW', 'W2', 'WNW', 'NNW']
+    locations = [
+        "C",
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW",
+        "N2",
+        "NNE",
+        "ENE",
+        "E2",
+        "ESE",
+        "SSE",
+        "S2",
+        "SSW",
+        "WSW",
+        "W2",
+        "WNW",
+        "NNW",
+    ]
     x_pos = np.array([0])
     y_pos = np.array([0])
 
@@ -113,8 +134,9 @@ def test_station_plot_locations():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00413, savefig_kwargs={'dpi': 300},
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(
+    tolerance=0.00413, savefig_kwargs={"dpi": 300}, remove_text=True
+)
 def test_stationlayout_api():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -122,16 +144,21 @@ def test_stationlayout_api():
     # testing data
     x = np.array([1, 5])
     y = np.array([2, 4])
-    data = {'temp': np.array([33., 212.]) * units.degF, 'u': np.array([2, 0]) * units.knots,
-            'v': np.array([0, 5]) * units.knots, 'stid': ['KDEN', 'KSHV'], 'cover': [3, 8]}
+    data = {
+        "temp": np.array([33.0, 212.0]) * units.degF,
+        "u": np.array([2, 0]) * units.knots,
+        "v": np.array([0, 5]) * units.knots,
+        "stid": ["KDEN", "KSHV"],
+        "cover": [3, 8],
+    }
 
     # Set up the layout
     layout = StationPlotLayout()
-    layout.add_barb('u', 'v', units='knots')
-    layout.add_value('NW', 'temp', fmt='0.1f', units=units.degC, color='darkred')
-    layout.add_symbol('C', 'cover', sky_cover, color='magenta')
-    layout.add_text((0, 2), 'stid', color='darkgrey')
-    layout.add_value('NE', 'dewpt', color='green')  # This should be ignored
+    layout.add_barb("u", "v", units="knots")
+    layout.add_value("NW", "temp", fmt="0.1f", units=units.degC, color="darkred")
+    layout.add_symbol("C", "cover", sky_cover, color="magenta")
+    layout.add_text((0, 2), "stid", color="darkgrey")
+    layout.add_value("NE", "dewpt", color="green")  # This should be ignored
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12)
@@ -149,11 +176,11 @@ def test_station_layout_odd_data():
 
     # Set up test layout
     layout = StationPlotLayout()
-    layout.add_barb('u', 'v')
-    layout.add_value('W', 'temperature', units='degF')
+    layout.add_barb("u", "v")
+    layout.add_value("W", "temperature", units="degF")
 
     # Now only use data without wind and no units
-    data = {'temperature': [25.]}
+    data = {"temperature": [25.0]}
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), [1], [2], fontsize=12)
@@ -164,24 +191,24 @@ def test_station_layout_odd_data():
 def test_station_layout_replace():
     """Test that layout locations are replaced."""
     layout = StationPlotLayout()
-    layout.add_text('E', 'temperature')
-    layout.add_value('E', 'dewpoint')
-    assert 'E' in layout
-    assert layout['E'][0] is StationPlotLayout.PlotTypes.value
-    assert layout['E'][1] == 'dewpoint'
+    layout.add_text("E", "temperature")
+    layout.add_value("E", "dewpoint")
+    assert "E" in layout
+    assert layout["E"][0] is StationPlotLayout.PlotTypes.value
+    assert layout["E"][1] == "dewpoint"
 
 
 def test_station_layout_names():
     """Test getting station layout names."""
     layout = StationPlotLayout()
-    layout.add_barb('u', 'v')
-    layout.add_text('E', 'stid')
-    layout.add_value('W', 'temp')
-    layout.add_symbol('C', 'cover', lambda x: x)
-    assert sorted(layout.names()) == ['cover', 'stid', 'temp', 'u', 'v']
+    layout.add_barb("u", "v")
+    layout.add_text("E", "stid")
+    layout.add_value("W", "temp")
+    layout.add_symbol("C", "cover", lambda x: x)
+    assert sorted(layout.names()) == ["cover", "stid", "temp", "u", "v"]
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
     fig = plt.figure(figsize=(9, 9))
@@ -189,12 +216,16 @@ def test_simple_layout():
     # testing data
     x = np.array([1, 5])
     y = np.array([2, 4])
-    data = {'air_temperature': np.array([33., 212.]) * units.degF,
-            'dew_point_temperature': np.array([28., 80.]) * units.degF,
-            'air_pressure_at_sea_level': np.array([29.92, 28.00]) * units.inHg,
-            'eastward_wind': np.array([2, 0]) * units.knots,
-            'northward_wind': np.array([0, 5]) * units.knots, 'cloud_coverage': [3, 8],
-            'present_weather': [65, 75], 'unused': [1, 2]}
+    data = {
+        "air_temperature": np.array([33.0, 212.0]) * units.degF,
+        "dew_point_temperature": np.array([28.0, 80.0]) * units.degF,
+        "air_pressure_at_sea_level": np.array([29.92, 28.00]) * units.inHg,
+        "eastward_wind": np.array([2, 0]) * units.knots,
+        "northward_wind": np.array([0, 5]) * units.knots,
+        "cloud_coverage": [3, 8],
+        "present_weather": [65, 75],
+        "unused": [1, 2],
+    }
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12)
@@ -206,7 +237,7 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1848, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.1848, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     fig = plt.figure(figsize=(3, 3))
@@ -214,15 +245,21 @@ def test_nws_layout():
     # testing data
     x = np.array([1])
     y = np.array([2])
-    data = {'air_temperature': np.array([77]) * units.degF,
-            'dew_point_temperature': np.array([71]) * units.degF,
-            'air_pressure_at_sea_level': np.array([999.8]) * units('mbar'),
-            'eastward_wind': np.array([15.]) * units.knots,
-            'northward_wind': np.array([15.]) * units.knots, 'cloud_coverage': [7],
-            'present_weather': [80], 'high_cloud_type': [1], 'medium_cloud_type': [3],
-            'low_cloud_type': [2], 'visibility_in_air': np.array([5.]) * units.mile,
-            'tendency_of_air_pressure': np.array([-0.3]) * units('mbar'),
-            'tendency_of_air_pressure_symbol': [8]}
+    data = {
+        "air_temperature": np.array([77]) * units.degF,
+        "dew_point_temperature": np.array([71]) * units.degF,
+        "air_pressure_at_sea_level": np.array([999.8]) * units("mbar"),
+        "eastward_wind": np.array([15.0]) * units.knots,
+        "northward_wind": np.array([15.0]) * units.knots,
+        "cloud_coverage": [7],
+        "present_weather": [80],
+        "high_cloud_type": [1],
+        "medium_cloud_type": [3],
+        "low_cloud_type": [2],
+        "visibility_in_air": np.array([5.0]) * units.mile,
+        "tendency_of_air_pressure": np.array([-0.3]) * units("mbar"),
+        "tendency_of_air_pressure_symbol": [8],
+    }
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12, spacing=16)
@@ -246,8 +283,8 @@ def test_plot_text_fontsize():
 
     # Make the plot
     sp = StationPlot(ax, x, y, fontsize=36)
-    sp.plot_text('NW', ['72'], fontsize=24)
-    sp.plot_text('SW', ['60'], fontsize=4)
+    sp.plot_text("NW", ["72"], fontsize=24)
+    sp.plot_text("SW", ["60"], fontsize=4)
 
     sp.ax.set_xlim(0, 3)
     sp.ax.set_ylim(0, 3)
@@ -262,8 +299,8 @@ def test_plot_symbol_fontsize():
     ax = plt.subplot(1, 1, 1)
 
     sp = StationPlot(ax, [0], [0], fontsize=8, spacing=32)
-    sp.plot_symbol('E', [92], current_weather)
-    sp.plot_symbol('W', [96], current_weather, fontsize=100)
+    sp.plot_symbol("E", [92], current_weather)
+    sp.plot_symbol("W", [96], current_weather, fontsize=100)
 
     return fig
 
@@ -271,12 +308,14 @@ def test_plot_symbol_fontsize():
 def test_layout_str():
     """Test layout string representation."""
     layout = StationPlotLayout()
-    layout.add_barb('u', 'v')
-    layout.add_text('E', 'stid')
-    layout.add_value('W', 'temp')
-    layout.add_symbol('C', 'cover', lambda x: x)
-    assert str(layout) == ('{C: (symbol, cover, ...), E: (text, stid, ...), '
-                           "W: (value, temp, ...), barb: (barb, ('u', 'v'), ...)}")
+    layout.add_barb("u", "v")
+    layout.add_text("E", "stid")
+    layout.add_value("W", "temp")
+    layout.add_symbol("C", "cover", lambda x: x)
+    assert str(layout) == (
+        "{C: (symbol, cover, ...), E: (text, stid, ...), "
+        "W: (value, temp, ...), barb: (barb, ('u', 'v'), ...)}"
+    )
 
 
 @pytest.fixture
@@ -288,8 +327,9 @@ def wind_plot():
     return u, v, x, y
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0423}.get(MPL_VERSION, 0.00434),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(
+    tolerance={"2.1": 0.0423}.get(MPL_VERSION, 0.00434), remove_text=True
+)
 def test_barb_projection(wind_plot, ccrs):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
@@ -304,8 +344,9 @@ def test_barb_projection(wind_plot, ccrs):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.0693}.get(MPL_VERSION, 0.00382),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(
+    tolerance={"2.1": 0.0693}.get(MPL_VERSION, 0.00382), remove_text=True
+)
 def test_arrow_projection(wind_plot, ccrs):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot
@@ -326,8 +367,8 @@ def wind_projection_list():
     """Create wind lists for testing."""
     lat = [38.22, 38.18, 38.25]
     lon = [-85.76, -85.86, -85.77]
-    u = [1.89778964, -3.83776523, 3.64147732] * units('m/s')
-    v = [1.93480072, 1.31000184, 1.36075552] * units('m/s')
+    u = [1.89778964, -3.83776523, 3.64147732] * units("m/s")
+    v = [1.93480072, 1.31000184, 1.36075552] * units("m/s")
     return lat, lon, u, v
 
 
@@ -358,8 +399,8 @@ def barbs_units():
     """Create barbs with units for testing."""
     x_pos = np.array([0])
     y_pos = np.array([0])
-    u_wind = np.array([3.63767155210412]) * units('m/s')
-    v_wind = np.array([3.63767155210412]) * units('m/s')
+    u_wind = np.array([3.63767155210412]) * units("m/s")
+    v_wind = np.array([3.63767155210412]) * units("m/s")
     return x_pos, y_pos, u_wind, v_wind
 
 
@@ -371,7 +412,7 @@ def test_barb_unit_conversion(barbs_units):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
-    stnplot.plot_barb(u_wind, v_wind, plot_units='knots')
+    stnplot.plot_barb(u_wind, v_wind, plot_units="knots")
     ax.set_xlim(-5, 5)
     ax.set_ylim(-5, 5)
 
@@ -386,7 +427,7 @@ def test_arrow_unit_conversion(barbs_units):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
-    stnplot.plot_arrow(u_wind, v_wind, plot_units='knots')
+    stnplot.plot_arrow(u_wind, v_wind, plot_units="knots")
     ax.set_xlim(-5, 5)
     ax.set_ylim(-5, 5)
 
@@ -398,8 +439,8 @@ def test_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     x_pos = np.array([0])
     y_pos = np.array([0])
-    u_wind = np.array([3.63767155210412]) * units('m/s')
-    v_wind = np.array([3.63767155210412]) * units('m/s')
+    u_wind = np.array([3.63767155210412]) * units("m/s")
+    v_wind = np.array([3.63767155210412]) * units("m/s")
 
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -411,8 +452,13 @@ def test_barb_no_default_unit_conversion():
     return fig
 
 
-@pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
-                                 (np.array([3]), np.array([3]) * units('m/s'))])
+@pytest.mark.parametrize(
+    "u,v",
+    [
+        (np.array([3]) * units("m/s"), np.array([3])),
+        (np.array([3]), np.array([3]) * units("m/s")),
+    ],
+)
 def test_barb_unit_conversion_exception(u, v):
     """Test that errors are raise if unit conversion is requested on un-united data."""
     x_pos = np.array([0])
@@ -422,27 +468,27 @@ def test_barb_unit_conversion_exception(u, v):
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
     with pytest.raises(ValueError):
-        stnplot.plot_barb(u, v, plot_units='knots')
+        stnplot.plot_barb(u, v, plot_units="knots")
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.021, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_symbol_pandas_timeseries():
     """Test the usage of Pandas DatetimeIndex as a valid `x` input into StationPlot."""
     pd.plotting.register_matplotlib_converters()
-    rng = pd.date_range('12/1/2017', periods=5, freq='D')
+    rng = pd.date_range("12/1/2017", periods=5, freq="D")
     sc = [1, 2, 3, 4, 5]
     ts = pd.Series(sc, index=rng)
     fig, ax = plt.subplots()
     y = np.ones(len(ts.index))
     stationplot = StationPlot(ax, ts.index, y, fontsize=12)
-    stationplot.plot_symbol('C', ts, sky_cover)
+    stationplot.plot_symbol("C", ts, sky_cover)
     ax.xaxis.set_major_locator(matplotlib.dates.DayLocator())
-    ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%-d'))
+    ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%-d"))
 
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=2.444, savefig_kwargs={"dpi": 300}, remove_text=True)
 def test_stationplot_unit_conversion():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -454,9 +500,9 @@ def test_stationplot_unit_conversion():
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16)
     sp.plot_barb([20, 0], [0, -50])
-    sp.plot_text('E', ['KOKC', 'ICT'], color='blue')
-    sp.plot_parameter('NW', [10.5, 15] * units.degC, plot_units='degF', color='red')
-    sp.plot_symbol('S', [5, 7], high_clouds, color='green')
+    sp.plot_text("E", ["KOKC", "ICT"], color="blue")
+    sp.plot_parameter("NW", [10.5, 15] * units.degC, plot_units="degF", color="red")
+    sp.plot_symbol("S", [5, 7], high_clouds, color="green")
 
     sp.ax.set_xlim(0, 6)
     sp.ax.set_ylim(0, 6)
@@ -474,4 +520,4 @@ def test_scalar_unit_conversion_exception():
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
     with pytest.raises(ValueError):
-        stnplot.plot_parameter('C', T, plot_units='degC')
+        stnplot.plot_parameter("C", T, plot_units="degC")

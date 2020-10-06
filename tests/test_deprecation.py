@@ -14,11 +14,11 @@ class FakeyMcFakeface:
     @classmethod
     def dontuse(cls):
         """Don't use."""
-        deprecation.warn_deprecated('0.0.1', pending=True)
+        deprecation.warn_deprecated("0.0.1", pending=True)
         return False
 
     @classmethod
-    @deprecation.deprecated('0.0.1')
+    @deprecation.deprecated("0.0.1")
     def really_dontuse(cls):
         """Really, don't use."""
         return False

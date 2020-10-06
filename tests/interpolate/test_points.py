@@ -21,7 +21,7 @@ from metpy.interpolate import (
 from metpy.interpolate.geometry import dist_2, find_natural_neighbors
 from metpy.interpolate.points import barnes_point, cressman_point, natural_neighbor_point
 
-logging.getLogger('metpy.interpolate.points').setLevel(logging.ERROR)
+logging.getLogger("metpy.interpolate.points").setLevel(logging.ERROR)
 
 
 @pytest.fixture()
@@ -29,8 +29,9 @@ def test_data():
     r"""Return data used for tests in this file."""
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58], dtype=float)
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16], dtype=float)
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364], dtype=float)
+    z = np.array(
+        [0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156, 0.225, 3.364], dtype=float
+    )
 
     return x, y, z
 
@@ -38,9 +39,9 @@ def test_data():
 @pytest.fixture()
 def test_points():
     r"""Return point locations used for tests in this file."""
-    with get_test_data('interpolation_test_grid.npz') as fobj:
+    with get_test_data("interpolation_test_grid.npz") as fobj:
         data = np.load(fobj)
-        return np.stack([data['xg'].reshape(-1), data['yg'].reshape(-1)], axis=1)
+        return np.stack([data["xg"].reshape(-1), data["yg"].reshape(-1)], axis=1)
 
 
 def test_nn_point(test_data):
@@ -52,11 +53,11 @@ def test_nn_point(test_data):
     sim_gridx = [30]
     sim_gridy = [30]
 
-    members, tri_info = find_natural_neighbors(tri,
-                                               list(zip(sim_gridx, sim_gridy)))
+    members, tri_info = find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
 
-    val = natural_neighbor_point(xp, yp, z, [sim_gridx[0], sim_gridy[0]],
-                                 tri, members[0], tri_info)
+    val = natural_neighbor_point(
+        xp, yp, z, [sim_gridx[0], sim_gridy[0]], tri, members[0], tri_info
+    )
 
     truth = 1.009
 
@@ -106,80 +107,88 @@ def test_natural_neighbor_to_points(test_data, test_points):
 
     img = natural_neighbor_to_points(obs_points, z, test_points)
 
-    with get_test_data('nn_bbox0to100.npz') as fobj:
-        truth = np.load(fobj)['img'].reshape(-1)
+    with get_test_data("nn_bbox0to100.npz") as fobj:
+        truth = np.load(fobj)["img"].reshape(-1)
 
     assert_array_almost_equal(truth, img)
 
 
-interp_methods = ['cressman', 'barnes', 'shouldraise']
+interp_methods = ["cressman", "barnes", "shouldraise"]
 
 
-@pytest.mark.parametrize('method', interp_methods)
+@pytest.mark.parametrize("method", interp_methods)
 def test_inverse_distance_to_points(method, test_data, test_points):
     r"""Test inverse distance interpolation to grid function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose()
 
     extra_kw = {}
-    if method == 'cressman':
-        extra_kw['r'] = 20
-        extra_kw['min_neighbors'] = 1
-        test_file = 'cressman_r20_mn1.npz'
-    elif method == 'barnes':
-        extra_kw['r'] = 40
-        extra_kw['kappa'] = 100
-        test_file = 'barnes_r40_k100.npz'
-    elif method == 'shouldraise':
-        extra_kw['r'] = 40
+    if method == "cressman":
+        extra_kw["r"] = 20
+        extra_kw["min_neighbors"] = 1
+        test_file = "cressman_r20_mn1.npz"
+    elif method == "barnes":
+        extra_kw["r"] = 40
+        extra_kw["kappa"] = 100
+        test_file = "barnes_r40_k100.npz"
+    elif method == "shouldraise":
+        extra_kw["r"] = 40
         with pytest.raises(ValueError):
-            inverse_distance_to_points(
-                obs_points, z, test_points, kind=method, **extra_kw)
+            inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
         return
 
     img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
 
     with get_test_data(test_file) as fobj:
-        truth = np.load(fobj)['img'].reshape(-1)
+        truth = np.load(fobj)["img"].reshape(-1)
 
     assert_array_almost_equal(truth, img)
 
 
 # SciPy 1.2.0 fixed a bug in cubic interpolation, so we skip on older versions
-interp_methods = ['natural_neighbor', 'cressman', 'barnes',
-                  'linear', 'nearest', 'rbf', 'shouldraise',
-                  pytest.param('cubic',
-                               marks=pytest.mark.skipif(
-                                   scipy.__version__ < '1.2.0',
-                                   reason='Need Scipy >=1.2 for fixed cubic interpolation.'))]
+interp_methods = [
+    "natural_neighbor",
+    "cressman",
+    "barnes",
+    "linear",
+    "nearest",
+    "rbf",
+    "shouldraise",
+    pytest.param(
+        "cubic",
+        marks=pytest.mark.skipif(
+            scipy.__version__ < "1.2.0",
+            reason="Need Scipy >=1.2 for fixed cubic interpolation.",
+        ),
+    ),
+]
 
 
-@pytest.mark.parametrize('method', interp_methods)
+@pytest.mark.parametrize("method", interp_methods)
 def test_interpolate_to_points(method, test_data):
     r"""Test main grid interpolation function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose() * 10
 
-    with get_test_data('interpolation_test_points.npz') as fobj:
-        test_points = np.load(fobj)['points']
+    with get_test_data("interpolation_test_points.npz") as fobj:
+        test_points = np.load(fobj)["points"]
 
     extra_kw = {}
-    if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
-    elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
-    elif method == 'shouldraise':
+    if method == "cressman":
+        extra_kw["search_radius"] = 200
+        extra_kw["minimum_neighbors"] = 1
+    elif method == "barnes":
+        extra_kw["search_radius"] = 400
+        extra_kw["minimum_neighbors"] = 1
+        extra_kw["gamma"] = 1
+    elif method == "shouldraise":
         with pytest.raises(ValueError):
-            interpolate_to_points(
-                obs_points, z, test_points, interp_type=method, **extra_kw)
+            interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
         return
 
     img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
 
-    with get_test_data(f'{method}_test.npz') as fobj:
-        truth = np.load(fobj)['img'].reshape(-1)
+    with get_test_data(f"{method}_test.npz") as fobj:
+        truth = np.load(fobj)["img"].reshape(-1)
 
     assert_array_almost_equal(truth, img)

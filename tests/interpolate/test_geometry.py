@@ -25,7 +25,7 @@ from metpy.interpolate.geometry import (
     triangle_area,
 )
 
-logging.getLogger('metpy.interpolate.geometry').setLevel(logging.ERROR)
+logging.getLogger("metpy.interpolate.geometry").setLevel(logging.ERROR)
 
 
 def test_get_points_within_r():
@@ -142,7 +142,7 @@ def test_circumcenter():
 
     cc = circumcenter(pt0, pt1, pt2)
 
-    truth = [5., 5.]
+    truth = [5.0, 5.0]
 
     assert_array_almost_equal(truth, cc)
 
@@ -160,19 +160,39 @@ def test_find_natural_neighbors():
     neighbors, tri_info = find_natural_neighbors(tri, test_points)
 
     # Need to check point indices rather than simplex indices
-    neighbors_truth = [[(1, 5, 0), (5, 1, 6)],
-                       [(11, 17, 16), (17, 11, 12)],
-                       [(23, 19, 24), (19, 23, 18), (23, 17, 18), (17, 23, 22)],
-                       [(7, 13, 12), (13, 7, 8), (9, 13, 8), (13, 9, 14),
-                        (13, 19, 18), (19, 13, 14), (17, 13, 18), (13, 17, 12)],
-                       np.zeros((0, 3), dtype=np.int32)]
+    neighbors_truth = [
+        [(1, 5, 0), (5, 1, 6)],
+        [(11, 17, 16), (17, 11, 12)],
+        [(23, 19, 24), (19, 23, 18), (23, 17, 18), (17, 23, 22)],
+        [
+            (7, 13, 12),
+            (13, 7, 8),
+            (9, 13, 8),
+            (13, 9, 14),
+            (13, 19, 18),
+            (19, 13, 14),
+            (17, 13, 18),
+            (13, 17, 12),
+        ],
+        np.zeros((0, 3), dtype=np.int32),
+    ]
 
-    centers_truth = [[(2.0, 2.0), (2.0, 2.0)],
-                     [(6.0, 10.0), (6.0, 10.0)],
-                     [(14.0, 14.0), (14.0, 14.0), (10.0, 14.0), (10.0, 14.0)],
-                     [(10.0, 6.0), (10.0, 6.0), (14.0, 6.0), (14.0, 6.0),
-                      (14.0, 10.0), (14.0, 10.0), (10.0, 10.0), (10.0, 10.0)],
-                     np.zeros((0, 2), dtype=np.int32)]
+    centers_truth = [
+        [(2.0, 2.0), (2.0, 2.0)],
+        [(6.0, 10.0), (6.0, 10.0)],
+        [(14.0, 14.0), (14.0, 14.0), (10.0, 14.0), (10.0, 14.0)],
+        [
+            (10.0, 6.0),
+            (10.0, 6.0),
+            (14.0, 6.0),
+            (14.0, 6.0),
+            (14.0, 10.0),
+            (14.0, 10.0),
+            (10.0, 10.0),
+            (10.0, 10.0),
+        ],
+        np.zeros((0, 2), dtype=np.int32),
+    ]
 
     for i, true_neighbor in enumerate(neighbors_truth):
         assert set(true_neighbor) == {tuple(v) for v in tri.simplices[neighbors[i]]}

@@ -9,14 +9,14 @@ import importlib
 import os
 import sys
 
-modules_to_skip = ['metpy.xarray']
+modules_to_skip = ["metpy.xarray"]
 
 
 failed = False
-for full_path in glob.glob('_templates/overrides/metpy.*.rst'):
+for full_path in glob.glob("_templates/overrides/metpy.*.rst"):
 
     filename = os.path.basename(full_path)
-    module = filename.split('.rst')[0]
+    module = filename.split(".rst")[0]
 
     if module in modules_to_skip:
         continue
@@ -35,11 +35,16 @@ for full_path in glob.glob('_templates/overrides/metpy.*.rst'):
 
     if missing_functions:
         failed = True
-        print('ERROR - The following functions are missing from the override file ' +
-              filename + ': ' + ', '.join(missing_functions), file=sys.stderr)
+        print(
+            "ERROR - The following functions are missing from the override file "
+            + filename
+            + ": "
+            + ", ".join(missing_functions),
+            file=sys.stderr,
+        )
 
 # Report status
 if failed:
     sys.exit(1)
 else:
-    print('Override check successful.')
+    print("Override check successful.")

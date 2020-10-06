@@ -26,10 +26,10 @@ __all__.extend(declarative.__all__)  # pylint: disable=undefined-variable
 __all__.extend(skewt.__all__)  # pylint: disable=undefined-variable
 __all__.extend(station_plot.__all__)  # pylint: disable=undefined-variable
 __all__.extend(wx_symbols.__all__)  # pylint: disable=undefined-variable
-__all__.extend(['add_metpy_logo', 'add_timestamp', 'add_unidata_logo',
-                'convert_gempak_color'])
+__all__.extend(["add_metpy_logo", "add_timestamp", "add_unidata_logo", "convert_gempak_color"])
 try:
     from .cartopy_utils import USCOUNTIES, USSTATES  # noqa: F401
-    __all__.extend(['USCOUNTIES', 'USSTATES'])
+
+    __all__.extend(["USCOUNTIES", "USSTATES"])
 except ImportError:
-    logger.warning('Cannot import USCOUNTIES and USSTATES without Cartopy installed.')
+    logger.warning("Cannot import USCOUNTIES and USSTATES without Cartopy installed.")

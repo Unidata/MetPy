@@ -20,7 +20,7 @@ def uvw_and_known_tke():
     v = -u
     w = 2 * u
     #  0.5 * sqrt(2 + 2 + 8)
-    e_true = np.sqrt(12) / 2.
+    e_true = np.sqrt(12) / 2.0
     return u, v, w, e_true
 
 
@@ -188,7 +188,7 @@ def uvw_and_known_kf_zero_mean():
     u = np.array([-2, -1, 0, 1, 2])
     v = -u
     w = 2 * u
-    kf_true = {'uv': -2, 'uw': 4, 'vw': -4}
+    kf_true = {"uv": -2, "uw": 4, "vw": -4}
     return u, v, w, kf_true
 
 
@@ -198,39 +198,36 @@ def uvw_and_known_kf_nonzero_mean():
     u = np.array([-2, -1, 0, 1, 5])
     v = -u
     w = 2 * u
-    kf_true = {'uv': -5.84, 'uw': 11.68, 'vw': -11.68}
+    kf_true = {"uv": -5.84, "uw": 11.68, "vw": -11.68}
     return u, v, w, kf_true
 
 
 def test_kf_1d_zero_mean(uvw_and_known_kf_zero_mean):
     """Test kinematic flux calculation in 1D with zero-mean time series."""
     u, v, w, kf_true = uvw_and_known_kf_zero_mean
-    assert_array_equal(kinematic_flux(u, v, perturbation=False),
-                       kf_true['uv'])
-    assert_array_equal(kinematic_flux(u, w, perturbation=False),
-                       kf_true['uw'])
-    assert_array_equal(kinematic_flux(v, w, perturbation=False),
-                       kf_true['vw'])
+    assert_array_equal(kinematic_flux(u, v, perturbation=False), kf_true["uv"])
+    assert_array_equal(kinematic_flux(u, w, perturbation=False), kf_true["uw"])
+    assert_array_equal(kinematic_flux(v, w, perturbation=False), kf_true["vw"])
 
     # given u, v, and w have a zero mean, the kf computed with
     # perturbation=True and perturbation=False should be the same
-    assert_array_equal(kinematic_flux(u, v, perturbation=False),
-                       kinematic_flux(u, v, perturbation=True))
-    assert_array_equal(kinematic_flux(u, w, perturbation=False),
-                       kinematic_flux(u, w, perturbation=True))
-    assert_array_equal(kinematic_flux(v, w, perturbation=False),
-                       kinematic_flux(v, w, perturbation=True))
+    assert_array_equal(
+        kinematic_flux(u, v, perturbation=False), kinematic_flux(u, v, perturbation=True)
+    )
+    assert_array_equal(
+        kinematic_flux(u, w, perturbation=False), kinematic_flux(u, w, perturbation=True)
+    )
+    assert_array_equal(
+        kinematic_flux(v, w, perturbation=False), kinematic_flux(v, w, perturbation=True)
+    )
 
 
 def test_kf_1d_nonzero_mean(uvw_and_known_kf_nonzero_mean):
     """Test kinematic flux calculation in 1D with non-zero-mean time series."""
     u, v, w, kf_true = uvw_and_known_kf_nonzero_mean
-    assert_array_equal(kinematic_flux(u, v, perturbation=False),
-                       kf_true['uv'])
-    assert_array_equal(kinematic_flux(u, w, perturbation=False),
-                       kf_true['uw'])
-    assert_array_equal(kinematic_flux(v, w, perturbation=False),
-                       kf_true['vw'])
+    assert_array_equal(kinematic_flux(u, v, perturbation=False), kf_true["uv"])
+    assert_array_equal(kinematic_flux(u, w, perturbation=False), kf_true["uw"])
+    assert_array_equal(kinematic_flux(v, w, perturbation=False), kf_true["vw"])
 
 
 def test_kf_2d_axis_last_zero_mean(uvw_and_known_kf_zero_mean):
@@ -240,20 +237,23 @@ def test_kf_2d_axis_last_zero_mean(uvw_and_known_kf_zero_mean):
     v = np.array([v, v, v])
     w = np.array([w, w, w])
 
-    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1),
-                       kf_true['uv'])
-    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1),
-                       kf_true['uw'])
-    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=-1),
-                       kf_true['vw'])
+    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1), kf_true["uv"])
+    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1), kf_true["uw"])
+    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=-1), kf_true["vw"])
     # given u, v, and w have a zero mean, the kf computed with
     # perturbation=True and perturbation=False should be the same
-    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1),
-                       kinematic_flux(u, v, perturbation=True, axis=-1))
-    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1),
-                       kinematic_flux(u, w, perturbation=True, axis=-1))
-    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=-1),
-                       kinematic_flux(v, w, perturbation=True, axis=-1))
+    assert_array_equal(
+        kinematic_flux(u, v, perturbation=False, axis=-1),
+        kinematic_flux(u, v, perturbation=True, axis=-1),
+    )
+    assert_array_equal(
+        kinematic_flux(u, w, perturbation=False, axis=-1),
+        kinematic_flux(u, w, perturbation=True, axis=-1),
+    )
+    assert_array_equal(
+        kinematic_flux(v, w, perturbation=False, axis=-1),
+        kinematic_flux(v, w, perturbation=True, axis=-1),
+    )
 
 
 def test_kf_2d_axis_last_nonzero_mean(uvw_and_known_kf_nonzero_mean):
@@ -263,12 +263,9 @@ def test_kf_2d_axis_last_nonzero_mean(uvw_and_known_kf_nonzero_mean):
     v = np.array([v, v, v])
     w = np.array([w, w, w])
 
-    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1),
-                       kf_true['uv'])
-    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1),
-                       kf_true['uw'])
-    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=-1),
-                       kf_true['vw'])
+    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1), kf_true["uv"])
+    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1), kf_true["uw"])
+    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=-1), kf_true["vw"])
 
 
 def test_kf_2d_axis_first_zero_mean(uvw_and_known_kf_zero_mean):
@@ -278,20 +275,23 @@ def test_kf_2d_axis_first_zero_mean(uvw_and_known_kf_zero_mean):
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
 
-    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0),
-                       kf_true['uv'])
-    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0),
-                       kf_true['uw'])
-    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=0),
-                       kf_true['vw'])
+    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0), kf_true["uv"])
+    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0), kf_true["uw"])
+    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=0), kf_true["vw"])
     # given u, v, and w have a zero mean, the kf computed with
     # perturbation=True and perturbation=False should be the same
-    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0),
-                       kinematic_flux(u, v, perturbation=True, axis=0))
-    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0),
-                       kinematic_flux(u, w, perturbation=True, axis=0))
-    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=0),
-                       kinematic_flux(v, w, perturbation=True, axis=0))
+    assert_array_equal(
+        kinematic_flux(u, v, perturbation=False, axis=0),
+        kinematic_flux(u, v, perturbation=True, axis=0),
+    )
+    assert_array_equal(
+        kinematic_flux(u, w, perturbation=False, axis=0),
+        kinematic_flux(u, w, perturbation=True, axis=0),
+    )
+    assert_array_equal(
+        kinematic_flux(v, w, perturbation=False, axis=0),
+        kinematic_flux(v, w, perturbation=True, axis=0),
+    )
 
 
 def test_kf_2d_axis_first_nonzero_mean(uvw_and_known_kf_nonzero_mean):
@@ -301,12 +301,9 @@ def test_kf_2d_axis_first_nonzero_mean(uvw_and_known_kf_nonzero_mean):
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
 
-    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0),
-                       kf_true['uv'])
-    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0),
-                       kf_true['uw'])
-    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=0),
-                       kf_true['vw'])
+    assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0), kf_true["uv"])
+    assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0), kf_true["uw"])
+    assert_array_equal(kinematic_flux(v, w, perturbation=False, axis=0), kf_true["vw"])
 
 
 #
@@ -318,7 +315,7 @@ def uvw_and_known_u_star_zero_mean():
     u = np.array([-2, -1, 0, 1, 2])
     v = -u
     w = 2 * u
-    u_star_true = {'uw': 2.0, 'uwvw': 2.3784142300054421}
+    u_star_true = {"uw": 2.0, "uwvw": 2.3784142300054421}
     return u, v, w, u_star_true
 
 
@@ -328,26 +325,22 @@ def uvw_and_known_u_star_nonzero_mean():
     u = np.array([-2, -1, 0, 1, 5])
     v = -u
     w = 2 * u
-    u_star_true = {'uw': 3.4176014981270124, 'uwvw': 4.0642360178166017}
+    u_star_true = {"uw": 3.4176014981270124, "uwvw": 4.0642360178166017}
     return u, v, w, u_star_true
 
 
 def test_u_star_1d_zero_mean(uvw_and_known_u_star_zero_mean):
     """Test friction velocity in 1D with a zero-mean time series."""
     u, v, w, u_star_true = uvw_and_known_u_star_zero_mean
-    assert_almost_equal(friction_velocity(u, w, perturbation=False),
-                        u_star_true['uw'])
-    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False),
-                        u_star_true['uwvw'])
+    assert_almost_equal(friction_velocity(u, w, perturbation=False), u_star_true["uw"])
+    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False), u_star_true["uwvw"])
 
 
 def test_u_star_1d_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
     """Test friction velocity in 1D with a non-zero-mean time series."""
     u, v, w, u_star_true = uvw_and_known_u_star_nonzero_mean
-    assert_almost_equal(friction_velocity(u, w, perturbation=False),
-                        u_star_true['uw'])
-    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False),
-                        u_star_true['uwvw'])
+    assert_almost_equal(friction_velocity(u, w, perturbation=False), u_star_true["uw"])
+    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False), u_star_true["uwvw"])
 
 
 def test_u_star_2d_axis_last_zero_mean(uvw_and_known_u_star_zero_mean):
@@ -357,10 +350,12 @@ def test_u_star_2d_axis_last_zero_mean(uvw_and_known_u_star_zero_mean):
     v = np.array([v, v, v])
     w = np.array([w, w, w])
 
-    assert_almost_equal(friction_velocity(u, w, perturbation=False,
-                        axis=-1), u_star_true['uw'])
-    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
-                        axis=-1), u_star_true['uwvw'])
+    assert_almost_equal(
+        friction_velocity(u, w, perturbation=False, axis=-1), u_star_true["uw"]
+    )
+    assert_almost_equal(
+        friction_velocity(u, w, v=v, perturbation=False, axis=-1), u_star_true["uwvw"]
+    )
 
 
 def test_u_star_2d_axis_last_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
@@ -370,10 +365,12 @@ def test_u_star_2d_axis_last_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
     v = np.array([v, v, v])
     w = np.array([w, w, w])
 
-    assert_almost_equal(friction_velocity(u, w, perturbation=False,
-                        axis=-1), u_star_true['uw'])
-    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
-                        axis=-1), u_star_true['uwvw'])
+    assert_almost_equal(
+        friction_velocity(u, w, perturbation=False, axis=-1), u_star_true["uw"]
+    )
+    assert_almost_equal(
+        friction_velocity(u, w, v=v, perturbation=False, axis=-1), u_star_true["uwvw"]
+    )
 
 
 def test_u_star_2d_axis_first_zero_mean(uvw_and_known_u_star_zero_mean):
@@ -383,10 +380,10 @@ def test_u_star_2d_axis_first_zero_mean(uvw_and_known_u_star_zero_mean):
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
 
-    assert_almost_equal(friction_velocity(u, w, perturbation=False,
-                        axis=0), u_star_true['uw'])
-    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
-                        axis=0), u_star_true['uwvw'])
+    assert_almost_equal(friction_velocity(u, w, perturbation=False, axis=0), u_star_true["uw"])
+    assert_almost_equal(
+        friction_velocity(u, w, v=v, perturbation=False, axis=0), u_star_true["uwvw"]
+    )
 
 
 def test_u_star_2d_axis_first_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
@@ -396,7 +393,7 @@ def test_u_star_2d_axis_first_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
 
-    assert_almost_equal(friction_velocity(u, w, perturbation=False,
-                        axis=0), u_star_true['uw'])
-    assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
-                        axis=0), u_star_true['uwvw'])
+    assert_almost_equal(friction_velocity(u, w, perturbation=False, axis=0), u_star_true["uw"])
+    assert_almost_equal(
+        friction_velocity(u, w, v=v, perturbation=False, axis=0), u_star_true["uwvw"]
+    )

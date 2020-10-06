@@ -16,8 +16,8 @@ exporter = Exporter(globals())
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
+@preprocess_and_wrap(wrap_like="u")
+@check_units("[speed]", "[speed]", dx="[length]", dy="[length]")
 def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
@@ -59,8 +59,8 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units(dx='[length]', dy='[length]')
+@preprocess_and_wrap(wrap_like="u")
+@check_units(dx="[length]", dy="[length]")
 def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the horizontal divergence of a vector.
 
@@ -102,8 +102,8 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
+@preprocess_and_wrap(wrap_like="u")
+@check_units("[speed]", "[speed]", "[length]", "[length]")
 def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the shearing deformation of the horizontal wind.
 
@@ -145,8 +145,8 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
+@preprocess_and_wrap(wrap_like="u")
+@check_units("[speed]", "[speed]", "[length]", "[length]")
 def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the stretching deformation of the horizontal wind.
 
@@ -188,8 +188,8 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
+@preprocess_and_wrap(wrap_like="u")
+@check_units("[speed]", "[speed]", "[length]", "[length]")
 def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the horizontal total deformation of the horizontal wind.
 
@@ -231,11 +231,11 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     """
     dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
     dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
-    return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
+    return np.sqrt((dvdx + dudy) ** 2 + (dudx - dvdy) ** 2)
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
+@preprocess_and_wrap(wrap_like="scalar", broadcast=("scalar", "u", "v", "w"))
 def advection(
     scalar,
     u=None,
@@ -288,11 +288,7 @@ def advection(
     """
     return -sum(
         wind * first_derivative(scalar, axis=axis, delta=delta)
-        for wind, delta, axis in (
-            (u, dx, x_dim),
-            (v, dy, y_dim),
-            (w, dz, vertical_dim)
-        )
+        for wind, delta, axis in ((u, dx, x_dim), (v, dy, y_dim), (w, dz, vertical_dim))
         if wind is not None
     )
 
@@ -300,10 +296,9 @@ def advection(
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
-    wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'u', 'v')
+    wrap_like="potential_temperature", broadcast=("potential_temperature", "u", "v")
 )
-@check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
+@check_units("[temperature]", "[speed]", "[speed]", "[length]", "[length]")
 def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
@@ -357,7 +352,7 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     ddx_thta = first_derivative(potential_temperature, delta=dx, axis=x_dim)
 
     # Compute the magnitude of the potential temperature gradient
-    mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
+    mag_thta = np.sqrt(ddx_thta ** 2 + ddy_thta ** 2)
 
     # Get the shearing, stretching, and total deformation of the wind field
     shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
@@ -376,8 +371,8 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('height', 'height'), broadcast=('height', 'latitude'))
-@check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
+@preprocess_and_wrap(wrap_like=("height", "height"), broadcast=("height", "latitude"))
+@check_units(dx="[length]", dy="[length]", latitude="[dimensionless]")
 def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     r"""Calculate the geostrophic wind given from the height or geopotential.
 
@@ -412,8 +407,8 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
     """
     f = coriolis_parameter(latitude)
-    if height.dimensionality['[length]'] == 2.0:
-        norm_factor = 1. / f
+    if height.dimensionality["[length]"] == 2.0:
+        norm_factor = 1.0 / f
     else:
         norm_factor = mpconsts.g / f
 
@@ -425,15 +420,10 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
-    wrap_like=('height', 'height'),
-    broadcast=('height', 'u', 'v', 'latitude')
+    wrap_like=("height", "height"), broadcast=("height", "u", "v", "latitude")
 )
 @check_units(
-    u='[speed]',
-    v='[speed]',
-    dx='[length]',
-    dy='[length]',
-    latitude='[dimensionless]'
+    u="[speed]", v="[speed]", dx="[length]", dy="[length]", latitude="[dimensionless]"
 )
 def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     r"""Calculate the ageostrophic wind given from the height or geopotential.
@@ -473,19 +463,14 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
 
     """
     u_geostrophic, v_geostrophic = geostrophic_wind(
-        height,
-        dx,
-        dy,
-        latitude,
-        x_dim=x_dim,
-        y_dim=y_dim
+        height, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim
     )
     return u - u_geostrophic, v - v_geostrophic
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'temperature'))
-@check_units('[length]', '[temperature]')
+@preprocess_and_wrap(wrap_like="height", broadcast=("height", "temperature"))
+@check_units("[length]", "[temperature]")
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
 
@@ -527,10 +512,25 @@ def montgomery_streamfunction(height, temperature):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[length]', '[speed]', '[speed]', '[length]',
-             bottom='[length]', storm_u='[speed]', storm_v='[speed]')
-def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
-                            storm_u=0 * units('m/s'), storm_v=0 * units('m/s')):
+@check_units(
+    "[length]",
+    "[speed]",
+    "[speed]",
+    "[length]",
+    bottom="[length]",
+    storm_u="[speed]",
+    storm_v="[speed]",
+)
+def storm_relative_helicity(
+    height,
+    u,
+    v,
+    depth,
+    *,
+    bottom=0 * units.m,
+    storm_u=0 * units("m/s"),
+    storm_v=0 * units("m/s")
+):
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
@@ -581,27 +581,31 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     storm_relative_u = u - storm_u
     storm_relative_v = v - storm_v
 
-    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1]
-                  - storm_relative_u[:-1] * storm_relative_v[1:])
+    int_layers = (
+        storm_relative_u[1:] * storm_relative_v[:-1]
+        - storm_relative_u[:-1] * storm_relative_v[1:]
+    )
 
     # Need to manually check for masked value because sum() on masked array with non-default
     # mask will return a masked value rather than 0. See numpy/numpy#11736
-    positive_srh = int_layers[int_layers.magnitude > 0.].sum()
+    positive_srh = int_layers[int_layers.magnitude > 0.0].sum()
     if np.ma.is_masked(positive_srh):
-        positive_srh = 0.0 * units('meter**2 / second**2')
-    negative_srh = int_layers[int_layers.magnitude < 0.].sum()
+        positive_srh = 0.0 * units("meter**2 / second**2")
+    negative_srh = int_layers[int_layers.magnitude < 0.0].sum()
     if np.ma.is_masked(negative_srh):
-        negative_srh = 0.0 * units('meter**2 / second**2')
+        negative_srh = 0.0 * units("meter**2 / second**2")
 
-    return (positive_srh.to('meter ** 2 / second ** 2'),
-            negative_srh.to('meter ** 2 / second ** 2'),
-            (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
+    return (
+        positive_srh.to("meter ** 2 / second ** 2"),
+        negative_srh.to("meter ** 2 / second ** 2"),
+        (positive_srh + negative_srh).to("meter ** 2 / second ** 2"),
+    )
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
-@check_units('[speed]', '[speed]', '[length]', '[length]')
+@preprocess_and_wrap(wrap_like="u", broadcast=("u", "v", "latitude"))
+@check_units("[speed]", "[speed]", "[length]", "[length]")
 def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
     """Calculate the absolute vorticity of the horizontal wind.
 
@@ -644,11 +648,18 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
-    wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'pressure', 'u', 'v', 'latitude')
+    wrap_like="potential_temperature",
+    broadcast=("potential_temperature", "pressure", "u", "v", "latitude"),
 )
-@check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
-             '[length]', '[length]', '[dimensionless]')
+@check_units(
+    "[temperature]",
+    "[pressure]",
+    "[speed]",
+    "[speed]",
+    "[length]",
+    "[length]",
+    "[dimensionless]",
+)
 def potential_vorticity_baroclinic(
     potential_temperature,
     pressure,
@@ -659,7 +670,7 @@ def potential_vorticity_baroclinic(
     latitude=None,
     x_dim=-1,
     y_dim=-2,
-    vertical_dim=-3
+    vertical_dim=-3,
 ):
     r"""Calculate the baroclinic potential vorticity.
 
@@ -726,15 +737,16 @@ def potential_vorticity_baroclinic(
         or np.shape(pressure)[vertical_dim] < 3
         or np.shape(potential_temperature)[vertical_dim] != np.shape(pressure)[vertical_dim]
     ):
-        raise ValueError('Length of potential temperature along the vertical axis '
-                         '{} must be at least 3.'.format(vertical_dim))
+        raise ValueError(
+            "Length of potential temperature along the vertical axis "
+            "{} must be at least 3.".format(vertical_dim)
+        )
 
     avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
     dthtadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
 
-    if (
-        (np.shape(potential_temperature)[y_dim] == 1)
-        and (np.shape(potential_temperature)[x_dim] == 1)
+    if (np.shape(potential_temperature)[y_dim] == 1) and (
+        np.shape(potential_temperature)[x_dim] == 1
     ):
         dthtady = 0 * units.K / units.m  # axis=y_dim only has one dimension
         dthtadx = 0 * units.K / units.m  # axis=x_dim only has one dimension
@@ -744,24 +756,17 @@ def potential_vorticity_baroclinic(
     dudp = first_derivative(u, x=pressure, axis=vertical_dim)
     dvdp = first_derivative(v, x=pressure, axis=vertical_dim)
 
-    return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx
-                           + avor * dthtadp)).to(units.kelvin * units.meter**2
-                                                 / (units.second * units.kilogram))
+    return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx + avor * dthtadp)).to(
+        units.kelvin * units.meter ** 2 / (units.second * units.kilogram)
+    )
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'u', 'v', 'latitude'))
-@check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+@preprocess_and_wrap(wrap_like="height", broadcast=("height", "u", "v", "latitude"))
+@check_units("[length]", "[speed]", "[speed]", "[length]", "[length]", "[dimensionless]")
 def potential_vorticity_barotropic(
-    height,
-    u,
-    v,
-    dx=None,
-    dy=None,
-    latitude=None,
-    x_dim=-1,
-    y_dim=-2
+    height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 ):
     r"""Calculate the barotropic (Rossby) potential vorticity.
 
@@ -803,27 +808,19 @@ def potential_vorticity_barotropic(
 
     """
     avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
-    return (avor / height).to('meter**-1 * second**-1')
+    return (avor / height).to("meter**-1 * second**-1")
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
-    wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'u_geostrophic', 'v_geostrophic', 'latitude')
+    wrap_like=("u", "u"), broadcast=("u", "v", "u_geostrophic", "v_geostrophic", "latitude")
 )
-@check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
-             '[dimensionless]')
+@check_units(
+    "[speed]", "[speed]", "[speed]", "[speed]", "[length]", "[length]", "[dimensionless]"
+)
 def inertial_advective_wind(
-    u,
-    v,
-    u_geostrophic,
-    v_geostrophic,
-    dx=None,
-    dy=None,
-    latitude=None,
-    x_dim=-1,
-    y_dim=-2
+    u, v, u_geostrophic, v_geostrophic, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 ):
     r"""Calculate the inertial advective wind.
 
@@ -897,20 +894,11 @@ def inertial_advective_wind(
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
-    wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
+    wrap_like=("u", "u"), broadcast=("u", "v", "temperature", "pressure", "static_stability")
 )
-@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
+@check_units("[speed]", "[speed]", "[temperature]", "[pressure]", "[length]", "[length]")
 def q_vector(
-    u,
-    v,
-    temperature,
-    pressure,
-    dx=None,
-    dy=None,
-    static_stability=1,
-    x_dim=-1,
-    y_dim=-2
+    u, v, temperature, pressure, dx=None, dy=None, static_stability=1, x_dim=-1, y_dim=-2
 ):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 

@@ -34,7 +34,7 @@ def distances_from_cross_section(cross):
         A tuple of the x and y distances as DataArrays
 
     """
-    if check_axis(cross.metpy.x, 'longitude') and check_axis(cross.metpy.y, 'latitude'):
+    if check_axis(cross.metpy.x, "longitude") and check_axis(cross.metpy.y, "latitude"):
         # Use pyproj to obtain x and y distances
         from pyproj import Geod
 
@@ -42,10 +42,12 @@ def distances_from_cross_section(cross):
         lon = cross.metpy.x
         lat = cross.metpy.y
 
-        forward_az, _, distance = g.inv(lon[0].values * np.ones_like(lon),
-                                        lat[0].values * np.ones_like(lat),
-                                        lon.values,
-                                        lat.values)
+        forward_az, _, distance = g.inv(
+            lon[0].values * np.ones_like(lon),
+            lat[0].values * np.ones_like(lat),
+            lon.values,
+            lat.values,
+        )
         x = distance * np.sin(np.deg2rad(forward_az))
         y = distance * np.cos(np.deg2rad(forward_az))
 
@@ -53,14 +55,14 @@ def distances_from_cross_section(cross):
         x = xr.DataArray(x * units.meter, coords=lon.coords, dims=lon.dims)
         y = xr.DataArray(y * units.meter, coords=lat.coords, dims=lat.dims)
 
-    elif check_axis(cross.metpy.x, 'x') and check_axis(cross.metpy.y, 'y'):
+    elif check_axis(cross.metpy.x, "x") and check_axis(cross.metpy.y, "y"):
 
         # Simply return what we have
         x = cross.metpy.x
         y = cross.metpy.y
 
     else:
-        raise AttributeError('Sufficient horizontal coordinates not defined.')
+        raise AttributeError("Sufficient horizontal coordinates not defined.")
 
     return x, y
 
@@ -80,19 +82,20 @@ def latitude_from_cross_section(cross):
 
     """
     y = cross.metpy.y
-    if check_axis(y, 'latitude'):
+    if check_axis(y, "latitude"):
         return y
     else:
         import cartopy.crs as ccrs
-        latitude = ccrs.Geodetic().transform_points(cross.metpy.cartopy_crs,
-                                                    cross.metpy.x.values,
-                                                    y.values)[..., 1]
+
+        latitude = ccrs.Geodetic().transform_points(
+            cross.metpy.cartopy_crs, cross.metpy.x.values, y.values
+        )[..., 1]
         latitude = xr.DataArray(latitude * units.degrees_north, coords=y.coords, dims=y.dims)
         return latitude
 
 
 @exporter.export
-def unit_vectors_from_cross_section(cross, index='index'):
+def unit_vectors_from_cross_section(cross, index="index"):
     r"""Calculate the unit tanget and unit normal vectors from a cross-section.
 
     Given a path described parametrically by :math:`\vec{l}(i) = (x(i), y(i))`, we can find
@@ -131,7 +134,7 @@ def unit_vectors_from_cross_section(cross, index='index'):
 
 @exporter.export
 @check_matching_coordinates
-def cross_section_components(data_x, data_y, index='index'):
+def cross_section_components(data_x, data_y, index="index"):
     r"""Obtain the tangential and normal components of a cross-section of a vector field.
 
     Parameters
@@ -170,7 +173,7 @@ def cross_section_components(data_x, data_y, index='index'):
 
 @exporter.export
 @check_matching_coordinates
-def normal_component(data_x, data_y, index='index'):
+def normal_component(data_x, data_y, index="index"):
     r"""Obtain the normal component of a cross-section of a vector field.
 
     Parameters
@@ -203,15 +206,15 @@ def normal_component(data_x, data_y, index='index'):
     component_norm = data_x * unit_norm[0] + data_y * unit_norm[1]
 
     # Reattach only reliable attributes after operation
-    if 'grid_mapping' in data_x.attrs:
-        component_norm.attrs['grid_mapping'] = data_x.attrs['grid_mapping']
+    if "grid_mapping" in data_x.attrs:
+        component_norm.attrs["grid_mapping"] = data_x.attrs["grid_mapping"]
 
     return component_norm
 
 
 @exporter.export
 @check_matching_coordinates
-def tangential_component(data_x, data_y, index='index'):
+def tangential_component(data_x, data_y, index="index"):
     r"""Obtain the tangential component of a cross-section of a vector field.
 
     Parameters
@@ -244,15 +247,15 @@ def tangential_component(data_x, data_y, index='index'):
     component_tang = data_x * unit_tang[0] + data_y * unit_tang[1]
 
     # Reattach only reliable attributes after operation
-    if 'grid_mapping' in data_x.attrs:
-        component_tang.attrs['grid_mapping'] = data_x.attrs['grid_mapping']
+    if "grid_mapping" in data_x.attrs:
+        component_tang.attrs["grid_mapping"] = data_x.attrs["grid_mapping"]
 
     return component_tang
 
 
 @exporter.export
 @check_matching_coordinates
-def absolute_momentum(u, v, index='index'):
+def absolute_momentum(u, v, index="index"):
     r"""Calculate cross-sectional absolute momentum (also called pseudoangular momentum).
 
     As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is
@@ -286,15 +289,15 @@ def absolute_momentum(u, v, index='index'):
 
     """
     # Get the normal component of the wind
-    norm_wind = normal_component(u, v, index=index).metpy.convert_units('m/s')
+    norm_wind = normal_component(u, v, index=index).metpy.convert_units("m/s")
 
     # Get other pieces of calculation (all as ndarrays matching shape of norm_wind)
     latitude = latitude_from_cross_section(norm_wind)
     _, latitude = xr.broadcast(norm_wind, latitude)
     f = coriolis_parameter(np.deg2rad(latitude.values))
     x, y = distances_from_cross_section(norm_wind)
-    x = x.metpy.convert_units('meters')
-    y = y.metpy.convert_units('meters')
+    x = x.metpy.convert_units("meters")
+    y = y.metpy.convert_units("meters")
     _, x, y = xr.broadcast(norm_wind, x, y)
     distance = np.hypot(x.metpy.quantify(), y.metpy.quantify())
 

@@ -19,14 +19,26 @@ from ..xarray import check_axis, grid_deltas_from_dataarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
-UND = 'UND'
-UND_ANGLE = -999.
+UND = "UND"
+UND_ANGLE = -999.0
 DIR_STRS = (
-    'N', 'NNE', 'NE', 'ENE',
-    'E', 'ESE', 'SE', 'SSE',
-    'S', 'SSW', 'SW', 'WSW',
-    'W', 'WNW', 'NW', 'NNW',
-    UND
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW",
+    UND,
 )  # note the order matters!
 
 MAX_DEGREE_ANGLE = 360 * units.degree
@@ -84,15 +96,15 @@ def nearest_intersection_idx(a, b):
 
     # Determine the point just before the intersection of the lines
     # Will return multiple points for multiple intersections
-    sign_change_idx, = np.nonzero(np.diff(np.sign(difference)))
+    (sign_change_idx,) = np.nonzero(np.diff(np.sign(difference)))
 
     return sign_change_idx
 
 
 @exporter.export
 @preprocess_and_wrap()
-@units.wraps(('=A', '=B'), ('=A', '=B', '=B', None, None))
-def find_intersections(x, a, b, direction='all', log_x=False):
+@units.wraps(("=A", "=B"), ("=A", "=B", "=B", None, None))
+def find_intersections(x, a, b, direction="all", log_x=False):
     """Calculate the best estimate of intersection.
 
     Calculates the best estimates of the intersection of two y-value
@@ -168,17 +180,17 @@ def find_intersections(x, a, b, direction='all', log_x=False):
         intersect_x = np.exp(intersect_x)
 
     # Check for duplicates
-    duplicate_mask = (np.ediff1d(intersect_x, to_end=1) != 0)
+    duplicate_mask = np.ediff1d(intersect_x, to_end=1) != 0
 
     # Make a mask based on the direction of sign change desired
-    if direction == 'increasing':
+    if direction == "increasing":
         mask = sign_change > 0
-    elif direction == 'decreasing':
+    elif direction == "decreasing":
         mask = sign_change < 0
-    elif direction == 'all':
+    elif direction == "all":
         return intersect_x[duplicate_mask], intersect_y[duplicate_mask]
     else:
-        raise ValueError(f'Unknown option for direction: {direction}')
+        raise ValueError(f"Unknown option for direction: {direction}")
 
     return intersect_x[mask & duplicate_mask], intersect_y[mask & duplicate_mask]
 
@@ -227,7 +239,7 @@ def _delete_masked_points(*arrs):
         arrays with masked elements removed
 
     """
-    if any(hasattr(a, 'mask') for a in arrs):
+    if any(hasattr(a, "mask") for a in arrs):
         keep = ~functools.reduce(np.logical_or, (np.ma.getmaskarray(a) for a in arrs))
         return tuple(ma.asarray(a[keep]) for a in arrs)
     else:
@@ -271,11 +283,11 @@ def reduce_point_density(points, radius, priority=None):
 
     """
     # Handle input with units. Assume meters if units are not specified
-    if hasattr(radius, 'units'):
-        radius = radius.to('m').m
+    if hasattr(radius, "units"):
+        radius = radius.to("m").m
 
-    if hasattr(points, 'units'):
-        points = points.to('m').m
+    if hasattr(points, "units"):
+        points = points.to("m").m
 
     # Handle 1D input
     if points.ndim < 2:
@@ -345,7 +357,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
         height = height[sort_inds]
 
     # Bound is given in pressure
-    if bound.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
+    if bound.dimensionality == {"[length]": -1.0, "[mass]": 1.0, "[time]": -2.0}:
         # If the bound is in the pressure data, we know the pressure bound exactly
         if bound in pressure:
             bound_pressure = bound
@@ -372,7 +384,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
                     bound_height = pressure_to_height_std(bound_pressure)
 
     # Bound is given in height
-    elif bound.dimensionality == {'[length]': 1.0}:
+    elif bound.dimensionality == {"[length]": 1.0}:
         # If there is height data, see if we have the bound or need to interpolate/find nearest
         if height is not None:
             if bound in height:  # Bound is in the height data
@@ -385,9 +397,12 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
                     # Need to cast back to the input type since interp (up to at least numpy
                     # 1.13 always returns float64. This can cause upstream users problems,
                     # resulting in something like np.append() to upcast.
-                    bound_pressure = (np.interp(np.atleast_1d(bound.m), height.m,
-                                                pressure.m).astype(np.result_type(bound))
-                                      * pressure.units)
+                    bound_pressure = (
+                        np.interp(np.atleast_1d(bound.m), height.m, pressure.m).astype(
+                            np.result_type(bound)
+                        )
+                        * pressure.units
+                    )
                 else:
                     idx = (np.abs(height - bound)).argmin()
                     bound_pressure = pressure[idx]
@@ -404,24 +419,26 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
 
     # Bound has invalid units
     else:
-        raise ValueError('Bound must be specified in units of length or pressure.')
+        raise ValueError("Bound must be specified in units of length or pressure.")
 
     # If the bound is out of the range of the data, we shouldn't extrapolate
-    if not (_greater_or_close(bound_pressure, np.nanmin(pressure.m) * pressure.units)
-            and _less_or_close(bound_pressure, np.nanmax(pressure.m) * pressure.units)):
-        raise ValueError('Specified bound is outside pressure range.')
-    if height is not None and not (_less_or_close(bound_height,
-                                                  np.nanmax(height.m) * height.units)
-                                   and _greater_or_close(bound_height,
-                                                         np.nanmin(height.m) * height.units)):
-        raise ValueError('Specified bound is outside height range.')
+    if not (
+        _greater_or_close(bound_pressure, np.nanmin(pressure.m) * pressure.units)
+        and _less_or_close(bound_pressure, np.nanmax(pressure.m) * pressure.units)
+    ):
+        raise ValueError("Specified bound is outside pressure range.")
+    if height is not None and not (
+        _less_or_close(bound_height, np.nanmax(height.m) * height.units)
+        and _greater_or_close(bound_height, np.nanmin(height.m) * height.units)
+    ):
+        raise ValueError("Specified bound is outside height range.")
 
     return bound_pressure, bound_height
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[length]')
+@check_units("[length]")
 def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_agl=False):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
 
@@ -459,7 +476,7 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     # Make sure pressure and datavars are the same length
     for datavar in args:
         if len(height) != len(datavar):
-            raise ValueError('Height and data variables must have the same length.')
+            raise ValueError("Height and data variables must have the same length.")
 
     # If we want things in AGL, subtract the minimum height from all height values
     if with_agl:
@@ -491,11 +508,13 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if top not in heights_interp:
-            heights_interp = units.Quantity(np.sort(np.append(heights_interp.m, top.m)),
-                                            height.units)
+            heights_interp = units.Quantity(
+                np.sort(np.append(heights_interp.m, top.m)), height.units
+            )
         if bottom not in heights_interp:
-            heights_interp = units.Quantity(np.sort(np.append(heights_interp.m, bottom.m)),
-                                            height.units)
+            heights_interp = units.Quantity(
+                np.sort(np.append(heights_interp.m, bottom.m)), height.units
+            )
 
     ret.append(heights_interp)
 
@@ -516,9 +535,10 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]')
-def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
-              interpolate=True):
+@check_units("[pressure]")
+def get_layer(
+    pressure, *args, height=None, bottom=None, depth=100 * units.hPa, interpolate=True
+):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer. The
@@ -564,26 +584,27 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     # Make sure pressure and datavars are the same length
     for datavar in args:
         if len(pressure) != len(datavar):
-            raise ValueError('Pressure and data variables must have the same length.')
+            raise ValueError("Pressure and data variables must have the same length.")
 
     # If the bottom is not specified, make it the surface pressure
     if bottom is None:
         bottom = np.nanmax(pressure.m) * pressure.units
 
-    bottom_pressure, bottom_height = _get_bound_pressure_height(pressure, bottom,
-                                                                height=height,
-                                                                interpolate=interpolate)
+    bottom_pressure, bottom_height = _get_bound_pressure_height(
+        pressure, bottom, height=height, interpolate=interpolate
+    )
 
     # Calculate the top if whatever units depth is in
-    if depth.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
+    if depth.dimensionality == {"[length]": -1.0, "[mass]": 1.0, "[time]": -2.0}:
         top = bottom_pressure - depth
-    elif depth.dimensionality == {'[length]': 1}:
+    elif depth.dimensionality == {"[length]": 1}:
         top = bottom_height + depth
     else:
-        raise ValueError('Depth must be specified in units of length or pressure')
+        raise ValueError("Depth must be specified in units of length or pressure")
 
-    top_pressure, _ = _get_bound_pressure_height(pressure, top, height=height,
-                                                 interpolate=interpolate)
+    top_pressure, _ = _get_bound_pressure_height(
+        pressure, top, height=height, interpolate=interpolate
+    )
 
     ret = []  # returned data variables in layer
 
@@ -592,8 +613,9 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     pressure = pressure[sort_inds]
 
     # Mask based on top and bottom pressure
-    inds = (_less_or_close(pressure, bottom_pressure)
-            & _greater_or_close(pressure, top_pressure))
+    inds = _less_or_close(pressure, bottom_pressure) & _greater_or_close(
+        pressure, top_pressure
+    )
     p_interp = pressure[inds]
 
     # Interpolate pressures at bounds if necessary and sort
@@ -756,9 +778,13 @@ def _less_or_close(a, value, **kwargs):
 
 def make_take(ndims, slice_dim):
     """Generate a take function to index in a particular dimension."""
+
     def take(indexer):
-        return tuple(indexer if slice_dim % ndims == i else slice(None)  # noqa: S001
-                     for i in range(ndims))
+        return tuple(
+            indexer if slice_dim % ndims == i else slice(None)  # noqa: S001
+            for i in range(ndims)
+        )
+
     return take
 
 
@@ -802,7 +828,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
 
     # Inputs must be the same number of dimensions
     if latitude.ndim != longitude.ndim:
-        raise ValueError('Latitude and longitude must have the same number of dimensions.')
+        raise ValueError("Latitude and longitude must have the same number of dimensions.")
 
     # If we were given 1D arrays, make a mesh grid
     if latitude.ndim < 2:
@@ -810,8 +836,8 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
 
     # pyproj requires ndarrays, not Quantities
     try:
-        longitude = np.asarray(longitude.m_as('degrees'))
-        latitude = np.asarray(latitude.m_as('degrees'))
+        longitude = np.asarray(longitude.m_as("degrees"))
+        latitude = np.asarray(latitude.m_as("degrees"))
     except AttributeError:
         longitude = np.asarray(longitude)
         latitude = np.asarray(latitude)
@@ -820,23 +846,27 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
     take_y = make_take(latitude.ndim, y_dim)
     take_x = make_take(latitude.ndim, x_dim)
 
-    geod_args = {'ellps': 'sphere'}
+    geod_args = {"ellps": "sphere"}
     if kwargs:
         geod_args = kwargs
 
     g = Geod(**geod_args)
 
-    forward_az, _, dy = g.inv(longitude[take_y(slice(None, -1))],
-                              latitude[take_y(slice(None, -1))],
-                              longitude[take_y(slice(1, None))],
-                              latitude[take_y(slice(1, None))])
-    dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
+    forward_az, _, dy = g.inv(
+        longitude[take_y(slice(None, -1))],
+        latitude[take_y(slice(None, -1))],
+        longitude[take_y(slice(1, None))],
+        latitude[take_y(slice(1, None))],
+    )
+    dy[(forward_az < -90.0) | (forward_az > 90.0)] *= -1
 
-    forward_az, _, dx = g.inv(longitude[take_x(slice(None, -1))],
-                              latitude[take_x(slice(None, -1))],
-                              longitude[take_x(slice(1, None))],
-                              latitude[take_x(slice(1, None))])
-    dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
+    forward_az, _, dx = g.inv(
+        longitude[take_x(slice(None, -1))],
+        latitude[take_x(slice(None, -1))],
+        longitude[take_x(slice(1, None))],
+        latitude[take_x(slice(1, None))],
+    )
+    dx[(forward_az < 0.0) | (forward_az > 180.0)] *= -1
 
     return dx * units.meter, dy * units.meter
 
@@ -873,7 +903,7 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs)
     """
     from pyproj import Geod
 
-    geod_args = {'ellps': 'sphere'}
+    geod_args = {"ellps": "sphere"}
     if kwargs:
         geod_args = kwargs
     g = Geod(**geod_args)
@@ -892,38 +922,42 @@ def xarray_derivative_wrap(func):
     This will automatically determine if the coordinates can be pulled directly from the
     DataArray, or if a call to lat_lon_grid_deltas is needed.
     """
+
     @functools.wraps(func)
     def wrapper(f, **kwargs):
-        if 'x' in kwargs or 'delta' in kwargs:
+        if "x" in kwargs or "delta" in kwargs:
             # Use the usual DataArray to pint.Quantity preprocessing wrapper
             return preprocess_and_wrap()(func)(f, **kwargs)
         elif isinstance(f, xr.DataArray):
             # Get axis argument, defaulting to first dimension
-            axis = f.metpy.find_axis_name(kwargs.get('axis', 0))
+            axis = f.metpy.find_axis_name(kwargs.get("axis", 0))
 
             # Initialize new kwargs with the axis number
-            new_kwargs = {'axis': f.get_axis_num(axis)}
+            new_kwargs = {"axis": f.get_axis_num(axis)}
 
-            if check_axis(f[axis], 'time'):
+            if check_axis(f[axis], "time"):
                 # Time coordinate, need to get time deltas
-                new_kwargs['delta'] = f[axis].metpy.time_deltas
-            elif check_axis(f[axis], 'longitude'):
+                new_kwargs["delta"] = f[axis].metpy.time_deltas
+            elif check_axis(f[axis], "longitude"):
                 # Longitude coordinate, need to get grid deltas
-                new_kwargs['delta'], _ = grid_deltas_from_dataarray(f)
-            elif check_axis(f[axis], 'latitude'):
+                new_kwargs["delta"], _ = grid_deltas_from_dataarray(f)
+            elif check_axis(f[axis], "latitude"):
                 # Latitude coordinate, need to get grid deltas
-                _, new_kwargs['delta'] = grid_deltas_from_dataarray(f)
+                _, new_kwargs["delta"] = grid_deltas_from_dataarray(f)
             else:
                 # General coordinate, use as is
-                new_kwargs['x'] = f[axis].metpy.unit_array
+                new_kwargs["x"] = f[axis].metpy.unit_array
 
             # Calculate and return result as a DataArray
             result = func(f.metpy.unit_array, **new_kwargs)
             return xr.DataArray(result, coords=f.coords, dims=f.dims)
         else:
             # Error
-            raise ValueError('Must specify either "x" or "delta" for value positions when "f" '
-                             'is not a DataArray.')
+            raise ValueError(
+                'Must specify either "x" or "delta" for value positions when "f" '
+                "is not a DataArray."
+            )
+
     return wrapper
 
 
@@ -984,9 +1018,11 @@ def first_derivative(f, axis=None, x=None, delta=None):
 
     combined_delta = delta[delta_slice0] + delta[delta_slice1]
     delta_diff = delta[delta_slice1] - delta[delta_slice0]
-    center = (- delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
-              + delta_diff / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
-              + delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
+    center = (
+        -delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
+        + delta_diff / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+        + delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2]
+    )
 
     # Fill in "left" edge with forward difference
     slice0 = take(slice(None, 1))
@@ -997,9 +1033,11 @@ def first_derivative(f, axis=None, x=None, delta=None):
 
     combined_delta = delta[delta_slice0] + delta[delta_slice1]
     big_delta = combined_delta + delta[delta_slice0]
-    left = (- big_delta / (combined_delta * delta[delta_slice0]) * f[slice0]
-            + combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
-            - delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
+    left = (
+        -big_delta / (combined_delta * delta[delta_slice0]) * f[slice0]
+        + combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+        - delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2]
+    )
 
     # Now the "right" edge with backward difference
     slice0 = take(slice(-3, -2))
@@ -1010,9 +1048,11 @@ def first_derivative(f, axis=None, x=None, delta=None):
 
     combined_delta = delta[delta_slice0] + delta[delta_slice1]
     big_delta = combined_delta + delta[delta_slice1]
-    right = (delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
-             - combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
-             + big_delta / (combined_delta * delta[delta_slice1]) * f[slice2])
+    right = (
+        delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
+        - combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+        + big_delta / (combined_delta * delta[delta_slice1]) * f[slice2]
+    )
 
     return concatenate((left, center, right), axis=axis)
 
@@ -1073,9 +1113,11 @@ def second_derivative(f, axis=None, x=None, delta=None):
     delta_slice1 = take(slice(1, None))
 
     combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    center = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
-                  - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
-                  + f[slice2] / (combined_delta * delta[delta_slice1]))
+    center = 2 * (
+        f[slice0] / (combined_delta * delta[delta_slice0])
+        - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+        + f[slice2] / (combined_delta * delta[delta_slice1])
+    )
 
     # Fill in "left" edge
     slice0 = take(slice(None, 1))
@@ -1085,9 +1127,11 @@ def second_derivative(f, axis=None, x=None, delta=None):
     delta_slice1 = take(slice(1, 2))
 
     combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    left = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
-                - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
-                + f[slice2] / (combined_delta * delta[delta_slice1]))
+    left = 2 * (
+        f[slice0] / (combined_delta * delta[delta_slice0])
+        - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+        + f[slice2] / (combined_delta * delta[delta_slice1])
+    )
 
     # Now the "right" edge
     slice0 = take(slice(-3, -2))
@@ -1097,9 +1141,11 @@ def second_derivative(f, axis=None, x=None, delta=None):
     delta_slice1 = take(slice(-1, None))
 
     combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    right = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
-                 - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
-                 + f[slice2] / (combined_delta * delta[delta_slice1]))
+    right = 2 * (
+        f[slice0] / (combined_delta * delta[delta_slice0])
+        - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+        + f[slice2] / (combined_delta * delta[delta_slice1])
+    )
 
     return concatenate((left, center, right), axis=axis)
 
@@ -1153,8 +1199,10 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
 
     """
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
-    return tuple(first_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
-                 for ind, axis in enumerate(axes))
+    return tuple(
+        first_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
+        for ind, axis in enumerate(axes)
+    )
 
 
 @exporter.export
@@ -1204,8 +1252,10 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
 
     """
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
-    derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
-              for ind, axis in enumerate(axes)]
+    derivs = [
+        second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
+        for ind, axis in enumerate(axes)
+    ]
     return sum(derivs)
 
 
@@ -1228,25 +1278,30 @@ def _process_gradient_args(f, axes, coordinates, deltas):
 
     def _check_length(positions):
         if axes_given and len(positions) < len(axes):
-            raise ValueError('Length of "coordinates" or "deltas" cannot be less than that '
-                             'of "axes".')
+            raise ValueError(
+                'Length of "coordinates" or "deltas" cannot be less than that ' 'of "axes".'
+            )
         elif not axes_given and len(positions) != len(axes):
-            raise ValueError('Length of "coordinates" or "deltas" must match the number of '
-                             'dimensions of "f" when "axes" is not given.')
+            raise ValueError(
+                'Length of "coordinates" or "deltas" must match the number of '
+                'dimensions of "f" when "axes" is not given.'
+            )
 
     if deltas is not None:
         if coordinates is not None:
             raise ValueError('Cannot specify both "coordinates" and "deltas".')
         _check_length(deltas)
-        return 'delta', deltas, axes
+        return "delta", deltas, axes
     elif coordinates is not None:
         _check_length(coordinates)
-        return 'x', coordinates, axes
+        return "x", coordinates, axes
     elif isinstance(f, xr.DataArray):
-        return 'pass', axes, axes  # only the axis argument matters
+        return "pass", axes, axes  # only the axis argument matters
     else:
-        raise ValueError('Must specify either "coordinates" or "deltas" for value positions '
-                         'when "f" is not a DataArray.')
+        raise ValueError(
+            'Must specify either "coordinates" or "deltas" for value positions '
+            'when "f" is not a DataArray.'
+        )
 
 
 def _process_deriv_args(f, axis, x, delta):
@@ -1255,7 +1310,7 @@ def _process_deriv_args(f, axis, x, delta):
     axis = normalize_axis_index(axis if axis is not None else 0, n)
 
     if f.shape[axis] < 3:
-        raise ValueError('f must have at least 3 point along the desired axis.')
+        raise ValueError("f must have at least 3 point along the desired axis.")
 
     if delta is not None:
         if x is not None:
@@ -1265,9 +1320,9 @@ def _process_deriv_args(f, axis, x, delta):
         if delta.size == 1:
             diff_size = list(f.shape)
             diff_size[axis] -= 1
-            delta_units = getattr(delta, 'units', None)
+            delta_units = getattr(delta, "units", None)
             delta = np.broadcast_to(delta, diff_size, subok=True)
-            if not hasattr(delta, 'units') and delta_units is not None:
+            if not hasattr(delta, "units") and delta_units is not None:
                 delta = delta * delta_units
         else:
             delta = _broadcast_to_axis(delta, axis, n)
@@ -1281,7 +1336,7 @@ def _process_deriv_args(f, axis, x, delta):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='input_dir')
+@preprocess_and_wrap(wrap_like="input_dir")
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
@@ -1302,10 +1357,10 @@ def parse_angle(input_dir):
     if isinstance(input_dir, str):
         # abb_dirs = abbrieviated directions
         abb_dirs = _clean_direction([_abbrieviate_direction(input_dir)])
-    elif hasattr(input_dir, '__len__'):  # handle np.array, pd.Series, list, and array-like
-        input_dir_str = ','.join(_clean_direction(input_dir, preprocess=True))
+    elif hasattr(input_dir, "__len__"):  # handle np.array, pd.Series, list, and array-like
+        input_dir_str = ",".join(_clean_direction(input_dir, preprocess=True))
         abb_dir_str = _abbrieviate_direction(input_dir_str)
-        abb_dirs = _clean_direction(abb_dir_str.split(','))
+        abb_dirs = _clean_direction(abb_dir_str.split(","))
     else:  # handle unrecognizable scalar
         return np.nan
 
@@ -1315,25 +1370,23 @@ def parse_angle(input_dir):
 def _clean_direction(dir_list, preprocess=False):
     """Handle None if preprocess, else handles anything not in DIR_STRS."""
     if preprocess:  # primarily to remove None from list so ','.join works
-        return [UND if not isinstance(the_dir, str) else the_dir
-                for the_dir in dir_list]
+        return [UND if not isinstance(the_dir, str) else the_dir for the_dir in dir_list]
     else:  # remove extraneous abbrieviated directions
-        return [UND if the_dir not in DIR_STRS else the_dir
-                for the_dir in dir_list]
+        return [UND if the_dir not in DIR_STRS else the_dir for the_dir in dir_list]
 
 
 def _abbrieviate_direction(ext_dir_str):
     """Convert extended (non-abbrievated) directions to abbrieviation."""
-    return (ext_dir_str
-            .upper()
-            .replace('_', '')
-            .replace('-', '')
-            .replace(' ', '')
-            .replace('NORTH', 'N')
-            .replace('EAST', 'E')
-            .replace('SOUTH', 'S')
-            .replace('WEST', 'W')
-            )
+    return (
+        ext_dir_str.upper()
+        .replace("_", "")
+        .replace("-", "")
+        .replace(" ", "")
+        .replace("NORTH", "N")
+        .replace("EAST", "E")
+        .replace("SOUTH", "S")
+        .replace("WEST", "W")
+    )
 
 
 @exporter.export
@@ -1365,7 +1418,7 @@ def angle_to_direction(input_angle, full=False, level=3):
     except AttributeError:  # no units associated
         origin_units = units.degree
 
-    if not hasattr(input_angle, '__len__') or isinstance(input_angle, str):
+    if not hasattr(input_angle, "__len__") or isinstance(input_angle, str):
         input_angle = [input_angle]
         scalar = True
     else:
@@ -1374,7 +1427,7 @@ def angle_to_direction(input_angle, full=False, level=3):
     # clean any numeric strings, negatives, and None
     # does not handle strings with alphabet
     input_angle = np.array(input_angle).astype(float)
-    with np.errstate(invalid='ignore'):  # warns about the np.nan
+    with np.errstate(invalid="ignore"):  # warns about the np.nan
         input_angle[np.where(input_angle < 0)] = np.nan
 
     input_angle = input_angle * origin_units
@@ -1390,12 +1443,14 @@ def angle_to_direction(input_angle, full=False, level=3):
     elif level == 1:
         nskip = 4
     else:
-        err_msg = 'Level of complexity cannot be less than 1 or greater than 3!'
+        err_msg = "Level of complexity cannot be less than 1 or greater than 3!"
         raise ValueError(err_msg)
 
-    angle_dict = {i * BASE_DEGREE_MULTIPLIER.m * nskip: dir_str
-                  for i, dir_str in enumerate(DIR_STRS[::nskip])}
-    angle_dict[MAX_DEGREE_ANGLE.m] = 'N'  # handle edge case of 360.
+    angle_dict = {
+        i * BASE_DEGREE_MULTIPLIER.m * nskip: dir_str
+        for i, dir_str in enumerate(DIR_STRS[::nskip])
+    }
+    angle_dict[MAX_DEGREE_ANGLE.m] = "N"  # handle edge case of 360.
     angle_dict[UND_ANGLE] = UND
 
     # round to the nearest angles for dict lookup
@@ -1410,19 +1465,18 @@ def angle_to_direction(input_angle, full=False, level=3):
     # ['N', 'N', 'NE', 'NE', 'E', 'E', 'SE', 'SE',
     #  'S', 'S', 'SW', 'SW', 'W', 'W', 'NW', 'NW']
 
-    multiplier = np.round(
-        (norm_angles / BASE_DEGREE_MULTIPLIER / nskip) - 0.001).m
-    round_angles = (multiplier * BASE_DEGREE_MULTIPLIER.m * nskip)
+    multiplier = np.round((norm_angles / BASE_DEGREE_MULTIPLIER / nskip) - 0.001).m
+    round_angles = multiplier * BASE_DEGREE_MULTIPLIER.m * nskip
     round_angles[np.where(np.isnan(round_angles))] = UND_ANGLE
 
     dir_str_arr = itemgetter(*round_angles)(angle_dict)  # for array
     if full:
-        dir_str_arr = ','.join(dir_str_arr)
+        dir_str_arr = ",".join(dir_str_arr)
         dir_str_arr = _unabbrieviate_direction(dir_str_arr)
         if not scalar:
-            dir_str = dir_str_arr.split(',')
+            dir_str = dir_str_arr.split(",")
         else:
-            dir_str = dir_str_arr.replace(',', ' ')
+            dir_str = dir_str_arr.replace(",", " ")
     else:
         dir_str = dir_str_arr
 
@@ -1431,15 +1485,15 @@ def angle_to_direction(input_angle, full=False, level=3):
 
 def _unabbrieviate_direction(abb_dir_str):
     """Convert abbrieviated directions to non-abbrieviated direction."""
-    return (abb_dir_str
-            .upper()
-            .replace(UND, 'Undefined ')
-            .replace('N', 'North ')
-            .replace('E', 'East ')
-            .replace('S', 'South ')
-            .replace('W', 'West ')
-            .replace(' ,', ',')
-            ).strip()
+    return (
+        abb_dir_str.upper()
+        .replace(UND, "Undefined ")
+        .replace("N", "North ")
+        .replace("E", "East ")
+        .replace("S", "South ")
+        .replace("W", "West ")
+        .replace(" ,", ",")
+    ).strip()
 
 
 def _remove_nans(*variables):

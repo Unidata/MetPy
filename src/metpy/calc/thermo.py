@@ -31,8 +31,8 @@ sat_pressure_0c = 6.112 * units.millibar
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
-@check_units('[temperature]', '[temperature]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("temperature", "dewpoint"))
+@check_units("[temperature]", "[temperature]")
 def relative_humidity_from_dewpoint(temperature, dewpoint):
     r"""Calculate the relative humidity.
 
@@ -58,12 +58,12 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     """
     e = saturation_vapor_pressure(dewpoint)
     e_s = saturation_vapor_pressure(temperature)
-    return (e / e_s)
+    return e / e_s
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='pressure')
-@check_units('[pressure]', '[pressure]')
+@preprocess_and_wrap(wrap_like="pressure")
+@check_units("[pressure]", "[pressure]")
 def exner_function(pressure, reference_pressure=mpconsts.P0):
     r"""Calculate the Exner function.
 
@@ -93,12 +93,12 @@ def exner_function(pressure, reference_pressure=mpconsts.P0):
     temperature_from_potential_temperature
 
     """
-    return (pressure / reference_pressure).to('dimensionless')**mpconsts.kappa
+    return (pressure / reference_pressure).to("dimensionless") ** mpconsts.kappa
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
-@check_units('[pressure]', '[temperature]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("pressure", "temperature"))
+@check_units("[pressure]", "[temperature]")
 def potential_temperature(pressure, temperature):
     r"""Calculate the potential temperature.
 
@@ -140,10 +140,9 @@ def potential_temperature(pressure, temperature):
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='potential_temperature',
-    broadcast=('pressure', 'potential_temperature')
+    wrap_like="potential_temperature", broadcast=("pressure", "potential_temperature")
 )
-@check_units('[pressure]', '[temperature]')
+@check_units("[pressure]", "[temperature]")
 def temperature_from_potential_temperature(pressure, potential_temperature):
     r"""Calculate the temperature from a given potential temperature.
 
@@ -188,10 +187,9 @@ def temperature_from_potential_temperature(pressure, potential_temperature):
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'reference_pressure')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "reference_pressure")
 )
-@check_units('[pressure]', '[temperature]', '[pressure]')
+@check_units("[pressure]", "[temperature]", "[pressure]")
 def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     r"""Calculate the temperature at a level assuming only dry processes.
 
@@ -227,15 +225,14 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     """
     if reference_pressure is None:
         reference_pressure = pressure[0]
-    return temperature * (pressure / reference_pressure)**mpconsts.kappa
+    return temperature * (pressure / reference_pressure) ** mpconsts.kappa
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'reference_pressure')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "reference_pressure")
 )
-@check_units('[pressure]', '[temperature]', '[pressure]')
+@check_units("[pressure]", "[temperature]", "[pressure]")
 def moist_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
@@ -277,29 +274,34 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     grids).
 
     """
+
     def dt(t, p):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
         rs = saturation_mixing_ratio(p, t)
-        frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
-                / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
-                                    / (mpconsts.Rd * t * t)))).to('kelvin')
+        frac = (
+            (mpconsts.Rd * t + mpconsts.Lv * rs)
+            / (
+                mpconsts.Cp_d
+                + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon / (mpconsts.Rd * t * t))
+            )
+        ).to("kelvin")
         return (frac / p).magnitude
 
     if reference_pressure is None:
         reference_pressure = pressure[0]
 
-    pressure = pressure.to('mbar')
-    reference_pressure = reference_pressure.to('mbar')
+    pressure = pressure.to("mbar")
+    reference_pressure = reference_pressure.to("mbar")
     temperature = np.atleast_1d(temperature)
 
-    side = 'left'
+    side = "left"
 
-    pres_decreasing = (pressure[0] > pressure[-1])
+    pres_decreasing = pressure[0] > pressure[-1]
     if pres_decreasing:
         # Everything is easier if pressures are in increasing order
         pressure = pressure[::-1]
-        side = 'right'
+        side = "right"
 
     ref_pres_idx = np.searchsorted(pressure.m, reference_pressure.m, side=side)
 
@@ -307,7 +309,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     if reference_pressure > pressure.min():
         # Integrate downward in pressure
-        pres_down = np.append(reference_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
+        pres_down = np.append(reference_pressure.m, pressure[(ref_pres_idx - 1) :: -1].m)
         trace_down = si.odeint(dt, temperature.m.squeeze(), pres_down.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_down[:0:-1]))
 
@@ -325,7 +327,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) using from the starting point.
 
@@ -376,26 +378,34 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     Quantities even when given xarray DataArray profiles.
 
     """
+
     def _lcl_iter(p, p0, w, t):
-        td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
-        return (p0 * (td / t) ** (1. / mpconsts.kappa)).m
+        td = globals()["dewpoint"](vapor_pressure(units.Quantity(p, pressure.units), w))
+        return (p0 * (td / t) ** (1.0 / mpconsts.kappa)).m
 
     w = mixing_ratio(saturation_vapor_pressure(dewpoint), pressure)
-    lcl_p = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
-                           xtol=eps, maxiter=max_iters)
+    lcl_p = so.fixed_point(
+        _lcl_iter, pressure.m, args=(pressure.m, w, temperature), xtol=eps, maxiter=max_iters
+    )
 
     # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
     lcl_p = np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p) * pressure.units
 
-    return lcl_p, globals()['dewpoint'](vapor_pressure(lcl_p, w)).to(temperature.units)
+    return lcl_p, globals()["dewpoint"](vapor_pressure(lcl_p, w)).to(temperature.units)
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
-        which='top'):
+@check_units("[pressure]", "[temperature]", "[temperature]", "[temperature]")
+def lfc(
+    pressure,
+    temperature,
+    dewpoint,
+    parcel_temperature_profile=None,
+    dewpoint_start=None,
+    which="top",
+):
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -457,11 +467,21 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     # If that is the case, ignore that point to get the real first
     # intersection for the LFC calculation. Use logarithmic interpolation.
     if np.isclose(parcel_temperature_profile[0].to(temperature.units).m, temperature[0].m):
-        x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                  temperature[1:], direction='increasing', log_x=True)
+        x, y = find_intersections(
+            pressure[1:],
+            parcel_temperature_profile[1:],
+            temperature[1:],
+            direction="increasing",
+            log_x=True,
+        )
     else:
-        x, y = find_intersections(pressure, parcel_temperature_profile,
-                                  temperature, direction='increasing', log_x=True)
+        x, y = find_intersections(
+            pressure,
+            parcel_temperature_profile,
+            temperature,
+            direction="increasing",
+            log_x=True,
+        )
 
     # Compute LCL for this parcel for future comparisons
     this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpoint_start)
@@ -487,9 +507,13 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
         idx = x < this_lcl[0]
         # LFC height < LCL height, so set LFC = LCL
         if not any(idx):
-            el_pres, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                            temperature[1:], direction='decreasing',
-                                            log_x=True)
+            el_pres, _ = find_intersections(
+                pressure[1:],
+                parcel_temperature_profile[1:],
+                temperature[1:],
+                direction="decreasing",
+                log_x=True,
+            )
             if np.min(el_pres) > this_lcl[0]:
                 x, y = np.nan * pressure.units, np.nan * temperature.units
             else:
@@ -498,74 +522,118 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
         # Otherwise, find all LFCs that exist above the LCL
         # What is returned depends on which flag as described in the docstring
         else:
-            return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                            parcel_temperature_profile, temperature,
-                                            dewpoint, intersect_type='LFC')
+            return _multiple_el_lfc_options(
+                x,
+                y,
+                idx,
+                which,
+                pressure,
+                parcel_temperature_profile,
+                temperature,
+                dewpoint,
+                intersect_type="LFC",
+            )
 
 
-def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
-                             which, pressure, parcel_temperature_profile, temperature,
-                             dewpoint, intersect_type):
+def _multiple_el_lfc_options(
+    intersect_pressures,
+    intersect_temperatures,
+    valid_x,
+    which,
+    pressure,
+    parcel_temperature_profile,
+    temperature,
+    dewpoint,
+    intersect_type,
+):
     """Choose which ELs and LFCs to return from a sounding."""
     p_list, t_list = intersect_pressures[valid_x], intersect_temperatures[valid_x]
-    if which == 'all':
+    if which == "all":
         x, y = p_list, t_list
-    elif which == 'bottom':
+    elif which == "bottom":
         x, y = p_list[0], t_list[0]
-    elif which == 'top':
+    elif which == "top":
         x, y = p_list[-1], t_list[-1]
-    elif which == 'wide':
-        x, y = _wide_option(intersect_type, p_list, t_list, pressure,
-                            parcel_temperature_profile, temperature)
-    elif which == 'most_cape':
-        x, y = _most_cape_option(intersect_type, p_list, t_list, pressure, temperature,
-                                 dewpoint, parcel_temperature_profile)
+    elif which == "wide":
+        x, y = _wide_option(
+            intersect_type, p_list, t_list, pressure, parcel_temperature_profile, temperature
+        )
+    elif which == "most_cape":
+        x, y = _most_cape_option(
+            intersect_type,
+            p_list,
+            t_list,
+            pressure,
+            temperature,
+            dewpoint,
+            parcel_temperature_profile,
+        )
     else:
-        raise ValueError('Invalid option for "which". Valid options are "top", "bottom", '
-                         '"wide", "most_cape", and "all".')
+        raise ValueError(
+            'Invalid option for "which". Valid options are "top", "bottom", '
+            '"wide", "most_cape", and "all".'
+        )
     return x, y
 
 
-def _wide_option(intersect_type, p_list, t_list, pressure, parcel_temperature_profile,
-                 temperature):
+def _wide_option(
+    intersect_type, p_list, t_list, pressure, parcel_temperature_profile, temperature
+):
     """Calculate the LFC or EL that produces the greatest distance between these points."""
     # zip the LFC and EL lists together and find greatest difference
-    if intersect_type == 'LFC':
+    if intersect_type == "LFC":
         # Find EL intersection pressure values
         lfc_p_list = p_list
-        el_p_list, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                          temperature[1:], direction='decreasing',
-                                          log_x=True)
+        el_p_list, _ = find_intersections(
+            pressure[1:],
+            parcel_temperature_profile[1:],
+            temperature[1:],
+            direction="decreasing",
+            log_x=True,
+        )
     else:  # intersect_type == 'EL'
         el_p_list = p_list
         # Find LFC intersection pressure values
-        lfc_p_list, _ = find_intersections(pressure, parcel_temperature_profile,
-                                           temperature, direction='increasing',
-                                           log_x=True)
+        lfc_p_list, _ = find_intersections(
+            pressure,
+            parcel_temperature_profile,
+            temperature,
+            direction="increasing",
+            log_x=True,
+        )
     diff = [lfc_p.m - el_p.m for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
-    return (p_list[np.where(diff == np.max(diff))][0],
-            t_list[np.where(diff == np.max(diff))][0])
+    return (
+        p_list[np.where(diff == np.max(diff))][0],
+        t_list[np.where(diff == np.max(diff))][0],
+    )
 
 
-def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dewpoint,
-                      parcel_temperature_profile):
+def _most_cape_option(
+    intersect_type, p_list, t_list, pressure, temperature, dewpoint, parcel_temperature_profile
+):
     """Calculate the LFC or EL that produces the most CAPE in the profile."""
     # Need to loop through all possible combinations of cape, find greatest cape profile
     cape_list, pair_list = [], []
-    for which_lfc in ['top', 'bottom']:
-        for which_el in ['top', 'bottom']:
-            cape, _ = cape_cin(pressure, temperature, dewpoint, parcel_temperature_profile,
-                               which_lfc=which_lfc, which_el=which_el)
+    for which_lfc in ["top", "bottom"]:
+        for which_el in ["top", "bottom"]:
+            cape, _ = cape_cin(
+                pressure,
+                temperature,
+                dewpoint,
+                parcel_temperature_profile,
+                which_lfc=which_lfc,
+                which_el=which_el,
+            )
             cape_list.append(cape.m)
             pair_list.append([which_lfc, which_el])
     (lfc_chosen, el_chosen) = pair_list[np.where(cape_list == np.max(cape_list))[0][0]]
-    if intersect_type == 'LFC':
-        if lfc_chosen == 'top':
+    if intersect_type == "LFC":
+        if lfc_chosen == "top":
             x, y = p_list[-1], t_list[-1]
         else:  # 'bottom' is returned
             x, y = p_list[0], t_list[0]
     else:  # EL is returned
-        if el_chosen == 'top':
+        if el_chosen == "top":
             x, y = p_list[-1], t_list[-1]
         else:
             x, y = p_list[0], t_list[0]
@@ -574,8 +642,8 @@ def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dew
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='top'):
+@check_units("[pressure]", "[temperature]", "[temperature]", "[temperature]")
+def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which="top"):
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -631,21 +699,34 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
 
     # Interpolate in log space to find the appropriate pressure - units have to be stripped
     # and reassigned to allow np.log() to function properly.
-    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
-                              direction='decreasing', log_x=True)
+    x, y = find_intersections(
+        pressure[1:],
+        parcel_temperature_profile[1:],
+        temperature[1:],
+        direction="decreasing",
+        log_x=True,
+    )
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpoint[0])
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
-        return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                        parcel_temperature_profile, temperature, dewpoint,
-                                        intersect_type='EL')
+        return _multiple_el_lfc_options(
+            x,
+            y,
+            idx,
+            which,
+            pressure,
+            parcel_temperature_profile,
+            temperature,
+            dewpoint,
+            intersect_type="EL",
+        )
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='pressure')
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@preprocess_and_wrap(wrap_like="pressure")
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def parcel_profile(pressure, temperature, dewpoint):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
@@ -683,7 +764,7 @@ def parcel_profile(pressure, temperature, dewpoint):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
@@ -727,8 +808,9 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
 
     """
-    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
-                                                              dewpoint[0])
+    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(
+        pressure, temperature[0], dewpoint[0]
+    )
     new_press = concatenate((p_l, p_lcl, p_u))
     prof_temp = concatenate((t_l, t_lcl, t_u))
     new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
@@ -774,35 +856,33 @@ def parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint):
 
     """
     p, ambient_temperature, ambient_dew_point, profile_temperature = parcel_profile_with_lcl(
-        pressure,
-        temperature,
-        dewpoint
+        pressure, temperature, dewpoint
     )
     return xr.Dataset(
         {
-            'ambient_temperature': (
-                ('isobaric',),
+            "ambient_temperature": (
+                ("isobaric",),
                 ambient_temperature,
-                {'standard_name': 'air_temperature'}
+                {"standard_name": "air_temperature"},
             ),
-            'ambient_dew_point': (
-                ('isobaric',),
+            "ambient_dew_point": (
+                ("isobaric",),
                 ambient_dew_point,
-                {'standard_name': 'dew_point_temperature'}
+                {"standard_name": "dew_point_temperature"},
             ),
-            'parcel_temperature': (
-                ('isobaric',),
+            "parcel_temperature": (
+                ("isobaric",),
                 profile_temperature,
-                {'long_name': 'air_temperature_of_lifted_parcel'}
-            )
+                {"long_name": "air_temperature_of_lifted_parcel"},
+            ),
         },
         coords={
-            'isobaric': (
-                'isobaric',
+            "isobaric": (
+                "isobaric",
                 p.m,
-                {'units': str(p.units), 'standard_name': 'air_pressure'}
+                {"units": str(p.units), "standard_name": "air_pressure"},
             )
-        }
+        },
     )
 
 
@@ -825,16 +905,28 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
     if _greater_or_close(np.nanmin(pressure.m), press_lcl.m):
-        return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
-                temp_lower[:-1], temp_lcl, units.Quantity(np.array([]), temp_lower.units))
+        return (
+            press_lower[:-1],
+            press_lcl,
+            units.Quantity(np.array([]), press_lower.units),
+            temp_lower[:-1],
+            temp_lcl,
+            units.Quantity(np.array([]), temp_lower.units),
+        )
 
     # Find moist pseudo-adiabatic profile starting at the LCL
     press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
     temp_upper = moist_lapse(press_upper, temp_lower[-1]).to(temp_lower.units)
 
     # Return profile pieces
-    return (press_lower[:-1], press_lcl, press_upper[1:],
-            temp_lower[:-1], temp_lcl, temp_upper[1:])
+    return (
+        press_lower[:-1],
+        press_lcl,
+        press_upper[1:],
+        temp_lower[:-1],
+        temp_lcl,
+        temp_upper[1:],
+    )
 
 
 def _insert_lcl_level(pressure, temperature, lcl_pressure):
@@ -848,8 +940,8 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='mixing_ratio', broadcast=('pressure', 'mixing_ratio'))
-@check_units('[pressure]', '[dimensionless]')
+@preprocess_and_wrap(wrap_like="mixing_ratio", broadcast=("pressure", "mixing_ratio"))
+@check_units("[pressure]", "[dimensionless]")
 def vapor_pressure(pressure, mixing_ratio):
     r"""Calculate water vapor (partial) pressure.
 
@@ -885,8 +977,8 @@ def vapor_pressure(pressure, mixing_ratio):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature')
-@check_units('[temperature]')
+@preprocess_and_wrap(wrap_like="temperature")
+@check_units("[temperature]")
 def saturation_vapor_pressure(temperature):
     r"""Calculate the saturation water vapor (partial) pressure.
 
@@ -916,13 +1008,14 @@ def saturation_vapor_pressure(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
-    return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin)
-                                    / (temperature - 29.65 * units.kelvin))
+    return sat_pressure_0c * np.exp(
+        17.67 * (temperature - 273.15 * units.kelvin) / (temperature - 29.65 * units.kelvin)
+    )
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
-@check_units('[temperature]', '[dimensionless]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("temperature", "relative_humidity"))
+@check_units("[temperature]", "[dimensionless]")
 def dewpoint_from_relative_humidity(temperature, relative_humidity):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
@@ -944,13 +1037,13 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 
     """
     if np.any(relative_humidity > 1.2):
-        warnings.warn('Relative humidity >120%, ensure proper units.')
+        warnings.warn("Relative humidity >120%, ensure proper units.")
     return dewpoint(relative_humidity * saturation_vapor_pressure(temperature))
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='vapor_pressure')
-@check_units('[pressure]')
+@preprocess_and_wrap(wrap_like="vapor_pressure")
+@check_units("[pressure]")
 def dewpoint(vapor_pressure):
     r"""Calculate the ambient dewpoint given the vapor pressure.
 
@@ -978,12 +1071,12 @@ def dewpoint(vapor_pressure):
 
     """
     val = np.log(vapor_pressure / sat_pressure_0c)
-    return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
+    return 0.0 * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='partial_press', broadcast=('partial_press', 'total_press'))
-@check_units('[pressure]', '[pressure]', '[dimensionless]')
+@preprocess_and_wrap(wrap_like="partial_press", broadcast=("partial_press", "total_press"))
+@check_units("[pressure]", "[pressure]", "[dimensionless]")
 def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate the mixing ratio of a gas.
 
@@ -1019,13 +1112,14 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return (molecular_weight_ratio * partial_press
-            / (total_press - partial_press)).to('dimensionless')
+    return (molecular_weight_ratio * partial_press / (total_press - partial_press)).to(
+        "dimensionless"
+    )
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('total_press', 'temperature'))
-@check_units('[pressure]', '[temperature]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("total_press", "temperature"))
+@check_units("[pressure]", "[temperature]")
 def saturation_mixing_ratio(total_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
 
@@ -1056,10 +1150,9 @@ def saturation_mixing_ratio(total_press, temperature):
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'dewpoint')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "dewpoint")
 )
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
 
@@ -1101,19 +1194,19 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     available.
 
     """
-    t = temperature.to('kelvin').magnitude
-    td = dewpoint.to('kelvin').magnitude
+    t = temperature.to("kelvin").magnitude
+    td = dewpoint.to("kelvin").magnitude
     r = saturation_mixing_ratio(pressure, dewpoint).magnitude
     e = saturation_vapor_pressure(dewpoint)
 
-    t_l = 56 + 1. / (1. / (td - 56) + np.log(t / td) / 800.)
+    t_l = 56 + 1.0 / (1.0 / (td - 56) + np.log(t / td) / 800.0)
     th_l = potential_temperature(pressure - e, temperature) * (t / t_l) ** (0.28 * r)
-    return th_l * np.exp(r * (1 + 0.448 * r) * (3036. / t_l - 1.78))
+    return th_l * np.exp(r * (1 + 0.448 * r) * (3036.0 / t_l - 1.78))
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
-@check_units('[pressure]', '[temperature]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("pressure", "temperature"))
+@check_units("[pressure]", "[temperature]")
 def saturation_equivalent_potential_temperature(pressure, temperature):
     r"""Calculate saturation equivalent potential temperature.
 
@@ -1167,20 +1260,20 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     available.
 
     """
-    t = temperature.to('kelvin').magnitude
-    p = pressure.to('hPa').magnitude
-    e = saturation_vapor_pressure(temperature).to('hPa').magnitude
+    t = temperature.to("kelvin").magnitude
+    p = pressure.to("hPa").magnitude
+    e = saturation_vapor_pressure(temperature).to("hPa").magnitude
     r = saturation_mixing_ratio(pressure, temperature).magnitude
 
     th_l = t * (1000 / (p - e)) ** mpconsts.kappa
-    th_es = th_l * np.exp((3036. / t - 1.78) * r * (1 + 0.448 * r))
+    th_es = th_l * np.exp((3036.0 / t - 1.78) * r * (1 + 0.448 * r))
 
     return units.Quantity(th_es, units.kelvin)
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
-@check_units('[temperature]', '[dimensionless]', '[dimensionless]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("temperature", "mixing_ratio"))
+@check_units("[temperature]", "[dimensionless]", "[dimensionless]")
 def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual temperature.
 
@@ -1208,18 +1301,19 @@ def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpcons
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
     """
-    return temperature * ((mixing_ratio + molecular_weight_ratio)
-                          / (molecular_weight_ratio * (1 + mixing_ratio)))
+    return temperature * (
+        (mixing_ratio + molecular_weight_ratio) / (molecular_weight_ratio * (1 + mixing_ratio))
+    )
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'mixing_ratio')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "mixing_ratio")
 )
-@check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
-def virtual_potential_temperature(pressure, temperature, mixing_ratio,
-                                  molecular_weight_ratio=mpconsts.epsilon):
+@check_units("[pressure]", "[temperature]", "[dimensionless]", "[dimensionless]")
+def virtual_potential_temperature(
+    pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon
+):
     r"""Calculate virtual potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
@@ -1254,10 +1348,9 @@ def virtual_potential_temperature(pressure, temperature, mixing_ratio,
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'mixing_ratio')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "mixing_ratio")
 )
-@check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
+@check_units("[pressure]", "[temperature]", "[dimensionless]", "[dimensionless]")
 def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate density.
 
@@ -1293,12 +1386,13 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='dry_bulb_temperature',
-    broadcast=('pressure', 'dry_bulb_temperature', 'wet_bulb_temperature')
+    wrap_like="dry_bulb_temperature",
+    broadcast=("pressure", "dry_bulb_temperature", "wet_bulb_temperature"),
 )
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb_temperature,
-                                        **kwargs):
+@check_units("[pressure]", "[temperature]", "[temperature]")
+def relative_humidity_wet_psychrometric(
+    pressure, dry_bulb_temperature, wet_bulb_temperature, **kwargs
+):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
     This uses a psychrometric relationship as outlined in [WMO8]_, with
@@ -1331,19 +1425,23 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
     psychrometric_vapor_pressure_wet, saturation_vapor_pressure
 
     """
-    return (psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature,
-                                             wet_bulb_temperature, **kwargs)
-            / saturation_vapor_pressure(dry_bulb_temperature))
+    return psychrometric_vapor_pressure_wet(
+        pressure, dry_bulb_temperature, wet_bulb_temperature, **kwargs
+    ) / saturation_vapor_pressure(dry_bulb_temperature)
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='dry_bulb_temperature',
-    broadcast=('pressure', 'dry_bulb_temperature', 'wet_bulb_temperature')
+    wrap_like="dry_bulb_temperature",
+    broadcast=("pressure", "dry_bulb_temperature", "wet_bulb_temperature"),
 )
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_temperature,
-                                     psychrometer_coefficient=6.21e-4 / units.kelvin):
+@check_units("[pressure]", "[temperature]", "[temperature]")
+def psychrometric_vapor_pressure_wet(
+    pressure,
+    dry_bulb_temperature,
+    wet_bulb_temperature,
+    psychrometer_coefficient=6.21e-4 / units.kelvin,
+):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
     This uses a psychrometric relationship as outlined in [WMO8]_, with
@@ -1385,16 +1483,18 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     saturation_vapor_pressure
 
     """
-    return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient
-            * pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
+    return saturation_vapor_pressure(
+        wet_bulb_temperature
+    ) - psychrometer_coefficient * pressure * (dry_bulb_temperature - wet_bulb_temperature).to(
+        "kelvin"
+    )
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'relative_humidity')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "relative_humidity")
 )
-@check_units('[pressure]', '[temperature]', '[dimensionless]')
+@check_units("[pressure]", "[temperature]", "[dimensionless]")
 def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
 
@@ -1428,16 +1528,16 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     relative_humidity_from_mixing_ratio, saturation_mixing_ratio
 
     """
-    return (relative_humidity
-            * saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
+    return (relative_humidity * saturation_mixing_ratio(pressure, temperature)).to(
+        "dimensionless"
+    )
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'mixing_ratio')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "mixing_ratio")
 )
-@check_units('[pressure]', '[temperature]', '[dimensionless]')
+@check_units("[pressure]", "[temperature]", "[dimensionless]")
 def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
@@ -1474,8 +1574,8 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='specific_humidity')
-@check_units('[dimensionless]')
+@preprocess_and_wrap(wrap_like="specific_humidity")
+@check_units("[dimensionless]")
 def mixing_ratio_from_specific_humidity(specific_humidity):
     r"""Calculate the mixing ratio from specific humidity.
 
@@ -1504,15 +1604,15 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     """
     try:
-        specific_humidity = specific_humidity.to('dimensionless')
+        specific_humidity = specific_humidity.to("dimensionless")
     except AttributeError:
         pass
     return specific_humidity / (1 - specific_humidity)
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='mixing_ratio')
-@check_units('[dimensionless]')
+@preprocess_and_wrap(wrap_like="mixing_ratio")
+@check_units("[dimensionless]")
 def specific_humidity_from_mixing_ratio(mixing_ratio):
     r"""Calculate the specific humidity from the mixing ratio.
 
@@ -1541,7 +1641,7 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
     """
     try:
-        mixing_ratio = mixing_ratio.to('dimensionless')
+        mixing_ratio = mixing_ratio.to("dimensionless")
     except AttributeError:
         pass
     return mixing_ratio / (1 + mixing_ratio)
@@ -1549,10 +1649,9 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'specific_humidity')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "specific_humidity")
 )
-@check_units('[pressure]', '[temperature]', '[dimensionless]')
+@check_units("[pressure]", "[temperature]", "[dimensionless]")
 def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
 
@@ -1585,15 +1684,17 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
     relative_humidity_from_mixing_ratio
 
     """
-    return (mixing_ratio_from_specific_humidity(specific_humidity)
-            / saturation_mixing_ratio(pressure, temperature))
+    return mixing_ratio_from_specific_humidity(specific_humidity) / saturation_mixing_ratio(
+        pressure, temperature
+    )
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom',
-             which_el='top'):
+@check_units("[pressure]", "[temperature]", "[temperature]", "[temperature]")
+def cape_cin(
+    pressure, temperature, dewpoint, parcel_profile, which_lfc="bottom", which_el="top"
+):
     r"""Calculate CAPE and CIN.
 
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
@@ -1655,21 +1756,32 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     lfc, el
 
     """
-    pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
-                                                                   dewpoint, parcel_profile)
+    pressure, temperature, dewpoint, parcel_profile = _remove_nans(
+        pressure, temperature, dewpoint, parcel_profile
+    )
     # Calculate LFC limit of integration
-    lfc_pressure, _ = lfc(pressure, temperature, dewpoint,
-                          parcel_temperature_profile=parcel_profile, which=which_lfc)
+    lfc_pressure, _ = lfc(
+        pressure,
+        temperature,
+        dewpoint,
+        parcel_temperature_profile=parcel_profile,
+        which=which_lfc,
+    )
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
-        return 0 * units('J/kg'), 0 * units('J/kg')
+        return 0 * units("J/kg"), 0 * units("J/kg")
     else:
         lfc_pressure = lfc_pressure.magnitude
 
     # Calculate the EL limit of integration
-    el_pressure, _ = el(pressure, temperature, dewpoint,
-                        parcel_temperature_profile=parcel_profile, which=which_el)
+    el_pressure, _ = el(
+        pressure,
+        temperature,
+        dewpoint,
+        parcel_temperature_profile=parcel_profile,
+        which=which_el,
+    )
 
     # No EL and we use the top reading of the sounding.
     if np.isnan(el_pressure):
@@ -1688,20 +1800,22 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     p_mask = _less_or_close(x.m, lfc_pressure) & _greater_or_close(x.m, el_pressure)
     x_clipped = x[p_mask].magnitude
     y_clipped = y[p_mask].magnitude
-    cape = (mpconsts.Rd
-            * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cape = (mpconsts.Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(
+        units("J/kg")
+    )
 
     # CIN
     # Only use data between the surface and LFC for calculation
     p_mask = _greater_or_close(x.m, lfc_pressure)
     x_clipped = x[p_mask].magnitude
     y_clipped = y[p_mask].magnitude
-    cin = (mpconsts.Rd
-           * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cin = (mpconsts.Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(
+        units("J/kg")
+    )
 
     # Set CIN to 0 if it's returned as a positive value (#1190)
-    if cin > 0 * units('J/kg'):
-        cin = 0 * units('J/kg')
+    if cin > 0 * units("J/kg"):
+        cin = 0 * units("J/kg")
     return cape, cin
 
 
@@ -1745,9 +1859,10 @@ def _find_append_zero_crossings(x, y):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
-                         bottom=None, depth=300 * units.hPa):
+@check_units("[pressure]", "[temperature]", "[temperature]")
+def most_unstable_parcel(
+    pressure, temperature, dewpoint, height=None, bottom=None, depth=300 * units.hPa
+):
     """
     Determine the most unstable parcel in a layer.
 
@@ -1789,8 +1904,15 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
     Quantities even when given xarray DataArray profiles.
 
     """
-    p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
-                                           depth=depth, height=height, interpolate=False)
+    p_layer, t_layer, td_layer = get_layer(
+        pressure,
+        temperature,
+        dewpoint,
+        bottom=bottom,
+        depth=depth,
+        height=height,
+        interpolate=False,
+    )
     theta_e = equivalent_potential_temperature(p_layer, t_layer, td_layer)
     max_idx = np.argmax(theta_e)
     return p_layer[max_idx], t_layer[max_idx], td_layer[max_idx], max_idx
@@ -1799,10 +1921,19 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
 @exporter.export
 @add_vertical_dim_from_xarray
 @preprocess_and_wrap()
-@check_units('[temperature]', '[pressure]', '[temperature]')
-def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=0,
-                             temperature_out=False, max_iters=50, eps=1e-6,
-                             bottom_up_search=True, **kwargs):
+@check_units("[temperature]", "[pressure]", "[temperature]")
+def isentropic_interpolation(
+    levels,
+    pressure,
+    temperature,
+    *args,
+    vertical_dim=0,
+    temperature_out=False,
+    max_iters=50,
+    eps=1e-6,
+    bottom_up_search=True,
+    **kwargs
+):
     r"""Interpolate data in isobaric coordinates to isentropic coordinates.
 
     Parameters
@@ -1865,8 +1996,8 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     ndim = temperature.ndim
 
     # Convert units
-    pres = pressure.to('hPa')
-    temperature = temperature.to('kelvin')
+    pres = pressure.to("hPa")
+    temperature = temperature.to("kelvin")
 
     slices = [np.newaxis] * ndim
     slices[vertical_dim] = slice(None)
@@ -1880,7 +2011,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     levs = pres[sorter]
     tmpk = temperature[sorter]
 
-    levels = np.asarray(levels.m_as('kelvin')).reshape(-1)
+    levels = np.asarray(levels.m_as("kelvin")).reshape(-1)
     isentlevels = levels[np.argsort(levels)]
 
     # Make the desired isentropic levels the same shape as temperature
@@ -1889,14 +2020,14 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     isentlevs_nd = np.broadcast_to(isentlevels[slices], shape)
 
     # exponent to Poisson's Equation, which is imported above
-    ka = mpconsts.kappa.m_as('dimensionless')
+    ka = mpconsts.kappa.m_as("dimensionless")
 
     # calculate theta for each point
     pres_theta = potential_temperature(levs, tmpk)
 
     # Raise error if input theta level is larger than pres_theta max
     if np.max(pres_theta.m) < np.max(levels):
-        raise ValueError('Input theta level out of data bounds')
+        raise ValueError("Input theta level out of data bounds")
 
     # Find log of pressure to implement assumption of linear temperature dependence on
     # ln(p)
@@ -1906,8 +2037,9 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     pok = mpconsts.P0 ** ka
 
     # index values for each point for the pressure level nearest to the desired theta level
-    above, below, good = find_bounding_indices(pres_theta.m, levels, vertical_dim,
-                                               from_below=bottom_up_search)
+    above, below, good = find_bounding_indices(
+        pres_theta.m, levels, vertical_dim, from_below=bottom_up_search
+    )
 
     # calculate constants for the interpolation
     a = (tmpk.m[above] - tmpk.m[below]) / (log_p[above] - log_p[below])
@@ -1921,9 +2053,13 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     good &= ~np.isnan(a)
 
     # iterative interpolation using scipy.optimize.fixed_point and _isen_iter defined above
-    log_p_solved = so.fixed_point(_isen_iter, isentprs[good],
-                                  args=(isentlevs_nd[good], ka, a[good], b[good], pok.m),
-                                  xtol=eps, maxiter=max_iters)
+    log_p_solved = so.fixed_point(
+        _isen_iter,
+        isentprs[good],
+        args=(isentlevs_nd[good], ka, a[good], b[good], pok.m),
+        xtol=eps,
+        maxiter=max_iters,
+    )
 
     # get back pressure from log p
     isentprs[good] = np.exp(log_p_solved)
@@ -1940,8 +2076,13 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
     # do an interpolation for each additional argument
     if args:
-        others = interpolate_1d(isentlevels, pres_theta.m, *(arr[sorter] for arr in args),
-                                axis=vertical_dim, return_list_always=True)
+        others = interpolate_1d(
+            isentlevels,
+            pres_theta.m,
+            *(arr[sorter] for arr in args),
+            axis=vertical_dim,
+            return_list_always=True
+        )
         ret.extend(others)
 
     return ret
@@ -1949,12 +2090,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
 @exporter.export
 def isentropic_interpolation_as_dataset(
-    levels,
-    temperature,
-    *args,
-    max_iters=50,
-    eps=1e-6,
-    bottom_up_search=True
+    levels, temperature, *args, max_iters=50, eps=1e-6, bottom_up_search=True
 ):
     r"""Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.
 
@@ -2007,7 +2143,7 @@ def isentropic_interpolation_as_dataset(
         all_args[0].metpy.vertical,
         all_args[0].metpy.unit_array,
         *(arg.metpy.unit_array for arg in all_args[1:]),
-        vertical_dim=all_args[0].metpy.find_axis_number('vertical'),
+        vertical_dim=all_args[0].metpy.find_axis_number("vertical"),
         temperature_out=True,
         max_iters=max_iters,
         eps=eps,
@@ -2015,53 +2151,36 @@ def isentropic_interpolation_as_dataset(
     )
 
     # Reconstruct coordinates and dims (add isentropic levels, remove isobaric levels)
-    vertical_dim = all_args[0].metpy.find_axis_name('vertical')
+    vertical_dim = all_args[0].metpy.find_axis_name("vertical")
     new_coords = {
-        'isentropic_level': xr.DataArray(
+        "isentropic_level": xr.DataArray(
             levels.m,
-            dims=('isentropic_level',),
-            coords={'isentropic_level': levels.m},
-            name='isentropic_level',
-            attrs={
-                'units': str(levels.units),
-                'positive': 'up'
-            }
+            dims=("isentropic_level",),
+            coords={"isentropic_level": levels.m},
+            name="isentropic_level",
+            attrs={"units": str(levels.units), "positive": "up"},
         ),
-        **{
-            key: value
-            for key, value in all_args[0].coords.items()
-            if key != vertical_dim
-        }
+        **{key: value for key, value in all_args[0].coords.items() if key != vertical_dim},
     }
-    new_dims = [
-        dim if dim != vertical_dim else 'isentropic_level' for dim in all_args[0].dims
-    ]
+    new_dims = [dim if dim != vertical_dim else "isentropic_level" for dim in all_args[0].dims]
 
     # Build final dataset from interpolated Quantities and original DataArrays
     return xr.Dataset(
         {
-            'pressure': (
-                new_dims,
-                ret[0],
-                {'standard_name': 'air_pressure'}
-            ),
-            'temperature': (
-                new_dims,
-                ret[1],
-                {'standard_name': 'air_temperature'}
-            ),
+            "pressure": (new_dims, ret[0], {"standard_name": "air_pressure"}),
+            "temperature": (new_dims, ret[1], {"standard_name": "air_temperature"}),
             **{
                 all_args[i].name: (new_dims, ret[i + 1], all_args[i].attrs)
                 for i in range(1, len(all_args))
-            }
+            },
         },
-        coords=new_coords
+        coords=new_coords,
     )
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def surface_based_cape_cin(pressure, temperature, dewpoint):
     r"""Calculate surface-based CAPE and CIN.
 
@@ -2106,7 +2225,7 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     r"""Calculate most unstable CAPE/CIN.
 
@@ -2147,15 +2266,15 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     _, _, _, parcel_idx = most_unstable_parcel(pressure, temperature, dewpoint, **kwargs)
-    p, t, td, mu_profile = parcel_profile_with_lcl(pressure[parcel_idx:],
-                                                   temperature[parcel_idx:],
-                                                   dewpoint[parcel_idx:])
+    p, t, td, mu_profile = parcel_profile_with_lcl(
+        pressure[parcel_idx:], temperature[parcel_idx:], dewpoint[parcel_idx:]
+    )
     return cape_cin(p, t, td, mu_profile)
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     r"""Calculate mixed-layer CAPE and CIN.
 
@@ -2195,9 +2314,10 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Quantities even when given xarray DataArray profiles.
 
     """
-    depth = kwargs.get('depth', 100 * units.hPa)
-    parcel_pressure, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
-                                                                 dewpoint, **kwargs)
+    depth = kwargs.get("depth", 100 * units.hPa)
+    parcel_pressure, parcel_temp, parcel_dewpoint = mixed_parcel(
+        pressure, temperature, dewpoint, **kwargs
+    )
 
     # Remove values below top of mixed layer and add in the mixed layer values
     pressure_prof = pressure[pressure < (pressure[0] - depth)]
@@ -2213,9 +2333,17 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
-                 height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
+@check_units("[pressure]", "[temperature]", "[temperature]")
+def mixed_parcel(
+    pressure,
+    temperature,
+    dewpoint,
+    parcel_start_pressure=None,
+    height=None,
+    bottom=None,
+    depth=100 * units.hPa,
+    interpolate=True,
+):
     r"""Calculate the properties of a parcel mixed from a layer.
 
     Determines the properties of an air parcel that is the result of complete mixing of a
@@ -2267,9 +2395,15 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
     mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
 
     # Mix the variables over the layer
-    mean_theta, mean_mixing_ratio = mixed_layer(pressure, theta, mixing_ratio, bottom=bottom,
-                                                height=height, depth=depth,
-                                                interpolate=interpolate)
+    mean_theta, mean_mixing_ratio = mixed_layer(
+        pressure,
+        theta,
+        mixing_ratio,
+        bottom=bottom,
+        height=height,
+        depth=depth,
+        interpolate=interpolate,
+    )
 
     # Convert back to temperature
     mean_temperature = mean_theta * exner_function(parcel_start_pressure)
@@ -2279,17 +2413,21 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
 
     # Using globals() here allows us to keep the dewpoint parameter but still call the
     # function of the same name.
-    mean_dewpoint = globals()['dewpoint'](mean_vapor_pressure)
+    mean_dewpoint = globals()["dewpoint"](mean_vapor_pressure)
 
-    return (parcel_start_pressure, mean_temperature.to(temperature.units),
-            mean_dewpoint.to(dewpoint.units))
+    return (
+        parcel_start_pressure,
+        mean_temperature.to(temperature.units),
+        mean_dewpoint.to(dewpoint.units),
+    )
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]')
-def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
-                interpolate=True):
+@check_units("[pressure]")
+def mixed_layer(
+    pressure, *args, height=None, bottom=None, depth=100 * units.hPa, interpolate=True
+):
     r"""Mix variable(s) over a layer, yielding a mass-weighted average.
 
     This function will integrate a data variable with respect to pressure and determine the
@@ -2324,22 +2462,26 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
     Quantities even when given xarray DataArray profiles.
 
     """
-    layer = get_layer(pressure, *args, height=height, bottom=bottom,
-                      depth=depth, interpolate=interpolate)
+    layer = get_layer(
+        pressure, *args, height=height, bottom=bottom, depth=depth, interpolate=interpolate
+    )
     p_layer = layer[0]
     datavars_layer = layer[1:]
 
     ret = []
     for datavar_layer in datavars_layer:
         actual_depth = abs(p_layer[0] - p_layer[-1])
-        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer.m, p_layer.m)
-                   * datavar_layer.units)
+        ret.append(
+            (-1.0 / actual_depth.m)
+            * np.trapz(datavar_layer.m, p_layer.m)
+            * datavar_layer.units
+        )
     return ret
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('height', 'temperature'))
-@check_units('[length]', '[temperature]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("height", "temperature"))
+@check_units("[length]", "[temperature]")
 def dry_static_energy(height, temperature):
     r"""Calculate the dry static energy of parcels.
 
@@ -2366,15 +2508,14 @@ def dry_static_energy(height, temperature):
         The dry static energy
 
     """
-    return (mpconsts.g * height + mpconsts.Cp_d * temperature).to('kJ/kg')
+    return (mpconsts.g * height + mpconsts.Cp_d * temperature).to("kJ/kg")
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('height', 'temperature', 'specific_humidity')
+    wrap_like="temperature", broadcast=("height", "temperature", "specific_humidity")
 )
-@check_units('[length]', '[temperature]', '[dimensionless]')
+@check_units("[length]", "[temperature]", "[dimensionless]")
 def moist_static_energy(height, temperature, specific_humidity):
     r"""Calculate the moist static energy of parcels.
 
@@ -2404,15 +2545,23 @@ def moist_static_energy(height, temperature, specific_humidity):
         The moist static energy
 
     """
-    return (dry_static_energy(height, temperature)
-            + mpconsts.Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
+    return (
+        dry_static_energy(height, temperature)
+        + mpconsts.Lv * specific_humidity.to("dimensionless")
+    ).to("kJ/kg")
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]')
-def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
-                          molecular_weight_ratio=mpconsts.epsilon, bottom=None, depth=None):
+@check_units("[pressure]", "[temperature]")
+def thickness_hydrostatic(
+    pressure,
+    temperature,
+    mixing_ratio=None,
+    molecular_weight_ratio=mpconsts.epsilon,
+    bottom=None,
+    depth=None,
+):
     r"""Calculate the thickness of a layer via the hypsometric equation.
 
     This thickness calculation uses the pressure and temperature profiles (and optionally
@@ -2468,27 +2617,35 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
             layer_p, layer_virttemp = pressure, temperature
         else:
             layer_p = pressure
-            layer_virttemp = virtual_temperature(temperature, mixing_ratio,
-                                                 molecular_weight_ratio)
+            layer_virttemp = virtual_temperature(
+                temperature, mixing_ratio, molecular_weight_ratio
+            )
     else:
         if mixing_ratio is None:
-            layer_p, layer_virttemp = get_layer(pressure, temperature, bottom=bottom,
-                                                depth=depth)
+            layer_p, layer_virttemp = get_layer(
+                pressure, temperature, bottom=bottom, depth=depth
+            )
         else:
-            layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing_ratio,
-                                                     bottom=bottom, depth=depth)
+            layer_p, layer_temp, layer_w = get_layer(
+                pressure, temperature, mixing_ratio, bottom=bottom, depth=depth
+            )
             layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
     # Take the integral (with unit handling) and return the result in meters
-    return (- mpconsts.Rd / mpconsts.g * np.trapz(
-        layer_virttemp.m_as('K'), x=np.log(layer_p.m_as('hPa'))) * units.K).to('m')
+    return (
+        -mpconsts.Rd
+        / mpconsts.g
+        * np.trapz(layer_virttemp.m_as("K"), x=np.log(layer_p.m_as("hPa")))
+        * units.K
+    ).to("m")
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]')
-def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative_humidity,
-                                                 bottom=None, depth=None):
+@check_units("[pressure]", "[temperature]")
+def thickness_hydrostatic_from_relative_humidity(
+    pressure, temperature, relative_humidity, bottom=None, depth=None
+):
     r"""Calculate the thickness of a layer given pressure, temperature and relative humidity.
 
     Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,
@@ -2539,14 +2696,15 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     """
     mixing = mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity)
 
-    return thickness_hydrostatic(pressure, temperature, mixing_ratio=mixing, bottom=bottom,
-                                 depth=depth)
+    return thickness_hydrostatic(
+        pressure, temperature, mixing_ratio=mixing, bottom=bottom, depth=depth
+    )
 
 
 @exporter.export
 @add_vertical_dim_from_xarray
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'potential_temperature'))
-@check_units('[length]', '[temperature]')
+@preprocess_and_wrap(wrap_like="height", broadcast=("height", "potential_temperature"))
+@check_units("[length]", "[temperature]")
 def brunt_vaisala_frequency_squared(height, potential_temperature, vertical_dim=0):
     r"""Calculate the square of the Brunt-Vaisala frequency.
 
@@ -2581,20 +2739,20 @@ def brunt_vaisala_frequency_squared(height, potential_temperature, vertical_dim=
 
     """
     # Ensure validity of temperature units
-    potential_temperature = potential_temperature.to('K')
+    potential_temperature = potential_temperature.to("K")
 
     # Calculate and return the square of Brunt-Vaisala frequency
-    return mpconsts.g / potential_temperature * first_derivative(
-        potential_temperature,
-        x=height,
-        axis=vertical_dim
+    return (
+        mpconsts.g
+        / potential_temperature
+        * first_derivative(potential_temperature, x=height, axis=vertical_dim)
     )
 
 
 @exporter.export
 @add_vertical_dim_from_xarray
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'potential_temperature'))
-@check_units('[length]', '[temperature]')
+@preprocess_and_wrap(wrap_like="height", broadcast=("height", "potential_temperature"))
+@check_units("[length]", "[temperature]")
 def brunt_vaisala_frequency(height, potential_temperature, vertical_dim=0):
     r"""Calculate the Brunt-Vaisala frequency.
 
@@ -2630,8 +2788,9 @@ def brunt_vaisala_frequency(height, potential_temperature, vertical_dim=0):
     brunt_vaisala_frequency_squared, brunt_vaisala_period, potential_temperature
 
     """
-    bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
-                                                      vertical_dim=vertical_dim)
+    bv_freq_squared = brunt_vaisala_frequency_squared(
+        height, potential_temperature, vertical_dim=vertical_dim
+    )
     bv_freq_squared[bv_freq_squared.magnitude < 0] = np.nan
 
     return np.sqrt(bv_freq_squared)
@@ -2639,8 +2798,8 @@ def brunt_vaisala_frequency(height, potential_temperature, vertical_dim=0):
 
 @exporter.export
 @add_vertical_dim_from_xarray
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'potential_temperature'))
-@check_units('[length]', '[temperature]')
+@preprocess_and_wrap(wrap_like="height", broadcast=("height", "potential_temperature"))
+@check_units("[length]", "[temperature]")
 def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
     r"""Calculate the Brunt-Vaisala period.
 
@@ -2675,8 +2834,9 @@ def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
     brunt_vaisala_frequency, brunt_vaisala_frequency_squared, potential_temperature
 
     """
-    bv_freq_squared = brunt_vaisala_frequency_squared(height, potential_temperature,
-                                                      vertical_dim=vertical_dim)
+    bv_freq_squared = brunt_vaisala_frequency_squared(
+        height, potential_temperature, vertical_dim=vertical_dim
+    )
     bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
 
     return 2 * np.pi / np.sqrt(bv_freq_squared)
@@ -2684,10 +2844,9 @@ def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'dewpoint')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "dewpoint")
 )
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def wet_bulb_temperature(pressure, temperature, dewpoint):
     """Calculate the wet-bulb temperature using Normand's rule.
 
@@ -2719,22 +2878,25 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     caution on large arrays.
 
     """
-    if not hasattr(pressure, 'shape'):
+    if not hasattr(pressure, "shape"):
         pressure = np.atleast_1d(pressure)
         temperature = np.atleast_1d(temperature)
         dewpoint = np.atleast_1d(dewpoint)
 
-    it = np.nditer([pressure, temperature, dewpoint, None],
-                   op_dtypes=['float', 'float', 'float', 'float'],
-                   flags=['buffered'])
+    it = np.nditer(
+        [pressure, temperature, dewpoint, None],
+        op_dtypes=["float", "float", "float", "float"],
+        flags=["buffered"],
+    )
 
     for press, temp, dewp, ret in it:
         press = press * pressure.units
         temp = temp * temperature.units
         dewp = dewp * dewpoint.units
         lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
-        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, press]),
-                                                 lcl_temperature)
+        moist_adiabat_temperatures = moist_lapse(
+            concatenate([lcl_pressure, press]), lcl_temperature
+        )
         ret[...] = moist_adiabat_temperatures[-1].magnitude
 
     # If we started with a scalar, return a scalar
@@ -2745,8 +2907,8 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 
 @exporter.export
 @add_vertical_dim_from_xarray
-@preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
-@check_units('[pressure]', '[temperature]')
+@preprocess_and_wrap(wrap_like="temperature", broadcast=("pressure", "temperature"))
+@check_units("[pressure]", "[temperature]")
 def static_stability(pressure, temperature, vertical_dim=0):
     r"""Calculate the static stability within a vertical profile.
 
@@ -2772,19 +2934,19 @@ def static_stability(pressure, temperature, vertical_dim=0):
     """
     theta = potential_temperature(pressure, temperature)
 
-    return - mpconsts.Rd * temperature / pressure * first_derivative(
-        np.log(theta.m_as('K')),
-        x=pressure,
-        axis=vertical_dim
+    return (
+        -mpconsts.Rd
+        * temperature
+        / pressure
+        * first_derivative(np.log(theta.m_as("K")), x=pressure, axis=vertical_dim)
     )
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temperature',
-    broadcast=('pressure', 'temperature', 'specific_humdiity')
+    wrap_like="temperature", broadcast=("pressure", "temperature", "specific_humdiity")
 )
-@check_units('[pressure]', '[temperature]', '[dimensionless]')
+@check_units("[pressure]", "[temperature]", "[dimensionless]")
 def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
 
@@ -2807,14 +2969,15 @@ def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     relative_humidity_from_mixing_ratio, dewpoint_from_relative_humidity
 
     """
-    return dewpoint_from_relative_humidity(temperature,
-                                           relative_humidity_from_specific_humidity(
-                                               pressure, temperature, specific_humidity))
+    return dewpoint_from_relative_humidity(
+        temperature,
+        relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity),
+    )
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='w', broadcast=('w', 'pressure', 'temperature'))
-@check_units('[length]/[time]', '[pressure]', '[temperature]')
+@preprocess_and_wrap(wrap_like="w", broadcast=("w", "pressure", "temperature"))
+@check_units("[length]/[time]", "[pressure]", "[temperature]")
 def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
     r"""Calculate omega from w assuming hydrostatic conditions.
 
@@ -2852,15 +3015,14 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing_ratio=0):
 
     """
     rho = density(pressure, temperature, mixing_ratio)
-    return (-mpconsts.g * rho * w).to('Pa/s')
+    return (-mpconsts.g * rho * w).to("Pa/s")
 
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='omega',
-    broadcast=('omega', 'pressure', 'temperature', 'mixing_ratio')
+    wrap_like="omega", broadcast=("omega", "pressure", "temperature", "mixing_ratio")
 )
-@check_units('[pressure]/[time]', '[pressure]', '[temperature]')
+@check_units("[pressure]/[time]", "[pressure]", "[temperature]")
 def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
     r"""Calculate w from omega assuming hydrostatic conditions.
 
@@ -2901,12 +3063,12 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 
     """
     rho = density(pressure, temperature, mixing_ratio)
-    return (omega / (- mpconsts.g * rho)).to('m/s')
+    return (omega / (-mpconsts.g * rho)).to("m/s")
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='dewpoint', broadcast=('dewpoint', 'pressure'))
-@check_units('[pressure]', '[temperature]')
+@preprocess_and_wrap(wrap_like="dewpoint", broadcast=("dewpoint", "pressure"))
+@check_units("[pressure]", "[temperature]")
 def specific_humidity_from_dewpoint(pressure, dewpoint):
     r"""Calculate the specific humidity from the dewpoint temperature and pressure.
 
@@ -2934,7 +3096,7 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@check_units("[pressure]", "[temperature]", "[temperature]")
 def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
@@ -2978,10 +3140,9 @@ def lifted_index(pressure, temperature, parcel_profile):
 @exporter.export
 @add_vertical_dim_from_xarray
 @preprocess_and_wrap(
-    wrap_like='potential_temperature',
-    broadcast=('height', 'potential_temperature', 'u', 'v')
+    wrap_like="potential_temperature", broadcast=("height", "potential_temperature", "u", "v")
 )
-@check_units('[length]', '[temperature]', '[speed]', '[speed]')
+@check_units("[length]", "[temperature]", "[speed]", "[speed]")
 def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim=0):
     r"""Calculate the gradient (or flux) Richardson number.
 

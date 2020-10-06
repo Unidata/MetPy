@@ -48,25 +48,28 @@ def expanded_indexer(key, ndim):
         else:
             new_key.append(k)
     if len(new_key) > ndim:
-        raise IndexError('too many indices')
+        raise IndexError("too many indices")
     new_key.extend((ndim - len(new_key)) * [slice(None)])
     return tuple(new_key)
 
 
 def is_dict_like(value):
     """Check if value is dict-like."""
-    return hasattr(value, 'keys') and hasattr(value, '__getitem__')
+    return hasattr(value, "keys") and hasattr(value, "__getitem__")
 
 
 def either_dict_or_kwargs(pos_kwargs, kw_kwargs, func_name):
     """Ensure dict-like argument from either positional or keyword arguments."""
     if pos_kwargs is not None:
         if not is_dict_like(pos_kwargs):
-            raise ValueError('the first argument to .{} must be a '
-                             'dictionary'.format(func_name))
+            raise ValueError(
+                "the first argument to .{} must be a " "dictionary".format(func_name)
+            )
         if kw_kwargs:
-            raise ValueError('cannot specify both keyword and positional arguments to '
-                             '.{}'.format(func_name))
+            raise ValueError(
+                "cannot specify both keyword and positional arguments to "
+                ".{}".format(func_name)
+            )
         return pos_kwargs
     else:
         return kw_kwargs

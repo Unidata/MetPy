@@ -30,10 +30,10 @@ from metpy.units import units
 
 # Current observations can be downloaded here:
 # https://www.mesonet.org/index.php/weather/category/past_data_files
-data = pd.read_csv(get_test_data('mesonet_sample.txt'), na_values=' ')
+data = pd.read_csv(get_test_data("mesonet_sample.txt"), na_values=" ")
 
 # Drop stations with missing values of data we want
-data = data.dropna(how='any', subset=['PRES', 'TAIR', 'TDEW', 'WDIR', 'WSPD'])
+data = data.dropna(how="any", subset=["PRES", "TAIR", "TDEW", "WDIR", "WSPD"])
 
 ###########################################
 # The mesonet has so many stations that it would clutter the plot if we used them all.
@@ -41,7 +41,7 @@ data = data.dropna(how='any', subset=['PRES', 'TAIR', 'TDEW', 'WDIR', 'WSPD'])
 
 # Reduce the density of observations so the plot is readable
 proj = ccrs.LambertConformal(central_longitude=-98)
-point_locs = proj.transform_points(ccrs.PlateCarree(), data['LON'].values, data['LAT'].values)
+point_locs = proj.transform_points(ccrs.PlateCarree(), data["LON"].values, data["LAT"].values)
 data = data[mpcalc.reduce_point_density(point_locs, 50 * units.km)]
 
 ###########################################
@@ -52,18 +52,18 @@ data = data[mpcalc.reduce_point_density(point_locs, 50 * units.km)]
 # - Get wind components from speed and direction
 
 # Read in the data and assign units as defined by the Mesonet
-temperature = data['TAIR'].values * units.degF
-dewpoint = data['TDEW'].values * units.degF
-pressure = data['PRES'].values * units.hPa
-wind_speed = data['WSPD'].values * units.mph
-wind_direction = data['WDIR']
-latitude = data['LAT']
-longitude = data['LON']
-station_id = data['STID']
+temperature = data["TAIR"].values * units.degF
+dewpoint = data["TDEW"].values * units.degF
+pressure = data["PRES"].values * units.hPa
+wind_speed = data["WSPD"].values * units.mph
+wind_direction = data["WDIR"]
+latitude = data["LAT"]
+longitude = data["LON"]
+station_id = data["STID"]
 
 # Take cardinal direction and convert to degrees, then convert to components
 wind_direction = mpcalc.parse_angle(list(wind_direction))
-u, v = mpcalc.wind_components(wind_speed.to('knots'), wind_direction)
+u, v = mpcalc.wind_components(wind_speed.to("knots"), wind_direction)
 
 ###########################################
 # Create the figure
@@ -71,28 +71,34 @@ u, v = mpcalc.wind_components(wind_speed.to('knots'), wind_direction)
 
 # Create the figure and an axes set to the projection.
 fig = plt.figure(figsize=(20, 8))
-add_metpy_logo(fig, 70, 30, size='large')
+add_metpy_logo(fig, 70, 30, size="large")
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable.
 ax.add_feature(cfeature.LAND)
-ax.add_feature(cfeature.STATES.with_scale('50m'))
+ax.add_feature(cfeature.STATES.with_scale("50m"))
 
 # Set plot bounds
 ax.set_extent((-104, -93, 33.4, 37.2))
 
-stationplot = StationPlot(ax, longitude.values, latitude.values, clip_on=True,
-                          transform=ccrs.PlateCarree(), fontsize=12)
+stationplot = StationPlot(
+    ax,
+    longitude.values,
+    latitude.values,
+    clip_on=True,
+    transform=ccrs.PlateCarree(),
+    fontsize=12,
+)
 
 # Plot the temperature and dew point to the upper and lower left, respectively, of
 # the center point. Each one uses a different color.
-stationplot.plot_parameter('NW', temperature, color='red')
-stationplot.plot_parameter('SW', dewpoint, color='darkgreen')
+stationplot.plot_parameter("NW", temperature, color="red")
+stationplot.plot_parameter("SW", dewpoint, color="darkgreen")
 
 # A more complex example uses a custom formatter to control how the sea-level pressure
 # values are plotted. This uses the standard trailing 3-digits of the pressure value
 # in tenths of millibars.
-stationplot.plot_parameter('NE', pressure.m, formatter=lambda v: format(10 * v, '.0f')[-3:])
+stationplot.plot_parameter("NE", pressure.m, formatter=lambda v: format(10 * v, ".0f")[-3:])
 
 # Add wind barbs
 stationplot.plot_barb(u, v)
@@ -102,6 +108,6 @@ stationplot.plot_barb(u, v)
 stationplot.plot_text((2, -1), station_id)
 
 # Add title and display figure
-plt.title('Oklahoma Mesonet Observations', fontsize=16, loc='left')
-plt.title('Time: 2100 UTC 09 September 2019', fontsize=16, loc='right')
+plt.title("Oklahoma Mesonet Observations", fontsize=16, loc="left")
+plt.title("Time: 2100 UTC 09 September 2019", fontsize=16, loc="right")
 plt.show()
