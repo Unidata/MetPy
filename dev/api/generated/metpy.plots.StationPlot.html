@@ -260,8 +260,8 @@ station elements.</p>
 <li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><em>matplotlib.axes.Axes</em></a>) – The <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> for plotting</p></li>
 <li><p><strong>x</strong> (<em>array_like</em>) – The x location of the stations in the plot</p></li>
 <li><p><strong>y</strong> (<em>array_like</em>) – The y location of the stations in the plot</p></li>
-<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The fontsize to use for drawing text</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The spacing, in points, that corresponds to a single increment between
+<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The fontsize to use for drawing text</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The spacing, in points, that corresponds to a single increment between
 station plot elements.</p></li>
 <li><p><strong>transform</strong> (<a class="reference external" href="https://matplotlib.org/api/transformations.html#matplotlib.transforms.Transform" title="(in Matplotlib v3.3.2)"><em>matplotlib.transforms.Transform</em></a><em> (or </em><em>compatible</em><em>)</em>) – The default transform to apply to the x and y positions when plotting.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.
@@ -329,8 +329,8 @@ station elements.</p>
 <li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><em>matplotlib.axes.Axes</em></a>) – The <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> for plotting</p></li>
 <li><p><strong>x</strong> (<em>array_like</em>) – The x location of the stations in the plot</p></li>
 <li><p><strong>y</strong> (<em>array_like</em>) – The y location of the stations in the plot</p></li>
-<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The fontsize to use for drawing text</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The spacing, in points, that corresponds to a single increment between
+<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The fontsize to use for drawing text</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The spacing, in points, that corresponds to a single increment between
 station plot elements.</p></li>
 <li><p><strong>transform</strong> (<a class="reference external" href="https://matplotlib.org/api/transformations.html#matplotlib.transforms.Transform" title="(in Matplotlib v3.3.2)"><em>matplotlib.transforms.Transform</em></a><em> (or </em><em>compatible</em><em>)</em>) – The default transform to apply to the x and y positions when plotting.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.
@@ -394,20 +394,20 @@ like color or line width.</p>
 <code class="sig-name descname">plot_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">parameter</span></em>, <em class="sig-param"><span class="n">formatter</span><span class="o">=</span><span class="default_value">'.0f'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>At the specified location in the station model plot a set of values.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, the data in <em class="xref py py-obj">parameter</em> should be
-plotted. The conversion of the data values to a string is controlled by <a class="reference external" href="https://docs.python.org/3/library/formatter.html#module-formatter" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatter</span></code></a>.</p>
+plotted. The conversion of the data values to a string is controlled by <a class="reference external" href="https://docs.python.org/3/library/formatter.html#module-formatter" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatter</span></code></a>.</p>
 <p>Additional keyword arguments given will be passed onto the actual plotting
 code; this is useful for specifying things like color or font properties.</p>
 <p>If something has already been plotted at this location, it will be replaced.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions; increments
 are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x and y relative to the center.</p></li>
 <li><p><strong>parameter</strong> (<em>array_like</em>) – The numeric values that should be plotted</p></li>
-<li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
-compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+<li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</p></li>
 <li><p><strong>plot_units</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.unit</span></code>) – Units to plot in (performing conversion if necessary). Defaults to given units.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
@@ -433,7 +433,7 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions; increments
 are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x and y relative to the center.</p></li>
@@ -484,11 +484,11 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions; increments
 are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x and y relative to the center.</p></li>
-<li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> (or </em><em>array</em><em>) </em><em>of strings</em>) – The strings that should be plotted</p></li>
+<li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> (or </em><em>array</em><em>) </em><em>of strings</em>) – The strings that should be plotted</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>
 </dd>
@@ -541,7 +541,7 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 06, 2020 at 00:58:29.
+      Last updated on Oct 06, 2020 at 16:14:20.
 
     </p>
   </div>
@@ -575,7 +575,7 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post370+g52d4846',
+            VERSION:'1.0.0rc1.post372+g536d6af',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
