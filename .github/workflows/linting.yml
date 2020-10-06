@@ -40,3 +40,11 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           doc8 docs | reviewdog -efm='%f:%l: %m' -name=doc8 -reporter=github-check -filter-mode=nofilter
+
+  black:
+    name: Black
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-python@v2
+        - uses: psf/black@stable
