@@ -4,7 +4,7 @@
 """Support reading information from various NEXRAD formats."""
 
 import bz2
-from collections import defaultdict, namedtuple, OrderedDict
+from collections import OrderedDict, defaultdict, namedtuple
 import contextlib
 import datetime
 import logging
@@ -17,9 +17,18 @@ from xdrlib import Unpacker
 import numpy as np
 from scipy.constants import day, milli
 
-from ._tools import (Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct,
-                     open_as_needed, zlib_decompress_all_frames)
 from ..package_tools import Exporter
+from ._tools import (
+    Array,
+    BitField,
+    Bits,
+    DictStruct,
+    Enum,
+    IOBuffer,
+    NamedStruct,
+    open_as_needed,
+    zlib_decompress_all_frames,
+)
 
 exporter = Exporter(globals())
 

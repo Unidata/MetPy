@@ -17,12 +17,19 @@ import xarray as xr
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
-from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
-                         PanelContainer, PlotObs)
+from metpy.plots import (
+    BarbPlot,
+    ContourPlot,
+    FilledContourPlot,
+    ImagePlot,
+    MapPanel,
+    PanelContainer,
+    PlotObs,
+)
+
 # Fixtures to make sure we have the right backend
 from metpy.testing import needs_cartopy, needs_pyproj, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
-
 
 MPL_VERSION = matplotlib.__version__[:3]
 

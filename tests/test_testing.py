@@ -9,8 +9,11 @@ import pytest
 import xarray as xr
 
 from metpy.deprecation import MetpyDeprecationWarning
-from metpy.testing import (assert_array_almost_equal, check_and_drop_units,
-                           check_and_silence_deprecation)
+from metpy.testing import (
+    assert_array_almost_equal,
+    check_and_drop_units,
+    check_and_silence_deprecation,
+)
 
 
 # Test #1183: numpy.testing.assert_array* ignores any masked value, so work-around

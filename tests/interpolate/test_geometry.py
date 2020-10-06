@@ -10,10 +10,20 @@ import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from scipy.spatial import Delaunay
 
-from metpy.interpolate.geometry import (area, circumcenter, circumcircle_radius, dist_2,
-                                        distance, find_local_boundary, find_natural_neighbors,
-                                        find_nn_triangles_point, get_point_count_within_r,
-                                        get_points_within_r, order_edges, triangle_area)
+from metpy.interpolate.geometry import (
+    area,
+    circumcenter,
+    circumcircle_radius,
+    dist_2,
+    distance,
+    find_local_boundary,
+    find_natural_neighbors,
+    find_nn_triangles_point,
+    get_point_count_within_r,
+    get_points_within_r,
+    order_edges,
+    triangle_area,
+)
 
 logging.getLogger('metpy.interpolate.geometry').setLevel(logging.ERROR)
 

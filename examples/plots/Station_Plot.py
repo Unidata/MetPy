@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from metpy.calc import reduce_point_density
 from metpy.cbook import get_test_data
 from metpy.io import metar
-from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot
+from metpy.plots import StationPlot, add_metpy_logo, current_weather, sky_cover
 
 ###########################################
 # The setup

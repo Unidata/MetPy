@@ -5,9 +5,9 @@ r"""Contains calculations related to turbulence and time series perturbations.""
 
 import numpy as np
 
-from .tools import make_take
 from ..package_tools import Exporter
 from ..xarray import preprocess_and_wrap
+from .tools import make_take
 
 exporter = Exporter(globals())
 

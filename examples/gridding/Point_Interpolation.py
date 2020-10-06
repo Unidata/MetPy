@@ -15,8 +15,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from metpy.cbook import get_test_data
-from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
-                               remove_repeat_coordinates)
+from metpy.interpolate import (
+    interpolate_to_grid,
+    remove_nan_observations,
+    remove_repeat_coordinates,
+)
 from metpy.plots import add_metpy_logo
 
 

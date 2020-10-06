@@ -10,13 +10,13 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from ._tools import open_as_needed
-from .metar_parser import parse, ParseError
-from .station_data import station_info
 from ..calc import altimeter_to_sea_level_pressure, wind_components
 from ..package_tools import Exporter
 from ..plots.wx_symbols import wx_code_map
 from ..units import units
+from ._tools import open_as_needed
+from .metar_parser import ParseError, parse
+from .station_data import station_info
 
 exporter = Exporter(globals())
 

@@ -3,18 +3,19 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality that we have upstreamed or will upstream into matplotlib."""
 
+# See if we need to patch in our own scattertext implementation
+from matplotlib.axes import Axes  # noqa: E402, I100, I202
+
 # See if we should monkey-patch Barbs for better pivot
 import matplotlib.transforms as transforms
 import numpy as np
 
-# See if we need to patch in our own scattertext implementation
-from matplotlib.axes import Axes  # noqa: E402, I100, I202
 if not hasattr(Axes, 'scattertext'):
-    import matplotlib.cbook as cbook
-    import matplotlib.transforms as mtransforms
     from matplotlib import rcParams
     from matplotlib.artist import allow_rasterization
+    import matplotlib.cbook as cbook
     from matplotlib.text import Text
+    import matplotlib.transforms as mtransforms
 
     def scattertext(self, x, y, texts, loc=(0, 0), **kw):
         """Add text to the axes.

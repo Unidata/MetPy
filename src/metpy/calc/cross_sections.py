@@ -10,11 +10,11 @@ is based around xarray DataArrays.
 import numpy as np
 import xarray as xr
 
-from .basic import coriolis_parameter
-from .tools import first_derivative
 from ..package_tools import Exporter
 from ..units import units
 from ..xarray import check_axis, check_matching_coordinates
+from .basic import coriolis_parameter
+from .tools import first_derivative
 
 exporter = Exporter(globals())
 

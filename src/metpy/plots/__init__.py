@@ -7,8 +7,12 @@ import logging
 
 # Trigger matplotlib wrappers
 from . import _mpl  # noqa: F401
-from ._util import (add_metpy_logo, add_timestamp, add_unidata_logo,  # noqa: F401
-                    convert_gempak_color)
+from ._util import (  # noqa: F401
+    add_metpy_logo,
+    add_timestamp,
+    add_unidata_logo,
+    convert_gempak_color,
+)
 from .ctables import *  # noqa: F403
 from .declarative import *  # noqa: F403
 from .skewt import *  # noqa: F403

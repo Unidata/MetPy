@@ -16,8 +16,8 @@ from xarray import Variable
 from xarray.backends.common import AbstractDataStore
 from xarray.core.utils import FrozenDict
 
-from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from ..package_tools import Exporter
+from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 
 exporter = Exporter(globals())
 log = logging.getLogger(__name__)

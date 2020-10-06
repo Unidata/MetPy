@@ -10,14 +10,16 @@ import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pytest
 import scipy
-from scipy.spatial import cKDTree, Delaunay
+from scipy.spatial import Delaunay, cKDTree
 
 from metpy.cbook import get_test_data
-from metpy.interpolate import (interpolate_to_points, inverse_distance_to_points,
-                               natural_neighbor_to_points)
+from metpy.interpolate import (
+    interpolate_to_points,
+    inverse_distance_to_points,
+    natural_neighbor_to_points,
+)
 from metpy.interpolate.geometry import dist_2, find_natural_neighbors
-from metpy.interpolate.points import (barnes_point, cressman_point,
-                                      natural_neighbor_point)
+from metpy.interpolate.points import barnes_point, cressman_point, natural_neighbor_point
 
 logging.getLogger('metpy.interpolate.points').setLevel(logging.ERROR)
 

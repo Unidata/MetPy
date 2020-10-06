@@ -7,9 +7,16 @@ from enum import Enum
 
 import numpy as np
 
-from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
-                         pressure_tendency, sky_cover, wx_symbol_font)
 from ..package_tools import Exporter
+from .wx_symbols import (
+    current_weather,
+    high_clouds,
+    low_clouds,
+    mid_clouds,
+    pressure_tendency,
+    sky_cover,
+    wx_symbol_font,
+)
 
 exporter = Exporter(globals())
 

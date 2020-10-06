@@ -11,8 +11,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from metpy.cbook import get_test_data, POOCH
-from metpy.io import is_precip_mode, Level2File, Level3File
+from metpy.cbook import POOCH, get_test_data
+from metpy.io import Level2File, Level3File, is_precip_mode
 
 # Turn off the warnings for tests
 logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)

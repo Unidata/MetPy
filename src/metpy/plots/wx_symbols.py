@@ -7,8 +7,8 @@ See WMO manual 485 Vol 1 for more info on the symbols.
 """
 
 try:
-    from importlib.resources import (files as importlib_resources_files,
-                                     as_file as importlib_resources_as_file)
+    from importlib.resources import as_file as importlib_resources_as_file
+    from importlib.resources import files as importlib_resources_files
 except ImportError:  # Can remove when we require Python > 3.8
     from importlib_resources import (files as importlib_resources_files,
                                      as_file as importlib_resources_as_file)

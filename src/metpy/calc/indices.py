@@ -4,12 +4,12 @@
 """Contains calculation of various derived indices."""
 import numpy as np
 
-from .thermo import mixing_ratio, saturation_vapor_pressure
-from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, concatenate, units
 from ..xarray import preprocess_and_wrap
+from .thermo import mixing_ratio, saturation_vapor_pressure
+from .tools import _remove_nans, get_layer
 
 exporter = Exporter(globals())
 

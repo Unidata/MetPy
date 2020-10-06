@@ -9,8 +9,13 @@ import pytest
 import xarray as xr
 
 from metpy.plots.mapping import CFProjection
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data, needs_cartopy)
+from metpy.testing import (
+    assert_almost_equal,
+    assert_array_almost_equal,
+    assert_array_equal,
+    get_test_data,
+    needs_cartopy,
+)
 from metpy.units import DimensionalityError, units
 from metpy.xarray import (
     add_grid_arguments_from_xarray,
@@ -18,7 +23,7 @@ from metpy.xarray import (
     check_axis,
     check_matching_coordinates,
     grid_deltas_from_dataarray,
-    preprocess_and_wrap
+    preprocess_and_wrap,
 )
 
 

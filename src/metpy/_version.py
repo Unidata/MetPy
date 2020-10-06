@@ -16,9 +16,9 @@ def get_version():
                            version_scheme='post-release', local_scheme='dirty-tag')
     except (ImportError, LookupError):
         try:
-            from importlib.metadata import version, PackageNotFoundError
+            from importlib.metadata import PackageNotFoundError, version
         except ImportError:  # Can remove when we require Python > 3.7
-            from importlib_metadata import version, PackageNotFoundError
+            from importlib_metadata import PackageNotFoundError, version
 
         try:
             return version(__package__)

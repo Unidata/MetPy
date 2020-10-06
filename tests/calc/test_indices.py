@@ -7,9 +7,15 @@ from datetime import datetime
 
 import numpy as np
 
-from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
-                        mean_pressure_weighted, precipitable_water,
-                        significant_tornado, supercell_composite)
+from metpy.calc import (
+    bulk_shear,
+    bunkers_storm_motion,
+    critical_angle,
+    mean_pressure_weighted,
+    precipitable_water,
+    significant_tornado,
+    supercell_composite,
+)
 from metpy.testing import assert_almost_equal, assert_array_equal, get_upper_air_data
 from metpy.units import concatenate, units
 

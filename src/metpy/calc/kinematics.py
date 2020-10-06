@@ -5,11 +5,11 @@
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
+from .tools import first_derivative, get_layer_heights, gradient
 
 exporter = Exporter(globals())
 

@@ -9,9 +9,12 @@ from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pandas as pd
 import pytest
 
-from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
-                               remove_observations_below_value,
-                               remove_repeat_coordinates)
+from metpy.interpolate import (
+    interpolate_to_grid,
+    remove_nan_observations,
+    remove_observations_below_value,
+    remove_repeat_coordinates,
+)
 from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
 
 

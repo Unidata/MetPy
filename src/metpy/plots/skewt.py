@@ -22,12 +22,12 @@ from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
 import matplotlib.transforms as transforms
 import numpy as np
 
-from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
 from ..units import concatenate, units
+from ._util import colored_line
 
 exporter = Exporter(globals())
 

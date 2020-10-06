@@ -24,6 +24,7 @@ try:
         def geometries(self):
             """Return an iterator of (shapely) geometries for this feature."""
             import cartopy.io.shapereader as shapereader
+
             # Ensure that the associated files are in the cache
             fname = f'{self.name}_{self.scaler.scale}'
             for extension in ['.dbf', '.shx']:

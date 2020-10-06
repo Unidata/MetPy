@@ -12,6 +12,7 @@ try:
 except ImportError:
     pass  # No CartoPy
 from metpy.plots.cartopy_utils import import_cartopy
+
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
@@ -80,6 +81,7 @@ def test_us_states_scales(ccrs):
 def test_cartopy_stub(monkeypatch):
     """Test that the CartoPy stub will issue an error if CartoPy is not present."""
     import sys
+
     # This makes sure that cartopy is not found
     monkeypatch.setitem(sys.modules, 'cartopy.crs', None)
 

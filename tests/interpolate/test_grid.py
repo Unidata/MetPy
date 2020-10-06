@@ -12,10 +12,17 @@ import pytest
 import scipy
 
 from metpy.cbook import get_test_data
-from metpy.interpolate.grid import (generate_grid, generate_grid_coords, get_boundary_coords,
-                                    get_xy_range, get_xy_steps, interpolate_to_grid,
-                                    interpolate_to_isosurface, inverse_distance_to_grid,
-                                    natural_neighbor_to_grid)
+from metpy.interpolate.grid import (
+    generate_grid,
+    generate_grid_coords,
+    get_boundary_coords,
+    get_xy_range,
+    get_xy_steps,
+    interpolate_to_grid,
+    interpolate_to_isosurface,
+    inverse_distance_to_grid,
+    natural_neighbor_to_grid,
+)
 
 logging.getLogger('metpy.interpolate.grid').setLevel(logging.ERROR)
 

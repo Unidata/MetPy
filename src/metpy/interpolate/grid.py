@@ -5,10 +5,13 @@
 
 import numpy as np
 
-from .points import (interpolate_to_points, inverse_distance_to_points,
-                     natural_neighbor_to_points)
 from ..package_tools import Exporter
 from ..pandas import preprocess_pandas
+from .points import (
+    interpolate_to_points,
+    inverse_distance_to_points,
+    natural_neighbor_to_points,
+)
 
 exporter = Exporter(globals())
 
@@ -342,6 +345,7 @@ def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=Tru
 
     """
     from ..calc import find_bounding_indices
+
     # Find index values above and below desired interpolated surface value
     above, below, good = find_bounding_indices(level_var, [level], axis=0,
                                                from_below=bottom_up_search)

@@ -7,16 +7,37 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
-                        divergence, frontogenesis, geostrophic_wind, inertial_advective_wind,
-                        lat_lon_grid_deltas, montgomery_streamfunction,
-                        potential_temperature, potential_vorticity_baroclinic,
-                        potential_vorticity_barotropic, q_vector, shearing_deformation,
-                        static_stability, storm_relative_helicity, stretching_deformation,
-                        total_deformation, vorticity, wind_components)
-from metpy.constants import g, Re
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           get_test_data, needs_cartopy, needs_pyproj)
+from metpy.calc import (
+    absolute_vorticity,
+    advection,
+    ageostrophic_wind,
+    divergence,
+    frontogenesis,
+    geostrophic_wind,
+    inertial_advective_wind,
+    lat_lon_grid_deltas,
+    montgomery_streamfunction,
+    potential_temperature,
+    potential_vorticity_baroclinic,
+    potential_vorticity_barotropic,
+    q_vector,
+    shearing_deformation,
+    static_stability,
+    storm_relative_helicity,
+    stretching_deformation,
+    total_deformation,
+    vorticity,
+    wind_components,
+)
+from metpy.constants import Re, g
+from metpy.testing import (
+    assert_almost_equal,
+    assert_array_almost_equal,
+    assert_array_equal,
+    get_test_data,
+    needs_cartopy,
+    needs_pyproj,
+)
 from metpy.units import concatenate, units
 
 

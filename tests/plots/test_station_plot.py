@@ -9,12 +9,19 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from metpy.plots import (current_weather, high_clouds, nws_layout, simple_layout,
-                         sky_cover, StationPlot, StationPlotLayout)
+from metpy.plots import (
+    StationPlot,
+    StationPlotLayout,
+    current_weather,
+    high_clouds,
+    nws_layout,
+    simple_layout,
+    sky_cover,
+)
+
 # Fixtures to make sure we have the right backend and consistent round
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 from metpy.units import units
-
 
 MPL_VERSION = matplotlib.__version__[:3]
 

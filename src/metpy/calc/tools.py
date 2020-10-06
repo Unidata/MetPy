@@ -337,6 +337,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
     """
     # avoid circular import if basic.py ever imports something from tools.py
     from .basic import height_to_pressure_std, pressure_to_height_std
+
     # Make sure pressure is monotonically decreasing
     sort_inds = np.argsort(pressure)[::-1]
     pressure = pressure[sort_inds]

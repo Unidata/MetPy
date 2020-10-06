@@ -51,7 +51,7 @@ approach taken in MetPy is correct.
 # 8. Repeat steps 4 through 7 for each grid cell.
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.spatial import ConvexHull, Delaunay, delaunay_plot_2d, Voronoi, voronoi_plot_2d
+from scipy.spatial import ConvexHull, Delaunay, Voronoi, delaunay_plot_2d, voronoi_plot_2d
 from scipy.spatial.distance import euclidean
 
 from metpy.interpolate import geometry

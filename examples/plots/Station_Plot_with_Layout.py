@@ -24,8 +24,13 @@ import pandas as pd
 
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
-from metpy.plots import (add_metpy_logo, simple_layout, StationPlot,
-                         StationPlotLayout, wx_code_map)
+from metpy.plots import (
+    StationPlot,
+    StationPlotLayout,
+    add_metpy_logo,
+    simple_layout,
+    wx_code_map,
+)
 from metpy.units import units
 
 ###########################################
