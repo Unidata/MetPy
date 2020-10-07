@@ -1638,7 +1638,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     e = saturation_vapor_pressure(temperature).to('hPa').magnitude
     r = saturation_mixing_ratio(pressure, temperature).magnitude
 
-    th_l = t * (1000 / (p - e)) ** mpconsts.kappa
+    th_l = t * (1000 / (p - e)) ** mpconsts.nounit.kappa
     th_es = th_l * np.exp((3036. / t - 1.78) * r * (1 + 0.448 * r))
 
     return units.Quantity(th_es, units.kelvin)

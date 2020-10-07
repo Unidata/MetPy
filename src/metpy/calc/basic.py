@@ -405,8 +405,8 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     # NB: older numpy.ma.where does not return a masked array
     app_temperature = masked_array(
         np.ma.where(masked_array(wind_chill_temperature).mask,
-                    heat_index_temperature.to(temperature.units),
-                    wind_chill_temperature.to(temperature.units)
+                    heat_index_temperature.m_as(temperature.units),
+                    wind_chill_temperature.m_as(temperature.units)
                     ), temperature.units)
 
     # If mask_undefined is False, then set any masked values to the temperature
