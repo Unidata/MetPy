@@ -59,7 +59,9 @@ def test_find_intersections(direction, expected):
     y1 = 3 * x**2
     y2 = 100 * x - 650
     # Note: Truth is what we will get with this sampling, not the mathematical intersection
-    assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
+    x_int, y_int = find_intersections(x, y1, y2, direction=direction)
+    assert_array_almost_equal(x_int, expected[0], 2)
+    assert_array_almost_equal(y_int, expected[1], 2)
 
 
 def test_find_intersections_no_intersections():
@@ -67,10 +69,10 @@ def test_find_intersections_no_intersections():
     x = np.linspace(5, 30, 17)
     y1 = 3 * x + 0
     y2 = 5 * x + 5
-    # Note: Truth is what we will get with this sampling, not the mathematical intersection
-    truth = np.array([[],
-                      []])
-    assert_array_equal(truth, find_intersections(x, y1, y2))
+
+    x_int, y_int = find_intersections(x, y1, y2)
+    assert_array_equal(x_int, np.array([]))
+    assert_array_equal(y_int, np.array([]))
 
 
 def test_find_intersections_invalid_direction():
@@ -107,7 +109,9 @@ def test_find_intersections_intersections_in_data_at_ends(direction, expected):
     x = np.arange(14)
     y1 = np.array([0, 3, 2, 1, -1, 2, 2, 0, 1, 0, 0, -2, 2, 0])
     y2 = np.zeros_like(y1)
-    assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
+    x_int, y_int = find_intersections(x, y1, y2, direction=direction)
+    assert_array_almost_equal(x_int, expected[0], 2)
+    assert_array_almost_equal(y_int, expected[1], 2)
 
 
 @pytest.mark.parametrize('mask, expected_idx, expected_element', [
@@ -791,14 +795,16 @@ def test_gradient_2d(deriv_2d_data):
                        [-3, -1, 4],
                        [-3, -1, 4],
                        [-3, -1, 4]]))
-    assert_array_almost_equal(res, truth, 5)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 5)
 
 
 def test_gradient_4d(deriv_4d_data):
     """Test gradient with 4D arrays."""
     res = gradient(deriv_4d_data, deltas=(1, 1, 1, 1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16., 4., 1.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_gradient_restricted_axes(deriv_2d_data):
@@ -813,7 +819,8 @@ def test_gradient_restricted_axes(deriv_2d_data):
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]]]))
-    assert_array_almost_equal(res, truth, 5)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 5)
 
 
 def test_bounding_indices():
@@ -991,7 +998,8 @@ def test_3d_gradient_3d_data_no_axes(deriv_4d_data):
     test = deriv_4d_data[0]
     res = gradient(test, deltas=(1, 1, 1))
     truth = tuple(factor * np.ones_like(test) for factor in (16., 4., 1.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_2d_gradient_3d_data_no_axes(deriv_4d_data):
@@ -1014,14 +1022,16 @@ def test_2d_gradient_4d_data_2_axes_3_deltas(deriv_4d_data):
     """Test 2D gradient of 4D data with 2 axes and 3 deltas."""
     res = gradient(deriv_4d_data, deltas=(1, 1, 1), axes=(-2, -1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (4., 1.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_2d_gradient_4d_data_2_axes_2_deltas(deriv_4d_data):
     """Test 2D gradient of 4D data with 2 axes and 2 deltas."""
     res = gradient(deriv_4d_data, deltas=(1, 1), axes=(0, 1))
     truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16.))
-    assert_array_almost_equal(res, truth, 8)
+    for r, t in zip(res, truth):
+        assert_array_almost_equal(r, t, 8)
 
 
 def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
