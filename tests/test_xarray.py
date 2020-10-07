@@ -248,6 +248,30 @@ def test_missing_grid_mapping_var(caplog):
     assert 'Could not find' in caplog.text
 
 
+def test_parsecf_crs():
+    """Test calling `parse_cf` with the metpy_crs variable."""
+    ds = xr.Dataset({'metpy_crs': xr.DataArray(1)})
+
+    with pytest.warns(UserWarning, match='Attempting to parse metpy_crs'):
+        ds.metpy.parse_cf('metpy_crs')
+
+
+def test_parsecf_existing_scalar_crs():
+    """Test calling `parse_cf` on a variable with an existing scalar metpy_crs coordinate."""
+    ds = xr.Dataset({'data': xr.DataArray(1, coords=dict(metpy_crs=1))})
+
+    with pytest.warns(UserWarning, match='metpy_crs already present'):
+        ds.metpy.parse_cf('data')
+
+
+def test_parsecf_existing_vector_crs():
+    """Test calling `parse_cf` on a variable with an existing vector metpy_crs coordinate."""
+    ds = xr.Dataset({'data': xr.DataArray(1, dims=('metpy_crs',), coords=(np.ones(3),))})
+
+    with pytest.warns(UserWarning, match='metpy_crs already present'):
+        ds.metpy.parse_cf('data')
+
+
 def test_preprocess_and_wrap_only_preprocessing():
     """Test xarray preprocessing and wrapping decorator for only preprocessing."""
     data = xr.DataArray(np.ones(3), attrs={'units': 'km'})

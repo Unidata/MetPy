@@ -688,15 +688,12 @@ class MetPyDatasetAccessor:
                 'Attempting to parse metpy_crs as a data variable. Unexpected merge conflicts '
                 'may occur.'
             )
-        elif 'metpy_crs' in var.coords:
-            try:
-                assert isinstance(var.coords['metpy_crs'].item(), CFProjection)
-            except (ValueError, AssertionError):
-                # Catch non-scalar and non-CFProjection coordinates
-                warnings.warn(
-                    'metpy_crs already present as a non-CFProjection coordinate. Unexpected '
-                    'merge conflicts may occur.'
-                )
+        elif 'metpy_crs' in var.coords and (var.coords['metpy_crs'].size > 1 or not isinstance(
+                var.coords['metpy_crs'].item(), CFProjection)):
+            warnings.warn(
+                'metpy_crs already present as a non-CFProjection coordinate. Unexpected '
+                'merge conflicts may occur.'
+            )
 
         # Assign coordinates if the coordinates argument is given
         if coordinates is not None:
