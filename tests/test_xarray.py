@@ -193,7 +193,7 @@ def test_quantify(test_ds_generic):
     assert is_quantity(result.data)
     assert result.data.units == units.kelvin
     assert 'units' not in result.attrs
-    np.testing.assert_array_almost_equal(result.data, units.Quantity(original))
+    assert_array_almost_equal(result.data, units.Quantity(original, 'K'))
 
 
 def test_dequantify():
@@ -213,9 +213,9 @@ def test_dataset_quantify(test_ds_generic):
     assert is_quantity(result['test'].data)
     assert result['test'].data.units == units.kelvin
     assert 'units' not in result['test'].attrs
-    np.testing.assert_array_almost_equal(
+    assert_array_almost_equal(
         result['test'].data,
-        units.Quantity(test_ds_generic['test'].data)
+        units.Quantity(test_ds_generic['test'].data, 'K')
     )
     assert result.attrs == test_ds_generic.attrs
 
@@ -1354,7 +1354,7 @@ def test_preprocess_and_wrap_with_to_magnitude():
     def func(a, b):
         return a * b
 
-    np.testing.assert_array_equal(func(data, data2), np.array([0, 0, 1]))
+    assert_array_equal(func(data, data2), np.array([0, 0, 1]))
 
 
 def test_preprocess_and_wrap_with_variable():
@@ -1377,9 +1377,9 @@ def test_preprocess_and_wrap_with_variable():
         result_21 = func(data2, data1)
 
     assert isinstance(result_12, xr.DataArray)
-    xr.testing.assert_identical(func(data1, data2), expected_12)
+    xr.testing.assert_identical(result_12, expected_12)
     assert is_quantity(result_21)
-    assert_array_equal(func(data2, data1), expected_21)
+    assert_array_equal(result_21, expected_21)
 
 
 def test_grid_deltas_from_dataarray_lonlat(test_da_lonlat):
