@@ -15,7 +15,7 @@ import metpy.calc as mpcalc
 
 ###########################################
 # Create a test value of a directional text
-dir_str = 'SOUTH SOUTH EAST'
+dir_str = "SOUTH SOUTH EAST"
 print(dir_str)
 
 ###########################################
@@ -27,6 +27,6 @@ print(angle_deg)
 ###########################################
 # The function can also handle arrays of string
 # in many different abbrieviations and capitalizations
-dir_str_list = ['ne', 'NE', 'NORTHEAST', 'NORTH_EAST', 'NORTH east']
+dir_str_list = ["ne", "NE", "NORTHEAST", "NORTH_EAST", "NORTH east"]
 angle_deg_list = mpcalc.parse_angle(dir_str_list)
 print(angle_deg_list)

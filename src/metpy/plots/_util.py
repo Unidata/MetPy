@@ -13,8 +13,17 @@ import numpy as np
 from ..units import concatenate
 
 
-def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=False,
-                  pretext='Created: ', time_format='%Y-%m-%dT%H:%M:%SZ', **kwargs):
+def add_timestamp(
+    ax,
+    time=None,
+    x=0.99,
+    y=-0.04,
+    ha="right",
+    high_contrast=False,
+    pretext="Created: ",
+    time_format="%Y-%m-%dT%H:%M:%SZ",
+    **kwargs
+):
     """Add a timestamp to a plot.
 
     Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.
@@ -45,9 +54,10 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
 
     """
     if high_contrast:
-        text_args = {'color': 'white',
-                     'path_effects':
-                         [mpatheffects.withStroke(linewidth=2, foreground='black')]}
+        text_args = {
+            "color": "white",
+            "path_effects": [mpatheffects.withStroke(linewidth=2, foreground="black")],
+        }
     else:
         text_args = {}
     text_args.update(**kwargs)
@@ -57,7 +67,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
     return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 
-def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
+def _add_logo(fig, x=10, y=25, zorder=100, which="metpy", size="small", **kwargs):
     """Add the MetPy or Unidata logo to a figure.
 
     Adds an image to the figure.
@@ -89,21 +99,19 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
     except ImportError:  # Can remove when we require Python > 3.8
         from importlib_resources import files as importlib_resources_files
 
-    fname_suffix = {'small': '_75x75.png',
-                    'large': '_150x150.png'}
-    fname_prefix = {'unidata': 'unidata',
-                    'metpy': 'metpy'}
+    fname_suffix = {"small": "_75x75.png", "large": "_150x150.png"}
+    fname_prefix = {"unidata": "unidata", "metpy": "metpy"}
     try:
         fname = fname_prefix[which] + fname_suffix[size]
     except KeyError:
-        raise ValueError('Unknown logo size or selection') from None
+        raise ValueError("Unknown logo size or selection") from None
 
-    with (importlib_resources_files('metpy.plots') / '_static' / fname).open('rb') as fobj:
+    with (importlib_resources_files("metpy.plots") / "_static" / fname).open("rb") as fobj:
         logo = imread(fobj)
     return fig.figimage(logo, x, y, zorder=zorder, **kwargs)
 
 
-def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
+def add_metpy_logo(fig, x=10, y=25, zorder=100, size="small", **kwargs):
     """Add the MetPy logo to a figure.
 
     Adds an image of the MetPy logo to the figure.
@@ -128,10 +136,10 @@ def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
        The `matplotlib.image.FigureImage` instance created
 
     """
-    return _add_logo(fig, x=x, y=y, zorder=zorder, which='metpy', size=size, **kwargs)
+    return _add_logo(fig, x=x, y=y, zorder=zorder, which="metpy", size=size, **kwargs)
 
 
-def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
+def add_unidata_logo(fig, x=10, y=25, zorder=100, size="small", **kwargs):
     """Add the Unidata logo to a figure.
 
     Adds an image of the MetPy logo to the figure.
@@ -156,7 +164,7 @@ def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
        The `matplotlib.image.FigureImage` instance created
 
     """
-    return _add_logo(fig, x=x, y=y, zorder=zorder, which='unidata', size=size, **kwargs)
+    return _add_logo(fig, x=x, y=y, zorder=zorder, which="unidata", size=size, **kwargs)
 
 
 # Not part of public API
@@ -197,8 +205,9 @@ def colored_line(x, y, c, **kwargs):
     num_pts = points.size // 2
     final_shape = (num_pts - 1, 2, 2)
     final_strides = (points.itemsize, points.itemsize, num_pts * points.itemsize)
-    segments = np.lib.stride_tricks.as_strided(points, shape=final_shape,
-                                               strides=final_strides)
+    segments = np.lib.stride_tricks.as_strided(
+        points, shape=final_shape, strides=final_strides
+    )
 
     # Create a LineCollection from the segments and set it to colormap based on c
     lc = LineCollection(segments, **kwargs)
@@ -206,7 +215,7 @@ def colored_line(x, y, c, **kwargs):
     return lc
 
 
-def convert_gempak_color(c, style='psc'):
+def convert_gempak_color(c, style="psc"):
     """Convert GEMPAK color numbers into corresponding Matplotlib colors.
 
     Takes a sequence of GEMPAK color numbers and turns them into
@@ -226,6 +235,7 @@ def convert_gempak_color(c, style='psc'):
         List of strings of Matplotlib colors, or a single string if only one color requested.
 
     """
+
     def normalize(x):
         """Transform input x to an int in range 0 to 31 consistent with GEMPAK color quirks."""
         x = int(x)
@@ -236,46 +246,48 @@ def convert_gempak_color(c, style='psc'):
         return x
 
     # Define GEMPAK colors (Matplotlib doesn't appear to like numbered variants)
-    cols = ['white',       # 0/32
-            'black',       # 1
-            'red',         # 2
-            'green',       # 3
-            'blue',        # 4
-            'yellow',      # 5
-            'cyan',        # 6
-            'magenta',     # 7
-            '#CD6839',     # 8 (sienna3)
-            '#FF8247',     # 9 (sienna1)
-            '#FFA54F',     # 10 (tan1)
-            '#FFAEB9',     # 11 (LightPink1)
-            '#FF6A6A',     # 12 (IndianRed1)
-            '#EE2C2C',     # 13 (firebrick2)
-            '#8B0000',     # 14 (red4)
-            '#CD0000',     # 15 (red3)
-            '#EE4000',     # 16 (OrangeRed2)
-            '#FF7F00',     # 17 (DarkOrange1)
-            '#CD8500',     # 18 (orange3)
-            'gold',        # 19
-            '#EEEE00',     # 20 (yellow2)
-            'chartreuse',  # 21
-            '#00CD00',     # 22 (green3)
-            '#008B00',     # 23 (green4)
-            '#104E8B',     # 24 (DodgerBlue4)
-            'DodgerBlue',  # 25
-            '#00B2EE',     # 26 (DeepSkyBlue2)
-            '#00EEEE',     # 27 (cyan2)
-            '#8968CD',     # 28 (MediumPurple3)
-            '#912CEE',     # 29 (purple2)
-            '#8B008B',     # 30 (magenta4)
-            'bisque']      # 31
+    cols = [
+        "white",  # 0/32
+        "black",  # 1
+        "red",  # 2
+        "green",  # 3
+        "blue",  # 4
+        "yellow",  # 5
+        "cyan",  # 6
+        "magenta",  # 7
+        "#CD6839",  # 8 (sienna3)
+        "#FF8247",  # 9 (sienna1)
+        "#FFA54F",  # 10 (tan1)
+        "#FFAEB9",  # 11 (LightPink1)
+        "#FF6A6A",  # 12 (IndianRed1)
+        "#EE2C2C",  # 13 (firebrick2)
+        "#8B0000",  # 14 (red4)
+        "#CD0000",  # 15 (red3)
+        "#EE4000",  # 16 (OrangeRed2)
+        "#FF7F00",  # 17 (DarkOrange1)
+        "#CD8500",  # 18 (orange3)
+        "gold",  # 19
+        "#EEEE00",  # 20 (yellow2)
+        "chartreuse",  # 21
+        "#00CD00",  # 22 (green3)
+        "#008B00",  # 23 (green4)
+        "#104E8B",  # 24 (DodgerBlue4)
+        "DodgerBlue",  # 25
+        "#00B2EE",  # 26 (DeepSkyBlue2)
+        "#00EEEE",  # 27 (cyan2)
+        "#8968CD",  # 28 (MediumPurple3)
+        "#912CEE",  # 29 (purple2)
+        "#8B008B",  # 30 (magenta4)
+        "bisque",
+    ]  # 31
 
-    if style != 'psc':
-        if style == 'xw':
-            cols[0] = 'black'
-            cols[1] = 'bisque'
-            cols[31] = 'white'
+    if style != "psc":
+        if style == "xw":
+            cols[0] = "black"
+            cols[1] = "bisque"
+            cols[31] = "white"
         else:
-            raise ValueError('Unknown style parameter')
+            raise ValueError("Unknown style parameter")
 
     try:
         c_list = list(c)

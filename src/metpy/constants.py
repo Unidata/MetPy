@@ -69,51 +69,52 @@ exporter = Exporter(globals())
 # Export all the variables defined in this block
 with exporter:
     # Earth
-    earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
+    earth_gravity = g = units.Quantity(1.0, units.gravity).to("m / s^2")
     # Taken from GEMPAK constants
     Re = earth_avg_radius = 6.3712e6 * units.m
-    G = gravitational_constant = (units.Quantity(1, units.
-                                                 newtonian_constant_of_gravitation)
-                                  .to('m^3 / kg / s^2'))
+    G = gravitational_constant = units.Quantity(1, units.newtonian_constant_of_gravitation).to(
+        "m^3 / kg / s^2"
+    )
     omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
-    S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
+    S = earth_solar_irradiance = units.Quantity(1.368e3, "W / m^2")
     delta = earth_max_declination = 23.45 * units.deg
     earth_orbit_eccentricity = 0.0167
     earth_mass = me = 5.9722e24 * units.kg
 
     # molar gas constant
-    R = units.Quantity(1.0, units.R).to('J / K / mol')
+    R = units.Quantity(1.0, units.R).to("J / K / mol")
 
     #
     # Water
     #
     # From: https://pubchem.ncbi.nlm.nih.gov/compound/water
-    Mw = water_molecular_weight = units.Quantity(18.01528, 'g / mol')
+    Mw = water_molecular_weight = units.Quantity(18.01528, "g / mol")
     Rv = water_gas_constant = R / Mw
     # Nominal density of liquid water at 0C
-    rho_l = density_water = units.Quantity(1e3, 'kg / m^3')
-    Cp_v = wv_specific_heat_press = units.Quantity(1952., 'm^2 / s^2 / K')
-    Cv_v = wv_specific_heat_vol = units.Quantity(1463., 'm^2 / s^2 / K')
-    Cp_l = water_specific_heat = units.Quantity(4218., 'm^2 / s^2 / K')  # at 0C
-    Lv = water_heat_vaporization = units.Quantity(2.501e6, 'm^2 / s^2')  # at 0C
-    Lf = water_heat_fusion = units.Quantity(3.34e5, 'm^2 / s^2')  # at 0C
-    Cp_i = ice_specific_heat = units.Quantity(2106, 'm^2 / s^2 / K')  # at 0C
-    rho_i = density_ice = units.Quantity(917, 'kg / m^3')  # at 0C
+    rho_l = density_water = units.Quantity(1e3, "kg / m^3")
+    Cp_v = wv_specific_heat_press = units.Quantity(1952.0, "m^2 / s^2 / K")
+    Cv_v = wv_specific_heat_vol = units.Quantity(1463.0, "m^2 / s^2 / K")
+    Cp_l = water_specific_heat = units.Quantity(4218.0, "m^2 / s^2 / K")  # at 0C
+    Lv = water_heat_vaporization = units.Quantity(2.501e6, "m^2 / s^2")  # at 0C
+    Lf = water_heat_fusion = units.Quantity(3.34e5, "m^2 / s^2")  # at 0C
+    Cp_i = ice_specific_heat = units.Quantity(2106, "m^2 / s^2 / K")  # at 0C
+    rho_i = density_ice = units.Quantity(917, "kg / m^3")  # at 0C
 
     # Dry air -- standard atmosphere
-    Md = dry_air_molecular_weight = units.Quantity(28.9644, 'g / mol')
+    Md = dry_air_molecular_weight = units.Quantity(28.9644, "g / mol")
     Rd = dry_air_gas_constant = R / Md
     dry_air_spec_heat_ratio = 1.4
-    Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
+    Cp_d = dry_air_spec_heat_press = units.Quantity(1005, "m^2 / s^2 / K")  # Bolton 1980
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
-    rho_d = dry_air_density_stp = ((1000. * units.mbar)
-                                   / (Rd * 273.15 * units.K)).to('kg / m^3')
+    rho_d = dry_air_density_stp = ((1000.0 * units.mbar) / (Rd * 273.15 * units.K)).to(
+        "kg / m^3"
+    )
 
     # General meteorology constants
-    P0 = pot_temp_ref_press = 1000. * units.mbar
-    kappa = poisson_exponent = (Rd / Cp_d).to('dimensionless')
+    P0 = pot_temp_ref_press = 1000.0 * units.mbar
+    kappa = poisson_exponent = (Rd / Cp_d).to("dimensionless")
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
-    epsilon = molecular_weight_ratio = (Mw / Md).to('dimensionless')
+    epsilon = molecular_weight_ratio = (Mw / Md).to("dimensionless")
 
 del Exporter

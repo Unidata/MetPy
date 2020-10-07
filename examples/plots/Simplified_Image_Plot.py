@@ -16,12 +16,12 @@ from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.plots import ImagePlot, MapPanel, PanelContainer
 
-data = xr.open_dataset(GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini')))
+data = xr.open_dataset(GiniFile(get_test_data("NHEM-MULTICOMP_1km_IR_20151208_2100.gini")))
 
 img = ImagePlot()
 img.data = data
-img.field = 'IR'
-img.colormap = 'Greys_r'
+img.field = "IR"
+img.colormap = "Greys_r"
 
 panel = MapPanel()
 panel.plots = [img]

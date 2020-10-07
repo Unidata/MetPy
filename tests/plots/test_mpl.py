@@ -11,6 +11,7 @@ import numpy as np
 
 # Needed to trigger scattertext monkey-patching
 import metpy.plots  # noqa: F401, I202
+
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
@@ -19,13 +20,18 @@ from metpy.testing import set_agg_backend  # noqa: F401, I202
 # to handle robustly
 def test_scattertext_patheffect_empty():
     """Test scattertext with empty strings and PathEffects (Issue #245)."""
-    strings = ['abc', '', 'def']
+    strings = ["abc", "", "def"]
     x, y = np.arange(6).reshape(2, 3)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.scattertext(x, y, strings, color='white',
-                   path_effects=[mpatheffects.withStroke(linewidth=1, foreground='black')])
+    ax.scattertext(
+        x,
+        y,
+        strings,
+        color="white",
+        path_effects=[mpatheffects.withStroke(linewidth=1, foreground="black")],
+    )
 
     # Need to trigger a render
-    with TemporaryFile('wb') as fobj:
+    with TemporaryFile("wb") as fobj:
         fig.savefig(fobj)

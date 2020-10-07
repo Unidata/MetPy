@@ -33,34 +33,34 @@ units = pint.UnitRegistry(
     autoconvert_offset_to_baseunit=True,
     preprocessors=[
         functools.partial(
-            re.sub,
-            r'(?<=[A-Za-z])(?![A-Za-z])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])',
-            '**'
+            re.sub, r"(?<=[A-Za-z])(?![A-Za-z])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])", "**"
         ),
-        lambda string: string.replace('%', 'percent')
-    ]
+        lambda string: string.replace("%", "percent"),
+    ],
 )
 
 # Capture v0.10 NEP 18 warning on first creation
 with warnings.catch_warnings():
-    warnings.simplefilter('ignore')
+    warnings.simplefilter("ignore")
     units.Quantity([])
 
 # For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
-units.define(pint.unit.UnitDefinition('percent', '%', (),
-             pint.converters.ScaleConverter(0.01)))
+units.define(
+    pint.unit.UnitDefinition("percent", "%", (), pint.converters.ScaleConverter(0.01))
+)
 
 # Define commonly encountered units not defined by pint
-units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
-             '= degreeN')
-units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
+units.define(
+    "degrees_north = degree = degrees_N = degreesN = degree_north = degree_N " "= degreeN"
+)
+units.define("degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE")
 
 # Alias geopotential meters (gpm) to just meters
-units.define('@alias meter = gpm')
+units.define("@alias meter = gpm")
 
 # Silence UnitStrippedWarning
-if hasattr(pint, 'UnitStrippedWarning'):
-    warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
+if hasattr(pint, "UnitStrippedWarning"):
+    warnings.simplefilter("ignore", category=pint.UnitStrippedWarning)
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
@@ -85,8 +85,9 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
         try:
             column_units = df.units
         except AttributeError:
-            raise ValueError('No units attribute attached to pandas '
-                             'dataframe and col_units not given.') from None
+            raise ValueError(
+                "No units attribute attached to pandas " "dataframe and col_units not given."
+            ) from None
 
     # Iterate through columns attaching units if we have them, if not, don't touch it
     res = {}
@@ -120,15 +121,15 @@ def concatenate(arrs, axis=0):
         New container with the value passed in and units corresponding to the first item.
 
     """
-    dest = 'dimensionless'
+    dest = "dimensionless"
     for a in arrs:
-        if hasattr(a, 'units'):
+        if hasattr(a, "units"):
             dest = a.units
             break
 
     data = []
     for a in arrs:
-        if hasattr(a, 'to'):
+        if hasattr(a, "to"):
             a = a.to(dest).magnitude
         data.append(np.atleast_1d(a))
 
@@ -192,12 +193,13 @@ def _check_argument_units(args, defaults, dimensionality):
         # No dimensionality
         except AttributeError:
             # If this argument is dimensionless, don't worry
-            if parsed != '':
-                yield arg, 'none', need
+            if parsed != "":
+                yield arg, "none", need
 
 
 def check_units(*units_by_pos, **units_by_name):
     """Create a decorator to check units of function arguments."""
+
     def dec(func):
         # Match the signature of the function to the arguments given to the decorator
         sig = signature(func)
@@ -207,11 +209,16 @@ def check_units(*units_by_pos, **units_by_name):
         # pint directly (e.g. "[mass] / [length] / [time]**2). This is for both efficiency
         # reasons and to ensure that problems with the decorator are caught at import,
         # rather than runtime.
-        dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
-                for name, orig in bound_units.arguments.items()}
+        dims = {
+            name: (orig, units.get_dimensionality(orig.replace("dimensionless", "")))
+            for name, orig in bound_units.arguments.items()
+        }
 
-        defaults = {name: sig.parameters[name].default for name in sig.parameters
-                    if sig.parameters[name].default is not Parameter.empty}
+        defaults = {
+            name: sig.parameters[name].default
+            for name in sig.parameters
+            if sig.parameters[name].default is not Parameter.empty
+        }
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -222,17 +229,21 @@ def check_units(*units_by_pos, **units_by_name):
             # If there are any bad units, emit a proper error message making it clear
             # what went wrong.
             if bad:
-                msg = f'`{func.__name__}` given arguments with incorrect units: '
-                msg += ', '.join(f'`{arg}` requires "{req}" but given "{given}"'
-                                 for arg, given, req in bad)
-                if 'none' in msg:
-                    msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
-                            '    from metpy.units import units\n'
-                            '    x = x * units.meter / units.second')
+                msg = f"`{func.__name__}` given arguments with incorrect units: "
+                msg += ", ".join(
+                    f'`{arg}` requires "{req}" but given "{given}"' for arg, given, req in bad
+                )
+                if "none" in msg:
+                    msg += (
+                        "\nAny variable `x` can be assigned a unit as follows:\n"
+                        "    from metpy.units import units\n"
+                        "    x = x * units.meter / units.second"
+                    )
                 raise ValueError(msg)
             return func(*args, **kwargs)
 
         return wrapper
+
     return dec
 
 

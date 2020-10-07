@@ -13,12 +13,15 @@ log = logging.getLogger(__name__)
 
 def preprocess_pandas(func):
     """Decorate a function to convert all data series arguments to `np.ndarray`."""
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # not using hasattr(a, values) because it picks up dict.values()
         # and this is more explictly handling pandas
         args = tuple(a.values if isinstance(a, pd.Series) else a for a in args)
-        kwargs = {name: (v.values if isinstance(v, pd.Series) else v)
-                  for name, v in kwargs.items()}
+        kwargs = {
+            name: (v.values if isinstance(v, pd.Series) else v) for name, v in kwargs.items()
+        }
         return func(*args, **kwargs)
+
     return wrapper

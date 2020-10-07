@@ -26,3 +26,5 @@ docs/tutorials
 docs/api/generated
 examples/scripts
 test_output/
+
+.venv/

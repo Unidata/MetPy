@@ -17,6 +17,7 @@ import metpy.calc as mpcalc
 from metpy.units import units
 
 ###########################################
+# fmt: off
 # Create some test data to use for our example
 data = np.array([[23, 24, 23],
                  [25, 26, 25],
@@ -33,12 +34,13 @@ y = np.array([[1, 1, 1],
               [2, 2, 2],
               [3, 3, 3],
               [4, 4, 4]]) * units.kilometer
+# fmt: on
 
 ###########################################
 # Calculate the gradient using the coordinates of the data
 grad = mpcalc.gradient(data, coordinates=(y, x))
-print('Gradient in y direction: ', grad[0])
-print('Gradient in x direction: ', grad[1])
+print("Gradient in y direction: ", grad[0])
+print("Gradient in x direction: ", grad[1])
 
 ###########################################
 # It's also possible that we do not have the position of data points, but know
@@ -47,18 +49,13 @@ print('Gradient in x direction: ', grad[1])
 x_delta = 2 * units.km
 y_delta = 1 * units.km
 grad = mpcalc.gradient(data, deltas=(y_delta, x_delta))
-print('Gradient in y direction: ', grad[0])
-print('Gradient in x direction: ', grad[1])
+print("Gradient in y direction: ", grad[0])
+print("Gradient in x direction: ", grad[1])
 
 ###########################################
 # Finally, the deltas can be arrays for unevenly spaced data.
-x_deltas = np.array([[2, 3],
-                     [1, 3],
-                     [2, 3],
-                     [1, 2]]) * units.kilometer
-y_deltas = np.array([[2, 3, 1],
-                     [1, 3, 2],
-                     [2, 3, 1]]) * units.kilometer
+x_deltas = np.array([[2, 3], [1, 3], [2, 3], [1, 2]]) * units.kilometer
+y_deltas = np.array([[2, 3, 1], [1, 3, 2], [2, 3, 1]]) * units.kilometer
 grad = mpcalc.gradient(data, deltas=(y_deltas, x_deltas))
-print('Gradient in y direction: ', grad[0])
-print('Gradient in x direction: ', grad[1])
+print("Gradient in y direction: ", grad[0])
+print("Gradient in x direction: ", grad[1])

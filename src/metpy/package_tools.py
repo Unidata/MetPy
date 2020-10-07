@@ -7,7 +7,7 @@
 # Inspired by David Beazley and taken from python-ideas:
 # https://mail.python.org/pipermail/python-ideas/2014-May/027824.html
 
-__all__ = ('Exporter',)
+__all__ = ("Exporter",)
 
 
 class Exporter:
@@ -22,7 +22,7 @@ class Exporter:
     def __init__(self, globls):
         """Initialize the Exporter."""
         self.globls = globls
-        self.exports = globls.setdefault('__all__', [])
+        self.exports = globls.setdefault("__all__", [])
 
     def export(self, defn):
         """Declare a function or class as exported."""

@@ -7,11 +7,13 @@ See WMO manual 485 Vol 1 for more info on the symbols.
 """
 
 try:
-    from importlib.resources import (files as importlib_resources_files,
-                                     as_file as importlib_resources_as_file)
+    from importlib.resources import as_file as importlib_resources_as_file
+    from importlib.resources import files as importlib_resources_files
 except ImportError:  # Can remove when we require Python > 3.8
-    from importlib_resources import (files as importlib_resources_files,
-                                     as_file as importlib_resources_as_file)
+    from importlib_resources import (
+        files as importlib_resources_files,
+        as_file as importlib_resources_as_file,
+    )
 
 import matplotlib.font_manager as fm
 import numpy as np
@@ -21,7 +23,7 @@ from ..package_tools import Exporter
 exporter = Exporter(globals())
 
 # Create a matplotlib font object pointing to our weather symbol font
-fontfile = importlib_resources_files('metpy.plots') / 'fonts/wx_symbols.ttf'
+fontfile = importlib_resources_files("metpy.plots") / "fonts/wx_symbols.ttf"
 with importlib_resources_as_file(fontfile) as fname:
     # Need to pass str, not Path, for older matplotlib
     wx_symbol_font = fm.FontProperties(fname=str(fname))
@@ -48,13 +50,18 @@ def wx_code_to_numeric(codes):
     """
     wx_sym_list = []
     for s in codes:
-        wxcode = s.split()[0] if ' ' in s else s
+        wxcode = s.split()[0] if " " in s else s
         try:
             wx_sym_list.append(wx_code_map[wxcode])
         except KeyError:
-            if wxcode[0].startswith(('-', '+')):
-                options = [slice(None, 7), slice(None, 5), slice(1, 5), slice(None, 3),
-                           slice(1, 3)]
+            if wxcode[0].startswith(("-", "+")):
+                options = [
+                    slice(None, 7),
+                    slice(None, 5),
+                    slice(1, 5),
+                    slice(None, 3),
+                    slice(1, 3),
+                ]
             else:
                 options = [slice(None, 6), slice(None, 4), slice(None, 2)]
 
@@ -103,7 +110,7 @@ class CodePointMapping:
             if next_char_jump and code >= next_char_jump[0]:
                 jump_len = next_char_jump[1]
                 code += jump_len
-                self.chrs.extend([''] * jump_len)
+                self.chrs.extend([""] * jump_len)
                 next_char_jump = self._safe_pop(char_jumps)
             else:
                 self.chrs.append(chr(font_point))
@@ -159,13 +166,28 @@ class CodePointMapping:
 
 with exporter:
     #: Current weather
-    current_weather = CodePointMapping(100, 0xE9A2, [(7, 2), (93, 2), (94, 2), (95, 2),
-                                                     (97, 2)], [(0, 4)])
+    current_weather = CodePointMapping(
+        100, 0xE9A2, [(7, 2), (93, 2), (94, 2), (95, 2), (97, 2)], [(0, 4)]
+    )
 
     #: Current weather from an automated station
-    current_weather_auto = CodePointMapping(100, 0xE94B, [(92, 2), (95, 2)],
-                                            [(6, 4), (13, 5), (19, 1), (36, 4), (49, 1),
-                                             (59, 1), (69, 1), (79, 1), (88, 1), (97, 2)])
+    current_weather_auto = CodePointMapping(
+        100,
+        0xE94B,
+        [(92, 2), (95, 2)],
+        [
+            (6, 4),
+            (13, 5),
+            (19, 1),
+            (36, 4),
+            (49, 1),
+            (59, 1),
+            (69, 1),
+            (79, 1),
+            (88, 1),
+            (97, 2),
+        ],
+    )
 
     #: Low clouds
     low_clouds = CodePointMapping(10, 0xE933, [(7, 1)], [(0, 1)])
@@ -191,51 +213,197 @@ with exporter:
     # It may become necessary to add automated station wx_codes in the future,
     # but that will also require knowing the status of all stations.
 
-    wx_code_map = {'': 0, 'M': 0, 'TSNO': 0, 'VA': 4, 'FU': 4,
-                   'HZ': 5, 'DU': 6, 'BLDU': 7, 'SA': 7,
-                   'BLSA': 7, 'VCBLSA': 7, 'VCBLDU': 7, 'BLPY': 7,
-                   'PO': 8, 'VCPO': 8, 'VCDS': 9, 'VCSS': 9,
-                   'BR': 10, 'BCBR': 10, 'BC': 11, 'MIFG': 12,
-                   'VCTS': 13, 'VIRGA': 14, 'VCSH': 16, 'TS': 17,
-                   'THDR': 17, 'VCTSHZ': 17, 'TSFZFG': 17, 'TSBR': 17,
-                   'TSDZ': 17, 'SQ': 18, 'FC': 19, '+FC': 19,
-                   'DS': 31, 'SS': 31, 'DRSA': 31, 'DRDU': 31,
-                   'TSUP': 32, '+DS': 34, '+SS': 34, '-BLSN': 36,
-                   'BLSN': 36, '+BLSN': 36, 'VCBLSN': 36, 'DRSN': 38,
-                   '+DRSN': 38, 'VCFG': 40, 'BCFG': 41, 'PRFG': 44,
-                   'FG': 45, 'FZFG': 49, '-VCTSDZ': 51, '-DZ': 51,
-                   '-DZBR': 51, 'VCTSDZ': 53, 'DZ': 53, '+VCTSDZ': 55,
-                   '+DZ': 55, '-FZDZ': 56, '-FZDZSN': 56, 'FZDZ': 57,
-                   '+FZDZ': 57, 'FZDZSN': 57, '-DZRA': 58, 'DZRA': 59,
-                   '+DZRA': 59, '-VCTSRA': 61, '-RA': 61, '-RABR': 61,
-                   'VCTSRA': 63, 'RA': 63, 'RABR': 63, 'RAFG': 63,
-                   '+VCTSRA': 65, '+RA': 65, '-FZRA': 66, '-FZRASN': 66,
-                   '-FZRABR': 66, '-FZRAPL': 66, '-FZRASNPL': 66, 'TSFZRAPL': 67,
-                   '-TSFZRA': 67, 'FZRA': 67, '+FZRA': 67, 'FZRASN': 67,
-                   'TSFZRA': 67, '-DZSN': 68, '-RASN': 68, '-SNRA': 68,
-                   '-SNDZ': 68, 'RASN': 69, '+RASN': 69, 'SNRA': 69,
-                   'DZSN': 69, 'SNDZ': 69, '+DZSN': 69, '+SNDZ': 69,
-                   '-VCTSSN': 71, '-SN': 71, '-SNBR': 71, 'VCTSSN': 73,
-                   'SN': 73, '+VCTSSN': 75, '+SN': 75, 'VCTSUP': 76,
-                   'IN': 76, '-UP': 76, 'UP': 76, '+UP': 76,
-                   '-SNSG': 77, 'SG': 77, '-SG': 77, 'IC': 78,
-                   '-FZDZPL': 79, '-FZDZPLSN': 79, 'FZDZPL': 79, '-FZRAPLSN': 79,
-                   'FZRAPL': 79, '+FZRAPL': 79, '-RAPL': 79, '-RASNPL': 79,
-                   '-RAPLSN': 79, '+RAPL': 79, 'RAPL': 79, '-SNPL': 79,
-                   'SNPL': 79, '-PL': 79, 'PL': 79, '-PLSN': 79,
-                   '-PLRA': 79, 'PLRA': 79, '-PLDZ': 79, '+PL': 79,
-                   'PLSN': 79, 'PLUP': 79, '+PLSN': 79, '-SH': 80,
-                   '-SHRA': 80, 'SH': 81, 'SHRA': 81, '+SH': 81,
-                   '+SHRA': 81, '-SHRASN': 83, '-SHSNRA': 83, '+SHRABR': 84,
-                   'SHRASN': 84, '+SHRASN': 84, 'SHSNRA': 84, '+SHSNRA': 84,
-                   '-SHSN': 85, 'SHSN': 86, '+SHSN': 86, '-GS': 87,
-                   '-SHGS': 87, 'FZRAPLGS': 88, '-SNGS': 88, 'GSPLSN': 88,
-                   'GSPL': 88, 'PLGSSN': 88, 'GS': 88, 'SHGS': 88,
-                   '+GS': 88, '+SHGS': 88, '-GR': 89, '-SHGR': 89,
-                   '-SNGR': 90, 'GR': 90, 'SHGR': 90, '+GR': 90,
-                   '+SHGR': 90, '-TSRA': 95, 'TSRA': 95, 'TSSN': 95,
-                   'TSPL': 95, '-TSDZ': 95, '-TSSN': 95, '-TSPL': 95,
-                   'TSPLSN': 95, 'TSSNPL': 95, '-TSSNPL': 95, 'TSRAGS': 96,
-                   'TSGS': 96, 'TSGR': 96, '+TSRA': 97, '+TSSN': 97,
-                   '+TSPL': 97, '+TSPLSN': 97, 'TSSA': 98, 'TSDS': 98,
-                   'TSDU': 98, '+TSGS': 99, '+TSGR': 99}
+    wx_code_map = {
+        "": 0,
+        "M": 0,
+        "TSNO": 0,
+        "VA": 4,
+        "FU": 4,
+        "HZ": 5,
+        "DU": 6,
+        "BLDU": 7,
+        "SA": 7,
+        "BLSA": 7,
+        "VCBLSA": 7,
+        "VCBLDU": 7,
+        "BLPY": 7,
+        "PO": 8,
+        "VCPO": 8,
+        "VCDS": 9,
+        "VCSS": 9,
+        "BR": 10,
+        "BCBR": 10,
+        "BC": 11,
+        "MIFG": 12,
+        "VCTS": 13,
+        "VIRGA": 14,
+        "VCSH": 16,
+        "TS": 17,
+        "THDR": 17,
+        "VCTSHZ": 17,
+        "TSFZFG": 17,
+        "TSBR": 17,
+        "TSDZ": 17,
+        "SQ": 18,
+        "FC": 19,
+        "+FC": 19,
+        "DS": 31,
+        "SS": 31,
+        "DRSA": 31,
+        "DRDU": 31,
+        "TSUP": 32,
+        "+DS": 34,
+        "+SS": 34,
+        "-BLSN": 36,
+        "BLSN": 36,
+        "+BLSN": 36,
+        "VCBLSN": 36,
+        "DRSN": 38,
+        "+DRSN": 38,
+        "VCFG": 40,
+        "BCFG": 41,
+        "PRFG": 44,
+        "FG": 45,
+        "FZFG": 49,
+        "-VCTSDZ": 51,
+        "-DZ": 51,
+        "-DZBR": 51,
+        "VCTSDZ": 53,
+        "DZ": 53,
+        "+VCTSDZ": 55,
+        "+DZ": 55,
+        "-FZDZ": 56,
+        "-FZDZSN": 56,
+        "FZDZ": 57,
+        "+FZDZ": 57,
+        "FZDZSN": 57,
+        "-DZRA": 58,
+        "DZRA": 59,
+        "+DZRA": 59,
+        "-VCTSRA": 61,
+        "-RA": 61,
+        "-RABR": 61,
+        "VCTSRA": 63,
+        "RA": 63,
+        "RABR": 63,
+        "RAFG": 63,
+        "+VCTSRA": 65,
+        "+RA": 65,
+        "-FZRA": 66,
+        "-FZRASN": 66,
+        "-FZRABR": 66,
+        "-FZRAPL": 66,
+        "-FZRASNPL": 66,
+        "TSFZRAPL": 67,
+        "-TSFZRA": 67,
+        "FZRA": 67,
+        "+FZRA": 67,
+        "FZRASN": 67,
+        "TSFZRA": 67,
+        "-DZSN": 68,
+        "-RASN": 68,
+        "-SNRA": 68,
+        "-SNDZ": 68,
+        "RASN": 69,
+        "+RASN": 69,
+        "SNRA": 69,
+        "DZSN": 69,
+        "SNDZ": 69,
+        "+DZSN": 69,
+        "+SNDZ": 69,
+        "-VCTSSN": 71,
+        "-SN": 71,
+        "-SNBR": 71,
+        "VCTSSN": 73,
+        "SN": 73,
+        "+VCTSSN": 75,
+        "+SN": 75,
+        "VCTSUP": 76,
+        "IN": 76,
+        "-UP": 76,
+        "UP": 76,
+        "+UP": 76,
+        "-SNSG": 77,
+        "SG": 77,
+        "-SG": 77,
+        "IC": 78,
+        "-FZDZPL": 79,
+        "-FZDZPLSN": 79,
+        "FZDZPL": 79,
+        "-FZRAPLSN": 79,
+        "FZRAPL": 79,
+        "+FZRAPL": 79,
+        "-RAPL": 79,
+        "-RASNPL": 79,
+        "-RAPLSN": 79,
+        "+RAPL": 79,
+        "RAPL": 79,
+        "-SNPL": 79,
+        "SNPL": 79,
+        "-PL": 79,
+        "PL": 79,
+        "-PLSN": 79,
+        "-PLRA": 79,
+        "PLRA": 79,
+        "-PLDZ": 79,
+        "+PL": 79,
+        "PLSN": 79,
+        "PLUP": 79,
+        "+PLSN": 79,
+        "-SH": 80,
+        "-SHRA": 80,
+        "SH": 81,
+        "SHRA": 81,
+        "+SH": 81,
+        "+SHRA": 81,
+        "-SHRASN": 83,
+        "-SHSNRA": 83,
+        "+SHRABR": 84,
+        "SHRASN": 84,
+        "+SHRASN": 84,
+        "SHSNRA": 84,
+        "+SHSNRA": 84,
+        "-SHSN": 85,
+        "SHSN": 86,
+        "+SHSN": 86,
+        "-GS": 87,
+        "-SHGS": 87,
+        "FZRAPLGS": 88,
+        "-SNGS": 88,
+        "GSPLSN": 88,
+        "GSPL": 88,
+        "PLGSSN": 88,
+        "GS": 88,
+        "SHGS": 88,
+        "+GS": 88,
+        "+SHGS": 88,
+        "-GR": 89,
+        "-SHGR": 89,
+        "-SNGR": 90,
+        "GR": 90,
+        "SHGR": 90,
+        "+GR": 90,
+        "+SHGR": 90,
+        "-TSRA": 95,
+        "TSRA": 95,
+        "TSSN": 95,
+        "TSPL": 95,
+        "-TSDZ": 95,
+        "-TSSN": 95,
+        "-TSPL": 95,
+        "TSPLSN": 95,
+        "TSSNPL": 95,
+        "-TSSNPL": 95,
+        "TSRAGS": 96,
+        "TSGS": 96,
+        "TSGR": 96,
+        "+TSRA": 97,
+        "+TSSN": 97,
+        "+TSPL": 97,
+        "+TSPLSN": 97,
+        "TSSA": 98,
+        "TSDS": 98,
+        "TSDU": 98,
+        "+TSGS": 99,
+        "+TSGR": 99,
+    }

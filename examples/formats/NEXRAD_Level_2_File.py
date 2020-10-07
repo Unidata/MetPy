@@ -17,7 +17,7 @@ from metpy.plots import add_metpy_logo, add_timestamp
 ###########################################
 
 # Open the file
-name = get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False)
+name = get_test_data("KTLX20130520_201643_V06.gz", as_file_obj=False)
 f = Level2File(name)
 
 print(f.sweeps[0][0])
@@ -32,17 +32,17 @@ az = np.array([ray[0].az_angle for ray in f.sweeps[sweep]])
 
 # 5th item is a dict mapping a var name (byte string) to a tuple
 # of (header, data array)
-ref_hdr = f.sweeps[sweep][0][4][b'REF'][0]
+ref_hdr = f.sweeps[sweep][0][4][b"REF"][0]
 ref_range = np.arange(ref_hdr.num_gates) * ref_hdr.gate_width + ref_hdr.first_gate
-ref = np.array([ray[4][b'REF'][1] for ray in f.sweeps[sweep]])
+ref = np.array([ray[4][b"REF"][1] for ray in f.sweeps[sweep]])
 
-rho_hdr = f.sweeps[sweep][0][4][b'RHO'][0]
+rho_hdr = f.sweeps[sweep][0][4][b"RHO"][0]
 rho_range = (np.arange(rho_hdr.num_gates + 1) - 0.5) * rho_hdr.gate_width + rho_hdr.first_gate
-rho = np.array([ray[4][b'RHO'][1] for ray in f.sweeps[sweep]])
+rho = np.array([ray[4][b"RHO"][1] for ray in f.sweeps[sweep]])
 
 ###########################################
 fig, axes = plt.subplots(1, 2, figsize=(15, 8))
-add_metpy_logo(fig, 190, 85, size='large')
+add_metpy_logo(fig, 190, 85, size="large")
 for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     # Turn into an array, then mask
     data = np.ma.array(var_data)
@@ -53,8 +53,8 @@ for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     ylocs = var_range * np.cos(np.deg2rad(az[:, np.newaxis]))
 
     # Plot the data
-    ax.pcolormesh(xlocs, ylocs, data, cmap='viridis')
-    ax.set_aspect('equal', 'datalim')
+    ax.pcolormesh(xlocs, ylocs, data, cmap="viridis")
+    ax.set_aspect("equal", "datalim")
     ax.set_xlim(-40, 20)
     ax.set_ylim(-30, 30)
     add_timestamp(ax, f.dt, y=0.02, high_contrast=True)

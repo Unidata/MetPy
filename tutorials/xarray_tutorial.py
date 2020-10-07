@@ -36,7 +36,7 @@ from metpy.xarray import grid_deltas_from_dataarray
 # 2017).
 
 # Open the netCDF file as a xarray Dataset
-data = xr.open_dataset(get_test_data('irma_gfs_example.nc', False))
+data = xr.open_dataset(get_test_data("irma_gfs_example.nc", False))
 
 # View a summary of the Dataset
 print(data)
@@ -58,21 +58,24 @@ data = data.metpy.parse_cf()
 
 # If we instead want just a single variable, we can pass that variable name to parse_cf and
 # it will return just that data variable as a DataArray.
-data_var = data.metpy.parse_cf('Temperature_isobaric')
+data_var = data.metpy.parse_cf("Temperature_isobaric")
 
 # If we want only a subset of variables, we can pass a list of variable names as well.
-data_subset = data.metpy.parse_cf(['u-component_of_wind_isobaric',
-                                   'v-component_of_wind_isobaric'])
+data_subset = data.metpy.parse_cf(
+    ["u-component_of_wind_isobaric", "v-component_of_wind_isobaric"]
+)
 
 # To rename variables, supply a dictionary between old and new names to the rename method
-data = data.rename({
-    'Vertical_velocity_pressure_isobaric': 'omega',
-    'Relative_humidity_isobaric': 'relative_humidity',
-    'Temperature_isobaric': 'temperature',
-    'u-component_of_wind_isobaric': 'u',
-    'v-component_of_wind_isobaric': 'v',
-    'Geopotential_height_isobaric': 'height'
-})
+data = data.rename(
+    {
+        "Vertical_velocity_pressure_isobaric": "omega",
+        "Relative_humidity_isobaric": "relative_humidity",
+        "Temperature_isobaric": "temperature",
+        "u-component_of_wind_isobaric": "u",
+        "v-component_of_wind_isobaric": "v",
+        "Geopotential_height_isobaric": "height",
+    }
+)
 
 #########################################################################
 # Units
@@ -83,7 +86,7 @@ data = data.rename({
 # convert the the data from one unit to another (keeping it as a DataArray). For now, we'll
 # just use ``convert_units`` to convert our temperature to ``degC``.
 
-data['temperature'] = data['temperature'].metpy.convert_units('degC')
+data["temperature"] = data["temperature"].metpy.convert_units("degC")
 
 #########################################################################
 # Coordinates
@@ -117,14 +120,14 @@ data['temperature'] = data['temperature'].metpy.convert_units('degC')
 # will be identical (as will ``y`` and ``latitude``).
 
 # Get multiple coordinates (for example, in just the x and y direction)
-x, y = data['temperature'].metpy.coordinates('x', 'y')
+x, y = data["temperature"].metpy.coordinates("x", "y")
 
 # If we want to get just a single coordinate from the coordinates method, we have to use
 # tuple unpacking because the coordinates method returns a generator
-vertical, = data['temperature'].metpy.coordinates('vertical')
+(vertical,) = data["temperature"].metpy.coordinates("vertical")
 
 # Or, we can just get a coordinate from the property
-time = data['temperature'].metpy.time
+time = data["temperature"].metpy.time
 
 # To verify, we can inspect all their names
 print([coord.name for coord in (x, y, vertical, time)])
@@ -138,7 +141,7 @@ print([coord.name for coord in (x, y, vertical, time)])
 # mentioned above as aliases for the coordinates. And so, if we wanted 850 hPa heights,
 # we would take:
 
-print(data['height'].metpy.sel(vertical=850 * units.hPa))
+print(data["height"].metpy.sel(vertical=850 * units.hPa))
 
 #########################################################################
 # For full details on xarray indexing/selection, see
@@ -151,14 +154,14 @@ print(data['height'].metpy.sel(vertical=850 * units.hPa))
 # Getting the cartopy coordinate reference system (CRS) of the projection of a DataArray is as
 # straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
-data_crs = data['temperature'].metpy.cartopy_crs
+data_crs = data["temperature"].metpy.cartopy_crs
 print(data_crs)
 
 #########################################################################
 # The cartopy ``Globe`` can similarly be accessed via the ``data_var.metpy.cartopy_globe``
 # property:
 
-data_globe = data['temperature'].metpy.cartopy_globe
+data_globe = data["temperature"].metpy.cartopy_globe
 print(data_globe)
 
 #########################################################################
@@ -180,7 +183,7 @@ print(data_globe)
 
 lat, lon = xr.broadcast(y, x)
 dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, initstring=data_crs.proj4_init)
-heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
+heights = data["height"].metpy.loc[{"time": time[0], "vertical": 500.0 * units.hPa}]
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
 print(u_geo)
 print(v_geo)
@@ -214,7 +217,7 @@ print(v_geo)
 # takes a ``DataArray`` input, but returns unit arrays for use in other calculations. We could
 # rewrite the above geostrophic wind example using this helper function as follows:
 
-heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
+heights = data["height"].metpy.loc[{"time": time[0], "vertical": 500.0 * units.hPa}]
 lat, lon = xr.broadcast(y, x)
 dx, dy = grid_deltas_from_dataarray(heights)
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
@@ -234,15 +237,16 @@ print(v_geo)
 # <http://xarray.pydata.org/en/stable/plotting.html>`_.)
 
 # A very simple example example of a plot of 500 hPa heights
-data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}].plot()
+data["height"].metpy.loc[{"time": time[0], "vertical": 500.0 * units.hPa}].plot()
 plt.show()
 
 #########################################################################
 
 # Let's add a projection and coastlines to it
 ax = plt.axes(projection=ccrs.LambertConformal())
-data['height'].metpy.loc[{'time': time[0],
-                          'vertical': 500. * units.hPa}].plot(ax=ax, transform=data_crs)
+data["height"].metpy.loc[{"time": time[0], "vertical": 500.0 * units.hPa}].plot(
+    ax=ax, transform=data_crs
+)
 ax.coastlines()
 plt.show()
 
@@ -251,41 +255,76 @@ plt.show()
 # Or, let's make a full 500 hPa map with heights, temperature, winds, and humidity
 
 # Select the data for this time and level
-data_level = data.metpy.loc[{time.name: time[0], vertical.name: 500. * units.hPa}]
+data_level = data.metpy.loc[{time.name: time[0], vertical.name: 500.0 * units.hPa}]
 
 # Create the matplotlib figure and axis
-fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': data_crs})
+fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={"projection": data_crs})
 
 # Plot RH as filled contours
-rh = ax.contourf(x, y, data_level['relative_humidity'], levels=[70, 80, 90, 100],
-                 colors=['#99ff00', '#00ff00', '#00cc00'])
+rh = ax.contourf(
+    x,
+    y,
+    data_level["relative_humidity"],
+    levels=[70, 80, 90, 100],
+    colors=["#99ff00", "#00ff00", "#00cc00"],
+)
 
 # Plot wind barbs, but not all of them
 wind_slice = slice(5, -5, 5)
-ax.barbs(x[wind_slice], y[wind_slice],
-         data_level['u'].metpy.unit_array[wind_slice, wind_slice].to('knots'),
-         data_level['v'].metpy.unit_array[wind_slice, wind_slice].to('knots'),
-         length=6)
+ax.barbs(
+    x[wind_slice],
+    y[wind_slice],
+    data_level["u"].metpy.unit_array[wind_slice, wind_slice].to("knots"),
+    data_level["v"].metpy.unit_array[wind_slice, wind_slice].to("knots"),
+    length=6,
+)
 
 # Plot heights and temperature as contours
-h_contour = ax.contour(x, y, data_level['height'], colors='k', levels=range(5400, 6000, 60))
-h_contour.clabel(fontsize=8, colors='k', inline=1, inline_spacing=8,
-                 fmt='%i', rightside_up=True, use_clabeltext=True)
-t_contour = ax.contour(x, y, data_level['temperature'], colors='xkcd:deep blue',
-                       levels=range(-26, 4, 2), alpha=0.8, linestyles='--')
-t_contour.clabel(fontsize=8, colors='xkcd:deep blue', inline=1, inline_spacing=8,
-                 fmt='%i', rightside_up=True, use_clabeltext=True)
+h_contour = ax.contour(x, y, data_level["height"], colors="k", levels=range(5400, 6000, 60))
+h_contour.clabel(
+    fontsize=8,
+    colors="k",
+    inline=1,
+    inline_spacing=8,
+    fmt="%i",
+    rightside_up=True,
+    use_clabeltext=True,
+)
+t_contour = ax.contour(
+    x,
+    y,
+    data_level["temperature"],
+    colors="xkcd:deep blue",
+    levels=range(-26, 4, 2),
+    alpha=0.8,
+    linestyles="--",
+)
+t_contour.clabel(
+    fontsize=8,
+    colors="xkcd:deep blue",
+    inline=1,
+    inline_spacing=8,
+    fmt="%i",
+    rightside_up=True,
+    use_clabeltext=True,
+)
 
 # Add geographic features
-ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor=cfeature.COLORS['land'])
-ax.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor=cfeature.COLORS['water'])
-ax.add_feature(cfeature.STATES.with_scale('50m'), edgecolor='#c7c783', zorder=0)
-ax.add_feature(cfeature.LAKES.with_scale('50m'), facecolor=cfeature.COLORS['water'],
-               edgecolor='#c7c783', zorder=0)
+ax.add_feature(cfeature.LAND.with_scale("50m"), facecolor=cfeature.COLORS["land"])
+ax.add_feature(cfeature.OCEAN.with_scale("50m"), facecolor=cfeature.COLORS["water"])
+ax.add_feature(cfeature.STATES.with_scale("50m"), edgecolor="#c7c783", zorder=0)
+ax.add_feature(
+    cfeature.LAKES.with_scale("50m"),
+    facecolor=cfeature.COLORS["water"],
+    edgecolor="#c7c783",
+    zorder=0,
+)
 
 # Set a title and show the plot
-ax.set_title('500 hPa Heights (m), Temperature (\u00B0C), Humidity (%) at '
-             + time[0].dt.strftime('%Y-%m-%d %H:%MZ').item())
+ax.set_title(
+    "500 hPa Heights (m), Temperature (\u00B0C), Humidity (%) at "
+    + time[0].dt.strftime("%Y-%m-%d %H:%MZ").item()
+)
 plt.show()
 
 #########################################################################

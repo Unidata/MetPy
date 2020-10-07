@@ -49,16 +49,16 @@ from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
-TABLE_EXT = '.tbl'
+TABLE_EXT = ".tbl"
 
 log = logging.getLogger(__name__)
 
 
 def _parse(s):
-    if hasattr(s, 'decode'):
-        s = s.decode('ascii')
+    if hasattr(s, "decode"):
+        s = s.decode("ascii")
 
-    if not s.startswith('#'):
+    if not s.startswith("#"):
         return ast.literal_eval(s)
 
     return None
@@ -92,7 +92,7 @@ def read_colortable(fobj):
                 ret.append(mcolors.colorConverter.to_rgb(literal))
         return ret
     except (SyntaxError, ValueError) as e:
-        raise RuntimeError(f'Malformed colortable (bad line: {line})') from e
+        raise RuntimeError(f"Malformed colortable (bad line: {line})") from e
 
 
 def convert_gempak_table(infile, outfile):
@@ -110,9 +110,9 @@ def convert_gempak_table(infile, outfile):
 
     """
     for line in infile:
-        if not line.startswith('!') and line.strip():
+        if not line.startswith("!") and line.strip():
             r, g, b = map(int, line.split())
-            outfile.write('({:f}, {:f}, {:f})\n'.format(r / 255, g / 255, b / 255))
+            outfile.write("({:f}, {:f}, {:f})\n".format(r / 255, g / 255, b / 255))
 
 
 class ColortableRegistry(dict):
@@ -141,7 +141,7 @@ class ColortableRegistry(dict):
         for entry in (importlib_resources_files(pkg) / path).iterdir():
             if entry.suffix == TABLE_EXT:
                 with entry.open() as stream:
-                    self.add_colortable(stream, entry.with_suffix('').name)
+                    self.add_colortable(stream, entry.with_suffix("").name)
 
     def scan_dir(self, path):
         r"""Scan a directory on disk for color table files and add them to the registry.
@@ -152,15 +152,15 @@ class ColortableRegistry(dict):
             The path to the directory with the color tables
 
         """
-        for fname in glob.glob(os.path.join(path, '*' + TABLE_EXT)):
+        for fname in glob.glob(os.path.join(path, "*" + TABLE_EXT)):
             if os.path.isfile(fname):
                 with open(fname) as fobj:
                     try:
                         self.add_colortable(fobj, os.path.splitext(os.path.basename(fname))[0])
-                        log.debug('Added colortable from file: %s', fname)
+                        log.debug("Added colortable from file: %s", fname)
                     except RuntimeError:
                         # If we get a file we can't handle, assume we weren't meant to.
-                        log.info('Skipping unparsable file: %s', fname)
+                        log.info("Skipping unparsable file: %s", fname)
 
     def add_colortable(self, fobj, name):
         r"""Add a color table from a file to the registry.
@@ -174,7 +174,7 @@ class ColortableRegistry(dict):
 
         """
         self[name] = read_colortable(fobj)
-        self[name + '_r'] = self[name][::-1]
+        self[name + "_r"] = self[name][::-1]
 
     def get_with_steps(self, name, start, step):
         r"""Get a color table from the registry with a corresponding norm.
@@ -273,7 +273,7 @@ class ColortableRegistry(dict):
 
 
 registry = ColortableRegistry()
-registry.scan_resource('metpy.plots', 'colortable_files')
+registry.scan_resource("metpy.plots", "colortable_files")
 registry.scan_dir(os.path.curdir)
 
 with exporter:

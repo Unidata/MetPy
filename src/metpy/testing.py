@@ -18,6 +18,7 @@ import xarray as xr
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.deprecation import MetpyDeprecationWarning
+
 from .units import units
 
 
@@ -27,10 +28,12 @@ def needs_cartopy(test_func):
     Will skip the decorated test, or any test using the decorated fixture, if ``cartopy`` is
     unable to be imported.
     """
+
     @functools.wraps(test_func)
     def wrapped(*args, **kwargs):
-        pytest.importorskip('cartopy')
+        pytest.importorskip("cartopy")
         return test_func(*args, **kwargs)
+
     return wrapped
 
 
@@ -40,10 +43,12 @@ def needs_pyproj(test_func):
     Will skip the decorated test, or any test using the decorated fixture, if ``pyproj`` is
     unable to be imported.
     """
+
     @functools.wraps(test_func)
     def wrapped(*args, **kwargs):
-        pytest.importorskip('pyproj')
+        pytest.importorskip("pyproj")
         return test_func(*args, **kwargs)
+
     return wrapped
 
 
@@ -63,12 +68,14 @@ def get_upper_air_data(date, station):
         dict : upper air data
 
     """
-    sounding_key = f'{date:%Y-%m-%dT%HZ}_{station}'
-    sounding_files = {'2016-05-22T00Z_DDC': 'may22_sounding.txt',
-                      '2013-01-20T12Z_OUN': 'jan20_sounding.txt',
-                      '1999-05-04T00Z_OUN': 'may4_sounding.txt',
-                      '2002-11-11T00Z_BNA': 'nov11_sounding.txt',
-                      '2010-12-09T12Z_BOI': 'dec9_sounding.txt'}
+    sounding_key = f"{date:%Y-%m-%dT%HZ}_{station}"
+    sounding_files = {
+        "2016-05-22T00Z_DDC": "may22_sounding.txt",
+        "2013-01-20T12Z_OUN": "jan20_sounding.txt",
+        "1999-05-04T00Z_OUN": "may4_sounding.txt",
+        "2002-11-11T00Z_BNA": "nov11_sounding.txt",
+        "2010-12-09T12Z_BOI": "dec9_sounding.txt",
+    }
 
     fname = sounding_files[sounding_key]
     fobj = get_test_data(fname)
@@ -76,7 +83,7 @@ def get_upper_air_data(date, station):
     def to_float(s):
         # Remove all whitespace and replace empty values with NaN
         if not s.strip():
-            s = 'nan'
+            s = "nan"
         return float(s)
 
     # Skip dashes, column names, units, and more dashes
@@ -89,8 +96,13 @@ def get_upper_air_data(date, station):
     # Read all lines of data and append to lists only if there is some data
     for row in fobj:
         level = to_float(row[0:7])
-        values = (to_float(row[7:14]), to_float(row[14:21]), to_float(row[21:28]),
-                  to_float(row[42:49]), to_float(row[49:56]))
+        values = (
+            to_float(row[7:14]),
+            to_float(row[14:21]),
+            to_float(row[21:28]),
+            to_float(row[42:49]),
+            to_float(row[49:56]),
+        )
 
         if any(np.invert(np.isnan(values[1:]))):
             arr_data.append((level,) + values)
@@ -106,8 +118,16 @@ def get_upper_air_data(date, station):
 
     u, v = wind_components(spd, direc)
 
-    return {'pressure': p, 'height': z, 'temperature': t,
-            'dewpoint': td, 'direction': direc, 'speed': spd, 'u_wind': u, 'v_wind': v}
+    return {
+        "pressure": p,
+        "height": z,
+        "temperature": t,
+        "dewpoint": td,
+        "direction": direc,
+        "speed": spd,
+        "u_wind": u,
+        "v_wind": v,
+    }
 
 
 def check_and_drop_units(actual, desired):
@@ -139,22 +159,25 @@ def check_and_drop_units(actual, desired):
             actual = actual.metpy.unit_array
         # If the desired result has units, add dimensionless units if necessary, then
         # ensure that this is compatible to the desired result.
-        if hasattr(desired, 'units'):
-            if not hasattr(actual, 'units'):
-                actual = units.Quantity(actual, 'dimensionless')
+        if hasattr(desired, "units"):
+            if not hasattr(actual, "units"):
+                actual = units.Quantity(actual, "dimensionless")
             actual = actual.to(desired.units)
         # Otherwise, the desired result has no units. Convert the actual result to
         # dimensionless units if it is a united quantity.
         else:
-            if hasattr(actual, 'units'):
-                actual = actual.to('dimensionless')
+            if hasattr(actual, "units"):
+                actual = actual.to("dimensionless")
     except DimensionalityError:
-        raise AssertionError('Units are not compatible: {} should be {}'.format(
-            actual.units, getattr(desired, 'units', 'dimensionless'))) from None
+        raise AssertionError(
+            "Units are not compatible: {} should be {}".format(
+                actual.units, getattr(desired, "units", "dimensionless")
+            )
+        ) from None
 
-    if hasattr(actual, 'magnitude'):
+    if hasattr(actual, "magnitude"):
         actual = actual.magnitude
-    if hasattr(desired, 'magnitude'):
+    if hasattr(desired, "magnitude"):
         desired = desired.magnitude
 
     return actual, desired
@@ -166,8 +189,8 @@ def check_mask(actual, desired):
     This handles the fact that `~numpy.testing.assert_array_equal` ignores masked values
     in either of the arrays. This ensures that the masks are identical.
     """
-    actual_mask = getattr(actual, 'mask', np.full(np.asarray(actual).shape, False))
-    desired_mask = getattr(desired, 'mask', np.full(np.asarray(desired).shape, False))
+    actual_mask = getattr(actual, "mask", np.full(np.asarray(actual).shape, False))
+    desired_mask = getattr(desired, "mask", np.full(np.asarray(desired).shape, False))
     np.testing.assert_array_equal(actual_mask, desired_mask)
 
 
@@ -213,13 +236,14 @@ def assert_xarray_allclose(actual, desired):
     assert desired.attrs == actual.attrs
 
 
-@pytest.fixture(scope='module', autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def set_agg_backend():
     """Fixture to ensure the Agg backend is active."""
     import matplotlib.pyplot as plt
+
     prev_backend = plt.get_backend()
     try:
-        plt.switch_backend('agg')
+        plt.switch_backend("agg")
         yield
     finally:
         plt.switch_backend(prev_backend)
@@ -232,12 +256,15 @@ def check_and_silence_warning(warn_type):
     tests, but checks that the warning is present and makes sure the function still works as
     intended.
     """
+
     def dec(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             with pytest.warns(warn_type):
                 return func(*args, **kwargs)
+
         return wrapper
+
     return dec
 
 

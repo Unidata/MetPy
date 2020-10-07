@@ -5,10 +5,13 @@
 
 import numpy as np
 
-from .points import (interpolate_to_points, inverse_distance_to_points,
-                     natural_neighbor_to_points)
 from ..package_tools import Exporter
 from ..pandas import preprocess_pandas
+from .points import (
+    interpolate_to_points,
+    inverse_distance_to_points,
+    natural_neighbor_to_points,
+)
 
 exporter = Exporter(globals())
 
@@ -33,8 +36,8 @@ def generate_grid(horiz_dim, bbox):
     """
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
-    grid_x = np.linspace(bbox['west'], bbox['east'], x_steps)
-    grid_y = np.linspace(bbox['south'], bbox['north'], y_steps)
+    grid_x = np.linspace(bbox["west"], bbox["east"], x_steps)
+    grid_y = np.linspace(bbox["south"], bbox["north"], y_steps)
 
     gx, gy = np.meshgrid(grid_x, grid_y)
 
@@ -74,8 +77,8 @@ def get_xy_range(bbox):
         Range in meters in y dimension.
 
     """
-    x_range = bbox['east'] - bbox['west']
-    y_range = bbox['north'] - bbox['south']
+    x_range = bbox["east"] - bbox["west"]
+    y_range = bbox["north"] - bbox["south"]
 
     return x_range, y_range
 
@@ -126,7 +129,7 @@ def get_boundary_coords(x, y, spatial_pad=0):
     north = np.max(y) + spatial_pad
     south = np.min(y) - spatial_pad
 
-    return {'west': west, 'south': south, 'east': east, 'north': north}
+    return {"west": west, "south": south, "east": east, "north": north}
 
 
 @exporter.export
@@ -168,8 +171,18 @@ def natural_neighbor_to_grid(xp, yp, variable, grid_x, grid_y):
 
 
 @exporter.export
-def inverse_distance_to_grid(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
-                             min_neighbors=3, kind='cressman'):
+def inverse_distance_to_grid(
+    xp,
+    yp,
+    variable,
+    grid_x,
+    grid_y,
+    r,
+    gamma=None,
+    kappa=None,
+    min_neighbors=3,
+    kind="cressman",
+):
     r"""Generate an inverse distance interpolation of the given points to a regular grid.
 
     Values are assigned to the given grid using inverse distance weighting based on either
@@ -215,17 +228,35 @@ def inverse_distance_to_grid(xp, yp, variable, grid_x, grid_y, r, gamma=None, ka
     # Handle grid-to-points conversion, and use function from `interpolation`
     points_obs = list(zip(xp, yp))
     points_grid = generate_grid_coords(grid_x, grid_y)
-    img = inverse_distance_to_points(points_obs, variable, points_grid, r, gamma=gamma,
-                                     kappa=kappa, min_neighbors=min_neighbors, kind=kind)
+    img = inverse_distance_to_points(
+        points_obs,
+        variable,
+        points_grid,
+        r,
+        gamma=gamma,
+        kappa=kappa,
+        min_neighbors=min_neighbors,
+        kind=kind,
+    )
     return img.reshape(grid_x.shape)
 
 
 @exporter.export
 @preprocess_pandas
-def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
-                        minimum_neighbors=3, gamma=0.25, kappa_star=5.052,
-                        search_radius=None, rbf_func='linear', rbf_smooth=0,
-                        boundary_coords=None):
+def interpolate_to_grid(
+    x,
+    y,
+    z,
+    interp_type="linear",
+    hres=50000,
+    minimum_neighbors=3,
+    gamma=0.25,
+    kappa_star=5.052,
+    search_radius=None,
+    rbf_func="linear",
+    rbf_smooth=0,
+    boundary_coords=None,
+):
     r"""Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
     Parameters
@@ -297,10 +328,18 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
     # Handle grid-to-points conversion, and use function from `interpolation`
     points_obs = np.array(list(zip(x, y)))
     points_grid = generate_grid_coords(grid_x, grid_y)
-    img = interpolate_to_points(points_obs, z, points_grid, interp_type=interp_type,
-                                minimum_neighbors=minimum_neighbors, gamma=gamma,
-                                kappa_star=kappa_star, search_radius=search_radius,
-                                rbf_func=rbf_func, rbf_smooth=rbf_smooth)
+    img = interpolate_to_points(
+        points_obs,
+        z,
+        points_grid,
+        interp_type=interp_type,
+        minimum_neighbors=minimum_neighbors,
+        gamma=gamma,
+        kappa_star=kappa_star,
+        search_radius=search_radius,
+        rbf_func=rbf_func,
+        rbf_smooth=rbf_smooth,
+    )
 
     return grid_x, grid_y, img.reshape(grid_x.shape)
 
@@ -342,18 +381,22 @@ def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=Tru
 
     """
     from ..calc import find_bounding_indices
+
     # Find index values above and below desired interpolated surface value
-    above, below, good = find_bounding_indices(level_var, [level], axis=0,
-                                               from_below=bottom_up_search)
+    above, below, good = find_bounding_indices(
+        level_var, [level], axis=0, from_below=bottom_up_search
+    )
 
     # Linear interpolation of variable to interpolated surface value
-    interp_level = (((level - level_var[above]) / (level_var[below] - level_var[above]))
-                    * (interp_var[below] - interp_var[above])) + interp_var[above]
+    interp_level = (
+        ((level - level_var[above]) / (level_var[below] - level_var[above]))
+        * (interp_var[below] - interp_var[above])
+    ) + interp_var[above]
 
     # Handle missing values and instances where no values for surface exist above and below
     interp_level[~good] = np.nan
-    minvar = (np.min(level_var, axis=0) >= level)
-    maxvar = (np.max(level_var, axis=0) <= level)
+    minvar = np.min(level_var, axis=0) >= level
+    maxvar = np.max(level_var, axis=0) <= level
     interp_level[0][minvar] = interp_var[-1][minvar]
     interp_level[0][maxvar] = interp_var[0][maxvar]
     return interp_level.squeeze()

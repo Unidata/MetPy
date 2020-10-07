@@ -58,7 +58,7 @@ print(area)
 # Units can be converted using the `to()` method. While you won't see square meters in
 # the units list, we can parse complex/compound units as strings:
 
-print(area.to('m^2'))
+print(area.to("m^2"))
 
 #########################################################################
 # Temperature
@@ -110,8 +110,8 @@ print(273 * units.kelvin - 10 * units.kelvin)
 # We can create compound units for things like speed by parsing a string of
 # units. Abbreviations or full unit names are acceptable.
 
-u = np.random.randint(0, 15, 10) * units('m/s')
-v = np.random.randint(0, 15, 10) * units('meters/second')
+u = np.random.randint(0, 15, 10) * units("m/s")
+v = np.random.randint(0, 15, 10) * units("meters/second")
 
 print(u)
 print(v)

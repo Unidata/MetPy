@@ -220,7 +220,7 @@ def circumcenter(pt0, pt1, pt2):
     ac_x_diff = a_x - c_x
     ba_x_diff = b_x - a_x
 
-    d_div = (a_x * bc_y_diff + b_x * ca_y_diff + c_x * ab_y_diff)
+    d_div = a_x * bc_y_diff + b_x * ca_y_diff + c_x * ab_y_diff
 
     if d_div == 0:
         raise ZeroDivisionError

@@ -23,13 +23,13 @@ from ..xarray import preprocess_and_wrap
 exporter = Exporter(globals())
 
 # The following variables are constants for a standard atmosphere
-t0 = 288. * units.kelvin
+t0 = 288.0 * units.kelvin
 p0 = 1013.25 * units.hPa
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]')
+@preprocess_and_wrap(wrap_like="u")
+@check_units("[speed]", "[speed]")
 def wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
 
@@ -55,9 +55,9 @@ def wind_speed(u, v):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]')
-def wind_direction(u, v, convention='from'):
+@preprocess_and_wrap(wrap_like="u")
+@check_units("[speed]", "[speed]")
+def wind_direction(u, v, convention="from"):
     r"""Compute the wind direction from u and v-components.
 
     Parameters
@@ -87,30 +87,30 @@ def wind_direction(u, v, convention='from'):
     of 0.
 
     """
-    wdir = 90. * units.deg - np.arctan2(-v, -u)
+    wdir = 90.0 * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = np.atleast_1d(wdir)
 
     # Handle oceanographic convection
-    if convention == 'to':
+    if convention == "to":
         wdir -= 180 * units.deg
-    elif convention not in ('to', 'from'):
+    elif convention not in ("to", "from"):
         raise ValueError('Invalid kwarg for "convention". Valid options are "from" or "to".')
 
     mask = wdir <= 0
     if np.any(mask):
-        wdir[mask] += 360. * units.deg
+        wdir[mask] += 360.0 * units.deg
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude
-    calm_mask = (np.asarray(u.magnitude) == 0.) & (np.asarray(v.magnitude) == 0.)
+    calm_mask = (np.asarray(u.magnitude) == 0.0) & (np.asarray(v.magnitude) == 0.0)
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
     if np.any(calm_mask):
-        wdir[calm_mask] = 0. * units.deg
-    return wdir.reshape(origshape).to('degrees')
+        wdir[calm_mask] = 0.0 * units.deg
+    return wdir.reshape(origshape).to("degrees")
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like=('speed', 'speed'))
-@check_units('[speed]')
+@preprocess_and_wrap(wrap_like=("speed", "speed"))
+@check_units("[speed]")
 def wind_components(speed, wind_direction):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
@@ -147,8 +147,8 @@ def wind_components(speed, wind_direction):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature')
-@check_units(temperature='[temperature]', speed='[speed]')
+@preprocess_and_wrap(wrap_like="temperature")
+@check_units(temperature="[temperature]", speed="[speed]")
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
 
@@ -194,10 +194,14 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
         # noinspection PyAugmentAssignment
         speed = speed * 1.5
 
-    temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
-    speed_factor = speed.to('km/hr').magnitude ** 0.16
-    wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude
-                          - 11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
+    temp_limit, speed_limit = 10.0 * units.degC, 3 * units.mph
+    speed_factor = speed.to("km/hr").magnitude ** 0.16
+    wcti = units.Quantity(
+        (0.6215 + 0.3965 * speed_factor) * temperature.to("degC").magnitude
+        - 11.37 * speed_factor
+        + 13.12,
+        units.degC,
+    ).to(temperature.units)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -209,8 +213,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature')
-@check_units('[temperature]')
+@preprocess_and_wrap(wrap_like="temperature")
+@check_units("[temperature]")
 def heat_index(temperature, relative_humidity, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
@@ -247,9 +251,9 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     temperature = np.atleast_1d(temperature)
     relative_humidity = np.atleast_1d(relative_humidity)
     # assign units to relative_humidity if they currently are not present
-    if not hasattr(relative_humidity, 'units'):
+    if not hasattr(relative_humidity, "units"):
         relative_humidity = relative_humidity * units.dimensionless
-    delta = temperature.to(units.degF) - 0. * units.degF
+    delta = temperature.to(units.degF) - 0.0 * units.degF
     rh2 = relative_humidity * relative_humidity
     delta2 = delta * delta
 
@@ -257,29 +261,31 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * relative_humidity
 
     # More refined Heat Index -- constants converted for relative_humidity in [0, 1]
-    b = (-42.379 * units.degF
-         + 2.04901523 * delta
-         + 1014.333127 * units.delta_degF * relative_humidity
-         - 22.475541 * delta * relative_humidity
-         - 6.83783e-3 / units.delta_degF * delta2
-         - 5.481717e2 * units.delta_degF * rh2
-         + 1.22874e-1 / units.delta_degF * delta2 * relative_humidity
-         + 8.5282 * delta * rh2
-         - 1.99e-2 / units.delta_degF * delta2 * rh2)
+    b = (
+        -42.379 * units.degF
+        + 2.04901523 * delta
+        + 1014.333127 * units.delta_degF * relative_humidity
+        - 22.475541 * delta * relative_humidity
+        - 6.83783e-3 / units.delta_degF * delta2
+        - 5.481717e2 * units.delta_degF * rh2
+        + 1.22874e-1 / units.delta_degF * delta2 * relative_humidity
+        + 8.5282 * delta * rh2
+        - 1.99e-2 / units.delta_degF * delta2 * rh2
+    )
 
     # Create return heat index
     hi = np.full(np.shape(temperature), np.nan) * units.degF
     # Retain masked status of temperature with resulting heat index
-    if hasattr(temperature, 'mask'):
+    if hasattr(temperature, "mask"):
         hi = masked_array(hi)
 
     # If T <= 40F, Heat Index is T
-    sel = (temperature <= 40. * units.degF)
+    sel = temperature <= 40.0 * units.degF
     if np.any(sel):
         hi[sel] = temperature[sel].to(units.degF)
 
     # If a < 79F and hi is unset, Heat Index is a
-    sel = (a < 79. * units.degF) & np.isnan(hi)
+    sel = (a < 79.0 * units.degF) & np.isnan(hi)
     if np.any(sel):
         hi[sel] = a[sel]
 
@@ -289,36 +295,51 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         hi[sel] = b[sel]
 
     # Adjustment for RH <= 13% and 80F <= T <= 112F
-    sel = ((relative_humidity <= 13. * units.percent) & (temperature >= 80. * units.degF)
-           & (temperature <= 112. * units.degF))
+    sel = (
+        (relative_humidity <= 13.0 * units.percent)
+        & (temperature >= 80.0 * units.degF)
+        & (temperature <= 112.0 * units.degF)
+    )
     if np.any(sel):
-        rh15adj = ((13. - relative_humidity[sel] * 100.) / 4.
-                   * np.sqrt((17. * units.delta_degF
-                              - np.abs(delta[sel] - 95. * units.delta_degF))
-                             / 17. * units.delta_degF))
+        rh15adj = (
+            (13.0 - relative_humidity[sel] * 100.0)
+            / 4.0
+            * np.sqrt(
+                (17.0 * units.delta_degF - np.abs(delta[sel] - 95.0 * units.delta_degF))
+                / 17.0
+                * units.delta_degF
+            )
+        )
         hi[sel] = hi[sel] - rh15adj
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
-    sel = ((relative_humidity > 85. * units.percent) & (temperature >= 80. * units.degF)
-           & (temperature <= 87. * units.degF))
+    sel = (
+        (relative_humidity > 85.0 * units.percent)
+        & (temperature >= 80.0 * units.degF)
+        & (temperature <= 87.0 * units.degF)
+    )
     if np.any(sel):
-        rh85adj = 0.02 * (relative_humidity[sel] * 100. - 85.) * (87. * units.delta_degF
-                                                                  - delta[sel])
+        rh85adj = (
+            0.02
+            * (relative_humidity[sel] * 100.0 - 85.0)
+            * (87.0 * units.delta_degF - delta[sel])
+        )
         hi[sel] = hi[sel] + rh85adj
 
     # See if we need to mask any undefined values
     if mask_undefined:
-        mask = np.array(temperature < 80. * units.degF)
+        mask = np.array(temperature < 80.0 * units.degF)
         if mask.any():
             hi = masked_array(hi, mask=mask)
     return hi
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature')
-@check_units(temperature='[temperature]', speed='[speed]')
-def apparent_temperature(temperature, relative_humidity, speed, face_level_winds=False,
-                         mask_undefined=True):
+@preprocess_and_wrap(wrap_like="temperature")
+@check_units(temperature="[temperature]", speed="[speed]")
+def apparent_temperature(
+    temperature, relative_humidity, speed, face_level_winds=False, mask_undefined=True
+):
     r"""Calculate the current apparent temperature.
 
     Calculates the current apparent temperature based on the wind chill or heat index
@@ -364,19 +385,24 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     speed = np.atleast_1d(speed)
 
     # NB: mask_defined=True is needed to know where computed values exist
-    wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
-                                       mask_undefined=True).to(temperature.units)
+    wind_chill_temperature = windchill(
+        temperature, speed, face_level_winds=face_level_winds, mask_undefined=True
+    ).to(temperature.units)
 
-    heat_index_temperature = heat_index(temperature, relative_humidity,
-                                        mask_undefined=True).to(temperature.units)
+    heat_index_temperature = heat_index(
+        temperature, relative_humidity, mask_undefined=True
+    ).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
     # NB: older numpy.ma.where does not return a masked array
     app_temperature = masked_array(
-        np.ma.where(masked_array(wind_chill_temperature).mask,
-                    heat_index_temperature.to(temperature.units),
-                    wind_chill_temperature.to(temperature.units)
-                    ), temperature.units)
+        np.ma.where(
+            masked_array(wind_chill_temperature).mask,
+            heat_index_temperature.to(temperature.units),
+            wind_chill_temperature.to(temperature.units),
+        ),
+        temperature.units,
+    )
 
     # If mask_undefined is False, then set any masked values to the temperature
     if not mask_undefined:
@@ -384,7 +410,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
 
     # If no values are masked and provided temperature does not have a mask
     # we should return a non-masked array
-    if not np.any(app_temperature.mask) and not hasattr(temperature, 'mask'):
+    if not np.any(app_temperature.mask) and not hasattr(temperature, "mask"):
         app_temperature = np.array(app_temperature.m) * temperature.units
 
     if is_not_scalar:
@@ -394,8 +420,8 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='pressure')
-@check_units('[pressure]')
+@preprocess_and_wrap(wrap_like="pressure")
+@check_units("[pressure]")
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to height using the U.S. standard atmosphere [NOAA1976]_.
 
@@ -416,14 +442,15 @@ def pressure_to_height_std(pressure):
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
 
     """
-    gamma = 6.5 * units('K/km')
-    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
-        mpconsts.Rd * gamma / mpconsts.g))
+    gamma = 6.5 * units("K/km")
+    return (t0 / gamma) * (
+        1 - (pressure / p0).to("dimensionless") ** (mpconsts.Rd * gamma / mpconsts.g)
+    )
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='height')
-@check_units('[length]')
+@preprocess_and_wrap(wrap_like="height")
+@check_units("[length]")
 def height_to_geopotential(height):
     r"""Compute geopotential for a given height above sea level.
 
@@ -479,7 +506,7 @@ def height_to_geopotential(height):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='geopotential')
+@preprocess_and_wrap(wrap_like="geopotential")
 def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
 
@@ -539,8 +566,8 @@ def geopotential_to_height(geopotential):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='height')
-@check_units('[length]')
+@preprocess_and_wrap(wrap_like="height")
+@check_units("[length]")
 def height_to_pressure_std(height):
     r"""Convert height data to pressures using the U.S. standard atmosphere [NOAA1976]_.
 
@@ -561,12 +588,12 @@ def height_to_pressure_std(height):
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
     """
-    gamma = 6.5 * units('K/km')
+    gamma = 6.5 * units("K/km")
     return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='latitude')
+@preprocess_and_wrap(wrap_like="latitude")
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
@@ -584,12 +611,12 @@ def coriolis_parameter(latitude):
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
-    return (2. * mpconsts.omega * np.sin(latitude)).to('1/s')
+    return (2.0 * mpconsts.omega * np.sin(latitude)).to("1/s")
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='pressure')
-@check_units('[pressure]', '[length]')
+@preprocess_and_wrap(wrap_like="pressure")
+@check_units("[pressure]", "[length]")
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
 
@@ -617,8 +644,8 @@ def add_height_to_pressure(pressure, height):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='height')
-@check_units('[length]', '[pressure]')
+@preprocess_and_wrap(wrap_like="height")
+@check_units("[length]", "[pressure]")
 def add_pressure_to_height(height, pressure):
     r"""Calculate the height at a certain pressure above another height.
 
@@ -646,8 +673,8 @@ def add_pressure_to_height(height, pressure):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='sigma')
-@check_units('[dimensionless]', '[pressure]', '[pressure]')
+@preprocess_and_wrap(wrap_like="sigma")
+@check_units("[dimensionless]", "[pressure]", "[pressure]")
 def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     r"""Calculate pressure from sigma values.
 
@@ -680,16 +707,16 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
 
     """
     if np.any(sigma < 0) or np.any(sigma > 1):
-        raise ValueError('Sigma values should be bounded by 0 and 1')
+        raise ValueError("Sigma values should be bounded by 0 and 1")
 
     if pressure_sfc.magnitude < 0 or pressure_top.magnitude < 0:
-        raise ValueError('Pressure input should be non-negative')
+        raise ValueError("Pressure input should be non-negative")
 
     return sigma * (pressure_sfc - pressure_top) + pressure_top
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='scalar_grid', match_unit=True, to_magnitude=True)
+@preprocess_and_wrap(wrap_like="scalar_grid", match_unit=True, to_magnitude=True)
 def smooth_gaussian(scalar_grid, n):
     """Filter with normal distribution of weights.
 
@@ -781,7 +808,7 @@ def smooth_gaussian(scalar_grid, n):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='scalar_grid', match_unit=True, to_magnitude=True)
+@preprocess_and_wrap(wrap_like="scalar_grid", match_unit=True, to_magnitude=True)
 def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     """Filter with an arbitrary window smoother.
 
@@ -823,6 +850,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     smooth_rectangular, smooth_circular, smooth_n_point, smooth_gaussian
 
     """
+
     def _pad(n):
         # Return number of entries to pad given length along dimension.
         return (n - 1) // 2
@@ -842,7 +870,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     # Verify that shape in all dimensions is odd (need to have a neighboorhood around a
     # central point)
     if any((size % 2 == 0) for size in window.shape):
-        raise ValueError('The shape of the smoothing window must be odd in all dimensions.')
+        raise ValueError("The shape of the smoothing window must be odd in all dimensions.")
 
     # Optionally normalize the supplied weighting window
     if normalize_weights:
@@ -858,16 +886,18 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
 
     # Index for full array elements, offset by the weight index
     def offset_full_index(weight_index):
-        return _trailing_dims(_offset(_pad(n), weight_index[i] - _pad(n))
-                              for i, n in enumerate(weights.shape))
+        return _trailing_dims(
+            _offset(_pad(n), weight_index[i] - _pad(n)) for i, n in enumerate(weights.shape)
+        )
 
     # TODO: this is not lazy-loading/dask compatible, as it "densifies" the data
     data = np.array(scalar_grid)
     for _ in range(passes):
         # Set values corresponding to smoothing weights by summing over each weight and
         # applying offsets in needed dimensions
-        data[inner_full_index] = sum(weights[index] * data[offset_full_index(index)]
-                                     for index in weight_indexes)
+        data[inner_full_index] = sum(
+            weights[index] * data[offset_full_index(index)] for index in weight_indexes
+        )
 
     return data
 
@@ -994,23 +1024,23 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
 
     """
     if n == 9:
-        weights = np.array([[0.0625, 0.125, 0.0625],
-                            [0.125, 0.25, 0.125],
-                            [0.0625, 0.125, 0.0625]])
+        weights = np.array(
+            [[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]]
+        )
     elif n == 5:
-        weights = np.array([[0., 0.125, 0.],
-                            [0.125, 0.5, 0.125],
-                            [0., 0.125, 0.]])
+        weights = np.array([[0.0, 0.125, 0.0], [0.125, 0.5, 0.125], [0.0, 0.125, 0.0]])
     else:
-        raise ValueError('The number of points to use in the smoothing '
-                         'calculation must be either 5 or 9.')
+        raise ValueError(
+            "The number of points to use in the smoothing "
+            "calculation must be either 5 or 9."
+        )
 
     return smooth_window(scalar_grid, window=weights, passes=passes, normalize_weights=False)
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='altimeter_value')
-@check_units('[pressure]', '[length]')
+@preprocess_and_wrap(wrap_like="altimeter_value")
+@check_units("[pressure]", "[length]")
 def altimeter_to_station_pressure(altimeter_value, height):
     r"""Convert the altimeter measurement to station pressure.
 
@@ -1080,19 +1110,19 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
     """
     # Gamma Value for this case
-    gamma = 0.0065 * units('K/m')
+    gamma = 0.0065 * units("K/m")
 
     # N-Value
     n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
 
-    return ((altimeter_value ** n
-             - ((p0.to(altimeter_value.units) ** n * gamma * height) / t0)) ** (1 / n)
-            + 0.3 * units.hPa)
+    return (
+        altimeter_value ** n - ((p0.to(altimeter_value.units) ** n * gamma * height) / t0)
+    ) ** (1 / n) + 0.3 * units.hPa
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='altimeter_value')
-@check_units('[pressure]', '[length]', '[temperature]')
+@preprocess_and_wrap(wrap_like="altimeter_value")
+@check_units("[pressure]", "[length]", "[temperature]")
 def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     r"""Convert the altimeter setting to sea-level pressure.
 
@@ -1179,10 +1209,12 @@ def _check_radians(value, max_radians=2 * np.pi):
 
     """
     try:
-        value = value.to('radians').m
+        value = value.to("radians").m
     except AttributeError:
         pass
     if np.any(np.greater(np.abs(value), max_radians)):
-        warnings.warn('Input over {} radians. '
-                      'Ensure proper units are given.'.format(np.nanmax(max_radians)))
+        warnings.warn(
+            "Input over {} radians. "
+            "Ensure proper units are given.".format(np.nanmax(max_radians))
+        )
     return value

@@ -3,18 +3,19 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality that we have upstreamed or will upstream into matplotlib."""
 
+# See if we need to patch in our own scattertext implementation
+from matplotlib.axes import Axes  # noqa: E402, I100, I202
+
 # See if we should monkey-patch Barbs for better pivot
 import matplotlib.transforms as transforms
 import numpy as np
 
-# See if we need to patch in our own scattertext implementation
-from matplotlib.axes import Axes  # noqa: E402, I100, I202
-if not hasattr(Axes, 'scattertext'):
-    import matplotlib.cbook as cbook
-    import matplotlib.transforms as mtransforms
+if not hasattr(Axes, "scattertext"):
     from matplotlib import rcParams
     from matplotlib.artist import allow_rasterization
+    import matplotlib.cbook as cbook
     from matplotlib.text import Text
+    import matplotlib.transforms as mtransforms
 
     def scattertext(self, x, y, texts, loc=(0, 0), **kw):
         """Add text to the axes.
@@ -61,10 +62,11 @@ if not hasattr(Axes, 'scattertext'):
         """
         # Start with default args and update from kw
         new_kw = {
-            'verticalalignment': 'center',
-            'horizontalalignment': 'center',
-            'transform': self.transData,
-            'clip_on': False}
+            "verticalalignment": "center",
+            "horizontalalignment": "center",
+            "transform": self.transData,
+            "clip_on": False,
+        }
         new_kw.update(kw)
 
         # Default to centered on point--special case it to keep transform
@@ -149,7 +151,7 @@ if not hasattr(Axes, 'scattertext'):
 
         def __str__(self):
             """Make a string representation of `TextCollection`."""
-            return 'TextCollection'
+            return "TextCollection"
 
         __repr__ = __str__
 
@@ -184,14 +186,13 @@ if not hasattr(Axes, 'scattertext'):
             if not any(self.text):
                 return
 
-            renderer.open_group('text', self.get_gid())
+            renderer.open_group("text", self.get_gid())
 
             trans = self.get_transform()
             if self.offset != (0, 0):
                 scale = self.axes.figure.dpi / 72
                 xoff, yoff = self.offset
-                trans += mtransforms.Affine2D().translate(scale * xoff,
-                                                          scale * yoff)
+                trans += mtransforms.Affine2D().translate(scale * xoff, scale * yoff)
 
             posx = self.convert_xunits(self.x)
             posy = self.convert_yunits(self.y)
@@ -215,7 +216,7 @@ if not hasattr(Axes, 'scattertext'):
 
                 self._text = t  # hack to allow self._get_layout to work
                 bbox, info, descent = self._get_layout(renderer)
-                self._text = ''
+                self._text = ""
 
                 for line, _, x, y in info:
 
@@ -226,28 +227,37 @@ if not hasattr(Axes, 'scattertext'):
                         y = canvash - y
 
                     # Can simplify next three lines once support for matplotlib<3.1 is dropped
-                    is_math_text = getattr(self, 'is_math_text', False)
-                    check_line = getattr(self, '_preprocess_math', is_math_text)
+                    is_math_text = getattr(self, "is_math_text", False)
+                    check_line = getattr(self, "_preprocess_math", is_math_text)
                     clean_line, ismath = check_line(line)
 
                     if self.get_path_effects():
                         from matplotlib.patheffects import PathEffectRenderer
+
                         textrenderer = PathEffectRenderer(
-                                            self.get_path_effects(), renderer)  # noqa: E126
+                            self.get_path_effects(), renderer
+                        )  # noqa: E126
                     else:
                         textrenderer = renderer
 
                     if self.get_usetex():
-                        textrenderer.draw_tex(gc, x, y, clean_line,
-                                              self._fontproperties, angle,
-                                              mtext=mtext)
+                        textrenderer.draw_tex(
+                            gc, x, y, clean_line, self._fontproperties, angle, mtext=mtext
+                        )
                     else:
-                        textrenderer.draw_text(gc, x, y, clean_line,
-                                               self._fontproperties, angle,
-                                               ismath=ismath, mtext=mtext)
+                        textrenderer.draw_text(
+                            gc,
+                            x,
+                            y,
+                            clean_line,
+                            self._fontproperties,
+                            angle,
+                            ismath=ismath,
+                            mtext=mtext,
+                        )
 
             gc.restore()
-            renderer.close_group('text')
+            renderer.close_group("text")
 
         def set_usetex(self, usetex):
             """
@@ -270,7 +280,7 @@ if not hasattr(Axes, 'scattertext'):
             the value of `rcParams['text.usetex']`
             """
             if self._usetex is None:
-                return rcParams['text.usetex']
+                return rcParams["text.usetex"]
             else:
                 return self._usetex
 

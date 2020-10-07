@@ -19,7 +19,7 @@ from metpy.plots import add_metpy_logo, add_timestamp, colortables
 ###########################################
 
 # Open the GINI file from the test data
-f = GiniFile(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini'))
+f = GiniFile(get_test_data("WEST-CONUS_4km_WV_20151208_2200.gini"))
 print(f)
 
 ###########################################
@@ -28,9 +28,9 @@ print(f)
 # handle parsing some netCDF Climate and Forecasting (CF) metadata to simplify working with
 # projections.
 ds = xr.open_dataset(f)
-x = ds.variables['x'][:]
-y = ds.variables['y'][:]
-dat = ds.metpy.parse_cf('WV')
+x = ds.variables["x"][:]
+y = ds.variables["y"][:]
+dat = ds.metpy.parse_cf("WV")
 
 ###########################################
 # Plot the image. We use MetPy's xarray/cartopy integration to automatically handle parsing
@@ -38,11 +38,16 @@ dat = ds.metpy.parse_cf('WV')
 fig = plt.figure(figsize=(10, 12))
 add_metpy_logo(fig, 125, 145)
 ax = fig.add_subplot(1, 1, 1, projection=dat.metpy.cartopy_crs)
-wv_norm, wv_cmap = colortables.get_with_range('WVCIMSS', 100, 260)
-wv_cmap.set_under('k')
-im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm,
-               extent=(x.min(), x.max(), y.min(), y.max()), origin='upper')
-ax.add_feature(cfeature.COASTLINE.with_scale('50m'))
+wv_norm, wv_cmap = colortables.get_with_range("WVCIMSS", 100, 260)
+wv_cmap.set_under("k")
+im = ax.imshow(
+    dat[:],
+    cmap=wv_cmap,
+    norm=wv_norm,
+    extent=(x.min(), x.max(), y.min(), y.max()),
+    origin="upper",
+)
+ax.add_feature(cfeature.COASTLINE.with_scale("50m"))
 add_timestamp(ax, f.prod_desc.datetime, y=0.02, high_contrast=True)
 
 plt.show()

@@ -26,7 +26,7 @@ def calc_kappa(spacing, kappa_star=5.052):
         kappa: float
 
     """
-    return kappa_star * (2.0 * spacing / np.pi)**2
+    return kappa_star * (2.0 * spacing / np.pi) ** 2
 
 
 def average_spacing(points):

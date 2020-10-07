@@ -18,25 +18,27 @@ import xarray
 import metpy.calc
 
 # Need to disable fallback before importing pint
-os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
+os.environ["PINT_ARRAY_PROTOCOL_FALLBACK"] = "0"
 import pint  # noqa: I100, E402
 
 
 def pytest_report_header(config, startdir):
     """Add dependency information to pytest output."""
-    return (f'Dep Versions: Matplotlib {matplotlib.__version__}, '
-            f'NumPy {numpy.__version__}, SciPy {scipy.__version__}, '
-            f'Xarray {xarray.__version__}, Pint {pint.__version__}, '
-            f'Pandas {pandas.__version__}, Traitlets {traitlets.__version__}, '
-            f'Pooch {pooch.version.full_version}')
+    return (
+        f"Dep Versions: Matplotlib {matplotlib.__version__}, "
+        f"NumPy {numpy.__version__}, SciPy {scipy.__version__}, "
+        f"Xarray {xarray.__version__}, Pint {pint.__version__}, "
+        f"Pandas {pandas.__version__}, Traitlets {traitlets.__version__}, "
+        f"Pooch {pooch.version.full_version}"
+    )
 
 
 @pytest.fixture(autouse=True)
 def doctest_available_modules(doctest_namespace):
     """Make modules available automatically to doctests."""
-    doctest_namespace['metpy'] = metpy
-    doctest_namespace['metpy.calc'] = metpy.calc
-    doctest_namespace['plt'] = matplotlib.pyplot
+    doctest_namespace["metpy"] = metpy
+    doctest_namespace["metpy.calc"] = metpy.calc
+    doctest_namespace["plt"] = matplotlib.pyplot
 
 
 @pytest.fixture()
@@ -46,7 +48,7 @@ def ccrs():
     Any testing function/fixture that needs access to ``cartopy.crs`` can simply add this to
     their parameter list.
     """
-    return pytest.importorskip('cartopy.crs')
+    return pytest.importorskip("cartopy.crs")
 
 
 @pytest.fixture
@@ -56,91 +58,85 @@ def cfeature():
     Any testing function/fixture that needs access to ``cartopy.feature`` can simply add this
     to their parameter list.
     """
-    return pytest.importorskip('cartopy.feature')
+    return pytest.importorskip("cartopy.feature")
 
 
 @pytest.fixture()
 def test_da_lonlat():
     """Return a DataArray with a lon/lat grid and no time coordinate for use in tests."""
-    pytest.importorskip('cartopy')
+    pytest.importorskip("cartopy")
 
     data = numpy.linspace(300, 250, 3 * 4 * 4).reshape((3, 4, 4))
     ds = xarray.Dataset(
-        {'temperature': (['isobaric', 'lat', 'lon'], data)},
+        {"temperature": (["isobaric", "lat", "lon"], data)},
         coords={
-            'isobaric': xarray.DataArray(
-                numpy.array([850., 700., 500.]),
-                name='isobaric',
-                dims=['isobaric'],
-                attrs={'units': 'hPa'}
+            "isobaric": xarray.DataArray(
+                numpy.array([850.0, 700.0, 500.0]),
+                name="isobaric",
+                dims=["isobaric"],
+                attrs={"units": "hPa"},
             ),
-            'lat': xarray.DataArray(
+            "lat": xarray.DataArray(
                 numpy.linspace(30, 40, 4),
-                name='lat',
-                dims=['lat'],
-                attrs={'units': 'degrees_north'}
+                name="lat",
+                dims=["lat"],
+                attrs={"units": "degrees_north"},
             ),
-            'lon': xarray.DataArray(
+            "lon": xarray.DataArray(
                 numpy.linspace(260, 270, 4),
-                name='lon',
-                dims=['lon'],
-                attrs={'units': 'degrees_east'}
-            )
-        }
+                name="lon",
+                dims=["lon"],
+                attrs={"units": "degrees_east"},
+            ),
+        },
     )
-    ds['temperature'].attrs['units'] = 'kelvin'
+    ds["temperature"].attrs["units"] = "kelvin"
 
-    return ds.metpy.parse_cf('temperature')
+    return ds.metpy.parse_cf("temperature")
 
 
 @pytest.fixture()
 def test_da_xy():
     """Return a DataArray with a x/y grid and a time coordinate for use in tests."""
-    pytest.importorskip('cartopy')
+    pytest.importorskip("cartopy")
 
     data = numpy.linspace(300, 250, 3 * 3 * 4 * 4).reshape((3, 3, 4, 4))
     ds = xarray.Dataset(
-        {'temperature': (['time', 'isobaric', 'y', 'x'], data),
-         'lambert_conformal': ([], '')},
+        {"temperature": (["time", "isobaric", "y", "x"], data), "lambert_conformal": ([], "")},
         coords={
-            'time': xarray.DataArray(
-                numpy.array([numpy.datetime64('2018-07-01T00:00'),
-                             numpy.datetime64('2018-07-01T06:00'),
-                             numpy.datetime64('2018-07-01T12:00')]),
-                name='time',
-                dims=['time']
+            "time": xarray.DataArray(
+                numpy.array(
+                    [
+                        numpy.datetime64("2018-07-01T00:00"),
+                        numpy.datetime64("2018-07-01T06:00"),
+                        numpy.datetime64("2018-07-01T12:00"),
+                    ]
+                ),
+                name="time",
+                dims=["time"],
             ),
-            'isobaric': xarray.DataArray(
-                numpy.array([850., 700., 500.]),
-                name='isobaric',
-                dims=['isobaric'],
-                attrs={'units': 'hPa'}
+            "isobaric": xarray.DataArray(
+                numpy.array([850.0, 700.0, 500.0]),
+                name="isobaric",
+                dims=["isobaric"],
+                attrs={"units": "hPa"},
             ),
-            'y': xarray.DataArray(
-                numpy.linspace(-1000, 500, 4),
-                name='y',
-                dims=['y'],
-                attrs={'units': 'km'}
+            "y": xarray.DataArray(
+                numpy.linspace(-1000, 500, 4), name="y", dims=["y"], attrs={"units": "km"}
             ),
-            'x': xarray.DataArray(
-                numpy.linspace(0, 1500, 4),
-                name='x',
-                dims=['x'],
-                attrs={'units': 'km'}
-            )
-        }
+            "x": xarray.DataArray(
+                numpy.linspace(0, 1500, 4), name="x", dims=["x"], attrs={"units": "km"}
+            ),
+        },
     )
-    ds['temperature'].attrs = {
-        'units': 'kelvin',
-        'grid_mapping': 'lambert_conformal'
-    }
-    ds['lambert_conformal'].attrs = {
-        'grid_mapping_name': 'lambert_conformal_conic',
-        'standard_parallel': 50.0,
-        'longitude_of_central_meridian': -107.0,
-        'latitude_of_projection_origin': 50.0,
-        'earth_shape': 'spherical',
-        'earth_radius': 6367470.21484375
+    ds["temperature"].attrs = {"units": "kelvin", "grid_mapping": "lambert_conformal"}
+    ds["lambert_conformal"].attrs = {
+        "grid_mapping_name": "lambert_conformal_conic",
+        "standard_parallel": 50.0,
+        "longitude_of_central_meridian": -107.0,
+        "latitude_of_projection_origin": 50.0,
+        "earth_shape": "spherical",
+        "earth_radius": 6367470.21484375,
     }
 
-    return ds.metpy.parse_cf('temperature')
+    return ds.metpy.parse_cf("temperature")

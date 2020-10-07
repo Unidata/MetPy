@@ -22,12 +22,12 @@ from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
 import matplotlib.transforms as transforms
 import numpy as np
 
-from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
 from ..units import concatenate, units
+from ._util import colored_line
 
 exporter = Exporter(globals())
 
@@ -62,9 +62,13 @@ class SkewTTransform(transforms.Affine2D):
             # x0, y0 = self._bbox.xmin, self._bbox.ymin
             # self.translate(-x0, -y0).skew_deg(self._rot, 0).translate(x0, y0)
             # Setting it this way is just more efficient.
-            self._mtx = np.array([[1.0, self._rot_factor, -self._rot_factor * self._bbox.ymin],
-                                  [0.0, 1.0, 0.0],
-                                  [0.0, 0.0, 1.0]])
+            self._mtx = np.array(
+                [
+                    [1.0, self._rot_factor, -self._rot_factor * self._bbox.ymin],
+                    [0.0, 1.0, 0.0],
+                    [0.0, 0.0, 1.0],
+                ]
+            )
 
             # Need to clear both the invalid flag *and* reset the inverse, which is cached
             # by the parent class.
@@ -90,8 +94,13 @@ class SkewXTick(maxis.XTick):
         # restore these states (`set_visible`) at the end of the block (after
         # the draw).
         with ExitStack() as stack:
-            for artist in [self.gridline, self.tick1line, self.tick2line,
-                           self.label1, self.label2]:
+            for artist in [
+                self.gridline,
+                self.tick1line,
+                self.tick2line,
+                self.label1,
+                self.label2,
+            ]:
                 stack.callback(artist.set_visible, artist.get_visible())
 
             self.tick1line.set_visible(self.tick1line.get_visible() and self.lower_in_bounds)
@@ -114,8 +123,9 @@ class SkewXTick(maxis.XTick):
     @property
     def grid_in_bounds(self):
         """Whether any of the tick grid line is in bounds."""
-        return transforms.interval_contains(self.axes.xaxis.get_view_interval(),
-                                            self.get_loc())
+        return transforms.interval_contains(
+            self.axes.xaxis.get_view_interval(), self.get_loc()
+        )
 
 
 class SkewXAxis(maxis.XAxis):
@@ -129,17 +139,27 @@ class SkewXAxis(maxis.XAxis):
     def _get_tick(self, major):
         # Warning stuff can go away when we only support Matplotlib >=3.3
         with warnings.catch_warnings():
-            warnings.simplefilter('ignore', getattr(
-                matplotlib, 'MatplotlibDeprecationWarning', DeprecationWarning))
+            warnings.simplefilter(
+                "ignore",
+                getattr(matplotlib, "MatplotlibDeprecationWarning", DeprecationWarning),
+            )
             return SkewXTick(self.axes, None, label=None, major=major)
 
     # Needed to properly handle tight bbox
     def _get_tick_bboxes(self, ticks, renderer):
         """Return lists of bboxes for ticks' label1's and label2's."""
-        return ([tick.label1.get_window_extent(renderer)
-                 for tick in ticks if tick.label1.get_visible() and tick.lower_in_bounds],
-                [tick.label2.get_window_extent(renderer)
-                 for tick in ticks if tick.label2.get_visible() and tick.upper_in_bounds])
+        return (
+            [
+                tick.label1.get_window_extent(renderer)
+                for tick in ticks
+                if tick.label1.get_visible() and tick.lower_in_bounds
+            ],
+            [
+                tick.label2.get_window_extent(renderer)
+                for tick in ticks
+                if tick.label2.get_visible() and tick.upper_in_bounds
+            ],
+        )
 
     def get_view_interval(self):
         """Get the view interval."""
@@ -155,7 +175,7 @@ class SkewSpine(mspines.Spine):
 
     def _adjust_location(self):
         pts = self._path.vertices
-        if self.spine_type == 'top':
+        if self.spine_type == "top":
             pts[:, 0] = self.axes.upper_xlim
         else:
             pts[:, 0] = self.axes.lower_xlim
@@ -173,7 +193,7 @@ class SkewXAxes(Axes):
     # The projection must specify a name.  This will be used be the
     # user to select the projection, i.e. ``subplot(111,
     # projection='skewx')``.
-    name = 'skewx'
+    name = "skewx"
 
     def __init__(self, *args, **kwargs):
         r"""Initialize `SkewXAxes`.
@@ -191,24 +211,26 @@ class SkewXAxes(Axes):
 
         """
         # This needs to be popped and set before moving on
-        self.rot = kwargs.pop('rotation', 30)
+        self.rot = kwargs.pop("rotation", 30)
         super().__init__(*args, **kwargs)
 
     def _init_axis(self):
         # Taken from Axes and modified to use our modified X-axis
         self.xaxis = SkewXAxis(self)
-        self.spines['top'].register_axis(self.xaxis)
-        self.spines['bottom'].register_axis(self.xaxis)
+        self.spines["top"].register_axis(self.xaxis)
+        self.spines["bottom"].register_axis(self.xaxis)
         self.yaxis = maxis.YAxis(self)
-        self.spines['left'].register_axis(self.yaxis)
-        self.spines['right'].register_axis(self.yaxis)
+        self.spines["left"].register_axis(self.yaxis)
+        self.spines["right"].register_axis(self.yaxis)
 
-    def _gen_axes_spines(self, locations=None, offset=0.0, units='inches'):
+    def _gen_axes_spines(self, locations=None, offset=0.0, units="inches"):
         # pylint: disable=unused-argument
-        spines = {'top': SkewSpine.linear_spine(self, 'top'),
-                  'bottom': mspines.Spine.linear_spine(self, 'bottom'),
-                  'left': mspines.Spine.linear_spine(self, 'left'),
-                  'right': mspines.Spine.linear_spine(self, 'right')}
+        spines = {
+            "top": SkewSpine.linear_spine(self, "top"),
+            "bottom": mspines.Spine.linear_spine(self, "bottom"),
+            "left": mspines.Spine.linear_spine(self, "left"),
+            "right": mspines.Spine.linear_spine(self, "right"),
+        }
         return spines
 
     def _set_lim_and_transforms(self):
@@ -239,8 +261,9 @@ class SkewXAxes(Axes):
     @property
     def upper_xlim(self):
         """Get the data limits for the x-axis along the top of the axes."""
-        return self.transData.inverted().transform([[self.bbox.xmin, self.bbox.ymax],
-                                                    self.bbox.max])[:, 0]
+        return self.transData.inverted().transform(
+            [[self.bbox.xmin, self.bbox.ymax], self.bbox.max]
+        )[:, 0]
 
 
 # Now register the projection with matplotlib so the user can select it.
@@ -293,7 +316,8 @@ class SkewT:
         """
         if fig is None:
             import matplotlib.pyplot as plt
-            figsize = plt.rcParams.get('figure.figsize', (7, 7))
+
+            figsize = plt.rcParams.get("figure.figsize", (7, 7))
             fig = plt.figure(figsize=figsize)
         self._fig = fig
 
@@ -301,7 +325,7 @@ class SkewT:
             raise ValueError("Specify only one of `rect' and `subplot', but not both")
 
         elif rect:
-            self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation)
+            self.ax = fig.add_axes(rect, projection="skewx", rotation=rotation)
 
         else:
             if subplot is not None:
@@ -313,10 +337,10 @@ class SkewT:
             else:
                 subplot = (1, 1, 1)
 
-            self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
+            self.ax = fig.add_subplot(*subplot, projection="skewx", rotation=rotation)
 
         # Set the yaxis as inverted with log scaling
-        self.ax.set_yscale('log')
+        self.ax.set_yscale("log")
 
         # Override default ticking for log scaling
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -339,8 +363,8 @@ class SkewT:
         self.moist_adiabats = None
 
         # Maintain a reasonable ratio of data limits. Only works on Matplotlib >= 3.2
-        if matplotlib.__version__[:3] > '3.1':
-            self.ax.set_aspect(aspect, adjustable='box')
+        if matplotlib.__version__[:3] > "3.1":
+            self.ax.set_aspect(aspect, adjustable="box")
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
@@ -373,8 +397,9 @@ class SkewT:
         t, pressure = _delete_masked_points(t, pressure)
         return self.ax.plot(t, pressure, *args, **kwargs)
 
-    def plot_barbs(self, pressure, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
-                   y_clip_radius=0.08, **kwargs):
+    def plot_barbs(
+        self, pressure, u, v, c=None, xloc=1.0, x_clip_radius=0.1, y_clip_radius=0.08, **kwargs
+    ):
         r"""Plot wind barbs.
 
         Adds wind barbs to the skew-T plot. This is a wrapper around the
@@ -416,14 +441,16 @@ class SkewT:
 
         """
         # If plot_units specified, convert the data to those units
-        plotting_units = kwargs.pop('plot_units', None)
+        plotting_units = kwargs.pop("plot_units", None)
         if plotting_units:
-            if hasattr(u, 'units') and hasattr(v, 'units'):
+            if hasattr(u, "units") and hasattr(v, "units"):
                 u = u.to(plotting_units)
                 v = v.to(plotting_units)
             else:
-                raise ValueError('To convert to plotting units, units must be attached to '
-                                 'u and v wind components.')
+                raise ValueError(
+                    "To convert to plotting units, units must be attached to "
+                    "u and v wind components."
+                )
 
         # Assemble array of x-locations in axes space
         x = np.empty_like(pressure)
@@ -431,18 +458,37 @@ class SkewT:
 
         # Do barbs plot at this location
         if c is not None:
-            b = self.ax.barbs(x, pressure, u, v, c,
-                              transform=self.ax.get_yaxis_transform(which='tick2'),
-                              clip_on=True, zorder=2, **kwargs)
+            b = self.ax.barbs(
+                x,
+                pressure,
+                u,
+                v,
+                c,
+                transform=self.ax.get_yaxis_transform(which="tick2"),
+                clip_on=True,
+                zorder=2,
+                **kwargs,
+            )
         else:
-            b = self.ax.barbs(x, pressure, u, v,
-                              transform=self.ax.get_yaxis_transform(which='tick2'),
-                              clip_on=True, zorder=2, **kwargs)
+            b = self.ax.barbs(
+                x,
+                pressure,
+                u,
+                v,
+                transform=self.ax.get_yaxis_transform(which="tick2"),
+                clip_on=True,
+                zorder=2,
+                **kwargs,
+            )
 
         # Override the default clip box, which is the axes rectangle, so we can have
         # barbs that extend outside.
-        ax_bbox = transforms.Bbox([[xloc - x_clip_radius, -y_clip_radius],
-                                   [xloc + x_clip_radius, 1.0 + y_clip_radius]])
+        ax_bbox = transforms.Bbox(
+            [
+                [xloc - x_clip_radius, -y_clip_radius],
+                [xloc + x_clip_radius, 1.0 + y_clip_radius],
+            ]
+        )
         b.set_clip_box(transforms.TransformedBbox(ax_bbox, self.ax.transAxes))
         return b
 
@@ -492,13 +538,13 @@ class SkewT:
             pressure = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = dry_lapse(pressure, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        t = dry_lapse(pressure, t0[:, np.newaxis], 1000.0 * units.mbar).to(units.degC)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
-        kwargs.setdefault('colors', 'r')
-        kwargs.setdefault('linestyles', 'dashed')
-        kwargs.setdefault('alpha', 0.5)
+        kwargs.setdefault("colors", "r")
+        kwargs.setdefault("linestyles", "dashed")
+        kwargs.setdefault("alpha", 0.5)
         self.dry_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.dry_adiabats
 
@@ -542,21 +588,23 @@ class SkewT:
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.concatenate((np.arange(xmin, 0, 10),
-                                 np.arange(0, xmax + 1, 5))) * units.degC
+            t0 = (
+                np.concatenate((np.arange(xmin, 0, 10), np.arange(0, xmax + 1, 5)))
+                * units.degC
+            )
 
         # Get pressure levels based on ylims if necessary
         if pressure is None:
             pressure = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = moist_lapse(pressure, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        t = moist_lapse(pressure, t0[:, np.newaxis], 1000.0 * units.mbar).to(units.degC)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
-        kwargs.setdefault('colors', 'b')
-        kwargs.setdefault('linestyles', 'dashed')
-        kwargs.setdefault('alpha', 0.5)
+        kwargs.setdefault("colors", "b")
+        kwargs.setdefault("linestyles", "dashed")
+        kwargs.setdefault("alpha", 0.5)
         self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.moist_adiabats
 
@@ -595,8 +643,9 @@ class SkewT:
 
         # Default mixing level values if necessary
         if mixing_ratio is None:
-            mixing_ratio = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
-                                     0.016, 0.024, 0.032]).reshape(-1, 1)
+            mixing_ratio = np.array(
+                [0.0004, 0.001, 0.002, 0.004, 0.007, 0.01, 0.016, 0.024, 0.032]
+            ).reshape(-1, 1)
 
         # Set pressure range if necessary
         if pressure is None:
@@ -607,13 +656,13 @@ class SkewT:
         linedata = [np.vstack((t.m, pressure.m)).T for t in td]
 
         # Add to plot
-        kwargs.setdefault('colors', 'g')
-        kwargs.setdefault('linestyles', 'dashed')
-        kwargs.setdefault('alpha', 0.8)
+        kwargs.setdefault("colors", "g")
+        kwargs.setdefault("linestyles", "dashed")
+        kwargs.setdefault("alpha", 0.8)
         self.mixing_lines = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.mixing_lines
 
-    def shade_area(self, y, x1, x2=0, which='both', **kwargs):
+    def shade_area(self, y, x1, x2=0, which="both", **kwargs):
         r"""Shade area between two curves.
 
         Shades areas between curves. Area can be where one is greater or less than the other
@@ -643,26 +692,25 @@ class SkewT:
         :func:`matplotlib.axes.Axes.fill_betweenx`
 
         """
-        fill_properties = {'positive':
-                           {'facecolor': 'tab:red', 'alpha': 0.4, 'where': x1 > x2},
-                           'negative':
-                           {'facecolor': 'tab:blue', 'alpha': 0.4, 'where': x1 < x2},
-                           'both':
-                           {'facecolor': 'tab:green', 'alpha': 0.4, 'where': None}}
+        fill_properties = {
+            "positive": {"facecolor": "tab:red", "alpha": 0.4, "where": x1 > x2},
+            "negative": {"facecolor": "tab:blue", "alpha": 0.4, "where": x1 < x2},
+            "both": {"facecolor": "tab:green", "alpha": 0.4, "where": None},
+        }
 
         try:
             fill_args = fill_properties[which]
             fill_args.update(kwargs)
         except KeyError:
-            raise ValueError(f'Unknown option for which: {which}') from None
+            raise ValueError(f"Unknown option for which: {which}") from None
 
         arrs = y, x1, x2
 
-        if fill_args['where'] is not None:
-            arrs = arrs + (fill_args['where'],)
-            fill_args.pop('where', None)
+        if fill_args["where"] is not None:
+            arrs = arrs + (fill_args["where"],)
+            fill_args.pop("where", None)
 
-        fill_args['interpolate'] = True
+        fill_args["interpolate"] = True
 
         arrs = _delete_masked_points(*arrs)
 
@@ -699,7 +747,7 @@ class SkewT:
         :func:`matplotlib.axes.Axes.fill_betweenx`
 
         """
-        return self.shade_area(pressure, t_parcel, t, which='positive', **kwargs)
+        return self.shade_area(pressure, t_parcel, t, which="positive", **kwargs)
 
     def shade_cin(self, pressure, t, t_parcel, dewpoint=None, **kwargs):
         r"""Shade areas of Convective INhibition (CIN).
@@ -737,8 +785,9 @@ class SkewT:
             idx = np.logical_and(pressure > el_p, pressure < lcl_p)
         else:
             idx = np.arange(0, len(pressure))
-        return self.shade_area(pressure[idx], t_parcel[idx], t[idx], which='negative',
-                               **kwargs)
+        return self.shade_area(
+            pressure[idx], t_parcel[idx], t[idx], which="negative", **kwargs
+        )
 
 
 @exporter.export
@@ -772,17 +821,18 @@ class Hodograph:
         """
         if ax is None:
             import matplotlib.pyplot as plt
+
             self.ax = plt.figure().add_subplot(1, 1, 1)
         else:
             self.ax = ax
-        self.ax.set_aspect('equal', 'box')
+        self.ax.set_aspect("equal", "box")
         self.ax.set_xlim(-component_range, component_range)
         self.ax.set_ylim(-component_range, component_range)
 
         # == sqrt(2) * max_range, which is the distance at the corner
         self.max_range = 1.4142135 * component_range
 
-    def add_grid(self, increment=10., **kwargs):
+    def add_grid(self, increment=10.0, **kwargs):
         r"""Add grid lines to hodograph.
 
         Creates lines for the x- and y-axes, as well as circles denoting wind speed values.
@@ -803,15 +853,15 @@ class Hodograph:
         """
         # Some default arguments. Take those, and update with any
         # arguments passed in
-        grid_args = {'color': 'grey', 'linestyle': 'dashed'}
+        grid_args = {"color": "grey", "linestyle": "dashed"}
         if kwargs:
             grid_args.update(kwargs)
 
         # Take those args and make appropriate for a Circle
         circle_args = grid_args.copy()
-        color = circle_args.pop('color', None)
-        circle_args['edgecolor'] = color
-        circle_args['fill'] = False
+        color = circle_args.pop("color", None)
+        circle_args["edgecolor"] = color
+        circle_args["fill"] = False
 
         self.rings = []
         for r in np.arange(increment, self.max_range, increment):
@@ -826,7 +876,7 @@ class Hodograph:
     @staticmethod
     def _form_line_args(kwargs):
         """Simplify taking the default line style and extending with kwargs."""
-        def_args = {'linewidth': 3}
+        def_args = {"linewidth": 3}
         def_args.update(kwargs)
         return def_args
 
@@ -878,11 +928,10 @@ class Hodograph:
             arrows plotted
 
         """
-        quiver_args = {'units': 'xy', 'scale': 1}
+        quiver_args = {"units": "xy", "scale": 1}
         quiver_args.update(**kwargs)
         center_position = np.zeros_like(u)
-        return self.ax.quiver(center_position, center_position,
-                              u, v, **quiver_args)
+        return self.ax.quiver(center_position, center_position, u, v, **quiver_args)
 
     def plot_colormapped(self, u, v, c, intervals=None, colors=None, **kwargs):
         r"""Plot u, v data, with line colored based on a third set of data.
@@ -927,15 +976,17 @@ class Hodograph:
         if colors:
             cmap = mcolors.ListedColormap(colors)
             # If we are segmenting by height (a length), interpolate the contour intervals
-            if intervals.dimensionality == {'[length]': 1.0}:
+            if intervals.dimensionality == {"[length]": 1.0}:
 
                 # Find any intervals not in the data and interpolate them
                 interpolation_heights = [bound.m for bound in intervals if bound not in c]
                 interpolation_heights = np.array(interpolation_heights) * intervals.units
-                interpolation_heights = (np.sort(interpolation_heights.magnitude)
-                                         * interpolation_heights.units)
-                (interpolated_heights, interpolated_u,
-                 interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)
+                interpolation_heights = (
+                    np.sort(interpolation_heights.magnitude) * interpolation_heights.units
+                )
+                (interpolated_heights, interpolated_u, interpolated_v) = interpolate_1d(
+                    interpolation_heights, c, c, u, v
+                )
 
                 # Combine the interpolated data with the actual data
                 c = concatenate([c, interpolated_heights])
@@ -955,10 +1006,10 @@ class Hodograph:
                 intervals = np.asarray(intervals) * intervals.units
 
             norm = mcolors.BoundaryNorm(intervals.magnitude, cmap.N)
-            cmap.set_over('none')
-            cmap.set_under('none')
-            kwargs['cmap'] = cmap
-            kwargs['norm'] = norm
+            cmap.set_over("none")
+            cmap.set_under("none")
+            kwargs["cmap"] = cmap
+            kwargs["norm"] = norm
             line_args = self._form_line_args(kwargs)
 
         # Plotting a continuously colored line
