@@ -207,6 +207,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.core.numeric</span> <span class="kn">import</span> <span class="n">normalize_axis_index</span>
 <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
@@ -962,7 +963,7 @@
 
 <div class="viewcode-block" id="lat_lon_grid_deltas"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">x_dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">x_dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">geod</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the actual delta between grid points that are in latitude/longitude format.</span>
 
 <span class="sd">    Parameters</span>
@@ -977,8 +978,9 @@
 <span class="sd">        axis number for the x dimension, defaults to -1.</span>
 <span class="sd">    y_dim : int</span>
 <span class="sd">        axis number for the y dimesion, defaults to -2.</span>
-<span class="sd">    kwargs</span>
-<span class="sd">        Other keyword arguments to pass to :class:`~pyproj.Geod`</span>
+<span class="sd">    geod : `pyproj.Geod` or ``None``</span>
+<span class="sd">        PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a</span>
+<span class="sd">        default spherical ellipsoid.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -996,8 +998,6 @@
 <span class="sd">    array-like type). It will also &quot;densify&quot; your data if using Dask or lazy-loading.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
-
     <span class="c1"># Inputs must be the same number of dimensions</span>
     <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="n">longitude</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Latitude and longitude must have the same number of dimensions.&#39;</span><span class="p">)</span>
@@ -1018,11 +1018,10 @@
     <span class="n">take_y</span> <span class="o">=</span> <span class="n">make_take</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">y_dim</span><span class="p">)</span>
     <span class="n">take_x</span> <span class="o">=</span> <span class="n">make_take</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">)</span>
 
-    <span class="n">geod_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ellps&#39;</span><span class="p">:</span> <span class="s1">&#39;sphere&#39;</span><span class="p">}</span>
-    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">geod_args</span> <span class="o">=</span> <span class="n">kwargs</span>
-
-    <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="o">**</span><span class="n">geod_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">geod</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="n">ellps</span><span class="o">=</span><span class="s1">&#39;sphere&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">geod</span>
 
     <span class="n">forward_az</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">longitude</span><span class="p">[</span><span class="n">take_y</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))],</span>
                               <span class="n">latitude</span><span class="p">[</span><span class="n">take_y</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))],</span>
@@ -1041,7 +1040,7 @@
 
 <div class="viewcode-block" id="azimuth_range_to_lat_lon"><a class="viewcode-back" href="../../../api/generated/metpy.calc.azimuth_range_to_lat_lon.html#metpy.calc.azimuth_range_to_lat_lon">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">azimuth_range_to_lat_lon</span><span class="p">(</span><span class="n">azimuths</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">azimuth_range_to_lat_lon</span><span class="p">(</span><span class="n">azimuths</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">,</span> <span class="n">geod</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert azimuth and range locations in a polar coordinate system to lat/lon coordinates.</span>
 
 <span class="sd">    Pole refers to the origin of the coordinate system.</span>
@@ -1057,8 +1056,9 @@
 <span class="sd">        The latitude of the pole in decimal degrees</span>
 <span class="sd">    center_lon : float</span>
 <span class="sd">        The longitude of the pole in decimal degrees</span>
-<span class="sd">    kwargs</span>
-<span class="sd">        arbitrary keyword arguments to pass to pyproj.Geod (e.g. &#39;ellps&#39;)</span>
+<span class="sd">    geod : `pyproj.Geod` or ``None``</span>
+<span class="sd">        PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a</span>
+<span class="sd">        default spherical ellipsoid.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1069,12 +1069,10 @@
 <span class="sd">    Credit to Brian Blaylock for the original implementation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
-
-    <span class="n">geod_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ellps&#39;</span><span class="p">:</span> <span class="s1">&#39;sphere&#39;</span><span class="p">}</span>
-    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">geod_args</span> <span class="o">=</span> <span class="n">kwargs</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="o">**</span><span class="n">geod_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">geod</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="n">ellps</span><span class="o">=</span><span class="s1">&#39;sphere&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">geod</span>
 
     <span class="n">rng2d</span><span class="p">,</span> <span class="n">az2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">ranges</span><span class="p">,</span> <span class="n">azimuths</span><span class="p">)</span>
     <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">az2d</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">)</span>
@@ -1673,7 +1671,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 07, 2020 at 06:41:47.
+      Last updated on Oct 09, 2020 at 05:40:27.
 
     </p>
   </div>
@@ -1707,7 +1705,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post374+g6bf9e25',
+            VERSION:'1.0.0rc1.post384+gf8d2fcd',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

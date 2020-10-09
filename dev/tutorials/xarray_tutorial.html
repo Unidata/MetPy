@@ -426,7 +426,7 @@ Coordinates:
     reftime    datetime64[ns] 2017-09-05T12:00:00
   * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
   * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
-    crs        object Projection: latitude_longitude
+    metpy_crs  object Projection: latitude_longitude
     isobaric3  float64 8.5e+04
 Attributes:
     long_name:                      Geopotential height @ Isobaric surface
@@ -449,22 +449,31 @@ Attributes:
 <h2>Projections<a class="headerlink" href="#projections" title="Permalink to this headline">¶</a></h2>
 <p>Getting the cartopy coordinate reference system (CRS) of the projection of a DataArray is as
 straightforward as using the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_crs</span></code> property:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_crs</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data_crs</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cartopy_crs</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cartopy_crs</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7fbf69474f90&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7feab98aa770&gt;
+</pre></div>
+</div>
+<p>Likewise, the PyProj CRS can be obtained with the <code class="docutils literal notranslate"><span class="pre">.pyproj_crs</span></code> property:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyproj_crs</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pyproj_crs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&quot;$schema&quot;: &quot;https://proj.org/schemas/v0.2/projjson.schema.json&quot;, &quot;type&quot;: &quot;GeographicCRS&quot;, &quot;name&quot;: &quot;undefined&quot;, &quot;datum&quot;: {&quot;$schema&quot;: &quot;https://proj.org/schemas/v0.2/projjson.schema.json&quot;, &quot;type&quot;: &quot;GeodeticReferenceFrame&quot;, &quot;name&quot;: &quot;undefined&quot;, &quot;ellipsoid&quot;: {&quot;name&quot;: &quot;undefined&quot;, &quot;radius&quot;: 6371229}}, &quot;coordinate_system&quot;: {&quot;$schema&quot;: &quot;https://proj.org/schemas/v0.2/projjson.schema.json&quot;, &quot;type&quot;: &quot;CoordinateSystem&quot;, &quot;subtype&quot;: &quot;ellipsoidal&quot;, &quot;axis&quot;: [{&quot;name&quot;: &quot;Longitude&quot;, &quot;abbreviation&quot;: &quot;lon&quot;, &quot;direction&quot;: &quot;east&quot;, &quot;unit&quot;: &quot;degree&quot;}, {&quot;name&quot;: &quot;Latitude&quot;, &quot;abbreviation&quot;: &quot;lat&quot;, &quot;direction&quot;: &quot;north&quot;, &quot;unit&quot;: &quot;degree&quot;}]}}
 </pre></div>
 </div>
 <p>The cartopy <code class="docutils literal notranslate"><span class="pre">Globe</span></code> can similarly be accessed via the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_globe</span></code>
 property:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_globe</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_globe</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data_globe</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cartopy_globe</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_globe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cartopy_globe</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7fbf6943c910&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7feab9c82880&gt;
 </pre></div>
 </div>
 </div>
@@ -482,7 +491,7 @@ dimensions by order, not name</p></li>
 </ul>
 <p>As an example, we calculate geostropic wind at 500 hPa below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="xarray.broadcast" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-function"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">)</span>
-<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <span class="n">initstring</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_crs</span><span class="o">.</span><span class="n">proj4_init</span></a><span class="p">)</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <span class="n">geod</span><span class="o">=</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">())</span>
 <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">heights</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
 <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">u_geo</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">v_geo</span></a> <span class="o">=</span> <a href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">geostrophic_wind</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">heights</span></a><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">u_geo</span></a><span class="p">)</span>
@@ -491,46 +500,46 @@ dimensions by order, not name</p></li>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray (latitude: 81, longitude: 131)&gt;
-&lt;Quantity([[ 2.27255554  6.25140312  3.28255416 ... 33.11408008 32.73451717
-  32.57653661]
- [ 3.81629673  4.38877614  4.32523476 ... 31.00803157 30.75375118
-  30.53090851]
- [ 5.12733371  4.83910424  5.80060296 ... 29.19382514 29.03383238
-  28.58473285]
+&lt;Quantity([[ 2.2733034   6.25293339  3.28353199 ... 33.12285541 32.74320064
+  32.58517175]
+ [ 3.81693346  4.38966762  4.32598735 ... 31.0138463  30.7595135
+  30.53663254]
+ [ 5.1277875   4.83945459  5.80108591 ... 29.19673862 29.03672755
+  28.58760112]
  ...
- [-1.91178314 -1.14643259 -1.91181665 ... -7.0079228  -7.39214953
-  -6.88190745]
- [-2.801646   -2.66973201 -2.40253719 ... -6.40453277 -7.20430366
-  -6.93719275]
- [-7.13845126 -8.40509536 -3.63934311 ... -5.60696811 -7.55739378
-  -8.39839852]], &#39;meter / second&#39;)&gt;
+ [-1.90177703 -1.14044725 -1.90177703 ... -6.97111921 -7.35333151
+  -6.84577833]
+ [-2.78677553 -2.65553785 -2.38982204 ... -6.37069849 -7.16622569
+  -6.90050988]
+ [-7.10062943 -8.36058307 -3.62002875 ... -5.57712273 -7.51721329
+  -8.3537817 ]], &#39;meter / second&#39;)&gt;
 Coordinates:
     time1      datetime64[ns] 2017-09-05T12:00:00
     reftime    datetime64[ns] 2017-09-05T12:00:00
   * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
   * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
-    crs        object Projection: latitude_longitude
+    metpy_crs  object Projection: latitude_longitude
     isobaric3  float64 5e+04
 &lt;xarray.DataArray (latitude: 81, longitude: 131)&gt;
-&lt;Quantity([[-14.79152481 -14.39816817 -16.89520568 ...   5.58291437   6.513699
-    7.39606131]
- [ -8.30101213 -13.77064356 -17.09080998 ...   5.27352106   6.10386071
-    7.17918929]
- [-11.98245046 -13.54015713 -14.85469509 ...   4.91926144   5.74746197
-    6.72132592]
+&lt;Quantity([[-14.83673367 -14.44217477 -16.94684424 ...   5.599978     6.53360749
+    7.41866665]
+ [ -8.32614256 -13.81233272 -17.14255058 ...   5.28948608   6.12233949
+    7.20092352]
+ [-12.01837752 -13.58075467 -14.89923401 ...   4.9340109    5.76469463
+    6.74147851]
  ...
- [  4.25739862   3.4827536    2.96632359 ...   3.2245386    3.2245386
-    1.93346357]
- [  6.60970778   3.10076929   2.02109591 ...   2.42597342   3.63896014
-    3.37233348]
- [  4.79936391   4.23716749   2.54368012 ...   1.55552506   2.96791422
-    3.81293338]], &#39;meter / second&#39;)&gt;
+ [  4.26253418   3.48695474   2.96990178 ...   3.22842826   3.22842826
+    1.93579585]
+ [  6.61761      3.10447641   2.02351222 ...   2.42887379   3.64331069
+    3.37636526]
+ [  4.80505261   4.24218982   2.54669515 ...   1.55736883   2.9714321
+    3.81745286]], &#39;meter / second&#39;)&gt;
 Coordinates:
     time1      datetime64[ns] 2017-09-05T12:00:00
     reftime    datetime64[ns] 2017-09-05T12:00:00
   * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
   * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
-    crs        object Projection: latitude_longitude
+    metpy_crs  object Projection: latitude_longitude
     isobaric3  float64 5e+04
 </pre></div>
 </div>
@@ -584,46 +593,46 @@ rewrite the above geostrophic wind example using this helper function as follows
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray (latitude: 81, longitude: 131)&gt;
-&lt;Quantity([[ 2.27255554  6.25140312  3.28255416 ... 33.11408008 32.73451717
-  32.57653661]
- [ 3.81629673  4.38877614  4.32523476 ... 31.00803157 30.75375118
-  30.53090851]
- [ 5.12733371  4.83910424  5.80060296 ... 29.19382514 29.03383238
-  28.58473285]
+&lt;Quantity([[ 2.2733034   6.25293339  3.28353199 ... 33.12285541 32.74320064
+  32.58517175]
+ [ 3.81693346  4.38966762  4.32598735 ... 31.0138463  30.7595135
+  30.53663254]
+ [ 5.1277875   4.83945459  5.80108591 ... 29.19673862 29.03672755
+  28.58760112]
  ...
- [-1.91178314 -1.14643259 -1.91181665 ... -7.0079228  -7.39214953
-  -6.88190745]
- [-2.801646   -2.66973201 -2.40253719 ... -6.40453277 -7.20430366
-  -6.93719275]
- [-7.13845126 -8.40509536 -3.63934311 ... -5.60696811 -7.55739378
-  -8.39839852]], &#39;meter / second&#39;)&gt;
+ [-1.90177703 -1.14044725 -1.90177703 ... -6.97111921 -7.35333151
+  -6.84577833]
+ [-2.78677553 -2.65553785 -2.38982204 ... -6.37069849 -7.16622569
+  -6.90050988]
+ [-7.10062943 -8.36058307 -3.62002875 ... -5.57712273 -7.51721329
+  -8.3537817 ]], &#39;meter / second&#39;)&gt;
 Coordinates:
     time1      datetime64[ns] 2017-09-05T12:00:00
     reftime    datetime64[ns] 2017-09-05T12:00:00
   * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
   * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
-    crs        object Projection: latitude_longitude
+    metpy_crs  object Projection: latitude_longitude
     isobaric3  float64 5e+04
 &lt;xarray.DataArray (latitude: 81, longitude: 131)&gt;
-&lt;Quantity([[-14.79152481 -14.39816817 -16.89520568 ...   5.58291437   6.513699
-    7.39606131]
- [ -8.30101213 -13.77064356 -17.09080998 ...   5.27352106   6.10386071
-    7.17918929]
- [-11.98245046 -13.54015713 -14.85469509 ...   4.91926144   5.74746197
-    6.72132592]
+&lt;Quantity([[-14.83673367 -14.44217477 -16.94684424 ...   5.599978     6.53360749
+    7.41866665]
+ [ -8.32614256 -13.81233272 -17.14255058 ...   5.28948608   6.12233949
+    7.20092352]
+ [-12.01837752 -13.58075467 -14.89923401 ...   4.9340109    5.76469463
+    6.74147851]
  ...
- [  4.25739862   3.4827536    2.96632359 ...   3.2245386    3.2245386
-    1.93346357]
- [  6.60970778   3.10076929   2.02109591 ...   2.42597342   3.63896014
-    3.37233348]
- [  4.79936391   4.23716749   2.54368012 ...   1.55552506   2.96791422
-    3.81293338]], &#39;meter / second&#39;)&gt;
+ [  4.26253418   3.48695474   2.96990178 ...   3.22842826   3.22842826
+    1.93579585]
+ [  6.61761      3.10447641   2.02351222 ...   2.42887379   3.64331069
+    3.37636526]
+ [  4.80505261   4.24218982   2.54669515 ...   1.55736883   2.9714321
+    3.81745286]], &#39;meter / second&#39;)&gt;
 Coordinates:
     time1      datetime64[ns] 2017-09-05T12:00:00
     reftime    datetime64[ns] 2017-09-05T12:00:00
   * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
   * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
-    crs        object Projection: latitude_longitude
+    metpy_crs  object Projection: latitude_longitude
     isobaric3  float64 5e+04
 </pre></div>
 </div>
@@ -644,7 +653,7 @@ the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s add a projection and coastlines to it</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">())</span>
 <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                          <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">data_crs</span><span class="p">)</span>
+                          <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">cartopy_crs</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
@@ -656,7 +665,7 @@ the data.</p>
 <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.name.html#xarray.DataArray.name" title="xarray.DataArray.name" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">time</span><span class="o">.</span><span class="n">name</span></a><span class="p">:</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.name.html#xarray.DataArray.name" title="xarray.DataArray.name" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">vertical</span><span class="o">.</span><span class="n">name</span></a><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
 
 <span class="c1"># Create the matplotlib figure and axis</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">data_crs</span><span class="p">})</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">cartopy_crs</span><span class="p">})</span>
 
 <span class="c1"># Plot RH as filled contours</span>
 <span class="n">rh</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_level</span></a><span class="p">[</span><span class="s1">&#39;relative_humidity&#39;</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
@@ -781,7 +790,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.137 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.033 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-xarray-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fdf887129bd8090f4be24127e43a5148/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></p>
@@ -817,7 +826,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 07, 2020 at 06:41:47.
+      Last updated on Oct 09, 2020 at 05:40:27.
 
     </p>
   </div>
@@ -851,7 +860,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.0rc1.post374+g6bf9e25',
+            VERSION:'1.0.0rc1.post384+gf8d2fcd',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

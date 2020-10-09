@@ -221,6 +221,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">._vendor.xarray</span> <span class="kn">import</span> <span class="n">either_dict_or_kwargs</span><span class="p">,</span> <span class="n">expanded_indexer</span><span class="p">,</span> <span class="n">is_dict_like</span>
@@ -412,8 +413,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">crs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinate reference system (CRS) as a CFProjection object.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;crs&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;metpy_crs&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;crs attribute is not available.&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -430,6 +431,11 @@
     <span class="k">def</span> <span class="nf">cartopy_geodetic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the Geodetic CRS associated with the native CRS globe.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">cartopy_geodetic</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pyproj_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinate reference system (CRS) as a pyproj object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_pyproj</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_fixup_coordinate_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord_map</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ensure sure we have coordinate variables in map, not coordinate names.&quot;&quot;&quot;</span>
@@ -770,7 +776,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. Cartopy is used for the coordinate</span>
+<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
 <span class="sd">        transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -806,7 +812,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. Cartopy is used for the coordinate</span>
+<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
 <span class="sd">        transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -833,7 +839,7 @@
 <span class="sd">        &gt;&gt;&gt; import xarray as xr</span>
 <span class="sd">        &gt;&gt;&gt; from metpy.cbook import get_test_data</span>
 <span class="sd">        &gt;&gt;&gt; ds = xr.open_dataset(get_test_data(&#39;narr_example.nc&#39;, False)).metpy.parse_cf()</span>
-<span class="sd">        &gt;&gt;&gt; print(ds[&#39;crs&#39;].item())</span>
+<span class="sd">        &gt;&gt;&gt; print(ds[&#39;metpy_crs&#39;].item())</span>
 <span class="sd">        Projection: lambert_conformal_conic</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -875,6 +881,19 @@
 
         <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="p">[</span><span class="n">varname</span><span class="p">]</span>
 
+        <span class="c1"># Check for crs conflict</span>
+        <span class="k">if</span> <span class="n">varname</span> <span class="o">==</span> <span class="s1">&#39;metpy_crs&#39;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;Attempting to parse metpy_crs as a data variable. Unexpected merge conflicts &#39;</span>
+                <span class="s1">&#39;may occur.&#39;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;metpy_crs&#39;</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">CFProjection</span><span class="p">)):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;metpy_crs already present as a non-CFProjection coordinate. Unexpected &#39;</span>
+                <span class="s1">&#39;merge conflicts may occur.&#39;</span>
+            <span class="p">)</span>
+
         <span class="c1"># Assign coordinates if the coordinates argument is given</span>
         <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">var</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
@@ -909,7 +928,7 @@
         <span class="c1"># Rebuild the coordinates of the dataarray, and return quantified DataArray</span>
         <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_coords</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">crs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">var</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;crs&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">})</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">var</span></div>
 
     <span class="k">def</span> <span class="nf">_rebuild_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">crs</span><span class="p">):</span>
@@ -995,7 +1014,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. Cartopy is used for the coordinate</span>
+<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
 <span class="sd">        transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1040,7 +1059,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. Cartopy is used for the coordinate</span>
+<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
 <span class="sd">        transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1194,14 +1213,14 @@
     <span class="n">attrs</span> <span class="o">=</span> <span class="n">cf_attributes</span> <span class="k">if</span> <span class="n">cf_attributes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cf_kwargs</span>
 
     <span class="c1"># Assign crs coordinate to xarray object</span>
-    <span class="k">return</span> <span class="n">xarray_object</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">crs</span><span class="o">=</span><span class="n">CFProjection</span><span class="p">(</span><span class="n">attrs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">xarray_object</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">metpy_crs</span><span class="o">=</span><span class="n">CFProjection</span><span class="p">(</span><span class="n">attrs</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_build_latitude_longitude</span><span class="p">(</span><span class="n">da</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Build latitude/longitude coordinates from DataArray&#39;s y/x coordinates.&quot;&quot;&quot;</span>
     <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
     <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">lonlats</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_geodetic</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">)</span>
+    <span class="n">lonlats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">Proj</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="p">)(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">radians</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">longitude</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">lonlats</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                              <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="n">y</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">x</span><span class="p">},</span>
                              <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees_east&#39;</span><span class="p">,</span> <span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;longitude&#39;</span><span class="p">})</span>
@@ -1222,9 +1241,12 @@
                          <span class="s1">&#39;must be 2D&#39;</span><span class="p">)</span>
 
     <span class="c1"># Convert to projected y/x</span>
-    <span class="n">xxyy</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_geodetic</span><span class="p">,</span>
-                                                 <span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                                                 <span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">xxyy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">Proj</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="p">)(</span>
+        <span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">radians</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Handle tolerance</span>
     <span class="n">tolerance</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">tolerance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">tolerance</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
@@ -1251,7 +1273,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Projected y and x coordinates cannot be collapsed to 1D within &#39;</span>
                          <span class="s1">&#39;tolerance. Verify that your latitude and longitude coordinates &#39;</span>
-                         <span class="s1">&#39;correpsond to your CRS coordinate.&#39;</span><span class="p">)</span>
+                         <span class="s1">&#39;correspond to your CRS coordinate.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">preprocess_and_wrap</span><span class="p">(</span><span class="n">broadcast</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wrap_like</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">match_unit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">to_magnitude</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1492,7 +1514,7 @@
         <span class="p">(</span><span class="n">dx_var</span><span class="p">,</span> <span class="n">dx_units</span><span class="p">),</span> <span class="p">(</span><span class="n">dy_var</span><span class="p">,</span> <span class="n">dy_units</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="n">latitude</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">deltas</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span> <span class="n">deltas</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">deltas</span> <span class="ow">in</span> <span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">x_dim</span><span class="o">=</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">y_dim</span><span class="p">,</span>
-                                              <span class="n">initstring</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">proj4_init</span><span class="p">))</span>
+                                              <span class="n">geod</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Obtain y/x coordinate differences</span>
         <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
@@ -1654,7 +1676,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 07, 2020 at 06:41:47.
+      Last updated on Oct 09, 2020 at 05:40:27.
 
     </p>
   </div>
@@ -1688,7 +1710,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post374+g6bf9e25',
+            VERSION:'1.0.0rc1.post384+gf8d2fcd',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -71,7 +71,7 @@ dimension.
       * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
       * y                    (y) float64 -3.087e+06 -3.054e+06 ... 7.114e+05
       * x                    (x) float64 -3.977e+06 -3.945e+06 ... 5.47e+06
-        crs                  object Projection: lambert_conformal_conic
+        metpy_crs            object Projection: lambert_conformal_conic
     Data variables:
         Temperature          (isobaric, y, x) float32 ...
         Lambert_Conformal    |S1 b'd'
@@ -140,7 +140,7 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
     Coordinates:
         time                 datetime64[ns] 1987-04-04T18:00:00
       * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
-        crs                  object Projection: lambert_conformal_conic
+        metpy_crs            object Projection: lambert_conformal_conic
         x                    (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
         y                    (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
       * index                (index) int64 0 1 2 3 4 5 6 7 ... 93 94 95 96 97 98 99
@@ -212,7 +212,7 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
     Coordinates:
         time                   datetime64[ns] 1987-04-04T18:00:00
       * isobaric               (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
-        crs                    object Projection: lambert_conformal_conic
+        metpy_crs              object Projection: lambert_conformal_conic
         x                      (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
         y                      (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
       * index                  (index) int64 0 1 2 3 4 5 6 ... 93 94 95 96 97 98 99
@@ -341,7 +341,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.241 seconds)
+   **Total running time of the script:** ( 0 minutes  5.181 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:

@@ -244,7 +244,7 @@
 <h1>lat_lon_grid_deltas<a class="headerlink" href="#lat-lon-grid-deltas" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.calc.lat_lon_grid_deltas">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">lat_lon_grid_deltas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">longitude</span></em>, <em class="sig-param"><span class="n">latitude</span></em>, <em class="sig-param"><span class="n">x_dim</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">y_dim</span><span class="o">=</span><span class="default_value">- 2</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#lat_lon_grid_deltas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.lat_lon_grid_deltas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">lat_lon_grid_deltas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">longitude</span></em>, <em class="sig-param"><span class="n">latitude</span></em>, <em class="sig-param"><span class="n">x_dim</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">y_dim</span><span class="o">=</span><span class="default_value">- 2</span></em>, <em class="sig-param"><span class="n">geod</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#lat_lon_grid_deltas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.lat_lon_grid_deltas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the actual delta between grid points that are in latitude/longitude format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -255,7 +255,8 @@ degrees.</p></li>
 degrees.</p></li>
 <li><p><strong>x_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – axis number for the x dimension, defaults to -1.</p></li>
 <li><p><strong>y_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – axis number for the y dimesion, defaults to -2.</p></li>
-<li><p><strong>kwargs</strong> – Other keyword arguments to pass to <code class="xref py py-class docutils literal notranslate"><span class="pre">Geod</span></code></p></li>
+<li><p><strong>geod</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyproj.Geod</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – PyProj Geod to use for forward azimuth and distance calculations. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, use a
+default spherical ellipsoid.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -303,7 +304,7 @@ array-like type). It will also “densify” your data if using Dask or lazy-loa
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 07, 2020 at 06:41:47.
+      Last updated on Oct 09, 2020 at 05:40:27.
 
     </p>
   </div>
@@ -337,7 +338,7 @@ array-like type). It will also “densify” your data if using Dask or lazy-loa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc1.post374+g6bf9e25',
+            VERSION:'1.0.0rc1.post384+gf8d2fcd',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

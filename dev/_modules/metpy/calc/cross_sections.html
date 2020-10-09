@@ -235,9 +235,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">):</span>
         <span class="c1"># Use pyproj to obtain x and y distances</span>
-        <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
-
-        <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">proj4_init</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
 
@@ -282,10 +280,13 @@
     <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">y</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-        <span class="n">latitude</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">()</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">,</span>
-                                                    <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                                                    <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="p">)(</span>
+            <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">radians</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">latitude</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">latitude</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degrees_north</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">latitude</span>
 
@@ -513,7 +514,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 07, 2020 at 06:41:47.
+      Last updated on Oct 09, 2020 at 05:40:27.
 
     </p>
   </div>
@@ -547,7 +548,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1.post374+g6bf9e25',
+            VERSION:'1.0.0rc1.post384+gf8d2fcd',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
