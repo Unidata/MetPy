@@ -119,7 +119,7 @@ def test_distances_from_cross_section_given_lonlat(test_cross_lonlat):
     true_x = xr.DataArray(
         true_x_values * units.meters,
         coords={
-            'crs': test_cross_lonlat['crs'],
+            'metpy_crs': test_cross_lonlat['metpy_crs'],
             'lat': test_cross_lonlat['lat'],
             'lon': test_cross_lonlat['lon'],
             'index': index,
@@ -129,7 +129,7 @@ def test_distances_from_cross_section_given_lonlat(test_cross_lonlat):
     true_y = xr.DataArray(
         true_y_values * units.meters,
         coords={
-            'crs': test_cross_lonlat['crs'],
+            'metpy_crs': test_cross_lonlat['metpy_crs'],
             'lat': test_cross_lonlat['lat'],
             'lon': test_cross_lonlat['lon'],
             'index': index,
@@ -168,7 +168,7 @@ def test_latitude_from_cross_section_given_y(test_cross_xy):
     true_latitude = xr.DataArray(
         true_latitude_values * units.degrees_north,
         coords={
-            'crs': test_cross_xy['crs'],
+            'metpy_crs': test_cross_xy['metpy_crs'],
             'y': test_cross_xy['y'],
             'x': test_cross_xy['x'],
             'index': index,

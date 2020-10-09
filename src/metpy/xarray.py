@@ -22,6 +22,7 @@ import re
 import warnings
 
 import numpy as np
+from pyproj import Proj
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
@@ -213,8 +214,8 @@ class MetPyDataArrayAccessor:
     @property
     def crs(self):
         """Return the coordinate reference system (CRS) as a CFProjection object."""
-        if 'crs' in self._data_array.coords:
-            return self._data_array.coords['crs'].item()
+        if 'metpy_crs' in self._data_array.coords:
+            return self._data_array.coords['metpy_crs'].item()
         raise AttributeError('crs attribute is not available.')
 
     @property
@@ -231,6 +232,11 @@ class MetPyDataArrayAccessor:
     def cartopy_geodetic(self):
         """Return the Geodetic CRS associated with the native CRS globe."""
         return self.crs.cartopy_geodetic
+
+    @property
+    def pyproj_crs(self):
+        """Return the coordinate reference system (CRS) as a pyproj object."""
+        return self.crs.to_pyproj()
 
     def _fixup_coordinate_map(self, coord_map):
         """Ensure sure we have coordinate variables in map, not coordinate names."""
@@ -571,7 +577,7 @@ class MetPyDataArrayAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        A valid CRS coordinate must be present. PyProj is used for the coordinate
         transformations.
 
         """
@@ -607,7 +613,7 @@ class MetPyDataArrayAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        A valid CRS coordinate must be present. PyProj is used for the coordinate
         transformations.
 
         """
@@ -634,7 +640,7 @@ class MetPyDatasetAccessor:
         >>> import xarray as xr
         >>> from metpy.cbook import get_test_data
         >>> ds = xr.open_dataset(get_test_data('narr_example.nc', False)).metpy.parse_cf()
-        >>> print(ds['crs'].item())
+        >>> print(ds['metpy_crs'].item())
         Projection: lambert_conformal_conic
 
     """
@@ -676,6 +682,19 @@ class MetPyDatasetAccessor:
 
         var = self._dataset[varname]
 
+        # Check for crs conflict
+        if varname == 'metpy_crs':
+            warnings.warn(
+                'Attempting to parse metpy_crs as a data variable. Unexpected merge conflicts '
+                'may occur.'
+            )
+        elif 'metpy_crs' in var.coords and (var.coords['metpy_crs'].size > 1 or not isinstance(
+                var.coords['metpy_crs'].item(), CFProjection)):
+            warnings.warn(
+                'metpy_crs already present as a non-CFProjection coordinate. Unexpected '
+                'merge conflicts may occur.'
+            )
+
         # Assign coordinates if the coordinates argument is given
         if coordinates is not None:
             var = var.metpy.assign_coordinates(coordinates)
@@ -710,7 +729,7 @@ class MetPyDatasetAccessor:
         # Rebuild the coordinates of the dataarray, and return quantified DataArray
         var = self._rebuild_coords(var, crs)
         if crs is not None:
-            var = var.assign_coords(coords={'crs': crs})
+            var = var.assign_coords(coords={'metpy_crs': crs})
         return var
 
     def _rebuild_coords(self, var, crs):
@@ -796,7 +815,7 @@ class MetPyDatasetAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        A valid CRS coordinate must be present. PyProj is used for the coordinate
         transformations.
 
         """
@@ -841,7 +860,7 @@ class MetPyDatasetAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. Cartopy is used for the coordinate
+        A valid CRS coordinate must be present. PyProj is used for the coordinate
         transformations.
 
         """
@@ -995,14 +1014,14 @@ def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
     attrs = cf_attributes if cf_attributes is not None else cf_kwargs
 
     # Assign crs coordinate to xarray object
-    return xarray_object.assign_coords(crs=CFProjection(attrs))
+    return xarray_object.assign_coords(metpy_crs=CFProjection(attrs))
 
 
 def _build_latitude_longitude(da):
     """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
     y, x = da.metpy.coordinates('y', 'x')
     xx, yy = np.meshgrid(x.values, y.values)
-    lonlats = da.metpy.cartopy_geodetic.transform_points(da.metpy.cartopy_crs, xx, yy)
+    lonlats = np.stack(Proj(da.metpy.pyproj_crs)(xx, yy, inverse=True, radians=False), axis=-1)
     longitude = xr.DataArray(lonlats[..., 0], dims=(y.name, x.name),
                              coords={y.name: y, x.name: x},
                              attrs={'units': 'degrees_east', 'standard_name': 'longitude'})
@@ -1023,9 +1042,12 @@ def _build_y_x(da, tolerance):
                          'must be 2D')
 
     # Convert to projected y/x
-    xxyy = da.metpy.cartopy_crs.transform_points(da.metpy.cartopy_geodetic,
-                                                 longitude.values,
-                                                 latitude.values)
+    xxyy = np.stack(Proj(da.metpy.pyproj_crs)(
+        longitude.values,
+        latitude.values,
+        inverse=False,
+        radians=False
+    ), axis=-1)
 
     # Handle tolerance
     tolerance = 1 if tolerance is None else tolerance.m_as('m')
@@ -1052,7 +1074,7 @@ def _build_y_x(da, tolerance):
     else:
         raise ValueError('Projected y and x coordinates cannot be collapsed to 1D within '
                          'tolerance. Verify that your latitude and longitude coordinates '
-                         'correpsond to your CRS coordinate.')
+                         'correspond to your CRS coordinate.')
 
 
 def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_magnitude=False):
@@ -1293,7 +1315,7 @@ def grid_deltas_from_dataarray(f, kind='default'):
         (dx_var, dx_units), (dy_var, dy_units) = (
             (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
             for deltas in lat_lon_grid_deltas(longitude, latitude, x_dim=x_dim, y_dim=y_dim,
-                                              initstring=f.metpy.cartopy_crs.proj4_init))
+                                              geod=f.metpy.pyproj_crs.get_geod()))
     else:
         # Obtain y/x coordinate differences
         y, x = f.metpy.coordinates('y', 'x')

@@ -8,6 +8,7 @@ from collections import namedtuple
 import numpy as np
 import numpy.ma as ma
 import pandas as pd
+from pyproj import Geod
 import pytest
 import xarray as xr
 
@@ -20,8 +21,7 @@ from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, azimuth_range_to_lat_lon, BASE_DEGREE_MULTIPLIER,
                               DIR_STRS, UND)
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           needs_pyproj)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import units
 from metpy.xarray import grid_deltas_from_dataarray
 
@@ -422,7 +422,6 @@ def test_get_layer_heights_agl_bottom_no_interp():
     assert_array_almost_equal(data_true, data, 6)
 
 
-@needs_pyproj
 def test_lat_lon_grid_deltas_1d():
     """Test for lat_lon_grid_deltas for variable grid."""
     lat = np.arange(40, 50, 2.5)
@@ -440,7 +439,6 @@ def test_lat_lon_grid_deltas_1d():
 
 
 @pytest.mark.parametrize('flip_order', [(False, True)])
-@needs_pyproj
 def test_lat_lon_grid_deltas_2d(flip_order):
     """Test for lat_lon_grid_deltas for variable grid with negative delta distances."""
     lat = np.arange(40, 50, 2.5)
@@ -464,7 +462,6 @@ def test_lat_lon_grid_deltas_2d(flip_order):
     assert_almost_equal(dy, dy_truth, 4)
 
 
-@needs_pyproj
 def test_lat_lon_grid_deltas_extra_dimensions():
     """Test for lat_lon_grid_deltas with extra leading dimensions."""
     lon, lat = np.meshgrid(np.arange(-100, -90, 2.5), np.arange(40, 50, 2.5))
@@ -483,7 +480,6 @@ def test_lat_lon_grid_deltas_extra_dimensions():
     assert_almost_equal(dy, dy_truth, 4)
 
 
-@needs_pyproj
 def test_lat_lon_grid_deltas_mismatched_shape():
     """Test for lat_lon_grid_deltas for variable grid."""
     lat = np.arange(40, 50, 2.5)
@@ -495,12 +491,11 @@ def test_lat_lon_grid_deltas_mismatched_shape():
         lat_lon_grid_deltas(lon, lat)
 
 
-@needs_pyproj
 def test_lat_lon_grid_deltas_geod_kwargs():
     """Test that geod kwargs are overridden by users #774."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
-    dx, dy = lat_lon_grid_deltas(lon, lat, a=4370997)
+    dx, dy = lat_lon_grid_deltas(lon, lat, geod=Geod(a=4370997))
     dx_truth = np.array([[146095.76101984, 146095.76101984, 146095.76101984],
                          [140608.9751528, 140608.9751528, 140608.9751528],
                          [134854.56713287, 134854.56713287, 134854.56713287],
@@ -875,9 +870,8 @@ def test_angle_to_direction_level_1():
     assert_array_equal(output_dirs, expected_dirs)
 
 
-@needs_pyproj
 def test_azimuth_range_to_lat_lon():
-    """Test converstion of azimuth and range to lat/lon grid."""
+    """Test conversion of azimuth and range to lat/lon grid."""
     az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
     rng = [2125., 64625., 127125., 189625., 252125., 314625.]
     clon = -89.98416666666667
@@ -907,15 +901,13 @@ def test_azimuth_range_to_lat_lon():
     assert_array_almost_equal(output_lat, true_lat, 6)
 
 
-@needs_pyproj
 def test_azimuth_range_to_lat_lon_diff_ellps():
-    """Test converstion of azimuth and range to lat/lon grid."""
+    """Test conversion of azimuth and range to lat/lon grid."""
     az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
     rng = [2125., 64625., 127125., 189625., 252125., 314625.]
     clon = -89.98416666666667
     clat = 32.27972222222222
-    kwargs = {'ellps': 'WGS84'}
-    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat, **kwargs)
+    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat, Geod(ellps='WGS84'))
     true_lon = [[-89.9946749, -90.3055083, -90.6198256, -90.9377279, -91.2593193,
                 -91.5847066],
                 [-89.9938168, -90.279303, -90.5680603, -90.860187, -91.1557841,
@@ -997,7 +989,7 @@ def test_first_derivative_xarray_lonlat(test_da_lonlat):
         coords=(('lat', test_da_lonlat['lat']),)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
-    truth.coords['crs'] = test_da_lonlat['crs']
+    truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
     truth.attrs['units'] = 'kelvin / meter'
     truth = truth.metpy.quantify()
 
@@ -1051,7 +1043,7 @@ def test_second_derivative_xarray_lonlat(test_da_lonlat):
         coords=(('lat', test_da_lonlat['lat']),)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
-    truth.coords['crs'] = test_da_lonlat['crs']
+    truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
     truth.attrs['units'] = 'kelvin / meter^2'
     truth = truth.metpy.quantify()
 
@@ -1079,7 +1071,7 @@ def test_gradient_xarray(test_da_xy):
         coords=(('isobaric', test_da_xy['isobaric']),)
     )
     _, truth_p = xr.broadcast(test_da_xy, partial)
-    truth_p.coords['crs'] = test_da_xy['crs']
+    truth_p.coords['metpy_crs'] = test_da_xy['metpy_crs']
     truth_p.attrs['units'] = 'kelvin / hectopascal'
     truth_p = truth_p.metpy.quantify()
 
@@ -1163,7 +1155,7 @@ def test_laplacian_xarray_lonlat(test_da_lonlat):
         coords=(('lat', test_da_lonlat['lat']),)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
-    truth.coords['crs'] = test_da_lonlat['crs']
+    truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
     truth.attrs['units'] = 'kelvin / meter^2'
     truth = truth.metpy.quantify()
 

@@ -10,12 +10,13 @@ years. For Python itself, that means supporting the last two minor releases.
 
 * matplotlib >= 2.1.0
 * numpy >= 1.16.0
-* scipy >= 1.0.0
-* pint >= 0.10.1
 * pandas >= 0.22.0
-* xarray >= 0.14.1
-* traitlets >= 4.3.0
+* pint >= 0.10.1
 * pooch >= 0.1
+* pyproj >= 2.3.0
+* scipy >= 1.0.0
+* traitlets >= 4.3.0
+* xarray >= 0.14.1
 
 ------------
 Installation

@@ -110,7 +110,7 @@ def test_interpolate_to_slice_against_selection(test_ds_lonlat):
 @needs_cartopy
 def test_geodesic(test_ds_xy):
     """Test the geodesic construction."""
-    crs = test_ds_xy['temperature'].metpy.cartopy_crs
+    crs = test_ds_xy['temperature'].metpy.pyproj_crs
     path = geodesic(crs, (36.46, -112.45), (42.95, -68.74), 7)
     truth = np.array([[-4.99495719e+05, -1.49986599e+06],
                       [9.84044354e+04, -1.26871737e+06],
@@ -150,7 +150,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
         truth_values_x,
         name='x',
         coords={
-            'crs': data['crs'],
+            'metpy_crs': data['metpy_crs'],
             'y': (['index'], truth_values_y),
             'x': (['index'], truth_values_x),
             'index': index,
@@ -161,7 +161,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
         truth_values_y,
         name='y',
         coords={
-            'crs': data['crs'],
+            'metpy_crs': data['metpy_crs'],
             'y': (['index'], truth_values_y),
             'x': (['index'], truth_values_x),
             'index': index,
@@ -175,7 +175,7 @@ def test_cross_section_dataarray_and_linear_interp(test_ds_xy):
             'time': data['time'],
             'isobaric': data['isobaric'],
             'index': index,
-            'crs': data['crs'],
+            'metpy_crs': data['metpy_crs'],
             'y': data_truth_y,
             'x': data_truth_x
         },
@@ -216,7 +216,7 @@ def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
         coords={
             'isobaric': test_ds_lonlat['isobaric'],
             'index': index,
-            'crs': test_ds_lonlat['crs'],
+            'metpy_crs': test_ds_lonlat['metpy_crs'],
             'lat': (['index'], truth_values_lat),
             'lon': (['index'], truth_values_lon)
         },
@@ -242,7 +242,7 @@ def test_cross_section_error_on_missing_coordinate(test_ds_lonlat):
     """Test that the proper error is raised with missing coordinate."""
     # Use a variable with no crs coordinate
     data_bad = test_ds_lonlat['temperature'].copy()
-    del data_bad['crs']
+    del data_bad['metpy_crs']
     start, end = (30.5, 255.5), (44.5, 274.5)
 
     with pytest.raises(ValueError):

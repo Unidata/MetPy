@@ -8,6 +8,7 @@ from operator import itemgetter
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
 import numpy.ma as ma
+from pyproj import Geod
 from scipy.spatial import cKDTree
 import xarray as xr
 
@@ -763,7 +764,7 @@ def make_take(ndims, slice_dim):
 
 @exporter.export
 @preprocess_and_wrap()
-def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
+def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
     Parameters
@@ -778,8 +779,9 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
         axis number for the x dimension, defaults to -1.
     y_dim : int
         axis number for the y dimesion, defaults to -2.
-    kwargs
-        Other keyword arguments to pass to :class:`~pyproj.Geod`
+    geod : `pyproj.Geod` or ``None``
+        PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a
+        default spherical ellipsoid.
 
     Returns
     -------
@@ -797,8 +799,6 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
     array-like type). It will also "densify" your data if using Dask or lazy-loading.
 
     """
-    from pyproj import Geod
-
     # Inputs must be the same number of dimensions
     if latitude.ndim != longitude.ndim:
         raise ValueError('Latitude and longitude must have the same number of dimensions.')
@@ -819,11 +819,10 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
     take_y = make_take(latitude.ndim, y_dim)
     take_x = make_take(latitude.ndim, x_dim)
 
-    geod_args = {'ellps': 'sphere'}
-    if kwargs:
-        geod_args = kwargs
-
-    g = Geod(**geod_args)
+    if geod is None:
+        g = Geod(ellps='sphere')
+    else:
+        g = geod
 
     forward_az, _, dy = g.inv(longitude[take_y(slice(None, -1))],
                               latitude[take_y(slice(None, -1))],
@@ -842,7 +841,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, **kwargs):
 
 @exporter.export
 @preprocess_and_wrap()
-def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs):
+def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, geod=None):
     """Convert azimuth and range locations in a polar coordinate system to lat/lon coordinates.
 
     Pole refers to the origin of the coordinate system.
@@ -858,8 +857,9 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs)
         The latitude of the pole in decimal degrees
     center_lon : float
         The longitude of the pole in decimal degrees
-    kwargs
-        arbitrary keyword arguments to pass to pyproj.Geod (e.g. 'ellps')
+    geod : `pyproj.Geod` or ``None``
+        PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a
+        default spherical ellipsoid.
 
     Returns
     -------
@@ -870,12 +870,10 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, **kwargs)
     Credit to Brian Blaylock for the original implementation.
 
     """
-    from pyproj import Geod
-
-    geod_args = {'ellps': 'sphere'}
-    if kwargs:
-        geod_args = kwargs
-    g = Geod(**geod_args)
+    if geod is None:
+        g = Geod(ellps='sphere')
+    else:
+        g = geod
 
     rng2d, az2d = np.meshgrid(ranges, azimuths)
     lats = np.full(az2d.shape, center_lat)
