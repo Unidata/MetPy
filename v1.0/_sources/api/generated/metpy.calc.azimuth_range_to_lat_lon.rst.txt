@@ -1,0 +1,12 @@
+azimuth_range_to_lat_lon
+===================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: azimuth_range_to_lat_lon
+
+.. include:: metpy.calc.azimuth_range_to_lat_lon.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

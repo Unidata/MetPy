@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_tutorials_upperair_soundings.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_tutorials_upperair_soundings.py:
+        Click :ref:`here <sphx_glr_download_tutorials_upperair_soundings.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_tutorials_upperair_soundings.py:
 
 
 ===========================
@@ -15,7 +17,7 @@ Upper air analysis is a staple of many synoptic and mesoscale analysis
 problems. In this tutorial we will gather weather balloon data, plot it,
 perform a series of thermodynamic calculations, and summarize the results.
 To learn more about the Skew-T diagram and its use in weather analysis and
-forecasting, checkout `this <https://homes.comet.ucar.edu/~alanbol/aws-tr-79-006.pdf>`_
+forecasting, checkout `this <http://www.pmarshwx.com/research/manuals/AF_skewt_manual.pdf>`_
 air weather service guide.
 
 
@@ -171,6 +173,7 @@ These lines perform the following tasks:
 
 
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_001.png
+    :alt: upperair soundings
     :class: sphx-glr-single-img
 
 
@@ -225,6 +228,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 
 
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_002.png
+    :alt: upperair soundings
     :class: sphx-glr-single-img
 
 
@@ -288,6 +292,7 @@ which are not drawn.
 
 
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_003.png
+    :alt: upperair soundings
     :class: sphx-glr-single-img
 
 
@@ -297,7 +302,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.495 seconds)
+   **Total running time of the script:** ( 0 minutes  1.549 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:
@@ -310,13 +315,13 @@ which are not drawn.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: upperair_soundings.py <upperair_soundings.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: upperair_soundings.ipynb <upperair_soundings.ipynb>`
 

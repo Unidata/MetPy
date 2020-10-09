@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_gridding_Point_Interpolation.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_gridding_Point_Interpolation.py:
+        Click :ref:`here <sphx_glr_download_examples_gridding_Point_Interpolation.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_gridding_Point_Interpolation.py:
 
 
 Point Interpolation
@@ -120,6 +122,7 @@ Scipy.interpolate linear
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_001.png
+    :alt: Linear
     :class: sphx-glr-single-img
 
 
@@ -130,7 +133,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f1828e160f0>
+    <matplotlib.colorbar.Colorbar object at 0x7fce936cbc40>
 
 
 
@@ -151,6 +154,7 @@ Natural neighbor interpolation (MetPy implementation)
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_002.png
+    :alt: Natural Neighbor
     :class: sphx-glr-single-img
 
 
@@ -161,7 +165,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f182983e898>
+    <matplotlib.colorbar.Colorbar object at 0x7fce9b725550>
 
 
 
@@ -187,6 +191,7 @@ min_neighbors = 1
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_003.png
+    :alt: Cressman
     :class: sphx-glr-single-img
 
 
@@ -197,7 +202,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f1829c00630>
+    <matplotlib.colorbar.Colorbar object at 0x7fce937c9df0>
 
 
 
@@ -221,6 +226,7 @@ min_neighbors = 3
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_004.png
+    :alt: Barnes
     :class: sphx-glr-single-img
 
 
@@ -231,7 +237,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f18298b84e0>
+    <matplotlib.colorbar.Colorbar object at 0x7fce93790d30>
 
 
 
@@ -254,6 +260,7 @@ linear
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_005.png
+    :alt: Radial Basis Function
     :class: sphx-glr-single-img
 
 
@@ -263,7 +270,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.452 seconds)
+   **Total running time of the script:** ( 0 minutes  14.429 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
@@ -276,13 +283,13 @@ linear
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Point_Interpolation.py <Point_Interpolation.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Point_Interpolation.ipynb <Point_Interpolation.ipynb>`
 

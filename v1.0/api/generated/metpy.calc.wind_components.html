@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>wind_components &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,56 +28,46 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../../index.html"/>
-        <link rel="up" title="calc" href="metpy.calc.html"/>
-        <link rel="next" title="wind_direction" href="metpy.calc.wind_direction.html"/>
-        <link rel="prev" title="vorticity" href="metpy.calc.vorticity.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="wind_direction" href="metpy.calc.wind_direction.html" />
+    <link rel="prev" title="vorticity" href="metpy.calc.vorticity.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> MetPy
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../../_static/metpy_150x150.png" class="logo" />
+            <img src="../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -78,22 +75,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -110,6 +92,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -127,7 +110,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">metpy.io</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -183,13 +166,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">MetPy</a>
@@ -197,9 +181,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -221,7 +206,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
@@ -251,9 +236,9 @@
             
   <div class="section" id="wind-components">
 <h1>wind_components<a class="headerlink" href="#wind-components" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="metpy.calc.wind_components">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">wind_components</code><span class="sig-paren">(</span><em class="sig-param">speed</em>, <em class="sig-param">wind_direction</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#wind_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.wind_components" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">wind_components</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">speed</span></em>, <em class="sig-param"><span class="n">wind_direction</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#wind_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.wind_components" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the U, V wind vector components from the speed and direction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -275,8 +260,7 @@ directions, respectively.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
-<span class="go">(&lt;Quantity(7.071067811865475, &#39;meter / second&#39;)&gt;,</span>
-<span class="go"> &lt;Quantity(7.071067811865477, &#39;meter / second&#39;)&gt;)</span>
+<span class="go"> (&lt;Quantity(7.07106781, &#39;meter / second&#39;)&gt;, &lt;Quantity(7.07106781, &#39;meter / second&#39;)&gt;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -284,35 +268,35 @@ directions, respectively.</p>
 <div class="section" id="examples-using-metpy-calc-wind-components">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.wind_components</span></code><a class="headerlink" href="#examples-using-metpy-calc-wind-components" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_Advanced_Sounding_thumb.png" src="../../_images/sphx_glr_Advanced_Sounding_thumb.png" />
+<img alt="Advanced Sounding" src="../../_images/sphx_glr_Advanced_Sounding_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an..."><div class="figure align-default" id="id2">
-<img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
+<img alt="Wind and Sea Level Pressure Interpolation" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability."><div class="figure align-default" id="id3">
-<img alt="../../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
+<img alt="Skew-T with Complex Layout" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot."><div class="figure align-default" id="id4">
-<img alt="../../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
+<img alt="Hodograph Inset" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot."><div class="figure align-default" id="id5">
-<img alt="../../_images/sphx_glr_Simple_Sounding_thumb.png" src="../../_images/sphx_glr_Simple_Sounding_thumb.png" />
+<img alt="Simple Sounding" src="../../_images/sphx_glr_Simple_Sounding_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simple_Sounding.html#sphx-glr-examples-plots-simple-sounding-py"><span class="std std-ref">Simple Sounding</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><div class="figure align-default" id="id6">
-<img alt="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
+<img alt="Mesonet Station Plot" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><div class="figure align-default" id="id7">
-<img alt="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
+<img alt="Station Plot with Layout" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure align-default" id="id8">
-<img alt="../../_images/sphx_glr_upperair_soundings_thumb.png" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
+<img alt="Upper Air Sounding Tutorial" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
@@ -320,9 +304,7 @@ directions, respectively.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -331,7 +313,7 @@ directions, respectively.</p>
         <a href="metpy.calc.wind_direction.html" class="btn btn-neutral float-right" title="wind_direction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.vorticity.html" class="btn btn-neutral" title="vorticity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.vorticity.html" class="btn btn-neutral float-left" title="vorticity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -340,12 +322,22 @@ directions, respectively.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -357,9 +349,6 @@ directions, respectively.</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -372,41 +361,15 @@ directions, respectively.</p>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

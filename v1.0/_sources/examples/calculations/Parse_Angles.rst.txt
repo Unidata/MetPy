@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_calculations_Parse_Angles.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_calculations_Parse_Angles.py:
+        Click :ref:`here <sphx_glr_download_examples_calculations_Parse_Angles.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_calculations_Parse_Angles.py:
 
 
 Parse angles
@@ -115,13 +117,13 @@ in many different abbrieviations and capitalizations
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Parse_Angles.py <Parse_Angles.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Parse_Angles.ipynb <Parse_Angles.ipynb>`
 

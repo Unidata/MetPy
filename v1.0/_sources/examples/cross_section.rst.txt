@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_cross_section.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_cross_section.py:
+        Click :ref:`here <sphx_glr_download_examples_cross_section.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_cross_section.py:
 
 
 ======================
@@ -37,8 +39,9 @@ gridded data.
 
 **Getting the data**
 
-This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
-(https://www.ncdc.noaa.gov/data-access/model-data).
+This example uses [NARR reanalysis data](
+https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+for 18 UTC 04 April 1987 from NCEI.
 
 We use MetPy's CF parsing to get the data ready for use, and squeeze down the size-one time
 dimension.
@@ -68,12 +71,12 @@ dimension.
       * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
       * y                    (y) float64 -3.087e+06 -3.054e+06 ... 7.114e+05
       * x                    (x) float64 -3.977e+06 -3.945e+06 ... 5.47e+06
-        crs                  object Projection: lambert_conformal_conic
+        metpy_crs            object Projection: lambert_conformal_conic
     Data variables:
         Temperature          (isobaric, y, x) float32 ...
-        Lambert_Conformal    |S1 ...
+        Lambert_Conformal    |S1 b'd'
         lat                  (y, x) float64 ...
-        lon                  (y, x) float64 ...
+        lon                  (y, x) float64 -140.0 -139.7 -139.5 ... -42.28 -42.07
         u_wind               (isobaric, y, x) float32 ...
         v_wind               (isobaric, y, x) float32 ...
         Geopotential_height  (isobaric, y, x) float32 ...
@@ -137,7 +140,7 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
     Coordinates:
         time                 datetime64[ns] 1987-04-04T18:00:00
       * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
-        crs                  object Projection: lambert_conformal_conic
+        metpy_crs            object Projection: lambert_conformal_conic
         x                    (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
         y                    (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
       * index                (index) int64 0 1 2 3 4 5 6 7 ... 93 94 95 96 97 98 99
@@ -145,7 +148,7 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
         lon                  (index) float64 -105.0 -104.6 -104.2 ... -65.39 -65.0
     Data variables:
         Temperature          (isobaric, index) float64 287.7 286.9 ... 211.4 211.4
-        Lambert_Conformal    |S1 ...
+        Lambert_Conformal    |S1 b'd'
         u_wind               (isobaric, index) float64 -2.729 0.4776 ... 24.6 23.68
         v_wind               (isobaric, index) float64 8.473 5.723 ... -1.082
         Geopotential_height  (isobaric, index) float64 118.6 127.4 ... 1.636e+04
@@ -176,27 +179,21 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
 .. code-block:: default
 
 
-    temperature, pressure, specific_humidity = xr.broadcast(cross['Temperature'],
-                                                            cross['isobaric'],
-                                                            cross['Specific_humidity'])
-
-    theta = mpcalc.potential_temperature(pressure, temperature)
-    rh = mpcalc.relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity)
-
-    # These calculations return unit arrays, so put those back into DataArrays in our Dataset
-    cross['Potential_temperature'] = xr.DataArray(theta,
-                                                  coords=temperature.coords,
-                                                  dims=temperature.dims,
-                                                  attrs={'units': theta.units})
-    cross['Relative_humidity'] = xr.DataArray(rh,
-                                              coords=specific_humidity.coords,
-                                              dims=specific_humidity.dims,
-                                              attrs={'units': rh.units})
-
-    cross['u_wind'].metpy.convert_units('knots')
-    cross['v_wind'].metpy.convert_units('knots')
-    cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(cross['u_wind'],
-                                                                       cross['v_wind'])
+    cross['Potential_temperature'] = mpcalc.potential_temperature(
+        cross['isobaric'],
+        cross['Temperature']
+    )
+    cross['Relative_humidity'] = mpcalc.relative_humidity_from_specific_humidity(
+        cross['isobaric'],
+        cross['Temperature'],
+        cross['Specific_humidity']
+    )
+    cross['u_wind'] = cross['u_wind'].metpy.convert_units('knots')
+    cross['v_wind'] = cross['v_wind'].metpy.convert_units('knots')
+    cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(
+        cross['u_wind'],
+        cross['v_wind']
+    )
 
     print(cross)
 
@@ -215,7 +212,7 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
     Coordinates:
         time                   datetime64[ns] 1987-04-04T18:00:00
       * isobaric               (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
-        crs                    object Projection: lambert_conformal_conic
+        metpy_crs              object Projection: lambert_conformal_conic
         x                      (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
         y                      (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
       * index                  (index) int64 0 1 2 3 4 5 6 ... 93 94 95 96 97 98 99
@@ -223,15 +220,15 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
         lon                    (index) float64 -105.0 -104.6 -104.2 ... -65.39 -65.0
     Data variables:
         Temperature            (isobaric, index) float64 287.7 286.9 ... 211.4 211.4
-        Lambert_Conformal      |S1 ...
-        u_wind                 (isobaric, index) float64 -5.304 0.9285 ... 46.03
-        v_wind                 (isobaric, index) float64 16.47 11.13 ... -2.104
+        Lambert_Conformal      |S1 b'd'
+        u_wind                 (isobaric, index) float64 <Quantity([[ -5.30445235...
+        v_wind                 (isobaric, index) float64 <Quantity([[16.47047637 ...
         Geopotential_height    (isobaric, index) float64 118.6 127.4 ... 1.636e+04
         Specific_humidity      (isobaric, index) float64 0.006367 ... 4.223e-06
         Potential_temperature  (isobaric, index) float64 <Quantity([[287.71705253...
         Relative_humidity      (isobaric, index) float64 <Quantity([[0.61136026 0...
-        t_wind                 (isobaric, index) float64 -2.027 3.07 ... 45.18 43.27
-        n_wind                 (isobaric, index) float64 17.18 10.73 ... -15.83
+        t_wind                 (isobaric, index) float64 <Quantity([[-2.02660106 ...
+        n_wind                 (isobaric, index) float64 <Quantity([[ 17.18448995...
     Attributes:
         Conventions:              CF-1.0
         Originating_center:       US National Weather Service - NCEP(WMC) (7)
@@ -321,8 +318,18 @@ Now, we can make the plot.
 
 
 .. image:: /examples/images/sphx_glr_cross_section_001.png
+    :alt: NARR Cross-Section – (37.0, -105.0) to (35.5, -65.0) – Valid: 1987-04-04 18:00Z Potential Temperature (K), Tangential/Normal Winds (knots), Relative Humidity (dimensionless) Inset: Cross-Section Path and 500 hPa Geopotential Height
     :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /Users/rmay/repos/metpy/examples/cross_section.py:99: UserWarning: FixedFormatter should only be used together with FixedLocator
+      ax.set_yticklabels(np.arange(1000, 50, -100))
 
 
 
@@ -334,7 +341,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.779 seconds)
+   **Total running time of the script:** ( 0 minutes  2.562 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
@@ -347,13 +354,13 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: cross_section.py <cross_section.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: cross_section.ipynb <cross_section.ipynb>`
 

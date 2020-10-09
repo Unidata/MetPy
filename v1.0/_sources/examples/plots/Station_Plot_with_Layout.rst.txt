@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_plots_Station_Plot_with_Layout.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_plots_Station_Plot_with_Layout.py:
+        Click :ref:`here <sphx_glr_download_examples_plots_Station_Plot_with_Layout.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_plots_Station_Plot_with_Layout.py:
 
 
 Station Plot with Layout
@@ -230,6 +232,7 @@ The payoff
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_with_Layout_001.png
+    :alt: Station Plot with Layout
     :class: sphx-glr-single-img
 
 
@@ -288,6 +291,7 @@ or instead, a custom layout can be used:
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_with_Layout_002.png
+    :alt: Station Plot with Layout
     :class: sphx-glr-single-img
 
 
@@ -297,7 +301,7 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.418 seconds)
+   **Total running time of the script:** ( 0 minutes  1.961 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:
@@ -310,13 +314,13 @@ or instead, a custom layout can be used:
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Station_Plot_with_Layout.py <Station_Plot_with_Layout.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Station_Plot_with_Layout.ipynb <Station_Plot_with_Layout.ipynb>`
 

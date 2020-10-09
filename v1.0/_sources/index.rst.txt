@@ -83,6 +83,7 @@ release new features, and ``y`` when we make a release with only bug fixes.
 Media
 -----
 
+* `AMS 2020 talk`_ on MetPy being ready for a 1.0 release
 * `AMS 2019 talk`_ on bringing GEMPAK-like syntax to MetPy's declaritive plotting interface
 * `AMS 2019 poster`_ on recent development and community building with MetPy
 * `SciPy 2018 poster`_ and `abstract <http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Abstract.pdf>`_ on building community by John Leeman
@@ -112,6 +113,7 @@ Media
 .. _`SciPy 2018 poster`: http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Poster.pdf
 .. _`AMS 2019 talk`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/352384
 .. _`AMS 2019 poster`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/354058
+.. _`AMS 2020 talk`: https://ams.confex.com/ams/2020Annual/meetingapp.cgi/Paper/369011
 
 -------
 License
@@ -141,4 +143,4 @@ Related Projects
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
 .. _siphon: https://unidata.github.io/siphon/
 .. _Unidata Python Gallery: https://unidata.github.io/python-training/gallery/gallery-home
-__ https://www.unidata.ucar.edu/software/thredds/current/tds/
+__ https://www.unidata.ucar.edu/software/tds/current/

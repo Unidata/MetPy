@@ -1,4 +1,4 @@
-
+﻿
 
 calc
 ==========
@@ -75,6 +75,7 @@ Soundings
       el
       lcl
       lfc
+      lifted_index
       mixed_layer
       mixed_layer_cape_cin
       mixed_parcel
@@ -82,6 +83,7 @@ Soundings
       most_unstable_parcel
       parcel_profile
       parcel_profile_with_lcl
+      parcel_profile_with_lcl_as_dataset
       significant_tornado
       storm_relative_helicity
       supercell_composite
@@ -128,6 +130,7 @@ Boundary Layer/Turbulence
       brunt_vaisala_frequency_squared
       brunt_vaisala_period
       friction_velocity
+      gradient_richardson_number
       tke
 
 
@@ -140,7 +143,6 @@ Mathematical Functions
       cross_section_components
       first_derivative
       gradient
-      grid_deltas_from_dataarray
       laplacian
       lat_lon_grid_deltas
       normal_component
@@ -188,15 +190,16 @@ Other
       :toctree: ./
 
       angle_to_direction
+      azimuth_range_to_lat_lon
       find_bounding_indices
       find_intersections
       get_layer
       get_layer_heights
       get_perturbation
       isentropic_interpolation
+      isentropic_interpolation_as_dataset
       nearest_intersection_idx
       parse_angle
       reduce_point_density
       resample_nn_1d
-
 

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>xarray &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,56 +28,46 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../../index.html"/>
-        <link rel="up" title="Reference Guide" href="../index.html"/>
-        <link rel="next" title="MetPy Roadmap" href="../../roadmap.html"/>
-        <link rel="prev" title="remove_repeat_coordinates" href="metpy.interpolate.remove_repeat_coordinates.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="grid_deltas_from_dataarray" href="metpy.xarray.grid_deltas_from_dataarray.html" />
+    <link rel="prev" title="remove_repeat_coordinates" href="metpy.interpolate.remove_repeat_coordinates.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> MetPy
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../../_static/metpy_150x150.png" class="logo" />
+            <img src="../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -78,22 +75,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -110,6 +92,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -127,13 +110,17 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">metpy.io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">xarray</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accessors">Accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -150,13 +137,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">MetPy</a>
@@ -164,9 +152,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -188,7 +177,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
@@ -228,7 +217,7 @@ Dataset.</p>
 <p>See Also: <a class="reference internal" href="../../tutorials/xarray_tutorial.html"><span class="doc">xarray with MetPy Tutorial</span></a>.</p>
 <div class="section" id="accessors">
 <h2>Accessors<a class="headerlink" href="#accessors" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="metpy.xarray.MetPyDataArrayAccessor">
 <em class="property">class </em><code class="sig-prename descclassname">metpy.xarray.</code><code class="sig-name descname">MetPyDataArrayAccessor</code><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide custom attributes and methods on xarray DataArrays for MetPy functionality.</p>
@@ -236,9 +225,9 @@ Dataset.</p>
 attribute on a DataArray. For example, MetPy can identify the coordinate corresponding
 to a particular axis (given sufficent metadata):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span>
-<span class="gp">... </span>                           <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="o">-</span><span class="mi">104</span><span class="p">]},</span>
-<span class="gp">... </span>                           <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;degC&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                           <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="o">-</span><span class="mi">104</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
 <span class="go">&lt;xarray.DataArray &#39;lon&#39; (lon: 2)&gt;</span>
 <span class="go">array([-105, -104])</span>
@@ -248,13 +237,13 @@ to a particular axis (given sufficent metadata):</p>
 <span class="go">    _metpy_axis:  x,longitude</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.assign_coordinates">
-<code class="sig-name descname">assign_coordinates</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assign the given coordinates to the given MetPy axis types.</p>
+<code class="sig-name descname">assign_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coordinates</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new DataArray with given coordinates assigned to the given MetPy axis types.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – Mapping from axis types (‘time’, ‘vertical’, ‘y’, ‘latitude’, ‘x’, ‘longitude’) to
+<dd class="field-odd"><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – Mapping from axis types (‘time’, ‘vertical’, ‘y’, ‘latitude’, ‘x’, ‘longitude’) to
 coordinates of this DataArray. Coordinates can either be specified directly or by
 their name. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, clears the <em class="xref py py-obj">_metpy_axis</em> attribute on all coordinates,
 which will trigger reparsing of all coordinates on next access.</p>
@@ -262,19 +251,19 @@ which will trigger reparsing of all coordinates on next access.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.assign_crs">
-<code class="sig-name descname">assign_crs</code><span class="sig-paren">(</span><em class="sig-param">cf_attributes=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_crs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_crs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assign_crs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cf_attributes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_crs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_crs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign a CRS to this DataArray based on CF projection attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of CF projection attributes</p></li>
+<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of CF projection attributes</p></li>
 <li><p><strong>kwargs</strong> (<em>optional</em>) – CF projection attributes specified as keyword arguments</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with CRS coordinate assigned</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with CRS coordinate assigned</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -282,71 +271,90 @@ which will trigger reparsing of all coordinates on next access.</p>
 but not both.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.assign_latitude_longitude">
-<code class="sig-name descname">assign_latitude_longitude</code><span class="sig-paren">(</span><em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_latitude_longitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_latitude_longitude" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assign_latitude_longitude</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_latitude_longitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_latitude_longitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign latitude and longitude coordinates derived from y and x coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
+<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
 otherwise, raise a RuntimeError if such coordinates exist.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with latitude and longtiude auxilary coordinates assigned.</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with latitude and longtiude auxilary coordinates assigned.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.assign_y_x">
-<code class="sig-name descname">assign_y_x</code><span class="sig-paren">(</span><em class="sig-param">force=False</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_y_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_y_x" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assign_y_x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tolerance</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.assign_y_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.assign_y_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign y and x dimension coordinates derived from 2D latitude and longitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
 <li><p><strong>tolerance</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with y and x dimension coordinates assigned.</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with y and x dimension coordinates assigned.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.cartopy_crs">
 <em class="property">property </em><code class="sig-name descname">cartopy_crs</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_crs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a cartopy object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic">
+<em class="property">property </em><code class="sig-name descname">cartopy_geodetic</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Geodetic CRS associated with the native CRS globe.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.cartopy_globe">
 <em class="property">property </em><code class="sig-name descname">cartopy_globe</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_globe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the globe belonging to the coordinate reference system (CRS).</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="metpy.xarray.MetPyDataArrayAccessor.convert_units">
-<code class="sig-name descname">convert_units</code><span class="sig-paren">(</span><em class="sig-param">units</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the data values to different units in-place.</p>
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units">
+<code class="sig-name descname">convert_coordinate_units</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coord</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_coordinate_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new DataArray with coordinate converted to different units.</p>
+<p class="rubric">Notes</p>
+<p>Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded
+into memory by this operation.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.convert_units">
+<code class="sig-name descname">convert_units</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new DataArray with values converted to different units.</p>
+<p class="rubric">Notes</p>
+<p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+by this operation. Do not utilize on moderate- to large-sized remote datasets before
+subsetting!</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.coordinates">
-<code class="sig-name descname">coordinates</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.coordinates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coordinate variables corresponding to the given axes types.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Strings describing the axes type(s) to obtain. Currently understood types are
+<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Strings describing the axes type(s) to obtain. Currently understood types are
 ‘time’, ‘vertical’, ‘y’, ‘latitude’, ‘x’, and ‘longitude’.</p>
 </dd>
 </dl>
@@ -356,103 +364,134 @@ access a single coordinate, use the appropriate attribute on the accessor, or us
 unpacking.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.coordinates_identical">
-<code class="sig-name descname">coordinates_identical</code><span class="sig-paren">(</span><em class="sig-param">other</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.coordinates_identical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.coordinates_identical" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">coordinates_identical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.coordinates_identical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.coordinates_identical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether or not the coordinates of other match this DataArray’s.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.crs">
 <em class="property">property </em><code class="sig-name descname">crs</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.crs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a CFProjection object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.dequantify">
+<code class="sig-name descname">dequantify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.dequantify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.dequantify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DataArray with the data as magnitude and the units as an attribute.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.find_axis_name">
-<code class="sig-name descname">find_axis_name</code><span class="sig-paren">(</span><em class="sig-param">axis</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.find_axis_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.find_axis_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_axis_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">axis</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.find_axis_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.find_axis_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the name of the axis corresponding to the given identifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
+<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
 name (string) or a standard axis type (string).</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.find_axis_number">
-<code class="sig-name descname">find_axis_number</code><span class="sig-paren">(</span><em class="sig-param">axis</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.find_axis_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.find_axis_number" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_axis_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">axis</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.find_axis_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.find_axis_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dimension number of the axis corresponding to the given identifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
+<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
 name (string) or a standard axis type (string).</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.latitude">
 <em class="property">property </em><code class="sig-name descname">latitude</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.latitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the latitude coordinate (if it exists).</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.loc">
 <em class="property">property </em><code class="sig-name descname">loc</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.loc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap DataArray.loc with an indexer to handle units and coordinate types.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.longitude">
 <em class="property">property </em><code class="sig-name descname">longitude</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.longitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the longitude coordinate (if it exists).</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.magnitude">
+<em class="property">property </em><code class="sig-name descname">magnitude</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the magnitude of the data values of this DataArray (i.e., without units).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.pyproj_crs">
+<em class="property">property </em><code class="sig-name descname">pyproj_crs</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_crs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the coordinate reference system (CRS) as a pyproj object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.quantify">
+<code class="sig-name descname">quantify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.quantify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.quantify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DataArray with the data converted to a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
+<p class="rubric">Notes</p>
+<p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+by this operation. Do not utilize on moderate- to large-sized remote datasets before
+subsetting!</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.sel">
-<code class="sig-name descname">sel</code><span class="sig-paren">(</span><em class="sig-param">indexers=None</em>, <em class="sig-param">method=None</em>, <em class="sig-param">tolerance=None</em>, <em class="sig-param">drop=False</em>, <em class="sig-param">**indexers_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.sel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.sel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">indexers</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tolerance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">drop</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">indexers_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.sel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.sel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap DataArray.sel to handle units and coordinate types.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.time">
 <em class="property">property </em><code class="sig-name descname">time</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the time coordinate.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.time_deltas">
 <em class="property">property </em><code class="sig-name descname">time_deltas</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.time_deltas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the time difference of the data in seconds (to microsecond precision).</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.unit_array">
 <em class="property">property </em><code class="sig-name descname">unit_array</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.unit_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data values of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
+<p class="rubric">Notes</p>
+<p>If not already existing as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or Dask array, the data of this DataArray
+will be loaded into memory by this operation.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.units">
 <em class="property">property </em><code class="sig-name descname">units</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the units of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
+<dd><p>Return the units of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code>.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.vertical">
 <em class="property">property </em><code class="sig-name descname">vertical</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.vertical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the vertical coordinate.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.x">
 <em class="property">property </em><code class="sig-name descname">x</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the x coordinate.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.y">
 <em class="property">property </em><code class="sig-name descname">y</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.y" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the y coordinate.</p>
@@ -460,31 +499,31 @@ name (string) or a standard axis type (string).</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="metpy.xarray.MetPyDatasetAccessor">
 <em class="property">class </em><code class="sig-prename descclassname">metpy.xarray.</code><code class="sig-name descname">MetPyDatasetAccessor</code><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide custom attributes and methods on XArray Datasets for MetPy functionality.</p>
 <p>This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.testing</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 <span class="go">Projection: lambert_conformal_conic</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.assign_crs">
-<code class="sig-name descname">assign_crs</code><span class="sig-paren">(</span><em class="sig-param">cf_attributes=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.assign_crs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.assign_crs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assign_crs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cf_attributes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.assign_crs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.assign_crs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign a CRS to this Datatset based on CF projection attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of CF projection attributes</p></li>
+<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of CF projection attributes</p></li>
 <li><p><strong>kwargs</strong> (<em>optional</em>) – CF projection attributes specified as keyword arguments</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with CRS coordinate assigned</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with CRS coordinate assigned</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -492,96 +531,107 @@ name (string) or a standard axis type (string).</p>
 but not both.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.assign_latitude_longitude">
-<code class="sig-name descname">assign_latitude_longitude</code><span class="sig-paren">(</span><em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.assign_latitude_longitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.assign_latitude_longitude" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assign_latitude_longitude</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.assign_latitude_longitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.assign_latitude_longitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign latitude and longitude coordinates derived from y and x coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
+<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
 otherwise, raise a RuntimeError if such coordinates exist.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with latitude and longitude coordinates assigned to all
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with latitude and longitude coordinates assigned to all
 variables with y and x coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.assign_y_x">
-<code class="sig-name descname">assign_y_x</code><span class="sig-paren">(</span><em class="sig-param">force=False</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.assign_y_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.assign_y_x" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assign_y_x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tolerance</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.assign_y_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.assign_y_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign y and x dimension coordinates derived from 2D latitude and longitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
 <li><p><strong>tolerance</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with y and x dimension coordinates assigned to all variables
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with y and x dimension coordinates assigned to all variables
 with valid latitude and longitude coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDatasetAccessor.dequantify">
+<code class="sig-name descname">dequantify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.dequantify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.dequantify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new dataset with variables cast to magnitude and units on attribute.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.loc">
 <em class="property">property </em><code class="sig-name descname">loc</code><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.loc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap Dataset.loc with an indexer to handle units and coordinate types.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.parse_cf">
-<code class="sig-name descname">parse_cf</code><span class="sig-paren">(</span><em class="sig-param">varname=None</em>, <em class="sig-param">coordinates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.parse_cf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.parse_cf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse_cf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">varname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">coordinates</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.parse_cf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.parse_cf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse Climate and Forecasting (CF) convention metadata.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>varname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>iterable of str</em><em>, </em><em>optional</em>) – Name of the variable(s) to extract from the dataset while parsing for CF metadata.
+<li><p><strong>varname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>iterable of str</em><em>, </em><em>optional</em>) – Name of the variable(s) to extract from the dataset while parsing for CF metadata.
 Defaults to all variables.</p></li>
-<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
+<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
 if you wish to override MetPy’s automatic parsing of some axis type(s).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Parsed DataArray (if varname is a string) or Dataset</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Parsed DataArray (if varname is a string) or Dataset</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDatasetAccessor.quantify">
+<code class="sig-name descname">quantify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.quantify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.quantify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new dataset with all numeric variables quantified and cached data loaded.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.sel">
-<code class="sig-name descname">sel</code><span class="sig-paren">(</span><em class="sig-param">indexers=None</em>, <em class="sig-param">method=None</em>, <em class="sig-param">tolerance=None</em>, <em class="sig-param">drop=False</em>, <em class="sig-param">**indexers_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.sel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.sel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">indexers</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tolerance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">drop</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">indexers_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.sel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.sel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap Dataset.sel to handle units.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="metpy.xarray.MetPyDatasetAccessor.update_attribute">
-<code class="sig-name descname">update_attribute</code><span class="sig-paren">(</span><em class="sig-param">attribute</em>, <em class="sig-param">mapping</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.update_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.update_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update attribute of all Dataset variables.</p>
+<code class="sig-name descname">update_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">attribute</span></em>, <em class="sig-param"><span class="n">mapping</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDatasetAccessor.update_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDatasetAccessor.update_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new Dataset with specified attribute updated on all Dataset variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>attribute</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>,</em>) – Name of attribute to update</p></li>
-<li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em> or </em><em>callable</em>) – Either a dict, with keys as variable names and values as attribute values to set,
+<li><p><strong>attribute</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>,</em>) – Name of attribute to update</p></li>
+<li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><em>callable</em>) – Either a dict, with keys as variable names and values as attribute values to set,
 or a callable, which must accept one positional argument (variable name) and
 arbitrary keyword arguments (all existing variable attributes). If a variable name
 is not present/the callable returns None, the attribute will not be updated.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Dataset with attribute updated (modified in place, and returned to allow method
-chaining)</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New Dataset with attribute updated</p>
 </dd>
 </dl>
 </dd></dl>
@@ -589,22 +639,36 @@ chaining)</p>
 </dd></dl>
 
 </div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html#metpy.xarray.grid_deltas_from_dataarray" title="metpy.xarray.grid_deltas_from_dataarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code></a>(f[, kind])</p></td>
+<td><p>Calculate the horizontal deltas between grid points of a DataArray.</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../roadmap.html" class="btn btn-neutral float-right" title="MetPy Roadmap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.xarray.grid_deltas_from_dataarray.html" class="btn btn-neutral float-right" title="grid_deltas_from_dataarray" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.interpolate.remove_repeat_coordinates.html" class="btn btn-neutral" title="remove_repeat_coordinates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.interpolate.remove_repeat_coordinates.html" class="btn btn-neutral float-left" title="remove_repeat_coordinates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -613,12 +677,22 @@ chaining)</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -630,9 +704,6 @@ chaining)</p>
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -645,41 +716,15 @@ chaining)</p>
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

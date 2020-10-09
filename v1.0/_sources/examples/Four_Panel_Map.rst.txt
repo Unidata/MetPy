@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_Four_Panel_Map.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_Four_Panel_Map.py:
+        Click :ref:`here <sphx_glr_download_examples_Four_Panel_Map.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_Four_Panel_Map.py:
 
 
 Four Panel Map
@@ -146,42 +148,16 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
     # Do unit conversions to what we wish to plot
     vort_500 = vort_500 * 1e5
-    surface_temp.metpy.convert_units('degF')
-    precip_water.metpy.convert_units('inches')
-    winds_300.metpy.convert_units('knots')
+    surface_temp = surface_temp.metpy.convert_units('degF')
+    precip_water = precip_water.metpy.convert_units('inches')
+    winds_300 = winds_300.metpy.convert_units('knots')
 
 
 
 
 
 
-.. only:: builder_html
 
-    .. raw:: html
-
-        <pre>&lt;xarray.DataArray &#x27;winds_300&#x27; (lat: 201, lon: 361)&gt;
-        array([[  9.06131819,   9.01952253,   9.13813758, ..., 110.36004629,
-                111.83865508, 112.03460858],
-               [  7.66772117,   7.6033894 ,   7.66032592, ..., 109.23386609,
-                110.0245243 , 111.4624905 ],
-               [  7.57101844,   7.33527694,   7.17117905, ..., 109.48676816,
-                109.47831485, 110.61312632],
-               ...,
-               [ 46.42656091,  45.90972299,  45.47516017, ...,  30.04356059,
-                 31.90807565,  33.73844196],
-               [ 44.9448637 ,  44.59884182,  44.16121654, ...,  33.1024792 ,
-                 34.51569353,  35.92905988],
-               [ 43.29190924,  43.03102843,  42.77341402, ...,  34.65171756,
-                 35.87749102,  37.29193628]])
-        Coordinates:
-          * lat      (lat) float32 65.0 64.75 64.5 64.25 64.0 ... 15.75 15.5 15.25 15.0
-          * lon      (lon) float32 220.0 220.25 220.5 220.75 ... 309.5 309.75 310.0
-            time     datetime64[ns] 2017-02-28T21:00:00
-        Attributes:
-            units:          knot
-            standard_name:  winds_300</pre>
-        <br />
-        <br />
 
 
 .. code-block:: default
@@ -234,7 +210,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
                              transform=ccrs.PlateCarree(), zorder=0)
     axlist[2].set_title('Surface Temperatures', fontsize=16)
     cb3 = fig.colorbar(cf3, ax=axlist[2], orientation='horizontal', shrink=0.74, pad=0)
-    cb3.set_label(u'\N{DEGREE FAHRENHEIT}', size='x-large')
+    cb3.set_label('\N{DEGREE FAHRENHEIT}', size='x-large')
 
     # Lower right plot - precipitable water entire atmosphere
     cf4 = axlist[3].contourf(lon_2d, lat_2d, precip_water, cmap='Greens',
@@ -255,6 +231,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 .. image:: /examples/images/sphx_glr_Four_Panel_Map_001.png
+    :alt: 28 February 2017 21:00Z, 300-hPa Wind Speeds and Heights, 500-hPa Absolute Vorticity and Heights, Surface Temperatures, Precipitable Water
     :class: sphx-glr-single-img
 
 
@@ -264,7 +241,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.983 seconds)
+   **Total running time of the script:** ( 0 minutes  5.337 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:
@@ -277,13 +254,13 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Four_Panel_Map.py <Four_Panel_Map.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Four_Panel_Map.ipynb <Four_Panel_Map.ipynb>`
 

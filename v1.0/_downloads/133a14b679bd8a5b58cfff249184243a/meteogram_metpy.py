@@ -25,7 +25,7 @@ def calc_mslp(t, p, h):
 
 
 # Make meteogram plot
-class Meteogram(object):
+class Meteogram:
     """ Plot a time series of meteorological data from a particular station as a
     meteogram with standard variables to visualize, including thermodynamic,
     kinematic, and pressure. The functions below control the plotting of each
@@ -51,7 +51,7 @@ class Meteogram(object):
         self.axis_num = 0
         self.dates = mpl.dates.date2num(dates)
         self.time = time.strftime('%Y-%m-%d %H:%M UTC')
-        self.title = 'Latest Ob Time: {0}\nProbe ID: {1}'.format(self.time, probeid)
+        self.title = f'Latest Ob Time: {self.time}\nProbe ID: {probeid}'
 
     def plot_winds(self, ws, wd, wsmax, plot_range=None):
         """
@@ -80,10 +80,10 @@ class Meteogram(object):
         ax7.set_ylabel('Wind\nDirection\n(degrees)', multialignment='center')
         ax7.set_ylim(0, 360)
         ax7.set_yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
-        lns = ln1 + ln2 + ln3
-        labs = [l.get_label() for l in lns]
+        lines = ln1 + ln2 + ln3
+        labs = [line.get_label() for line in lines]
         ax7.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
-        ax7.legend(lns, labs, loc='upper center',
+        ax7.legend(lines, labs, loc='upper center',
                    bbox_to_anchor=(0.5, 1.2), ncol=3, prop={'size': 12})
 
     def plot_thermo(self, t, td, plot_range=None):
@@ -111,11 +111,11 @@ class Meteogram(object):
 
         ax_twin = self.ax2.twinx()
         ax_twin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        lns = ln4 + ln5
-        labs = [l.get_label() for l in lns]
+        lines = ln4 + ln5
+        labs = [line.get_label() for line in lines]
         ax_twin.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
 
-        self.ax2.legend(lns, labs, loc='upper center',
+        self.ax2.legend(lines, labs, loc='upper center',
                         bbox_to_anchor=(0.5, 1.2), ncol=2, prop={'size': 12})
 
     def plot_rh(self, rh, plot_range=None):

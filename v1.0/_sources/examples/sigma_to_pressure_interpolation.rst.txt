@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_sigma_to_pressure_interpolation.py:
+        Click :ref:`here <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_sigma_to_pressure_interpolation.py:
 
 
 ===============================
@@ -101,7 +103,7 @@ variable for plotting.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
+    /Users/rmay/repos/metpy/src/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -131,24 +133,23 @@ variable for plotting.
     # Plot the heights
     cs = ax.contour(lon, lat, height[FH, 0, :, :], transform=ccrs.PlateCarree(),
                     colors='k', linewidths=1.0, linestyles='solid')
-    ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-              fmt='%i', rightside_up=True, use_clabeltext=True)
+    cs.clabel(fontsize=10, inline=1, inline_spacing=7, fmt='%i', rightside_up=True,
+              use_clabeltext=True)
 
     # Contour the temperature
     cf = ax.contourf(lon, lat, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r,
                      transform=ccrs.PlateCarree())
-    cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
-                      pad=0.05, extendrect='True')
+    cb = fig.colorbar(cf, orientation='horizontal', aspect=65, shrink=0.5, pad=0.05,
+                      extendrect='True')
     cb.set_label('Celsius', size='x-large')
 
     ax.set_extent([-106.5, -90.4, 34.5, 46.75], crs=ccrs.PlateCarree())
 
     # Make the axis title
-    ax.set_title('{:.0f} hPa Heights (m) and Temperature (C)'.format(plevs[0].m), loc='center',
-                 fontsize=10)
+    ax.set_title(f'{plevs[0]:~.0f} Heights (m) and Temperature (C)', loc='center', fontsize=10)
 
     # Set the figure title
-    fig.suptitle('WRF-ARW Forecast VALID: {:s} UTC'.format(str(vtimes[FH])), fontsize=14)
+    fig.suptitle(f'WRF-ARW Forecast VALID: {vtimes[FH]} UTC', fontsize=14)
     add_timestamp(ax, vtimes[FH], y=0.02, high_contrast=True)
 
     plt.show()
@@ -156,6 +157,7 @@ variable for plotting.
 
 
 .. image:: /examples/images/sphx_glr_sigma_to_pressure_interpolation_001.png
+    :alt: WRF-ARW Forecast VALID: 1980-06-03 13:00:00 UTC, 700 hPa Heights (m) and Temperature (C)
     :class: sphx-glr-single-img
 
 
@@ -165,7 +167,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.944 seconds)
+   **Total running time of the script:** ( 0 minutes  3.680 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
@@ -178,13 +180,13 @@ variable for plotting.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: sigma_to_pressure_interpolation.py <sigma_to_pressure_interpolation.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: sigma_to_pressure_interpolation.ipynb <sigma_to_pressure_interpolation.ipynb>`
 

@@ -13,6 +13,8 @@ Level3File
    .. autosummary::
    
       ~Level3File.additional_gsm_fmt
+      ~Level3File.digital_radial_fmt
+      ~Level3File.digital_radial_hdr_fmt
       ~Level3File.graph_block_fmt
       ~Level3File.gsm_fmt
       ~Level3File.header_fmt
@@ -50,6 +52,8 @@ Level3File
 
    
    .. autoattribute:: additional_gsm_fmt
+   .. autoattribute:: digital_radial_fmt
+   .. autoattribute:: digital_radial_hdr_fmt
    .. autoattribute:: graph_block_fmt
    .. autoattribute:: gsm_fmt
    .. autoattribute:: header_fmt

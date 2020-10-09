@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_plots_Combined_plotting.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_plots_Combined_plotting.py:
+        Click :ref:`here <sphx_glr_download_examples_plots_Combined_plotting.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_plots_Combined_plotting.py:
 
 
 Combined Plotting
@@ -90,19 +92,9 @@ Plot the data on a map
 
 
 .. image:: /examples/plots/images/sphx_glr_Combined_plotting_001.png
+    :alt: NARR Example
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 
 
 
@@ -110,7 +102,7 @@ Plot the data on a map
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.280 seconds)
+   **Total running time of the script:** ( 0 minutes  2.887 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:
@@ -123,13 +115,13 @@ Plot the data on a map
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Combined_plotting.py <Combined_plotting.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Combined_plotting.ipynb <Combined_plotting.ipynb>`
 

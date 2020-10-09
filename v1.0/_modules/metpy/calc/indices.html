@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>metpy.calc.indices &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,54 +28,44 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../../../index.html"/>
-        <link rel="up" title="Module code" href="../../index.html"/> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> MetPy
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../../../_static/metpy_150x150.png" class="logo" />
+            <img src="../../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -76,22 +73,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -108,6 +90,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -135,13 +118,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">MetPy</a>
@@ -149,9 +133,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -173,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -203,14 +188,14 @@
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="kn">import</span> <span class="n">_remove_nans</span><span class="p">,</span> <span class="n">get_layer</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">mpconsts</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_and_wrap</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="precipitable_water"><a class="viewcode-back" href="../../../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">precipitable_water</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate precipitable water through the depth of a sounding.</span>
@@ -243,6 +228,10 @@
 <span class="sd">    &gt;&gt;&gt; dewpoint = np.array([20, 15, 10]) * units.degC</span>
 <span class="sd">    &gt;&gt;&gt; pw = precipitable_water(pressure, dewpoint)</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Sort pressure and dewpoint to be in decreasing pressure order (increasing height)</span>
     <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -269,7 +258,7 @@
 
 
 <div class="viewcode-block" id="mean_pressure_weighted"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mean_pressure_weighted.html#metpy.calc.mean_pressure_weighted">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mean_pressure_weighted</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate pressure-weighted mean of an arbitrary variable through a layer.</span>
@@ -295,10 +284,14 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        u_mean: u-component of layer mean wind.</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        v_mean: v-component of layer mean wind.</span>
+<span class="sd">    list of `pint.Quantity`</span>
+<span class="sd">        list of layer mean value for each profile in args</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Returned variable means in layer</span>
@@ -318,7 +311,7 @@
 
 
 <div class="viewcode-block" id="bunkers_storm_motion"><a class="viewcode-back" href="../../../api/generated/metpy.calc.bunkers_storm_motion.html#metpy.calc.bunkers_storm_motion">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">bunkers_storm_motion</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.</span>
@@ -344,6 +337,12 @@
 <span class="sd">        U and v component of Bunkers LM storm motion</span>
 <span class="sd">    wind_mean: `pint.Quantity`</span>
 <span class="sd">        U and v component of sfc-6km mean flow</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># mean wind from sfc-6km</span>
@@ -378,7 +377,7 @@
 
 
 <div class="viewcode-block" id="bulk_shear"><a class="viewcode-back" href="../../../api/generated/metpy.calc.bulk_shear.html#metpy.calc.bulk_shear">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">bulk_shear</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate bulk shear through a layer.</span>
@@ -410,6 +409,12 @@
 <span class="sd">    v_shr: `pint.Quantity`</span>
 <span class="sd">        v-component of layer bulk shear</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">u_layer</span><span class="p">,</span> <span class="n">v_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
                                     <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
@@ -421,7 +426,7 @@
 
 
 <div class="viewcode-block" id="supercell_composite"><a class="viewcode-back" href="../../../api/generated/metpy.calc.supercell_composite.html#metpy.calc.supercell_composite">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;mucape&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">supercell_composite</span><span class="p">(</span><span class="n">mucape</span><span class="p">,</span> <span class="n">effective_storm_helicity</span><span class="p">,</span> <span class="n">effective_shear</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the supercell composite parameter.</span>
@@ -453,7 +458,7 @@
 <span class="sd">        supercell composite</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">effective_shear</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
+    <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">effective_shear</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
     <span class="n">effective_shear</span><span class="p">[</span><span class="n">effective_shear</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
     <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">effective_shear</span> <span class="o">/</span> <span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
 
@@ -463,7 +468,7 @@
 
 
 <div class="viewcode-block" id="significant_tornado"><a class="viewcode-back" href="../../../api/generated/metpy.calc.significant_tornado.html#metpy.calc.significant_tornado">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;sbcape&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">significant_tornado</span><span class="p">(</span><span class="n">sbcape</span><span class="p">,</span> <span class="n">surface_based_lcl_height</span><span class="p">,</span> <span class="n">storm_helicity_1km</span><span class="p">,</span> <span class="n">shear_6km</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the significant tornado parameter (fixed layer).</span>
@@ -501,12 +506,12 @@
 <span class="sd">        significant tornado parameter</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">surface_based_lcl_height</span><span class="p">),</span>
+    <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">surface_based_lcl_height</span><span class="p">),</span>
                                        <span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="mi">2000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
     <span class="n">surface_based_lcl_height</span><span class="p">[</span><span class="n">surface_based_lcl_height</span> <span class="o">&gt;</span> <span class="mi">2000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span>
     <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="p">((</span><span class="mf">2000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span> <span class="o">-</span> <span class="n">surface_based_lcl_height</span><span class="p">)</span>
                                 <span class="o">/</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
-    <span class="n">shear_6km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">shear_6km</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
+    <span class="n">shear_6km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">shear_6km</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
     <span class="n">shear_6km</span><span class="p">[</span><span class="n">shear_6km</span> <span class="o">&lt;</span> <span class="mf">12.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
     <span class="n">shear_6km</span> <span class="o">/=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
 
@@ -517,7 +522,7 @@
 
 
 <div class="viewcode-block" id="critical_angle"><a class="viewcode-back" href="../../../api/generated/metpy.calc.critical_angle.html#metpy.calc.critical_angle">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">critical_angle</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">u_storm</span><span class="p">,</span> <span class="n">v_storm</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the critical angle.</span>
@@ -549,6 +554,12 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        critical angle in degrees</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Convert everything to m/s</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
@@ -578,9 +589,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -589,12 +598,22 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -606,9 +625,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -621,41 +637,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>metpy.io.gini &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,54 +28,44 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../../../index.html"/>
-        <link rel="up" title="Module code" href="../../index.html"/> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> MetPy
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../../../_static/metpy_150x150.png" class="logo" />
+            <img src="../../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -76,22 +73,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -108,6 +90,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -135,13 +118,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">MetPy</a>
@@ -149,9 +133,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -173,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -209,10 +194,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">xarray</span> <span class="kn">import</span> <span class="n">Variable</span>
 <span class="kn">from</span> <span class="nn">xarray.backends.common</span> <span class="kn">import</span> <span class="n">AbstractDataStore</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenDict</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenOrderedDict</span> <span class="k">as</span> <span class="n">FrozenDict</span>
+<span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenDict</span>
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
@@ -247,7 +229,7 @@
     <span class="n">mapper</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)),</span> <span class="n">names</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;UnknownValue&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lookup</span>
 
 
@@ -299,7 +281,8 @@
                 <span class="s1">&#39;Sounder (9.71 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (7.43 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (7.02 micron)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Sounder (6.51 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.57 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.52 micron)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Sounder (4.45 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.13 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (3.98 micron)&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Sounder (3.74 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (Visible)&#39;</span><span class="p">]</span>
+                <span class="c1"># Percent Normal TPW found empirically from Service Change Notice 20-03</span>
+                <span class="s1">&#39;Sounder (3.74 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (Visible)&#39;</span><span class="p">,</span> <span class="s1">&#39;Percent Normal TPW&#39;</span><span class="p">]</span>
 
     <span class="n">prod_desc_fmt</span> <span class="o">=</span> <span class="n">NamedStruct</span><span class="p">([(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>
                                  <span class="p">(</span><span class="s1">&#39;creating_entity&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">_name_lookup</span><span class="p">(</span><span class="n">crafts</span><span class="p">)),</span>
@@ -464,7 +447,7 @@
             <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;standard_parallel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s1">&#39;Unhandled GINI Projection: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span><span class="p">))</span>
+                <span class="sa">f</span><span class="s1">&#39;Unhandled GINI Projection: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">Variable</span><span class="p">((),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
 
@@ -539,32 +522,6 @@
 
         <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">y_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lon_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">lat_var</span><span class="p">)]</span>
 
-    <span class="c1"># FIXME: Work around xarray &lt;=0.10.3 docstring for load angering sphinx</span>
-    <span class="c1"># That&#39;s the only reason this exists.</span>
-<div class="viewcode-block" id="GiniFile.load"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Load the variables and attributes simultaneously.</span>
-
-<span class="sd">        A centralized loading function makes it easier to create</span>
-<span class="sd">        data stores that do automatic encoding/decoding.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">            class SuffixAppendingDataStore(AbstractDataStore):</span>
-
-<span class="sd">                def load(self):</span>
-<span class="sd">                    variables, attributes = AbstractDataStore.load(self)</span>
-<span class="sd">                    variables = {&#39;%s_suffix&#39; % k: v</span>
-<span class="sd">                                 for k, v in iteritems(variables)}</span>
-<span class="sd">                    attributes = {&#39;%s_suffix&#39; % k: v</span>
-<span class="sd">                                  for k, v in iteritems(attributes)}</span>
-<span class="sd">                    return variables, attributes</span>
-
-<span class="sd">        This function will be called anytime variables or attributes</span>
-<span class="sd">        are requested, so care should be taken to make sure its fast.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
 
@@ -599,21 +556,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">satellite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">creating_entity</span><span class="p">,</span>
-                          <span class="n">sector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="GiniFile.get_dimensions"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_dimensions">[docs]</a>    <span class="k">def</span> <span class="nf">get_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the file&#39;s dimensions.</span>
-
-<span class="sd">        This is used by `xarray.open_dataset`.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span></div></div>
+                          <span class="n">sector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -622,12 +569,22 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -639,9 +596,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -654,41 +608,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

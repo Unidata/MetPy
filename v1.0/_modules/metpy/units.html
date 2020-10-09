@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>metpy.units &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,54 +28,44 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> MetPy
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../../_static/metpy_150x150.png" class="logo" />
+            <img src="../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -76,22 +73,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -108,6 +90,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -135,13 +118,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">MetPy</a>
@@ -149,9 +133,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -173,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -224,16 +209,17 @@
 <span class="n">DimensionalityError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">DimensionalityError</span>
 
 <span class="c1"># Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">units</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span><span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                              <span class="n">preprocessors</span><span class="o">=</span><span class="p">[</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                                             <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span>
-                                             <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?&lt;=[A-Za-z])(?![A-Za-z])(?&lt;![0-9\-][eE])&#39;</span>
-                                              <span class="sa">r</span><span class="s1">&#39;(?&lt;![0-9\-])(?=[0-9\-])&#39;</span><span class="p">),</span>
-                                             <span class="s1">&#39;**&#39;</span><span class="p">),</span>
-                                             <span class="k">lambda</span> <span class="n">string</span><span class="p">:</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">)])</span>
-<span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-    <span class="n">units</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span><span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">units</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span>
+    <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">preprocessors</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s1">&#39;(?&lt;=[A-Za-z])(?![A-Za-z])(?&lt;![0-9\-][eE])(?&lt;![0-9\-])(?=[0-9\-])&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;**&#39;</span>
+        <span class="p">),</span>
+        <span class="k">lambda</span> <span class="n">string</span><span class="p">:</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
 <span class="c1"># Capture v0.10 NEP 18 warning on first creation</span>
 <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -250,11 +236,7 @@
 <span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE&#39;</span><span class="p">)</span>
 
 <span class="c1"># Alias geopotential meters (gpm) to just meters</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;meter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;metre&#39;</span><span class="p">,</span> <span class="s1">&#39;gpm&#39;</span><span class="p">)</span>
-    <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;gpm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;meter&#39;</span><span class="p">]</span>
-<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to add gpm alias to meters.&#39;</span><span class="p">)</span>
+<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;@alias meter = gpm&#39;</span><span class="p">)</span>
 
 <span class="c1"># Silence UnitStrippedWarning</span>
 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pint</span><span class="p">,</span> <span class="s1">&#39;UnitStrippedWarning&#39;</span><span class="p">):</span>
@@ -284,7 +266,7 @@
             <span class="n">column_units</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">units</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No units attribute attached to pandas &#39;</span>
-                             <span class="s1">&#39;dataframe and col_units not given.&#39;</span><span class="p">)</span>
+                             <span class="s1">&#39;dataframe and col_units not given.&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
 
     <span class="c1"># Iterate through columns attaching units if we have them, if not, don&#39;t touch it</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
@@ -299,7 +281,7 @@
 <div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenate multiple values into a new unitized object.</span>
 
-<span class="sd">    This is essentially a unit-aware version of `numpy.concatenate`. All items</span>
+<span class="sd">    This is essentially a scalar-/masked array-aware version of `numpy.concatenate`. All items</span>
 <span class="sd">    must be able to be converted to the same units. If an item has no units, it will be given</span>
 <span class="sd">    those of the rest of the collection, without conversion. The first units found in the</span>
 <span class="sd">    arguments is used as the final output units.</span>
@@ -337,100 +319,6 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="diff"><a class="viewcode-back" href="../../api/generated/metpy.units.diff.html#metpy.units.diff">[docs]</a><span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the n-th discrete difference along given axis.</span>
-
-<span class="sd">    Wraps :func:`numpy.diff` to handle units.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    x : array-like</span>
-<span class="sd">        Input data</span>
-<span class="sd">    n : int, optional</span>
-<span class="sd">        The number of times values are differenced.</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis along which the difference is taken, default is the last axis.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    diff : ndarray</span>
-<span class="sd">        The n-th differences. The shape of the output is the same as `a`</span>
-<span class="sd">        except along `axis` where the dimension is smaller by `n`. The</span>
-<span class="sd">        type of the output is the same as that of the input.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    numpy.diff</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="c1"># Can&#39;t just use units because of how things like temperature work</span>
-        <span class="n">it</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">flat</span>
-        <span class="n">true_units</span> <span class="o">=</span> <span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="o">-</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">))</span><span class="o">.</span><span class="n">units</span>
-        <span class="k">return</span> <span class="n">ret</span> <span class="o">*</span> <span class="n">true_units</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="atleast_1d"><a class="viewcode-back" href="../../api/generated/metpy.units.atleast_1d.html#metpy.units.atleast_1d">[docs]</a><span class="k">def</span> <span class="nf">atleast_1d</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert inputs to arrays with at least one dimension.</span>
-
-<span class="sd">    Scalars are converted to 1-dimensional arrays, whilst other</span>
-<span class="sd">    higher-dimensional inputs are preserved. This is a thin wrapper</span>
-<span class="sd">    around `numpy.atleast_1d` to preserve units.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    arrs : arbitrary positional arguments</span>
-<span class="sd">        Input arrays to be converted if necessary</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        A single quantity or a list of quantities, matching the number of inputs.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mags</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;magnitude&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
-    <span class="n">orig_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">units</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="o">*</span><span class="n">mags</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">orig_units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ret</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">m</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">)]</span></div>
-
-
-<div class="viewcode-block" id="atleast_2d"><a class="viewcode-back" href="../../api/generated/metpy.units.atleast_2d.html#metpy.units.atleast_2d">[docs]</a><span class="k">def</span> <span class="nf">atleast_2d</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert inputs to arrays with at least two dimensions.</span>
-
-<span class="sd">    Scalars and 1-dimensional arrays are converted to 2-dimensional arrays,</span>
-<span class="sd">    whilst other higher-dimensional inputs are preserved. This is a thin wrapper</span>
-<span class="sd">    around `numpy.atleast_2d` to preserve units.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    arrs : arbitrary positional arguments</span>
-<span class="sd">        Input arrays to be converted if necessary</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        A single quantity or a list of quantities, matching the number of inputs.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mags</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;magnitude&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
-    <span class="n">orig_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">units</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="o">*</span><span class="n">mags</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">orig_units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ret</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">m</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">)]</span></div>
 
 
 <div class="viewcode-block" id="masked_array"><a class="viewcode-back" href="../../api/generated/metpy.units.masked_array.html#metpy.units.masked_array">[docs]</a><span class="k">def</span> <span class="nf">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -472,9 +360,9 @@
             <span class="c1"># Argument did not have units specified in decorator</span>
             <span class="k">continue</span>
 
-        <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">defaults</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">defaults</span> <span class="ow">and</span> <span class="p">(</span><span class="n">defaults</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">check</span> <span class="o">=</span> <span class="n">val</span> <span class="o">==</span> <span class="n">defaults</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">check</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">check</span><span class="p">):</span>
                 <span class="k">continue</span>
 
         <span class="c1"># See if the value passed in is appropriate</span>
@@ -514,10 +402,9 @@
             <span class="c1"># If there are any bad units, emit a proper error message making it clear</span>
             <span class="c1"># what went wrong.</span>
             <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;`</span><span class="si">{}</span><span class="s1">` given arguments with incorrect units: </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;`</span><span class="si">{}</span><span class="s1">` requires &quot;</span><span class="si">{}</span><span class="s1">&quot; but given &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
-                              <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">bad</span><span class="p">))</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">` given arguments with incorrect units: &#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">` requires &quot;</span><span class="si">{</span><span class="n">req</span><span class="si">}</span><span class="s1">&quot; but given &quot;</span><span class="si">{</span><span class="n">given</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                                 <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">bad</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s1">&#39;none&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
                     <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Any variable `x` can be assigned a unit as follows:</span><span class="se">\n</span><span class="s1">&#39;</span>
                             <span class="s1">&#39;    from metpy.units import units</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -529,65 +416,14 @@
     <span class="k">return</span> <span class="n">dec</span></div>
 
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="c1"># Try to enable pint&#39;s built-in support</span>
-    <span class="n">units</span><span class="o">.</span><span class="n">setup_matplotlib</span><span class="p">()</span>
-<span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">):</span>  <span class="c1"># Pint&#39;s not available, try our own</span>
-    <span class="kn">import</span> <span class="nn">matplotlib.units</span> <span class="k">as</span> <span class="nn">munits</span>
-
-    <span class="k">class</span> <span class="nc">PintAxisInfo</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">AxisInfo</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Support default axis and tick labeling and default limits.&quot;&quot;&quot;</span>
-
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Set the default label to the pretty-print of the unit.&quot;&quot;&quot;</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;{:P}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">units</span><span class="p">))</span>
-
-    <span class="k">class</span> <span class="nc">PintConverter</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">ConversionInterface</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement support for pint within matplotlib&#39;s unit conversion framework.&quot;&quot;&quot;</span>
-
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Initialize converter for pint units.&quot;&quot;&quot;</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reg</span> <span class="o">=</span> <span class="n">registry</span>
-
-        <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Convert :`Quantity` instances for matplotlib to use.&quot;&quot;&quot;</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
-                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_convert_value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">_convert_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Handle converting using attached unit or falling back to axis units.&quot;&quot;&quot;</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">axis</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-
-        <span class="nd">@staticmethod</span>
-        <span class="k">def</span> <span class="nf">axisinfo</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Return axis information for this particular unit.&quot;&quot;&quot;</span>
-            <span class="k">return</span> <span class="n">PintAxisInfo</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
-
-        <span class="nd">@staticmethod</span>
-        <span class="k">def</span> <span class="nf">default_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Get the default unit to use for the given combination of unit and axis.&quot;&quot;&quot;</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
-                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Register the class</span>
-    <span class="n">munits</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">PintConverter</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-    <span class="k">del</span> <span class="n">munits</span>
+<span class="c1"># Enable pint&#39;s built-in matplotlib support</span>
+<span class="n">units</span><span class="o">.</span><span class="n">setup_matplotlib</span><span class="p">()</span>
 
 <span class="k">del</span> <span class="n">pint</span>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -596,12 +432,22 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -613,9 +459,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -628,41 +471,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

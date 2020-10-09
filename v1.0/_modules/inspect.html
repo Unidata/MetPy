@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>inspect &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,54 +28,44 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../index.html"/>
-        <link rel="up" title="Module code" href="index.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> MetPy
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../_static/metpy_150x150.png" class="logo" />
+            <img src="../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -76,22 +73,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -108,6 +90,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -135,13 +118,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">MetPy</a>
@@ -149,9 +133,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -173,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="index.html">Module code</a> &raquo;</li>
         
@@ -305,7 +290,7 @@
 <span class="k">def</span> <span class="nf">isdatadescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return true if the object is a data descriptor.</span>
 
-<span class="sd">    Data descriptors have both a __get__ and a __set__ attribute.  Examples are</span>
+<span class="sd">    Data descriptors have a __set__ or a __delete__ attribute.  Examples are</span>
 <span class="sd">    properties (defined in Python) and getsets and members (defined in C).</span>
 <span class="sd">    Typically, data descriptors will also have __name__ and __doc__ attributes</span>
 <span class="sd">    (properties, getsets, and members have both of these attributes), but this</span>
@@ -314,7 +299,7 @@
         <span class="c1"># mutual exclusion</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="n">tp</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="s2">&quot;__set__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="s2">&quot;__get__&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="s2">&quot;__set__&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="s2">&quot;__delete__&quot;</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="s1">&#39;MemberDescriptorType&#39;</span><span class="p">):</span>
     <span class="c1"># CPython and equivalent</span>
@@ -363,30 +348,38 @@
 <span class="sd">        __kwdefaults__  dict of keyword only parameters with defaults&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">isgeneratorfunction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_has_code_flag</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return true if ``f`` is a function (or a method or functools.partial</span>
+<span class="sd">    wrapper wrapping a function) whose code object has the given ``flag``</span>
+<span class="sd">    set in its flags.&quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="n">ismethod</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="vm">__func__</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">_unwrap_partial</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isfunction</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span> <span class="n">flag</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">isgeneratorfunction</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return true if the object is a user-defined generator function.</span>
 
 <span class="sd">    Generator function objects provide the same attributes as functions.</span>
 <span class="sd">    See help(isfunction) for a list of attributes.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">((</span><span class="n">isfunction</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ismethod</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span> <span class="ow">and</span>
-                <span class="nb">object</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span> <span class="n">CO_GENERATOR</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_has_code_flag</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CO_GENERATOR</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">iscoroutinefunction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">iscoroutinefunction</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return true if the object is a coroutine function.</span>
 
 <span class="sd">    Coroutine functions are defined with &quot;async def&quot; syntax.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">((</span><span class="n">isfunction</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ismethod</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span> <span class="ow">and</span>
-                <span class="nb">object</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span> <span class="n">CO_COROUTINE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_has_code_flag</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CO_COROUTINE</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">isasyncgenfunction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">isasyncgenfunction</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return true if the object is an asynchronous generator function.</span>
 
 <span class="sd">    Asynchronous generator functions are defined with &quot;async def&quot;</span>
 <span class="sd">    syntax and have &quot;yield&quot; expressions in their body.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">((</span><span class="n">isfunction</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ismethod</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span> <span class="ow">and</span>
-                <span class="nb">object</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span> <span class="n">CO_ASYNC_GENERATOR</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_has_code_flag</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CO_ASYNC_GENERATOR</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">isasyncgen</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return true if the object is an asynchronous generator.&quot;&quot;&quot;</span>
@@ -459,6 +452,7 @@
 <span class="sd">                            | 16=nested | 32=generator | 64=nofree | 128=coroutine</span>
 <span class="sd">                            | 256=iterable_coroutine | 512=async_generator</span>
 <span class="sd">        co_freevars         tuple of names of free variables</span>
+<span class="sd">        co_posonlyargcount  number of positional only arguments</span>
 <span class="sd">        co_kwonlyargcount   number of keyword only arguments (not including ** arg)</span>
 <span class="sd">        co_lnotab           encoded mapping of line numbers to bytecode indices</span>
 <span class="sd">        co_name             name with which this code object was defined</span>
@@ -774,9 +768,12 @@
         <span class="bp">cls</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__objclass__</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">obj</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">ismemberdescriptor</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="n">slots</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;__slots__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slots</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">slots</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">slots</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-
     <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">doc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__doc__</span>
@@ -842,9 +839,9 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> is a built-in module&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">isclass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">):</span>
-            <span class="nb">object</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="s1">&#39;__file__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="vm">__file__</span>
+            <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;__file__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">module</span><span class="o">.</span><span class="vm">__file__</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> is a built-in class&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">ismethod</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="nb">object</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="vm">__func__</span>
@@ -924,7 +921,7 @@
         <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">modulesbyfile</span><span class="p">[</span><span class="n">file</span><span class="p">])</span>
     <span class="c1"># Update the filename to module name cache and check yet again</span>
     <span class="c1"># Copy sys.modules in order to cope with changes while iterating</span>
-    <span class="k">for</span> <span class="n">modname</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="n">modname</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">ismodule</span><span class="p">(</span><span class="n">module</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;__file__&#39;</span><span class="p">):</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="vm">__file__</span>
             <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="n">_filesbymodname</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
@@ -1193,7 +1190,7 @@
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">parent</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
                     <span class="n">children</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">children</span><span class="p">[</span><span class="n">parent</span><span class="p">]:</span>
                     <span class="n">children</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -1215,21 +1212,11 @@
 <span class="sd">    &#39;args&#39; is the list of argument names. Keyword-only arguments are</span>
 <span class="sd">    appended. &#39;varargs&#39; and &#39;varkw&#39; are the names of the * and **</span>
 <span class="sd">    arguments or None.&quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">varkw</span> <span class="o">=</span> <span class="n">_getfullargs</span><span class="p">(</span><span class="n">co</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Arguments</span><span class="p">(</span><span class="n">args</span> <span class="o">+</span> <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">_getfullargs</span><span class="p">(</span><span class="n">co</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get information about the arguments accepted by a code object.</span>
-
-<span class="sd">    Four things are returned: (args, varargs, kwonlyargs, varkw), where</span>
-<span class="sd">    &#39;args&#39; and &#39;kwonlyargs&#39; are lists of argument names, and &#39;varargs&#39;</span>
-<span class="sd">    and &#39;varkw&#39; are the names of the * and ** arguments or None.&quot;&quot;&quot;</span>
-
     <span class="k">if</span> <span class="ow">not</span> <span class="n">iscode</span><span class="p">(</span><span class="n">co</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> is not a code object&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">co</span><span class="p">))</span>
 
-    <span class="n">nargs</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">co_argcount</span>
     <span class="n">names</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">co_varnames</span>
+    <span class="n">nargs</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">co_argcount</span>
     <span class="n">nkwargs</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">co_kwonlyargcount</span>
     <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">names</span><span class="p">[:</span><span class="n">nargs</span><span class="p">])</span>
     <span class="n">kwonlyargs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">nargs</span><span class="p">:</span><span class="n">nargs</span><span class="o">+</span><span class="n">nkwargs</span><span class="p">])</span>
@@ -1243,8 +1230,7 @@
     <span class="n">varkw</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">co</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span> <span class="n">CO_VARKEYWORDS</span><span class="p">:</span>
         <span class="n">varkw</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">[</span><span class="n">nargs</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">varkw</span>
-
+    <span class="k">return</span> <span class="n">Arguments</span><span class="p">(</span><span class="n">args</span> <span class="o">+</span> <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">)</span>
 
 <span class="n">ArgSpec</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;ArgSpec&#39;</span><span class="p">,</span> <span class="s1">&#39;args varargs keywords defaults&#39;</span><span class="p">)</span>
 
@@ -1265,15 +1251,17 @@
 <span class="sd">    Alternatively, use getfullargspec() for an API with a similar namedtuple</span>
 <span class="sd">    based interface, but full support for annotations and keyword-only</span>
 <span class="sd">    parameters.</span>
+
+<span class="sd">    Deprecated since Python 3.5, use `inspect.getfullargspec()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;inspect.getargspec() is deprecated, &quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;inspect.getargspec() is deprecated since Python 3.0, &quot;</span>
                   <span class="s2">&quot;use inspect.signature() or inspect.getfullargspec()&quot;</span><span class="p">,</span>
                   <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">kwonlydefaults</span><span class="p">,</span> <span class="n">ann</span> <span class="o">=</span> \
         <span class="n">getfullargspec</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">kwonlyargs</span> <span class="ow">or</span> <span class="n">ann</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Function has keyword-only parameters or annotations&quot;</span>
-                         <span class="s2">&quot;, use getfullargspec() API which can support them&quot;</span><span class="p">)</span>
+                         <span class="s2">&quot;, use inspect.signature() API which can support them&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ArgSpec</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
 
 <span class="n">FullArgSpec</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;FullArgSpec&#39;</span><span class="p">,</span>
@@ -1295,7 +1283,6 @@
 <span class="sd">      - the &quot;self&quot; parameter is always reported, even for bound methods</span>
 <span class="sd">      - wrapper chains defined by __wrapped__ *not* unwrapped automatically</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Re: `skip_bound_arg=False`</span>
         <span class="c1">#</span>
@@ -1327,6 +1314,7 @@
     <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">varargs</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">varkw</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">posonlyargs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">kwonlyargs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1341,7 +1329,9 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span>
 
         <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="n">_POSITIONAL_ONLY</span><span class="p">:</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">posonlyargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="n">defaults</span> <span class="o">+=</span> <span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="p">,)</span>
         <span class="k">elif</span> <span class="n">kind</span> <span class="ow">is</span> <span class="n">_POSITIONAL_OR_KEYWORD</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
@@ -1366,7 +1356,7 @@
         <span class="c1"># compatibility with &#39;func.__defaults__&#39;</span>
         <span class="n">defaults</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">FullArgSpec</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">FullArgSpec</span><span class="p">(</span><span class="n">posonlyargs</span> <span class="o">+</span> <span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span>
                        <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">kwdefaults</span><span class="p">,</span> <span class="n">annotations</span><span class="p">)</span>
 
 
@@ -1515,14 +1505,12 @@
             <span class="p">(</span><span class="n">f_name</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span> <span class="k">if</span> <span class="n">plural</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">kwonly_sig</span><span class="p">,</span>
              <span class="s2">&quot;was&quot;</span> <span class="k">if</span> <span class="n">given</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kwonly_given</span> <span class="k">else</span> <span class="s2">&quot;were&quot;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">getcallargs</span><span class="p">(</span><span class="o">*</span><span class="n">func_and_positional</span><span class="p">,</span> <span class="o">**</span><span class="n">named</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">getcallargs</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="n">positional</span><span class="p">,</span> <span class="o">**</span><span class="n">named</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the mapping of arguments to values.</span>
 
 <span class="sd">    A dict is returned, with keys the function argument names (including the</span>
 <span class="sd">    names of the * and ** arguments, if any), and values the respective bound</span>
 <span class="sd">    values from &#39;positional&#39; and &#39;named&#39;.&quot;&quot;&quot;</span>
-    <span class="n">func</span> <span class="o">=</span> <span class="n">func_and_positional</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">positional</span> <span class="o">=</span> <span class="n">func_and_positional</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="n">spec</span> <span class="o">=</span> <span class="n">getfullargspec</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="n">args</span><span class="p">,</span> <span class="n">varargs</span><span class="p">,</span> <span class="n">varkw</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">kwonlyargs</span><span class="p">,</span> <span class="n">kwonlydefaults</span><span class="p">,</span> <span class="n">ann</span> <span class="o">=</span> <span class="n">spec</span>
     <span class="n">f_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
@@ -2187,7 +2175,7 @@
 
     <span class="k">def</span> <span class="nf">parse_name</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">annotation</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">annotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Annotations are not currently supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">arg</span>
 
@@ -2200,14 +2188,8 @@
             <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">NameConstant</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))):</span>
+            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
 
     <span class="k">class</span> <span class="nc">RewriteSymbolics</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeTransformer</span><span class="p">):</span>
@@ -2307,7 +2289,7 @@
     <span class="k">return</span> <span class="n">_signature_fromstr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">skip_bound_arg</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_signature_from_function</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_signature_from_function</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">skip_bound_arg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Private helper: constructs Signature for the given python function.&quot;&quot;&quot;</span>
 
     <span class="n">is_duck_function</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2319,15 +2301,20 @@
             <span class="c1"># of pure function:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> is not a Python function&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">))</span>
 
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__text_signature__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_signature_fromstr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">skip_bound_arg</span><span class="p">)</span>
+
     <span class="n">Parameter</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_parameter_cls</span>
 
     <span class="c1"># Parameter information.</span>
     <span class="n">func_code</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span>
     <span class="n">pos_count</span> <span class="o">=</span> <span class="n">func_code</span><span class="o">.</span><span class="n">co_argcount</span>
     <span class="n">arg_names</span> <span class="o">=</span> <span class="n">func_code</span><span class="o">.</span><span class="n">co_varnames</span>
-    <span class="n">positional</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arg_names</span><span class="p">[:</span><span class="n">pos_count</span><span class="p">])</span>
+    <span class="n">posonly_count</span> <span class="o">=</span> <span class="n">func_code</span><span class="o">.</span><span class="n">co_posonlyargcount</span>
+    <span class="n">positional</span> <span class="o">=</span> <span class="n">arg_names</span><span class="p">[:</span><span class="n">pos_count</span><span class="p">]</span>
     <span class="n">keyword_only_count</span> <span class="o">=</span> <span class="n">func_code</span><span class="o">.</span><span class="n">co_kwonlyargcount</span>
-    <span class="n">keyword_only</span> <span class="o">=</span> <span class="n">arg_names</span><span class="p">[</span><span class="n">pos_count</span><span class="p">:(</span><span class="n">pos_count</span> <span class="o">+</span> <span class="n">keyword_only_count</span><span class="p">)]</span>
+    <span class="n">keyword_only</span> <span class="o">=</span> <span class="n">arg_names</span><span class="p">[</span><span class="n">pos_count</span><span class="p">:</span><span class="n">pos_count</span> <span class="o">+</span> <span class="n">keyword_only_count</span><span class="p">]</span>
     <span class="n">annotations</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__annotations__</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__defaults__</span>
     <span class="n">kwdefaults</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__kwdefaults__</span>
@@ -2339,19 +2326,27 @@
 
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># Non-keyword-only parameters w/o defaults.</span>
     <span class="n">non_default_count</span> <span class="o">=</span> <span class="n">pos_count</span> <span class="o">-</span> <span class="n">pos_default_count</span>
+    <span class="n">posonly_left</span> <span class="o">=</span> <span class="n">posonly_count</span>
+
+    <span class="c1"># Non-keyword-only parameters w/o defaults.</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">positional</span><span class="p">[:</span><span class="n">non_default_count</span><span class="p">]:</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">_POSITIONAL_ONLY</span> <span class="k">if</span> <span class="n">posonly_left</span> <span class="k">else</span> <span class="n">_POSITIONAL_OR_KEYWORD</span>
         <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_empty</span><span class="p">)</span>
         <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span>
-                                    <span class="n">kind</span><span class="o">=</span><span class="n">_POSITIONAL_OR_KEYWORD</span><span class="p">))</span>
+                                    <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">posonly_left</span><span class="p">:</span>
+            <span class="n">posonly_left</span> <span class="o">-=</span> <span class="mi">1</span>
 
     <span class="c1"># ... w/ defaults.</span>
     <span class="k">for</span> <span class="n">offset</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positional</span><span class="p">[</span><span class="n">non_default_count</span><span class="p">:]):</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">_POSITIONAL_ONLY</span> <span class="k">if</span> <span class="n">posonly_left</span> <span class="k">else</span> <span class="n">_POSITIONAL_OR_KEYWORD</span>
         <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_empty</span><span class="p">)</span>
         <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span>
-                                    <span class="n">kind</span><span class="o">=</span><span class="n">_POSITIONAL_OR_KEYWORD</span><span class="p">,</span>
+                                    <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span>
                                     <span class="n">default</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="n">offset</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">posonly_left</span><span class="p">:</span>
+            <span class="n">posonly_left</span> <span class="o">-=</span> <span class="mi">1</span>
 
     <span class="c1"># *args</span>
     <span class="k">if</span> <span class="n">func_code</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span> <span class="n">CO_VARARGS</span><span class="p">:</span>
@@ -2474,7 +2469,8 @@
     <span class="k">if</span> <span class="n">isfunction</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_signature_is_functionlike</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
         <span class="c1"># If it&#39;s a pure Python function, or an object that is duck type</span>
         <span class="c1"># of a Python function (Cython functions, for instance), then:</span>
-        <span class="k">return</span> <span class="n">_signature_from_function</span><span class="p">(</span><span class="n">sigcls</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_signature_from_function</span><span class="p">(</span><span class="n">sigcls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span>
+                                        <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">_signature_is_builtin</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_signature_from_builtin</span><span class="p">(</span><span class="n">sigcls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span>
@@ -2551,7 +2547,7 @@
                 <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="fm">__init__</span> <span class="ow">is</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__init__</span> <span class="ow">and</span>
                     <span class="n">obj</span><span class="o">.</span><span class="fm">__new__</span> <span class="ow">is</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">):</span>
                     <span class="c1"># Return a signature of &#39;object&#39; builtin.</span>
-                    <span class="k">return</span> <span class="n">signature</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">sigcls</span><span class="o">.</span><span class="n">from_callable</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="s1">&#39;no signature found for builtin type </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
@@ -2607,6 +2603,9 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_PARAM_NAME_MAPPING</span><span class="p">[</span><span class="bp">self</span><span class="p">]</span>
 
 <span class="n">_POSITIONAL_ONLY</span>         <span class="o">=</span> <span class="n">_ParameterKind</span><span class="o">.</span><span class="n">POSITIONAL_ONLY</span>
 <span class="n">_POSITIONAL_OR_KEYWORD</span>   <span class="o">=</span> <span class="n">_ParameterKind</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span>
@@ -2621,8 +2620,6 @@
     <span class="n">_KEYWORD_ONLY</span><span class="p">:</span> <span class="s1">&#39;keyword-only&#39;</span><span class="p">,</span>
     <span class="n">_VAR_KEYWORD</span><span class="p">:</span> <span class="s1">&#39;variadic keyword&#39;</span>
 <span class="p">}</span>
-
-<span class="n">_get_paramkind_descr</span> <span class="o">=</span> <span class="n">_PARAM_NAME_MAPPING</span><span class="o">.</span><span class="fm">__getitem__</span>
 
 
 <div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../api/generated/metpy.units.Parameter.html#metpy.units.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">:</span>
@@ -2661,11 +2658,11 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="o">=</span> <span class="n">_ParameterKind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;value </span><span class="si">{kind!r}</span><span class="s1"> is not a valid Parameter.kind&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;value </span><span class="si">{</span><span class="n">kind</span><span class="si">!r}</span><span class="s1"> is not a valid Parameter.kind&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_empty</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_VAR_POSITIONAL</span><span class="p">,</span> <span class="n">_VAR_KEYWORD</span><span class="p">):</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> parameters cannot have default values&#39;</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_get_paramkind_descr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_kind</span><span class="p">))</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_kind</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default</span> <span class="o">=</span> <span class="n">default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_annotation</span> <span class="o">=</span> <span class="n">annotation</span>
@@ -2687,7 +2684,7 @@
                     <span class="s1">&#39;implicit arguments must be passed as &#39;</span>
                     <span class="s1">&#39;positional or keyword arguments, not </span><span class="si">{}</span><span class="s1">&#39;</span>
                 <span class="p">)</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_get_paramkind_descr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_kind</span><span class="p">))</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_kind</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="o">=</span> <span class="n">_POSITIONAL_ONLY</span>
             <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;implicit</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -2963,8 +2960,8 @@
                             <span class="s1">&#39;wrong parameter order: </span><span class="si">{}</span><span class="s1"> parameter before </span><span class="si">{}</span><span class="s1"> &#39;</span>
                             <span class="s1">&#39;parameter&#39;</span>
                         <span class="p">)</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_get_paramkind_descr</span><span class="p">(</span><span class="n">top_kind</span><span class="p">),</span>
-                                         <span class="n">_get_paramkind_descr</span><span class="p">(</span><span class="n">kind</span><span class="p">))</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top_kind</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                                         <span class="n">kind</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">kind</span> <span class="o">&gt;</span> <span class="n">top_kind</span><span class="p">:</span>
                         <span class="n">kind_defaults</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2997,19 +2994,25 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_function</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Constructs Signature for the given python function.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Constructs Signature for the given python function.</span>
 
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;inspect.Signature.from_function() is deprecated, &quot;</span>
-                      <span class="s2">&quot;use Signature.from_callable()&quot;</span><span class="p">,</span>
+<span class="sd">        Deprecated since Python 3.5, use `Signature.from_callable()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;inspect.Signature.from_function() is deprecated since &quot;</span>
+                      <span class="s2">&quot;Python 3.5, use Signature.from_callable()&quot;</span><span class="p">,</span>
                       <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_signature_from_function</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_builtin</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Constructs Signature for the given builtin function.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Constructs Signature for the given builtin function.</span>
 
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;inspect.Signature.from_builtin() is deprecated, &quot;</span>
-                      <span class="s2">&quot;use Signature.from_callable()&quot;</span><span class="p">,</span>
+<span class="sd">        Deprecated since Python 3.5, use `Signature.from_callable()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;inspect.Signature.from_builtin() is deprecated since &quot;</span>
+                      <span class="s2">&quot;Python 3.5, use Signature.from_callable()&quot;</span><span class="p">,</span>
                       <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_signature_from_builtin</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
 
@@ -3137,7 +3140,7 @@
                         <span class="n">arguments</span><span class="p">[</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
                         <span class="k">break</span>
 
-                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">param</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="n">_POSITIONAL_ONLY</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                             <span class="s1">&#39;multiple values for argument </span><span class="si">{arg!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                                 <span class="n">arg</span><span class="o">=</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">))</span> <span class="kn">from</span> <span class="bp">None</span>
@@ -3194,19 +3197,19 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bound_arguments_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arguments</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a BoundArguments object, that maps the passed `args`</span>
 <span class="sd">        and `kwargs` to the function&#39;s signature.  Raises `TypeError`</span>
 <span class="sd">        if the passed arguments can not be bound.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_bind</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bind</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">bind_partial</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bind_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a BoundArguments object, that partially maps the</span>
 <span class="sd">        passed `args` and `kwargs` to the function&#39;s signature.</span>
 <span class="sd">        Raises `TypeError` if the passed arguments can not be bound.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_bind</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bind</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
@@ -3295,7 +3298,7 @@
                                                     <span class="nb">type</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                                                     <span class="n">exc</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">has_attrs</span><span class="p">:</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -3305,7 +3308,7 @@
 
     <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">builtin_module_names</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t get info for builtin modules.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">details</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Target: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
@@ -3333,9 +3336,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -3344,12 +3345,22 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -3361,9 +3372,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -3376,41 +3384,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

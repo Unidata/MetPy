@@ -63,9 +63,9 @@ winds_300 = ds['winds_300'][0]
 
 # Do unit conversions to what we wish to plot
 vort_500 = vort_500 * 1e5
-surface_temp.metpy.convert_units('degF')
-precip_water.metpy.convert_units('inches')
-winds_300.metpy.convert_units('knots')
+surface_temp = surface_temp.metpy.convert_units('degF')
+precip_water = precip_water.metpy.convert_units('inches')
+winds_300 = winds_300.metpy.convert_units('knots')
 
 ###########################################
 
@@ -107,7 +107,7 @@ cf3 = axlist[2].contourf(lon_2d, lat_2d, surface_temp, cmap='YlOrRd',
                          transform=ccrs.PlateCarree(), zorder=0)
 axlist[2].set_title('Surface Temperatures', fontsize=16)
 cb3 = fig.colorbar(cf3, ax=axlist[2], orientation='horizontal', shrink=0.74, pad=0)
-cb3.set_label(u'\N{DEGREE FAHRENHEIT}', size='x-large')
+cb3.set_label('\N{DEGREE FAHRENHEIT}', size='x-large')
 
 # Lower right plot - precipitable water entire atmosphere
 cf4 = axlist[3].contourf(lon_2d, lat_2d, precip_water, cmap='Greens',

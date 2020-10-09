@@ -22,7 +22,9 @@ PlotVector
       ~PlotVector.name
       ~PlotVector.parent
       ~PlotVector.pivot
+      ~PlotVector.plot_units
       ~PlotVector.plotdata
+      ~PlotVector.scale
       ~PlotVector.skip
       ~PlotVector.time
 
@@ -79,7 +81,9 @@ PlotVector
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot
+   .. autoattribute:: plot_units
    .. autoattribute:: plotdata
+   .. autoattribute:: scale
    .. autoattribute:: skip
    .. autoattribute:: time
 

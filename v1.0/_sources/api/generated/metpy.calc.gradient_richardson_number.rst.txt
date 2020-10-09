@@ -1,0 +1,12 @@
+gradient_richardson_number
+=====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: gradient_richardson_number
+
+.. include:: metpy.calc.gradient_richardson_number.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

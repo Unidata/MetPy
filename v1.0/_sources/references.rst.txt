@@ -48,6 +48,11 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
+.. [DoswellSchultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
+           Parameters in Forecasting Severe Storms. *Electronic Journal of Severe Storms
+           Meteorology*,
+           `EJSSM <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.
+
 .. [Esterheld2008] Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
            Non-Tornadic Supercells: A New Hodograph Technique. *E-Journal Of Severe Storms
            Meteorology*, **3(2)**, Retrieved May 10, 2018.
@@ -73,14 +78,22 @@ References
            doi:`10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2>`_.
 
-.. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
-           Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
+.. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report
+           on Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
            `FCM-R19-2003 <_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
 
+.. [Galway1956] Galway, J. G., 1956: The Lifted Index as a Predictor of Latent Instability.
+           *American Meteorology Society*,
+           doi:`10.1175/1520-0477-37.10.528
+           <https://doi.org/10.1175/1520-0477-37.10.528>`_.
+
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
+
+.. [Holton2004] Holton, J. R., 2004: *An Introduction to Dynamic Meteorology*. 4th ed.
+           Academic Press, 535 pp.
 
 .. [Koch1983] Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
            objective map analysis scheme for use with satellite and conventional data.
@@ -110,8 +123,8 @@ References
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
 
-.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
-           Division, NWS Southern Region Headquarters, 1990.
+.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific
+           Services Division, NWS Southern Region Headquarters, 1990.
            `SR90-23 <_static/rothfusz-1990-heat-index-equation.pdf>`_, 2 pp.
 
 .. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
@@ -122,9 +135,9 @@ References
            doi:`10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2>`_.
 
-.. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951: `Smithsonian
-           meteorological tables <_static/Smithsonian1951.pdf>`  *Smithsonian Miscellaneous
-           Collections*, **144**, 151 pp.
+.. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951:
+           `Smithsonian meteorological tables <_static/Smithsonian1951.pdf>`_ *Smithsonian
+           Miscellaneous Collections*, **144**, 151 pp.
 
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
@@ -145,5 +158,5 @@ References
            694-703, doi:`10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
-.. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=4147>`_.
+.. [WMO8] WMO, 2018: Guide to Meteorological Instruments and Methods of Observation.
+           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=10179>`_.

@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_plots_Simplified_Image_Plot.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_plots_Simplified_Image_Plot.py:
+        Click :ref:`here <sphx_glr_download_examples_plots_Simplified_Image_Plot.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_plots_Simplified_Image_Plot.py:
 
 
 Simple Plotting
@@ -17,6 +19,7 @@ Plots a sample satellite image file.
 
 
 .. image:: /examples/plots/images/sphx_glr_Simplified_Image_Plot_001.png
+    :alt: IR
     :class: sphx-glr-single-img
 
 
@@ -62,7 +65,7 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.574 seconds)
+   **Total running time of the script:** ( 0 minutes  0.503 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simplified_Image_Plot.py:
@@ -75,13 +78,13 @@ Plots a sample satellite image file.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Simplified_Image_Plot.py <Simplified_Image_Plot.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Simplified_Image_Plot.ipynb <Simplified_Image_Plot.ipynb>`
 

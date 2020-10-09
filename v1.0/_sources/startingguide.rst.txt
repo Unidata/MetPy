@@ -139,7 +139,7 @@ Calculations
 Meteorology and atmospheric science are fully-dependent on complex equations and formulas.
 Rather than figuring out how to write them efficiently in Python yourself, MetPy provides
 support for many of the common equations within the field. For the full list, please see the
-`Calculations <api/generated/metpy.calc.html>`_ reference guide. If you don't see the equation
+:doc:`Calculations <api/generated/metpy.calc>` reference guide. If you don't see the equation
 you're looking for, consider submitting a feature request to MetPy
 `here <https://github.com/Unidata/MetPy/issues/new/choose>`_.
 
@@ -371,4 +371,4 @@ Support
 -------
 
 Get stuck trying to use MetPy with your data? Unidata's Python team is here to help! See our
-`support page <SUPPORT>`_ for more information.
+:doc:`support page <SUPPORT>` for more information.

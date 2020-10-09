@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_examples_gridding_Inverse_Distance_Verification.py:
+        Click :ref:`here <sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_examples_gridding_Inverse_Distance_Verification.py:
 
 
 Inverse Distance Verification: Cressman and Barnes
@@ -159,8 +161,8 @@ Plot all of the affiliated information and interpolation values.
     draw_circle(ax, sim_gridx[0], sim_gridy[0], m='k-', r=radius, label='grid 0 radius')
     draw_circle(ax, sim_gridx[1], sim_gridy[1], m='b-', r=radius, label='grid 1 radius')
 
-    ax.annotate('grid 0: cressman {:.3f}'.format(cress_val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
-    ax.annotate('grid 1: barnes {:.3f}'.format(barnes_val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
+    ax.annotate(f'grid 0: cressman {cress_val:.3f}', xy=(sim_gridx[0] + 2, sim_gridy[0]))
+    ax.annotate(f'grid 1: barnes {barnes_val:.3f}', xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
     ax.set_aspect('equal', 'datalim')
     ax.legend()
@@ -169,6 +171,7 @@ Plot all of the affiliated information and interpolation values.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_001.png
+    :alt: Inverse Distance Verification
     :class: sphx-glr-single-img
 
 
@@ -179,7 +182,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f18297df4a8>
+    <matplotlib.legend.Legend object at 0x7fce9801f430>
 
 
 
@@ -193,8 +196,7 @@ their distances from the grid point.
 .. code-block:: default
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-    ax.annotate('grid 0: ({}, {})'.format(sim_gridx[0], sim_gridy[0]),
-                xy=(sim_gridx[0] + 2, sim_gridy[0]))
+    ax.annotate(f'grid 0: ({sim_gridx[0]}, {sim_gridy[0]})', xy=(sim_gridx[0] + 2, sim_gridy[0]))
     ax.plot(sim_gridx[0], sim_gridy[0], '+', markersize=10)
 
     mx, my = obs_tree.data[indices[0]].T
@@ -207,8 +209,8 @@ their distances from the grid point.
         xave = np.mean([sim_gridx[0], x])
         yave = np.mean([sim_gridy[0], y])
 
-        ax.annotate('distance: {}'.format(d), xy=(xave, yave))
-        ax.annotate('({}, {}) : {} F'.format(x, y, z), xy=(x, y))
+        ax.annotate(f'distance: {d}', xy=(xave, yave))
+        ax.annotate(f'({x}, {y}) : {z} F', xy=(x, y))
 
     ax.set_xlim(0, 80)
     ax.set_ylim(0, 80)
@@ -218,6 +220,7 @@ their distances from the grid point.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_002.png
+    :alt: Inverse Distance Verification
     :class: sphx-glr-single-img
 
 
@@ -265,8 +268,7 @@ Now repeat for grid 1, except use barnes interpolation.
 
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-    ax.annotate('grid 1: ({}, {})'.format(sim_gridx[1], sim_gridy[1]),
-                xy=(sim_gridx[1] + 2, sim_gridy[1]))
+    ax.annotate(f'grid 1: ({sim_gridx[1]}, {sim_gridy[1]})', xy=(sim_gridx[1] + 2, sim_gridy[1]))
     ax.plot(sim_gridx[1], sim_gridy[1], '+', markersize=10)
 
     mx, my = obs_tree.data[indices[1]].T
@@ -279,8 +281,8 @@ Now repeat for grid 1, except use barnes interpolation.
         xave = np.mean([sim_gridx[1], x])
         yave = np.mean([sim_gridy[1], y])
 
-        ax.annotate('distance: {}'.format(d), xy=(xave, yave))
-        ax.annotate('({}, {}) : {} F'.format(x, y, z), xy=(x, y))
+        ax.annotate(f'distance: {d}', xy=(xave, yave))
+        ax.annotate(f'({x}, {y}) : {z} F', xy=(x, y))
 
     ax.set_xlim(40, 80)
     ax.set_ylim(40, 100)
@@ -290,6 +292,7 @@ Now repeat for grid 1, except use barnes interpolation.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_003.png
+    :alt: Inverse Distance Verification
     :class: sphx-glr-single-img
 
 
@@ -331,7 +334,7 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.702 seconds)
+   **Total running time of the script:** ( 0 minutes  0.541 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:
@@ -344,13 +347,13 @@ Step through barnes calculations.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: Inverse_Distance_Verification.py <Inverse_Distance_Verification.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: Inverse_Distance_Verification.ipynb <Inverse_Distance_Verification.ipynb>`
 

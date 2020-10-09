@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -10,6 +9,14 @@
   
   <title>calc &mdash; MetPy 1.0</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
 
   
   
@@ -21,56 +28,46 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/pop_ver.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 1.0" href="../../index.html"/>
-        <link rel="up" title="Reference Guide" href="../index.html"/>
-        <link rel="next" title="add_height_to_pressure" href="metpy.calc.add_height_to_pressure.html"/>
-        <link rel="prev" title="Level3File" href="metpy.io.Level3File.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="add_height_to_pressure" href="metpy.calc.add_height_to_pressure.html" />
+    <link rel="prev" title="Level3File" href="metpy.io.Level3File.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> MetPy
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
           
 
           
             
-            <img src="../../_static/metpy_150x150.png" class="logo" />
+            <img src="../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -78,22 +75,7 @@
             
             
               <div class="version">
-                
-                  <div class="version-dropdown">
-                    <select class="version-list" id="version-list">
-                      <option value=''>1.0</option>
-                      
-                        
-                          <option value="../latest">latest</option>
-                        
-                      
-                        
-                          <option value="../dev">dev</option>
-                        
-                      
-                    </select>
-                  </div>
-                
+                1.0
               </div>
             
           
@@ -110,6 +92,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -127,7 +110,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">metpy.io</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">calc</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dry-thermodynamics">Dry Thermodynamics</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
@@ -183,6 +166,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.el.html">el</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lifted_index.html">lifted_index</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer.html">mixed_layer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
@@ -190,6 +174,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.parcel_profile.html">parcel_profile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html">parcel_profile_with_lcl_as_dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.significant_tornado.html">significant_tornado</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.supercell_composite.html">supercell_composite</a></li>
@@ -226,6 +211,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.friction_velocity.html">friction_velocity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.gradient_richardson_number.html">gradient_richardson_number</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.tke.html">tke</a></li>
 </ul>
 </li>
@@ -233,7 +219,6 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.cross_section_components.html">cross_section_components</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.first_derivative.html">first_derivative</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.gradient.html">gradient</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.laplacian.html">laplacian</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.normal_component.html">normal_component</a></li>
@@ -265,12 +250,14 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#other">Other</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html">isentropic_interpolation_as_dataset</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.parse_angle.html">parse_angle</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
@@ -297,13 +284,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">MetPy</a>
@@ -311,9 +299,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -335,7 +324,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
@@ -403,7 +392,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.sigma_to_pressure.html#metpy.calc.sigma_to_pressure" title="metpy.calc.sigma_to_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma_to_pressure</span></code></a>(sigma, pressure_sfc, …)</p></td>
 <td><p>Calculate pressure from sigma values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.static_stability.html#metpy.calc.static_stability" title="metpy.calc.static_stability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">static_stability</span></code></a>(pressure, temperature[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.static_stability.html#metpy.calc.static_stability" title="metpy.calc.static_stability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">static_stability</span></code></a>(pressure, temperature[, …])</p></td>
 <td><p>Calculate the static stability within a vertical profile.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.temperature_from_potential_temperature.html#metpy.calc.temperature_from_potential_temperature" title="metpy.calc.temperature_from_potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature_from_potential_temperature</span></code></a>(…)</p></td>
@@ -540,26 +529,32 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.lfc.html#metpy.calc.lfc" title="metpy.calc.lfc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lfc</span></code></a>(pressure, temperature, dewpoint[, …])</p></td>
 <td><p>Calculate the level of free convection (LFC).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.mixed_layer.html#metpy.calc.mixed_layer" title="metpy.calc.mixed_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer</span></code></a>(pressure, *args[, height, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.lifted_index.html#metpy.calc.lifted_index" title="metpy.calc.lifted_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lifted_index</span></code></a>(pressure, temperature, …)</p></td>
+<td><p>Calculate Lifted Index from the pressure temperature and parcel profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixed_layer.html#metpy.calc.mixed_layer" title="metpy.calc.mixed_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer</span></code></a>(pressure, *args[, height, …])</p></td>
 <td><p>Mix variable(s) over a layer, yielding a mass-weighted average.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html#metpy.calc.mixed_layer_cape_cin" title="metpy.calc.mixed_layer_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer_cape_cin</span></code></a>(pressure, temperature, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.mixed_layer_cape_cin.html#metpy.calc.mixed_layer_cape_cin" title="metpy.calc.mixed_layer_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_layer_cape_cin</span></code></a>(pressure, temperature, …)</p></td>
 <td><p>Calculate mixed-layer CAPE and CIN.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.mixed_parcel.html#metpy.calc.mixed_parcel" title="metpy.calc.mixed_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_parcel</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.mixed_parcel.html#metpy.calc.mixed_parcel" title="metpy.calc.mixed_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixed_parcel</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate the properties of a parcel mixed from a layer.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin" title="metpy.calc.most_unstable_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_cape_cin</span></code></a>(pressure, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin" title="metpy.calc.most_unstable_cape_cin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_cape_cin</span></code></a>(pressure, …)</p></td>
 <td><p>Calculate most unstable CAPE/CIN.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.most_unstable_parcel.html#metpy.calc.most_unstable_parcel" title="metpy.calc.most_unstable_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_parcel</span></code></a>(pressure, temperature, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.most_unstable_parcel.html#metpy.calc.most_unstable_parcel" title="metpy.calc.most_unstable_parcel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_unstable_parcel</span></code></a>(pressure, temperature, …)</p></td>
 <td><p>Determine the most unstable parcel in a layer.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a>(pressure, temperature, dewpoint)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a>(pressure, temperature, dewpoint)</p></td>
 <td><p>Calculate the profile a parcel takes through the atmosphere.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl" title="metpy.calc.parcel_profile_with_lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl</span></code></a>(pressure, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl" title="metpy.calc.parcel_profile_with_lcl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl</span></code></a>(pressure, …)</p></td>
 <td><p>Calculate the profile a parcel takes through the atmosphere.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset" title="metpy.calc.parcel_profile_with_lcl_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile_with_lcl_as_dataset</span></code></a>(pressure, …)</p></td>
+<td><p>Calculate the profile a parcel takes through the atmosphere, returning a Dataset.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.significant_tornado.html#metpy.calc.significant_tornado" title="metpy.calc.significant_tornado"><code class="xref py py-obj docutils literal notranslate"><span class="pre">significant_tornado</span></code></a>(sbcape, …)</p></td>
 <td><p>Calculate the significant tornado parameter (fixed layer).</p></td>
@@ -589,28 +584,28 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum" title="metpy.calc.absolute_momentum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absolute_momentum</span></code></a>(u, v[, index])</p></td>
 <td><p>Calculate cross-sectional absolute momentum (also called pseudoangular momentum).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.absolute_vorticity.html#metpy.calc.absolute_vorticity" title="metpy.calc.absolute_vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absolute_vorticity</span></code></a>(u, v, dx, dy, latitude)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.absolute_vorticity.html#metpy.calc.absolute_vorticity" title="metpy.calc.absolute_vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absolute_vorticity</span></code></a>(u, v[, dx, dy, latitude, …])</p></td>
 <td><p>Calculate the absolute vorticity of the horizontal wind.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.advection.html#metpy.calc.advection" title="metpy.calc.advection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advection</span></code></a>(scalar, wind, deltas)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.advection.html#metpy.calc.advection" title="metpy.calc.advection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advection</span></code></a>(scalar[, u, v, w, dx, dy, dz, …])</p></td>
 <td><p>Calculate the advection of a scalar field by the wind.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ageostrophic_wind</span></code></a>(height, u, v, f, dx, dy)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ageostrophic_wind</span></code></a>(height, u, v[, dx, dy, …])</p></td>
 <td><p>Calculate the ageostrophic wind given from the height or geopotential.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="metpy.calc.coriolis_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coriolis_parameter</span></code></a>(latitude)</p></td>
 <td><p>Calculate the coriolis parameter at each point.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.divergence.html#metpy.calc.divergence" title="metpy.calc.divergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divergence</span></code></a>(u, v, dx, dy)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.divergence.html#metpy.calc.divergence" title="metpy.calc.divergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divergence</span></code></a>(u, v, *[, dx, dy, x_dim, y_dim])</p></td>
 <td><p>Calculate the horizontal divergence of a vector.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.exner_function.html#metpy.calc.exner_function" title="metpy.calc.exner_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exner_function</span></code></a>(pressure[, reference_pressure])</p></td>
 <td><p>Calculate the Exner function.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.frontogenesis.html#metpy.calc.frontogenesis" title="metpy.calc.frontogenesis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frontogenesis</span></code></a>(potential_temperature, u, v, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.frontogenesis.html#metpy.calc.frontogenesis" title="metpy.calc.frontogenesis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frontogenesis</span></code></a>(potential_temperature, u, v[, …])</p></td>
 <td><p>Calculate the 2D kinematic frontogenesis of a temperature field.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geostrophic_wind</span></code></a>(height, f, dx, dy)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geostrophic_wind</span></code></a>(height[, dx, dy, latitude, …])</p></td>
 <td><p>Calculate the geostrophic wind given from the height or geopotential.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.inertial_advective_wind.html#metpy.calc.inertial_advective_wind" title="metpy.calc.inertial_advective_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inertial_advective_wind</span></code></a>(u, v, u_geostrophic, …)</p></td>
@@ -622,25 +617,25 @@
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction" title="metpy.calc.montgomery_streamfunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">montgomery_streamfunction</span></code></a>(height, temperature)</p></td>
 <td><p>Compute the Montgomery Streamfunction on isentropic surfaces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic" title="metpy.calc.potential_vorticity_baroclinic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_baroclinic</span></code></a>(…)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic" title="metpy.calc.potential_vorticity_baroclinic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_baroclinic</span></code></a>(…[, dx, …])</p></td>
 <td><p>Calculate the baroclinic potential vorticity.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html#metpy.calc.potential_vorticity_barotropic" title="metpy.calc.potential_vorticity_barotropic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_barotropic</span></code></a>(height, u, v, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html#metpy.calc.potential_vorticity_barotropic" title="metpy.calc.potential_vorticity_barotropic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_barotropic</span></code></a>(height, u, v)</p></td>
 <td><p>Calculate the barotropic (Rossby) potential vorticity.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.q_vector.html#metpy.calc.q_vector" title="metpy.calc.q_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">q_vector</span></code></a>(u, v, temperature, pressure, dx, dy)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.q_vector.html#metpy.calc.q_vector" title="metpy.calc.q_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">q_vector</span></code></a>(u, v, temperature, pressure[, dx, …])</p></td>
 <td><p>Calculate Q-vector at a given pressure level using the u, v winds and temperature.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation" title="metpy.calc.shearing_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shearing_deformation</span></code></a>(u, v, dx, dy)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation" title="metpy.calc.shearing_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shearing_deformation</span></code></a>(u, v[, dx, dy, x_dim, …])</p></td>
 <td><p>Calculate the shearing deformation of the horizontal wind.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stretching_deformation</span></code></a>(u, v, dx, dy)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stretching_deformation</span></code></a>(u, v[, dx, dy, …])</p></td>
 <td><p>Calculate the stretching deformation of the horizontal wind.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_deformation</span></code></a>(u, v, dx, dy)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_deformation</span></code></a>(u, v[, dx, dy, x_dim, y_dim])</p></td>
 <td><p>Calculate the horizontal total deformation of the horizontal wind.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vorticity.html#metpy.calc.vorticity" title="metpy.calc.vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vorticity</span></code></a>(u, v, dx, dy)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.vorticity.html#metpy.calc.vorticity" title="metpy.calc.vorticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vorticity</span></code></a>(u, v, *[, dx, dy, x_dim, y_dim])</p></td>
 <td><p>Calculate the vertical vorticity of the horizontal wind.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_components</span></code></a>(speed, wind_direction)</p></td>
@@ -665,19 +660,22 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency" title="metpy.calc.brunt_vaisala_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brunt_vaisala_frequency</span></code></a>(height, …[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency" title="metpy.calc.brunt_vaisala_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brunt_vaisala_frequency</span></code></a>(height, …[, …])</p></td>
 <td><p>Calculate the Brunt-Vaisala frequency.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared" title="metpy.calc.brunt_vaisala_frequency_squared"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brunt_vaisala_frequency_squared</span></code></a>(height, …)</p></td>
 <td><p>Calculate the square of the Brunt-Vaisala frequency.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period" title="metpy.calc.brunt_vaisala_period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brunt_vaisala_period</span></code></a>(height, …[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period" title="metpy.calc.brunt_vaisala_period"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brunt_vaisala_period</span></code></a>(height, …[, vertical_dim])</p></td>
 <td><p>Calculate the Brunt-Vaisala period.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.friction_velocity.html#metpy.calc.friction_velocity" title="metpy.calc.friction_velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friction_velocity</span></code></a>(u, w[, v, perturbation, axis])</p></td>
 <td><p>Compute the friction velocity from the time series of velocity components.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.tke.html#metpy.calc.tke" title="metpy.calc.tke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tke</span></code></a>(u, v, w[, perturbation, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.gradient_richardson_number.html#metpy.calc.gradient_richardson_number" title="metpy.calc.gradient_richardson_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient_richardson_number</span></code></a>(height, …[, …])</p></td>
+<td><p>Calculate the gradient (or flux) Richardson number.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.tke.html#metpy.calc.tke" title="metpy.calc.tke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tke</span></code></a>(u, v, w[, perturbation, axis])</p></td>
 <td><p>Compute turbulence kinetic energy.</p></td>
 </tr>
 </tbody>
@@ -696,31 +694,28 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.cross_section_components.html#metpy.calc.cross_section_components" title="metpy.calc.cross_section_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_components</span></code></a>(data_x, data_y[, index])</p></td>
 <td><p>Obtain the tangential and normal components of a cross-section of a vector field.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.first_derivative.html#metpy.calc.first_derivative" title="metpy.calc.first_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_derivative</span></code></a>(f, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.first_derivative.html#metpy.calc.first_derivative" title="metpy.calc.first_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_derivative</span></code></a>(f[, axis, x, delta])</p></td>
 <td><p>Calculate the first derivative of a grid of values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient</span></code></a>(f, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient</span></code></a>(f[, axes, coordinates, deltas])</p></td>
 <td><p>Calculate the gradient of a grid of values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.grid_deltas_from_dataarray.html#metpy.calc.grid_deltas_from_dataarray" title="metpy.calc.grid_deltas_from_dataarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code></a>(f[, kind])</p></td>
-<td><p>Calculate the horizontal deltas between grid points of a DataArray.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.laplacian.html#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian</span></code></a>(f, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.laplacian.html#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian</span></code></a>(f[, axes, coordinates, deltas])</p></td>
 <td><p>Calculate the laplacian of a grid of values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lat_lon_grid_deltas</span></code></a>(longitude, latitude[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lat_lon_grid_deltas</span></code></a>(longitude, latitude[, …])</p></td>
 <td><p>Calculate the actual delta between grid points that are in latitude/longitude format.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.normal_component.html#metpy.calc.normal_component" title="metpy.calc.normal_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_component</span></code></a>(data_x, data_y[, index])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.normal_component.html#metpy.calc.normal_component" title="metpy.calc.normal_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_component</span></code></a>(data_x, data_y[, index])</p></td>
 <td><p>Obtain the normal component of a cross-section of a vector field.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">second_derivative</span></code></a>(f, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">second_derivative</span></code></a>(f[, axis, x, delta])</p></td>
 <td><p>Calculate the second derivative of a grid of values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.tangential_component.html#metpy.calc.tangential_component" title="metpy.calc.tangential_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangential_component</span></code></a>(data_x, data_y[, index])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.tangential_component.html#metpy.calc.tangential_component" title="metpy.calc.tangential_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangential_component</span></code></a>(data_x, data_y[, index])</p></td>
 <td><p>Obtain the tangential component of a cross-section of a vector field.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html#metpy.calc.unit_vectors_from_cross_section" title="metpy.calc.unit_vectors_from_cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unit_vectors_from_cross_section</span></code></a>(cross[, index])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html#metpy.calc.unit_vectors_from_cross_section" title="metpy.calc.unit_vectors_from_cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unit_vectors_from_cross_section</span></code></a>(cross[, index])</p></td>
 <td><p>Calculate the unit tanget and unit normal vectors from a cross-section.</p></td>
 </tr>
 </tbody>
@@ -814,23 +809,29 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="metpy.calc.angle_to_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angle_to_direction</span></code></a>(input_angle[, full, level])</p></td>
 <td><p>Convert the meteorological angle to directional text.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.find_bounding_indices.html#metpy.calc.find_bounding_indices" title="metpy.calc.find_bounding_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_bounding_indices</span></code></a>(arr, values, axis[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.azimuth_range_to_lat_lon.html#metpy.calc.azimuth_range_to_lat_lon" title="metpy.calc.azimuth_range_to_lat_lon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">azimuth_range_to_lat_lon</span></code></a>(azimuths, ranges, …)</p></td>
+<td><p>Convert azimuth and range locations in a polar coordinate system to lat/lon coordinates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.find_bounding_indices.html#metpy.calc.find_bounding_indices" title="metpy.calc.find_bounding_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_bounding_indices</span></code></a>(arr, values, axis[, …])</p></td>
 <td><p>Find the indices surrounding the values within arr along axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.find_intersections.html#metpy.calc.find_intersections" title="metpy.calc.find_intersections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_intersections</span></code></a>(x, a, b[, direction, log_x])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.find_intersections.html#metpy.calc.find_intersections" title="metpy.calc.find_intersections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_intersections</span></code></a>(x, a, b[, direction, log_x])</p></td>
 <td><p>Calculate the best estimate of intersection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.get_layer.html#metpy.calc.get_layer" title="metpy.calc.get_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_layer</span></code></a>(pressure, *args[, height, bottom, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.get_layer.html#metpy.calc.get_layer" title="metpy.calc.get_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_layer</span></code></a>(pressure, *args[, height, bottom, …])</p></td>
 <td><p>Return an atmospheric layer from upper air data with the requested bottom and depth.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.get_layer_heights.html#metpy.calc.get_layer_heights" title="metpy.calc.get_layer_heights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_layer_heights</span></code></a>(height, depth, *args[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.get_layer_heights.html#metpy.calc.get_layer_heights" title="metpy.calc.get_layer_heights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_layer_heights</span></code></a>(height, depth, *args[, …])</p></td>
 <td><p>Return an atmospheric layer from upper air data with the requested bottom and depth.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.get_perturbation.html#metpy.calc.get_perturbation" title="metpy.calc.get_perturbation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_perturbation</span></code></a>(ts[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.get_perturbation.html#metpy.calc.get_perturbation" title="metpy.calc.get_perturbation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_perturbation</span></code></a>(ts[, axis])</p></td>
 <td><p>Compute the perturbation from the mean of a time series.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation" title="metpy.calc.isentropic_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isentropic_interpolation</span></code></a>(levels, pressure, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation" title="metpy.calc.isentropic_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isentropic_interpolation</span></code></a>(levels, pressure, …)</p></td>
 <td><p>Interpolate data in isobaric coordinates to isentropic coordinates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html#metpy.calc.isentropic_interpolation_as_dataset" title="metpy.calc.isentropic_interpolation_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isentropic_interpolation_as_dataset</span></code></a>(levels, …)</p></td>
+<td><p>Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.nearest_intersection_idx.html#metpy.calc.nearest_intersection_idx" title="metpy.calc.nearest_intersection_idx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nearest_intersection_idx</span></code></a>(a, b)</p></td>
 <td><p>Determine the index of the point just before two lines with common x values.</p></td>
@@ -852,9 +853,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -863,7 +862,7 @@
         <a href="metpy.calc.add_height_to_pressure.html" class="btn btn-neutral float-right" title="add_height_to_pressure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.io.Level3File.html" class="btn btn-neutral" title="Level3File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.io.Level3File.html" class="btn btn-neutral float-left" title="Level3File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -872,12 +871,22 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Jan 14, 2020 at 14:46:09.
+        
+        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
+      <span class="lastupdated">
+        Last updated on Oct 09, 2020 at 00:33:10.
+      </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
      
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -889,9 +898,6 @@
   ga('send', 'pageview');
 </script>
 <script>var version_json_loc = "../../../versions.json";</script>
-<p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
-</p>
 
 
 </footer>
@@ -904,41 +910,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0.0rc1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
