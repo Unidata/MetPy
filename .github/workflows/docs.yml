@@ -124,7 +124,7 @@ jobs:
 
     - name: Upload to GitHub Pages
       if: ${{ github.event_name != 'pull_request' && matrix.experimental == false }}
-      uses: peaceiris/actions-gh-pages@v3.7.0
+      uses: peaceiris/actions-gh-pages@v3.7.2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/build/html
