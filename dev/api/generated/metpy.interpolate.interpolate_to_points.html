@@ -242,7 +242,7 @@
 <code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">interpolate_to_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">xi</span></em>, <em class="sig-param"><span class="n">interp_type</span><span class="o">=</span><span class="default_value">'linear'</span></em>, <em class="sig-param"><span class="n">minimum_neighbors</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">0.25</span></em>, <em class="sig-param"><span class="n">kappa_star</span><span class="o">=</span><span class="default_value">5.052</span></em>, <em class="sig-param"><span class="n">search_radius</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rbf_func</span><span class="o">=</span><span class="default_value">'linear'</span></em>, <em class="sig-param"><span class="n">rbf_smooth</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/points.html#interpolate_to_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_to_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate unstructured point data to the given points.</p>
 <p>This function interpolates the given <em class="xref py py-obj">values</em> valid at <code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code> to the points <em class="xref py py-obj">xi</em>. This is
-modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.5.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by including
+modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.5.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by including
 the following types of interpolation:</p>
 <ul class="simple">
 <li><p>Linear</p></li>
@@ -260,7 +260,7 @@ the following types of interpolation:</p>
 <li><p><strong>values</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
 <li><p><strong>xi</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>M</em><em>, </em><em>D</em><em>)</em>) – Points to interpolate the data onto.</p></li>
 <li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.5.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
+1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.5.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</p></li>
 <li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
@@ -273,7 +273,7 @@ If search_radius is not specified, it will default to the average spacing of
 observations.</p></li>
 <li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.5.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
+‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.5.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</p></li>
 <li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
 </ul>
@@ -316,7 +316,7 @@ individual functions are also available for direct use.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 15, 2020 at 18:18:28.
+      Last updated on Oct 19, 2020 at 17:36:36.
 
     </p>
   </div>
@@ -350,7 +350,7 @@ individual functions are also available for direct use.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc2.post4+gf1c4b92',
+            VERSION:'1.0.0rc2.post6+gce48139',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
