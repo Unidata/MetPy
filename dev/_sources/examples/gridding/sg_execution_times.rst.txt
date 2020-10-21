@@ -5,16 +5,16 @@
 
 Computation times
 =================
-**00:19.883** total execution time for **examples_gridding** files:
+**00:19.502** total execution time for **examples_gridding** files:
 
 +-----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py` (``Wind_SLP_Interpolation.py``)                           | 00:12.178 | 0.0 MB |
+| :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py` (``Wind_SLP_Interpolation.py``)                           | 00:11.947 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_gridding_Point_Interpolation.py` (``Point_Interpolation.py``)                                 | 00:05.842 | 0.0 MB |
+| :ref:`sphx_glr_examples_gridding_Point_Interpolation.py` (``Point_Interpolation.py``)                                 | 00:05.724 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py` (``Natural_Neighbor_Verification.py``)             | 00:00.734 | 0.0 MB |
+| :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py` (``Natural_Neighbor_Verification.py``)             | 00:00.726 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py` (``Inverse_Distance_Verification.py``)             | 00:00.594 | 0.0 MB |
+| :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py` (``Inverse_Distance_Verification.py``)             | 00:00.580 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py` (``Find_Natural_Neighbors_Verification.py``) | 00:00.535 | 0.0 MB |
+| :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py` (``Find_Natural_Neighbors_Verification.py``) | 00:00.526 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------------------------+-----------+--------+
