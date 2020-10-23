@@ -5,28 +5,28 @@
 
 Computation times
 =================
-**00:36.800** total execution time for **examples_plots** files:
+**00:39.432** total execution time for **examples_plots** files:
 
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)                         | 00:13.261 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)                         | 00:13.933 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)           | 00:06.576 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)           | 00:07.070 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_upperair_declarative.py` (``upperair_declarative.py``)         | 00:04.419 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_upperair_declarative.py` (``upperair_declarative.py``)         | 00:04.525 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)               | 00:02.747 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)               | 00:03.616 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``) | 00:02.567 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``) | 00:02.535 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_surface_declarative.py` (``surface_declarative.py``)           | 00:02.233 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_surface_declarative.py` (``surface_declarative.py``)           | 00:02.501 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)                           | 00:02.034 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)                           | 00:02.120 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)                   | 00:01.141 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)                   | 00:01.123 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)       | 00:00.665 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)       | 00:00.840 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)                   | 00:00.584 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)                   | 00:00.603 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)                       | 00:00.573 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)                       | 00:00.566 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
