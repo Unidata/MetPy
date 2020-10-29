@@ -5,10 +5,10 @@
 
 Computation times
 =================
-**00:00.784** total execution time for **examples_calculations** files:
+**00:00.862** total execution time for **examples_calculations** files:
 
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)                                 | 00:00.756 | 0.0 MB |
+| :ref:`sphx_glr_examples_calculations_Smoothing.py` (``Smoothing.py``)                                 | 00:00.833 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)                                   | 00:00.016 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
