@@ -2358,6 +2358,10 @@ def dry_static_energy(height, temperature):
     `pint.Quantity`
         The dry static energy
 
+    See Also
+    --------
+    montgomery_streamfunction
+
     """
     return (mpconsts.g * height + mpconsts.Cp_d * temperature).to('kJ/kg')
 
