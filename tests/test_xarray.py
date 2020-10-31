@@ -258,7 +258,7 @@ def test_parsecf_crs():
 
 def test_parsecf_existing_scalar_crs():
     """Test calling `parse_cf` on a variable with an existing scalar metpy_crs coordinate."""
-    ds = xr.Dataset({'data': xr.DataArray(1, coords=dict(metpy_crs=1))})
+    ds = xr.Dataset({'data': xr.DataArray(1, coords={'metpy_crs': 1})})
 
     with pytest.warns(UserWarning, match='metpy_crs already present'):
         ds.metpy.parse_cf('data')
