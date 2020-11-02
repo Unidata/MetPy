@@ -683,8 +683,6 @@
 
 
 <div class="viewcode-block" id="montgomery_streamfunction"><a class="viewcode-back" href="../../../api/generated/metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
-<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">montgomery_streamfunction</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the Montgomery Streamfunction on isentropic surfaces.</span>
 
@@ -718,10 +716,11 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    get_isentropic_pressure</span>
+<span class="sd">    get_isentropic_pressure, dry_static_energy</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span></div>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dry_static_energy</span>
+    <span class="k">return</span> <span class="n">dry_static_energy</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="storm_relative_helicity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1189,7 +1188,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Oct 31, 2020 at 06:34:18.
+      Last updated on Nov 02, 2020 at 18:06:09.
 
     </p>
   </div>
@@ -1223,7 +1222,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0rc2.post23+g54129e6',
+            VERSION:'1.0.0rc2.post25+ge20380f',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
