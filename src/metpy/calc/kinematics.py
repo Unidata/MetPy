@@ -484,8 +484,6 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='height', broadcast=('height', 'temperature'))
-@check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
 
@@ -519,10 +517,11 @@ def montgomery_streamfunction(height, temperature):
 
     See Also
     --------
-    get_isentropic_pressure
+    get_isentropic_pressure, dry_static_energy
 
     """
-    return (mpconsts.g * height) + (mpconsts.Cp_d * temperature)
+    from . import dry_static_energy
+    return dry_static_energy(height, temperature)
 
 
 @exporter.export
