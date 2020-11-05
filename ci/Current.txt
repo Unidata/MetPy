@@ -5,7 +5,7 @@ numpy==1.19.2
 pandas==1.1.4
 pooch==1.2.0
 pint==0.16.1
-pyproj==2.6.1.post1
+pyproj==3.0.0
 scipy==1.5.2
 traitlets==4.3.3
 xarray==0.16.1
