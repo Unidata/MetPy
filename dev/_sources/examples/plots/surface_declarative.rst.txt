@@ -101,22 +101,13 @@ Georgia.
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.8.6/x64/lib/python3.8/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_boundary_lines_land.zip
-      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.674 seconds)
+   **Total running time of the script:** ( 0 minutes  2.760 seconds)
 
 
 .. _sphx_glr_download_examples_plots_surface_declarative.py:

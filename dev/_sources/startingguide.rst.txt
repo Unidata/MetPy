@@ -115,18 +115,18 @@ of the MetPy Xarray accessor, let's demonstrate some of the functionality here:
     import metpy
     from metpy.cbook import get_test_data
 
-    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj = False))
-    data = data.metpy.parse_cf()
+    ds = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj = False))
+    ds = ds.metpy.parse_cf()
 
     # Grab lat/lon values from file as unit arrays
     lats = ds.lat.metpy.unit_array
     lons = ds.lon.metpy.unit_array
 
     # Get the valid time
-    vtime = data.Temperature_isobaric.metpy.time[0]
+    vtime = ds.Temperature_isobaric.metpy.time[0]
 
     # Get the 700-hPa heights without manually identifying the vertical coordinate
-    hght_700 = data.Geopotential_height_isobaric.metpy.sel(vertical=700 * units.hPa,
+    hght_700 = ds.Geopotential_height_isobaric.metpy.sel(vertical=700 * units.hPa,
                                                      time=vtime)
 
 From here, you could make a map of the 700-hPa geopotential heights. We'll discuss how to
