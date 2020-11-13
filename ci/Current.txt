@@ -1,6 +1,6 @@
 importlib_metadata==2.0.0
 importlib_resources==3.3.0
-matplotlib==3.3.2
+matplotlib==3.3.3
 numpy==1.19.4
 pandas==1.1.4
 pooch==1.2.0
