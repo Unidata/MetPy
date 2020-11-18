@@ -45,7 +45,7 @@ jobs:
           conda-docs-
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: goanpeca/setup-miniconda@v1
+      uses: conda-incubator/setup-miniconda@v2
       with:
         miniconda-version: "latest"
         python-version: ${{ matrix.python-version }}
