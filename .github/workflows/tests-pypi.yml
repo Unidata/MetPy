@@ -63,6 +63,11 @@ jobs:
           pip-tests-${{ runner.os }}-
           pip-tests-
 
+    # TODO: Remove this when we drop Python 3.6
+    - name: Adjust traitlets dependency for Python 3.6
+      if: ${{ matrix.python-version == 3.6 }}
+      run: sed -e "s/traitlets==.*/traitlets==4.3.3/" -i.bak ci/Current.txt
+
     - name: Add extras to requirements
       if: ${{ matrix.no-extras != 'No Extras' }}
       run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
