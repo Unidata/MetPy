@@ -705,7 +705,7 @@ class SkewT:
         r"""Shade areas of Convective INhibition (CIN).
 
         Shades areas where the parcel is cooler than the environment (areas of negative
-        buoyancy. If `dewpoint` is passed in, negative area below the lifting condensation
+        buoyancy). If `dewpoint` is passed in, negative area below the lifting condensation
         level or above the equilibrium level is not shaded.
 
         Parameters
