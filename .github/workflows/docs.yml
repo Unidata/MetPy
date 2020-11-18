@@ -16,7 +16,7 @@ jobs:
   #
   Docs:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     continue-on-error: ${{ matrix.experimental }}
     env:
       DOC_VERSION: dev
@@ -25,11 +25,16 @@ jobs:
       matrix:
         include:
           - python-version: 3.8
+            check-links: false
+            dep-versions: Current.txt
+            git-versions: ''
+            experimental: false
+          - python-version: 3.9
             check-links: true
             dep-versions: Current.txt
             git-versions: ''
             experimental: false
-          - python-version: 3.8
+          - python-version: 3.9
             check-links: false
             dep-versions: Prerelease
             git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'
@@ -71,7 +76,7 @@ jobs:
     - name: Install dependencies (PyPI)
       if: ${{ runner.os == 'Linux' }}
       run: |
-        sudo apt-get install libgeos-dev libproj-dev
+        sudo apt-get install libgeos-dev libproj-dev proj-bin
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy

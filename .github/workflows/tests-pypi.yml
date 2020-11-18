@@ -13,22 +13,22 @@ jobs:
   #
   PyPITests:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }} ${{ matrix.no-extras }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     continue-on-error: ${{ matrix.dep-versions == 'Prerelease' }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
         dep-versions: [Current.txt]
         no-extras: ['']
         include:
           - python-version: 3.6
             dep-versions: Minimum
             no-extras: ''
-          - python-version: 3.8
+          - python-version: 3.9
             dep-versions: Current.txt
             no-extras: 'No Extras'
-          - python-version: 3.8
+          - python-version: 3.9
             dep-versions: Prerelease
             no-extras: ''
 
@@ -63,6 +63,11 @@ jobs:
           pip-tests-${{ runner.os }}-
           pip-tests-
 
+    # TODO: Remove this when we drop Python 3.6
+    - name: Adjust traitlets dependency for Python 3.6
+      if: ${{ matrix.python-version == 3.6 }}
+      run: sed -e "s/traitlets==.*/traitlets==4.3.3/" -i.bak ci/Current.txt
+
     - name: Add extras to requirements
       if: ${{ matrix.no-extras != 'No Extras' }}
       run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
@@ -77,7 +82,7 @@ jobs:
     # Need to install numpy first to make CartoPy happy.
     - name: Install dependencies
       run: |
-        sudo apt-get install libgeos-dev libproj-dev
+        sudo apt-get install libgeos-dev libproj-dev proj-bin
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
