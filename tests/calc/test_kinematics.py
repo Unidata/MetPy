@@ -20,6 +20,24 @@ from metpy.testing import (assert_almost_equal, assert_array_almost_equal, asser
 from metpy.units import concatenate, units
 
 
+@pytest.fixture()
+def basic_dataset():
+    """Fixture to create a dataset for use in basic tests using xarray integration."""
+    lon = xr.DataArray([-100, -96, -90],
+                       attrs={'standard_name': 'longitude', 'units': 'degrees_east'})
+    lat = xr.DataArray([30, 31, 33],
+                       attrs={'standard_name': 'latitude', 'units': 'degrees_north'})
+    u = xr.DataArray(np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s'),
+                     coords=(lat, lon), dims=('lat', 'lon'))
+    v = xr.DataArray(np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s'),
+                     coords=(lat, lon), dims=('lat', 'lon'))
+    z = xr.DataArray(np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * 20. * units.meter,
+                     coords=(lat, lon), dims=('lat', 'lon'))
+    t = xr.DataArray(np.arange(9).reshape(3, 3) * units.kelvin, coords=(lat, lon),
+                     dims=('lat', 'lon'))
+    return xr.Dataset({'u': u, 'v': v, 'height': z, 'temperature': t}).metpy.parse_cf()
+
+
 def test_default_order():
     """Test using the default array ordering."""
     u = np.ones((3, 3)) * units('m/s')
@@ -62,6 +80,16 @@ def test_vorticity_positional_grid_args_failure():
     u = np.c_[a, a, a] * units('m/s')
     with pytest.raises(TypeError, match='too many positional arguments'):
         vorticity(u.T, u, 1 * units.meter, 1 * units.meter)
+
+
+def test_vorticity_xarray(basic_dataset):
+    """Test vorticity calculation using xarray support."""
+    d = vorticity(basic_dataset.u, basic_dataset.v)
+    truth = np.array([[2.004485646e-5, 2.971929112e-5, 9.534206801e-5],
+                      [2.486578545e-5, 8.110461115e-6, 4.029608124e-6],
+                      [-4.494362040e-5, -3.923563259e-5, -6.976113764e-5]]) / units.sec
+    truth = xr.DataArray(truth, coords=basic_dataset.coords)
+    assert_array_almost_equal(d, truth, 4)
 
 
 def test_zero_divergence():
@@ -118,6 +146,16 @@ def test_divergence_positional_grid_args_failure():
         divergence(u, u, 1 * units.meter, 1 * units.meter)
 
 
+def test_divergence_xarray(basic_dataset):
+    """Test divergence calculation using xarray support."""
+    d = divergence(basic_dataset.u, basic_dataset.v)
+    truth = np.array([[-4.361528313e-5, 3.593794959e-5, -9.728275045e-5],
+                      [-1.672604193e-5, 9.158127775e-6, -4.223658565e-5],
+                      [3.011996772e-5, -3.745237046e-5, 9.570189256e-5]]) / units.sec
+    truth = xr.DataArray(truth, coords=basic_dataset.coords)
+    assert_array_almost_equal(d, truth, 4)
+
+
 def test_shearing_deformation_asym():
     """Test shearing deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
@@ -147,7 +185,7 @@ def test_total_deformation_asym():
 
 
 def test_frontogenesis_asym():
-    """Test frontogensis calculation with a complicated field."""
+    """Test frontogenesis calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     theta = np.array([[303, 295, 305], [308, 310, 312], [299, 293, 289]]) * units('K')
@@ -213,6 +251,16 @@ def test_advection_2d_asym():
     a = advection(s, u, v, dx=2 * units.meter, dy=1 * units.meter)
     truth = np.array([[0, -20.75, -2.5], [-33., -16., 20.], [-48, 91., 8]]) * units('K/sec')
     assert_array_equal(a, truth)
+
+
+def test_advection_xarray(basic_dataset):
+    """Test advection calculation using xarray support."""
+    a = advection(basic_dataset.temperature, basic_dataset.u, basic_dataset.v)
+    truth = np.array([[-0.0001953019, -0.000135269, -0.000262247],
+                      [-4.51008510e-5, -0.000139840, -2.44370835e-6],
+                      [-2.11362160e-5, -2.29201236e-5, -3.70146905e-5]]) * units('K/sec')
+    truth = xr.DataArray(truth, coords=basic_dataset.coords)
+    assert_array_almost_equal(a, truth, 4)
 
 
 def test_geostrophic_wind():
