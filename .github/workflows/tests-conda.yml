@@ -54,6 +54,10 @@ jobs:
         # Needed for caching
         use-only-tar-bz2: true
 
+    # TODO: Remove this when scipy>1.5.3 is available on conda-forge
+    - name: Adjust scipy dependency for Conda
+      run: sed -e "s/scipy==.*/scipy==1.5.3/" -i.bak ci/Current.txt
+
     - name: Install dependencies
       run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/Current.txt
 
