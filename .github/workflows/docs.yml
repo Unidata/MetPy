@@ -16,7 +16,7 @@ jobs:
   #
   Docs:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     continue-on-error: ${{ matrix.experimental }}
     env:
       DOC_VERSION: dev
@@ -76,7 +76,7 @@ jobs:
     - name: Install dependencies (PyPI)
       if: ${{ runner.os == 'Linux' }}
       run: |
-        sudo apt-get install libgeos-dev libproj-dev
+        sudo apt-get install libgeos-dev libproj-dev proj-bin
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
