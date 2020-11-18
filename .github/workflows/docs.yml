@@ -25,11 +25,16 @@ jobs:
       matrix:
         include:
           - python-version: 3.8
+            check-links: false
+            dep-versions: Current.txt
+            git-versions: ''
+            experimental: false
+          - python-version: 3.9
             check-links: true
             dep-versions: Current.txt
             git-versions: ''
             experimental: false
-          - python-version: 3.8
+          - python-version: 3.9
             check-links: false
             dep-versions: Prerelease
             git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'

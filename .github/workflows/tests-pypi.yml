@@ -18,17 +18,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
         dep-versions: [Current.txt]
         no-extras: ['']
         include:
           - python-version: 3.6
             dep-versions: Minimum
             no-extras: ''
-          - python-version: 3.8
+          - python-version: 3.9
             dep-versions: Current.txt
             no-extras: 'No Extras'
-          - python-version: 3.8
+          - python-version: 3.9
             dep-versions: Prerelease
             no-extras: ''
 
