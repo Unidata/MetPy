@@ -56,9 +56,12 @@ BarbPlot
       ~BarbPlot.on_trait_change
       ~BarbPlot.set_trait
       ~BarbPlot.setup_instance
+      ~BarbPlot.trait_defaults
       ~BarbPlot.trait_events
+      ~BarbPlot.trait_has_value
       ~BarbPlot.trait_metadata
       ~BarbPlot.trait_names
+      ~BarbPlot.trait_values
       ~BarbPlot.traits
       ~BarbPlot.unobserve
       ~BarbPlot.unobserve_all
@@ -115,9 +118,12 @@ BarbPlot
    .. automethod:: on_trait_change
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all

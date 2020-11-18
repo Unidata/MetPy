@@ -246,7 +246,7 @@
 <h1>PlotScalar<a class="headerlink" href="#plotscalar" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="metpy.plots.PlotScalar">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">PlotScalar</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PlotScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PlotScalar" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">PlotScalar</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PlotScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PlotScalar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the common elements of 2D scalar plots for single scalar value fields.</p>
 <p>Most of the other traits here are for one or more of the specific plots. Currently this
 allows too many options for <a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a> since it does not user image_range, for
@@ -337,7 +337,7 @@ example. Similar issues for <a class="reference internal" href="metpy.plots.Imag
 <td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.notify_change" title="metpy.plots.PlotScalar.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
-<td><p></p></td>
+<td><p>Notify observers of a change event</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.observe" title="metpy.plots.PlotScalar.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
 <td><p>Setup a handler to be called when a trait changes.</p></td>
@@ -348,11 +348,17 @@ example. Similar issues for <a class="reference internal" href="metpy.plots.Imag
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.set_trait" title="metpy.plots.PlotScalar.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
 <td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.setup_instance" title="metpy.plots.PlotScalar.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.setup_instance" title="metpy.plots.PlotScalar.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(**kwargs)</p></td>
 <td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_events" title="metpy.plots.PlotScalar.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_defaults" title="metpy.plots.PlotScalar.trait_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code></a>(*names, **metadata)</p></td>
+<td><p>Return a trait’s default value or a dictionary of them</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_events" title="metpy.plots.PlotScalar.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_has_value" title="metpy.plots.PlotScalar.trait_has_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code></a>(name)</p></td>
+<td><p>Returns True if the specified trait has a value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_metadata" title="metpy.plots.PlotScalar.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
 <td><p>Get metadata values for trait by key.</p></td>
@@ -360,13 +366,16 @@ example. Similar issues for <a class="reference internal" href="metpy.plots.Imag
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_names" title="metpy.plots.PlotScalar.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
 <td><p>Get a list of all the names of this class’ traits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.traits" title="metpy.plots.PlotScalar.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_values" title="metpy.plots.PlotScalar.trait_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code></a>(**metadata)</p></td>
+<td><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.traits" title="metpy.plots.PlotScalar.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve" title="metpy.plots.PlotScalar.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve" title="metpy.plots.PlotScalar.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
 <td><p>Remove a trait change handler.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve_all" title="metpy.plots.PlotScalar.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve_all" title="metpy.plots.PlotScalar.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
 <td><p>Remove trait change handlers of any type for the specified name.</p></td>
 </tr>
 </tbody>
@@ -555,7 +564,8 @@ All trait notifications will fire after all values have been assigned.</p>
 <dl class="py method">
 <dt id="metpy.plots.PlotScalar.notify_change">
 <code class="sig-name descname">notify_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">change</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.notify_change" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Notify observers of a change event</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="metpy.plots.PlotScalar.observe">
@@ -621,8 +631,17 @@ then unintall it.</p></li>
 
 <dl class="py method">
 <dt id="metpy.plots.PlotScalar.setup_instance">
-<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.setup_instance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.setup_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.plots.PlotScalar.trait_defaults">
+<code class="sig-name descname">trait_defaults</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">names</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.trait_defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a trait’s default value or a dictionary of them</p>
+<p class="rubric">Notes</p>
+<p>Dynamically generated default values may
+depend on the current state of the object.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -641,6 +660,26 @@ the event handlers of this class will be returned instead.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="metpy.plots.PlotScalar.trait_has_value">
+<code class="sig-name descname">trait_has_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.trait_has_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the specified trait has a value.</p>
+<p>This will return false even if <code class="docutils literal notranslate"><span class="pre">getattr</span></code> would return a
+dynamically generated default value. These default values
+will be recognized as existing only after they have been
+generated.</p>
+<p>Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">Int</span><span class="p">()</span>
+
+<span class="n">mc</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">mc</span><span class="o">.</span><span class="n">trait_has_value</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">i</span> <span class="c1"># generates a default value</span>
+<span class="k">assert</span> <span class="n">mc</span><span class="o">.</span><span class="n">trait_has_value</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metpy.plots.PlotScalar.trait_metadata">
 <code class="sig-name descname">trait_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">traitname</span></em>, <em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.trait_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get metadata values for trait by key.</p>
@@ -650,6 +689,27 @@ the event handlers of this class will be returned instead.</p>
 <dt id="metpy.plots.PlotScalar.trait_names">
 <code class="sig-name descname">trait_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.trait_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.plots.PlotScalar.trait_values">
+<code class="sig-name descname">trait_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.trait_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
+<p>The metadata kwargs allow functions to be passed in which
+filter traits based on metadata values.  The functions should
+take a single value as an argument and return a boolean.  If
+any function returns False, then the trait is not included in
+the output.  If a metadata key doesn’t exist, None will be passed
+to the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Trait values are retrieved via <code class="docutils literal notranslate"><span class="pre">getattr</span></code>, any exceptions raised
+by traits or the operations they may trigger will result in the
+absence of a trait value in the result <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -731,7 +791,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Nov 13, 2020 at 21:27:32.
+      Last updated on Nov 18, 2020 at 18:29:35.
 
     </p>
   </div>
@@ -765,7 +825,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc2.post42+g2be8ada',
+            VERSION:'1.0.0rc2.post51+g76aad22',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

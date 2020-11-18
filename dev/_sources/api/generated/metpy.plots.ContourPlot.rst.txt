@@ -56,9 +56,12 @@ ContourPlot
       ~ContourPlot.on_trait_change
       ~ContourPlot.set_trait
       ~ContourPlot.setup_instance
+      ~ContourPlot.trait_defaults
       ~ContourPlot.trait_events
+      ~ContourPlot.trait_has_value
       ~ContourPlot.trait_metadata
       ~ContourPlot.trait_names
+      ~ContourPlot.trait_values
       ~ContourPlot.traits
       ~ContourPlot.unobserve
       ~ContourPlot.unobserve_all
@@ -115,9 +118,12 @@ ContourPlot
    .. automethod:: on_trait_change
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all
