@@ -26,6 +26,7 @@ exporter = Exporter(globals())
 # The following variables are constants for a standard atmosphere
 t0 = 288. * units.kelvin
 p0 = 1013.25 * units.hPa
+gamma = 6.5 * units('K/km')
 
 
 @exporter.export
@@ -428,7 +429,6 @@ def pressure_to_height_std(pressure):
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
 
     """
-    gamma = 6.5 * units('K/km')
     return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
         mpconsts.Rd * gamma / mpconsts.g))
 
@@ -578,7 +578,6 @@ def height_to_pressure_std(height):
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
     """
-    gamma = 6.5 * units('K/km')
     return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
@@ -1099,9 +1098,6 @@ def altimeter_to_station_pressure(altimeter_value, height):
                        \right) \right] ^ \frac{1}{n} + 0.3
 
     """
-    # Gamma Value for this case
-    gamma = 0.0065 * units('K/m')
-
     # N-Value
     n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
 
