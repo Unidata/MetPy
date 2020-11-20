@@ -1390,7 +1390,7 @@ def add_grid_arguments_from_xarray(func):
             try:
                 vertical_coord = grid_prototype.metpy.vertical
                 bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
-            except AttributeError:
+            except (AttributeError, ValueError):
                 # Skip, since this only comes up in advection, where dz is optional (may not
                 # need vertical at all)
                 pass

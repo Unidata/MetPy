@@ -235,6 +235,7 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
 
 @exporter.export
+@add_grid_arguments_from_xarray
 @preprocess_and_wrap(wrap_like='scalar', broadcast=('scalar', 'u', 'v', 'w'))
 def advection(
     scalar,
