@@ -102,7 +102,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.9.0/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/50m/physical/ne_50m_land.zip
+    /opt/hostedtoolcache/Python/3.8.6/x64/lib/python3.8/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/50m/physical/ne_50m_land.zip
       warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 
 
@@ -111,7 +111,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.994 seconds)
+   **Total running time of the script:** ( 0 minutes  4.016 seconds)
 
 
 .. _sphx_glr_download_examples_plots_upperair_declarative.py:

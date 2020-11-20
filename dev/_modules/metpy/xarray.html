@@ -1589,7 +1589,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">vertical_coord</span> <span class="o">=</span> <span class="n">grid_prototype</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span>
                 <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;dz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">vertical_coord</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
                 <span class="c1"># Skip, since this only comes up in advection, where dz is optional (may not</span>
                 <span class="c1"># need vertical at all)</span>
                 <span class="k">pass</span>
@@ -1676,7 +1676,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Nov 18, 2020 at 18:30:28.
+      Last updated on Nov 20, 2020 at 20:16:28.
 
     </p>
   </div>
@@ -1710,7 +1710,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc2.post51+g76aad22',
+            VERSION:'1.0.0rc2.post54+g76eb247',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
