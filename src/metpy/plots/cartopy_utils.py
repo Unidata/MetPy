@@ -4,11 +4,11 @@
 """Cartopy specific mapping utilities."""
 
 try:
-    import cartopy.feature as cfeature
+    from cartopy.feature import Feature, Scaler
 
     from ..cbook import get_test_data
 
-    class MetPyMapFeature(cfeature.Feature):
+    class MetPyMapFeature(Feature):
         """A simple interface to MetPy-included shapefiles."""
 
         def __init__(self, name, scale, **kwargs):
@@ -18,7 +18,7 @@ try:
             self.name = name
 
             if isinstance(scale, str):
-                scale = cfeature.Scaler(scale)
+                scale = Scaler(scale)
             self.scaler = scale
 
         def geometries(self):
