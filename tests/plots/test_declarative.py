@@ -637,6 +637,43 @@ def test_plotobs_subset_time_window_level(sample_obs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.00142}.get(MPL_VERSION, 0))
+def test_plotobs_units_with_formatter(ccrs):
+    """Test using PlotObs with a field that both has units and a custom formatter."""
+    df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                     infer_datetime_format=True, parse_dates=['valid'])
+    df.units = {'alti': 'inHg'}
+
+    # Plot desired data
+    obs = PlotObs()
+    obs.data = df
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['alti']
+    obs.plot_units = ['hPa']
+    obs.locations = ['NE']
+    # Set a format for plotting MSLP
+    obs.formats = [lambda v: format(v * 10, '.0f')[-3:]]
+    obs.reduce_points = 0.75
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = 'lcc'
+    panel.area = 'in'
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.panels = [panel]
+    pc.size = (10, 10)
+
+    pc.draw()
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs(ccrs):
     """Test making a surface observation plot."""
