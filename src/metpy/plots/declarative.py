@@ -1583,15 +1583,12 @@ class PlotObs(HasTraits):
                 mapper = getattr(wx_symbols, str(field_kwargs['formatter']), None)
                 if mapper is not None:
                     field_kwargs.pop('formatter')
-                    self.handle.plot_symbol(location, parameter,
-                                            mapper, **field_kwargs)
+                    self.handle.plot_symbol(location, parameter, mapper, **field_kwargs)
                 else:
                     if self.formats[i] == 'text':
-                        self.handle.plot_text(location, data[ob_type][subset],
-                                              color=field_kwargs['color'])
+                        self.handle.plot_text(location, parameter, color=field_kwargs['color'])
                     else:
-                        self.handle.plot_parameter(location, data[ob_type][subset],
-                                                   **field_kwargs)
+                        self.handle.plot_parameter(location, parameter, **field_kwargs)
             else:
                 field_kwargs.pop('formatter')
                 self.handle.plot_parameter(location, parameter, **field_kwargs)
