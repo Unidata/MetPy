@@ -297,6 +297,26 @@ def test_get_layer_float32(flip_order):
     assert_array_almost_equal(hgt_layer, true_hgt_layer, 4)
 
 
+def test_get_layer_float32_no_heights():
+    """Test that get_layer works with float32 data when not given heights."""
+    p = np.array([1017.695312, 1010.831787, 1002.137207, 991.189453, 977.536194, 960.655212,
+                  940.116455, 915.509521, 886.550415], dtype=np.float32) * units.hPa
+    u = np.array([0.205419, 0.206133, -0.354010, -1.586414, -2.660765, -3.740533,
+                  -3.297433, 1.049471, 5.610486], dtype=np.float32) * units('m/s')
+    v = np.array([6.491890, 8.920976, 13.959625, 18.398054, 21.416298, 23.190233,
+                  23.028181, 20.971205, 19.243179], dtype=np.float32) * units('m/s')
+
+    p_l, u_l, v_l = get_layer(p, u, v, depth=1000 * units.meter)
+    assert_array_equal(p_l[:-1], p[:-1])
+    assert_array_almost_equal(u_l[:-1], u[:-1], 7)
+    assert_almost_equal(u_l[-1], 3.0449828 * units('m/s'), 4)
+    assert_array_almost_equal(v_l[:-1], v[:-1], 7)
+    assert_almost_equal(v_l[-1], 20.215168 * units('m/s'), 4)
+    assert p_l.dtype == p.dtype
+    assert u_l.dtype == u.dtype
+    assert v_l.dtype == v.dtype
+
+
 def test_get_layer_ragged_data():
     """Test that an error is raised for unequal length pressure and data arrays."""
     p = np.arange(10) * units.hPa

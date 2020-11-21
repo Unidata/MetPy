@@ -348,7 +348,10 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
     if bound.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
         # If the bound is in the pressure data, we know the pressure bound exactly
         if bound in pressure:
-            bound_pressure = bound
+            # By making sure this is at least a 1D array we avoid the behavior in numpy
+            # (at least up to 1.19.4) that float32 scalar * Python float -> float64, which
+            # can wreak havok with floating point comparisons.
+            bound_pressure = np.atleast_1d(bound)
             # If we have heights, we know the exact height value, otherwise return standard
             # atmosphere height for the pressure
             if height is not None:
