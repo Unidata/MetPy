@@ -2722,22 +2722,24 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         temperature = np.atleast_1d(temperature)
         dewpoint = np.atleast_1d(dewpoint)
 
-    it = np.nditer([pressure, temperature, dewpoint, None],
+    lcl_press, lcl_temp = lcl(pressure, temperature, dewpoint)
+
+    it = np.nditer([pressure.magnitude, lcl_press.magnitude, lcl_temp.magnitude, None],
                    op_dtypes=['float', 'float', 'float', 'float'],
                    flags=['buffered'])
 
-    for press, temp, dewp, ret in it:
+    for press, lpress, ltemp, ret in it:
         press = press * pressure.units
-        temp = temp * temperature.units
-        dewp = dewp * dewpoint.units
-        lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
-        moist_adiabat_temperatures = moist_lapse(press, lcl_temperature, lcl_pressure)
+        lpress = lpress * lcl_press.units
+        ltemp = ltemp * lcl_temp.units
+        moist_adiabat_temperatures = moist_lapse(press, ltemp, lpress)
         ret[...] = moist_adiabat_temperatures.magnitude
 
     # If we started with a scalar, return a scalar
-    if it.operands[3].size == 1:
-        return it.operands[3][0] * moist_adiabat_temperatures.units
-    return it.operands[3] * moist_adiabat_temperatures.units
+    ret = it.operands[3]
+    if ret.size == 1:
+        ret = ret[0]
+    return ret * moist_adiabat_temperatures.units
 
 
 @exporter.export
