@@ -279,6 +279,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
                                     / (mpconsts.Rd * t * t)))).to('kelvin')
         return (frac / p).magnitude
 
+    pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
         reference_pressure = pressure[0]
 
@@ -298,7 +299,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     ret_temperatures = np.empty((0, temperature.shape[0]))
 
-    if reference_pressure > pressure.min():
+    if _greater_or_close(reference_pressure, pressure.min()):
         # Integrate downward in pressure
         pres_down = np.append(reference_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
         trace_down = si.odeint(dt, temperature.m.squeeze(), pres_down.squeeze())
@@ -2730,9 +2731,8 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         temp = temp * temperature.units
         dewp = dewp * dewpoint.units
         lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
-        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, press]),
-                                                 lcl_temperature)
-        ret[...] = moist_adiabat_temperatures[-1].magnitude
+        moist_adiabat_temperatures = moist_lapse(press, lcl_temperature, lcl_pressure)
+        ret[...] = moist_adiabat_temperatures.magnitude
 
     # If we started with a scalar, return a scalar
     if it.operands[3].size == 1:
