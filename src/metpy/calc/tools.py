@@ -410,13 +410,11 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
         raise ValueError('Bound must be specified in units of length or pressure.')
 
     # If the bound is out of the range of the data, we shouldn't extrapolate
-    if not (_greater_or_close(bound_pressure, np.nanmin(pressure.m) * pressure.units)
-            and _less_or_close(bound_pressure, np.nanmax(pressure.m) * pressure.units)):
+    if not (_greater_or_close(bound_pressure, np.nanmin(pressure))
+            and _less_or_close(bound_pressure, np.nanmax(pressure))):
         raise ValueError('Specified bound is outside pressure range.')
-    if height is not None and not (_less_or_close(bound_height,
-                                                  np.nanmax(height.m) * height.units)
-                                   and _greater_or_close(bound_height,
-                                                         np.nanmin(height.m) * height.units)):
+    if height is not None and not (_less_or_close(bound_height, np.nanmax(height))
+                                   and _greater_or_close(bound_height, np.nanmin(height))):
         raise ValueError('Specified bound is outside height range.')
 
     return bound_pressure, bound_height
@@ -571,13 +569,13 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
 
     # If the bottom is not specified, make it the surface pressure
     if bottom is None:
-        bottom = np.nanmax(pressure.m) * pressure.units
+        bottom = np.nanmax(pressure)
 
     bottom_pressure, bottom_height = _get_bound_pressure_height(pressure, bottom,
                                                                 height=height,
                                                                 interpolate=interpolate)
 
-    # Calculate the top if whatever units depth is in
+    # Calculate the top in whatever units depth is in
     if depth.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
         top = bottom_pressure - depth
     elif depth.dimensionality == {'[length]': 1}:

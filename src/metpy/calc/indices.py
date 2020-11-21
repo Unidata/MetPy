@@ -61,10 +61,10 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     pressure, dewpoint = _remove_nans(pressure, dewpoint)
 
     if top is None:
-        top = np.nanmin(pressure.magnitude) * pressure.units
+        top = np.nanmin(pressure)
 
     if bottom is None:
-        bottom = np.nanmax(pressure.magnitude) * pressure.units
+        bottom = np.nanmax(pressure)
 
     pres_layer, dewpoint_layer = get_layer(pressure, dewpoint, bottom=bottom,
                                            depth=bottom - top)
