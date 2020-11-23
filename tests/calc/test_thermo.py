@@ -141,6 +141,18 @@ def test_moist_lapse_ref_pres():
     assert_array_almost_equal(temp, true_temp, 2)
 
 
+def test_moist_lapse_scalar():
+    """Test moist_lapse when given a scalar desired pressure and a reference pressure."""
+    temp = moist_lapse(np.array([800.]) * units.mbar, 19.85 * units.degC, 1000. * units.mbar)
+    assert_almost_equal(temp, 284.64 * units.kelvin, 2)
+
+
+def test_moist_lapse_uniform():
+    """Test moist_lapse when given a uniform array of pressures."""
+    temp = moist_lapse(np.array([900., 900., 900.]) * units.hPa, 20. * units.degC)
+    assert_almost_equal(temp, np.array([20., 20., 20.]) * units.degC, 7)
+
+
 def test_parcel_profile():
     """Test parcel profile calculation."""
     levels = np.array([1000., 900., 800., 700., 600., 500., 400.]) * units.mbar
@@ -1401,6 +1413,12 @@ def test_wet_bulb_temperature():
     val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
     truth = 18.34345936 * units.degC  # 18.59 from NWS calculator
     assert_almost_equal(val, truth, 5)
+
+
+def test_wet_bulb_temperature_saturated():
+    """Test wet bulb calculation works properly with saturated conditions."""
+    val = wet_bulb_temperature(850. * units.hPa, 17.6 * units.degC, 17.6 * units.degC)
+    assert_almost_equal(val, 17.6 * units.degC, 7)
 
 
 def test_wet_bulb_temperature_1d():
