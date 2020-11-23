@@ -112,7 +112,7 @@ the projection information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.811 seconds)
+   **Total running time of the script:** ( 0 minutes  0.954 seconds)
 
 
 .. _sphx_glr_download_examples_formats_GINI_Water_Vapor.py:
