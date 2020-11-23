@@ -922,7 +922,7 @@ class MetPyDatasetAccessor:
         # Apply across all variables and coordinates
         return (
             self._dataset
-            .map(mapping_func, keep_attrs=True)
+            .map(mapping_func)
             .assign_coords({
                 coord_name: mapping_func(coord_var)
                 for coord_name, coord_var in self._dataset.coords.items()
@@ -931,11 +931,11 @@ class MetPyDatasetAccessor:
 
     def quantify(self):
         """Return new dataset with all numeric variables quantified and cached data loaded."""
-        return self._dataset.map(lambda da: da.metpy.quantify(), keep_attrs=True)
+        return self._dataset.map(lambda da: da.metpy.quantify())
 
     def dequantify(self):
         """Return new dataset with variables cast to magnitude and units on attribute."""
-        return self._dataset.map(lambda da: da.metpy.dequantify(), keep_attrs=True)
+        return self._dataset.map(lambda da: da.metpy.dequantify())
 
 
 def _assign_axis(attributes, axis):

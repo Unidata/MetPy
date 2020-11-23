@@ -169,11 +169,13 @@ def test_quantify(test_ds_generic):
 
 def test_dequantify():
     """Test dequantify method for converting data away from Quantity."""
-    original = xr.DataArray(units.Quantity([280, 290, 300], 'K'))
+    original = xr.DataArray(units.Quantity([280, 290, 300], 'K'),
+                            attrs={'standard_name': 'air_temperature'})
     result = original.metpy.dequantify()
     assert isinstance(result.data, np.ndarray)
     assert result.attrs['units'] == 'kelvin'
     np.testing.assert_array_almost_equal(result.data, original.data.magnitude)
+    assert result.attrs['standard_name'] == 'air_temperature'
 
 
 def test_dataset_quantify(test_ds_generic):
@@ -1026,6 +1028,8 @@ def test_update_attribute_dictionary(test_ds_generic):
         'test': 'Filler data',
         'c': 'The third coordinate'
     }
+    test_ds_generic.c.attrs['units'] = 'K'
+    test_ds_generic.a.attrs['standard_name'] = 'air_temperature'
     result = test_ds_generic.metpy.update_attribute('description', descriptions)
 
     # Test attribute updates
@@ -1035,6 +1039,10 @@ def test_update_attribute_dictionary(test_ds_generic):
     assert 'description' not in result['d'].attrs
     assert 'description' not in result['e'].attrs
     assert result['test'].attrs['description'] == 'Filler data'
+
+    # Test that other attributes remain
+    assert result['c'].attrs['units'] == 'K'
+    assert result['a'].attrs['standard_name'] == 'air_temperature'
 
     # Test for no side effects
     assert 'description' not in test_ds_generic['c'].attrs
