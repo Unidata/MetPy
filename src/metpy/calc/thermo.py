@@ -818,7 +818,7 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     temp_lower = dry_lapse(press_lower, temperature)
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
-    if _greater_or_close(np.nanmin(pressure.m), press_lcl.m):
+    if _greater_or_close(np.nanmin(pressure), press_lcl):
         return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
                 temp_lower[:-1], temp_lcl, units.Quantity(np.array([]), temp_lower.units))
 
