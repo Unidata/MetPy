@@ -14,6 +14,11 @@
     font-weight: 400 !important;
 }
 
+/* Override the default logo height */
+.navbar-brand {
+    height: 50px;
+}
+
 /* Enhance the links to function docs in the gallery examples */
 div[class^="highlight"] a {
     background-color: #EEEEEE;
