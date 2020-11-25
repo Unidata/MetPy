@@ -33,7 +33,7 @@ div[class^="highlight"] a {
 }
 
 .intro-card {
-    background: #fff;
+    background: #cde5fd;
     border-radius: 0;
     padding: 30px 10px 10px 10px;
     margin: 10px 0px;
@@ -44,7 +44,7 @@ div[class^="highlight"] a {
 }
 
 .card-button {
-    background-color: #dcdcdc;
+    background-color: #fafafa;
     border: none;
     color: #484848;
     text-align: center;
@@ -54,6 +54,7 @@ div[class^="highlight"] a {
     border-radius: 0.5rem;
     max-width: 220px;
     padding: 0.5rem 0rem;
+    margin-top: auto;
 }
 
 .card-button a {

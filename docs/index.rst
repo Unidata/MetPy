@@ -30,7 +30,7 @@ OAC-1740315, AGS-1901712.
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
                 <div class="card text-center intro-card shadow">
                 <span><i class="fas fa-book-open fa-10x"></i></span>
-                <div class="card-body flex-fill">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">User Guide</h5>
                     <p class="card-text">The user guide provides in-depth information on how
                     to use MetPy, including how to get started. This is where to look for
@@ -49,7 +49,7 @@ OAC-1740315, AGS-1901712.
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
                 <div class="card text-center intro-card shadow">
                 <span><i class="fas fa-list-alt fa-10x"></i></span>
-                <div class="card-body flex-fill">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Reference Guide</h5>
                     <p class="card-text">The reference guide contains detailed descriptions on
                     every function and class within MetPy. This is where to turn to understand
@@ -67,7 +67,7 @@ OAC-1740315, AGS-1901712.
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
                 <div class="card text-center intro-card shadow">
                 <span><i class="fas fa-laptop-code fa-10x"></i></span>
-                <div class="card-body flex-fill">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Developer Guide</h5>
                     <p class="card-text">Want to help make MetPy better? Found something
                     that's not working quite right? You can find instructions on how to
@@ -86,7 +86,7 @@ OAC-1740315, AGS-1901712.
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
                 <div class="card text-center intro-card shadow">
                 <span><i class="fas fa-chart-area fa-10x"></i></span>
-                <div class="card-body flex-fill">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Examples</h5>
                     <p class="card-text">Check out MetPy's gallery of examples which contains
                     sample code demonstrating various parts of MetPy's functionality.</p>
