@@ -1,4 +1,7 @@
 * text=auto
+staticdata/*.txt text eol=lf
+staticdata/*.csv text eol=lf
+staticdata/*.tbl text eol=lf
 
 *.ipynb	diff=jupyternotebook
 talks/* linguist-documentation

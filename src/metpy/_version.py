@@ -13,7 +13,7 @@ def get_version():
     try:
         from setuptools_scm import get_version
         return get_version(root='../..', relative_to=__file__,
-                           version_scheme='post-release', local_scheme='dirty-tag')
+                           version_scheme='post-release')
     except (ImportError, LookupError):
         try:
             from importlib.metadata import version, PackageNotFoundError
