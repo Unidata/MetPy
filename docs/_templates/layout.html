@@ -7,6 +7,11 @@
     {{ super() }}
 {% endblock %}
 
+{% block extrahead %}
+    {{ super() }}
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/{{ pagename }}{{ file_suffix }}" />
+{% endblock %}
+
 {% block docs_navbar %}
   <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main">
     {%- include "docs-navbar.html" %}
