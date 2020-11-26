@@ -4,7 +4,7 @@ Examples
 ========
 
 For more MetPy examples, please visit the `Unidata Python Gallery
-<https://unidata.github.io/python-gallery/>`_.
+<https://unidata.github.io/python-training/gallery/gallery-home/>`_.
 
 .. _general-examples:
 

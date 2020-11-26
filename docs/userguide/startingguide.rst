@@ -4,10 +4,8 @@ Getting Started with MetPy
 Welcome to MetPy! We're glad you're here and we hope that you find this Python library
 to be useful for your needs. In order to help get you started with MetPy, we've put together
 this guide to introduce you to the basic syntax and functionality of this library. If you're
-new to Python, please visit the Unidata `Online Python Training`_ site for in-depth
+new to Python, please visit the `Unidata Python Training`_ site for in-depth
 discussion and examples of the Scientific Python ecosystem.
-
-.. _`Online Python Training`: https://unidata.github.io/online-python-training/
 
 ------------
 Installation
@@ -275,14 +273,12 @@ Gridded Data
 
 While MetPy doesn't provide many new tools for 2-D gridded data maps, we do provide lots of
 examples illustrating how to use MetPy for data analysis and CartoPy for visualization. Those
-examples can be found in the :doc:`MetPy Gallery <../examples/index>` and the
-`Unidata Python Gallery`_.
+examples can be found in the :doc:`MetPy Gallery <../examples/index>` and at the
+`Unidata Python Training`_ site.
 
 One unique tool in MetPy for gridded data is cross-section analysis. A detailed example of how
 to create a cross section with your gridded data is available
 :doc:`here <../examples/cross_section>`.
-
-.. _`Unidata Python Gallery`: https://unidata.github.io/python-gallery/
 
 ********************
 Declarative Plotting
@@ -337,12 +333,14 @@ Other Python Resources
 While MetPy does a lot of things, it doesn't do everything. Here are some other good resources
 to use as you start using MetPy and Python for meteorology and atmospheric science:
 
-**Training and Example Sites**
+**Learning Resources**
 
-* `Online Python Training`_
-* `Unidata Python Gallery`_
-* `Unidata Python Workshop`_
+* `Unidata Python Training`_
 * `MetPy Monday Playlist`_
+
+.. _`Unidata Python Training`: https://unidata.github.io/python-training
+.. _`MetPy Monday Playlist`:
+     https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO
 
 **Useful Python Packages**
 
@@ -356,9 +354,6 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 * `PyART`_: read and visualize radar data
 
 .. _Siphon: https://unidata.github.io/siphon/
-.. _`Unidata Python Workshop`: https://unidata.github.io/python-workshop
-.. _`MetPy Monday Playlist`:
-     https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO
 .. _`Xarray`: http://xarray.pydata.org/en/stable/
 .. _`Pandas`: https://pandas.pydata.org
 .. _`NumPy`: https://numpy.org/devdocs
