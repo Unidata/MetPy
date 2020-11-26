@@ -1,7 +1,7 @@
 .. _examples-index:
 
-Examples
-========
+Example Gallery
+===============
 
 For more MetPy examples, please visit the `Unidata Python Gallery
 <https://unidata.github.io/python-training/gallery/gallery-home/>`_.

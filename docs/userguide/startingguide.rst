@@ -7,17 +7,7 @@ this guide to introduce you to the basic syntax and functionality of this librar
 new to Python, please visit the `Unidata Python Training`_ site for in-depth
 discussion and examples of the Scientific Python ecosystem.
 
-------------
-Installation
-------------
-
-For installation instructions, please see our :doc:`Installation Guide <installguide>`.
-MetPy Monday videos `#1`_, `#2`_, and `#3`_ demonstrate how to install the conda package
-manager and Python packages, and how to work with conda environments.
-
-.. _#1: https://youtu.be/-fOfyHYpKck
-.. _#2: https://youtu.be/G3AF-nhNyDk
-.. _#3: https://youtu.be/15DNH25UCi0
+For installation instructions, please see our :doc:`installguide`.
 
 -----
 Units
@@ -344,7 +334,9 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 
 **Useful Python Packages**
 
-* `Siphon`_: remote access of meteorological data via THREDDS servers
+* `Siphon`_: remote access of meteorological data, including simple web services and and via
+  `THREDDS Data Servers`_
+* netCDF4-python_ is the officially blessed Python API for netCDF_
 * `Xarray`_: reading/writing labeled N-dimensional arrays
 * `Pandas`_: reading/writing tabular data
 * `NumPy`_: numerical computations
@@ -354,13 +346,16 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 * `PyART`_: read and visualize radar data
 
 .. _Siphon: https://unidata.github.io/siphon/
-.. _`Xarray`: http://xarray.pydata.org/en/stable/
-.. _`Pandas`: https://pandas.pydata.org
-.. _`NumPy`: https://numpy.org/devdocs
-.. _`Matplotlib`: https://matplotlib.org
-.. _`CartoPy`: https://scitools.org.uk/cartopy/docs/latest/
-.. _`SatPy`: https://satpy.readthedocs.io/en/latest/
-.. _`PyART`: https://arm-doe.github.io/pyart/
+.. _THREDDS Data Servers: https://www.unidata.ucar.edu/software/tds/current/
+.. _netCDF4-python: https://unidata.github.io/netcdf4-python/
+.. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
+.. _Xarray: http://xarray.pydata.org/en/stable/
+.. _Pandas: https://pandas.pydata.org
+.. _NumPy: https://numpy.org/devdocs
+.. _Matplotlib: https://matplotlib.org
+.. _CartoPy: https://scitools.org.uk/cartopy/docs/latest/
+.. _SatPy: https://satpy.readthedocs.io/en/latest/
+.. _PyART: https://arm-doe.github.io/pyart/
 
 -------
 Support

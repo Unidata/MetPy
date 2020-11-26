@@ -4,24 +4,20 @@
    :hidden:
 
    userguide/index
-   examples/index
    api/index
    devel/index
+   examples/index
    userguide/SUPPORT
 
 =====
 MetPy
 =====
 
-.. image:: _static/NSF.jpg
-   :width: 100 px
-   :align: right
+MetPy is a collection of tools in Python for reading, visualizing, and performing calculations
+with weather data. MetPy supports Python >= 3.6 and is freely available under a permissive
+`open source license <https://github.com/Unidata/MetPy/blob/master/LICENSE>`_.
 
-MetPy is a collection of tools in Python for reading, visualizing, and
-performing calculations with weather data. If you're new to MetPy, check
-out our :doc:`Getting Started <userguide/startingguide>` guide. Development is
-supported by the National Science Foundation through grants AGS-1344155,
-OAC-1740315, AGS-1901712.
+If you're new to MetPy, check out our :doc:`Getting Started <userguide/startingguide>` guide.
 
 .. raw:: html
 
@@ -103,3 +99,9 @@ OAC-1740315, AGS-1901712.
         </div>
     </div>
 
+.. image:: _static/NSF.jpg
+   :width: 100 px
+   :align: left
+
+Development is supported by the National Science Foundation through grants AGS-1344155,
+OAC-1740315, and AGS-1901712.

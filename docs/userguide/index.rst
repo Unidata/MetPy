@@ -8,13 +8,11 @@ User Guide
 
    installguide
    startingguide
-   SUPPORT
    units
    ../tutorials/index
    gempak
+   SUPPORT
    citing
-
-We support Python >= 3.6. Support for Python 2.7 was dropped with the release of 0.12.
 
 .. image:: ../_static/sounding.png
    :width: 150 px
@@ -57,33 +55,3 @@ Media
 .. _`AMS 2019 talk`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/352384
 .. _`AMS 2019 poster`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/354058
 .. _`AMS 2020 talk`: https://ams.confex.com/ams/2020Annual/meetingapp.cgi/Paper/369011
-
--------
-License
--------
-
-MetPy is available under the terms of the open source `BSD 3 Clause license`__.
-
-__ https://raw.githubusercontent.com/Unidata/MetPy/master/LICENSE
-
----------------
-Code of Conduct
----------------
-We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
-spirit please have a look at our `code of conduct`__.
-
-__ https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md
-
-----------------
-Related Projects
-----------------
-
-* netCDF4-python_ is the officially blessed Python API for netCDF_
-* siphon_ is a Python API for accessing remote data on `THREDDS Data Servers`__
-* The `Unidata Python Gallery`_ is a collection of meteorological Python scripts
-
-.. _netCDF4-python: https://unidata.github.io/netcdf4-python/
-.. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
-.. _siphon: https://unidata.github.io/siphon/
-.. _Unidata Python Gallery: https://unidata.github.io/python-training/gallery/gallery-home
-__ https://www.unidata.ucar.edu/software/tds/current/
