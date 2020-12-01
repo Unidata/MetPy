@@ -251,17 +251,17 @@ period of oscillation as in Exercise 3.13 of <a class="reference internal" href=
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>height</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric (geopotential) height</p></li>
-<li><p><strong>potential_temperature</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric potential temperature</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric (geopotential) height</p></li>
+<li><p><strong>potential_temperature</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric potential temperature</p></li>
 <li><p><strong>vertical_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the potential temperature array, defaults to 0,
-unless <em class="xref py py-obj">height</em> and <a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_temperature</span></code></a> given as <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, in which case
+unless <em class="xref py py-obj">height</em> and <a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_temperature</span></code></a> given as <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, in which case
 it is automatically determined from the coordinate metadata.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – Brunt-Vaisala period. Given as <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, unless both
-<em class="xref py py-obj">height</em> and <a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_temperature</span></code></a> arguments are given as <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, in
-which case will be <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.2.dev3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – Brunt-Vaisala period. Given as <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, unless both
+<em class="xref py py-obj">height</em> and <a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_temperature</span></code></a> arguments are given as <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, in
+which case will be <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -295,7 +295,7 @@ which case will be <a class="reference external" href="https://xarray.pydata.org
   <div role="contentinfo">
     <p>
         &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
-      Last updated on Nov 28, 2020 at 16:34:26.
+      Last updated on Dec 01, 2020 at 07:13:16.
 
     </p>
   </div>
@@ -329,7 +329,7 @@ which case will be <a class="reference external" href="https://xarray.pydata.org
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0rc2.post83+gcff9104',
+            VERSION:'1.0.0rc2.post86+g9ed109f',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

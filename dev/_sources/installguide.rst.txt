@@ -10,7 +10,7 @@ years. For Python itself, that means supporting the last two minor releases.
 
 * matplotlib >= 2.1.0
 * numpy >= 1.16.0
-* pandas >= 0.22.0
+* pandas >= 0.24.0
 * pint >= 0.10.1
 * pooch >= 0.1
 * pyproj >= 2.3.0
