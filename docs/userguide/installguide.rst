@@ -59,4 +59,4 @@ Examples
 --------
 
 The MetPy source comes with a set of example scripts in the ``examples``
-directory. These are also available as notebooks in the :doc:`../examples/index`.
+directory. These are also available as notebooks in the :doc:`/examples/index`.

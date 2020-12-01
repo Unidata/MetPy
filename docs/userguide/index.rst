@@ -9,14 +9,14 @@ User Guide
    installguide
    startingguide
    units
-   ../tutorials/index
+   /tutorials/index
    gempak
    SUPPORT
    citing
    media
 
-.. image:: ../_static/sounding.png
+.. image:: /_static/sounding.png
    :width: 150 px
 
-.. image:: ../_static/radar.png
+.. image:: /_static/radar.png
    :width: 150 px

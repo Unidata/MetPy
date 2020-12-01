@@ -63,7 +63,7 @@ MetPy aims to have three primary purposes: read and write meteorological data (I
 meteorological quantities with well-documented equations, and create publication-quality plots
 of meteorological data. The three subsections that follow will demonstrate just some of this
 functionality. For full reference to all of MetPy's API, please see our
-:doc:`Reference Guide <../api/index>`.
+:doc:`Reference Guide </api/index>`.
 
 ++++++++++++
 Input/Output
@@ -81,9 +81,9 @@ of these files, opening it with MetPy is as easy as:
     f = Level3File(example_filename.gz)
 
 From there, you can pull out the variables you want to analyze and plot. For more information,
-see the :doc:`GINI <../examples/formats/GINI_Water_Vapor>`,
-:doc:`NEXRAD Level 2 <../examples/formats/NEXRAD_Level_2_File>`, and
-:doc:`NEXRAD Level 3 <../examples/formats/NEXRAD_Level_3_File>` examples. MetPy Monday videos
+see the :doc:`GINI </examples/formats/GINI_Water_Vapor>`,
+:doc:`NEXRAD Level 2 </examples/formats/NEXRAD_Level_2_File>`, and
+:doc:`NEXRAD Level 3 </examples/formats/NEXRAD_Level_3_File>` examples. MetPy Monday videos
 `#29`_ and `#30`_ also show how to plot radar files with MetPy.
 
 .. _`#29`: https://youtu.be/73fhfV2zOt8
@@ -94,7 +94,7 @@ makes working with multi-dimensional labeled data (i.e. netCDF files) easy. For 
 look at Xarray's capabilities, see this `MetPy Monday video <https://youtu.be/_9j7Y1-lk-o>`_.
 With MetPy's accessor to this package, we can quickly pull out common dimensions, parse
 Climate and Forecasting (CF) metadata, and handle projection information. While the
-:doc:`Xarray with MetPy <../tutorials/xarray_tutorial>` is the best place to see the full
+:doc:`Xarray with MetPy </tutorials/xarray_tutorial>` is the best place to see the full
 utility of the MetPy Xarray accessor, let's demonstrate some of the functionality here:
 
 .. code-block:: python
@@ -127,7 +127,7 @@ Calculations
 Meteorology and atmospheric science are fully-dependent on complex equations and formulas.
 Rather than figuring out how to write them efficiently in Python yourself, MetPy provides
 support for many of the common equations within the field. For the full list, please see the
-:doc:`Calculations <../api/generated/metpy.calc>` reference guide. If you don't see the equation
+:doc:`Calculations </api/generated/metpy.calc>` reference guide. If you don't see the equation
 you're looking for, consider submitting a feature request to MetPy
 `here <https://github.com/Unidata/MetPy/issues/new/choose>`_.
 
@@ -233,9 +233,9 @@ The Skew-T Log-P diagram is the canonical thermodynamic diagram within meteorolo
 For some MetPy Monday videos on Skew-Ts, please watch `#16`_, `#18`_, and `#19`_. Hodographs
 can also be created and plotted with a Skew-T (see MetPy Monday video `#38`_).
 For more examples on how to do create Skew-Ts and Hodographs, please visit
-check out the :doc:`Simple Sounding <../examples/plots/Simple_Sounding>`,
-:doc:`Advanced Sounding <../examples/Advanced_Sounding>`, and
-:doc:`Hodograph Inset <../examples/plots/Hodograph_Inset>`.
+check out the :doc:`Simple Sounding </examples/plots/Simple_Sounding>`,
+:doc:`Advanced Sounding </examples/Advanced_Sounding>`, and
+:doc:`Hodograph Inset </examples/plots/Hodograph_Inset>`.
 
 .. _`#16`: https://youtu.be/oog6_b-844Q
 .. _`#18`: https://youtu.be/quFXzaNbWXM
@@ -254,8 +254,8 @@ library. This package handles projections and transforms to make sure your data 
 the correct location.
 
 For examples on how to make a station plot, please see the
-:doc:`Station Plot <../examples/plots/Station_Plot>` and
-:doc:`Station Plot Layout <../examples/plots/Station_Plot_with_Layout>` examples.
+:doc:`Station Plot </examples/plots/Station_Plot>` and
+:doc:`Station Plot Layout </examples/plots/Station_Plot_with_Layout>` examples.
 
 ************
 Gridded Data
@@ -263,12 +263,12 @@ Gridded Data
 
 While MetPy doesn't provide many new tools for 2-D gridded data maps, we do provide lots of
 examples illustrating how to use MetPy for data analysis and CartoPy for visualization. Those
-examples can be found in the :doc:`MetPy Gallery <../examples/index>` and at the
+examples can be found in the :doc:`MetPy Gallery </examples/index>` and at the
 `Unidata Python Training`_ site.
 
 One unique tool in MetPy for gridded data is cross-section analysis. A detailed example of how
 to create a cross section with your gridded data is available
-:doc:`here <../examples/cross_section>`.
+:doc:`here </examples/cross_section>`.
 
 ********************
 Declarative Plotting
@@ -308,7 +308,7 @@ NARR data.
     pc.show()
 
 Other plot types are available, including contouring to create overlay maps. For an example of
-this, check out the :doc:`Combined Plotting <../examples/plots/Combined_plotting>` example.
+this, check out the :doc:`Combined Plotting </examples/plots/Combined_plotting>` example.
 MetPy Monday videos `#69`_, `#70`_, and `#71`_ also demonstrate the declarative plotting
 interface.
 
