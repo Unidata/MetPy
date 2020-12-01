@@ -61,6 +61,7 @@ sphinx_gallery_conf = {
 plot_html_show_source_link = False
 plot_html_show_formats = False
 plot_formats = ['png']
+plot_rcparams = {'savefig.bbox': 'tight'}
 
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
