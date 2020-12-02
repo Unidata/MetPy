@@ -952,7 +952,7 @@ class PlotScalar(Plots2D):
         if 'degree' in x.units:
             x, y, _ = self.griddata.metpy.cartopy_crs.transform_points(ccrs.PlateCarree(),
                                                                        *np.meshgrid(x, y)).T
-            x = x[:, 0] % 360
+            x = x[:, 0]
             y = y[0, :]
 
         return x, y, self.griddata
@@ -1238,7 +1238,7 @@ class PlotVector(Plots2D):
             if 'degree' in x.units:
                 x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
                     ccrs.PlateCarree(), *np.meshgrid(x, y)).T
-                x = x.T % 360
+                x = x.T
                 y = y.T
 
         if x.ndim == 1:

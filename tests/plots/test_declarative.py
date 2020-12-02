@@ -79,6 +79,34 @@ def test_declarative_contour():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.328}.get(MPL_VERSION, 0.022))
+@needs_cartopy
+def test_declarative_contour_CAM():
+    """Test making a contour plot with CAM data."""
+    data = xr.open_dataset(get_test_data('CAM_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'PN'
+    contour.time = datetime.strptime('2020-11-29 00:00', '%Y-%m-%d %H:%M')
+    contour.level = 1000 * units.hPa
+    contour.linecolor = 'black'
+    contour.contours = list(range(0, 1200, 4))
+
+    panel = MapPanel()
+    panel.plots = [contour]
+    panel.layout = (1, 1, 1)
+    panel.layers = ['coastline', 'borders', 'states', 'land']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.fixture
 def fix_is_closed_polygon(monkeypatch):
     """Fix matplotlib.contour._is_closed_polygons for tests.
