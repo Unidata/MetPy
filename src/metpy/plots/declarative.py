@@ -500,7 +500,8 @@ class Panel(HasTraits):
 class PanelContainer(HasTraits):
     """Collects panels and set complete figure related settings (e.g., size)."""
 
-    size = Union([Tuple(Int(), Int()), Instance(type(None))], default_value=None)
+    size = Union([Tuple(Union([Int(), Float()]), Union([Int(), Float()])),
+                 Instance(type(None))], default_value=None)
     size.__doc__ = """This trait takes a tuple of (width, height) to set the size of the
     figure.
 
