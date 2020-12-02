@@ -72,7 +72,36 @@ def test_declarative_contour():
     panel.plots = [contour]
 
     pc = PanelContainer()
-    pc.size = (8, 8)
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'2.1': 0.256}.get(MPL_VERSION, 0.022))
+@needs_cartopy
+def test_declarative_figsize():
+    """Test having an all float figsize."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 30
+    contour.linewidth = 1
+    contour.linecolor = 'red'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.proj = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (10.5, 10.5)
     pc.panels = [panel]
     pc.draw()
 
@@ -184,7 +213,7 @@ def test_declarative_events():
     panel.plots = [contour, img]
 
     pc = PanelContainer()
-    pc.size = (8, 8)
+    pc.size = (8, 8.0)
     pc.panels = [panel]
     pc.draw()
 
