@@ -14,8 +14,8 @@ Units
 -----
 
 For the in-depth explanation of units, associated syntax, and unique features, please see
-our :doc:`Units <units>` page. What follows in this section is a short summary of how MetPy
-uses units.
+our :doc:`Units Tutorial </tutorials/unit_tutorial>` page. What follows in this section is
+a short summary of how MetPy uses units.
 
 One of the most significant differences in syntax for MetPy, compared to other Python
 libraries, is the frequent requirement of units to be attached to arrays before being
@@ -50,9 +50,10 @@ Unit-aware calculations can then be done with these variables:
     [ 0.5  0.5  0.5  0.5] meter / second
 
 
-In addition to the :doc:`Units <units>` page, checkout the MetPy Monday blog on
-`units <https://www.unidata.ucar.edu/blogs/developer/en/entry/metpy-mondays-4-units-in>`_
-or watch our MetPy Monday video on
+In addition to the :doc:`Units Tutorial </tutorials/unit_tutorial>` page, checkout the MetPy
+Monday blog on
+`units <https://www.unidata.ucar.edu/blogs/developer/en/entry/metpy-mondays-4-units-in>`_ or
+watch our MetPy Monday video on
 `temperature units <https://www.youtube.com/watch?v=iveJCqxe3Z4>`_.
 
 -------------

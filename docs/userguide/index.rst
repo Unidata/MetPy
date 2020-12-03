@@ -8,7 +8,6 @@ User Guide
 
    installguide
    startingguide
-   units
    /tutorials/index
    gempak
    SUPPORT
