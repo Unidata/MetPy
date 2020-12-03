@@ -116,22 +116,13 @@ We can plot all of the triangles as well as the circles representing the circumc
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/gridding/Find_Natural_Neighbors_Verification.py:68: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.526 seconds)
+   **Total running time of the script:** ( 0 minutes  0.479 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:

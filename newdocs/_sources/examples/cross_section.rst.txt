@@ -39,8 +39,9 @@ gridded data.
 
 **Getting the data**
 
-This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
-(https://www.ncdc.noaa.gov/data-access/model-data).
+This example uses [NARR reanalysis data](
+https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+for 18 UTC 04 April 1987 from NCEI.
 
 We use MetPy's CF parsing to get the data ready for use, and squeeze down the size-one time
 dimension.
@@ -70,7 +71,7 @@ dimension.
       * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
       * y                    (y) float64 -3.087e+06 -3.054e+06 ... 7.114e+05
       * x                    (x) float64 -3.977e+06 -3.945e+06 ... 5.47e+06
-        crs                  object Projection: lambert_conformal_conic
+        metpy_crs            object Projection: lambert_conformal_conic
     Data variables:
         Temperature          (isobaric, y, x) float32 ...
         Lambert_Conformal    |S1 b'd'
@@ -139,7 +140,7 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
     Coordinates:
         time                 datetime64[ns] 1987-04-04T18:00:00
       * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
-        crs                  object Projection: lambert_conformal_conic
+        metpy_crs            object Projection: lambert_conformal_conic
         x                    (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
         y                    (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
       * index                (index) int64 0 1 2 3 4 5 6 7 ... 93 94 95 96 97 98 99
@@ -178,27 +179,21 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
 .. code-block:: default
 
 
-    temperature, pressure, specific_humidity = xr.broadcast(cross['Temperature'],
-                                                            cross['isobaric'],
-                                                            cross['Specific_humidity'])
-
-    theta = mpcalc.potential_temperature(pressure, temperature)
-    rh = mpcalc.relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity)
-
-    # These calculations return unit arrays, so put those back into DataArrays in our Dataset
-    cross['Potential_temperature'] = xr.DataArray(theta,
-                                                  coords=temperature.coords,
-                                                  dims=temperature.dims,
-                                                  attrs={'units': theta.units})
-    cross['Relative_humidity'] = xr.DataArray(rh,
-                                              coords=specific_humidity.coords,
-                                              dims=specific_humidity.dims,
-                                              attrs={'units': rh.units})
-
+    cross['Potential_temperature'] = mpcalc.potential_temperature(
+        cross['isobaric'],
+        cross['Temperature']
+    )
+    cross['Relative_humidity'] = mpcalc.relative_humidity_from_specific_humidity(
+        cross['isobaric'],
+        cross['Temperature'],
+        cross['Specific_humidity']
+    )
     cross['u_wind'] = cross['u_wind'].metpy.convert_units('knots')
     cross['v_wind'] = cross['v_wind'].metpy.convert_units('knots')
-    cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(cross['u_wind'],
-                                                                       cross['v_wind'])
+    cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(
+        cross['u_wind'],
+        cross['v_wind']
+    )
 
     print(cross)
 
@@ -217,7 +212,7 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
     Coordinates:
         time                   datetime64[ns] 1987-04-04T18:00:00
       * isobaric               (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
-        crs                    object Projection: lambert_conformal_conic
+        metpy_crs              object Projection: lambert_conformal_conic
         x                      (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
         y                      (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
       * index                  (index) int64 0 1 2 3 4 5 6 ... 93 94 95 96 97 98 99
@@ -333,10 +328,8 @@ Now, we can make the plot.
 
  .. code-block:: none
 
-    /Users/rmay/repos/metpy/examples/cross_section.py:104: UserWarning: FixedFormatter should only be used together with FixedLocator
+    /Users/rmay/repos/metpy/examples/cross_section.py:99: UserWarning: FixedFormatter should only be used together with FixedLocator
       ax.set_yticklabels(np.arange(1000, 50, -100))
-    /Users/rmay/repos/metpy/examples/cross_section.py:137: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
 
 
 
@@ -348,7 +341,7 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.463 seconds)
+   **Total running time of the script:** ( 0 minutes  2.080 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:

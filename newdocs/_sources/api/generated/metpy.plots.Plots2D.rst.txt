@@ -47,9 +47,12 @@ Plots2D
       ~Plots2D.on_trait_change
       ~Plots2D.set_trait
       ~Plots2D.setup_instance
+      ~Plots2D.trait_defaults
       ~Plots2D.trait_events
+      ~Plots2D.trait_has_value
       ~Plots2D.trait_metadata
       ~Plots2D.trait_names
+      ~Plots2D.trait_values
       ~Plots2D.traits
       ~Plots2D.unobserve
       ~Plots2D.unobserve_all
@@ -97,9 +100,12 @@ Plots2D
    .. automethod:: on_trait_change
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all

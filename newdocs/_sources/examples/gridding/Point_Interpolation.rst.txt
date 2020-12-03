@@ -133,7 +133,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f8ba89a4a60>
+    <matplotlib.colorbar.Colorbar object at 0x7ff3c15deac0>
 
 
 
@@ -165,7 +165,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f8ba89d4fd0>
+    <matplotlib.colorbar.Colorbar object at 0x7ff497324430>
 
 
 
@@ -202,7 +202,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f8bc1380970>
+    <matplotlib.colorbar.Colorbar object at 0x7ff3c036b880>
 
 
 
@@ -237,7 +237,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f8bbcf1bc70>
+    <matplotlib.colorbar.Colorbar object at 0x7ff3c0380d00>
 
 
 
@@ -264,22 +264,13 @@ linear
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/gridding/Point_Interpolation.py:141: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  11.132 seconds)
+   **Total running time of the script:** ( 0 minutes  40.374 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:

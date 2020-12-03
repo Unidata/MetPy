@@ -9,10 +9,10 @@ $(document).ready(function() {
     console.log('cur_ver: ' + cur_ver);
 
     $.getJSON('/' + proj + '/versions.json', function(data) {
-        if (cur_ver != data.latest) {
+        if (cur_ver !== data.latest) {
             let msg;
-            if (cur_ver == 'dev' || data.prereleases.indexOf(cur_ver) > -1) {
-                msg = 'a development / pre-release';
+            if (cur_ver.includes('dev') || data.prereleases.indexOf(cur_ver) > -1) {
+                msg = 'development / pre-release';
             } else {
                 msg = 'previous';
             }
@@ -22,7 +22,7 @@ $(document).ready(function() {
         }
 
         $.each(data.versions, function() {
-            if (this != 'latest') {
+            if (this !== 'latest') {
                 const url = DOCUMENTATION_OPTIONS.URL_ROOT + '../' + this;
                 const name = this.startsWith('v') ? this.substring(1) : this;
                 $('#version-menu').append('<a class="dropdown-item" href="' + url + '">' + name + '</a>');

@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>xarray &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <title>xarray &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="References" href="../references.html" />
+    <link rel="next" title="grid_deltas_from_dataarray" href="metpy.xarray.grid_deltas_from_dataarray.html" />
     <link rel="prev" title="remove_repeat_coordinates" href="metpy.interpolate.remove_repeat_coordinates.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.xarray.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../index.html">
-      <img src="../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -61,10 +90,6 @@
             <a class="nav-link" href="../../userguide/index.html">User Guide</a>
         </li>
         
-        <li class="nav-item ">
-            <a class="nav-link" href="../../examples/index.html">Examples</a>
-        </li>
-        
         <li class="nav-item active">
             <a class="nav-link" href="../index.html">Reference Guide</a>
         </li>
@@ -74,21 +99,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,90 +147,90 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
+    <ul class="nav bd-sidenav">
+        
+        
+        
         
           
-              <li class="">
-                  <a href="metpy.constants.html">constants</a>
-              </li>
+            
+                <li class="">
+                    <a href="metpy.constants.html">constants</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.units.html">units</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.io.html">io</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.calc.html">calc</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.html">plots</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.ctables.html">ctables</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.interpolate.html">interpolate</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="">xarray</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="metpy.xarray.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../references.html">References</a>
+                </li>
+            
           
         
-          
-              <li class="">
-                  <a href="metpy.units.html">units</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.io.html">io</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.calc.html">calc</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.html">plots</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.ctables.html">ctables</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.interpolate.html">interpolate</a>
-              </li>
-          
         
-          
-              <li class="active">
-                  <a href="">xarray</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../references.html">References</a>
-              </li>
-          
-        
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -220,16 +248,13 @@
             <a href="#accessors" class="nav-link">Accessors</a>
         </li>
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#functions" class="nav-link">Functions</a>
+        </li>
+    
     </ul>
 </nav>
 
-
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/api/generated/metpy.xarray.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
 
               
           </div>
@@ -280,7 +305,7 @@ to a particular axis (given sufficent metadata):</p>
 <dd><p>Return new DataArray with given coordinates assigned to the given MetPy axis types.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – Mapping from axis types (‘time’, ‘vertical’, ‘y’, ‘latitude’, ‘x’, ‘longitude’) to
+<dd class="field-odd"><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – Mapping from axis types (‘time’, ‘vertical’, ‘y’, ‘latitude’, ‘x’, ‘longitude’) to
 coordinates of this DataArray. Coordinates can either be specified directly or by
 their name. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, clears the <em class="xref py py-obj">_metpy_axis</em> attribute on all coordinates,
 which will trigger reparsing of all coordinates on next access.</p>
@@ -295,12 +320,12 @@ which will trigger reparsing of all coordinates on next access.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) – Dictionary of CF projection attributes</p></li>
+<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of CF projection attributes</p></li>
 <li><p><strong>kwargs</strong> (<em>optional</em>) – CF projection attributes specified as keyword arguments</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with CRS coordinate assigned</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with CRS coordinate assigned</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -314,15 +339,15 @@ but not both.</p>
 <dd><p>Assign latitude and longitude coordinates derived from y and x coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
+<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
 otherwise, raise a RuntimeError if such coordinates exist.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with latitude and longtiude auxilary coordinates assigned.</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with latitude and longtiude auxilary coordinates assigned.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
@@ -333,18 +358,18 @@ transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
 <li><p><strong>tolerance</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with y and x dimension coordinates assigned.</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> – New xarray DataArray with y and x dimension coordinates assigned.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
@@ -352,6 +377,12 @@ transformations.</p>
 <dt id="metpy.xarray.MetPyDataArrayAccessor.cartopy_crs">
 <em class="property">property </em><code class="sig-name descname">cartopy_crs</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_crs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coordinate reference system (CRS) as a cartopy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic">
+<em class="property">property </em><code class="sig-name descname">cartopy_geodetic</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.cartopy_geodetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Geodetic CRS associated with the native CRS globe.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -385,7 +416,7 @@ subsetting!</p>
 <dd><p>Return the coordinate variables corresponding to the given axes types.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Strings describing the axes type(s) to obtain. Currently understood types are
+<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Strings describing the axes type(s) to obtain. Currently understood types are
 ‘time’, ‘vertical’, ‘y’, ‘latitude’, ‘x’, and ‘longitude’.</p>
 </dd>
 </dl>
@@ -419,7 +450,7 @@ unpacking.</p>
 <dd><p>Return the name of the axis corresponding to the given identifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
+<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
 name (string) or a standard axis type (string).</p>
 </dd>
 </dl>
@@ -431,7 +462,7 @@ name (string) or a standard axis type (string).</p>
 <dd><p>Return the dimension number of the axis corresponding to the given identifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
+<dd class="field-odd"><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Identifier for an axis. Can be an axis number (integer), dimension coordinate
 name (string) or a standard axis type (string).</p>
 </dd>
 </dl>
@@ -459,6 +490,12 @@ name (string) or a standard axis type (string).</p>
 <dt id="metpy.xarray.MetPyDataArrayAccessor.magnitude">
 <em class="property">property </em><code class="sig-name descname">magnitude</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.magnitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the magnitude of the data values of this DataArray (i.e., without units).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.xarray.MetPyDataArrayAccessor.pyproj_crs">
+<em class="property">property </em><code class="sig-name descname">pyproj_crs</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.pyproj_crs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the coordinate reference system (CRS) as a pyproj object.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -532,7 +569,7 @@ will be loaded into memory by this operation.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 <span class="go">Projection: lambert_conformal_conic</span>
 </pre></div>
 </div>
@@ -543,12 +580,12 @@ will be loaded into memory by this operation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) – Dictionary of CF projection attributes</p></li>
+<li><p><strong>cf_attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of CF projection attributes</p></li>
 <li><p><strong>kwargs</strong> (<em>optional</em>) – CF projection attributes specified as keyword arguments</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with CRS coordinate assigned</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with CRS coordinate assigned</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -562,16 +599,16 @@ but not both.</p>
 <dd><p>Assign latitude and longitude coordinates derived from y and x coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
+<dd class="field-odd"><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite latitude and longitude coordinates if they exist,
 otherwise, raise a RuntimeError if such coordinates exist.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with latitude and longitude coordinates assigned to all
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with latitude and longitude coordinates assigned to all
 variables with y and x coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
@@ -582,19 +619,19 @@ transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
 <li><p><strong>tolerance</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with y and x dimension coordinates assigned to all variables
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with y and x dimension coordinates assigned to all variables
 with valid latitude and longitude coordinates.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A valid CRS coordinate must be present. Cartopy is used for the coordinate
+<p>A valid CRS coordinate must be present. PyProj is used for the coordinate
 transformations.</p>
 </dd></dl>
 
@@ -617,14 +654,14 @@ transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>varname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">iterable</span></code> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <em>optional</em>) – Name of the variable(s) to extract from the dataset while parsing for CF metadata.
+<li><p><strong>varname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>iterable of str</em><em>, </em><em>optional</em>) – Name of the variable(s) to extract from the dataset while parsing for CF metadata.
 Defaults to all variables.</p></li>
-<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <em>optional</em>) – Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
+<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
 if you wish to override MetPy’s automatic parsing of some axis type(s).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Parsed DataArray (if varname is a string) or Dataset</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – Parsed DataArray (if varname is a string) or Dataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -648,21 +685,37 @@ if you wish to override MetPy’s automatic parsing of some axis type(s).</p></l
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>attribute</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str,</span></code>) – Name of attribute to update</p></li>
-<li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>) – Either a dict, with keys as variable names and values as attribute values to set,
+<li><p><strong>attribute</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>,</em>) – Name of attribute to update</p></li>
+<li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em> or </em><em>callable</em>) – Either a dict, with keys as variable names and values as attribute values to set,
 or a callable, which must accept one positional argument (variable name) and
 arbitrary keyword arguments (all existing variable attributes). If a variable name
 is not present/the callable returns None, the attribute will not be updated.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New Dataset with attribute updated</p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New Dataset with attribute updated</p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html#metpy.xarray.grid_deltas_from_dataarray" title="metpy.xarray.grid_deltas_from_dataarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code></a>(f[, kind])</p></td>
+<td><p>Calculate the horizontal deltas between grid points of a DataArray.</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </div>
 </div>
 
@@ -673,7 +726,7 @@ is not present/the callable returns None, the attribute will not be updated.</p>
               <div class='prev-next-bottom'>
                 
     <a class='left-prev' id="prev-link" href="metpy.interpolate.remove_repeat_coordinates.html" title="previous page">remove_repeat_coordinates</a>
-    <a class='right-next' id="next-link" href="../references.html" title="next page">References</a>
+    <a class='right-next' id="next-link" href="metpy.xarray.grid_deltas_from_dataarray.html" title="next page">grid_deltas_from_dataarray</a>
 
               </div>
               
@@ -683,7 +736,10 @@ is not present/the callable returns None, the attribute will not be updated.</p>
       </div>
     </div>
 
-    <script src="../../_static/js/index.js"></script>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -697,9 +753,9 @@ is not present/the callable returns None, the attribute will not be updated.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

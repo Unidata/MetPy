@@ -8,82 +8,149 @@ User Guide
 
    installguide
    startingguide
-   SUPPORT
-   units
-   ../tutorials/index
+   /tutorials/index
+   upgradeguide
    gempak
+   SUPPORT
    citing
+   media
 
-We support Python >= 3.6. Support for Python 2.7 was dropped with the release of 0.12.
+.. plot::
+    :include-source: False
+    :width: 300px
+    :align: left
 
-.. image:: ../_static/sounding.png
-   :width: 150 px
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
 
-.. image:: ../_static/radar.png
-   :width: 150 px
+    import metpy.calc as mpcalc
+    from metpy.cbook import get_test_data
+    from metpy.plots import SkewT
+    from metpy.units import units
 
------
-Media
------
+    fig = plt.figure(figsize=(4, 4), dpi=150)
+    skew = SkewT(fig, rotation=45)
 
-* `AMS 2020 talk`_ on MetPy being ready for a 1.0 release
-* `AMS 2019 talk`_ on bringing GEMPAK-like syntax to MetPy's declaritive plotting interface
-* `AMS 2019 poster`_ on recent development and community building with MetPy
-* `SciPy 2018 poster`_ and `abstract <http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Abstract.pdf>`_ on building community by John Leeman
-* `SciPy 2018 talk`_ on prototyping MetPy's future declarative plotting interface
-* Presentation on MetPy and Community Development at the `2018 AMS Annual Meeting`_ by Ryan May
-* `SciPy 2017 poster`_ and `repository <https://github.com/jrleeman/CAPE-SciPy-2017>`_
-  about reproducing a classic CAPE paper with MetPy.
-* `SciPy 2017 talk`_ and `slides
-  <https://nbviewer.jupyter.org/format/slides/github/dopplershift/
-  Talks/blob/master/SciPy2017/MetPy%20Units.ipynb>`_
-  about challenges developing MetPy with units
-* MetPy was featured on `Episode 100 of Podcast.__init__`_
-* Presentation on MetPy's build infrastructure by Ryan May at `SciPy 2016`_
-* MetPy was included in tools presented at the `SSEC/Wisconsin AOS Python Workshop`_
-* Presentation on MetPy at the `2016 AMS Annual Meeting`_ by Ryan May
-* Ryan May's talk and tutorial on MetPy at the `2015 Unidata Users Workshop`_
+    col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
 
-.. _`2015 Unidata Users Workshop`: https://www.youtube.com/watch?v=umwauHAL-0M
-.. _`2016 AMS Annual Meeting`: https://ams.confex.com/ams/96Annual/webprogram/Paper286983.html
-.. _`SSEC/Wisconsin AOS Python Workshop`: https://www.youtube.com/watch?v=RRvJI_vouQc
-.. _`SciPy 2016`: https://www.youtube.com/watch?v=moLKGjbXvgE
-.. _`Episode 100 of Podcast.__init__`: https://www.podcastinit.com/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
-.. _`SciPy 2017 talk`: https://www.youtube.com/watch?v=qCo9bkT9sow
-.. _`SciPy 2017 poster`: https://github.com/jrleeman/CAPE-SciPy-2017/blob/master/Poster/SciPy_Poster_2017.pdf
-.. _`2018 AMS Annual Meeting`: https://ams.confex.com/ams/98Annual/webprogram/Paper333578.html
-.. _`SciPy 2018 talk`: https://www.youtube.com/watch?v=OKQlUdPY0Jc
-.. _`SciPy 2018 poster`: http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Poster.pdf
-.. _`AMS 2019 talk`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/352384
-.. _`AMS 2019 poster`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/354058
-.. _`AMS 2020 talk`: https://ams.confex.com/ams/2020Annual/meetingapp.cgi/Paper/369011
+    df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
+                     skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
--------
-License
--------
+    # Drop any rows with all NaN values for T, Td, winds
+    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'), how='all'
+                   ).reset_index(drop=True)
 
-MetPy is available under the terms of the open source `BSD 3 Clause license`__.
+    p = df['pressure'].values * units.hPa
+    t = df['temperature'].values * units.degC
+    td = df['dewpoint'].values * units.degC
+    wind_speed = df['speed'].values * units.knots
+    wind_dir = df['direction'].values * units.degrees
+    u, v = mpcalc.wind_components(wind_speed, wind_dir)
+    p_prof, t, td, prof = mpcalc.parcel_profile_with_lcl(p, t, td)
 
-__ https://raw.githubusercontent.com/Unidata/MetPy/master/LICENSE
+    skew.plot(p_prof, t, 'r')
+    skew.plot(p_prof, td, 'g')
+    skew.plot(p_prof, prof, 'k')  # Plot parcel profile
+    skew.plot_barbs(p, u, v, y_clip_radius=0.11)
 
----------------
-Code of Conduct
----------------
-We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
-spirit please have a look at our `code of conduct`__.
+    skew.ax.set_title('Sounding for 00Z 4 May 1999')
+    skew.ax.set_xlim(-10, 35)
+    skew.ax.set_xlabel(f'Temperature ({t.units:~})')
+    skew.ax.set_ylim(1000, 250)
+    skew.ax.set_ylabel(f'Pressure ({p_prof.units:~})')
 
-__ https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md
+    # Add the relevant special lines
+    skew.plot_dry_adiabats()
+    skew.plot_moist_adiabats()
+    skew.plot_mixing_lines()
+    skew.shade_cin(p_prof, t, prof)
+    skew.shade_cape(p_prof, t, prof)
 
-----------------
-Related Projects
-----------------
+    plt.show()
 
-* netCDF4-python_ is the officially blessed Python API for netCDF_
-* siphon_ is a Python API for accessing remote data on `THREDDS Data Servers`__
-* The `Unidata Python Gallery`_ is a collection of meteorological Python scripts
+.. plot::
+    :include-source: False
+    :width: 300px
+    :align: right
 
-.. _netCDF4-python: https://unidata.github.io/netcdf4-python/
-.. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
-.. _siphon: https://unidata.github.io/siphon/
-.. _Unidata Python Gallery: https://unidata.github.io/python-training/gallery/gallery-home
-__ https://www.unidata.ucar.edu/software/tds/current/
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from metpy.cbook import get_test_data
+    from metpy.io import Level3File
+    from metpy.plots import colortables
+
+    name = get_test_data(f'nids/KOUN_SDUS54_N0QTLX_201305202016', as_file_obj=False)
+    f = Level3File(name)
+    datadict = f.sym_block[0][0]
+    data = f.map_data(datadict['data'])
+
+    az = np.array(datadict['start_az'] + [datadict['end_az'][-1]])
+    rng = np.linspace(0, f.max_range, data.shape[-1] + 1)
+    xlocs = rng * np.sin(np.deg2rad(az[:, np.newaxis]))
+    ylocs = rng * np.cos(np.deg2rad(az[:, np.newaxis]))
+
+    fig, ax = plt.subplots(1, 1, squeeze=True, figsize=(4, 4), dpi=150)
+    norm, cmap = colortables.get_with_steps('NWSStormClearReflectivity', -20, 0.5)
+    ax.pcolormesh(xlocs, ylocs, data, norm=norm, cmap=cmap)
+    ax.set_aspect('equal', 'datalim')
+    ax.set_xlim(-40, 20)
+    ax.set_ylim(-30, 30)
+    ax.set_title('KTLX Reflectivity at 2013/05/20 2016Z')
+
+    plt.show()
+
+.. raw:: html
+
+    <div class="clearer"></div>
+
+MetPy's User Guide can help show you how to use MetPy, walking through various parts of
+MetPy and show you to other resources. See the :doc:`/api/index` for more information on
+a particular function or feature in MetPy.
+
+New to MetPy? Try the :doc:`Getting Started Guide<startingguide>`.
+
+Need some more direct help? Check out our :doc:`support resources<SUPPORT>`.
+
+Used MetPy in your research? We'd love for you to :doc:`cite us<citing>` in your publication.
+
+.. plot::
+    :include-source: False
+    :width: 600px
+    :align: center
+
+    from datetime import datetime, timedelta
+    import cartopy.crs as ccrs
+    import pandas as pd
+    from metpy.cbook import get_test_data
+    import metpy.plots as mpplots
+
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = mpplots.PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 13)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['tmpf', 'dwpf', 'emsl', 'cloud_cover', 'wxsym']
+    obs.locations = ['NW', 'SW', 'NE', 'C', 'W']
+    obs.colors = ['red', 'green', 'black', 'black', 'blue']
+    obs.formats = [None, None, lambda v: format(10 * v, '.0f')[-3:], 'sky_cover',
+                   'current_weather']
+    obs.vector_field = ('uwind', 'vwind')
+    obs.reduce_points = 1.5
+
+    panel = mpplots.MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.area = 'east'
+    panel.projection = ccrs.PlateCarree()
+    panel.layers = ['coastline', 'borders', 'states']
+    panel.plots = [obs]
+    panel.title = 'Surface Data Analysis'
+
+    pc = mpplots.PanelContainer()
+    pc.size = (12, 9)
+    pc.panels = [panel]
+
+    pc.show()

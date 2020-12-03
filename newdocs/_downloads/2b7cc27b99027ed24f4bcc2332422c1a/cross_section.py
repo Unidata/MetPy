@@ -23,8 +23,9 @@ from metpy.interpolate import cross_section
 ##############################
 # **Getting the data**
 #
-# This example uses NARR reanalysis data for 18 UTC 04 April 1987 from NCEI
-# (https://www.ncdc.noaa.gov/data-access/model-data).
+# This example uses [NARR reanalysis data](
+# https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+# for 18 UTC 04 April 1987 from NCEI.
 #
 # We use MetPy's CF parsing to get the data ready for use, and squeeze down the size-one time
 # dimension.
@@ -49,27 +50,21 @@ print(cross)
 # For this example, we will be plotting potential temperature, relative humidity, and
 # tangential/normal winds. And so, we need to calculate those, and add them to the dataset:
 
-temperature, pressure, specific_humidity = xr.broadcast(cross['Temperature'],
-                                                        cross['isobaric'],
-                                                        cross['Specific_humidity'])
-
-theta = mpcalc.potential_temperature(pressure, temperature)
-rh = mpcalc.relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity)
-
-# These calculations return unit arrays, so put those back into DataArrays in our Dataset
-cross['Potential_temperature'] = xr.DataArray(theta,
-                                              coords=temperature.coords,
-                                              dims=temperature.dims,
-                                              attrs={'units': theta.units})
-cross['Relative_humidity'] = xr.DataArray(rh,
-                                          coords=specific_humidity.coords,
-                                          dims=specific_humidity.dims,
-                                          attrs={'units': rh.units})
-
+cross['Potential_temperature'] = mpcalc.potential_temperature(
+    cross['isobaric'],
+    cross['Temperature']
+)
+cross['Relative_humidity'] = mpcalc.relative_humidity_from_specific_humidity(
+    cross['isobaric'],
+    cross['Temperature'],
+    cross['Specific_humidity']
+)
 cross['u_wind'] = cross['u_wind'].metpy.convert_units('knots')
 cross['v_wind'] = cross['v_wind'].metpy.convert_units('knots')
-cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(cross['u_wind'],
-                                                                   cross['v_wind'])
+cross['t_wind'], cross['n_wind'] = mpcalc.cross_section_components(
+    cross['u_wind'],
+    cross['v_wind']
+)
 
 print(cross)
 

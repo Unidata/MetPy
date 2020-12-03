@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bulk_shear &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <title>bulk_shear &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="bunkers_storm_motion" href="metpy.calc.bunkers_storm_motion.html" />
     <link rel="prev" title="wet_bulb_temperature" href="metpy.calc.wet_bulb_temperature.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.bulk_shear.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../index.html">
-      <img src="../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -61,10 +90,6 @@
             <a class="nav-link" href="../../userguide/index.html">User Guide</a>
         </li>
         
-        <li class="nav-item ">
-            <a class="nav-link" href="../../examples/index.html">Examples</a>
-        </li>
-        
         <li class="nav-item active">
             <a class="nav-link" href="../index.html">Reference Guide</a>
         </li>
@@ -74,21 +99,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,578 +147,574 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
+    <ul class="nav bd-sidenav">
+        
+        
+        
         
           
-              <li class="">
-                  <a href="metpy.constants.html">constants</a>
-              </li>
+            
+                <li class="">
+                    <a href="metpy.constants.html">constants</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.units.html">units</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.io.html">io</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="metpy.calc.html">calc</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.density.html">density</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.dry_lapse.html">dry_lapse</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.dry_static_energy.html">dry_static_energy</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.geopotential_to_height.html">geopotential_to_height</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.height_to_geopotential.html">height_to_geopotential</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.potential_temperature.html">potential_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.static_stability.html">static_stability</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.thickness_hydrostatic.html">thickness_hydrostatic</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.dewpoint.html">dewpoint</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.dewpoint_from_relative_humidity.html">dewpoint_from_relative_humidity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mixing_ratio.html">mixing_ratio</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.moist_lapse.html">moist_lapse</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.moist_static_energy.html">moist_static_energy</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.precipitable_water.html">precipitable_water</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.relative_humidity_from_mixing_ratio.html">relative_humidity_from_mixing_ratio</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.specific_humidity_from_dewpoint.html">specific_humidity_from_dewpoint</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.vapor_pressure.html">vapor_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.vertical_velocity.html">vertical_velocity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.vertical_velocity_pressure.html">vertical_velocity_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.virtual_temperature.html">virtual_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="">bulk_shear</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.cape_cin.html">cape_cin</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.critical_angle.html">critical_angle</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.el.html">el</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.lcl.html">lcl</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.lfc.html">lfc</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.lifted_index.html">lifted_index</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mixed_layer.html">mixed_layer</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.mixed_parcel.html">mixed_parcel</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.parcel_profile.html">parcel_profile</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.parcel_profile_with_lcl_as_dataset.html">parcel_profile_with_lcl_as_dataset</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.significant_tornado.html">significant_tornado</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.supercell_composite.html">supercell_composite</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.absolute_momentum.html">absolute_momentum</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.absolute_vorticity.html">absolute_vorticity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.advection.html">advection</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.coriolis_parameter.html">coriolis_parameter</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.divergence.html">divergence</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.exner_function.html">exner_function</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.frontogenesis.html">frontogenesis</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.geostrophic_wind.html">geostrophic_wind</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.inertial_advective_wind.html">inertial_advective_wind</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.kinematic_flux.html">kinematic_flux</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.montgomery_streamfunction.html">montgomery_streamfunction</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.q_vector.html">q_vector</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.shearing_deformation.html">shearing_deformation</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.stretching_deformation.html">stretching_deformation</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.total_deformation.html">total_deformation</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.vorticity.html">vorticity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.wind_components.html">wind_components</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.wind_direction.html">wind_direction</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.wind_speed.html">wind_speed</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.brunt_vaisala_frequency.html">brunt_vaisala_frequency</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.friction_velocity.html">friction_velocity</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.gradient_richardson_number.html">gradient_richardson_number</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.tke.html">tke</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.cross_section_components.html">cross_section_components</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.first_derivative.html">first_derivative</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.gradient.html">gradient</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.laplacian.html">laplacian</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.normal_component.html">normal_component</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.second_derivative.html">second_derivative</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.tangential_component.html">tangential_component</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.apparent_temperature.html">apparent_temperature</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.heat_index.html">heat_index</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.windchill.html">windchill</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.altimeter_to_sea_level_pressure.html">altimeter_to_sea_level_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.altimeter_to_station_pressure.html">altimeter_to_station_pressure</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.smooth_window.html">smooth_window</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.smooth_rectangular.html">smooth_rectangular</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.smooth_circular.html">smooth_circular</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.smooth_n_point.html">smooth_n_point</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.angle_to_direction.html">angle_to_direction</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.find_intersections.html">find_intersections</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.get_layer.html">get_layer</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.get_layer_heights.html">get_layer_heights</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.get_perturbation.html">get_perturbation</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.isentropic_interpolation_as_dataset.html">isentropic_interpolation_as_dataset</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.parse_angle.html">parse_angle</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.reduce_point_density.html">reduce_point_density</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.html">plots</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.ctables.html">ctables</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.interpolate.html">interpolate</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.xarray.html">xarray</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../references.html">References</a>
+                </li>
+            
           
         
-          
-              <li class="">
-                  <a href="metpy.units.html">units</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.io.html">io</a>
-              </li>
-          
         
-          
-
-              <li class="active">
-                  <a href="metpy.calc.html">calc</a>
-                  <ul>
-                  
-                      <li class="">
-                          <a href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.density.html">density</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.dry_lapse.html">dry_lapse</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.dry_static_energy.html">dry_static_energy</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.geopotential_to_height.html">geopotential_to_height</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.height_to_geopotential.html">height_to_geopotential</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.potential_temperature.html">potential_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.static_stability.html">static_stability</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.thickness_hydrostatic.html">thickness_hydrostatic</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.dewpoint.html">dewpoint</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.dewpoint_from_relative_humidity.html">dewpoint_from_relative_humidity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mixing_ratio.html">mixing_ratio</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.moist_lapse.html">moist_lapse</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.moist_static_energy.html">moist_static_energy</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.precipitable_water.html">precipitable_water</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.relative_humidity_from_mixing_ratio.html">relative_humidity_from_mixing_ratio</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.specific_humidity_from_dewpoint.html">specific_humidity_from_dewpoint</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.vapor_pressure.html">vapor_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.vertical_velocity.html">vertical_velocity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.vertical_velocity_pressure.html">vertical_velocity_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.virtual_temperature.html">virtual_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a>
-                      </li>
-                  
-                      <li class="active">
-                          <a href="">bulk_shear</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.cape_cin.html">cape_cin</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.critical_angle.html">critical_angle</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.el.html">el</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.lcl.html">lcl</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.lfc.html">lfc</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.lifted_index.html">lifted_index</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mixed_layer.html">mixed_layer</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mixed_layer_cape_cin.html">mixed_layer_cape_cin</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.mixed_parcel.html">mixed_parcel</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.most_unstable_cape_cin.html">most_unstable_cape_cin</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.parcel_profile.html">parcel_profile</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.parcel_profile_with_lcl.html">parcel_profile_with_lcl</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.significant_tornado.html">significant_tornado</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.supercell_composite.html">supercell_composite</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.absolute_momentum.html">absolute_momentum</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.absolute_vorticity.html">absolute_vorticity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.advection.html">advection</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.coriolis_parameter.html">coriolis_parameter</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.divergence.html">divergence</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.exner_function.html">exner_function</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.frontogenesis.html">frontogenesis</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.geostrophic_wind.html">geostrophic_wind</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.inertial_advective_wind.html">inertial_advective_wind</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.kinematic_flux.html">kinematic_flux</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.montgomery_streamfunction.html">montgomery_streamfunction</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.q_vector.html">q_vector</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.shearing_deformation.html">shearing_deformation</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.stretching_deformation.html">stretching_deformation</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.total_deformation.html">total_deformation</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.vorticity.html">vorticity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.wind_components.html">wind_components</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.wind_direction.html">wind_direction</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.wind_speed.html">wind_speed</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.brunt_vaisala_frequency.html">brunt_vaisala_frequency</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.friction_velocity.html">friction_velocity</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.gradient_richardson_number.html">gradient_richardson_number</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.tke.html">tke</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.cross_section_components.html">cross_section_components</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.first_derivative.html">first_derivative</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.gradient.html">gradient</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.laplacian.html">laplacian</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.normal_component.html">normal_component</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.second_derivative.html">second_derivative</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.tangential_component.html">tangential_component</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.apparent_temperature.html">apparent_temperature</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.heat_index.html">heat_index</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.windchill.html">windchill</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.altimeter_to_sea_level_pressure.html">altimeter_to_sea_level_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.altimeter_to_station_pressure.html">altimeter_to_station_pressure</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.smooth_window.html">smooth_window</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.smooth_rectangular.html">smooth_rectangular</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.smooth_circular.html">smooth_circular</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.smooth_n_point.html">smooth_n_point</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.angle_to_direction.html">angle_to_direction</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.azimuth_range_to_lat_lon.html">azimuth_range_to_lat_lon</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.find_intersections.html">find_intersections</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.get_layer.html">get_layer</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.get_layer_heights.html">get_layer_heights</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.get_perturbation.html">get_perturbation</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.parse_angle.html">parse_angle</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.reduce_point_density.html">reduce_point_density</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a>
-                      </li>
-                  
-                  </ul>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.html">plots</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.ctables.html">ctables</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.interpolate.html">interpolate</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.xarray.html">xarray</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../references.html">References</a>
-              </li>
-          
-        
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -704,13 +728,6 @@
     </ul>
 </nav>
 
-
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/api/generated/metpy.calc.bulk_shear.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
 
               
           </div>
@@ -734,9 +751,9 @@
 <li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric pressure profile</p></li>
 <li><p><strong>u</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – U-component of wind.</p></li>
 <li><p><strong>v</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – V-component of wind.</p></li>
-<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – Heights from sounding</p></li>
-<li><p><strong>depth</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – The depth of the layer in meters or hPa. Defaults to 100 hPa.</p></li>
-<li><p><strong>bottom</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, <em>optional</em>) – The bottom of the layer in height or pressure coordinates.
+<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – Heights from sounding</p></li>
+<li><p><strong>depth</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The depth of the layer in meters or hPa. Defaults to 100 hPa.</p></li>
+<li><p><strong>bottom</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The bottom of the layer in height or pressure coordinates.
 If using a height, it must be in the same coordinates as the given
 heights (i.e., don’t use meters AGL unless given heights
 are in meters AGL.) Defaults to the highest pressure or lowest height given.</p></li>
@@ -750,6 +767,10 @@ are in meters AGL.) Defaults to the highest pressure or lowest height given.</p>
 </p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+Since this function returns scalar values when given a profile, this will return Pint
+Quantities even when given xarray DataArray profiles.</p>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -771,7 +792,10 @@ are in meters AGL.) Defaults to the highest pressure or lowest height given.</p>
       </div>
     </div>
 
-    <script src="../../_static/js/index.js"></script>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -785,9 +809,9 @@ are in meters AGL.) Defaults to the highest pressure or lowest height given.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

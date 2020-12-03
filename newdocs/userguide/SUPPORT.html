@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Support &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <title>Support &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../_static/language_data.js"></script>
     <script src="../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Working with Units" href="units.html" />
-    <link rel="prev" title="Getting Started with MetPy" href="startingguide.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    <link rel="next" title="Citing MetPy" href="citing.html" />
+    <link rel="prev" title="GEMPAK Comparison Guide" href="gempak.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/SUPPORT.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../index.html">
-      <img src="../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -62,15 +91,15 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../examples/index.html">Examples</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../api/index.html">Reference Guide</a>
         </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../examples/index.html">Example Gallery</a>
         </li>
         
         <li class="nav-item active">
@@ -79,16 +108,16 @@
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,80 +147,78 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
+    <ul class="nav bd-sidenav">
+        
         
           
-              <li class="">
-                  <a href="installguide.html">Install</a>
-              </li>
+            
+                <li class="">
+                    <a href="installguide.html">Install Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="startingguide.html">Getting Started with MetPy</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../tutorials/index.html">Tutorials</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="gempak.html">GEMPAK Comparison Guide</a>
+                </li>
+            
+          
+            
+                <li class="active">
+                    <a href="">Support</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="citing.html">Citing MetPy</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="media.html">Talks and Other Media</a>
+                </li>
+            
           
         
-          
-              <li class="">
-                  <a href="startingguide.html">Getting Started with MetPy</a>
-              </li>
-          
+        
+        
+        
+        
+        
+        
+        
         
           
-              <li class="active">
-                  <a href="">Support</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="units.html">Working with Units</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../tutorials/index.html">Tutorials</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="gempak.html">GEMPAK Conversion Guide</a>
-              </li>
-          
-        
-          
-              <li class="">
-                  <a href="citing.html">Citing MetPy</a>
-              </li>
-          
-        
-      
-      
-      
-      
-      
-      
-      
-      
-      
-        
-      
-      
-    </ul>
-
-</nav>
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -214,16 +240,13 @@
             <a href="#issues" class="nav-link">Issues</a>
         </li>
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#code-of-conduct" class="nav-link">Code of Conduct</a>
+        </li>
+    
     </ul>
 </nav>
 
-
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/userguide/SUPPORT.md">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
 
               
           </div>
@@ -262,6 +285,12 @@ using GitHub or Twitter.</p></li>
 <li><p><a class="reference external" href="https://github.com/Unidata/MetPy/issues">Issue Tracker (GitHub)</a></p></li>
 </ul>
 </div>
+<div class="section" id="code-of-conduct">
+<h2>Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Permalink to this headline">¶</a></h2>
+<p>We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
+spirit please have a look at our
+<a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md"><code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">of</span> <span class="pre">conduct</span></code></a>.</p>
+</div>
 </div>
 
 
@@ -270,8 +299,8 @@ using GitHub or Twitter.</p></li>
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="startingguide.html" title="previous page">Getting Started with MetPy</a>
-    <a class='right-next' id="next-link" href="units.html" title="next page">Working with Units</a>
+    <a class='left-prev' id="prev-link" href="gempak.html" title="previous page">GEMPAK Comparison Guide</a>
+    <a class='right-next' id="next-link" href="citing.html" title="next page">Citing MetPy</a>
 
               </div>
               
@@ -281,7 +310,10 @@ using GitHub or Twitter.</p></li>
       </div>
     </div>
 
-    <script src="../_static/js/index.js"></script>
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -295,9 +327,9 @@ using GitHub or Twitter.</p></li>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

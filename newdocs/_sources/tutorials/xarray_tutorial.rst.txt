@@ -33,6 +33,7 @@ versions.
     import metpy.calc as mpcalc
     from metpy.cbook import get_test_data
     from metpy.units import units
+    from metpy.xarray import grid_deltas_from_dataarray
 
 
 
@@ -286,7 +287,7 @@ we would take:
         reftime    datetime64[ns] 2017-09-05T12:00:00
       * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
       * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
-        crs        object Projection: latitude_longitude
+        metpy_crs  object Projection: latitude_longitude
         isobaric3  float64 8.5e+04
     Attributes:
         long_name:                      Geopotential height @ Isobaric surface
@@ -317,8 +318,8 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 .. code-block:: default
 
 
-    data_crs = data['temperature'].metpy.cartopy_crs
-    print(data_crs)
+    cartopy_crs = data['temperature'].metpy.cartopy_crs
+    print(cartopy_crs)
 
 
 
@@ -330,7 +331,31 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x7f8bb10741d0>
+    <cartopy.crs.PlateCarree object at 0x7ffe0e84af90>
+
+
+
+
+Likewise, the PyProj CRS can be obtained with the ``.pyproj_crs`` property:
+
+
+.. code-block:: default
+
+
+    pyproj_crs = data['temperature'].metpy.pyproj_crs
+    print(pyproj_crs)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    {"$schema": "https://proj.org/schemas/v0.2/projjson.schema.json", "type": "GeographicCRS", "name": "undefined", "datum": {"$schema": "https://proj.org/schemas/v0.2/projjson.schema.json", "type": "GeodeticReferenceFrame", "name": "undefined", "ellipsoid": {"name": "undefined", "radius": 6371229}}, "coordinate_system": {"$schema": "https://proj.org/schemas/v0.2/projjson.schema.json", "type": "CoordinateSystem", "subtype": "ellipsoidal", "axis": [{"name": "Longitude", "abbreviation": "lon", "direction": "east", "unit": "degree"}, {"name": "Latitude", "abbreviation": "lat", "direction": "north", "unit": "degree"}]}}
 
 
 
@@ -342,8 +367,8 @@ property:
 .. code-block:: default
 
 
-    data_globe = data['temperature'].metpy.cartopy_globe
-    print(data_globe)
+    cartopy_globe = data['temperature'].metpy.cartopy_globe
+    print(cartopy_globe)
 
 
 
@@ -355,13 +380,16 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x7f8bbe26a100>
+    <cartopy._crs.Globe object at 0x7ffe0ef9a310>
 
 
 
 
 Calculations
 ------------
+
+TODO: The below section is out of date as of PR #1490. Updates are needed as a part of the
+1.0 Upgrade Guide and Doc Update (Issue #1385).
 
 Most of the calculations in `metpy.calc` will accept DataArrays by converting them
 into their corresponding unit arrays. While this may often work without any issues, we must
@@ -378,10 +406,9 @@ As an example, we calculate geostropic wind at 500 hPa below:
 
 
     lat, lon = xr.broadcast(y, x)
-    f = mpcalc.coriolis_parameter(lat)
-    dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, initstring=data_crs.proj4_init)
+    dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, geod=pyproj_crs.get_geod())
     heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
-    u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
+    u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
     print(u_geo)
     print(v_geo)
 
@@ -395,8 +422,48 @@ As an example, we calculate geostropic wind at 500 hPa below:
 
  .. code-block:: none
 
-    [[2.2725555398006794 6.251403116856027 3.2825541563213423 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.8162967285510536 4.388776144480824 4.325234764565967 ...  31.008031569492758 30.75375118168766 30.530908511630987] [5.127333709607048 4.839104240492895 5.800602961393702 ...  29.19382513917348 29.03383238414735 28.584732853227813] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
-    [[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.60970778243941 3.1007692883802775 2.0210959055900948 ...  2.4259734241357735 3.63896013620366 3.3723334776636142] [4.799363905542013 4.237167486865887 2.5436801152342685 ...  1.5555250602976798 2.9679142225845174 3.8129333795048903]] meter / second
+    <xarray.DataArray (latitude: 81, longitude: 131)>
+    <Quantity([[ 2.2733034   6.25293339  3.28353199 ... 33.12285541 32.74320064
+      32.58517175]
+     [ 3.81693346  4.38966762  4.32598735 ... 31.0138463  30.7595135
+      30.53663254]
+     [ 5.1277875   4.83945459  5.80108591 ... 29.19673862 29.03672755
+      28.58760112]
+     ...
+     [-1.90177703 -1.14044725 -1.90177703 ... -6.97111921 -7.35333151
+      -6.84577833]
+     [-2.78677553 -2.65553785 -2.38982204 ... -6.37069849 -7.16622569
+      -6.90050988]
+     [-7.10062943 -8.36058307 -3.62002875 ... -5.57712273 -7.51721329
+      -8.3537817 ]], 'meter / second')>
+    Coordinates:
+        time1      datetime64[ns] 2017-09-05T12:00:00
+        reftime    datetime64[ns] 2017-09-05T12:00:00
+      * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
+      * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
+        metpy_crs  object Projection: latitude_longitude
+        isobaric3  float64 5e+04
+    <xarray.DataArray (latitude: 81, longitude: 131)>
+    <Quantity([[-14.83673367 -14.44217477 -16.94684424 ...   5.599978     6.53360749
+        7.41866665]
+     [ -8.32614256 -13.81233272 -17.14255058 ...   5.28948608   6.12233949
+        7.20092352]
+     [-12.01837752 -13.58075467 -14.89923401 ...   4.9340109    5.76469463
+        6.74147851]
+     ...
+     [  4.26253418   3.48695474   2.96990178 ...   3.22842826   3.22842826
+        1.93579585]
+     [  6.61761      3.10447641   2.02351222 ...   2.42887379   3.64331069
+        3.37636526]
+     [  4.80505261   4.24218982   2.54669515 ...   1.55736883   2.9714321
+        3.81745286]], 'meter / second')>
+    Coordinates:
+        time1      datetime64[ns] 2017-09-05T12:00:00
+        reftime    datetime64[ns] 2017-09-05T12:00:00
+      * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
+      * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
+        metpy_crs  object Projection: latitude_longitude
+        isobaric3  float64 5e+04
 
 
 
@@ -434,9 +501,8 @@ rewrite the above geostrophic wind example using this helper function as follows
 
     heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
     lat, lon = xr.broadcast(y, x)
-    f = mpcalc.coriolis_parameter(lat)
-    dx, dy = mpcalc.grid_deltas_from_dataarray(heights)
-    u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
+    dx, dy = grid_deltas_from_dataarray(heights)
+    u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
     print(u_geo)
     print(v_geo)
 
@@ -450,8 +516,48 @@ rewrite the above geostrophic wind example using this helper function as follows
 
  .. code-block:: none
 
-    [[2.2725555398006794 6.251403116856027 3.2825541563213423 ...  33.11408008114585 32.73451716892398 32.5765366055535] [3.8162967285510536 4.388776144480824 4.325234764565967 ...  31.008031569492758 30.75375118168766 30.530908511630987] [5.127333709607048 4.839104240492895 5.800602961393702 ...  29.19382513917348 29.03383238414735 28.584732853227813] ... [-1.9117831398732483 -1.1464325905754669 -1.91181664555917 ...  -7.0079228001080995 -7.392149528166841 -6.88190745221371] [-2.8016460018049023 -2.6697320073045367 -2.4025371858986984 ...  -6.404532768301047 -7.204303662756457 -6.93719274537382] [-7.13845125502525 -8.405095361594876 -3.6393431096920725 ...  -5.606968107542709 -7.557393778305965 -8.398398522461456]] meter / second
-    [[-14.791524808043887 -14.39816816884509 -16.89520567938152 ...  5.582914366984641 6.513698998038233 7.396061307243545] [-8.301012127894664 -13.770643557272367 -17.09080997637208 ...  5.273521060998235 6.103860705847083 7.179189291138215] [-11.98245046368792 -13.54015713307823 -14.854695089573378 ...  4.919261443711342 5.7474619744198705 6.721325915052195] ... [4.25739861885645 3.4827536038902918 2.966323593912038 ...  3.224538598899942 3.2245385989023876 1.9334635739628656] [6.60970778243941 3.1007692883802775 2.0210959055900948 ...  2.4259734241357735 3.63896013620366 3.3723334776636142] [4.799363905542013 4.237167486865887 2.5436801152342685 ...  1.5555250602976798 2.9679142225845174 3.8129333795048903]] meter / second
+    <xarray.DataArray (latitude: 81, longitude: 131)>
+    <Quantity([[ 2.2733034   6.25293339  3.28353199 ... 33.12285541 32.74320064
+      32.58517175]
+     [ 3.81693346  4.38966762  4.32598735 ... 31.0138463  30.7595135
+      30.53663254]
+     [ 5.1277875   4.83945459  5.80108591 ... 29.19673862 29.03672755
+      28.58760112]
+     ...
+     [-1.90177703 -1.14044725 -1.90177703 ... -6.97111921 -7.35333151
+      -6.84577833]
+     [-2.78677553 -2.65553785 -2.38982204 ... -6.37069849 -7.16622569
+      -6.90050988]
+     [-7.10062943 -8.36058307 -3.62002875 ... -5.57712273 -7.51721329
+      -8.3537817 ]], 'meter / second')>
+    Coordinates:
+        time1      datetime64[ns] 2017-09-05T12:00:00
+        reftime    datetime64[ns] 2017-09-05T12:00:00
+      * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
+      * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
+        metpy_crs  object Projection: latitude_longitude
+        isobaric3  float64 5e+04
+    <xarray.DataArray (latitude: 81, longitude: 131)>
+    <Quantity([[-14.83673367 -14.44217477 -16.94684424 ...   5.599978     6.53360749
+        7.41866665]
+     [ -8.32614256 -13.81233272 -17.14255058 ...   5.28948608   6.12233949
+        7.20092352]
+     [-12.01837752 -13.58075467 -14.89923401 ...   4.9340109    5.76469463
+        6.74147851]
+     ...
+     [  4.26253418   3.48695474   2.96990178 ...   3.22842826   3.22842826
+        1.93579585]
+     [  6.61761      3.10447641   2.02351222 ...   2.42887379   3.64331069
+        3.37636526]
+     [  4.80505261   4.24218982   2.54669515 ...   1.55736883   2.9714321
+        3.81745286]], 'meter / second')>
+    Coordinates:
+        time1      datetime64[ns] 2017-09-05T12:00:00
+        reftime    datetime64[ns] 2017-09-05T12:00:00
+      * latitude   (latitude) float32 50.0 49.5 49.0 48.5 ... 11.5 11.0 10.5 10.0
+      * longitude  (longitude) float32 250.0 250.5 251.0 251.5 ... 314.0 314.5 315.0
+        metpy_crs  object Projection: latitude_longitude
+        isobaric3  float64 5e+04
 
 
 
@@ -483,15 +589,6 @@ the data.
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:236: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
@@ -502,7 +599,7 @@ the data.
     # Let's add a projection and coastlines to it
     ax = plt.axes(projection=ccrs.LambertConformal())
     data['height'].metpy.loc[{'time': time[0],
-                              'vertical': 500. * units.hPa}].plot(ax=ax, transform=data_crs)
+                              'vertical': 500. * units.hPa}].plot(ax=ax, transform=cartopy_crs)
     ax.coastlines()
     plt.show()
 
@@ -513,15 +610,6 @@ the data.
     :alt: time1 = 2017-09-05T12:00:00, reftime = 2017-09-...
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:245: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
 
 
 
@@ -536,7 +624,7 @@ the data.
     data_level = data.metpy.loc[{time.name: time[0], vertical.name: 500. * units.hPa}]
 
     # Create the matplotlib figure and axis
-    fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': data_crs})
+    fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': cartopy_crs})
 
     # Plot RH as filled contours
     rh = ax.contourf(x, y, data_level['relative_humidity'], levels=[70, 80, 90, 100],
@@ -577,15 +665,6 @@ the data.
     :alt: 500 hPa Heights (m), Temperature (°C), Humidity (%) at 2017-09-05 12:00Z
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/tutorials/xarray_tutorial.py:287: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
 
 
 
@@ -715,7 +794,7 @@ Fix 2 (unit array broadcasting):
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.616 seconds)
+   **Total running time of the script:** ( 0 minutes  1.759 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:

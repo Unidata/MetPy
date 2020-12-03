@@ -57,9 +57,12 @@ PlotObs
       ~PlotObs.on_trait_change
       ~PlotObs.set_trait
       ~PlotObs.setup_instance
+      ~PlotObs.trait_defaults
       ~PlotObs.trait_events
+      ~PlotObs.trait_has_value
       ~PlotObs.trait_metadata
       ~PlotObs.trait_names
+      ~PlotObs.trait_values
       ~PlotObs.traits
       ~PlotObs.unobserve
       ~PlotObs.unobserve_all
@@ -117,9 +120,12 @@ PlotObs
    .. automethod:: on_trait_change
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all

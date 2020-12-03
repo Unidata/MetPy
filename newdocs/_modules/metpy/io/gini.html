@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metpy.io.gini &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <title>metpy.io.gini &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
@@ -22,32 +46,37 @@
     <script src="../../../_static/language_data.js"></script>
     <script src="../../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/io/gini.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../../index.html">
-      <img src="../../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -60,10 +89,6 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../examples/index.html">Examples</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../../../api/index.html">Reference Guide</a>
         </li>
         
@@ -72,21 +97,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -107,7 +136,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -117,34 +145,26 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -185,10 +205,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">xarray</span> <span class="kn">import</span> <span class="n">Variable</span>
 <span class="kn">from</span> <span class="nn">xarray.backends.common</span> <span class="kn">import</span> <span class="n">AbstractDataStore</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenDict</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenOrderedDict</span> <span class="k">as</span> <span class="n">FrozenDict</span>
+<span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenDict</span>
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
@@ -223,7 +240,7 @@
     <span class="n">mapper</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)),</span> <span class="n">names</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;UnknownValue&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lookup</span>
 
 
@@ -275,7 +292,8 @@
                 <span class="s1">&#39;Sounder (9.71 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (7.43 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (7.02 micron)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Sounder (6.51 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.57 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.52 micron)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Sounder (4.45 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (4.13 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (3.98 micron)&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Sounder (3.74 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (Visible)&#39;</span><span class="p">]</span>
+                <span class="c1"># Percent Normal TPW found empirically from Service Change Notice 20-03</span>
+                <span class="s1">&#39;Sounder (3.74 micron)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sounder (Visible)&#39;</span><span class="p">,</span> <span class="s1">&#39;Percent Normal TPW&#39;</span><span class="p">]</span>
 
     <span class="n">prod_desc_fmt</span> <span class="o">=</span> <span class="n">NamedStruct</span><span class="p">([(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>
                                  <span class="p">(</span><span class="s1">&#39;creating_entity&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">_name_lookup</span><span class="p">(</span><span class="n">crafts</span><span class="p">)),</span>
@@ -440,7 +458,7 @@
             <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;standard_parallel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s1">&#39;Unhandled GINI Projection: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span><span class="p">))</span>
+                <span class="sa">f</span><span class="s1">&#39;Unhandled GINI Projection: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">Variable</span><span class="p">((),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
 
@@ -515,32 +533,6 @@
 
         <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">y_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lon_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">lat_var</span><span class="p">)]</span>
 
-    <span class="c1"># FIXME: Work around xarray &lt;=0.10.3 docstring for load angering sphinx</span>
-    <span class="c1"># That&#39;s the only reason this exists.</span>
-<div class="viewcode-block" id="GiniFile.load"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Load the variables and attributes simultaneously.</span>
-
-<span class="sd">        A centralized loading function makes it easier to create</span>
-<span class="sd">        data stores that do automatic encoding/decoding.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">            class SuffixAppendingDataStore(AbstractDataStore):</span>
-
-<span class="sd">                def load(self):</span>
-<span class="sd">                    variables, attributes = AbstractDataStore.load(self)</span>
-<span class="sd">                    variables = {&#39;%s_suffix&#39; % k: v</span>
-<span class="sd">                                 for k, v in iteritems(variables)}</span>
-<span class="sd">                    attributes = {&#39;%s_suffix&#39; % k: v</span>
-<span class="sd">                                  for k, v in iteritems(attributes)}</span>
-<span class="sd">                    return variables, attributes</span>
-
-<span class="sd">        This function will be called anytime variables or attributes</span>
-<span class="sd">        are requested, so care should be taken to make sure its fast.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
 
@@ -575,15 +567,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">satellite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">creating_entity</span><span class="p">,</span>
-                          <span class="n">sector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="GiniFile.get_dimensions"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_dimensions">[docs]</a>    <span class="k">def</span> <span class="nf">get_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the file&#39;s dimensions.</span>
-
-<span class="sd">        This is used by `xarray.open_dataset`.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span></div></div>
+                          <span class="n">sector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span><span class="p">)</span></div></div>
 </pre></div>
 
               </div>
@@ -600,7 +584,10 @@
       </div>
     </div>
 
-    <script src="../../../_static/js/index.js"></script>
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -614,9 +601,9 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

@@ -236,15 +236,6 @@ The payoff
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/plots/Station_Plot_with_Layout.py:151: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
@@ -304,22 +295,13 @@ or instead, a custom layout can be used:
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/plots/Station_Plot_with_Layout.py:197: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.915 seconds)
+   **Total running time of the script:** ( 0 minutes  1.676 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:

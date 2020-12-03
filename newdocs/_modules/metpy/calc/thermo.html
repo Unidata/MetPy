@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metpy.calc.thermo &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <title>metpy.calc.thermo &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
@@ -22,32 +46,37 @@
     <script src="../../../_static/language_data.js"></script>
     <script src="../../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/thermo.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../../index.html">
-      <img src="../../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -60,10 +89,6 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../examples/index.html">Examples</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../../../api/index.html">Reference Guide</a>
         </li>
         
@@ -72,21 +97,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -107,7 +136,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -117,34 +145,26 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -178,6 +198,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">si</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">so</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_greater_or_close</span><span class="p">,</span> <span class="n">_less_or_close</span><span class="p">,</span> <span class="n">_remove_nans</span><span class="p">,</span> <span class="n">find_bounding_indices</span><span class="p">,</span>
                     <span class="n">find_intersections</span><span class="p">,</span> <span class="n">first_derivative</span><span class="p">,</span> <span class="n">get_layer</span><span class="p">)</span>
@@ -186,7 +207,7 @@
 <span class="kn">from</span> <span class="nn">..interpolate.one_dimension</span> <span class="kn">import</span> <span class="n">interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="kn">import</span> <span class="n">add_vertical_dim_from_xarray</span><span class="p">,</span> <span class="n">preprocess_and_wrap</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -194,13 +215,13 @@
 
 
 <div class="viewcode-block" id="relative_humidity_from_dewpoint"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">relative_humidity_from_dewpoint</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity.</span>
 
-<span class="sd">    Uses temperature and dewpoint in celsius to calculate relative</span>
-<span class="sd">    humidity using the ratio of vapor pressure to saturation vapor pressures.</span>
+<span class="sd">    Uses temperature and dewpoint to calculate relative humidity as the ratio of vapor</span>
+<span class="sd">    pressure to saturation vapor pressures.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -225,7 +246,7 @@
 
 
 <div class="viewcode-block" id="exner_function"><a class="viewcode-back" href="../../../api/generated/metpy.calc.exner_function.html#metpy.calc.exner_function">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;pressure&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">exner_function</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">reference_pressure</span><span class="o">=</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">P0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Exner function.</span>
@@ -260,7 +281,7 @@
 
 
 <div class="viewcode-block" id="potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the potential temperature.</span>
@@ -302,7 +323,10 @@
 
 
 <div class="viewcode-block" id="temperature_from_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.temperature_from_potential_temperature.html#metpy.calc.temperature_from_potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;potential_temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;potential_temperature&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">temperature_from_potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the temperature from a given potential temperature.</span>
@@ -347,9 +371,12 @@
 
 
 <div class="viewcode-block" id="dry_lapse"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dry_lapse.html#metpy.calc.dry_lapse">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;reference_pressure&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">dry_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">reference_pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">dry_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">reference_pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the temperature at a level assuming only dry processes.</span>
 
 <span class="sd">    This function lifts a parcel starting at `temperature`, conserving</span>
@@ -376,6 +403,11 @@
 <span class="sd">    parcel_profile : Calculate complete parcel profile</span>
 <span class="sd">    potential_temperature</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or</span>
+<span class="sd">    grids) unless reference_pressure is specified.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">reference_pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">reference_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -383,7 +415,10 @@
 
 
 <div class="viewcode-block" id="moist_lapse"><a class="viewcode-back" href="../../../api/generated/metpy.calc.moist_lapse.html#metpy.calc.moist_lapse">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;reference_pressure&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">moist_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">reference_pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the temperature at a level assuming liquid saturation processes.</span>
@@ -405,8 +440,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">       The temperature corresponding to the starting temperature and</span>
-<span class="sd">       pressure levels.</span>
+<span class="sd">       The resulting parcel temperature at levels given by `pressure`</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -423,6 +457,9 @@
 
 <span class="sd">    This equation comes from [Bakhshaii2013]_.</span>
 
+<span class="sd">    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or</span>
+<span class="sd">    grids).</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
@@ -433,6 +470,7 @@
                                     <span class="o">/</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span><span class="p">))))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kelvin&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">frac</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
 
+    <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">reference_pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">reference_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -452,7 +490,7 @@
 
     <span class="n">ret_temperatures</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">temperature</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
-    <span class="k">if</span> <span class="n">reference_pressure</span> <span class="o">&gt;</span> <span class="n">pressure</span><span class="o">.</span><span class="n">min</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">_greater_or_close</span><span class="p">(</span><span class="n">reference_pressure</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">min</span><span class="p">()):</span>
         <span class="c1"># Integrate downward in pressure</span>
         <span class="n">pres_down</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference_pressure</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">pressure</span><span class="p">[(</span><span class="n">ref_pres_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
         <span class="n">trace_down</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">temperature</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">pres_down</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())</span>
@@ -471,7 +509,7 @@
 
 
 <div class="viewcode-block" id="lcl"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the lifted condensation level (LCL) using from the starting point.</span>
@@ -518,6 +556,10 @@
 
 <span class="sd">    The function is guaranteed to finish by virtue of the `max_iters` counter.</span>
 
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">_lcl_iter</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="n">td</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">](</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">),</span> <span class="n">w</span><span class="p">))</span>
@@ -535,7 +577,7 @@
 
 
 <div class="viewcode-block" id="lfc"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lfc.html#metpy.calc.lfc">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">lfc</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dewpoint_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">which</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">):</span>
@@ -578,6 +620,12 @@
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    parcel_profile</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
@@ -710,7 +758,7 @@
 
 
 <div class="viewcode-block" id="el"><a class="viewcode-back" href="../../../api/generated/metpy.calc.el.html#metpy.calc.el">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">el</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the equilibrium level.</span>
@@ -748,6 +796,12 @@
 <span class="sd">    --------</span>
 <span class="sd">    parcel_profile</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
     <span class="c1"># Default to surface parcel if no profile or starting pressure level is given</span>
@@ -775,7 +829,7 @@
 
 
 <div class="viewcode-block" id="parcel_profile"><a class="viewcode-back" href="../../../api/generated/metpy.calc.parcel_profile.html#metpy.calc.parcel_profile">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;pressure&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the profile a parcel takes through the atmosphere.</span>
@@ -803,13 +857,17 @@
 <span class="sd">    --------</span>
 <span class="sd">    lcl, moist_lapse, dry_lapse</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">t_l</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">t_u</span> <span class="o">=</span> <span class="n">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">t_l</span><span class="p">,</span> <span class="n">t_u</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="parcel_profile_with_lcl"><a class="viewcode-back" href="../../../api/generated/metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the profile a parcel takes through the atmosphere.</span>
@@ -845,7 +903,13 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    lcl, moist_lapse, dry_lapse, parcel_profile</span>
+<span class="sd">    lcl, moist_lapse, dry_lapse, parcel_profile, parcel_profile_with_lcl_as_dataset</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Also, will only return Pint Quantities, even when given xarray DataArray profiles. To</span>
+<span class="sd">    obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p_l</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">,</span> <span class="n">p_u</span><span class="p">,</span> <span class="n">t_l</span><span class="p">,</span> <span class="n">t_lcl</span><span class="p">,</span> <span class="n">t_u</span> <span class="o">=</span> <span class="n">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -855,6 +919,76 @@
     <span class="n">new_temp</span> <span class="o">=</span> <span class="n">_insert_lcl_level</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">)</span>
     <span class="n">new_dewp</span> <span class="o">=</span> <span class="n">_insert_lcl_level</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_press</span><span class="p">,</span> <span class="n">new_temp</span><span class="p">,</span> <span class="n">new_dewp</span><span class="p">,</span> <span class="n">prof_temp</span></div>
+
+
+<div class="viewcode-block" id="parcel_profile_with_lcl_as_dataset"><a class="viewcode-back" href="../../../api/generated/metpy.calc.parcel_profile_with_lcl_as_dataset.html#metpy.calc.parcel_profile_with_lcl_as_dataset">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">parcel_profile_with_lcl_as_dataset</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the profile a parcel takes through the atmosphere, returning a Dataset.</span>
+
+<span class="sd">    The parcel starts at `temperature`, and `dewpoint`, lifted up</span>
+<span class="sd">    dry adiabatically to the LCL, and then moist adiabatically from there.</span>
+<span class="sd">    `pressure` specifies the pressure levels for the profile. This function returns</span>
+<span class="sd">    a profile that includes the LCL.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure level(s) of interest. This array must be from</span>
+<span class="sd">        high to low pressure.</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The atmospheric temperature at the levels in `pressure`. The first entry should be at</span>
+<span class="sd">        the same level as the first `pressure` data point.</span>
+<span class="sd">    dewpoint : `pint.Quantity`</span>
+<span class="sd">        The atmospheric dewpoint at the levels in `pressure`. The first entry should be at</span>
+<span class="sd">        the same level as the first `pressure` data point.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    profile : `xarray.Dataset`</span>
+<span class="sd">        The interpolated profile with three data variables: ambient_temperature,</span>
+<span class="sd">        ambient_dew_point, and profile_temperature, all of which are on an isobaric</span>
+<span class="sd">        coordinate.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    lcl, moist_lapse, dry_lapse, parcel_profile, parcel_profile_with_lcl</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">ambient_temperature</span><span class="p">,</span> <span class="n">ambient_dew_point</span><span class="p">,</span> <span class="n">profile_temperature</span> <span class="o">=</span> <span class="n">parcel_profile_with_lcl</span><span class="p">(</span>
+        <span class="n">pressure</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="p">,</span>
+        <span class="n">dewpoint</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;ambient_temperature&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;isobaric&#39;</span><span class="p">,),</span>
+                <span class="n">ambient_temperature</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">}</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;ambient_dew_point&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;isobaric&#39;</span><span class="p">,),</span>
+                <span class="n">ambient_dew_point</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">}</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;parcel_temperature&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="p">(</span><span class="s1">&#39;isobaric&#39;</span><span class="p">,),</span>
+                <span class="n">profile_temperature</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;air_temperature_of_lifted_parcel&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;isobaric&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s1">&#39;isobaric&#39;</span><span class="p">,</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">units</span><span class="p">),</span> <span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;air_pressure&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
@@ -875,7 +1009,7 @@
     <span class="n">temp_lower</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">press_lower</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
 
     <span class="c1"># If the pressure profile doesn&#39;t make it to the lcl, we can stop here</span>
-    <span class="k">if</span> <span class="n">_greater_or_close</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">press_lcl</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">_greater_or_close</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="p">),</span> <span class="n">press_lcl</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">press_lower</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">press_lcl</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">press_lower</span><span class="o">.</span><span class="n">units</span><span class="p">),</span>
                 <span class="n">temp_lower</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">temp_lcl</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">temp_lower</span><span class="o">.</span><span class="n">units</span><span class="p">))</span>
 
@@ -895,11 +1029,11 @@
     <span class="c1"># Pressure needs to be increasing for searchsorted, so flip it and then convert</span>
     <span class="c1"># the index back to the original array</span>
     <span class="n">loc</span> <span class="o">=</span> <span class="n">pressure</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">pressure</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">interp_temp</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">return</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">interp_temp</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="vapor_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;mixing_ratio&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;mixing_ratio&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">vapor_pressure</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate water vapor (partial) pressure.</span>
@@ -936,7 +1070,7 @@
 
 
 <div class="viewcode-block" id="saturation_vapor_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">saturation_vapor_pressure</span><span class="p">(</span><span class="n">temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the saturation water vapor (partial) pressure.</span>
@@ -972,7 +1106,7 @@
 
 
 <div class="viewcode-block" id="dewpoint_from_relative_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;relative_humidity&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the ambient dewpoint given air temperature and relative humidity.</span>
@@ -1000,7 +1134,7 @@
 
 
 <div class="viewcode-block" id="dewpoint"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;vapor_pressure&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the ambient dewpoint given the vapor pressure.</span>
@@ -1033,7 +1167,7 @@
 
 
 <div class="viewcode-block" id="mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;partial_press&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;partial_press&#39;</span><span class="p">,</span> <span class="s1">&#39;total_press&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mixing_ratio</span><span class="p">(</span><span class="n">partial_press</span><span class="p">,</span> <span class="n">total_press</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">epsilon</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the mixing ratio of a gas.</span>
@@ -1075,7 +1209,7 @@
 
 
 <div class="viewcode-block" id="saturation_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;total_press&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">saturation_mixing_ratio</span><span class="p">(</span><span class="n">total_press</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the saturation mixing ratio of water vapor.</span>
@@ -1106,7 +1240,10 @@
 
 
 <div class="viewcode-block" id="equivalent_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.equivalent_potential_temperature.html#metpy.calc.equivalent_potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">equivalent_potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate equivalent potential temperature.</span>
@@ -1160,7 +1297,7 @@
 
 
 <div class="viewcode-block" id="saturation_equivalent_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">saturation_equivalent_potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate saturation equivalent potential temperature.</span>
@@ -1227,7 +1364,7 @@
 
 
 <div class="viewcode-block" id="virtual_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;mixing_ratio&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">virtual_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">epsilon</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate virtual temperature.</span>
@@ -1261,7 +1398,10 @@
 
 
 <div class="viewcode-block" id="virtual_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.virtual_potential_temperature.html#metpy.calc.virtual_potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;mixing_ratio&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">virtual_potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">,</span>
                                   <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">epsilon</span><span class="p">):</span>
@@ -1298,7 +1438,10 @@
 
 
 <div class="viewcode-block" id="density"><a class="viewcode-back" href="../../../api/generated/metpy.calc.density.html#metpy.calc.density">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;mixing_ratio&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">density</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">epsilon</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate density.</span>
@@ -1334,9 +1477,12 @@
 
 
 <div class="viewcode-block" id="relative_humidity_wet_psychrometric"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_wet_psychrometric.html#metpy.calc.relative_humidity_wet_psychrometric">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;dry_bulb_temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;dry_bulb_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;wet_bulb_temperature&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">relative_humidity_wet_psychrometric</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dry_bulb_temperature</span><span class="p">,</span> <span class="n">web_bulb_temperature</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">relative_humidity_wet_psychrometric</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dry_bulb_temperature</span><span class="p">,</span> <span class="n">wet_bulb_temperature</span><span class="p">,</span>
                                         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity with wet bulb and dry bulb temperatures.</span>
 
@@ -1349,7 +1495,7 @@
 <span class="sd">        Total atmospheric pressure</span>
 <span class="sd">    dry_bulb_temperature: `pint.Quantity`</span>
 <span class="sd">        Dry bulb temperature</span>
-<span class="sd">    web_bulb_temperature: `pint.Quantity`</span>
+<span class="sd">    wet_bulb_temperature: `pint.Quantity`</span>
 <span class="sd">        Wet bulb temperature</span>
 
 <span class="sd">    Returns</span>
@@ -1371,12 +1517,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">psychrometric_vapor_pressure_wet</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dry_bulb_temperature</span><span class="p">,</span>
-                                             <span class="n">web_bulb_temperature</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                                             <span class="n">wet_bulb_temperature</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="o">/</span> <span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="psychrometric_vapor_pressure_wet"><a class="viewcode-back" href="../../../api/generated/metpy.calc.psychrometric_vapor_pressure_wet.html#metpy.calc.psychrometric_vapor_pressure_wet">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;dry_bulb_temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;dry_bulb_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;wet_bulb_temperature&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">psychrometric_vapor_pressure_wet</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dry_bulb_temperature</span><span class="p">,</span> <span class="n">wet_bulb_temperature</span><span class="p">,</span>
                                      <span class="n">psychrometer_coefficient</span><span class="o">=</span><span class="mf">6.21e-4</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">):</span>
@@ -1426,7 +1575,10 @@
 
 
 <div class="viewcode-block" id="mixing_ratio_from_relative_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixing_ratio_from_relative_humidity.html#metpy.calc.mixing_ratio_from_relative_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;relative_humidity&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the mixing ratio from relative humidity, temperature, and pressure.</span>
@@ -1466,7 +1618,10 @@
 
 
 <div class="viewcode-block" id="relative_humidity_from_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;mixing_ratio&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">relative_humidity_from_mixing_ratio</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity from mixing ratio, temperature, and pressure.</span>
@@ -1504,7 +1659,7 @@
 
 
 <div class="viewcode-block" id="mixing_ratio_from_specific_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixing_ratio_from_specific_humidity.html#metpy.calc.mixing_ratio_from_specific_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;specific_humidity&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mixing_ratio_from_specific_humidity</span><span class="p">(</span><span class="n">specific_humidity</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the mixing ratio from specific humidity.</span>
@@ -1541,7 +1696,7 @@
 
 
 <div class="viewcode-block" id="specific_humidity_from_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;mixing_ratio&#39;</span><span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">specific_humidity_from_mixing_ratio</span><span class="p">(</span><span class="n">mixing_ratio</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the specific humidity from the mixing ratio.</span>
@@ -1578,7 +1733,10 @@
 
 
 <div class="viewcode-block" id="relative_humidity_from_specific_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;specific_humidity&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">relative_humidity_from_specific_humidity</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">specific_humidity</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity from specific humidity, temperature, and pressure.</span>
@@ -1617,7 +1775,7 @@
 
 
 <div class="viewcode-block" id="cape_cin"><a class="viewcode-back" href="../../../api/generated/metpy.calc.cape_cin.html#metpy.calc.cape_cin">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cape_cin</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">parcel_profile</span><span class="p">,</span> <span class="n">which_lfc</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span>
              <span class="n">which_el</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">):</span>
@@ -1672,6 +1830,10 @@
 <span class="sd">    * :math:`T_{parcel}` Parcel temperature</span>
 <span class="sd">    * :math:`T_{env}` Environment temperature</span>
 <span class="sd">    * :math:`p` Atmospheric pressure</span>
+
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1750,7 +1912,7 @@
 <span class="sd">        y values of data</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">crossings</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">log_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">crossings</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">y</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">log_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">crossings</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">y</span><span class="p">,</span> <span class="n">crossings</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
@@ -1767,7 +1929,7 @@
 
 
 <div class="viewcode-block" id="most_unstable_parcel"><a class="viewcode-back" href="../../../api/generated/metpy.calc.most_unstable_parcel.html#metpy.calc.most_unstable_parcel">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">most_unstable_parcel</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">):</span>
@@ -1805,6 +1967,12 @@
 <span class="sd">    --------</span>
 <span class="sd">    get_layer</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p_layer</span><span class="p">,</span> <span class="n">t_layer</span><span class="p">,</span> <span class="n">td_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span>
                                            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1814,9 +1982,10 @@
 
 
 <div class="viewcode-block" id="isentropic_interpolation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@add_vertical_dim_from_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">isentropic_interpolation</span><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">isentropic_interpolation</span><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                              <span class="n">temperature_out</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
                              <span class="n">bottom_up_search</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolate data in isobaric coordinates to isentropic coordinates.</span>
@@ -1829,7 +1998,7 @@
 <span class="sd">        One-dimensional array of pressure levels</span>
 <span class="sd">    temperature : array</span>
 <span class="sd">        Array of temperature</span>
-<span class="sd">    axis : int, optional</span>
+<span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to the vertical in the temperature array, defaults to 0.</span>
 <span class="sd">    temperature_out : bool, optional</span>
 <span class="sd">        If true, will calculate temperature and output as the last item in the output list.</span>
@@ -1859,9 +2028,12 @@
 <span class="sd">    [Ziv1994]_. Any additional arguments are assumed to vary linearly with temperature and will</span>
 <span class="sd">    be linearly interpolated to the new isentropic levels.</span>
 
+<span class="sd">    Will only return Pint Quantities, even when given xarray DataArray profiles. To</span>
+<span class="sd">    obtain a xarray Dataset instead, use `isentropic_interpolation_as_dataset` instead.</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    potential_temperature</span>
+<span class="sd">    potential_temperature, isentropic_interpolation_as_dataset</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># iteration function to be used later</span>
@@ -1882,14 +2054,14 @@
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kelvin&#39;</span><span class="p">)</span>
 
     <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
-    <span class="n">slices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">slices</span><span class="p">[</span><span class="n">vertical_dim</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">slices</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span>
     <span class="n">pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">pres</span><span class="p">[</span><span class="n">slices</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">temperature</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">pres</span><span class="o">.</span><span class="n">units</span>
 
     <span class="c1"># Sort input data</span>
-    <span class="n">sort_pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pres</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-    <span class="n">sort_pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">sort_pres</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-    <span class="n">sorter</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="n">sort_pres</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+    <span class="n">sort_pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pres</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">)</span>
+    <span class="n">sort_pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">sort_pres</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="p">)</span>
+    <span class="n">sorter</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="n">sort_pres</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="p">)</span>
     <span class="n">levs</span> <span class="o">=</span> <span class="n">pres</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span>
     <span class="n">tmpk</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span>
 
@@ -1898,7 +2070,7 @@
 
     <span class="c1"># Make the desired isentropic levels the same shape as temperature</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">isentlevels</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">shape</span><span class="p">[</span><span class="n">vertical_dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">isentlevels</span><span class="o">.</span><span class="n">size</span>
     <span class="n">isentlevs_nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">isentlevels</span><span class="p">[</span><span class="n">slices</span><span class="p">],</span> <span class="n">shape</span><span class="p">)</span>
 
     <span class="c1"># exponent to Poisson&#39;s Equation, which is imported above</span>
@@ -1919,7 +2091,7 @@
     <span class="n">pok</span> <span class="o">=</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">P0</span> <span class="o">**</span> <span class="n">ka</span>
 
     <span class="c1"># index values for each point for the pressure level nearest to the desired theta level</span>
-    <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span> <span class="o">=</span> <span class="n">find_bounding_indices</span><span class="p">(</span><span class="n">pres_theta</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span>
+    <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span> <span class="o">=</span> <span class="n">find_bounding_indices</span><span class="p">(</span><span class="n">pres_theta</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="p">,</span>
                                                <span class="n">from_below</span><span class="o">=</span><span class="n">bottom_up_search</span><span class="p">)</span>
 
     <span class="c1"># calculate constants for the interpolation</span>
@@ -1954,14 +2126,126 @@
     <span class="c1"># do an interpolation for each additional argument</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
         <span class="n">others</span> <span class="o">=</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">isentlevels</span><span class="p">,</span> <span class="n">pres_theta</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">args</span><span class="p">),</span>
-                                <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">return_list_always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">,</span> <span class="n">return_list_always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">others</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ret</span></div>
 
 
+<div class="viewcode-block" id="isentropic_interpolation_as_dataset"><a class="viewcode-back" href="../../../api/generated/metpy.calc.isentropic_interpolation_as_dataset.html#metpy.calc.isentropic_interpolation_as_dataset">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">isentropic_interpolation_as_dataset</span><span class="p">(</span>
+    <span class="n">levels</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="n">max_iters</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">eps</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+    <span class="n">bottom_up_search</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    levels : `pint.Quantity`</span>
+<span class="sd">        One-dimensional array of desired potential temperature surfaces</span>
+<span class="sd">    temperature : `xarray.DataArray`</span>
+<span class="sd">        Array of temperature</span>
+<span class="sd">    args : `xarray.DataArray`, optional</span>
+<span class="sd">        Any other given variables will be interpolated to each isentropic level. Must have</span>
+<span class="sd">        names in order to have a well-formed output Dataset.</span>
+<span class="sd">    max_iters : int, optional</span>
+<span class="sd">        The maximum number of iterations to use in calculation, defaults to 50.</span>
+<span class="sd">    eps : float, optional</span>
+<span class="sd">        The desired absolute error in the calculated value, defaults to 1e-6.</span>
+<span class="sd">    bottom_up_search : bool, optional</span>
+<span class="sd">        Controls whether to search for levels bottom-up, or top-down. Defaults to</span>
+<span class="sd">        True, which is bottom-up search.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.Dataset</span>
+<span class="sd">        Dataset with pressure, temperature, and each additional argument, all on the specified</span>
+<span class="sd">        isentropic coordinates.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Input variable arrays must have the same number of vertical levels as the pressure levels</span>
+<span class="sd">    array. Pressure is calculated on isentropic surfaces by assuming that temperature varies</span>
+<span class="sd">    linearly with the natural log of pressure. Linear interpolation is then used in the</span>
+<span class="sd">    vertical to find the pressure at each isentropic level. Interpolation method from</span>
+<span class="sd">    [Ziv1994]_. Any additional arguments are assumed to vary linearly with temperature and will</span>
+<span class="sd">    be linearly interpolated to the new isentropic levels.</span>
+
+<span class="sd">    This formulation relies upon xarray functionality. If using Pint Quantities, use</span>
+<span class="sd">    `isentropic_interpolation` instead.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    potential_temperature, isentropic_interpolation</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure matching coordinates by broadcasting</span>
+    <span class="n">all_args</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># Obtain result as list of Quantities</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">isentropic_interpolation</span><span class="p">(</span>
+        <span class="n">levels</span><span class="p">,</span>
+        <span class="n">all_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span><span class="p">,</span>
+        <span class="n">all_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">all_args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+        <span class="n">vertical_dim</span><span class="o">=</span><span class="n">all_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_number</span><span class="p">(</span><span class="s1">&#39;vertical&#39;</span><span class="p">),</span>
+        <span class="n">temperature_out</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">max_iters</span><span class="o">=</span><span class="n">max_iters</span><span class="p">,</span>
+        <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">bottom_up_search</span><span class="o">=</span><span class="n">bottom_up_search</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Reconstruct coordinates and dims (add isentropic levels, remove isobaric levels)</span>
+    <span class="n">vertical_dim</span> <span class="o">=</span> <span class="n">all_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_name</span><span class="p">(</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+    <span class="n">new_coords</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;isentropic_level&#39;</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+            <span class="n">levels</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;isentropic_level&#39;</span><span class="p">,),</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;isentropic_level&#39;</span><span class="p">:</span> <span class="n">levels</span><span class="o">.</span><span class="n">m</span><span class="p">},</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;isentropic_level&#39;</span><span class="p">,</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">levels</span><span class="o">.</span><span class="n">units</span><span class="p">),</span>
+                <span class="s1">&#39;positive&#39;</span><span class="p">:</span> <span class="s1">&#39;up&#39;</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">all_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="n">vertical_dim</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">new_dims</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dim</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">!=</span> <span class="n">vertical_dim</span> <span class="k">else</span> <span class="s1">&#39;isentropic_level&#39;</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">all_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Build final dataset from interpolated Quantities and original DataArrays</span>
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;pressure&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">new_dims</span><span class="p">,</span>
+                <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">{</span><span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;air_pressure&#39;</span><span class="p">}</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">new_dims</span><span class="p">,</span>
+                <span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="p">{</span><span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">}</span>
+            <span class="p">),</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">all_args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">new_dims</span><span class="p">,</span> <span class="n">ret</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">all_args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_args</span><span class="p">))</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="n">new_coords</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="surface_based_cape_cin"><a class="viewcode-back" href="../../../api/generated/metpy.calc.surface_based_cape_cin.html#metpy.calc.surface_based_cape_cin">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">surface_based_cape_cin</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate surface-based CAPE and CIN.</span>
@@ -1993,6 +2277,12 @@
 <span class="sd">    --------</span>
 <span class="sd">    cape_cin, parcel_profile</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
     <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
@@ -2000,7 +2290,7 @@
 
 
 <div class="viewcode-block" id="most_unstable_cape_cin"><a class="viewcode-back" href="../../../api/generated/metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">most_unstable_cape_cin</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate most unstable CAPE/CIN.</span>
@@ -2033,6 +2323,12 @@
 <span class="sd">    --------</span>
 <span class="sd">    cape_cin, most_unstable_parcel, parcel_profile</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">parcel_idx</span> <span class="o">=</span> <span class="n">most_unstable_parcel</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -2043,7 +2339,7 @@
 
 
 <div class="viewcode-block" id="mixed_layer_cape_cin"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixed_layer_cape_cin.html#metpy.calc.mixed_layer_cape_cin">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mixed_layer_cape_cin</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate mixed-layer CAPE and CIN.</span>
@@ -2076,6 +2372,13 @@
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    cape_cin, mixed_parcel, parcel_profile</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)</span>
     <span class="n">parcel_pressure</span><span class="p">,</span> <span class="n">parcel_temp</span><span class="p">,</span> <span class="n">parcel_dewpoint</span> <span class="o">=</span> <span class="n">mixed_parcel</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span>
@@ -2094,7 +2397,7 @@
 
 
 <div class="viewcode-block" id="mixed_parcel"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixed_parcel.html#metpy.calc.mixed_parcel">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mixed_parcel</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">parcel_start_pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -2133,6 +2436,12 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        The dewpoint of the mixed parcel</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># If a parcel starting pressure is not provided, use the surface</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">parcel_start_pressure</span><span class="p">:</span>
@@ -2162,7 +2471,7 @@
 
 
 <div class="viewcode-block" id="mixed_layer"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mixed_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
                 <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -2193,6 +2502,12 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        The mixed value of the data variable.</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span>
                       <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
@@ -2208,7 +2523,7 @@
 
 
 <div class="viewcode-block" id="dry_static_energy"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dry_static_energy.html#metpy.calc.dry_static_energy">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">dry_static_energy</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the dry static energy of parcels.</span>
@@ -2235,12 +2550,19 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        The dry static energy</span>
 
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    montgomery_streamfunction</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="n">height</span> <span class="o">+</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kJ/kg&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="moist_static_energy"><a class="viewcode-back" href="../../../api/generated/metpy.calc.moist_static_energy.html#metpy.calc.moist_static_energy">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;specific_humidity&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">moist_static_energy</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">specific_humidity</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the moist static energy of parcels.</span>
@@ -2276,7 +2598,7 @@
 
 
 <div class="viewcode-block" id="thickness_hydrostatic"><a class="viewcode-back" href="../../../api/generated/metpy.calc.thickness_hydrostatic.html#metpy.calc.thickness_hydrostatic">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">thickness_hydrostatic</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2321,6 +2643,12 @@
 <span class="sd">    --------</span>
 <span class="sd">    thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the data for the layer, conditional upon bottom/depth being specified and mixing</span>
     <span class="c1"># ratio being given</span>
@@ -2346,7 +2674,7 @@
 
 
 <div class="viewcode-block" id="thickness_hydrostatic_from_relative_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.thickness_hydrostatic_from_relative_humidity.html#metpy.calc.thickness_hydrostatic_from_relative_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">thickness_hydrostatic_from_relative_humidity</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">,</span>
                                                  <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2391,6 +2719,12 @@
 <span class="sd">    thickness_hydrostatic, pressure_to_height_std, virtual_temperature,</span>
 <span class="sd">    mixing_ratio_from_relative_humidity</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
+<span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
+<span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mixing</span> <span class="o">=</span> <span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">)</span>
 
@@ -2399,9 +2733,10 @@
 
 
 <div class="viewcode-block" id="brunt_vaisala_frequency_squared"><a class="viewcode-back" href="../../../api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@add_vertical_dim_from_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;potential_temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">brunt_vaisala_frequency_squared</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">brunt_vaisala_frequency_squared</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the square of the Brunt-Vaisala frequency.</span>
 
 <span class="sd">    Brunt-Vaisala frequency squared (a measure of atmospheric stability) is given by the</span>
@@ -2413,17 +2748,21 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    height : `pint.Quantity`</span>
-<span class="sd">        One-dimensional profile of atmospheric height</span>
-<span class="sd">    potential_temperature : `pint.Quantity`</span>
+<span class="sd">    height : `xarray.DataArray` or `pint.Quantity`</span>
+<span class="sd">        Atmospheric (geopotential) height</span>
+<span class="sd">    potential_temperature : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0.</span>
+<span class="sd">    vertical_dim : int, optional</span>
+<span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0,</span>
+<span class="sd">        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case</span>
+<span class="sd">        it is automatically determined from the coordinate metadata.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The square of the Brunt-Vaisala frequency.</span>
+<span class="sd">    `pint.Quantity` or `xarray.DataArray`</span>
+<span class="sd">        The square of the Brunt-Vaisala frequency. Given as `pint.Quantity`, unless both</span>
+<span class="sd">        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in</span>
+<span class="sd">        which case will be `xarray.DataArray`.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2434,14 +2773,18 @@
     <span class="n">potential_temperature</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;K&#39;</span><span class="p">)</span>
 
     <span class="c1"># Calculate and return the square of Brunt-Vaisala frequency</span>
-    <span class="k">return</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="n">potential_temperature</span> <span class="o">*</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span>
-                                                                 <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="n">potential_temperature</span> <span class="o">*</span> <span class="n">first_derivative</span><span class="p">(</span>
+        <span class="n">potential_temperature</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="brunt_vaisala_frequency"><a class="viewcode-back" href="../../../api/generated/metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@add_vertical_dim_from_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;potential_temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">brunt_vaisala_frequency</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">brunt_vaisala_frequency</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Brunt-Vaisala frequency.</span>
 
 <span class="sd">    This function will calculate the Brunt-Vaisala frequency as follows:</span>
@@ -2455,17 +2798,21 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    height : `pint.Quantity`</span>
-<span class="sd">        One-dimensional profile of atmospheric height</span>
-<span class="sd">    potential_temperature : `pint.Quantity`</span>
+<span class="sd">    height : `xarray.DataArray` or `pint.Quantity`</span>
+<span class="sd">        Atmospheric (geopotential) height</span>
+<span class="sd">    potential_temperature : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0.</span>
+<span class="sd">    vertical_dim : int, optional</span>
+<span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0,</span>
+<span class="sd">        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case</span>
+<span class="sd">        it is automatically determined from the coordinate metadata.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Brunt-Vaisala frequency.</span>
+<span class="sd">    `pint.Quantity` or `xarray.DataArray`</span>
+<span class="sd">        Brunt-Vaisala frequency. Given as `pint.Quantity`, unless both</span>
+<span class="sd">        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in</span>
+<span class="sd">        which case will be `xarray.DataArray`.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2473,16 +2820,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">bv_freq_squared</span> <span class="o">=</span> <span class="n">brunt_vaisala_frequency_squared</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span>
-                                                      <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+                                                      <span class="n">vertical_dim</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">)</span>
     <span class="n">bv_freq_squared</span><span class="p">[</span><span class="n">bv_freq_squared</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">bv_freq_squared</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="brunt_vaisala_period"><a class="viewcode-back" href="../../../api/generated/metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@add_vertical_dim_from_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;potential_temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">brunt_vaisala_period</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">brunt_vaisala_period</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Brunt-Vaisala period.</span>
 
 <span class="sd">    This function is a helper function for `brunt_vaisala_frequency` that calculates the</span>
@@ -2494,17 +2842,22 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    height : `pint.Quantity`</span>
-<span class="sd">        One-dimensional profile of atmospheric height</span>
-<span class="sd">    potential_temperature : pint.Quantity`</span>
+<span class="sd">    height : `xarray.DataArray` or `pint.Quantity`</span>
+<span class="sd">        Atmospheric (geopotential) height</span>
+<span class="sd">    potential_temperature : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0.</span>
+<span class="sd">    vertical_dim : int, optional</span>
+<span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0,</span>
+<span class="sd">        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case</span>
+<span class="sd">        it is automatically determined from the coordinate metadata.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Brunt-Vaisala period.</span>
+<span class="sd">    `pint.Quantity` or `xarray.DataArray`</span>
+<span class="sd">        Brunt-Vaisala period. Given as `pint.Quantity`, unless both</span>
+<span class="sd">        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in</span>
+<span class="sd">        which case will be `xarray.DataArray`.</span>
+
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2512,14 +2865,17 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">bv_freq_squared</span> <span class="o">=</span> <span class="n">brunt_vaisala_frequency_squared</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span>
-                                                      <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+                                                      <span class="n">vertical_dim</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">)</span>
     <span class="n">bv_freq_squared</span><span class="p">[</span><span class="n">bv_freq_squared</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">bv_freq_squared</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="wet_bulb_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">wet_bulb_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the wet-bulb temperature using Normand&#39;s rule.</span>
@@ -2546,35 +2902,42 @@
 <span class="sd">    --------</span>
 <span class="sd">    lcl, moist_lapse</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Since this function iteratively applies a parcel calculation, it should be used with</span>
+<span class="sd">    caution on large arrays.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="s1">&#39;shape&#39;</span><span class="p">):</span>
         <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span>
         <span class="n">temperature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
         <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">dewpoint</span><span class="p">)</span>
 
-    <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">([</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">lcl_press</span><span class="p">,</span> <span class="n">lcl_temp</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
+
+    <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">([</span><span class="n">pressure</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">lcl_press</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">lcl_temp</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                    <span class="n">op_dtypes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">],</span>
                    <span class="n">flags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;buffered&#39;</span><span class="p">])</span>
 
-    <span class="k">for</span> <span class="n">press</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">dewp</span><span class="p">,</span> <span class="n">ret</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">press</span><span class="p">,</span> <span class="n">lpress</span><span class="p">,</span> <span class="n">ltemp</span><span class="p">,</span> <span class="n">ret</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
         <span class="n">press</span> <span class="o">=</span> <span class="n">press</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
-        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
-        <span class="n">dewp</span> <span class="o">=</span> <span class="n">dewp</span> <span class="o">*</span> <span class="n">dewpoint</span><span class="o">.</span><span class="n">units</span>
-        <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">press</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">dewp</span><span class="p">)</span>
-        <span class="n">moist_adiabat_temperatures</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">concatenate</span><span class="p">([</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">press</span><span class="p">]),</span>
-                                                 <span class="n">lcl_temperature</span><span class="p">)</span>
-        <span class="n">ret</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">moist_adiabat_temperatures</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">lpress</span> <span class="o">=</span> <span class="n">lpress</span> <span class="o">*</span> <span class="n">lcl_press</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">ltemp</span> <span class="o">=</span> <span class="n">ltemp</span> <span class="o">*</span> <span class="n">lcl_temp</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">moist_adiabat_temperatures</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">press</span><span class="p">,</span> <span class="n">ltemp</span><span class="p">,</span> <span class="n">lpress</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">moist_adiabat_temperatures</span><span class="o">.</span><span class="n">magnitude</span>
 
     <span class="c1"># If we started with a scalar, return a scalar</span>
-    <span class="k">if</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">moist_adiabat_temperatures</span><span class="o">.</span><span class="n">units</span>
-    <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">moist_adiabat_temperatures</span><span class="o">.</span><span class="n">units</span></div>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ret</span> <span class="o">*</span> <span class="n">moist_adiabat_temperatures</span><span class="o">.</span><span class="n">units</span></div>
 
 
 <div class="viewcode-block" id="static_stability"><a class="viewcode-back" href="../../../api/generated/metpy.calc.static_stability.html#metpy.calc.static_stability">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@add_vertical_dim_from_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">static_stability</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">static_stability</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the static stability within a vertical profile.</span>
 
 <span class="sd">    .. math:: \sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}</span>
@@ -2587,7 +2950,7 @@
 <span class="sd">        Profile of atmospheric pressure</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Profile of temperature</span>
-<span class="sd">    axis : int, optional</span>
+<span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to vertical in the pressure and temperature arrays, defaults</span>
 <span class="sd">        to 0.</span>
 
@@ -2599,12 +2962,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="o">-</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">temperature</span> <span class="o">/</span> <span class="n">pressure</span> <span class="o">*</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;K&#39;</span><span class="p">)),</span>
-                                                                     <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="o">-</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">temperature</span> <span class="o">/</span> <span class="n">pressure</span> <span class="o">*</span> <span class="n">first_derivative</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;K&#39;</span><span class="p">)),</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span>
+        <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="dewpoint_from_specific_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dewpoint_from_specific_humidity.html#metpy.calc.dewpoint_from_specific_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;specific_humdiity&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">dewpoint_from_specific_humidity</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">specific_humidity</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the dewpoint from specific humidity, temperature, and pressure.</span>
@@ -2634,7 +3003,7 @@
 
 
 <div class="viewcode-block" id="vertical_velocity_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vertical_velocity_pressure.html#metpy.calc.vertical_velocity_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]/[time]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">vertical_velocity_pressure</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate omega from w assuming hydrostatic conditions.</span>
@@ -2677,7 +3046,10 @@
 
 
 <div class="viewcode-block" id="vertical_velocity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vertical_velocity.html#metpy.calc.vertical_velocity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;omega&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;omega&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;mixing_ratio&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]/[time]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">vertical_velocity</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate w from omega assuming hydrostatic conditions.</span>
@@ -2723,7 +3095,7 @@
 
 
 <div class="viewcode-block" id="specific_humidity_from_dewpoint"><a class="viewcode-back" href="../../../api/generated/metpy.calc.specific_humidity_from_dewpoint.html#metpy.calc.specific_humidity_from_dewpoint">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span><span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure&#39;</span><span class="p">))</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">specific_humidity_from_dewpoint</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the specific humidity from the dewpoint temperature and pressure.</span>
@@ -2751,7 +3123,7 @@
 
 
 <div class="viewcode-block" id="lifted_index"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lifted_index.html#metpy.calc.lifted_index">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">lifted_index</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">parcel_profile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate Lifted Index from the pressure temperature and parcel profile.</span>
@@ -2794,9 +3166,13 @@
 
 
 <div class="viewcode-block" id="gradient_richardson_number"><a class="viewcode-back" href="../../../api/generated/metpy.calc.gradient_richardson_number.html#metpy.calc.gradient_richardson_number">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@add_vertical_dim_from_xarray</span>
+<span class="nd">@preprocess_and_wrap</span><span class="p">(</span>
+    <span class="n">wrap_like</span><span class="o">=</span><span class="s1">&#39;potential_temperature&#39;</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;potential_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">gradient_richardson_number</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">gradient_richardson_number</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">potential_temperature</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the gradient (or flux) Richardson number.</span>
 
 <span class="sd">    .. math::   Ri = (g/\theta) * \frac{\left(\partial \theta/\partial z\)}</span>
@@ -2815,17 +3191,18 @@
 <span class="sd">        x component of the wind</span>
 <span class="sd">    v : `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis corresponding to vertical, defaults to 0.</span>
+<span class="sd">    vertical_dim : int, optional</span>
+<span class="sd">        The axis corresponding to vertical, defaults to 0. Automatically determined from</span>
+<span class="sd">        xarray DataArray arguments.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Gradient Richardson number</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dthetadz</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-    <span class="n">dudz</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-    <span class="n">dvdz</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">dthetadz</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">)</span>
+    <span class="n">dudz</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">)</span>
+    <span class="n">dvdz</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">vertical_dim</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="n">potential_temperature</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dthetadz</span> <span class="o">/</span> <span class="p">(</span><span class="n">dudz</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dvdz</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
 </pre></div>
@@ -2844,7 +3221,10 @@
       </div>
     </div>
 
-    <script src="../../../_static/js/index.js"></script>
+    
+  <script src="../../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -2858,9 +3238,9 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

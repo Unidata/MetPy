@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StationPlot &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <title>StationPlot &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="StationPlotLayout" href="metpy.plots.StationPlotLayout.html" />
     <link rel="prev" title="SkewT" href="metpy.plots.SkewT.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlot.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../index.html">
-      <img src="../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -61,10 +90,6 @@
             <a class="nav-link" href="../../userguide/index.html">User Guide</a>
         </li>
         
-        <li class="nav-item ">
-            <a class="nav-link" href="../../examples/index.html">Examples</a>
-        </li>
-        
         <li class="nav-item active">
             <a class="nav-link" href="../index.html">Reference Guide</a>
         </li>
@@ -74,21 +99,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,174 +147,166 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
+    <ul class="nav bd-sidenav">
+        
+        
+        
         
           
-              <li class="">
-                  <a href="metpy.constants.html">constants</a>
-              </li>
+            
+                <li class="">
+                    <a href="metpy.constants.html">constants</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.units.html">units</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.io.html">io</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.calc.html">calc</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="metpy.plots.html">plots</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_timestamp.html">add_timestamp</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.read_colortable.html">read_colortable</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.BarbPlot.html">BarbPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.ContourPlot.html">ContourPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.Hodograph.html">Hodograph</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.ImagePlot.html">ImagePlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.MapPanel.html">MapPanel</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PanelContainer.html">PanelContainer</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotObs.html">PlotObs</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotScalar.html">PlotScalar</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotVector.html">PlotVector</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.Plots2D.html">Plots2D</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.SkewT.html">SkewT</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="">StationPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.ctables.html">ctables</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.interpolate.html">interpolate</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.xarray.html">xarray</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../references.html">References</a>
+                </li>
+            
           
         
-          
-              <li class="">
-                  <a href="metpy.units.html">units</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.io.html">io</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.calc.html">calc</a>
-              </li>
-          
         
-          
-
-              <li class="active">
-                  <a href="metpy.plots.html">plots</a>
-                  <ul>
-                  
-                      <li class="">
-                          <a href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.add_timestamp.html">add_timestamp</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.read_colortable.html">read_colortable</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.BarbPlot.html">BarbPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.ContourPlot.html">ContourPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.Hodograph.html">Hodograph</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.ImagePlot.html">ImagePlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.MapPanel.html">MapPanel</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PanelContainer.html">PanelContainer</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PlotObs.html">PlotObs</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PlotScalar.html">PlotScalar</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PlotVector.html">PlotVector</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.Plots2D.html">Plots2D</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.SkewT.html">SkewT</a>
-                      </li>
-                  
-                      <li class="active">
-                          <a href="">StationPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a>
-                      </li>
-                  
-                  </ul>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.ctables.html">ctables</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.interpolate.html">interpolate</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.xarray.html">xarray</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../references.html">References</a>
-              </li>
-          
-        
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -307,13 +327,6 @@
     </ul>
 </nav>
 
-
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/api/generated/metpy.plots.StationPlot.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
 
               
           </div>
@@ -339,13 +352,13 @@ station elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> for plotting</p></li>
-<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The x location of the stations in the plot</p></li>
-<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The y location of the stations in the plot</p></li>
-<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The fontsize to use for drawing text</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The spacing, in points, that corresponds to a single increment between
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.3)"><em>matplotlib.axes.Axes</em></a>) – The <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> for plotting</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – The x location of the stations in the plot</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – The y location of the stations in the plot</p></li>
+<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The fontsize to use for drawing text</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The spacing, in points, that corresponds to a single increment between
 station plot elements.</p></li>
-<li><p><strong>transform</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.transforms.Transform</span> <span class="pre">(or</span> <span class="pre">compatible)</span></code>) – The default transform to apply to the x and y positions when plotting.</p></li>
+<li><p><strong>transform</strong> (<a class="reference external" href="https://matplotlib.org/api/transformations.html#matplotlib.transforms.Transform" title="(in Matplotlib v3.3.3)"><em>matplotlib.transforms.Transform</em></a><em> (or </em><em>compatible</em><em>)</em>) – The default transform to apply to the x and y positions when plotting.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.
 These will be passed to all the plotting methods, and thus need to be valid
 for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
@@ -353,7 +366,7 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 </dd>
 </dl>
 <p class="rubric">Attributes Summary</p>
-<table class="longtable table">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -365,7 +378,7 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table class="longtable table">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -408,13 +421,13 @@ station elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> for plotting</p></li>
-<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The x location of the stations in the plot</p></li>
-<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The y location of the stations in the plot</p></li>
-<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The fontsize to use for drawing text</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The spacing, in points, that corresponds to a single increment between
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.3)"><em>matplotlib.axes.Axes</em></a>) – The <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> for plotting</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – The x location of the stations in the plot</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – The y location of the stations in the plot</p></li>
+<li><p><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The fontsize to use for drawing text</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The spacing, in points, that corresponds to a single increment between
 station plot elements.</p></li>
-<li><p><strong>transform</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.transforms.Transform</span> <span class="pre">(or</span> <span class="pre">compatible)</span></code>) – The default transform to apply to the x and y positions when plotting.</p></li>
+<li><p><strong>transform</strong> (<a class="reference external" href="https://matplotlib.org/api/transformations.html#matplotlib.transforms.Transform" title="(in Matplotlib v3.3.3)"><em>matplotlib.transforms.Transform</em></a><em> (or </em><em>compatible</em><em>)</em>) – The default transform to apply to the x and y positions when plotting.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.
 These will be passed to all the plotting methods, and thus need to be valid
 for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
@@ -428,22 +441,22 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 <code class="sig-name descname">plot_arrow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_arrow" title="Permalink to this definition">¶</a></dt>
 <dd><p>At the center of the station model plot wind arrows.</p>
 <p>Additional keyword arguments given will be passed onto matplotlib’s
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.quiver.html#matplotlib.axes.Axes.quiver" title="(in Matplotlib v3.3.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quiver()</span></code></a> function; this is useful for specifying things
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.quiver.html#matplotlib.axes.Axes.quiver" title="(in Matplotlib v3.3.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quiver()</span></code></a> function; this is useful for specifying things
 like color or line width.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The data to use for the u-component of the arrows.</p></li>
-<li><p><strong>v</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The data to use for the v-component of the arrows.</p></li>
+<li><p><strong>u</strong> (<em>array-like</em>) – The data to use for the u-component of the arrows.</p></li>
+<li><p><strong>v</strong> (<em>array-like</em>) – The data to use for the v-component of the arrows.</p></li>
 <li><p><strong>plot_units</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.unit</span></code>) – Units to plot in (performing conversion if necessary). Defaults to given units.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to pass to matplotlib’s
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_text()</span></code></a></p>
+<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_barb</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_parameter</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_symbol</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_text</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -452,22 +465,22 @@ like color or line width.</p>
 <code class="sig-name descname">plot_barb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_barb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_barb" title="Permalink to this definition">¶</a></dt>
 <dd><p>At the center of the station model plot wind barbs.</p>
 <p>Additional keyword arguments given will be passed onto matplotlib’s
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function; this is useful for specifying things
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function; this is useful for specifying things
 like color or line width.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The data to use for the u-component of the barbs.</p></li>
-<li><p><strong>v</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The data to use for the v-component of the barbs.</p></li>
+<li><p><strong>u</strong> (<em>array-like</em>) – The data to use for the u-component of the barbs.</p></li>
+<li><p><strong>v</strong> (<em>array-like</em>) – The data to use for the v-component of the barbs.</p></li>
 <li><p><strong>plot_units</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.unit</span></code>) – Units to plot in (performing conversion if necessary). Defaults to given units.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to pass to matplotlib’s
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.3.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_arrow" title="metpy.plots.StationPlot.plot_arrow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_arrow()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_text()</span></code></a></p>
+<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_arrow" title="metpy.plots.StationPlot.plot_arrow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_arrow</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_parameter</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_symbol</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_text</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -476,20 +489,20 @@ like color or line width.</p>
 <code class="sig-name descname">plot_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">location</span></em>, <em class="sig-param"><span class="n">parameter</span></em>, <em class="sig-param"><span class="n">formatter</span><span class="o">=</span><span class="default_value">'.0f'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>At the specified location in the station model plot a set of values.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, the data in <em class="xref py py-obj">parameter</em> should be
-plotted. The conversion of the data values to a string is controlled by <a class="reference external" href="https://docs.python.org/3/library/formatter.html#module-formatter" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatter</span></code></a>.</p>
+plotted. The conversion of the data values to a string is controlled by <a class="reference external" href="https://docs.python.org/3/library/formatter.html#module-formatter" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatter</span></code></a>.</p>
 <p>Additional keyword arguments given will be passed onto the actual plotting
 code; this is useful for specifying things like color or font properties.</p>
 <p>If something has already been plotted at this location, it will be replaced.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple[float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float]</span></code>) – The offset (relative to center) to plot this parameter. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions; increments
 are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x and y relative to the center.</p></li>
-<li><p><strong>parameter</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The numeric values that should be plotted</p></li>
-<li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>, <em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
-compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+<li><p><strong>parameter</strong> (<em>array_like</em>) – The numeric values that should be plotted</p></li>
+<li><p><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</p></li>
 <li><p><strong>plot_units</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.unit</span></code>) – Units to plot in (performing conversion if necessary). Defaults to given units.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
@@ -498,7 +511,7 @@ value and return a string. Defaults to ‘0.f’.</p></li>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_text()</span></code></a></p>
+<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_barb</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_symbol</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_text</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -515,12 +528,12 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple[float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float]</span></code>) – The offset (relative to center) to plot this parameter. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions; increments
 are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x and y relative to the center.</p></li>
-<li><p><strong>codes</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – The numeric values that should be converted to unicode characters for plotting.</p></li>
-<li><p><strong>symbol_mapper</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>) – Controls converting data values to unicode code points for the
+<li><p><strong>codes</strong> (<em>array_like</em>) – The numeric values that should be converted to unicode characters for plotting.</p></li>
+<li><p><strong>symbol_mapper</strong> (<em>callable</em>) – Controls converting data values to unicode code points for the
 <code class="xref py py-data docutils literal notranslate"><span class="pre">wx_symbol_font</span></code> font. This should take a value and return a single unicode
 character. See <code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.plots.wx_symbols</span></code> for included mappers.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
@@ -550,7 +563,7 @@ character. See <code class="xref py py-mod docutils literal notranslate"><span c
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_text()</span></code></a></p>
+<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_barb</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_parameter</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_text" title="metpy.plots.StationPlot.plot_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_text</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -566,18 +579,18 @@ code; this is useful for specifying things like color or font properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple[float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float]</span></code>) – The offset (relative to center) to plot this parameter. If str, should be one of
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – The offset (relative to center) to plot this parameter. If str, should be one of
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions; increments
 are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x and y relative to the center.</p></li>
-<li><p><strong>text</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span> <span class="pre">(or</span> <span class="pre">array)</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">strings</span></code>) – The strings that should be plotted</p></li>
+<li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> (or </em><em>array</em><em>) </em><em>of strings</em>) – The strings that should be plotted</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_symbol()</span></code></a></p>
+<p><a class="reference internal" href="#metpy.plots.StationPlot.plot_barb" title="metpy.plots.StationPlot.plot_barb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_barb</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_parameter" title="metpy.plots.StationPlot.plot_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_parameter</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlot.plot_symbol" title="metpy.plots.StationPlot.plot_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_symbol</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -617,7 +630,10 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
       </div>
     </div>
 
-    <script src="../../_static/js/index.js"></script>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -631,9 +647,9 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

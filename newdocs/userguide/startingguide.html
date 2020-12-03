@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Getting Started with MetPy &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <title>Getting Started with MetPy &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../_static/language_data.js"></script>
     <script src="../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Support" href="SUPPORT.html" />
-    <link rel="prev" title="Install" href="installguide.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
+    <link rel="prev" title="Install Guide" href="installguide.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/startingguide.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../index.html">
-      <img src="../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -62,10 +91,6 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../examples/index.html">Examples</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../api/index.html">Reference Guide</a>
         </li>
         
@@ -74,21 +99,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,78 +147,76 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
+    <ul class="nav bd-sidenav">
+        
         
           
-              <li class="">
-                  <a href="installguide.html">Install</a>
-              </li>
+            
+                <li class="">
+                    <a href="installguide.html">Install Guide</a>
+                </li>
+            
+          
+            
+                <li class="active">
+                    <a href="">Getting Started with MetPy</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../tutorials/index.html">Tutorials</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="gempak.html">GEMPAK Comparison Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="SUPPORT.html">Support</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="citing.html">Citing MetPy</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="media.html">Talks and Other Media</a>
+                </li>
+            
           
         
-          
-              <li class="active">
-                  <a href="">Getting Started with MetPy</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="SUPPORT.html">Support</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="units.html">Working with Units</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../tutorials/index.html">Tutorials</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="gempak.html">GEMPAK Conversion Guide</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="citing.html">Citing MetPy</a>
-              </li>
-          
         
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+        
+        
+        
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -203,10 +229,6 @@
 
 <nav id="bd-toc-nav">
     <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#installation" class="nav-link">Installation</a>
-        </li>
     
         <li class="nav-item toc-entry toc-h2">
             <a href="#units" class="nav-link">Units</a>
@@ -260,13 +282,6 @@
 </nav>
 
 
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/userguide/startingguide.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
-
               
           </div>
           
@@ -281,19 +296,14 @@
 <p>Welcome to MetPy! We’re glad you’re here and we hope that you find this Python library
 to be useful for your needs. In order to help get you started with MetPy, we’ve put together
 this guide to introduce you to the basic syntax and functionality of this library. If you’re
-new to Python, please visit the Unidata <a class="reference external" href="https://unidata.github.io/online-python-training/">Online Python Training</a> site for in-depth
+new to Python, please visit the <a class="reference external" href="https://unidata.github.io/python-training">Unidata Python Training</a> site for in-depth
 discussion and examples of the Scientific Python ecosystem.</p>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>For installation instructions, please see our <a class="reference internal" href="installguide.html"><span class="doc">Installation Guide</span></a>.
-MetPy Monday videos <a class="reference external" href="https://youtu.be/-fOfyHYpKck">#1</a>, <a class="reference external" href="https://youtu.be/G3AF-nhNyDk">#2</a>, and <a class="reference external" href="https://youtu.be/15DNH25UCi0">#3</a> demonstrate how to install the conda package
-manager and Python packages, and how to work with conda environments.</p>
-</div>
+<p>For installation instructions, please see our <a class="reference internal" href="installguide.html"><span class="doc">Install Guide</span></a>.</p>
 <div class="section" id="units">
 <h2>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h2>
 <p>For the in-depth explanation of units, associated syntax, and unique features, please see
-our <a class="reference internal" href="units.html"><span class="doc">Units</span></a> page. What follows in this section is a short summary of how MetPy
-uses units.</p>
+our <a class="reference internal" href="../tutorials/unit_tutorial.html"><span class="doc">Units Tutorial</span></a> page. What follows in this section is
+a short summary of how MetPy uses units.</p>
 <p>One of the most significant differences in syntax for MetPy, compared to other Python
 libraries, is the frequent requirement of units to be attached to arrays before being
 passed to MetPy functions. There are very few exceptions to this, and you’ll usually be
@@ -319,9 +329,10 @@ object:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span><span class="p">]</span> <span class="n">meter</span> <span class="o">/</span> <span class="n">second</span>
 </pre></div>
 </div>
-<p>In addition to the <a class="reference internal" href="units.html"><span class="doc">Units</span></a> page, checkout the MetPy Monday blog on
-<a class="reference external" href="https://www.unidata.ucar.edu/blogs/developer/en/entry/metpy-mondays-4-units-in">units</a>
-or watch our MetPy Monday video on
+<p>In addition to the <a class="reference internal" href="../tutorials/unit_tutorial.html"><span class="doc">Units Tutorial</span></a> page, checkout the MetPy
+Monday blog on
+<a class="reference external" href="https://www.unidata.ucar.edu/blogs/developer/en/entry/metpy-mondays-4-units-in">units</a> or
+watch our MetPy Monday video on
 <a class="reference external" href="https://www.youtube.com/watch?v=iveJCqxe3Z4">temperature units</a>.</p>
 </div>
 <div class="section" id="functionality">
@@ -352,24 +363,24 @@ makes working with multi-dimensional labeled data (i.e. netCDF files) easy. For 
 look at Xarray’s capabilities, see this <a class="reference external" href="https://youtu.be/_9j7Y1-lk-o">MetPy Monday video</a>.
 With MetPy’s accessor to this package, we can quickly pull out common dimensions, parse
 Climate and Forecasting (CF) metadata, and handle projection information. While the
-<a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">Xarray with MetPy</span></a> is the best place to see the full utility
-of the MetPy Xarray accessor, let’s demonstrate some of the functionality here:</p>
+<a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">Xarray with MetPy</span></a> is the best place to see the full
+utility of the MetPy Xarray accessor, let’s demonstrate some of the functionality here:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">metpy</span>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
 
 <span class="c1"># Grab lat/lon values from file as unit arrays</span>
 <span class="n">lats</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
 <span class="n">lons</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
 
 <span class="c1"># Get the valid time</span>
-<span class="n">vtime</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Temperature_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">vtime</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Temperature_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># Get the 700-hPa heights without manually identifying the vertical coordinate</span>
-<span class="n">hght_700</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Geopotential_height_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">700</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+<span class="n">hght_700</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Geopotential_height_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">700</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
                                                  <span class="n">time</span><span class="o">=</span><span class="n">vtime</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -381,7 +392,7 @@ do that in the Plotting section.</p>
 <p>Meteorology and atmospheric science are fully-dependent on complex equations and formulas.
 Rather than figuring out how to write them efficiently in Python yourself, MetPy provides
 support for many of the common equations within the field. For the full list, please see the
-<a class="reference external" href="../api/generated/metpy.calc.html">Calculations</a> reference guide. If you don’t see the equation
+<a class="reference internal" href="../api/generated/metpy.calc.html"><span class="doc">Calculations</span></a> reference guide. If you don’t see the equation
 you’re looking for, consider submitting a feature request to MetPy
 <a class="reference external" href="https://github.com/Unidata/MetPy/issues/new/choose">here</a>.</p>
 <p>To demonstrate some of the calculations MetPy can do, let’s show a simple example:</p>
@@ -491,8 +502,8 @@ the correct location.</p>
 <h4>Gridded Data<a class="headerlink" href="#gridded-data" title="Permalink to this headline">¶</a></h4>
 <p>While MetPy doesn’t provide many new tools for 2-D gridded data maps, we do provide lots of
 examples illustrating how to use MetPy for data analysis and CartoPy for visualization. Those
-examples can be found in the <a class="reference internal" href="../examples/index.html"><span class="doc">MetPy Gallery</span></a> and the
-<a class="reference external" href="https://unidata.github.io/python-gallery/">Unidata Python Gallery</a>.</p>
+examples can be found in the <a class="reference internal" href="../examples/index.html"><span class="doc">MetPy Gallery</span></a> and at the
+<a class="reference external" href="https://unidata.github.io/python-training">Unidata Python Training</a> site.</p>
 <p>One unique tool in MetPy for gridded data is cross-section analysis. A detailed example of how
 to create a cross section with your gridded data is available
 <a class="reference internal" href="../examples/cross_section.html"><span class="doc">here</span></a>.</p>
@@ -533,8 +544,9 @@ NARR data.</p>
 <img alt="../_images/startingguide-2.png" src="../_images/startingguide-2.png" />
 </div>
 <p>Other plot types are available, including contouring to create overlay maps. For an example of
-this, check out the <a class="reference internal" href="../examples/plots/Combined_plotting.html"><span class="doc">Combined Plotting</span></a> example. MetPy
-Monday videos <a class="reference external" href="https://youtu.be/mbxE2ovXx9M">#69</a>, <a class="reference external" href="https://youtu.be/QgS27jwj8OI">#70</a>, and <a class="reference external" href="https://youtu.be/RBJ8Pm7x4ok">#71</a> also demonstrate the declarative plotting interface.</p>
+this, check out the <a class="reference internal" href="../examples/plots/Combined_plotting.html"><span class="doc">Combined Plotting</span></a> example.
+MetPy Monday videos <a class="reference external" href="https://youtu.be/mbxE2ovXx9M">#69</a>, <a class="reference external" href="https://youtu.be/QgS27jwj8OI">#70</a>, and <a class="reference external" href="https://youtu.be/RBJ8Pm7x4ok">#71</a> also demonstrate the declarative plotting
+interface.</p>
 </div>
 </div>
 </div>
@@ -542,16 +554,16 @@ Monday videos <a class="reference external" href="https://youtu.be/mbxE2ovXx9M">
 <h2>Other Python Resources<a class="headerlink" href="#other-python-resources" title="Permalink to this headline">¶</a></h2>
 <p>While MetPy does a lot of things, it doesn’t do everything. Here are some other good resources
 to use as you start using MetPy and Python for meteorology and atmospheric science:</p>
-<p><strong>Training and Example Sites</strong></p>
+<p><strong>Learning Resources</strong></p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://unidata.github.io/online-python-training/">Online Python Training</a></p></li>
-<li><p><a class="reference external" href="https://unidata.github.io/python-gallery/">Unidata Python Gallery</a></p></li>
-<li><p><a class="reference external" href="https://unidata.github.io/python-workshop">Unidata Python Workshop</a></p></li>
+<li><p><a class="reference external" href="https://unidata.github.io/python-training">Unidata Python Training</a></p></li>
 <li><p><a class="reference external" href="https://www.youtube.com/playlist?list=PLQut5OXpV-0ir4IdllSt1iEZKTwFBa7kO">MetPy Monday Playlist</a></p></li>
 </ul>
 <p><strong>Useful Python Packages</strong></p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://unidata.github.io/siphon/">Siphon</a>: remote access of meteorological data via THREDDS servers</p></li>
+<li><p><a class="reference external" href="https://unidata.github.io/siphon/">Siphon</a>: remote access of meteorological data, including simple web services and and via
+<a class="reference external" href="https://www.unidata.ucar.edu/software/tds/current/">THREDDS Data Servers</a></p></li>
+<li><p><a class="reference external" href="https://unidata.github.io/netcdf4-python/">netCDF4-python</a> is the officially blessed Python API for <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/">netCDF</a></p></li>
 <li><p><a class="reference external" href="http://xarray.pydata.org/en/stable/">Xarray</a>: reading/writing labeled N-dimensional arrays</p></li>
 <li><p><a class="reference external" href="https://pandas.pydata.org">Pandas</a>: reading/writing tabular data</p></li>
 <li><p><a class="reference external" href="https://numpy.org/devdocs">NumPy</a>: numerical computations</p></li>
@@ -564,7 +576,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 <div class="section" id="support">
 <h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
 <p>Get stuck trying to use MetPy with your data? Unidata’s Python team is here to help! See our
-<a class="reference external" href="../SUPPORT">support page</a> for more information.</p>
+<a class="reference internal" href="SUPPORT.html"><span class="doc">support page</span></a> for more information.</p>
 </div>
 </div>
 
@@ -574,8 +586,8 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="installguide.html" title="previous page">Install</a>
-    <a class='right-next' id="next-link" href="SUPPORT.html" title="next page">Support</a>
+    <a class='left-prev' id="prev-link" href="installguide.html" title="previous page">Install Guide</a>
+    <a class='right-next' id="next-link" href="../tutorials/index.html" title="next page">Tutorials</a>
 
               </div>
               
@@ -585,7 +597,10 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
       </div>
     </div>
 
-    <script src="../_static/js/index.js"></script>
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -599,9 +614,9 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BarbPlot &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <title>BarbPlot &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ContourPlot" href="metpy.plots.ContourPlot.html" />
     <link rel="prev" title="wx_code_to_numeric" href="metpy.plots.wx_code_to_numeric.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.BarbPlot.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../index.html">
-      <img src="../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -61,10 +90,6 @@
             <a class="nav-link" href="../../userguide/index.html">User Guide</a>
         </li>
         
-        <li class="nav-item ">
-            <a class="nav-link" href="../../examples/index.html">Examples</a>
-        </li>
-        
         <li class="nav-item active">
             <a class="nav-link" href="../index.html">Reference Guide</a>
         </li>
@@ -74,21 +99,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,194 +147,186 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
+    <ul class="nav bd-sidenav">
+        
+        
+        
         
           
-              <li class="">
-                  <a href="metpy.constants.html">constants</a>
-              </li>
+            
+                <li class="">
+                    <a href="metpy.constants.html">constants</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.units.html">units</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.io.html">io</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.calc.html">calc</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="metpy.plots.html">plots</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_timestamp.html">add_timestamp</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.read_colortable.html">read_colortable</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="">BarbPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.ContourPlot.html">ContourPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.Hodograph.html">Hodograph</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.ImagePlot.html">ImagePlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.MapPanel.html">MapPanel</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PanelContainer.html">PanelContainer</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotObs.html">PlotObs</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotScalar.html">PlotScalar</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotVector.html">PlotVector</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.Plots2D.html">Plots2D</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.SkewT.html">SkewT</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.StationPlot.html">StationPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.ctables.html">ctables</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.interpolate.html">interpolate</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.xarray.html">xarray</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../references.html">References</a>
+                </li>
+            
           
         
-          
-              <li class="">
-                  <a href="metpy.units.html">units</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.io.html">io</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.calc.html">calc</a>
-              </li>
-          
         
-          
-
-              <li class="active">
-                  <a href="metpy.plots.html">plots</a>
-                  <ul>
-                  
-                      <li class="">
-                          <a href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.add_timestamp.html">add_timestamp</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.read_colortable.html">read_colortable</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a>
-                      </li>
-                  
-                      <li class="active">
-                          <a href="">BarbPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.ContourPlot.html">ContourPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.Hodograph.html">Hodograph</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.ImagePlot.html">ImagePlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.MapPanel.html">MapPanel</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PanelContainer.html">PanelContainer</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PlotObs.html">PlotObs</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PlotScalar.html">PlotScalar</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.PlotVector.html">PlotVector</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.Plots2D.html">Plots2D</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.SkewT.html">SkewT</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.StationPlot.html">StationPlot</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a>
-                      </li>
-                  
-                  </ul>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.ctables.html">ctables</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.interpolate.html">interpolate</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.xarray.html">xarray</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../references.html">References</a>
-              </li>
-          
-        
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+      </ul>
+  
+  </nav>
           </div>
           
 
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
               
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
     <ul class="nav section-nav flex-column">
     
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#examples-using-metpy-plots-barbplot" class="nav-link">Examples using metpy.plots.BarbPlot</a>
+        </li>
+    
     </ul>
 </nav>
 
-
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/api/generated/metpy.plots.BarbPlot.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
 
               
           </div>
@@ -321,10 +341,10 @@
 <h1>BarbPlot<a class="headerlink" href="#barbplot" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="metpy.plots.BarbPlot">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">BarbPlot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#BarbPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.BarbPlot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">BarbPlot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#BarbPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.BarbPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make plots of wind barbs on a map with traits to refine the look of plotted elements.</p>
 <p class="rubric">Attributes Summary</p>
-<table class="longtable table">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -381,7 +401,7 @@
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table class="longtable table">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -424,7 +444,7 @@
 <td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.notify_change" title="metpy.plots.BarbPlot.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
-<td><p></p></td>
+<td><p>Notify observers of a change event</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.observe" title="metpy.plots.BarbPlot.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
 <td><p>Setup a handler to be called when a trait changes.</p></td>
@@ -435,11 +455,17 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.set_trait" title="metpy.plots.BarbPlot.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
 <td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.setup_instance" title="metpy.plots.BarbPlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.setup_instance" title="metpy.plots.BarbPlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(**kwargs)</p></td>
 <td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_events" title="metpy.plots.BarbPlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_defaults" title="metpy.plots.BarbPlot.trait_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code></a>(*names, **metadata)</p></td>
+<td><p>Return a trait’s default value or a dictionary of them</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_events" title="metpy.plots.BarbPlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_has_value" title="metpy.plots.BarbPlot.trait_has_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code></a>(name)</p></td>
+<td><p>Returns True if the specified trait has a value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_metadata" title="metpy.plots.BarbPlot.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
 <td><p>Get metadata values for trait by key.</p></td>
@@ -447,13 +473,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_names" title="metpy.plots.BarbPlot.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
 <td><p>Get a list of all the names of this class’ traits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.traits" title="metpy.plots.BarbPlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.trait_values" title="metpy.plots.BarbPlot.trait_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code></a>(**metadata)</p></td>
+<td><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.traits" title="metpy.plots.BarbPlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.unobserve" title="metpy.plots.BarbPlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.unobserve" title="metpy.plots.BarbPlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
 <td><p>Remove a trait change handler.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.unobserve_all" title="metpy.plots.BarbPlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.BarbPlot.unobserve_all" title="metpy.plots.BarbPlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
 <td><p>Remove trait change handlers of any type for the specified name.</p></td>
 </tr>
 </tbody>
@@ -464,7 +493,7 @@
 <code class="sig-name descname">barblength</code><a class="headerlink" href="#metpy.plots.BarbPlot.barblength" title="Permalink to this definition">¶</a></dt>
 <dd><p>A float value that changes the length of the wind barbs. Default
 value is 7.</p>
-<p>This trait corresponds to the keyword length in <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.barbs.html#matplotlib.pyplot.barbs" title="(in Matplotlib v3.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.barbs</span></code></a>.</p>
+<p>This trait corresponds to the keyword length in <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.barbs.html#matplotlib.pyplot.barbs" title="(in Matplotlib v3.3.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.barbs</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -587,7 +616,7 @@ depending on what is desired.</p>
 <code class="sig-name descname">time</code><a class="headerlink" href="#metpy.plots.BarbPlot.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
 <p>If a forecast hour is to be plotted the time should be set to the valid future time, which
-can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
+can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
 from the Python standard library.</p>
 </dd></dl>
 
@@ -686,7 +715,8 @@ All trait notifications will fire after all values have been assigned.</p>
 <dl class="py method">
 <dt id="metpy.plots.BarbPlot.notify_change">
 <code class="sig-name descname">notify_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">change</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.notify_change" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Notify observers of a change event</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="metpy.plots.BarbPlot.observe">
@@ -696,7 +726,7 @@ All trait notifications will fire after all values have been assigned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>) – A callable that is called when a trait changes. Its
+<li><p><strong>handler</strong> (<em>callable</em>) – A callable that is called when a trait changes. Its
 signature should be <code class="docutils literal notranslate"><span class="pre">handler(change)</span></code>, where <code class="docutils literal notranslate"><span class="pre">change</span></code> is a
 dictionary. The change dictionary at least holds a ‘type’ key.
 * <code class="docutils literal notranslate"><span class="pre">type</span></code>: the type of notification.
@@ -706,10 +736,10 @@ case where type is ‘change’, we also have the following keys:
 * <code class="docutils literal notranslate"><span class="pre">old</span></code> : the old value of the modified trait attribute
 * <code class="docutils literal notranslate"><span class="pre">new</span></code> : the new value of the modified trait attribute
 * <code class="docutils literal notranslate"><span class="pre">name</span></code> : the name of the modified trait attribute.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span></code>) – If names is All, the handler will apply to all traits.  If a list
+<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>All</em>) – If names is All, the handler will apply to all traits.  If a list
 of str, handler will apply to all names in the list.  If a
 str, the handler will apply just to that name.</p></li>
-<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span> <span class="pre">(default</span></code>: <code class="docutils literal notranslate"><span class="pre">'change'</span></code><code class="xref py py-class docutils literal notranslate"><span class="pre">)</span></code>) – The type of notification to filter by. If equal to All, then all
+<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If equal to All, then all
 notifications are passed to the observe handler.</p></li>
 </ul>
 </dd>
@@ -731,13 +761,13 @@ handlers for the specified name are uninstalled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – A callable that is called when a trait changes.  Its
+<li><p><strong>handler</strong> (<em>callable</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – A callable that is called when a trait changes.  Its
 signature can be handler(), handler(name), handler(name, new),
 handler(name, old, new), or handler(name, old, new, self).</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – If None, the handler will apply to all traits.  If a list
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If None, the handler will apply to all traits.  If a list
 of str, handler will apply to all names in the list.  If a
 str, the handler will apply just to that name.</p></li>
-<li><p><strong>remove</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If False (the default), then install the handler.  If True
+<li><p><strong>remove</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If False (the default), then install the handler.  If True
 then unintall it.</p></li>
 </ul>
 </dd>
@@ -752,8 +782,17 @@ then unintall it.</p></li>
 
 <dl class="py method">
 <dt id="metpy.plots.BarbPlot.setup_instance">
-<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.setup_instance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.setup_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.plots.BarbPlot.trait_defaults">
+<code class="sig-name descname">trait_defaults</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">names</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.trait_defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a trait’s default value or a dictionary of them</p>
+<p class="rubric">Notes</p>
+<p>Dynamically generated default values may
+depend on the current state of the object.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -762,13 +801,33 @@ then unintall it.</p></li>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">(default</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">None)</span></code>) – The name of a trait of this class. If name is <code class="docutils literal notranslate"><span class="pre">None</span></code> then all
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> (</em><em>default: None</em><em>)</em>) – The name of a trait of this class. If name is <code class="docutils literal notranslate"><span class="pre">None</span></code> then all
 the event handlers of this class will be returned instead.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>The event handlers associated with a trait name, or all event handlers.</em></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.plots.BarbPlot.trait_has_value">
+<code class="sig-name descname">trait_has_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.trait_has_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the specified trait has a value.</p>
+<p>This will return false even if <code class="docutils literal notranslate"><span class="pre">getattr</span></code> would return a
+dynamically generated default value. These default values
+will be recognized as existing only after they have been
+generated.</p>
+<p>Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">Int</span><span class="p">()</span>
+
+<span class="n">mc</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">mc</span><span class="o">.</span><span class="n">trait_has_value</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">i</span> <span class="c1"># generates a default value</span>
+<span class="k">assert</span> <span class="n">mc</span><span class="o">.</span><span class="n">trait_has_value</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -781,6 +840,27 @@ the event handlers of this class will be returned instead.</p>
 <dt id="metpy.plots.BarbPlot.trait_names">
 <code class="sig-name descname">trait_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.trait_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.plots.BarbPlot.trait_values">
+<code class="sig-name descname">trait_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.BarbPlot.trait_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
+<p>The metadata kwargs allow functions to be passed in which
+filter traits based on metadata values.  The functions should
+take a single value as an argument and return a boolean.  If
+any function returns False, then the trait is not included in
+the output.  If a metadata key doesn’t exist, None will be passed
+to the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Trait values are retrieved via <code class="docutils literal notranslate"><span class="pre">getattr</span></code>, any exceptions raised
+by traits or the operations they may trigger will result in the
+absence of a trait value in the result <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -806,11 +886,11 @@ to the function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>) – The callable called when a trait attribute changes.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span> <span class="pre">(default</span></code>: <code class="xref py py-class docutils literal notranslate"><span class="pre">All)</span></code>) – The names of the traits for which the specified handler should be
+<li><p><strong>handler</strong> (<em>callable</em>) – The callable called when a trait attribute changes.</p></li>
+<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: All</em><em>)</em>) – The names of the traits for which the specified handler should be
 uninstalled. If names is All, the specified handler is uninstalled
 from the list of notifiers corresponding to all changes.</p></li>
-<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">All</span> <span class="pre">(default</span></code>: <code class="docutils literal notranslate"><span class="pre">'change'</span></code><code class="xref py py-class docutils literal notranslate"><span class="pre">)</span></code>) – The type of notification to filter by. If All, the specified handler
+<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If All, the specified handler
 is uninstalled from the list of notifiers corresponding to all types.</p></li>
 </ul>
 </dd>
@@ -826,7 +906,14 @@ If name is not specified, removes all trait notifiers.</p>
 
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div class="section" id="examples-using-metpy-plots-barbplot">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.BarbPlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-barbplot" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data e..."><div class="figure align-default" id="id1">
+<img alt="MetPy Declarative Syntax Tutorial" src="../../_images/sphx_glr_declarative_tutorial_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/declarative_tutorial.html#sphx-glr-tutorials-declarative-tutorial-py"><span class="std std-ref">MetPy Declarative Syntax Tutorial</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
               </div>
@@ -845,7 +932,10 @@ If name is not specified, removes all trait notifiers.</p>
       </div>
     </div>
 
-    <script src="../../_static/js/index.js"></script>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -859,9 +949,9 @@ If name is not specified, removes all trait notifiers.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

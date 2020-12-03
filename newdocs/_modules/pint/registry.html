@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pint.registry &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <title>pint.registry &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -22,32 +46,37 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/pint/registry.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../index.html">
-      <img src="../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -60,10 +89,6 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../examples/index.html">Examples</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../../api/index.html">Reference Guide</a>
         </li>
         
@@ -72,21 +97,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -107,7 +136,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -117,34 +145,26 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -211,18 +231,16 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">ChainMap</span><span class="p">,</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span><span class="p">,</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
 <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
 <span class="kn">from</span> <span class="nn">tokenize</span> <span class="kn">import</span> <span class="n">NAME</span><span class="p">,</span> <span class="n">NUMBER</span>
 
-<span class="kn">import</span> <span class="nn">pkg_resources</span>
-
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">registry_helpers</span><span class="p">,</span> <span class="n">systems</span>
 <span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">babel_parse</span><span class="p">,</span> <span class="n">tokenizer</span>
 <span class="kn">from</span> <span class="nn">.context</span> <span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">ContextChain</span>
-<span class="kn">from</span> <span class="nn">.converters</span> <span class="kn">import</span> <span class="n">ScaleConverter</span>
+<span class="kn">from</span> <span class="nn">.converters</span> <span class="kn">import</span> <span class="n">LogarithmicConverter</span><span class="p">,</span> <span class="n">ScaleConverter</span>
 <span class="kn">from</span> <span class="nn">.definitions</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AliasDefinition</span><span class="p">,</span>
     <span class="n">Definition</span><span class="p">,</span>
@@ -251,6 +269,13 @@
     <span class="n">string_preprocessor</span><span class="p">,</span>
     <span class="n">to_units_container</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">importlib.resources</span> <span class="k">as</span> <span class="nn">importlib_resources</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># Backport for Python &lt; 3.7</span>
+    <span class="kn">import</span> <span class="nn">importlib_resources</span>
+
 
 <span class="n">_BLOCK_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; |\(&quot;</span><span class="p">)</span>
 
@@ -338,6 +363,8 @@
 <span class="sd">        locale identifier string, used in `format_babel`</span>
 <span class="sd">    non_int_type : type</span>
 <span class="sd">        numerical type used for non integer values. (Default: float)</span>
+<span class="sd">    case_sensitive : bool, optional</span>
+<span class="sd">        Control default case sensitivity of unit parsing. (Default: True)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -358,6 +385,7 @@
         <span class="n">preprocessors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">fmt_locale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">non_int_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+        <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_register_parsers</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_dynamic_classes</span><span class="p">()</span>
@@ -378,6 +406,9 @@
 
         <span class="c1">#: Numerical type used for non integer values.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">non_int_type</span> <span class="o">=</span> <span class="n">non_int_type</span>
+
+        <span class="c1">#: Default unit case sensitivity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">case_sensitive</span> <span class="o">=</span> <span class="n">case_sensitive</span>
 
         <span class="c1">#: Map between name (string) and value (string) of defaults stored in the</span>
         <span class="c1">#: definitions file.</span>
@@ -696,8 +727,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">is_resource</span><span class="p">:</span>
-                    <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_stream</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                        <span class="n">rbytes</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="n">rbytes</span> <span class="o">=</span> <span class="n">importlib_resources</span><span class="o">.</span><span class="n">read_binary</span><span class="p">(</span><span class="n">__package__</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_definitions</span><span class="p">(</span>
                         <span class="n">StringIO</span><span class="p">(</span><span class="n">rbytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)),</span> <span class="n">is_resource</span>
                     <span class="p">)</span>
@@ -790,7 +820,7 @@
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not resolve </span><span class="si">{</span><span class="n">unit_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_or_alias</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_or_alias</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the canonical name of a unit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -816,7 +846,7 @@
 
         <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">unit_name</span>
-            <span class="n">symbol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">symbol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">)</span>
             <span class="n">prefix_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">UnitDefinition</span><span class="p">(</span>
                 <span class="n">name</span><span class="p">,</span>
@@ -829,10 +859,10 @@
 
         <span class="k">return</span> <span class="n">unit_name</span>
 
-    <span class="k">def</span> <span class="nf">get_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_or_alias</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_or_alias</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the preferred alias for a unit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_unit_name</span><span class="p">(</span><span class="n">name_or_alias</span><span class="p">)</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_unit_name</span><span class="p">(</span><span class="n">name_or_alias</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UndefinedUnitError</span><span class="p">(</span><span class="n">name_or_alias</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -1165,7 +1195,7 @@
 
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">parse_unit_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parse_unit_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a unit to identify prefix, unit name and suffix</span>
 <span class="sd">        by walking the list of prefix and suffix.</span>
 <span class="sd">        In case of equivalent combinations (e.g. (&#39;kilo&#39;, &#39;gram&#39;, &#39;&#39;) and</span>
@@ -1175,8 +1205,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        unit_name :</span>
 
-<span class="sd">        case_sensitive :</span>
-<span class="sd">             (Default value = True)</span>
+<span class="sd">        case_sensitive : bool or None</span>
+<span class="sd">            Control if unit lookup is case sensitive. Defaults to None, which uses the</span>
+<span class="sd">            registry&#39;s case_sensitive setting</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1187,9 +1218,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_parse_unit_name</span><span class="p">(</span><span class="n">unit_name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_parse_unit_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_parse_unit_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper of parse_unit_name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">case_sensitive</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">case_sensitive</span> <span class="k">if</span> <span class="n">case_sensitive</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">case_sensitive</span>
+        <span class="p">)</span>
         <span class="n">stw</span> <span class="o">=</span> <span class="n">unit_name</span><span class="o">.</span><span class="n">startswith</span>
         <span class="n">edw</span> <span class="o">=</span> <span class="n">unit_name</span><span class="o">.</span><span class="n">endswith</span>
         <span class="k">for</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">):</span>
@@ -1233,7 +1267,7 @@
                 <span class="n">candidates</span><span class="o">.</span><span class="n">pop</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cp</span> <span class="o">+</span> <span class="n">cu</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">parse_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parse_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a units expression and returns a UnitContainer with</span>
 <span class="sd">        the canonical names.</span>
 
@@ -1245,6 +1279,9 @@
 <span class="sd">        as_delta : bool or None</span>
 <span class="sd">            if the expression has multiple units, the parser will</span>
 <span class="sd">            interpret non multiplicative units as their `delta_` counterparts. (Default value = None)</span>
+<span class="sd">        case_sensitive : bool or None</span>
+<span class="sd">            Control if unit parsing is case sensitive. Defaults to None, which uses the</span>
+<span class="sd">            registry&#39;s setting.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1252,10 +1289,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocessors</span><span class="p">:</span>
             <span class="n">input_string</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
-        <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_units</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="p">)</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_units</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_parse_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_parse_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a units expression and returns a UnitContainer with</span>
 <span class="sd">        the canonical names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1280,7 +1317,7 @@
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">many</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">units</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">units</span><span class="p">:</span>
-            <span class="n">cname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">cname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">)</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">units</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">cname</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -1297,7 +1334,7 @@
 
         <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="k">def</span> <span class="nf">_eval_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_eval_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">):</span>
 
         <span class="c1"># TODO: remove this code when use_decimal is deprecated</span>
         <span class="k">if</span> <span class="n">use_decimal</span><span class="p">:</span>
@@ -1327,7 +1364,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;unknown token type&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">parse_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a string with a given regex pattern and returns result.</span>
 
@@ -1338,7 +1375,7 @@
 <span class="sd">        pattern_string:</span>
 <span class="sd">             The regex parse string</span>
 <span class="sd">        case_sensitive :</span>
-<span class="sd">             (Default value = True)</span>
+<span class="sd">             (Default value = None, which uses registry setting)</span>
 <span class="sd">        use_decimal :</span>
 <span class="sd">             (Default value = False)</span>
 <span class="sd">        many :</span>
@@ -1383,7 +1420,7 @@
         <span class="k">return</span> <span class="n">results</span>
 
     <span class="k">def</span> <span class="nf">parse_expression</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_decimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a mathematical expression including units and return a quantity object.</span>
 
@@ -1395,7 +1432,7 @@
 <span class="sd">        input_string :</span>
 
 <span class="sd">        case_sensitive :</span>
-<span class="sd">             (Default value = True)</span>
+<span class="sd">             (Default value = None, which uses registry setting)</span>
 <span class="sd">        use_decimal :</span>
 <span class="sd">             (Default value = False)</span>
 <span class="sd">        **values :</span>
@@ -1460,13 +1497,13 @@
         <span class="c1"># base units on multiplication and division.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoconvert_offset_to_baseunit</span> <span class="o">=</span> <span class="n">autoconvert_offset_to_baseunit</span>
 
-    <span class="k">def</span> <span class="nf">_parse_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_parse_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">as_delta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">as_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_as_delta</span>
 
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_parse_units</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_parse_units</span><span class="p">(</span><span class="n">input_string</span><span class="p">,</span> <span class="n">as_delta</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add unit to the registry.</span>
@@ -1510,7 +1547,7 @@
             <span class="k">raise</span> <span class="n">UndefinedUnitError</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_validate_and_extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-
+        <span class="c1"># u is for unit, e is for exponent</span>
         <span class="n">nonmult_units</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">units</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multiplicative</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="p">]</span>
@@ -1536,6 +1573,21 @@
             <span class="k">return</span> <span class="n">nonmult_unit</span>
 
         <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_add_ref_of_log_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset_unit</span><span class="p">,</span> <span class="n">all_units</span><span class="p">):</span>
+
+        <span class="n">slct_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">offset_unit</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slct_unit</span><span class="o">.</span><span class="n">converter</span><span class="p">,</span> <span class="n">LogarithmicConverter</span><span class="p">):</span>
+            <span class="c1"># Extract reference unit</span>
+            <span class="n">slct_ref</span> <span class="o">=</span> <span class="n">slct_unit</span><span class="o">.</span><span class="n">reference</span>
+            <span class="c1"># If reference unit is not dimensionless</span>
+            <span class="k">if</span> <span class="n">slct_ref</span> <span class="o">!=</span> <span class="n">UnitsContainer</span><span class="p">():</span>
+                <span class="c1"># Extract reference unit</span>
+                <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">slct_ref</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="c1"># Add it back to the unit list</span>
+                <span class="k">return</span> <span class="n">all_units</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="c1"># Otherwise, return the units unmodified</span>
+        <span class="k">return</span> <span class="n">all_units</span>
 
     <span class="k">def</span> <span class="nf">_convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert value from some source to destination units.</span>
@@ -1592,10 +1644,14 @@
         <span class="k">if</span> <span class="n">src_offset_unit</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">src_offset_unit</span><span class="p">]</span><span class="o">.</span><span class="n">converter</span><span class="o">.</span><span class="n">to_reference</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">inplace</span><span class="p">)</span>
             <span class="n">src</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">remove</span><span class="p">([</span><span class="n">src_offset_unit</span><span class="p">])</span>
+            <span class="c1"># Add reference unit for multiplicative section</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_ref_of_log_unit</span><span class="p">(</span><span class="n">src_offset_unit</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span>
 
         <span class="c1"># clean dst units from offset units</span>
         <span class="k">if</span> <span class="n">dst_offset_unit</span><span class="p">:</span>
             <span class="n">dst</span> <span class="o">=</span> <span class="n">dst</span><span class="o">.</span><span class="n">remove</span><span class="p">([</span><span class="n">dst_offset_unit</span><span class="p">])</span>
+            <span class="c1"># Add reference unit for multiplicative section</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_ref_of_log_unit</span><span class="p">(</span><span class="n">dst_offset_unit</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
         <span class="c1"># Convert non multiplicative units to the dst.</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_convert</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">inplace</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -2270,6 +2326,8 @@
 <span class="sd">        or unit string</span>
 <span class="sd">    fmt_locale :</span>
 <span class="sd">        locale identifier string, used in `format_babel`. Default to None</span>
+<span class="sd">    case_sensitive : bool, optional</span>
+<span class="sd">        Control default case sensitivity of unit parsing. (Default: True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -2285,6 +2343,7 @@
         <span class="n">preprocessors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">fmt_locale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">non_int_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+        <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -2299,6 +2358,7 @@
             <span class="n">preprocessors</span><span class="o">=</span><span class="n">preprocessors</span><span class="p">,</span>
             <span class="n">fmt_locale</span><span class="o">=</span><span class="n">fmt_locale</span><span class="p">,</span>
             <span class="n">non_int_type</span><span class="o">=</span><span class="n">non_int_type</span><span class="p">,</span>
+            <span class="n">case_sensitive</span><span class="o">=</span><span class="n">case_sensitive</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">pi_theorem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">):</span>
@@ -2383,7 +2443,10 @@
       </div>
     </div>
 
-    <script src="../../_static/js/index.js"></script>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -2397,9 +2460,9 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>

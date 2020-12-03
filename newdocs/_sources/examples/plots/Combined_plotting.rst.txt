@@ -96,22 +96,13 @@ Plot the data on a map
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/src/metpy/plots/declarative.py:571: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.598 seconds)
+   **Total running time of the script:** ( 0 minutes  2.195 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:

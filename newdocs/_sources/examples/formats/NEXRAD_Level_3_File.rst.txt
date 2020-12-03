@@ -40,7 +40,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
                ('NWS8bitVel', -100, 1.0))  # m/s
     for v, ctable, ax in zip(('N0Q', 'N0U'), ctables, axes):
         # Open the file
-        name = get_test_data('nids/KOUN_SDUS54_{}TLX_201305202016'.format(v), as_file_obj=False)
+        name = get_test_data(f'nids/KOUN_SDUS54_{v}TLX_201305202016', as_file_obj=False)
         f = Level3File(name)
 
         # Pull the data out of the file object
@@ -74,22 +74,13 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/rmay/repos/metpy/examples/formats/NEXRAD_Level_3_File.py:49: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
-      plt.show()
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.587 seconds)
+   **Total running time of the script:** ( 0 minutes  0.465 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py:

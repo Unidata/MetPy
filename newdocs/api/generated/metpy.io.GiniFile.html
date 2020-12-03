@@ -1,20 +1,44 @@
 
-
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GiniFile &#8212; MetPy 1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
-    <link href="../../_static/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <title>GiniFile &#8212; MetPy 1.0dev</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -22,34 +46,39 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Level2File" href="metpy.io.Level2File.html" />
     <link rel="prev" title="parse_metar_to_dataframe" href="metpy.io.parse_metar_to_dataframe.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="docsearch:language" content="en">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.GiniFile.html" />
+
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-    
     <a class="navbar-brand" href="../../index.html">
-      <img src="../../_static/metpy_150x150.png" class="logo" alt="logo">
-    </a>
     
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
 
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.0
+            Version 1.0dev
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
         </li>
@@ -61,10 +90,6 @@
             <a class="nav-link" href="../../userguide/index.html">User Guide</a>
         </li>
         
-        <li class="nav-item ">
-            <a class="nav-link" href="../../examples/index.html">Examples</a>
-        </li>
-        
         <li class="nav-item active">
             <a class="nav-link" href="../index.html">Reference Guide</a>
         </li>
@@ -74,21 +99,25 @@
         </li>
         
         <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
         </li>
         
         
         <li class="nav-item">
-            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Releases<i class="fas fa-external-link-alt"></i></a>
-        </li>
-        
-        <li class="nav-item">
-            <a class="nav-link nav-external" href="https://unidata.github.io/python-training">Python Gallery<i class="fas fa-external-link-alt"></i></a>
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
         </li>
         
       </ul>
 
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
 
       <ul class="navbar-nav">
@@ -109,7 +138,6 @@
       </ul>
     </div>
 </div>
-
   </nav>
 
 
@@ -119,122 +147,114 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
 
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form>
-
-
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-  <div class="bd-toc-item active">
+    <div class="bd-toc-item active">
+    
   
-
-  <ul class="nav bd-sidenav">
-      
-      
-      
-      
-      
-      
+    <ul class="nav bd-sidenav">
+        
+        
+        
         
           
-              <li class="">
-                  <a href="metpy.constants.html">constants</a>
-              </li>
+            
+                <li class="">
+                    <a href="metpy.constants.html">constants</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.units.html">units</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="metpy.io.html">io</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="metpy.io.add_station_lat_lon.html">add_station_lat_lon</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.io.is_precip_mode.html">is_precip_mode</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.io.parse_metar_file.html">parse_metar_file</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="">GiniFile</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.io.Level2File.html">Level2File</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.io.Level3File.html">Level3File</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.calc.html">calc</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.html">plots</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.plots.ctables.html">ctables</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.interpolate.html">interpolate</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.xarray.html">xarray</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../references.html">References</a>
+                </li>
+            
           
         
-          
-              <li class="">
-                  <a href="metpy.units.html">units</a>
-              </li>
-          
         
-          
-
-              <li class="active">
-                  <a href="metpy.io.html">io</a>
-                  <ul>
-                  
-                      <li class="">
-                          <a href="metpy.io.add_station_lat_lon.html">add_station_lat_lon</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.io.is_precip_mode.html">is_precip_mode</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.io.parse_metar_file.html">parse_metar_file</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a>
-                      </li>
-                  
-                      <li class="active">
-                          <a href="">GiniFile</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.io.Level2File.html">Level2File</a>
-                      </li>
-                  
-                      <li class="">
-                          <a href="metpy.io.Level3File.html">Level3File</a>
-                      </li>
-                  
-                  </ul>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.calc.html">calc</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.html">plots</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.plots.ctables.html">ctables</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.interpolate.html">interpolate</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="metpy.xarray.html">xarray</a>
-              </li>
-          
         
-          
-              <li class="">
-                  <a href="../references.html">References</a>
-              </li>
-          
-        
-      
-      
-      
-      
-      
-      
-    </ul>
-
-</nav>
+      </ul>
+  
+  </nav>
           </div>
           
 
@@ -255,13 +275,6 @@
     </ul>
 </nav>
 
-
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/Unidata/MetPy/edit/master/docs/api/generated/metpy.io.GiniFile.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
 
               
           </div>
@@ -284,29 +297,23 @@
 <p>Create an instance of <a class="reference internal" href="#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">file-like</span> <span class="pre">object</span></code>) – If str, the name of the file to be opened. Gzip-ed files are
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. Gzip-ed files are
 recognized with the extension <code class="docutils literal notranslate"><span class="pre">'.gz'</span></code>, as are bzip2-ed files with
 the extension <code class="docutils literal notranslate"><span class="pre">'.bz2'</span></code> If <em class="xref py py-obj">filename</em> is a file-like object,
 this will be read from directly.</p>
 </dd>
 </dl>
 <p class="rubric">Attributes Summary</p>
-<table class="longtable table">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.attrs" title="metpy.io.GiniFile.attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attrs</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.channels" title="metpy.io.GiniFile.channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.channels" title="metpy.io.GiniFile.channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.crafts" title="metpy.io.GiniFile.crafts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crafts</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.dimensions" title="metpy.io.GiniFile.dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimensions</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.crafts" title="metpy.io.GiniFile.crafts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crafts</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.lc_ps_fmt" title="metpy.io.GiniFile.lc_ps_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lc_ps_fmt</span></code></a></p></td>
@@ -330,16 +337,13 @@ this will be read from directly.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.sectors" title="metpy.io.GiniFile.sectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sectors</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.variables" title="metpy.io.GiniFile.variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.wmo_finder" title="metpy.io.GiniFile.wmo_finder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wmo_finder</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.wmo_finder" title="metpy.io.GiniFile.wmo_finder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wmo_finder</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table class="longtable table">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -351,54 +355,32 @@ this will be read from directly.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.close" title="metpy.io.GiniFile.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get" title="metpy.io.GiniFile.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_attrs" title="metpy.io.GiniFile.get_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attrs</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_attrs" title="metpy.io.GiniFile.get_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attrs</span></code></a>()</p></td>
 <td><p>Get the global attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_dimensions" title="metpy.io.GiniFile.get_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dimensions</span></code></a>()</p></td>
-<td><p>Get the file’s dimensions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_encoding" title="metpy.io.GiniFile.get_encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_encoding</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_dimensions" title="metpy.io.GiniFile.get_dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dimensions</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_variables" title="metpy.io.GiniFile.get_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variables</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_encoding" title="metpy.io.GiniFile.get_encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_encoding</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.get_variables" title="metpy.io.GiniFile.get_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variables</span></code></a>()</p></td>
 <td><p>Get all variables in the file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.items" title="metpy.io.GiniFile.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.keys" title="metpy.io.GiniFile.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.load" title="metpy.io.GiniFile.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
-<td><p>Load the variables and attributes simultaneously.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.values" title="metpy.io.GiniFile.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.load" title="metpy.io.GiniFile.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
+<td><p>This loads the variables and attributes simultaneously.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
-<dt id="metpy.io.GiniFile.attrs">
-<code class="sig-name descname">attrs</code><a class="headerlink" href="#metpy.io.GiniFile.attrs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt id="metpy.io.GiniFile.channels">
-<code class="sig-name descname">channels</code><em class="property"> = ['Unknown', 'Visible', 'IR (3.9 micron)', 'WV (6.5/6.7 micron)', 'IR (11 micron)', 'IR (12 micron)', 'IR (13 micron)', 'IR (1.3 micron)', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'LI (Imager)', 'PW (Imager)', 'Surface Skin Temp (Imager)', 'LI (Sounder)', 'PW (Sounder)', 'Surface Skin Temp (Sounder)', 'CAPE', 'Land-sea Temp', 'WINDEX', 'Dry Microburst Potential Index', 'Microburst Day Potential Index', 'Convective Inhibition', 'Volcano Imagery', 'Scatterometer', 'Cloud Top', 'Cloud Amount', 'Rainfall Rate', 'Surface Wind Speed', 'Surface Wetness', 'Ice Concentration', 'Ice Type', 'Ice Edge', 'Cloud Water Content', 'Surface Type', 'Snow Indicator', 'Snow/Water Content', 'Volcano Imagery', 'Reserved', 'Sounder (14.71 micron)', 'Sounder (14.37 micron)', 'Sounder (14.06 micron)', 'Sounder (13.64 micron)', 'Sounder (13.37 micron)', 'Sounder (12.66 micron)', 'Sounder (12.02 micron)', 'Sounder (11.03 micron)', 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)', 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)', 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)', 'Sounder (3.74 micron)', 'Sounder (Visible)']</em><a class="headerlink" href="#metpy.io.GiniFile.channels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">channels</code><em class="property"> = ['Unknown', 'Visible', 'IR (3.9 micron)', 'WV (6.5/6.7 micron)', 'IR (11 micron)', 'IR (12 micron)', 'IR (13 micron)', 'IR (1.3 micron)', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'LI (Imager)', 'PW (Imager)', 'Surface Skin Temp (Imager)', 'LI (Sounder)', 'PW (Sounder)', 'Surface Skin Temp (Sounder)', 'CAPE', 'Land-sea Temp', 'WINDEX', 'Dry Microburst Potential Index', 'Microburst Day Potential Index', 'Convective Inhibition', 'Volcano Imagery', 'Scatterometer', 'Cloud Top', 'Cloud Amount', 'Rainfall Rate', 'Surface Wind Speed', 'Surface Wetness', 'Ice Concentration', 'Ice Type', 'Ice Edge', 'Cloud Water Content', 'Surface Type', 'Snow Indicator', 'Snow/Water Content', 'Volcano Imagery', 'Reserved', 'Sounder (14.71 micron)', 'Sounder (14.37 micron)', 'Sounder (14.06 micron)', 'Sounder (13.64 micron)', 'Sounder (13.37 micron)', 'Sounder (12.66 micron)', 'Sounder (12.02 micron)', 'Sounder (11.03 micron)', 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)', 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)', 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)', 'Sounder (3.74 micron)', 'Sounder (Visible)', 'Percent Normal TPW']</em><a class="headerlink" href="#metpy.io.GiniFile.channels" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.crafts">
 <code class="sig-name descname">crafts</code><em class="property"> = ['Unknown', 'Unknown', 'Miscellaneous', 'JERS', 'ERS/QuikSCAT', 'POES/NPOESS', 'Composite', 'DMSP', 'GMS', 'METEOSAT', 'GOES-7', 'GOES-8', 'GOES-9', 'GOES-10', 'GOES-11', 'GOES-12', 'GOES-13', 'GOES-14', 'GOES-15', 'GOES-16']</em><a class="headerlink" href="#metpy.io.GiniFile.crafts" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="metpy.io.GiniFile.dimensions">
-<code class="sig-name descname">dimensions</code><a class="headerlink" href="#metpy.io.GiniFile.dimensions" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -437,11 +419,6 @@ this will be read from directly.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.GiniFile.variables">
-<code class="sig-name descname">variables</code><a class="headerlink" href="#metpy.io.GiniFile.variables" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt id="metpy.io.GiniFile.wmo_finder">
 <code class="sig-name descname">wmo_finder</code><em class="property"> = re.compile('(T\\w{3}\\d{2})[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')</em><a class="headerlink" href="#metpy.io.GiniFile.wmo_finder" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -453,7 +430,7 @@ this will be read from directly.</p>
 <dd><p>Create an instance of <a class="reference internal" href="#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">file-like</span> <span class="pre">object</span></code>) – If str, the name of the file to be opened. Gzip-ed files are
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. Gzip-ed files are
 recognized with the extension <code class="docutils literal notranslate"><span class="pre">'.gz'</span></code>, as are bzip2-ed files with
 the extension <code class="docutils literal notranslate"><span class="pre">'.bz2'</span></code> If <em class="xref py py-obj">filename</em> is a file-like object,
 this will be read from directly.</p>
@@ -467,23 +444,16 @@ this will be read from directly.</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="metpy.io.GiniFile.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#metpy.io.GiniFile.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt id="metpy.io.GiniFile.get_attrs">
 <code class="sig-name descname">get_attrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_attrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the global attributes.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.get_dimensions">
-<code class="sig-name descname">get_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_dimensions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the file’s dimensions.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
-</dd></dl>
+<code class="sig-name descname">get_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.get_encoding">
@@ -494,24 +464,14 @@ this will be read from directly.</p>
 <dt id="metpy.io.GiniFile.get_variables">
 <code class="sig-name descname">get_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all variables in the file.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.15.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="metpy.io.GiniFile.items">
-<code class="sig-name descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D’s items<a class="headerlink" href="#metpy.io.GiniFile.items" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="metpy.io.GiniFile.keys">
-<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D’s keys<a class="headerlink" href="#metpy.io.GiniFile.keys" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt id="metpy.io.GiniFile.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the variables and attributes simultaneously.</p>
-<p>A centralized loading function makes it easier to create
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>This loads the variables and attributes simultaneously.
+A centralized loading function makes it easier to create
 data stores that do automatic encoding/decoding.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuffixAppendingDataStore</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
@@ -519,20 +479,15 @@ data stores that do automatic encoding/decoding.</p>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">AbstractDataStore</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_suffix&#39;</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">variables</span><span class="p">)}</span>
+                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_suffix&#39;</span> <span class="o">%</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-                      <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">attributes</span><span class="p">)}</span>
+                      <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
 </pre></div>
 </div>
 <p>This function will be called anytime variables or attributes
 are requested, so care should be taken to make sure its fast.</p>
 </dd></dl>
-
-<dl class="py method">
-<dt id="metpy.io.GiniFile.values">
-<code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D’s values<a class="headerlink" href="#metpy.io.GiniFile.values" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -566,7 +521,10 @@ are requested, so care should be taken to make sure its fast.</p>
       </div>
     </div>
 
-    <script src="../../_static/js/index.js"></script>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
     
     <!-- Google Analytics -->
     <script>
@@ -580,9 +538,9 @@ are requested, so care should be taken to make sure its fast.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 11, 2020 at 21:45:45.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.0.<br/>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 03, 2020 at 15:30:14.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
 </footer>
