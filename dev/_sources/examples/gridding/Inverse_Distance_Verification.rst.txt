@@ -182,7 +182,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f76ec38a490>
+    <matplotlib.legend.Legend object at 0x7efc14c01f10>
 
 
 
@@ -334,7 +334,7 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.725 seconds)
+   **Total running time of the script:** ( 0 minutes  0.554 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:
