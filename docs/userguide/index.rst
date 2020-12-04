@@ -9,6 +9,7 @@ User Guide
    installguide
    startingguide
    /tutorials/index
+   upgradeguide
    gempak
    SUPPORT
    citing
