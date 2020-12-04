@@ -2,62 +2,121 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
-==============
-Units Tutorial
-==============
+==================
+Working With Units
+==================
 
 Early in our scientific careers we all learn about the importance of paying
 attention to units in our calculations. Unit conversions can still get the best
 of us and have caused more than one major technical disaster, including the
 crash and complete loss of the $327 million Mars Climate Orbiter.
 
-In MetPy, we use the pint library and a custom unit registry to help prevent
+In MetPy, we use the :mod:`pint` library and a custom unit registry to help prevent
 unit mistakes in calculations. That means that every quantity you pass to MetPy
 should have units attached, just like if you were doing the calculation on
-paper!
+paper! This simplifies the MetPy API by eliminating the need to specify units
+various functions. Instead, only the final results need to be converted to desired units. For
+more information on unit support, see the documentation for
+`Pint <http://pint.readthedocs.io>`_. Particular attention should be paid to the support
+for `temperature units <https://pint.readthedocs.io/en/latest/nonmult.html>`_.
 
-In MetPy units are attached by multiplying them with the integer, float, array,
-etc. In this tutorial we'll show some examples of working with units and get
-you on your way to utilizing the computation functions in MetPy.
+In this tutorial we'll show some examples of working with units and get you on your way to
+utilizing the computation functions in MetPy.
 """
 
+#########################################################################
+# Getting Started
+# ---------------
+# To use units, the first step is to import the default MetPy units registry from the
+# :mod:`~metpy.units` module:
 import numpy as np
 
+import metpy.calc as mpcalc
 from metpy.units import units
 
 #########################################################################
-# Simple Calculation
-# ------------------
+# The unit registry encapsulates all of the available units, as well as any pertinent settings.
+# The registry also understands unit prefixes and suffixes; this allows the registry to
+# understand ``'kilometer'`` and ``'meters'`` in addition to the base ``'meter'`` unit.
 #
-# Let's say we want to calculate the area of a rectangle. It so happens that
-# one of our colleagues measures their side of the rectangle in imperial units
-# and the other in metric units. No problem! First we need to attach units to
-# our measurements. For many units the easiest way is by find the unit as an
-# attribute of the unit registry:
-
-length = 10.4 * units.inches
-width = 20 * units.meters
-print(length, width)
+# In general, using units is only a small step on top of using the :class:`numpy.ndarray`
+# object.
+#
+# Adding Units to Data
+# --------------------
+# The easiest way to attach units to an array (or integer, float, etc.) is to multiply by the
+# units:
+distance = np.arange(1, 5) * units.meters
 
 #########################################################################
-# Don't forget that you can use tab completion to see what units are available!
-# Just about every imaginable quantity is there, but if you find one that isn't,
-# we're happy to talk about adding it.
-#
-# While it may seem like a lot of trouble, let's compute the area of a rectangle
-# defined by our length and width variables above. Without units attached, you'd
-# need to remember to perform a unit conversion before multiplying or you would
-# end up with an area in inch-meters and likely forget about it. With units
-# attached, the units are tracked for you.
+# It is also possible to directly construct a :class:`pint.Quantity`, with a full units string:
+time = units.Quantity(np.arange(2, 10, 2), 'sec')
 
+#########################################################################
+# Compound units can be constructed by the direct mathematical operations necessary:
+9.81 * units.meter / (units.second * units.second)
+
+#########################################################################
+# This verbose syntax can be reduced by using the unit registry's support for parsing units:
+9.81 * units('m/s^2')
+
+#########################################################################
+# Operations With Units
+# ---------------------
+# With units attached, it is possible to perform mathematical operations, resulting in the
+# proper units:
+print(distance / time)
+
+#########################################################################
+# For multiplication and division, units can combine and cancel. For addition and subtraction,
+# instead the operands must have compatible units. For instance, this works:
+print(distance + distance)
+
+#########################################################################
+# But for instance, `distance + time` would not work; instead it gives an error:
+#
+# `DimensionalityError: Cannot convert from 'meter' ([length]) to 'second' ([time])`
+#
+# Even if the units are not identical, as long as they are dimensionally equivalent, the
+# operation can be performed:
+print(3 * units.inch + 5 * units.cm)
+
+#########################################################################
+# Converting Units
+# ----------------
+#
+# Converting a :class:`~pint.Quantity` between units can be accomplished by using the
+# :meth:`~pint.Quantity.to` method call, which constructs a new :class:`~pint.Quantity` in the
+# desired units:
+
+print((1 * units.inch).to(units.mm))
+
+#########################################################################
+# There is also the :meth:`~pint.Quantity.ito` method which performs the same operation
+# in-place:
+a = np.arange(5.) * units.meter
+a.ito('feet')
+print(a)
+
+#########################################################################
+# To simplify units, there is also the :meth:`~pint.Quantity.to_base_units` method,
+# which converts a quantity to SI units, performing any needed cancellation:
+Lf = 3.34e6 * units('J/kg')
+print(Lf, Lf.to_base_units(), sep='\n')
+
+#########################################################################
+# :meth:`~pint.Quantity.to_base_units` can also be done in-place via the
+# :meth:`~pint.Quantity.ito_base_units` method.
+#
+# By default Pint does not do any more than simple unit simplification, so when you perform
+# operations you could get some seemingly odd results:
+length = 10.4 * units.inch
+width = 5 * units.cm
 area = length * width
 print(area)
 
 #########################################################################
-# That's great, now we have an area, but it is not in a very useful unit still.
-# Units can be converted using the `to()` method. While you won't see square meters in
-# the units list, we can parse complex/compound units as strings:
-
+# This is another place where :meth:`~pint.Quantity.to` comes in handy:
 print(area.to('m^2'))
 
 #########################################################################
@@ -83,48 +142,48 @@ print(area.to('m^2'))
 # On the other hand, we can subtract two offset quantities and get a delta. A delta unit is
 # pint's way of representing a relative change in two offset units, indicating that this is
 # not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees Celsius.
-
 print(10 * units.degC - 5 * units.degC)
 
 #########################################################################
 # We can add a delta to an offset unit as well since it is a relative change.
-
 print(25 * units.degC + 5 * units.delta_degF)
 
 #########################################################################
 # Absolute temperature scales like Kelvin and Rankine do not have an offset
 # and therefore can be used in addition/subtraction without the need for a
 # delta version of the unit.
-
 print(273 * units.kelvin + 10 * units.kelvin)
 
 #########################################################################
-
 print(273 * units.kelvin - 10 * units.kelvin)
 
 #########################################################################
+# MetPy Calculations
+# ------------------
+# All MetPy calculations are unit-aware and rely on this information to ensure
+# that the calculations operate correctly. For example, we can use units to take
+# an observation in whatever units are most convenient and let MetPy handle everything
+# under the hood. Below we calculate dewpoint from the temperature and relative humidity:
+temperature = 73.2 * units.degF
+rh = 64 * units.percent
+dewpoint = mpcalc.dewpoint_from_relative_humidity(temperature, rh)
+
+print(dewpoint)
 
 #########################################################################
-# Compound Units
-# --------------
-# We can create compound units for things like speed by parsing a string of
-# units. Abbreviations or full unit names are acceptable.
-
-u = np.random.randint(0, 15, 10) * units('m/s')
-v = np.random.randint(0, 15, 10) * units('meters/second')
-
-print(u)
-print(v)
+# or back to Fahrenheit:
+print(dewpoint.to('degF'))
 
 #########################################################################
 # Common Mistakes
 # ---------------
 # There are a few common mistakes the new users often make. Be sure to check
-# these when you're having issues
+# these when you're having issues.
 #
 # * Pressure units are `mbar` or `hPa` for common atmospheric measurements. The
-#   unit `mb` is actually millibarns.
+#   unit `mb` is actually millibarns--a unit used in particle physics.
 # * When using masked arrays, units must be multiplied on the left side. This
 #   will be addressed in the future, but is a current limitation in the
 #   ecosystem. The expected error will be
-#   `AttributeError: 'MaskedArray' object has no attribute 'units'`
+#   `AttributeError: 'MaskedArray' object has no attribute 'units'` or calculation
+#   functions complaining about expecting a units and getting "dimensionless".

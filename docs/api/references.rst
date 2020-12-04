@@ -82,7 +82,7 @@ References
            on Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
-           `FCM-R19-2003 <_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
+           `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
 
 .. [Galway1956] Galway, J. G., 1956: The Lifted Index as a Predictor of Latent Instability.
            *American Meteorology Society*,
@@ -113,7 +113,7 @@ References
            <https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf>`_,
            U.S. Government Printing Office, Washington, DC.
 
-.. [NWS10201] 2017: `National Weather Service Instruction 10-201 <_static/NWS_10-201.pdf>`_.
+.. [NWS10201] 2017: `National Weather Service Instruction 10-201 <../_static/NWS_10-201.pdf>`_.
 
 .. [Philips1957] Philips, N. A., 1957: A coordinate system having some special
            advantages for numerical forecasting. *J. Meteor.*, **14**, 184-185,
@@ -125,7 +125,7 @@ References
 
 .. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific
            Services Division, NWS Southern Region Headquarters, 1990.
-           `SR90-23 <_static/rothfusz-1990-heat-index-equation.pdf>`_, 2 pp.
+           `SR90-23 <../_static/rothfusz-1990-heat-index-equation.pdf>`_, 2 pp.
 
 .. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
            Academic Press, 627 pp.
@@ -136,7 +136,7 @@ References
            <https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2>`_.
 
 .. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951:
-           `Smithsonian meteorological tables <_static/Smithsonian1951.pdf>`_ *Smithsonian
+           `Smithsonian meteorological tables <../_static/Smithsonian1951.pdf>`_ *Smithsonian
            Miscellaneous Collections*, **144**, 151 pp.
 
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
@@ -150,7 +150,7 @@ References
            Storms, Hyannis, MA, Amer. Meteor. Soc.
 
 .. [USAF1990] United States Air Force, 1990: `The Use of the Skew T Log P Diagram for Weather
-            Forecasting <_static/USAF_SkewT_manual.pdf>`_, Scott AFB,
+            Forecasting <../_static/USAF_SkewT_manual.pdf>`_, Scott AFB,
             Illinois.
 
 .. [Ziv1994] Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors

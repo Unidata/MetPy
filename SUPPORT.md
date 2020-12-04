@@ -20,3 +20,8 @@ Need some help using MetPy to solve your problem?
 ## Issues
 Find a problem with MetPy? Looking for a feature we don't have? File an issue!
 * [Issue Tracker (GitHub)](https://github.com/Unidata/MetPy/issues)
+
+## Code of Conduct
+We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
+spirit please have a look at our
+[`code of conduct`](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md).

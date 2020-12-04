@@ -1,1 +1,0 @@
-../SUPPORT.md

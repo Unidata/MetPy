@@ -18,5 +18,9 @@ Reference Guide
    metpy.interpolate
    metpy.xarray
 
+.. toctree::
+
+   references
+
 * :ref:`modindex`
 * :ref:`genindex`

@@ -13,8 +13,11 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 # Sphinx doesn't know to clean out the debris from sphinx-gallery
+cleanall: clean
+	rm -rf $(SOURCEDIR)/examples $(SOURCEDIR)/tutorials $(SOURCEDIR)/api/generated
+
 clean:
-	rm -rf $(BUILDDIR)/* $(SOURCEDIR)/examples $(SOURCEDIR)/tutorials $(SOURCEDIR)/api/generated
+	rm -rf $(BUILDDIR)/*
 
 # Check that all functions in modules with template overrides are present in the doc file
 overridecheck:

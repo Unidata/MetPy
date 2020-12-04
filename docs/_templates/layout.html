@@ -1,0 +1,22 @@
+{% extends "!layout.html" %}
+
+{% block fonts %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    {{ super() }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ super() }}
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/{{ pagename }}{{ file_suffix }}" />
+{% endblock %}
+
+{% block docs_navbar %}
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main">
+    {%- include "docs-navbar.html" %}
+  </nav>
+
+{# Added to support a banner with an alert #}
+    <div class="container-fluid" id="banner"></div>
+{% endblock %}

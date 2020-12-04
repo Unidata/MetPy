@@ -1,5 +1,5 @@
 =======================
-GEMPAK Conversion Guide
+GEMPAK Comparison Guide
 =======================
 
 The popular meteorological plotting and analysis tool GEMPAK is no longer formally supported

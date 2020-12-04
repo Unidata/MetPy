@@ -1,12 +1,13 @@
-==================
-Installation Guide
-==================
+=============
+Install Guide
+=============
 
 ------------
 Requirements
 ------------
 In general, MetPy tries to support minor versions of dependencies released within the last two
-years. For Python itself, that means supporting the last two minor releases.
+years. For Python itself, that generally means supporting the last two minor releases; MetPy
+currently supports Python >= 3.6.
 
 * matplotlib >= 2.1.0
 * numpy >= 1.16.0
@@ -42,11 +43,20 @@ the base of the source directory, run:
 
 This will build and install MetPy into your current Python installation.
 
+------------------
+Working With Conda
+------------------
+
+MetPy Monday videos `#1`_, `#2`_, and `#3`_ demonstrate how to install the conda package
+manager and Python packages, and how to work with conda environments.
+
+.. _#1: https://youtu.be/-fOfyHYpKck
+.. _#2: https://youtu.be/G3AF-nhNyDk
+.. _#3: https://youtu.be/15DNH25UCi0
+
 --------
 Examples
 --------
 
 The MetPy source comes with a set of example scripts in the ``examples``
-directory. These are also available as notebooks in the gallery in
-the :doc:`examples/index`. Further examples of MetPy usage are available
-in the `Unidata Python Gallery <https://unidata.github.io/python-gallery/>`_.
+directory. These are also available as notebooks in the :doc:`/examples/index`.

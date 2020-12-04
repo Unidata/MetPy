@@ -81,7 +81,6 @@ jobs:
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
-        python -m pip install -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html sphinx_rtd_theme==0.2.5b1.post1
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir
@@ -101,15 +100,21 @@ jobs:
     - name: Install self
       run: python -m pip install -c ci/${{ matrix.dep-versions }} .
 
-    - name: Enable linkchecker for PRs
-      if: ${{ github.event_name == 'pull_request' && matrix.check-links == true }}
-      run: echo "LINKCHECKER=linkcheck" >> $GITHUB_ENV
-
     - name: Build docs
       run: |
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         pushd docs
-        make overridecheck html ${{ env.LINKCHECKER }} O=-W
+        make overridecheck html O=-W
+        popd
+
+    - name: Enable linkchecker for PRs
+      # Doing the linkchecker separately so that we avoid problems with vendored LICENSE
+      # files in the build directory
+      if: ${{ github.event_name == 'pull_request' && matrix.check-links == true }}
+      run: |
+        pushd docs
+        find build/html/_static -name LICENSE.md -delete
+        make linkcheck
         popd
 
     - name: Upload docs as artifact
