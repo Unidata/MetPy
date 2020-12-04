@@ -3,7 +3,7 @@
    font-family: Poppins, sans-serif;
  }
 
- /* Unidata header color */
+/* Unidata header color */
 .bg-unidata {
     background-color: #06778F;
 }
@@ -33,7 +33,8 @@ div[class^="highlight"] a {
 }
 
 .intro-card {
-    background: #cde5fd;
+    background: #d8e5e8;
+    border: none;
     border-radius: 0;
     padding: 30px 10px 10px 10px;
     margin: 10px 0px;
@@ -79,4 +80,15 @@ div[class^="highlight"] a {
 
 .bd-toc .section-nav {
     border-left: none;
+}
+
+/* Can remove once theme releases new version */
+/* xarray output display in bootstrap */
+.xr-wrap[hidden] {
+display: block !important;
+}
+
+.xr-var-data pre {
+  border: none;
+  box-shadow: none;
 }
