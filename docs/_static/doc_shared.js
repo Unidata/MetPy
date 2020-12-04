@@ -1,4 +1,4 @@
-const proj = "MetPy";
+const project = "MetPy";
 
 $(document).ready(function() {
     cur_ver = DOCUMENTATION_OPTIONS.VERSION;
@@ -8,7 +8,7 @@ $(document).ready(function() {
     }
     console.log('cur_ver: ' + cur_ver);
 
-    $.getJSON('/' + proj + '/versions.json', function(data) {
+    $.getJSON('/' + project + '/versions.json', function(data) {
         if (cur_ver !== data.latest) {
             let msg;
             if (cur_ver.includes('dev') || data.prereleases.indexOf(cur_ver) > -1) {
@@ -16,7 +16,7 @@ $(document).ready(function() {
             } else {
                 msg = 'previous';
             }
-            content = $('<div class="alert alert-warning alert-version" role="alert">This documentation page is for a ' + msg +
+            content = $('<div class="alert alert-secondary alert-version" role="alert">This documentation page is for a ' + msg +
                         ' version. For the latest release version, go to <a class="alert-link" href="https://unidata.github.io/MetPy/latest/">https://unidata.github.io/MetPy/latest/</a>');
             $('#banner').append(content);
         }
@@ -31,13 +31,13 @@ $(document).ready(function() {
     });
 });
 
-// Borrowed from Bokeh docs to look for an alert.html at the base of the
-// docs repo and add that to the banner if present.
+// Borrowed from Bokeh docs to look for a banner.html at the base of the docs repo and add that
+// to the banner if present.
 $(document).ready(function () {
-    $.get('/' + proj + '/alert.html', function (data) {
-       if (data.length > 0) {
-         content = $('<div class="alert alert-primary alert-news" role="alert">' + data + '</div>')
-         $('#banner').prepend(content);
-       }
+    $.get('/' + project + '/banner.html', function (data) {
+        if (data.length > 0) {
+            console.log(data);
+            $('#banner').prepend(data);
+        }
     })
  })

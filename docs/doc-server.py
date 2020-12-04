@@ -20,8 +20,8 @@ class Server(http.server.SimpleHTTPRequestHandler):
 
     def translate_path(self, path):
         """Translate a request path to the proper path into the built docs."""
-        if path == '/MetPy/alert.html':
-            return str(TEST_FILES_DIR / 'alert.html')
+        if path == '/MetPy/banner.html':
+            return str(TEST_FILES_DIR / 'banner.html')
         elif path == '/MetPy/versions.json':
             return str(TEST_FILES_DIR / 'versions.json')
         elif path.startswith('/MetPy/'):
