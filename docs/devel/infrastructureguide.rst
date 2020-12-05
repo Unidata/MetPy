@@ -62,15 +62,43 @@ The following services are used to track code quality:
 * `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
 * `Scrutinizer <https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)>`_
 
+We also maintain custom GitHub actions that automate additional tasks. Besides what's
+mentioned below as part of the release process, we have a script that automatically assigns
+the most recent milestone to unmilestoned merged PRs (``assign-milestone.yml``).
+Additional automation is encouraged, and GitHub Actions, using the javascript and the
+``actions/github-script`` action can greatly streamline the process of automating processes
+using the GitHub API. For more information see:
+
+* `Octokit Docs <https://octokit.github.io/rest.js/v18>`_ which is the built-in library for
+  doing GitHub API work in javascript
+* `github-script action repo <https://github.com/actions/github-script>`_ which is the action
+  that simplifies writing custom scripting
+* `GitHub Actions Docs <https://docs.github.com/en/free-pro-team@latest/actions>`_ for all
+  other things relating to GitHub Actions, like available events and workflow syntax
+
 ---------
 Releasing
 ---------
 
-To create a new release, go to the GitHub page and make a new release. The tag should be a
-sensible version number, like v1.0.0. Add a name (can just be the version) and add some release
-notes on what the big changes are. It's also possible to use
-`loghub <https://github.com/spyder-ide/loghub>`_ to get information on all the issues and PRs
-that were closed for the relevant milestone.
+MetPy releases are managed using
+`milestones on GitHub <https://github.com/Unidata/MetPy/milestones>`_. Each release should have
+a milestone named with the appropriate version. All issues and Pull Requests that are included,
+or intended to be included, should be tagged with this milestone. While this helps with
+planning, and making sure things are not overlooked, it's also a significant part of the
+release. Once all items are done, the release process is started by closing the corresponding
+milestone. This triggers a GitHub Action (``draft-release.yml``) that creates a new *draft*
+release, titled based on the name of the milestone and pointing to a corresponding tag. The
+body of the release is pre-populated with some release notes based on the milestone's issues,
+Pull Requests, and code contributors. These should be supplemented at the top with bullets
+summarizing the highlights of the release that are of interest to our users.
+
+If for some reason this needs to be done manually, go to the GitHub page and create a new
+release. The tag should be a adhere to our versioning, like v1.0.0. Add a name for the release
+(can just be the version) and add some release notes on what the big changes are.
+
+Once the release notes are completed, click the "Publish release" button. This will actually
+create the tag on GitHub, triggering the package builds described below as well as new
+documentation builds.
 
 ~~~~
 PyPI
