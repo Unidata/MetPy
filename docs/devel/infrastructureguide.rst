@@ -16,16 +16,7 @@ string like ``0.10.0.post209+gff2e549f.d20190918``, which comes from ``git descr
 version means that the current code is 209 commits past the 0.10.0 tag, on git hash
 ``ff2e549f``, with local changes on top, last made on a date (indicated by ``d20190918``). For
 a release, or non-git repo source dir, the version will just come from the most recent tag
-(i.e. ``v0.10.0``).
-
-To make a new version, simply add a new tag with a name like ``vMajor.Minor.Bugfix`` and push
-to GitHub. Github will add a new release with a source archive.zip file. Running
-
-.. parsed-literal::
-    python setup.py sdist
-
-will build a new source distribution with the appropriately generated version file as well.
-This will also create a new stable set of documentation.
+(i.e. ``v0.10.0``). Our main versioning scheme matches ``vMajor.Minor.Bugfix``.
 
 -------------
 Documentation
@@ -34,28 +25,34 @@ Documentation
 MetPy's documentation is built using sphinx >= 2.1. API documentation is automatically
 generated from docstrings, written using the
 `NumPy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_.
-There are also example scripts in the ``examples`` directory. Using the ``sphinx-gallery``
-extension, these examples are executed and turned into a gallery of thumbnails. The
+There are also example scripts in the ``examples`` directory, as well as our
+:doc:`/userguide/index` tutorials in the ``tutorials``. Using the ``sphinx-gallery``
+extension, these scripts are executed and turned into a gallery of thumbnails. The
 extension also makes these scripts available as Jupyter notebooks.
 
 The documentation is hosted on `GitHub Pages <https://unidata.github.io/MetPy>`_. The docs are
-built automatically from ``master`` with every build on Travis-CI; every merged PR will
-have the built docs upload to GitHub Pages. As part of the build, the documentation is also
-checked with ``doc8``. To see what the docs will look like, you also need to install the
-``pydata-sphinx-theme`` package.
+built automatically and uploaded upon pushes or merges to GitHub. Commits to ``master`` end up
+in our development version docs, while commits to versioned branches will update the
+docs for the corresponding version, which are located in the appropriately named subidrectory
+on the ``gh-pages`` branch. We only maintain docs at the minor level, not the bugfix one.
+The docs rely on the ``pydata-sphinx-theme`` package for styling the docs, which needs to be
+installed for any local doc builds.
 
 -----------
 Other Tools
 -----------
 
-Continuous integration is performed by `Travis CI <http://www.travis-ci.com/Unidata/MetPy>`_
-and `GitHub Actions <https://github.com/Unidata/MetPy/actions?query=workflow%3ACI>`_.
-Travis runs the unit tests on Linux for all supported versions of Python, as well as runs
-against the minimum package versions. ``flake8`` (with the ``pep8-naming`` and
-``flake8-quotes`` plugins) is also run against the code to check formatting. Travis is also
-used to build the documentation and to run the examples to ensure they stay working. We use
-a custom action running on GitHub to handle running all the tests and building the docs
-across a variety of operating systems and Python versions.
+Continuous integration is performed by
+`GitHub Actions <https://github.com/Unidata/MetPy/actions?query=workflow%3ACI>`_.
+This integration runs the unit tests on Linux for all supported versions of Python, as well
+as runs against the minimum package versions, using PyPI packages. This also runs against
+a (non-exhaustive) matrix of python versions on macOS and Windows. In addition to these tests,
+GitHub actions also builds the documentation and runs the examples across multiple platforms
+and Python versions, as well as checks for any broken web links. ``flake8`` (along with a
+variety of plugins found in ``ci/linting.txt``) is also run against the code to check
+formatting using another job on GitHub Actions. As part of this linting job, the docs are also
+checked using the ``doc8`` tool. Configurations for these are in a variety of files in
+``.github/workflows``.
 
 Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/MetPy>`_.
 
@@ -80,9 +77,9 @@ PyPI
 ~~~~
 
 Once the new release is published on GitHub, this will create the tag, which will trigger
-new builds on Travis (and our GitHub action, but that's not relevant). When the main test
-build on Travis (currently Python 3 tests) succeeds, Travis will handle building the source
-distribution and wheels, and upload them to PyPI.
+new builds GitHub actions (see ``release.yml``). This runs no tests, but assumes those were
+all working before the release was officially tagged. This action takes care of building
+PyPI packages (the wheel and source distribution) and uploads to PyPI.
 
 To build and upload manually (if for some reason it is necessary):
 
@@ -102,9 +99,13 @@ Conda
 
 MetPy conda packages are automatically produced and uploaded to
 `Anaconda.org <https://anaconda.org/conda-forge/MetPy>`_ thanks to conda-forge. Once the
-release is built and uploaded to PyPI, then a Pull Request should be made against the
-`MetPy feedstock <https://github.com/conda-forge/metpy-feedstock>`_, which contains the
-recipe for building MetPy's conda packages. The Pull Request should:
+release is built and uploaded to PyPI, conda-forge's automated bot infrastructure should
+(within anywhere from 30 minutes to a couple hours) produce a Pull Request on the
+`MetPy feedstock <https://github.com/conda-forge/metpy-feedstock>`_, which handles updating
+the package. This repository contains the recipe for building MetPy's conda packages.
+
+If for some reason the bots fail or are delayed, a PR for the version update can be done
+manually. This should:
 
 1. Update the version
 2. Update the hash to match that of the new source distribution **uploaded to PyPI**
