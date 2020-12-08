@@ -39,3 +39,7 @@ exclude_patterns:
 - "src/metpy/io/metar_parser.py"
 - "docs/**/*"
 - "staticdata/**/*"
+- "tests/*/baseline/*"
+- "src/metpy/plots/fonts/*.ttf"
+- "src/metpy/plots/_static/*.png"
+- "talks/*.pdf"
