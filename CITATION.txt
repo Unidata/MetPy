@@ -1,1 +1,1 @@
-docs/citing.rst
+docs/userguide/citing.rst
