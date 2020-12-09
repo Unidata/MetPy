@@ -33,9 +33,18 @@ plugins:
       E501:
         enabled: false
 
+  markdownlint:
+    enabled: true
+    issue_override:
+      severity: minor
+
 exclude_patterns:
 - "src/metpy/io/_nexrad_msgs/msg*.py"
 - "src/metpy/io/metar_parse.peg"
 - "src/metpy/io/metar_parser.py"
 - "docs/**/*"
 - "staticdata/**/*"
+- "tests/*/baseline/*"
+- "src/metpy/plots/fonts/*.ttf"
+- "src/metpy/plots/_static/*.png"
+- "talks/*.pdf"

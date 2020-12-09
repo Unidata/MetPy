@@ -1,0 +1,62 @@
+# When we close a milestone, create a draft release
+name: Draft Release
+on:
+  milestone:
+    types: [closed]
+
+jobs:
+  sync:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        name: Run script
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const milestone = context.payload.milestone;
+
+            // Find issues and PRs for this milestone
+            const items = await github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              milestone: milestone.number
+            });
+
+            // Get just the issues and format into a section for the release notes
+            const issues = items.data.filter(i => !i.pull_request);
+            const issue_text = '### Issues Closed\n' +
+                               issues.map(i => `* [Issue ${i.number}](${i.url}) - ${i.title}\n`)
+                               .join('') + `\nIn this release ${issues.length} issues were closed.`;
+
+            // Now do the same for the PRs
+            const prs = items.data.filter(i => !!i.pull_request);
+            const pr_text = '### Pull Requests Merged\n' +
+                            prs.map(i => `* [PR ${i.number}](${i.url}) - ${i.title}, by @${i.user.login}\n`)
+                            .join('') + `\nIn this release ${prs.length} pull requests were closed.`;
+
+            // Add the list of people who contributed PRs
+            const contrib_text = '### Contributors\n' +
+                                 Array.from(new Set(items.data.map(i => '@' + i.user.login))).join(', ') +
+                                 ' contributed code to this release.';
+
+            // Assemble into the body of the release
+            const body = [milestone.description, contrib_text, issue_text, pr_text].join('\n');
+
+            // Allows us to optionally pass in a branch of if there's one specified in the
+            // text of the milestone
+            params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: 'v' + milestone.title,
+              name: milestone.title,
+              draft: true,
+              body: body
+            };
+            const match = milestone.description.match(/branch:\s*([^\s]+)/);
+            if (!!match) {
+              params.target_commitish = match[1];
+              console.log('Found target branch:', params.target_commitish);
+            }
+            await github.repos.createRelease(params);

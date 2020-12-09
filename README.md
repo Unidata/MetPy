@@ -40,6 +40,7 @@ information.
 
 Need Help?
 ----------
+
 Need help using MetPy? Found an issue? Have a feature request? Checkout our
 [support page](https://github.com/Unidata/MetPy/blob/master/SUPPORT.md).
 
@@ -54,6 +55,7 @@ Important Links
 
 Dependencies
 ------------
+
 Other required packages:
 
 - Numpy
@@ -71,11 +73,13 @@ for more information.
 
 Code of Conduct
 ---------------
+
 We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
 spirit please have a look at our [Code of Conduct](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md).
 
 Contributing
 ------------
+
 **Imposter syndrome disclaimer**: We want your help. No, really.
 
 There may be a little voice inside your head that is telling you that you're not ready to be
@@ -98,6 +102,7 @@ For more information, please read the see the [contributing guide](https://githu
 
 Philosophy
 ----------
+
 The space MetPy aims for is GEMPAK (and maybe NCL)-like functionality, in a way that plugs
 easily into the existing scientific Python ecosystem (numpy, scipy, matplotlib). So, if you
 take the average GEMPAK script for a weather map, you need to:
