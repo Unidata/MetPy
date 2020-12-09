@@ -251,39 +251,38 @@ string like <code class="docutils literal notranslate"><span class="pre">0.10.0.
 version means that the current code is 209 commits past the 0.10.0 tag, on git hash
 <code class="docutils literal notranslate"><span class="pre">ff2e549f</span></code>, with local changes on top, last made on a date (indicated by <code class="docutils literal notranslate"><span class="pre">d20190918</span></code>). For
 a release, or non-git repo source dir, the version will just come from the most recent tag
-(i.e. <code class="docutils literal notranslate"><span class="pre">v0.10.0</span></code>).</p>
-<p>To make a new version, simply add a new tag with a name like <code class="docutils literal notranslate"><span class="pre">vMajor.Minor.Bugfix</span></code> and push
-to GitHub. Github will add a new release with a source archive.zip file. Running</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span>
-</pre></div>
-</div>
-<p>will build a new source distribution with the appropriately generated version file as well.
-This will also create a new stable set of documentation.</p>
+(i.e. <code class="docutils literal notranslate"><span class="pre">v0.10.0</span></code>). Our main versioning scheme matches <code class="docutils literal notranslate"><span class="pre">vMajor.Minor.Bugfix</span></code>.</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>MetPy’s documentation is built using sphinx &gt;= 2.1. API documentation is automatically
 generated from docstrings, written using the
 <a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">NumPy docstring standard</a>.
-There are also example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory. Using the <code class="docutils literal notranslate"><span class="pre">sphinx-gallery</span></code>
-extension, these examples are executed and turned into a gallery of thumbnails. The
+There are also example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory, as well as our
+<a class="reference internal" href="../userguide/index.html"><span class="doc">User Guide</span></a> tutorials in the <code class="docutils literal notranslate"><span class="pre">tutorials</span></code>. Using the <code class="docutils literal notranslate"><span class="pre">sphinx-gallery</span></code>
+extension, these scripts are executed and turned into a gallery of thumbnails. The
 extension also makes these scripts available as Jupyter notebooks.</p>
 <p>The documentation is hosted on <a class="reference external" href="https://unidata.github.io/MetPy">GitHub Pages</a>. The docs are
-built automatically from <code class="docutils literal notranslate"><span class="pre">master</span></code> with every build on Travis-CI; every merged PR will
-have the built docs upload to GitHub Pages. As part of the build, the documentation is also
-checked with <code class="docutils literal notranslate"><span class="pre">doc8</span></code>. To see what the docs will look like, you also need to install the
-<code class="docutils literal notranslate"><span class="pre">pydata-sphinx-theme</span></code> package.</p>
+built automatically and uploaded upon pushes or merges to GitHub. Commits to <code class="docutils literal notranslate"><span class="pre">master</span></code> end up
+in our development version docs, while commits to versioned branches will update the
+docs for the corresponding version, which are located in the appropriately named subidrectory
+on the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch. We only maintain docs at the minor level, not the bugfix one.
+The docs rely on the <code class="docutils literal notranslate"><span class="pre">pydata-sphinx-theme</span></code> package for styling the docs, which needs to be
+installed for any local doc builds.</p>
 </div>
 <div class="section" id="other-tools">
 <h2>Other Tools<a class="headerlink" href="#other-tools" title="Permalink to this headline">¶</a></h2>
-<p>Continuous integration is performed by <a class="reference external" href="http://www.travis-ci.com/Unidata/MetPy">Travis CI</a>
-and <a class="reference external" href="https://github.com/Unidata/MetPy/actions?query=workflow%3ACI">GitHub Actions</a>.
-Travis runs the unit tests on Linux for all supported versions of Python, as well as runs
-against the minimum package versions. <code class="docutils literal notranslate"><span class="pre">flake8</span></code> (with the <code class="docutils literal notranslate"><span class="pre">pep8-naming</span></code> and
-<code class="docutils literal notranslate"><span class="pre">flake8-quotes</span></code> plugins) is also run against the code to check formatting. Travis is also
-used to build the documentation and to run the examples to ensure they stay working. We use
-a custom action running on GitHub to handle running all the tests and building the docs
-across a variety of operating systems and Python versions.</p>
+<p>Continuous integration is performed by
+<a class="reference external" href="https://github.com/Unidata/MetPy/actions?query=workflow%3ACI">GitHub Actions</a>.
+This integration runs the unit tests on Linux for all supported versions of Python, as well
+as runs against the minimum package versions, using PyPI packages. This also runs against
+a (non-exhaustive) matrix of python versions on macOS and Windows. In addition to these tests,
+GitHub actions also builds the documentation and runs the examples across multiple platforms
+and Python versions, as well as checks for any broken web links. <code class="docutils literal notranslate"><span class="pre">flake8</span></code> (along with a
+variety of plugins found in <code class="docutils literal notranslate"><span class="pre">ci/linting.txt</span></code>) is also run against the code to check
+formatting using another job on GitHub Actions. As part of this linting job, the docs are also
+checked using the <code class="docutils literal notranslate"><span class="pre">doc8</span></code> tool. Configurations for these are in a variety of files in
+<code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code>.</p>
 <p>Test coverage is monitored by <a class="reference external" href="https://codecov.io/github/Unidata/MetPy">codecov.io</a>.</p>
 <p>The following services are used to track code quality:</p>
 <ul class="simple">
@@ -291,20 +290,46 @@ across a variety of operating systems and Python versions.</p>
 <li><p><a class="reference external" href="https://codeclimate.com/github/Unidata/MetPy">Code Climate</a></p></li>
 <li><p><a class="reference external" href="https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)">Scrutinizer</a></p></li>
 </ul>
+<p>We also maintain custom GitHub actions that automate additional tasks. Besides what’s
+mentioned below as part of the release process, we have a script that automatically assigns
+the most recent milestone to unmilestoned merged PRs (<code class="docutils literal notranslate"><span class="pre">assign-milestone.yml</span></code>).
+Additional automation is encouraged, and GitHub Actions, using the javascript and the
+<code class="docutils literal notranslate"><span class="pre">actions/github-script</span></code> action can greatly streamline the process of automating processes
+using the GitHub API. For more information see:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://octokit.github.io/rest.js/v18">Octokit Docs</a> which is the built-in library for
+doing GitHub API work in javascript</p></li>
+<li><p><a class="reference external" href="https://github.com/actions/github-script">github-script action repo</a> which is the action
+that simplifies writing custom scripting</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/free-pro-team&#64;latest/actions">GitHub Actions Docs</a> for all
+other things relating to GitHub Actions, like available events and workflow syntax</p></li>
+</ul>
 </div>
 <div class="section" id="releasing">
 <h2>Releasing<a class="headerlink" href="#releasing" title="Permalink to this headline">¶</a></h2>
-<p>To create a new release, go to the GitHub page and make a new release. The tag should be a
-sensible version number, like v1.0.0. Add a name (can just be the version) and add some release
-notes on what the big changes are. It’s also possible to use
-<a class="reference external" href="https://github.com/spyder-ide/loghub">loghub</a> to get information on all the issues and PRs
-that were closed for the relevant milestone.</p>
+<p>MetPy releases are managed using
+<a class="reference external" href="https://github.com/Unidata/MetPy/milestones">milestones on GitHub</a>. Each release should have
+a milestone named with the appropriate version. All issues and Pull Requests that are included,
+or intended to be included, should be tagged with this milestone. While this helps with
+planning, and making sure things are not overlooked, it’s also a significant part of the
+release. Once all items are done, the release process is started by closing the corresponding
+milestone. This triggers a GitHub Action (<code class="docutils literal notranslate"><span class="pre">draft-release.yml</span></code>) that creates a new <em>draft</em>
+release, titled based on the name of the milestone and pointing to a corresponding tag. The
+body of the release is pre-populated with some release notes based on the milestone’s issues,
+Pull Requests, and code contributors. These should be supplemented at the top with bullets
+summarizing the highlights of the release that are of interest to our users.</p>
+<p>If for some reason this needs to be done manually, go to the GitHub page and create a new
+release. The tag should be a adhere to our versioning, like v1.0.0. Add a name for the release
+(can just be the version) and add some release notes on what the big changes are.</p>
+<p>Once the release notes are completed, click the “Publish release” button. This will actually
+create the tag on GitHub, triggering the package builds described below as well as new
+documentation builds.</p>
 <div class="section" id="pypi">
 <h3>PyPI<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
 <p>Once the new release is published on GitHub, this will create the tag, which will trigger
-new builds on Travis (and our GitHub action, but that’s not relevant). When the main test
-build on Travis (currently Python 3 tests) succeeds, Travis will handle building the source
-distribution and wheels, and upload them to PyPI.</p>
+new builds GitHub actions (see <code class="docutils literal notranslate"><span class="pre">release.yml</span></code>). This runs no tests, but assumes those were
+all working before the release was officially tagged. This action takes care of building
+PyPI packages (the wheel and source distribution) and uploads to PyPI.</p>
 <p>To build and upload manually (if for some reason it is necessary):</p>
 <ol class="arabic simple">
 <li><p>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> will give
@@ -322,9 +347,12 @@ as well as any updated flags from <code class="docutils literal notranslate"><sp
 <h3>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h3>
 <p>MetPy conda packages are automatically produced and uploaded to
 <a class="reference external" href="https://anaconda.org/conda-forge/MetPy">Anaconda.org</a> thanks to conda-forge. Once the
-release is built and uploaded to PyPI, then a Pull Request should be made against the
-<a class="reference external" href="https://github.com/conda-forge/metpy-feedstock">MetPy feedstock</a>, which contains the
-recipe for building MetPy’s conda packages. The Pull Request should:</p>
+release is built and uploaded to PyPI, conda-forge’s automated bot infrastructure should
+(within anywhere from 30 minutes to a couple hours) produce a Pull Request on the
+<a class="reference external" href="https://github.com/conda-forge/metpy-feedstock">MetPy feedstock</a>, which handles updating
+the package. This repository contains the recipe for building MetPy’s conda packages.</p>
+<p>If for some reason the bots fail or are delayed, a PR for the version update can be done
+manually. This should:</p>
 <ol class="arabic simple">
 <li><p>Update the version</p></li>
 <li><p>Update the hash to match that of the new source distribution <strong>uploaded to PyPI</strong></p></li>
@@ -373,7 +401,7 @@ packages to anaconda.org.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 08, 2020 at 19:57:17.<br/>
+        Last updated on Dec 09, 2020 at 19:38:44.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
