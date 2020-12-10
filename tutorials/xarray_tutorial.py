@@ -12,11 +12,11 @@ models (the other being Pint Quantities). MetPy also provides DataArray and Data
 *accessors* (collections of methods and properties attached to the ``.metpy`` property) for
 coordinate/CRS and unit operations.
 
-Full information on MetPy's accessors is available in the `reference guide
-<../api/generated/metpy.xarray.html>`_, otherwise, continue on in this tutorial for a
-demonstration of the three main components of MetPy's integration with xarray (coordinates/
-coordinate reference systems, units, and calculations), as well as instructive examples for
-both CF-compliant and non-compliant datasets.
+Full information on MetPy's accessors is available in the `appropriate section of the
+reference guide <../api/generated/metpy.xarray.html>`_, otherwise, continue on in this
+tutorial for a demonstration of the three main components of MetPy's integration with xarray
+(coordinates/coordinate reference systems, units, and calculations), as well as instructive
+examples for both CF-compliant and non-compliant datasets.
 
 First, some general imports...
 """
@@ -70,7 +70,7 @@ temperature
 # coordinates can have a variety of different names and yet refer to the same type (such as
 # "isobaric1" and "isobaric3" both referring to vertical isobaric coordinates). Following
 # CF conventions, as well as using some fall-back regular expressions, MetPy can
-# systematically coordinates of the following types:
+# systematically identify coordinates of the following types:
 #
 # - time
 # - vertical
@@ -201,7 +201,7 @@ heights_mean
 # could slow your script or even cause your process to run out of memory. And so, we recommend
 # subsetting your data before quantifying it.
 #
-# Also, these Pint ``Quantity`` data objects are not properly handled by xarray when writting
+# Also, these Pint ``Quantity`` data objects are not properly handled by xarray when writing
 # to disk. And so, if you want to safely export your data, you will need to undo the
 # quantification with the ``.dequantify()`` method, which converts your data back to a
 # unit-naive array with the unit as a text attribute
@@ -252,7 +252,7 @@ height_units
 
 heights = data_parsed.metpy.parse_cf('Geopotential_height_isobaric').metpy.sel(
     time='2017-09-05 18:00',
-    vertical=50000.
+    vertical=500 * units.hPa
 )
 u_g, v_g = mpcalc.geostrophic_wind(heights)
 u_g
@@ -279,10 +279,10 @@ cape, cin = mpcalc.surface_based_cape_cin(
 cape
 
 #########################################################################
-# Remaining portions of MetPy's calculations (such as its interpolation module) do not fully
-# support xarray, and so, use of ``.values`` may be needed to convert to a bare NumPy array.
-# For full information on xarray support for your function of interest, see the
-# `Reference Guide <../api/index.html>`_.
+# A few remaining portions of MetPy's calculations (mainly the interpolation module and a few
+# other functions) do not fully support xarray, and so, use of ``.values`` may be needed to
+# convert to a bare NumPy array. For full information on xarray support for your function of
+# interest, see the `Reference Guide <../api/index.html>`_.
 #
 # CF-Compliant Dataset Example
 # ----------------------------
@@ -300,7 +300,7 @@ data = xr.open_dataset(
 # Subset to only the data you need to save on memory usage
 subset = data.metpy.sel(isobaric=500 * units.hPa)
 
-# Quantify if you plan on performing array operations that need to maintain unit correctness
+# Quantify if you plan on performing xarray operations that need to maintain unit correctness
 subset = subset.metpy.quantify()
 
 # Perform calculations
