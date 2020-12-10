@@ -134,7 +134,7 @@ data_subset = data.metpy.parse_cf([
 ])
 
 # Parse single variable
-temperature = data.metpy.parse_cf('Temperature_isobaric')
+relative_humidity = data.metpy.parse_cf('Relative_humidity_isobaric')
 
 #########################################################################
 # If your dataset doesn't have a CF-conforming grid mapping variable, you can manually specify
@@ -153,7 +153,7 @@ temperature
 # corresponding to this CRS:
 
 # Cartopy CRS, useful for plotting
-temperature.metpy.cartopy_crs
+relative_humidity.metpy.cartopy_crs
 
 #########################################################################
 
