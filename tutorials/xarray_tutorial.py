@@ -12,8 +12,8 @@ models (the other being Pint Quantities). MetPy also provides DataArray and Data
 *accessors* (collections of methods and properties attached to the ``.metpy`` property) for
 coordinate/CRS and unit operations.
 
-Full information on MetPy's accessors is available in the `appropriate section of the
-reference guide <../api/generated/metpy.xarray.html>`_, otherwise, continue on in this
+Full information on MetPy's accessors is available in the :doc:`appropriate section of the
+reference guide </api/generated/metpy.xarray>`, otherwise, continue on in this
 tutorial for a demonstration of the three main components of MetPy's integration with xarray
 (coordinates/coordinate reference systems, units, and calculations), as well as instructive
 examples for both CF-compliant and non-compliant datasets.
@@ -282,7 +282,7 @@ cape
 # A few remaining portions of MetPy's calculations (mainly the interpolation module and a few
 # other functions) do not fully support xarray, and so, use of ``.values`` may be needed to
 # convert to a bare NumPy array. For full information on xarray support for your function of
-# interest, see the `Reference Guide <../api/index.html>`_.
+# interest, see the :doc:`/api/index`.
 #
 # CF-Compliant Dataset Example
 # ----------------------------
