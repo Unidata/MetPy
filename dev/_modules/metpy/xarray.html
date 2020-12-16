@@ -337,7 +337,8 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        If not already existing as a `pint.Quantity` or Dask array, the data of this DataArray</span>
-<span class="sd">        will be loaded into memory by this operation.</span>
+<span class="sd">        will be loaded into memory by this operation. Do not utilize on moderate- to</span>
+<span class="sd">        large-sized remote datasets before subsetting!</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">data</span>
@@ -352,16 +353,27 @@
 <span class="sd">        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory</span>
 <span class="sd">        by this operation. Do not utilize on moderate- to large-sized remote datasets before</span>
 <span class="sd">        subsetting!</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        convert_coordinate_units</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantify</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.convert_coordinate_units"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units">[docs]</a>    <span class="k">def</span> <span class="nf">convert_coordinate_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return new DataArray with coordinate converted to different units.</span>
+        <span class="sd">&quot;&quot;&quot;Return new DataArray with specified coordinate converted to different units.</span>
+
+<span class="sd">        This operation differs from ``.convert_units`` since xarray coordinate indexes do not</span>
+<span class="sd">        yet support unit-aware arrays (even though unit-aware *data* arrays are).</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded</span>
 <span class="sd">        into memory by this operation.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        convert_units</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_coord_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
             <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
@@ -370,7 +382,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="n">coord</span><span class="p">:</span> <span class="n">new_coord_var</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.quantify"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.quantify">[docs]</a>    <span class="k">def</span> <span class="nf">quantify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a DataArray with the data converted to a `pint.Quantity`.</span>
+        <span class="sd">&quot;&quot;&quot;Return a new DataArray with the data converted to a `pint.Quantity`.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -391,7 +403,7 @@
         <span class="k">return</span> <span class="n">quantified_dataarray</span></div>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.dequantify"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.dequantify">[docs]</a>    <span class="k">def</span> <span class="nf">dequantify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a DataArray with the data as magnitude and the units as an attribute.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return a new DataArray with the data as magnitude and the units as an attribute.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="c1"># Only dequantify if quantified</span>
             <span class="n">dequantified_dataarray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
@@ -421,7 +433,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cartopy_geodetic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the Geodetic CRS associated with the native CRS globe.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the cartopy Geodetic CRS associated with the native CRS globe.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">cartopy_geodetic</span>
 
     <span class="nd">@property</span>
@@ -732,6 +744,15 @@
 <div class="viewcode-block" id="MetPyDataArrayAccessor.assign_crs"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.assign_crs">[docs]</a>    <span class="k">def</span> <span class="nf">assign_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cf_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Assign a CRS to this DataArray based on CF projection attributes.</span>
 
+<span class="sd">        Specify a coordinate reference system/grid mapping following the Climate and</span>
+<span class="sd">        Forecasting (CF) conventions (see `Appendix F: Grid Mappings</span>
+<span class="sd">        &lt;http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-grid-mappings&gt;`_</span>
+<span class="sd">        ) and store in the ``metpy_crs`` coordinate.</span>
+
+<span class="sd">        This method is only required if your data do not come from a dataset that follows CF</span>
+<span class="sd">        conventions with respect to grid mappings (in which case the ``.parse_cf`` method will</span>
+<span class="sd">        parse for the CRS metadata automatically).</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cf_attributes : dict, optional</span>
@@ -753,7 +774,7 @@
         <span class="k">return</span> <span class="n">_assign_crs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="p">,</span> <span class="n">cf_attributes</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.assign_latitude_longitude"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.assign_latitude_longitude">[docs]</a>    <span class="k">def</span> <span class="nf">assign_latitude_longitude</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign latitude and longitude coordinates derived from y and x coordinates.</span>
+        <span class="sd">&quot;&quot;&quot;Assign 2D latitude and longitude coordinates derived from 1D y and x coordinates.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -768,8 +789,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
-<span class="sd">        transformations.</span>
+<span class="sd">        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or</span>
+<span class="sd">        ``.assign_crs``). PyProj is used for the coordinate transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check for existing latitude and longitude coords</span>
@@ -786,7 +807,7 @@
         <span class="k">return</span> <span class="n">new_dataarray</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">assign_coordinates</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.assign_y_x"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.assign_y_x">[docs]</a>    <span class="k">def</span> <span class="nf">assign_y_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign y and x dimension coordinates derived from 2D latitude and longitude.</span>
+        <span class="sd">&quot;&quot;&quot;Assign 1D y and x dimension coordinates derived from 2D latitude and longitude.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -804,7 +825,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
+<span class="sd">        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or</span>
+<span class="sd">        ``.assign_crs``) for the y/x projection space. PyProj is used for the coordinate</span>
 <span class="sd">        transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -826,7 +848,8 @@
 <span class="k">class</span> <span class="nc">MetPyDatasetAccessor</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Provide custom attributes and methods on XArray Datasets for MetPy functionality.</span>
 
-<span class="sd">    This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.</span>
+<span class="sd">    This accessor provides parsing of CF grid mapping metadata, generating missing coordinate</span>
+<span class="sd">    types, and unit-/coordinate-type-aware operations.</span>
 
 <span class="sd">        &gt;&gt;&gt; import xarray as xr</span>
 <span class="sd">        &gt;&gt;&gt; from metpy.cbook import get_test_data</span>
@@ -841,7 +864,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
 
 <div class="viewcode-block" id="MetPyDatasetAccessor.parse_cf"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDatasetAccessor.parse_cf">[docs]</a>    <span class="k">def</span> <span class="nf">parse_cf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">varname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse Climate and Forecasting (CF) convention metadata.</span>
+        <span class="sd">&quot;&quot;&quot;Parse dataset for coordinate system metadata according to CF conventions.</span>
+
+<span class="sd">        Interpret the grid mapping metadata in the dataset according to the Climate and</span>
+<span class="sd">        Forecasting (CF) conventions (see `Appendix F: Grid Mappings</span>
+<span class="sd">        &lt;http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-grid-mappings&gt;`_</span>
+<span class="sd">        ) and store in the ``metpy_crs`` coordinate. Also, gives option to manually specify</span>
+<span class="sd">        coordinate types with the ``coordinates`` keyword argument.</span>
+
+<span class="sd">        If your dataset does not follow the CF conventions, you can manually supply the grid</span>
+<span class="sd">        mapping metadata with the ``.assign_crs`` method.</span>
+
+<span class="sd">        This method operates on individual data variables within the dataset, so do not be</span>
+<span class="sd">        suprised if information not associated with individual data variables is not</span>
+<span class="sd">        preserved.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -856,6 +892,10 @@
 <span class="sd">        -------</span>
 <span class="sd">        `xarray.DataArray` or `xarray.Dataset`</span>
 <span class="sd">            Parsed DataArray (if varname is a string) or Dataset</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        assign_crs</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">.plots.mapping</span> <span class="kn">import</span> <span class="n">CFProjection</span>
@@ -969,6 +1009,15 @@
 <div class="viewcode-block" id="MetPyDatasetAccessor.assign_crs"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDatasetAccessor.assign_crs">[docs]</a>    <span class="k">def</span> <span class="nf">assign_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cf_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Assign a CRS to this Datatset based on CF projection attributes.</span>
 
+<span class="sd">        Specify a coordinate reference system/grid mapping following the Climate and</span>
+<span class="sd">        Forecasting (CF) conventions (see `Appendix F: Grid Mappings</span>
+<span class="sd">        &lt;http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-grid-mappings&gt;`_</span>
+<span class="sd">        ) and store in the ``metpy_crs`` coordinate.</span>
+
+<span class="sd">        This method is only required if your dataset does not already follow CF conventions</span>
+<span class="sd">        with respect to grid mappings (in which case the ``.parse_cf`` method will parse for</span>
+<span class="sd">        the CRS metadata automatically).</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cf_attributes : dict, optional</span>
@@ -985,6 +1034,10 @@
 <span class="sd">        -----</span>
 <span class="sd">        CF projection arguments should be supplied as a dictionary or collection of kwargs,</span>
 <span class="sd">        but not both.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        parse_cf</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_assign_crs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="p">,</span> <span class="n">cf_attributes</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
@@ -1006,8 +1059,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
-<span class="sd">        transformations.</span>
+<span class="sd">        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or</span>
+<span class="sd">        ``.assign_crs``). PyProj is used for the coordinate transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Determine if there is a valid grid prototype from which to compute the coordinates,</span>
@@ -1051,8 +1104,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A valid CRS coordinate must be present. PyProj is used for the coordinate</span>
-<span class="sd">        transformations.</span>
+<span class="sd">        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or</span>
+<span class="sd">        ``.assign_crs``). PyProj is used for the coordinate transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Determine if there is a valid grid prototype from which to compute the coordinates,</span>
@@ -1121,7 +1174,14 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetPyDatasetAccessor.quantify"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDatasetAccessor.quantify">[docs]</a>    <span class="k">def</span> <span class="nf">quantify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return new dataset with all numeric variables quantified and cached data loaded.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return new dataset with all numeric variables quantified and cached data loaded.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory</span>
+<span class="sd">        by this operation. Do not utilize on moderate- to large-sized remote datasets before</span>
+<span class="sd">        subsetting!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">da</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">quantify</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="MetPyDatasetAccessor.dequantify"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDatasetAccessor.dequantify">[docs]</a>    <span class="k">def</span> <span class="nf">dequantify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1462,7 +1522,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    f : `xarray.DataArray`</span>
-<span class="sd">        Parsed DataArray (MetPy&#39;s crs coordinate must be available for kind=&quot;actual&quot;)</span>
+<span class="sd">        Parsed DataArray (``metpy_crs`` coordinate must be available for kind=&quot;actual&quot;)</span>
 <span class="sd">    kind : str</span>
 <span class="sd">        Type of grid delta to calculate. &quot;actual&quot; returns true distances as calculated from</span>
 <span class="sd">        longitude and latitude via `lat_lon_grid_deltas`. &quot;nominal&quot; returns horizontal</span>
@@ -1687,7 +1747,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 15, 2020 at 07:54:43.<br/>
+        Last updated on Dec 16, 2020 at 02:37:12.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
