@@ -1055,7 +1055,12 @@
         <span class="n">lnum</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">co_firstlineno</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(\s*def\s)|(\s*async\s+def\s)|(.*(?&lt;!\w)lambda(:|\s))|^(\s*@)&#39;</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">lnum</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lnum</span><span class="p">]):</span> <span class="k">break</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lnum</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">&#39;lineno is out of bounds&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="k">break</span>
             <span class="n">lnum</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">lines</span><span class="p">,</span> <span class="n">lnum</span>
     <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">&#39;could not find code object&#39;</span><span class="p">)</span>
@@ -1117,6 +1122,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">indecorator</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decoratorhasargs</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">tokeneater</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">srowcol</span><span class="p">,</span> <span class="n">erowcol</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">indecorator</span><span class="p">:</span>
@@ -1148,6 +1154,8 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">passline</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">INDENT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="o">=</span> <span class="n">erowcol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">passline</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">DEDENT</span><span class="p">:</span>
@@ -1157,6 +1165,10 @@
             <span class="c1">#  not e.g. for &quot;if: else:&quot; or &quot;try: finally:&quot; blocks)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">EndOfBlock</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">srowcol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span><span class="p">:</span>
+                <span class="c1"># Include comments if indented at least as much as the block</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="n">srowcol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">tokenize</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">NL</span><span class="p">):</span>
             <span class="c1"># any other token on the same indentation level end the previous</span>
             <span class="c1"># block as well, except the pseudo-tokens COMMENT and NL.</span>
@@ -3403,7 +3415,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 16, 2020 at 02:37:12.<br/>
+        Last updated on Dec 16, 2020 at 19:01:01.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
