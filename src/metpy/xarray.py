@@ -146,7 +146,8 @@ class MetPyDataArrayAccessor:
         Notes
         -----
         If not already existing as a `pint.Quantity` or Dask array, the data of this DataArray
-        will be loaded into memory by this operation.
+        will be loaded into memory by this operation. Do not utilize on moderate- to
+        large-sized remote datasets before subsetting!
         """
         if isinstance(self._data_array.data, units.Quantity):
             return self._data_array.data
@@ -161,16 +162,27 @@ class MetPyDataArrayAccessor:
         Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
         by this operation. Do not utilize on moderate- to large-sized remote datasets before
         subsetting!
+
+        See Also
+        --------
+        convert_coordinate_units
         """
         return self.quantify().copy(data=self.unit_array.to(units))
 
     def convert_coordinate_units(self, coord, units):
-        """Return new DataArray with coordinate converted to different units.
+        """Return new DataArray with specified coordinate converted to different units.
+
+        This operation differs from ``.convert_units`` since xarray coordinate indexes do not
+        yet support unit-aware arrays (even though unit-aware *data* arrays are).
 
         Notes
         -----
         Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded
         into memory by this operation.
+
+        See Also
+        --------
+        convert_units
         """
         new_coord_var = self._data_array[coord].copy(
             data=self._data_array[coord].metpy.unit_array.m_as(units)
@@ -179,7 +191,7 @@ class MetPyDataArrayAccessor:
         return self._data_array.assign_coords(coords={coord: new_coord_var})
 
     def quantify(self):
-        """Return a DataArray with the data converted to a `pint.Quantity`.
+        """Return a new DataArray with the data converted to a `pint.Quantity`.
 
         Notes
         -----
@@ -200,7 +212,7 @@ class MetPyDataArrayAccessor:
         return quantified_dataarray
 
     def dequantify(self):
-        """Return a DataArray with the data as magnitude and the units as an attribute."""
+        """Return a new DataArray with the data as magnitude and the units as an attribute."""
         if isinstance(self._data_array.data, units.Quantity):
             # Only dequantify if quantified
             dequantified_dataarray = self._data_array.copy(
@@ -230,7 +242,7 @@ class MetPyDataArrayAccessor:
 
     @property
     def cartopy_geodetic(self):
-        """Return the Geodetic CRS associated with the native CRS globe."""
+        """Return the cartopy Geodetic CRS associated with the native CRS globe."""
         return self.crs.cartopy_geodetic
 
     @property
@@ -541,6 +553,15 @@ class MetPyDataArrayAccessor:
     def assign_crs(self, cf_attributes=None, **kwargs):
         """Assign a CRS to this DataArray based on CF projection attributes.
 
+        Specify a coordinate reference system/grid mapping following the Climate and
+        Forecasting (CF) conventions (see `Appendix F: Grid Mappings
+        <http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-grid-mappings>`_
+        ) and store in the ``metpy_crs`` coordinate.
+
+        This method is only required if your data do not come from a dataset that follows CF
+        conventions with respect to grid mappings (in which case the ``.parse_cf`` method will
+        parse for the CRS metadata automatically).
+
         Parameters
         ----------
         cf_attributes : dict, optional
@@ -562,7 +583,7 @@ class MetPyDataArrayAccessor:
         return _assign_crs(self._data_array, cf_attributes, kwargs)
 
     def assign_latitude_longitude(self, force=False):
-        """Assign latitude and longitude coordinates derived from y and x coordinates.
+        """Assign 2D latitude and longitude coordinates derived from 1D y and x coordinates.
 
         Parameters
         ----------
@@ -577,8 +598,8 @@ class MetPyDataArrayAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. PyProj is used for the coordinate
-        transformations.
+        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or
+        ``.assign_crs``). PyProj is used for the coordinate transformations.
 
         """
         # Check for existing latitude and longitude coords
@@ -595,7 +616,7 @@ class MetPyDataArrayAccessor:
         return new_dataarray.metpy.assign_coordinates(None)
 
     def assign_y_x(self, force=False, tolerance=None):
-        """Assign y and x dimension coordinates derived from 2D latitude and longitude.
+        """Assign 1D y and x dimension coordinates derived from 2D latitude and longitude.
 
         Parameters
         ----------
@@ -613,7 +634,8 @@ class MetPyDataArrayAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. PyProj is used for the coordinate
+        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or
+        ``.assign_crs``) for the y/x projection space. PyProj is used for the coordinate
         transformations.
 
         """
@@ -635,7 +657,8 @@ class MetPyDataArrayAccessor:
 class MetPyDatasetAccessor:
     """Provide custom attributes and methods on XArray Datasets for MetPy functionality.
 
-    This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.
+    This accessor provides parsing of CF grid mapping metadata, generating missing coordinate
+    types, and unit-/coordinate-type-aware operations.
 
         >>> import xarray as xr
         >>> from metpy.cbook import get_test_data
@@ -650,7 +673,20 @@ class MetPyDatasetAccessor:
         self._dataset = dataset
 
     def parse_cf(self, varname=None, coordinates=None):
-        """Parse Climate and Forecasting (CF) convention metadata.
+        """Parse dataset for coordinate system metadata according to CF conventions.
+
+        Interpret the grid mapping metadata in the dataset according to the Climate and
+        Forecasting (CF) conventions (see `Appendix F: Grid Mappings
+        <http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-grid-mappings>`_
+        ) and store in the ``metpy_crs`` coordinate. Also, gives option to manually specify
+        coordinate types with the ``coordinates`` keyword argument.
+
+        If your dataset does not follow the CF conventions, you can manually supply the grid
+        mapping metadata with the ``.assign_crs`` method.
+
+        This method operates on individual data variables within the dataset, so do not be
+        suprised if information not associated with individual data variables is not
+        preserved.
 
         Parameters
         ----------
@@ -665,6 +701,10 @@ class MetPyDatasetAccessor:
         -------
         `xarray.DataArray` or `xarray.Dataset`
             Parsed DataArray (if varname is a string) or Dataset
+
+        See Also
+        --------
+        assign_crs
 
         """
         from .plots.mapping import CFProjection
@@ -778,6 +818,15 @@ class MetPyDatasetAccessor:
     def assign_crs(self, cf_attributes=None, **kwargs):
         """Assign a CRS to this Datatset based on CF projection attributes.
 
+        Specify a coordinate reference system/grid mapping following the Climate and
+        Forecasting (CF) conventions (see `Appendix F: Grid Mappings
+        <http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-grid-mappings>`_
+        ) and store in the ``metpy_crs`` coordinate.
+
+        This method is only required if your dataset does not already follow CF conventions
+        with respect to grid mappings (in which case the ``.parse_cf`` method will parse for
+        the CRS metadata automatically).
+
         Parameters
         ----------
         cf_attributes : dict, optional
@@ -794,6 +843,10 @@ class MetPyDatasetAccessor:
         -----
         CF projection arguments should be supplied as a dictionary or collection of kwargs,
         but not both.
+
+        See Also
+        --------
+        parse_cf
 
         """
         return _assign_crs(self._dataset, cf_attributes, kwargs)
@@ -815,8 +868,8 @@ class MetPyDatasetAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. PyProj is used for the coordinate
-        transformations.
+        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or
+        ``.assign_crs``). PyProj is used for the coordinate transformations.
 
         """
         # Determine if there is a valid grid prototype from which to compute the coordinates,
@@ -860,8 +913,8 @@ class MetPyDatasetAccessor:
 
         Notes
         -----
-        A valid CRS coordinate must be present. PyProj is used for the coordinate
-        transformations.
+        A valid CRS coordinate must be present (as assigned by ``.parse_cf`` or
+        ``.assign_crs``). PyProj is used for the coordinate transformations.
 
         """
         # Determine if there is a valid grid prototype from which to compute the coordinates,
@@ -930,7 +983,14 @@ class MetPyDatasetAccessor:
         )
 
     def quantify(self):
-        """Return new dataset with all numeric variables quantified and cached data loaded."""
+        """Return new dataset with all numeric variables quantified and cached data loaded.
+
+        Notes
+        -----
+        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+        by this operation. Do not utilize on moderate- to large-sized remote datasets before
+        subsetting!
+        """
         return self._dataset.map(lambda da: da.metpy.quantify())
 
     def dequantify(self):
@@ -1271,7 +1331,7 @@ def grid_deltas_from_dataarray(f, kind='default'):
     Parameters
     ----------
     f : `xarray.DataArray`
-        Parsed DataArray (MetPy's crs coordinate must be available for kind="actual")
+        Parsed DataArray (``metpy_crs`` coordinate must be available for kind="actual")
     kind : str
         Type of grid delta to calculate. "actual" returns true distances as calculated from
         longitude and latitude via `lat_lon_grid_deltas`. "nominal" returns horizontal
