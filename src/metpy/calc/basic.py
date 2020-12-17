@@ -139,6 +139,9 @@ def wind_components(speed, wind_direction):
     >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
      (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
 
+    .. versionchanged:: 1.0
+       Renamed ``wdir`` parameter to ``wind_direction``
+
     """
     wind_direction = _check_radians(wind_direction, max_radians=4 * np.pi)
     u = -speed * np.sin(wind_direction)
@@ -185,7 +188,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     See Also
     --------
-    heat_index
+    heat_index, apparent_temperature
 
     """
     # Correct for lower height measurement of winds if necessary
@@ -239,9 +242,13 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         A flag indicating whether a masked array should be returned with
         values masked where the temperature < 80F. Defaults to `True`.
 
+
+    .. versionchanged:: 1.0
+       Renamed ``rh`` parameter to ``relative_humidity``
+
     See Also
     --------
-    windchill
+    windchill, apparent_temperature
 
     """
     temperature = np.atleast_1d(temperature)
@@ -351,6 +358,10 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     -------
     `pint.Quantity`
         Corresponding apparent temperature value(s)
+
+
+    .. versionchanged:: 1.0
+       Renamed ``rh`` parameter to ``relative_humidity``
 
     See Also
     --------
@@ -532,6 +543,9 @@ def geopotential_to_height(geopotential):
     (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton's Law of
     Gravitation assuming a spherical Earth and no centrifugal force effects.)
 
+    .. versionchanged:: 1.0
+       Renamed ``geopot`` parameter to ``geopotential``
+
     See Also
     --------
     height_to_geopotential
@@ -679,6 +693,9 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     * :math:`\sigma` is non-dimensional, scaled pressure
     * :math:`p_{sfc}` is pressure at the surface or model floor
     * :math:`p_{top}` is pressure at the top of the model domain
+
+    .. versionchanged:: 1.0
+       Renamed ``psfc``, ``ptop`` parameters to ``pressure_sfc``, ``pressure_top``
 
     """
     if np.any(sigma < 0) or np.any(sigma > 1):

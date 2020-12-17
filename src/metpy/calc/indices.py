@@ -55,6 +55,9 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
 
+    .. versionchanged:: 1.0
+       Signature changed from ``(dewpt, pressure, bottom=None, top=None)``
+
     """
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
@@ -120,6 +123,9 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
+
     """
     ret = []  # Returned variable means in layer
     layer_arg = get_layer(pressure, *args, height=height,
@@ -175,6 +181,9 @@ def bunkers_storm_motion(pressure, u, v, height):
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
 
     """
     # mean wind from sfc-6km
@@ -251,6 +260,9 @@ def bulk_shear(pressure, u, v, height=None, bottom=None, depth=None):
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
 
     """
     _, u_layer, v_layer = get_layer(pressure, u, v, height=height,
@@ -406,6 +418,9 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
 
     """
     # Convert everything to m/s

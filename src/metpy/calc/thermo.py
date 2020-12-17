@@ -45,6 +45,10 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     `pint.Quantity`
         Relative humidity
 
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
     See Also
     --------
     saturation_vapor_pressure
@@ -178,6 +182,9 @@ def temperature_from_potential_temperature(pressure, potential_temperature):
     >>> p = 850 * units.mbar
     >>> T = temperature_from_potential_temperature(p, theta)
 
+    .. versionchanged:: 1.0
+       Renamed ``theta`` parameter to ``potential_temperature``
+
     """
     return potential_temperature * exner_function(pressure)
 
@@ -221,6 +228,9 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     -----
     Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or
     grids) unless reference_pressure is specified.
+
+    .. versionchanged:: 1.0
+       Renamed ``ref_pressure`` parameter to ``reference_pressure``
 
     """
     if reference_pressure is None:
@@ -275,6 +285,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or
     grids).
+
+    .. versionchanged:: 1.0
+       Renamed ``ref_pressure`` parameter to ``reference_pressure``
 
     """
     def dt(t, p):
@@ -380,6 +393,9 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
     """
     def _lcl_iter(p, p0, w, t):
         td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
@@ -452,6 +468,9 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt``,``dewpoint_start`` parameters to ``dewpoint``, ``dewpoint_start``
 
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
@@ -633,6 +652,9 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     # Default to surface parcel if no profile or starting pressure level is given
@@ -694,6 +716,9 @@ def parcel_profile(pressure, temperature, dewpoint):
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
 
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
+
     """
     _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint)
     return concatenate((t_l, t_u))
@@ -748,6 +773,9 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Also, will only return Pint Quantities, even when given xarray DataArray profiles. To
     obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
     p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
@@ -899,6 +927,9 @@ def vapor_pressure(pressure, mixing_ratio):
 
     .. math:: e = p \frac{r}{r + \epsilon}
 
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
+
     See Also
     --------
     saturation_vapor_pressure, dewpoint
@@ -962,6 +993,10 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
     `pint.Quantity`
         Dewpoint temperature
 
+
+    .. versionchanged:: 1.0
+       Renamed ``rh`` parameter to ``relative_humidity``
+
     See Also
     --------
     dewpoint, saturation_vapor_pressure
@@ -999,6 +1034,9 @@ def dewpoint(vapor_pressure):
     formula for dewpoint in degrees Celsius:
 
     .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}
+
+    .. versionchanged:: 1.0
+       Renamed ``e`` parameter to ``vapor_pressure``
 
     """
     val = np.log(vapor_pressure / sat_pressure_0c)
@@ -1040,6 +1078,9 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
 
     .. math:: r = \epsilon \frac{e}{p - e}
 
+    .. versionchanged:: 1.0
+       Renamed ``part_press``, ``tot_press`` parameters to ``partial_press``, ``total_press``
+
     See Also
     --------
     saturation_mixing_ratio, vapor_pressure
@@ -1076,6 +1117,9 @@ def saturation_mixing_ratio(total_press, temperature):
     such as [Hobbs1977]_ pg.73:
 
     .. math:: r_s = \epsilon \frac{e_s}{p - e_s}
+
+    .. versionchanged:: 1.0
+       Renamed ``tot_press`` parameter to ``total_press``
 
     """
     return mixing_ratio(saturation_vapor_pressure(temperature), total_press)
@@ -1239,6 +1283,9 @@ def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpcons
     -----
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
+
     """
     return temperature * ((mixing_ratio + molecular_weight_ratio)
                           / (molecular_weight_ratio * (1 + mixing_ratio)))
@@ -1282,6 +1329,9 @@ def virtual_potential_temperature(pressure, temperature, mixing_ratio,
     -----
     .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
+
     """
     pottemp = potential_temperature(pressure, temperature)
     return virtual_temperature(pottemp, mixing_ratio, molecular_weight_ratio)
@@ -1324,6 +1374,9 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
     -----
     .. math:: \rho = \frac{p}{R_dT_v}
 
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
+
     """
     virttemp = virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
     return (pressure / (mpconsts.Rd * virttemp)).to(units.kilogram / units.meter ** 3)
@@ -1365,6 +1418,10 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
     * :math:`RH` is relative humidity as a unitless ratio
     * :math:`e` is vapor pressure from the wet psychrometric calculation
     * :math:`e_s` is the saturation vapor pressure
+
+    .. versionchanged:: 1.0
+       Changed signature from
+       ``(dry_bulb_temperature, web_bulb_temperature, pressure, **kwargs)``
 
     See Also
     --------
@@ -1423,6 +1480,10 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     Psychrometer coefficient depends on the specific instrument being used and the ventilation
     of the instrument.
 
+    .. versionchanged:: 1.0
+       Changed signature from
+       ``(dry_bulb_temperature, wet_bulb_temperature, pressure, psychrometer_coefficient)``
+
     See Also
     --------
     saturation_vapor_pressure
@@ -1468,6 +1529,9 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     * :math:`relative_humidity` is relative humidity as a unitless ratio
     * :math:`w_s` is the saturation mixing ratio
 
+    .. versionchanged:: 1.0
+       Changed signature from ``(relative_humidity, temperature, pressure)``
+
     See Also
     --------
     relative_humidity_from_mixing_ratio, saturation_mixing_ratio
@@ -1511,6 +1575,9 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     * :math:`relative_humidity` is relative humidity as a unitless ratio
     * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(mixing_ratio, temperature, pressure)``
 
     See Also
     --------
@@ -1629,6 +1696,9 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
     * :math:`q` is specific humidity
     * :math:`w_s` is the saturation mixing ratio
 
+    .. versionchanged:: 1.0
+       Changed signature from ``(specific_humidity, temperature, pressure)``
+
     See Also
     --------
     relative_humidity_from_mixing_ratio
@@ -1704,6 +1774,9 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``dewpt`` parameter to ``dewpoint``
 
     See Also
     --------
@@ -1850,6 +1923,9 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
+
     """
     p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, height=height, interpolate=False)
@@ -1914,6 +1990,9 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
     Will only return Pint Quantities, even when given xarray DataArray profiles. To
     obtain a xarray Dataset instead, use `isentropic_interpolation_as_dataset` instead.
+
+    .. versionchanged:: 1.0
+       Renamed ``theta_levels``, ``axis`` parameters to ``levels``, ``vertical_dim``
 
     See Also
     --------
@@ -2344,6 +2423,10 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``p``, ``dewpt``, ``heights`` parameters to
+       ``pressure``, ``dewpoint``, ``height``
+
     """
     # If a parcel starting pressure is not provided, use the surface
     if not parcel_start_pressure:
@@ -2415,6 +2498,9 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``p``, ``heights`` parameters to ``pressure``, ``height``
+
     """
     layer = get_layer(pressure, *args, height=height, bottom=bottom,
                       depth=depth, interpolate=interpolate)
@@ -2458,6 +2544,10 @@ def dry_static_energy(height, temperature):
     `pint.Quantity`
         Dry static energy
 
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
+
     See Also
     --------
     montgomery_streamfunction
@@ -2478,14 +2568,6 @@ def moist_static_energy(height, temperature, specific_humidity):
     This function will calculate the moist static energy following
     equation 3.72 in [Hobbs2006]_.
 
-    Notes
-    -----
-    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q
-
-    * :math:`T` is temperature
-    * :math:`z` is height
-    * :math:`q` is specific humidity
-
     Parameters
     ----------
     height : `pint.Quantity`
@@ -2501,6 +2583,17 @@ def moist_static_energy(height, temperature, specific_humidity):
     -------
     `pint.Quantity`
         Moist static energy
+
+    Notes
+    -----
+    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q
+
+    * :math:`T` is temperature
+    * :math:`z` is height
+    * :math:`q` is specific humidity
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
 
     """
     return (dry_static_energy(height, temperature)
@@ -2561,6 +2654,9 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
     # Get the data for the layer, conditional upon bottom/depth being specified and mixing
@@ -2683,6 +2779,10 @@ def brunt_vaisala_frequency_squared(height, potential_temperature, vertical_dim=
         `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in
         which case will be `xarray.DataArray`.
 
+
+    .. versionchanged:: 1.0
+       Renamed ``heights``, ``axis`` parameters to ``height``, ``vertical_dim``
+
     See Also
     --------
     brunt_vaisala_frequency, brunt_vaisala_period, potential_temperature
@@ -2735,6 +2835,10 @@ def brunt_vaisala_frequency(height, potential_temperature, vertical_dim=0):
         `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in
         which case will be `xarray.DataArray`.
 
+
+    .. versionchanged:: 1.0
+       Renamed ``heights``, ``axis`` parameters to ``height``, ``vertical_dim``
+
     See Also
     --------
     brunt_vaisala_frequency_squared, brunt_vaisala_period, potential_temperature
@@ -2781,6 +2885,9 @@ def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
         `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in
         which case will be `xarray.DataArray`.
 
+
+    .. versionchanged:: 1.0
+       Renamed ``heights``, ``axis`` parameters to ``height``, ``vertical_dim``
 
     See Also
     --------
@@ -2886,6 +2993,10 @@ def static_stability(pressure, temperature, vertical_dim=0):
     `pint.Quantity`
         The profile of static stability
 
+
+    .. versionchanged:: 1.0
+       Renamed ``axis`` parameter ``vertical_dim``
+
     """
     theta = potential_temperature(pressure, temperature)
 
@@ -2920,6 +3031,10 @@ def dewpoint_from_specific_humidity(pressure, temperature, specific_humidity):
     -------
     `pint.Quantity`
         Dew point temperature
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(specific_humidity, temperature, pressure)``
 
     See Also
     --------
@@ -3047,6 +3162,10 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
     -------
     `pint.Quantity`
         Specific humidity
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(dewpoint, pressure)``
 
     See Also
     --------
