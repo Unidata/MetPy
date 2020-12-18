@@ -224,6 +224,7 @@
               <span class="s1">&#39;Yury Selivanov &lt;yselivanov@sprymix.com&gt;&#39;</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">dis</span>
 <span class="kn">import</span> <span class="nn">collections.abc</span>
 <span class="kn">import</span> <span class="nn">enum</span>
@@ -961,6 +962,42 @@
         <span class="k">if</span> <span class="n">builtinobject</span> <span class="ow">is</span> <span class="nb">object</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">builtin</span>
 
+
+<span class="k">class</span> <span class="nc">ClassFoundException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">_ClassFinder</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeVisitor</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qualname</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">=</span> <span class="n">qualname</span>
+
+    <span class="k">def</span> <span class="nf">visit_FunctionDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;locals&gt;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="n">visit_AsyncFunctionDef</span> <span class="o">=</span> <span class="n">visit_FunctionDef</span>
+
+    <span class="k">def</span> <span class="nf">visit_ClassDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">):</span>
+            <span class="c1"># Return the decorator for the class if present</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">decorator_list</span><span class="p">:</span>
+                <span class="n">line_number</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">decorator_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lineno</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">line_number</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">lineno</span>
+
+            <span class="c1"># decrement by one since lines starts with indexing by zero</span>
+            <span class="n">line_number</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">raise</span> <span class="n">ClassFoundException</span><span class="p">(</span><span class="n">line_number</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+
 <span class="k">def</span> <span class="nf">findsource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the entire source file and starting line number for an object.</span>
 
@@ -993,25 +1030,15 @@
         <span class="k">return</span> <span class="n">lines</span><span class="p">,</span> <span class="mi">0</span>
 
     <span class="k">if</span> <span class="n">isclass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(\s*)class\s*&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\b&#39;</span><span class="p">)</span>
-        <span class="c1"># make some effort to find the best matching class definition:</span>
-        <span class="c1"># use the one with the least indentation, which is the one</span>
-        <span class="c1"># that&#39;s most probably not inside a function definition.</span>
-        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
-            <span class="n">match</span> <span class="o">=</span> <span class="n">pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-                <span class="c1"># if it&#39;s at toplevel, it&#39;s already the best one</span>
-                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">lines</span><span class="p">,</span> <span class="n">i</span>
-                <span class="c1"># else add whitespace to candidate list</span>
-                <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">i</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">candidates</span><span class="p">:</span>
-            <span class="c1"># this will sort by whitespace, and by line number,</span>
-            <span class="c1"># less whitespace first</span>
-            <span class="n">candidates</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">lines</span><span class="p">,</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">qualname</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="vm">__qualname__</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">class_finder</span> <span class="o">=</span> <span class="n">_ClassFinder</span><span class="p">(</span><span class="n">qualname</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">class_finder</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ClassFoundException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">line_number</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">lines</span><span class="p">,</span> <span class="n">line_number</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">&#39;could not find class definition&#39;</span><span class="p">)</span>
 
@@ -1029,7 +1056,12 @@
         <span class="n">lnum</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">co_firstlineno</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(\s*def\s)|(\s*async\s+def\s)|(.*(?&lt;!\w)lambda(:|\s))|^(\s*@)&#39;</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">lnum</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lnum</span><span class="p">]):</span> <span class="k">break</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lnum</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">&#39;lineno is out of bounds&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="k">break</span>
             <span class="n">lnum</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">lines</span><span class="p">,</span> <span class="n">lnum</span>
     <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">&#39;could not find code object&#39;</span><span class="p">)</span>
@@ -1091,6 +1123,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">indecorator</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decoratorhasargs</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">tokeneater</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">srowcol</span><span class="p">,</span> <span class="n">erowcol</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">indecorator</span><span class="p">:</span>
@@ -1122,6 +1155,8 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">passline</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">INDENT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="o">=</span> <span class="n">erowcol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">passline</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">DEDENT</span><span class="p">:</span>
@@ -1131,6 +1166,10 @@
             <span class="c1">#  not e.g. for &quot;if: else:&quot; or &quot;try: finally:&quot; blocks)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">EndOfBlock</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">srowcol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_col0</span><span class="p">:</span>
+                <span class="c1"># Include comments if indented at least as much as the block</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="n">srowcol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">tokenize</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">NL</span><span class="p">):</span>
             <span class="c1"># any other token on the same indentation level end the previous</span>
             <span class="c1"># block as well, except the pseudo-tokens COMMENT and NL.</span>
@@ -1328,7 +1367,6 @@
     <span class="n">varkw</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">posonlyargs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">kwonlyargs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">defaults</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">kwdefaults</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2795,7 +2833,7 @@
 
 <span class="sd">    Has the following public attributes:</span>
 
-<span class="sd">    * arguments : OrderedDict</span>
+<span class="sd">    * arguments : dict</span>
 <span class="sd">        An ordered mutable mapping of parameters&#39; names to arguments&#39; values.</span>
 <span class="sd">        Does not contain arguments&#39; default values.</span>
 <span class="sd">    * signature : Signature</span>
@@ -2895,7 +2933,7 @@
                     <span class="c1"># Signature.bind_partial().</span>
                     <span class="k">continue</span>
                 <span class="n">new_arguments</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">new_arguments</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">new_arguments</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span><span class="p">:</span>
@@ -2963,7 +3001,7 @@
                 <span class="n">top_kind</span> <span class="o">=</span> <span class="n">_POSITIONAL_ONLY</span>
                 <span class="n">kind_defaults</span> <span class="o">=</span> <span class="kc">False</span>
 
-                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
                     <span class="n">kind</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">kind</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span>
 
@@ -2998,8 +3036,7 @@
 
                     <span class="n">params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">params</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(((</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-                                                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">))</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">MappingProxyType</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_return_annotation</span> <span class="o">=</span> <span class="n">return_annotation</span>
@@ -3081,7 +3118,7 @@
     <span class="k">def</span> <span class="nf">_bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Private method. Don&#39;t use directly.&quot;&quot;&quot;</span>
 
-        <span class="n">arguments</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">parameters</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="n">parameters_ex</span> <span class="o">=</span> <span class="p">()</span>
@@ -3379,7 +3416,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 17:37:05.<br/>
+        Last updated on Dec 18, 2020 at 17:37:52.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
