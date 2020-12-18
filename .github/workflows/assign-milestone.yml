@@ -23,6 +23,10 @@ jobs:
               console.log('PR has existing milestone, skipping.');
               return;
             }
+            if (context.payload.pull_request.user.type === 'Bot') {
+              console.log('Ignoring Bot PR');
+              return;
+            }
             milestones = await github.issues.listMilestones({
               owner: context.repo.owner,
               repo: context.repo.repo,
