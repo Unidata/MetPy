@@ -234,7 +234,7 @@ def check_units(*units_by_pos, **units_by_name):
                 if 'none' in msg:
                     msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
                             '    from metpy.units import units\n'
-                            '    x = x * units.meter / units.second')
+                            '    x = units.Quantity(x, "m/s")')
 
                 # If function has changed, mention that fact
                 if func.__doc__:
