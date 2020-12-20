@@ -195,7 +195,7 @@ def _next_non_masked_element(a, idx):
     a : array-like
         1-dimensional array of numeric values
     idx : integer
-        index of requested element
+        Index of requested element
 
     Returns
     -------
@@ -220,12 +220,12 @@ def _delete_masked_points(*arrs):
     Parameters
     ----------
     arrs : one or more array-like
-        source arrays
+        Source arrays
 
     Returns
     -------
     arrs : one or more array-like
-        arrays with masked elements removed
+        Arrays with masked elements removed
 
     """
     if any(hasattr(a, 'mask') for a in arrs):
@@ -333,7 +333,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
     Returns
     -------
     `pint.Quantity`
-        The bound pressure and height.
+        The bound pressure and height
 
     """
     # avoid circular import if basic.py ever imports something from tools.py
@@ -434,11 +434,11 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     height : array-like
         Atmospheric height
     depth : `pint.Quantity`
-        The thickness of the layer
+        Thickness of the layer
     args : array-like
         Atmospheric variable(s) measured at the given pressures
     bottom : `pint.Quantity`, optional
-        The bottom of the layer
+        Bottom of the layer
     interpolate : bool, optional
         Interpolate the top and bottom points if they are not in the given data. Defaults
         to True.
@@ -449,7 +449,7 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     Returns
     -------
     `pint.Quantity, pint.Quantity`
-        The height and data variables of the layer
+        Height and data variables of the layer
 
     Notes
     -----
@@ -538,10 +538,10 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
         Atmospheric heights corresponding to the given pressures. Defaults to using
         heights calculated from ``pressure`` assuming a standard atmosphere [NOAA1976]_.
     bottom : `pint.Quantity`, optional
-        The bottom of the layer as a pressure or height above the surface pressure. Defaults
+        Bottom of the layer as a pressure or height above the surface pressure. Defaults
         to the highest pressure or lowest height given.
     depth : `pint.Quantity`, optional
-        The thickness of the layer as a pressure or height above the bottom of the layer.
+        Thickness of the layer as a pressure or height above the bottom of the layer.
         Defaults to 100 hPa.
     interpolate : bool, optional
         Interpolate the top and bottom points if they are not in the given data. Defaults
@@ -642,7 +642,7 @@ def find_bounding_indices(arr, values, axis, from_below=True):
         One or more values to search for in `arr`
 
     axis : int
-        The dimension of `arr` along which to search.
+        Dimension of `arr` along which to search
 
     from_below : bool, optional
         Whether to search from "below" (i.e. low indices to high indices). If `False`,
@@ -749,7 +749,7 @@ def _less_or_close(a, value, **kwargs):
     Returns
     -------
     array-like
-        Boolean array where values are less than or nearly equal to value.
+        Boolean array where values are less than or nearly equal to value
 
     """
     return (a < value) | np.isclose(a, value, **kwargs)
@@ -771,10 +771,11 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     Parameters
     ----------
     longitude : array_like
-        array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in
+        Array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
+
     latitude : array_like
-        array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
+        Array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
     x_dim: int
         axis number for the x dimension, defaults to -1.
@@ -787,7 +788,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     Returns
     -------
     dx, dy:
-        at least two dimensional arrays of signed deltas between grid points in the x and y
+        At least two dimensional arrays of signed deltas between grid points in the x and y
         direction
 
     Notes
@@ -955,7 +956,7 @@ def first_derivative(f, axis=None, x=None, delta=None):
         to 0. For reference, the current standard axis types are 'time', 'vertical', 'y', and
         'x'.
     x : array-like, optional
-        The coordinate values corresponding to the grid points in `f`.
+        The coordinate values corresponding to the grid points in `f`
     delta : array-like, optional
         Spacing between the grid points in `f`. Should be one item less than the size
         of `f` along `axis`.
@@ -963,7 +964,7 @@ def first_derivative(f, axis=None, x=None, delta=None):
     Returns
     -------
     array-like
-        The first derivative calculated along the selected axis.
+        The first derivative calculated along the selected axis
 
     See Also
     --------
@@ -1027,7 +1028,7 @@ def second_derivative(f, axis=None, x=None, delta=None):
     `delta` are given, `f` will be converted to a `pint.Quantity` and the derivative returned
     as a `pint.Quantity`, otherwise, if neither `x` nor `delta` are given, the attached
     coordinate information belonging to `axis` will be used and the derivative will be returned
-    as an `xarray.DataArray`.
+    as an `xarray.DataArray`
 
     This uses 3 points to calculate the derivative, using forward or backward at the edges of
     the grid as appropriate, and centered elsewhere. The irregular spacing is handled
@@ -1045,7 +1046,7 @@ def second_derivative(f, axis=None, x=None, delta=None):
         to 0. For reference, the current standard axis types are 'time', 'vertical', 'y', and
         'x'.
     x : array-like, optional
-        The coordinate values corresponding to the grid points in `f`.
+        The coordinate values corresponding to the grid points in `f`
     delta : array-like, optional
         Spacing between the grid points in `f`. There should be one item less than the size
         of `f` along `axis`.
@@ -1053,7 +1054,7 @@ def second_derivative(f, axis=None, x=None, delta=None):
     Returns
     -------
     array-like
-        The second derivative calculated along the selected axis.
+        The second derivative calculated along the selected axis
 
     See Also
     --------
@@ -1284,12 +1285,12 @@ def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
     Works for abbrieviations or whole words (E -> 90 | South -> 180)
-    and also is able to parse 22.5 degreee angles such as ESE/East South East
+    and also is able to parse 22.5 degreee angles such as ESE/East South East.
 
     Parameters
     ----------
     input_dir : string or array-like
-        Directional text such as west, [south-west, ne], etc
+        Directional text such as west, [south-west, ne], etc.
 
     Returns
     -------
@@ -1345,7 +1346,7 @@ def angle_to_direction(input_angle, full=False, level=3):
     Parameters
     ----------
     input_angle : numeric or array-like numeric
-        Angles such as 0, 25, 45, 360, 410, etc
+        Angles such as 0, 25, 45, 360, 410, etc.
     full : boolean
         True returns full text (South), False returns abbrieviated text (S)
     level : int
@@ -1443,8 +1444,8 @@ def _unabbrieviate_direction(abb_dir_str):
 def _remove_nans(*variables):
     """Remove NaNs from arrays that cause issues with calculations.
 
-    Takes a variable number of arguments
-    Returns masked arrays in the same order as provided
+    Takes a variable number of arguments and returns masked arrays in the same
+    order as provided.
     """
     mask = None
     for v in variables:

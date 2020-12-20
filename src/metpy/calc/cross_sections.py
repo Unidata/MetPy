@@ -69,7 +69,7 @@ def latitude_from_cross_section(cross):
     Parameters
     ----------
     cross : `xarray.DataArray`
-        The input DataArray of a cross-section from which to obtain latitudes.
+        The input DataArray of a cross-section from which to obtain latitudes
 
     Returns
     -------
@@ -97,7 +97,7 @@ def unit_vectors_from_cross_section(cross, index='index'):
     r"""Calculate the unit tanget and unit normal vectors from a cross-section.
 
     Given a path described parametrically by :math:`\vec{l}(i) = (x(i), y(i))`, we can find
-    the unit tangent vector by the formula
+    the unit tangent vector by the formula:
 
     .. math:: \vec{T}(i) =
         \frac{1}{\sqrt{\left( \frac{dx}{di} \right)^2 + \left( \frac{dy}{di} \right)^2}}
@@ -109,16 +109,17 @@ def unit_vectors_from_cross_section(cross, index='index'):
     Parameters
     ----------
     cross : `xarray.DataArray`
-        The input DataArray of a cross-section from which to obtain latitudes.
+        The input DataArray of a cross-section from which to obtain latitudes
+
     index : `str`, optional
         A string denoting the index coordinate of the cross section, defaults to 'index' as
-        set by `metpy.interpolate.cross_section`.
+        set by `metpy.interpolate.cross_section`
 
     Returns
     -------
     unit_tangent_vector, unit_normal_vector : tuple of `numpy.ndarray`
         Arrays describing the unit tangent and unit normal vectors (in x,y) for all points
-        along the cross section.
+        along the cross section
 
     """
     x, y = distances_from_cross_section(cross)
@@ -140,6 +141,7 @@ def cross_section_components(data_x, data_y, index='index'):
     data_x : `xarray.DataArray`
         The input DataArray of the x-component (in terms of data projection) of the vector
         field.
+
     data_y : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the vector
         field.
@@ -147,8 +149,7 @@ def cross_section_components(data_x, data_y, index='index'):
     Returns
     -------
     component_tangential, component_normal: tuple of `xarray.DataArray`
-        The components of the vector field in the tangential and normal directions,
-        respectively.
+        Components of the vector field in the tangential and normal directions, respectively
 
     See Also
     --------
@@ -186,7 +187,7 @@ def normal_component(data_x, data_y, index='index'):
     Returns
     -------
     component_normal: `xarray.DataArray`
-        The component of the vector field in the normal directions.
+        Component of the vector field in the normal directions
 
     See Also
     --------
@@ -219,15 +220,16 @@ def tangential_component(data_x, data_y, index='index'):
     ----------
     data_x : `xarray.DataArray`
         The input DataArray of the x-component (in terms of data projection) of the vector
-        field.
+        field
+
     data_y : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the vector
-        field.
+        field
 
     Returns
     -------
     component_tangential: `xarray.DataArray`
-        The component of the vector field in the tangential directions.
+        Component of the vector field in the tangential directions
 
     See Also
     --------
@@ -257,7 +259,7 @@ def absolute_momentum(u, v, index='index'):
     r"""Calculate cross-sectional absolute momentum (also called pseudoangular momentum).
 
     As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is
-    given by
+    given by:
 
     .. math:: M = v + fx
 
@@ -279,7 +281,7 @@ def absolute_momentum(u, v, index='index'):
     Returns
     -------
     absolute_momentum: `xarray.DataArray`
-        The absolute momentum
+        Absolute momentum
 
     Notes
     -----

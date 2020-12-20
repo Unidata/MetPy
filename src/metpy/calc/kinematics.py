@@ -309,7 +309,7 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
-    outlined in [Bluestein1993]_ pg.248-253.
+    outlined in [Bluestein1993]_ pg.248-253
 
     .. math:: F=\frac{1}{2}\left|\nabla \theta\right|[D cos(2\beta)-\delta]
 
@@ -470,7 +470,7 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
     Returns
     -------
     A 2-item tuple of arrays
-        A tuple of the u-component and v-component of the ageostrophic wind.
+        A tuple of the u-component and v-component of the ageostrophic wind
 
     """
     u_geostrophic, v_geostrophic = geostrophic_wind(
@@ -534,7 +534,7 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
-    Calculates storm relatively helicity following [Markowski2010]_ 230-231.
+    Calculates storm relatively helicity following [Markowski2010]_ pg.230-231
 
     .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
 
@@ -546,28 +546,36 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     Parameters
     ----------
     u : array-like
-        u component winds
+        U component winds
+
     v : array-like
-        v component winds
+        V component winds
+
     height : array-like
-        atmospheric height, will be converted to AGL
+        Atmospheric height, will be converted to AGL
+
     depth : number
-        depth of the layer
+        Depth of the layer
+
     bottom : number
-        height of layer bottom AGL (default is surface)
+        Height of layer bottom AGL (default is surface)
+
     storm_u : number
-        u component of storm motion (default is 0 m/s)
+        U component of storm motion (default is 0 m/s)
+
     storm_v : number
-        v component of storm motion (default is 0 m/s)
+        V component of storm motion (default is 0 m/s)
 
     Returns
     -------
     `pint.Quantity`
-        positive storm-relative helicity
+        Positive storm-relative helicity
+
     `pint.Quantity`
-        negative storm-relative helicity
+        Negative storm-relative helicity
+
     `pint.Quantity`
-        total storm-relative helicity
+        Total storm-relative helicity
 
     Notes
     -----
@@ -667,7 +675,7 @@ def potential_vorticity_baroclinic(
               - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
               + \frac{\partial \theta}{\partial p}(\zeta + f) \right)
 
-    This formula is based on equation 4.5.93 [Bluestein1993]_.
+    This formula is based on equation 4.5.93 [Bluestein1993]_
 
     Parameters
     ----------
@@ -880,7 +888,7 @@ def inertial_advective_wind(
     -----
     Many forms of the inertial advective wind assume the advecting and advected
     wind to both be the geostrophic wind. To do so, pass the x and y components
-    of the geostrophic with for u and u_geostrophic/v and v_geostrophic.
+    of the geostrophic wind for u and u_geostrophic/v and v_geostrophic.
 
     """
     f = coriolis_parameter(latitude)
@@ -927,7 +935,7 @@ def q_vector(
     .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}
                   \right) \omega =
               - 2 \nabla_p \cdot \vec{Q} -
-                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}.
+                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}
 
     Parameters
     ----------
