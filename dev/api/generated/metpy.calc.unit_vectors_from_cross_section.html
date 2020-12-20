@@ -746,7 +746,7 @@
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">unit_vectors_from_cross_section</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cross</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">'index'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#unit_vectors_from_cross_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.unit_vectors_from_cross_section" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the unit tanget and unit normal vectors from a cross-section.</p>
 <p>Given a path described parametrically by <span class="math notranslate nohighlight">\(\vec{l}(i) = (x(i), y(i))\)</span>, we can find
-the unit tangent vector by the formula</p>
+the unit tangent vector by the formula:</p>
 <div class="math notranslate nohighlight">
 \[\vec{T}(i) =
 \frac{1}{\sqrt{\left( \frac{dx}{di} \right)^2 + \left( \frac{dy}{di} \right)^2}}
@@ -756,14 +756,14 @@ simple <span class="math notranslate nohighlight">\(\frac{\pi}{2}\)</span> rotat
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cross</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of a cross-section from which to obtain latitudes.</p></li>
+<li><p><strong>cross</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of a cross-section from which to obtain latitudes</p></li>
 <li><p><strong>index</strong> (<em class="xref py py-obj">str</em>, optional) – A string denoting the index coordinate of the cross section, defaults to ‘index’ as
-set by <a class="reference internal" href="metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a>.</p></li>
+set by <a class="reference internal" href="metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>unit_tangent_vector, unit_normal_vector</strong> (tuple of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – Arrays describing the unit tangent and unit normal vectors (in x,y) for all points
-along the cross section.</p>
+along the cross section</p>
 </dd>
 </dl>
 </dd></dl>
@@ -805,7 +805,7 @@ along the cross section.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

@@ -752,11 +752,11 @@ of the measured temperature profile and parcel profile are logarithmically inter
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric pressure level(s) of interest, in order from highest to
-lowest pressure.</p></li>
-<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric temperature corresponding to pressure.</p></li>
-<li><p><strong>dewpoint</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric dewpoint corresponding to pressure.</p></li>
-<li><p><strong>parcel_profile</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The temperature profile of the parcel.</p></li>
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric pressure level(s) of interest, in order from highest to
+lowest pressure</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric temperature corresponding to pressure</p></li>
+<li><p><strong>dewpoint</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric dewpoint corresponding to pressure</p></li>
+<li><p><strong>parcel_profile</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Temperature profile of the parcel</p></li>
 <li><p><strong>which_lfc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Choose which LFC to integrate from. Valid options are ‘top’, ‘bottom’, ‘wide’,
 and ‘most_cape’. Default is ‘bottom’.</p></li>
 <li><p><strong>which_el</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Choose which EL to integrate to. Valid options are ‘top’, ‘bottom’, ‘wide’,
@@ -765,8 +765,8 @@ and ‘most_cape’. Default is ‘top’.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Convective Available Potential Energy (CAPE).</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Convective INhibition (CIN).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Convective Available Potential Energy (CAPE)</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Convective Inhibition (CIN)</p></li>
 </ul>
 </p>
 </dd>
@@ -778,16 +778,16 @@ and ‘most_cape’. Default is ‘top’.</p></li>
 <div class="math notranslate nohighlight">
 \[\text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)\]</div>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(CAPE\)</span> Convective available potential energy</p></li>
-<li><p><span class="math notranslate nohighlight">\(CIN\)</span> Convective inhibition</p></li>
-<li><p><span class="math notranslate nohighlight">\(LFC\)</span> Pressure of the level of free convection</p></li>
-<li><p><span class="math notranslate nohighlight">\(EL\)</span> Pressure of the equilibrium level</p></li>
-<li><p><span class="math notranslate nohighlight">\(SFC\)</span> Level of the surface or beginning of parcel path</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_d\)</span> Gas constant</p></li>
-<li><p><span class="math notranslate nohighlight">\(g\)</span> Gravitational acceleration</p></li>
-<li><p><span class="math notranslate nohighlight">\(T_{parcel}\)</span> Parcel temperature</p></li>
-<li><p><span class="math notranslate nohighlight">\(T_{env}\)</span> Environment temperature</p></li>
-<li><p><span class="math notranslate nohighlight">\(p\)</span> Atmospheric pressure</p></li>
+<li><p><span class="math notranslate nohighlight">\(CAPE\)</span> is convective available potential energy</p></li>
+<li><p><span class="math notranslate nohighlight">\(CIN\)</span> is convective inhibition</p></li>
+<li><p><span class="math notranslate nohighlight">\(LFC\)</span> is pressure of the level of free convection</p></li>
+<li><p><span class="math notranslate nohighlight">\(EL\)</span> is pressure of the equilibrium level</p></li>
+<li><p><span class="math notranslate nohighlight">\(SFC\)</span> is the level of the surface or beginning of parcel path</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_d\)</span> is the gas constant</p></li>
+<li><p><span class="math notranslate nohighlight">\(g\)</span> is gravitational acceleration</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{parcel}\)</span> is the parcel temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{env}\)</span> is environment temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is atmospheric pressure</p></li>
 </ul>
 <p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
 Since this function returns scalar values when given a profile, this will return Pint
@@ -835,7 +835,7 @@ Quantities even when given xarray DataArray profiles.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

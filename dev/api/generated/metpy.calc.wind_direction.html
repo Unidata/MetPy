@@ -750,13 +750,13 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Wind component in the X (East-West) direction</p></li>
 <li><p><strong>v</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Wind component in the Y (North-South) direction</p></li>
-<li><p><strong>convention</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Convention to return direction. ‘from’ returns the direction the wind is coming from
-(meteorological convention). ‘to’ returns the direction the wind is going towards
-(oceanographic convention). Default is ‘from’.</p></li>
+<li><p><strong>convention</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Convention to return direction; ‘from’ returns the direction the wind is coming from
+(meteorological convention), ‘to’ returns the direction the wind is going towards
+(oceanographic convention), default is ‘from’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>direction</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The direction of the wind in interval [0, 360] degrees, with 360 being North, with the
+<dd class="field-even"><p><strong>direction</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The direction of the wind in intervals [0, 360] degrees, with 360 being North,
 direction defined by the convention kwarg.</p>
 </dd>
 </dl>
@@ -806,7 +806,7 @@ of 0.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

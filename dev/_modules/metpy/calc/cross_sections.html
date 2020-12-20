@@ -261,7 +261,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    cross : `xarray.DataArray`</span>
-<span class="sd">        The input DataArray of a cross-section from which to obtain latitudes.</span>
+<span class="sd">        The input DataArray of a cross-section from which to obtain latitudes</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -289,7 +289,7 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the unit tanget and unit normal vectors from a cross-section.</span>
 
 <span class="sd">    Given a path described parametrically by :math:`\vec{l}(i) = (x(i), y(i))`, we can find</span>
-<span class="sd">    the unit tangent vector by the formula</span>
+<span class="sd">    the unit tangent vector by the formula:</span>
 
 <span class="sd">    .. math:: \vec{T}(i) =</span>
 <span class="sd">        \frac{1}{\sqrt{\left( \frac{dx}{di} \right)^2 + \left( \frac{dy}{di} \right)^2}}</span>
@@ -301,16 +301,17 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    cross : `xarray.DataArray`</span>
-<span class="sd">        The input DataArray of a cross-section from which to obtain latitudes.</span>
+<span class="sd">        The input DataArray of a cross-section from which to obtain latitudes</span>
+
 <span class="sd">    index : `str`, optional</span>
 <span class="sd">        A string denoting the index coordinate of the cross section, defaults to &#39;index&#39; as</span>
-<span class="sd">        set by `metpy.interpolate.cross_section`.</span>
+<span class="sd">        set by `metpy.interpolate.cross_section`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    unit_tangent_vector, unit_normal_vector : tuple of `numpy.ndarray`</span>
 <span class="sd">        Arrays describing the unit tangent and unit normal vectors (in x,y) for all points</span>
-<span class="sd">        along the cross section.</span>
+<span class="sd">        along the cross section</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">distances_from_cross_section</span><span class="p">(</span><span class="n">cross</span><span class="p">)</span>
@@ -332,6 +333,7 @@
 <span class="sd">    data_x : `xarray.DataArray`</span>
 <span class="sd">        The input DataArray of the x-component (in terms of data projection) of the vector</span>
 <span class="sd">        field.</span>
+
 <span class="sd">    data_y : `xarray.DataArray`</span>
 <span class="sd">        The input DataArray of the y-component (in terms of data projection) of the vector</span>
 <span class="sd">        field.</span>
@@ -339,8 +341,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    component_tangential, component_normal: tuple of `xarray.DataArray`</span>
-<span class="sd">        The components of the vector field in the tangential and normal directions,</span>
-<span class="sd">        respectively.</span>
+<span class="sd">        Components of the vector field in the tangential and normal directions, respectively</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -378,7 +379,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    component_normal: `xarray.DataArray`</span>
-<span class="sd">        The component of the vector field in the normal directions.</span>
+<span class="sd">        Component of the vector field in the normal directions</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -411,15 +412,16 @@
 <span class="sd">    ----------</span>
 <span class="sd">    data_x : `xarray.DataArray`</span>
 <span class="sd">        The input DataArray of the x-component (in terms of data projection) of the vector</span>
-<span class="sd">        field.</span>
+<span class="sd">        field</span>
+
 <span class="sd">    data_y : `xarray.DataArray`</span>
 <span class="sd">        The input DataArray of the y-component (in terms of data projection) of the vector</span>
-<span class="sd">        field.</span>
+<span class="sd">        field</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    component_tangential: `xarray.DataArray`</span>
-<span class="sd">        The component of the vector field in the tangential directions.</span>
+<span class="sd">        Component of the vector field in the tangential directions</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -449,7 +451,7 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate cross-sectional absolute momentum (also called pseudoangular momentum).</span>
 
 <span class="sd">    As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is</span>
-<span class="sd">    given by</span>
+<span class="sd">    given by:</span>
 
 <span class="sd">    .. math:: M = v + fx</span>
 
@@ -471,7 +473,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    absolute_momentum: `xarray.DataArray`</span>
-<span class="sd">        The absolute momentum</span>
+<span class="sd">        Absolute momentum</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -526,7 +528,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

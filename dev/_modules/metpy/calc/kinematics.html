@@ -501,7 +501,7 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the 2D kinematic frontogenesis of a temperature field.</span>
 
 <span class="sd">    The implementation is a form of the Petterssen Frontogenesis and uses the formula</span>
-<span class="sd">    outlined in [Bluestein1993]_ pg.248-253.</span>
+<span class="sd">    outlined in [Bluestein1993]_ pg.248-253</span>
 
 <span class="sd">    .. math:: F=\frac{1}{2}\left|\nabla \theta\right|[D cos(2\beta)-\delta]</span>
 
@@ -662,7 +662,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    A 2-item tuple of arrays</span>
-<span class="sd">        A tuple of the u-component and v-component of the ageostrophic wind.</span>
+<span class="sd">        A tuple of the u-component and v-component of the ageostrophic wind</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v_geostrophic</span> <span class="o">=</span> <span class="n">geostrophic_wind</span><span class="p">(</span>
@@ -726,7 +726,7 @@
     <span class="c1"># Partially adapted from similar SharpPy code</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate storm relative helicity.</span>
 
-<span class="sd">    Calculates storm relatively helicity following [Markowski2010]_ 230-231.</span>
+<span class="sd">    Calculates storm relatively helicity following [Markowski2010]_ pg.230-231</span>
 
 <span class="sd">    .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz</span>
 
@@ -738,28 +738,36 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    u : array-like</span>
-<span class="sd">        u component winds</span>
+<span class="sd">        U component winds</span>
+
 <span class="sd">    v : array-like</span>
-<span class="sd">        v component winds</span>
+<span class="sd">        V component winds</span>
+
 <span class="sd">    height : array-like</span>
-<span class="sd">        atmospheric height, will be converted to AGL</span>
+<span class="sd">        Atmospheric height, will be converted to AGL</span>
+
 <span class="sd">    depth : number</span>
-<span class="sd">        depth of the layer</span>
+<span class="sd">        Depth of the layer</span>
+
 <span class="sd">    bottom : number</span>
-<span class="sd">        height of layer bottom AGL (default is surface)</span>
+<span class="sd">        Height of layer bottom AGL (default is surface)</span>
+
 <span class="sd">    storm_u : number</span>
-<span class="sd">        u component of storm motion (default is 0 m/s)</span>
+<span class="sd">        U component of storm motion (default is 0 m/s)</span>
+
 <span class="sd">    storm_v : number</span>
-<span class="sd">        v component of storm motion (default is 0 m/s)</span>
+<span class="sd">        V component of storm motion (default is 0 m/s)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        positive storm-relative helicity</span>
+<span class="sd">        Positive storm-relative helicity</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        negative storm-relative helicity</span>
+<span class="sd">        Negative storm-relative helicity</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        total storm-relative helicity</span>
+<span class="sd">        Total storm-relative helicity</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -859,7 +867,7 @@
 <span class="sd">              - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}</span>
 <span class="sd">              + \frac{\partial \theta}{\partial p}(\zeta + f) \right)</span>
 
-<span class="sd">    This formula is based on equation 4.5.93 [Bluestein1993]_.</span>
+<span class="sd">    This formula is based on equation 4.5.93 [Bluestein1993]_</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1072,7 +1080,7 @@
 <span class="sd">    -----</span>
 <span class="sd">    Many forms of the inertial advective wind assume the advecting and advected</span>
 <span class="sd">    wind to both be the geostrophic wind. To do so, pass the x and y components</span>
-<span class="sd">    of the geostrophic with for u and u_geostrophic/v and v_geostrophic.</span>
+<span class="sd">    of the geostrophic wind for u and u_geostrophic/v and v_geostrophic.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">coriolis_parameter</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
@@ -1119,7 +1127,7 @@
 <span class="sd">    .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}</span>
 <span class="sd">                  \right) \omega =</span>
 <span class="sd">              - 2 \nabla_p \cdot \vec{Q} -</span>
-<span class="sd">                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}.</span>
+<span class="sd">                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1201,7 +1209,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

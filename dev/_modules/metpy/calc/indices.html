@@ -216,23 +216,26 @@
 
 <span class="sd">    .. math::  -\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp</span>
 
-<span class="sd">    from [Salby1996]_, p. 28.</span>
+<span class="sd">    from [Salby1996]_, p. 28</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
 <span class="sd">        Atmospheric dewpoint profile</span>
+
 <span class="sd">    bottom: `pint.Quantity`, optional</span>
 <span class="sd">        Bottom of the layer, specified in pressure. Defaults to None (highest pressure).</span>
+
 <span class="sd">    top: `pint.Quantity`, optional</span>
-<span class="sd">        The top of the layer, specified in pressure. Defaults to None (lowest pressure).</span>
+<span class="sd">        Top of the layer, specified in pressure. Defaults to None (lowest pressure).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The precipitable water in the layer</span>
+<span class="sd">        Precipitable water in the layer</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -281,18 +284,22 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    args : `pint.Quantity`</span>
-<span class="sd">        Parameters for which the pressure-weighted mean is to be calculated.</span>
+<span class="sd">        Parameters for which the pressure-weighted mean is to be calculated</span>
+
 <span class="sd">    height : `pint.Quantity`, optional</span>
 <span class="sd">        Heights from sounding. Standard atmosphere heights assumed (if needed)</span>
 <span class="sd">        if no heights are given.</span>
+
 <span class="sd">    bottom: `pint.Quantity`, optional</span>
 <span class="sd">        The bottom of the layer in either the provided height coordinate</span>
 <span class="sd">        or in pressure. Don&#39;t provide in meters AGL unless the provided</span>
 <span class="sd">        height coordinate is meters AGL. Default is the first observation,</span>
 <span class="sd">        assumed to be the surface.</span>
+
 <span class="sd">    depth: `pint.Quantity`, optional</span>
-<span class="sd">        The depth of the layer in meters or hPa.</span>
+<span class="sd">        Depth of the layer in meters or hPa</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -334,10 +341,13 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Pressure from sounding</span>
+
 <span class="sd">    u : `pint.Quantity`</span>
 <span class="sd">        U component of the wind</span>
+
 <span class="sd">    v : `pint.Quantity`</span>
 <span class="sd">        V component of the wind</span>
+
 <span class="sd">    height : `pint.Quantity`</span>
 <span class="sd">        Height from sounding</span>
 
@@ -345,8 +355,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    right_mover: `pint.Quantity`</span>
 <span class="sd">        U and v component of Bunkers RM storm motion</span>
+
 <span class="sd">    left_mover: `pint.Quantity`</span>
 <span class="sd">        U and v component of Bunkers LM storm motion</span>
+
 <span class="sd">    wind_mean: `pint.Quantity`</span>
 <span class="sd">        U and v component of sfc-6km mean flow</span>
 
@@ -400,14 +412,19 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    u : `pint.Quantity`</span>
-<span class="sd">        U-component of wind.</span>
+<span class="sd">        U-component of wind</span>
+
 <span class="sd">    v : `pint.Quantity`</span>
-<span class="sd">        V-component of wind.</span>
+<span class="sd">        V-component of wind</span>
+
 <span class="sd">    height : `pint.Quantity`, optional</span>
 <span class="sd">        Heights from sounding</span>
+
 <span class="sd">    depth: `pint.Quantity`, optional</span>
 <span class="sd">        The depth of the layer in meters or hPa. Defaults to 100 hPa.</span>
+
 <span class="sd">    bottom: `pint.Quantity`, optional</span>
 <span class="sd">        The bottom of the layer in height or pressure coordinates.</span>
 <span class="sd">        If using a height, it must be in the same coordinates as the given</span>
@@ -417,9 +434,9 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    u_shr: `pint.Quantity`</span>
-<span class="sd">        u-component of layer bulk shear</span>
+<span class="sd">        U-component of layer bulk shear</span>
 <span class="sd">    v_shr: `pint.Quantity`</span>
-<span class="sd">        v-component of layer bulk shear</span>
+<span class="sd">        V-component of layer bulk shear</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -459,15 +476,17 @@
 <span class="sd">    ----------</span>
 <span class="sd">    mucape : `pint.Quantity`</span>
 <span class="sd">        Most-unstable CAPE</span>
+
 <span class="sd">    effective_storm_helicity : `pint.Quantity`</span>
 <span class="sd">        Effective-layer storm-relative helicity</span>
+
 <span class="sd">    effective_shear : `pint.Quantity`</span>
 <span class="sd">        Effective bulk shear</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        supercell composite</span>
+<span class="sd">        Supercell composite</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">effective_shear</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
@@ -505,17 +524,20 @@
 <span class="sd">    ----------</span>
 <span class="sd">    sbcape : `pint.Quantity`</span>
 <span class="sd">        Surface-based CAPE</span>
+
 <span class="sd">    surface_based_lcl_height : `pint.Quantity`</span>
 <span class="sd">        Surface-based lifted condensation level</span>
+
 <span class="sd">    storm_helicity_1km : `pint.Quantity`</span>
 <span class="sd">        Surface-1km storm-relative helicity</span>
+
 <span class="sd">    shear_6km : `pint.Quantity`</span>
 <span class="sd">        Surface-6km bulk shear</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        significant tornado parameter</span>
+<span class="sd">        Significant tornado parameter</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">surface_based_lcl_height</span><span class="p">),</span>
@@ -549,22 +571,27 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        Pressures from sounding.</span>
+<span class="sd">        Pressures from sounding</span>
+
 <span class="sd">    u : `pint.Quantity`</span>
-<span class="sd">        U-component of sounding winds.</span>
+<span class="sd">        U-component of sounding winds</span>
+
 <span class="sd">    v : `pint.Quantity`</span>
-<span class="sd">        V-component of sounding winds.</span>
+<span class="sd">        V-component of sounding winds</span>
+
 <span class="sd">    height : `pint.Quantity`</span>
-<span class="sd">        Heights from sounding.</span>
+<span class="sd">        Heights from sounding</span>
+
 <span class="sd">    u_storm : `pint.Quantity`</span>
-<span class="sd">        U-component of storm motion.</span>
+<span class="sd">        U-component of storm motion</span>
+
 <span class="sd">    v_storm : `pint.Quantity`</span>
-<span class="sd">        V-component of storm motion.</span>
+<span class="sd">        V-component of storm motion</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        critical angle in degrees</span>
+<span class="sd">        Critical angle in degrees</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -632,7 +659,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

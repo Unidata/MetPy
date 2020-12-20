@@ -760,12 +760,12 @@ or other parameters.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>altimeter_value</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The altimeter setting value as defined by the METAR or other observation,
 which can be measured in either inches of mercury (in. Hg) or millibars (mb)</p></li>
-<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Elevation of the station measuring pressure.</p></li>
+<li><p><strong>height</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Elevation of the station measuring pressure</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The station pressure in hPa or in. Hg, which can be used to calculate sea-level
-pressure</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The station pressure in hPa or in. Hg. Can be used to calculate sea-level
+pressure.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -784,18 +784,15 @@ Smithsonian Handbook (1951) p. 269</p>
 \frac{H_{b}}{p_{1}^n} \right ] ^ \frac{1}{n}\]</div>
 </dd>
 </dl>
-<p>Where</p>
+<p>Where,</p>
 <p><span class="math notranslate nohighlight">\(p_{0}\)</span> = standard sea-level pressure = 1013.25 mb</p>
 <p><span class="math notranslate nohighlight">\(p_{1} = p_{mb} - 0.3\)</span> when <span class="math notranslate nohighlight">\(p_{0} = 1013.25 mb\)</span></p>
 <p>gamma = lapse rate in <a class="reference internal" href="../references.html#noaa1976" id="id3"><span>[NOAA1976]</span></a> standard atmosphere below the isothermal layer
 <span class="math notranslate nohighlight">\(6.5^{\circ}C. km.^{-1}\)</span></p>
 <p><span class="math notranslate nohighlight">\(t_{0}\)</span> = standard sea-level temperature 288 K</p>
-<dl class="simple">
-<dt><span class="math notranslate nohighlight">\(H_{b} =\)</span> station elevation in meters (elevation for which station</dt><dd><p>pressure is given)</p>
-</dd>
-<dt><span class="math notranslate nohighlight">\(n = \frac{a R_{d}}{g} = 0.190284\)</span> where <span class="math notranslate nohighlight">\(R_{d}\)</span> is the gas</dt><dd><p>constant for dry air</p>
-</dd>
-</dl>
+<p><span class="math notranslate nohighlight">\(H_{b} =\)</span> station elevation in meters (elevation for which station pressure is given)</p>
+<p><span class="math notranslate nohighlight">\(n = \frac{a R_{d}}{g} = 0.190284\)</span> where <span class="math notranslate nohighlight">\(R_{d}\)</span> is the gas constant for dry
+air</p>
 <p>And solving for <span class="math notranslate nohighlight">\(p_{mb}\)</span> results in the equation below, which is used to
 calculate station pressure <span class="math notranslate nohighlight">\((p_{mb})\)</span></p>
 <div class="math notranslate nohighlight">
@@ -840,7 +837,7 @@ calculate station pressure <span class="math notranslate nohighlight">\((p_{mb})
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

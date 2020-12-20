@@ -750,12 +750,12 @@ outlined by the FCM <a class="reference internal" href="../references.html#fcmr1
 <p>Specifically, these formulas assume that wind speed is measured at
 10m.  If, instead, the speeds are measured at face level, the winds
 need to be multiplied by a factor of 1.5 (this can be done by specifying
-<em class="xref py py-obj">face_level_winds</em> as <em class="xref py py-obj">True</em>.)</p>
+<em class="xref py py-obj">face_level_winds</em> as <em class="xref py py-obj">True</em>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The air temperature</p></li>
-<li><p><strong>speed</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The wind speed at 10m.  If instead the winds are at face level,
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Air temperature</p></li>
+<li><p><strong>speed</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Wind speed at 10m. If instead the winds are at face level,
 <em class="xref py py-obj">face_level_winds</em> should be set to <em class="xref py py-obj">True</em> and the 1.5 multiplicative
 correction will be applied automatically.</p></li>
 <li><p><strong>face_level_winds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether the wind speeds were measured at facial
@@ -768,7 +768,7 @@ to <em class="xref py py-obj">True</em>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The corresponding Wind Chill Temperature Index value(s)</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Corresponding Wind Chill Temperature Index value(s)</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -814,7 +814,7 @@ to <em class="xref py py-obj">True</em>.</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

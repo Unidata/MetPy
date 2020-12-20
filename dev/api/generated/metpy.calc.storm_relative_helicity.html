@@ -745,7 +745,7 @@
 <dt id="metpy.calc.storm_relative_helicity">
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">storm_relative_helicity</code><span class="sig-paren">(</span><em class="sig-param">height</em>, <em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">depth</em>, <em class="sig-param">*</em>, <em class="sig-param">bottom=&lt;Quantity(0</em>, <em class="sig-param">'meter')&gt;</em>, <em class="sig-param">storm_u=&lt;Quantity(0.0</em>, <em class="sig-param">'meter / second')&gt;</em>, <em class="sig-param">storm_v=&lt;Quantity(0.0</em>, <em class="sig-param">'meter / second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#storm_relative_helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.storm_relative_helicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate storm relative helicity.</p>
-<p>Calculates storm relatively helicity following <a class="reference internal" href="../references.html#markowski2010" id="id1"><span>[Markowski2010]</span></a> 230-231.</p>
+<p>Calculates storm relatively helicity following <a class="reference internal" href="../references.html#markowski2010" id="id1"><span>[Markowski2010]</span></a> pg.230-231</p>
 <div class="math notranslate nohighlight">
 \[\int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz\]</div>
 <p>This is applied to the data from a hodograph with the following summation:</p>
@@ -755,20 +755,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>array-like</em>) – u component winds</p></li>
-<li><p><strong>v</strong> (<em>array-like</em>) – v component winds</p></li>
-<li><p><strong>height</strong> (<em>array-like</em>) – atmospheric height, will be converted to AGL</p></li>
-<li><p><strong>depth</strong> (<em>number</em>) – depth of the layer</p></li>
-<li><p><strong>bottom</strong> (<em>number</em>) – height of layer bottom AGL (default is surface)</p></li>
-<li><p><strong>storm_u</strong> (<em>number</em>) – u component of storm motion (default is 0 m/s)</p></li>
-<li><p><strong>storm_v</strong> (<em>number</em>) – v component of storm motion (default is 0 m/s)</p></li>
+<li><p><strong>u</strong> (<em>array-like</em>) – U component winds</p></li>
+<li><p><strong>v</strong> (<em>array-like</em>) – V component winds</p></li>
+<li><p><strong>height</strong> (<em>array-like</em>) – Atmospheric height, will be converted to AGL</p></li>
+<li><p><strong>depth</strong> (<em>number</em>) – Depth of the layer</p></li>
+<li><p><strong>bottom</strong> (<em>number</em>) – Height of layer bottom AGL (default is surface)</p></li>
+<li><p><strong>storm_u</strong> (<em>number</em>) – U component of storm motion (default is 0 m/s)</p></li>
+<li><p><strong>storm_v</strong> (<em>number</em>) – V component of storm motion (default is 0 m/s)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – positive storm-relative helicity</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – negative storm-relative helicity</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – total storm-relative helicity</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Positive storm-relative helicity</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Negative storm-relative helicity</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Total storm-relative helicity</p></li>
 </ul>
 </p>
 </dd>
@@ -816,7 +816,7 @@ Quantities even when given xarray DataArray profiles.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

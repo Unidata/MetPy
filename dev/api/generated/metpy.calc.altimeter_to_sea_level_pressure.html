@@ -748,7 +748,7 @@
 <p>This function is useful for working with METARs since most provide
 altimeter values, but not sea-level pressure, which is often plotted
 on surface maps. The following definitions of altimeter setting, station pressure, and
-sea-level pressure are taken from <a class="reference internal" href="../references.html#smithsonian1951" id="id1"><span>[Smithsonian1951]</span></a>
+sea-level pressure are taken from <a class="reference internal" href="../references.html#smithsonian1951" id="id1"><span>[Smithsonian1951]</span></a>.
 Altimeter setting is the pressure value to which an aircraft altimeter scale
 is set so that it will indicate the altitude above mean sea-level of an aircraft
 on the ground at the location for which the value is determined. It assumes a standard
@@ -763,14 +763,14 @@ the sea-level pressure is helpful for plotting purposes and different calculatio
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>altimeter_value</strong> (<em>'pint.Quantity'</em>) – The altimeter setting value is defined by the METAR or other observation,
-with units of inches of mercury (in Hg) or millibars (hPa)</p></li>
+with units of inches of mercury (in Hg) or millibars (hPa).</p></li>
 <li><p><strong>height</strong> (<em>'pint.Quantity'</em>) – Elevation of the station measuring pressure. Often times measured in meters</p></li>
 <li><p><strong>temperature</strong> (<em>'pint.Quantity'</em>) – Temperature at the station</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>‘pint.Quantity’</em> – The sea-level pressure in hPa and makes pressure values easier to compare
-between different stations</p>
+between different stations.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -778,7 +778,7 @@ between different stations</p>
 <p><a class="reference internal" href="metpy.calc.altimeter_to_station_pressure.html#metpy.calc.altimeter_to_station_pressure" title="metpy.calc.altimeter_to_station_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">altimeter_to_station_pressure</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
-<p>This function is implemented using the following equations from Wallace and Hobbs (1977)</p>
+<p>This function is implemented using the following equations from Wallace and Hobbs (1977).</p>
 <dl>
 <dt>Equation 2.29:</dt><dd><div class="math notranslate nohighlight">
 \[\Delta z = Z_{2} - Z_{1}
@@ -833,7 +833,7 @@ between different stations</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

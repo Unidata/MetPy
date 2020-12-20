@@ -765,17 +765,16 @@ is only done across the last two.</p></li>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This function is a close replication of the GEMPAK function GWFS,
+<p>This function is a close replication of the GEMPAK function <code class="docutils literal notranslate"><span class="pre">GWFS</span></code>,
 but is not identical.  The following notes are incorporated from
 the GEMPAK source code:</p>
 <p>This function smoothes a scalar grid using a moving average
 low-pass filter whose weights are determined by the normal
 (Gaussian) probability distribution function for two dimensions.
 The weight given to any grid point within the area covered by the
-moving average for a target grid point is proportional to</p>
-<blockquote>
-<div><p>EXP [ -( D ** 2 ) ],</p>
-</div></blockquote>
+moving average for a target grid point is proportional to:</p>
+<div class="math notranslate nohighlight">
+\[e^{-D^2}\]</div>
 <p>where D is the distance from that point to the target point divided
 by the standard deviation of the normal distribution.  The value of
 the standard deviation is determined by the degree of filtering
@@ -864,7 +863,7 @@ then the 4 delta x wave length is passed with approximate response
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

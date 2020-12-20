@@ -387,7 +387,7 @@
 <span class="sd">    a : array-like</span>
 <span class="sd">        1-dimensional array of numeric values</span>
 <span class="sd">    idx : integer</span>
-<span class="sd">        index of requested element</span>
+<span class="sd">        Index of requested element</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -412,12 +412,12 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    arrs : one or more array-like</span>
-<span class="sd">        source arrays</span>
+<span class="sd">        Source arrays</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    arrs : one or more array-like</span>
-<span class="sd">        arrays with masked elements removed</span>
+<span class="sd">        Arrays with masked elements removed</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">):</span>
@@ -525,7 +525,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The bound pressure and height.</span>
+<span class="sd">        The bound pressure and height</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># avoid circular import if basic.py ever imports something from tools.py</span>
@@ -626,11 +626,11 @@
 <span class="sd">    height : array-like</span>
 <span class="sd">        Atmospheric height</span>
 <span class="sd">    depth : `pint.Quantity`</span>
-<span class="sd">        The thickness of the layer</span>
+<span class="sd">        Thickness of the layer</span>
 <span class="sd">    args : array-like</span>
 <span class="sd">        Atmospheric variable(s) measured at the given pressures</span>
 <span class="sd">    bottom : `pint.Quantity`, optional</span>
-<span class="sd">        The bottom of the layer</span>
+<span class="sd">        Bottom of the layer</span>
 <span class="sd">    interpolate : bool, optional</span>
 <span class="sd">        Interpolate the top and bottom points if they are not in the given data. Defaults</span>
 <span class="sd">        to True.</span>
@@ -641,7 +641,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity, pint.Quantity`</span>
-<span class="sd">        The height and data variables of the layer</span>
+<span class="sd">        Height and data variables of the layer</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -730,10 +730,10 @@
 <span class="sd">        Atmospheric heights corresponding to the given pressures. Defaults to using</span>
 <span class="sd">        heights calculated from ``pressure`` assuming a standard atmosphere [NOAA1976]_.</span>
 <span class="sd">    bottom : `pint.Quantity`, optional</span>
-<span class="sd">        The bottom of the layer as a pressure or height above the surface pressure. Defaults</span>
+<span class="sd">        Bottom of the layer as a pressure or height above the surface pressure. Defaults</span>
 <span class="sd">        to the highest pressure or lowest height given.</span>
 <span class="sd">    depth : `pint.Quantity`, optional</span>
-<span class="sd">        The thickness of the layer as a pressure or height above the bottom of the layer.</span>
+<span class="sd">        Thickness of the layer as a pressure or height above the bottom of the layer.</span>
 <span class="sd">        Defaults to 100 hPa.</span>
 <span class="sd">    interpolate : bool, optional</span>
 <span class="sd">        Interpolate the top and bottom points if they are not in the given data. Defaults</span>
@@ -834,7 +834,7 @@
 <span class="sd">        One or more values to search for in `arr`</span>
 
 <span class="sd">    axis : int</span>
-<span class="sd">        The dimension of `arr` along which to search.</span>
+<span class="sd">        Dimension of `arr` along which to search</span>
 
 <span class="sd">    from_below : bool, optional</span>
 <span class="sd">        Whether to search from &quot;below&quot; (i.e. low indices to high indices). If `False`,</span>
@@ -941,7 +941,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
-<span class="sd">        Boolean array where values are less than or nearly equal to value.</span>
+<span class="sd">        Boolean array where values are less than or nearly equal to value</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -963,10 +963,11 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    longitude : array_like</span>
-<span class="sd">        array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in</span>
+<span class="sd">        Array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in</span>
 <span class="sd">        degrees.</span>
+
 <span class="sd">    latitude : array_like</span>
-<span class="sd">        array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in</span>
+<span class="sd">        Array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in</span>
 <span class="sd">        degrees.</span>
 <span class="sd">    x_dim: int</span>
 <span class="sd">        axis number for the x dimension, defaults to -1.</span>
@@ -979,7 +980,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    dx, dy:</span>
-<span class="sd">        at least two dimensional arrays of signed deltas between grid points in the x and y</span>
+<span class="sd">        At least two dimensional arrays of signed deltas between grid points in the x and y</span>
 <span class="sd">        direction</span>
 
 <span class="sd">    Notes</span>
@@ -1147,7 +1148,7 @@
 <span class="sd">        to 0. For reference, the current standard axis types are &#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, and</span>
 <span class="sd">        &#39;x&#39;.</span>
 <span class="sd">    x : array-like, optional</span>
-<span class="sd">        The coordinate values corresponding to the grid points in `f`.</span>
+<span class="sd">        The coordinate values corresponding to the grid points in `f`</span>
 <span class="sd">    delta : array-like, optional</span>
 <span class="sd">        Spacing between the grid points in `f`. Should be one item less than the size</span>
 <span class="sd">        of `f` along `axis`.</span>
@@ -1155,7 +1156,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
-<span class="sd">        The first derivative calculated along the selected axis.</span>
+<span class="sd">        The first derivative calculated along the selected axis</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1219,7 +1220,7 @@
 <span class="sd">    `delta` are given, `f` will be converted to a `pint.Quantity` and the derivative returned</span>
 <span class="sd">    as a `pint.Quantity`, otherwise, if neither `x` nor `delta` are given, the attached</span>
 <span class="sd">    coordinate information belonging to `axis` will be used and the derivative will be returned</span>
-<span class="sd">    as an `xarray.DataArray`.</span>
+<span class="sd">    as an `xarray.DataArray`</span>
 
 <span class="sd">    This uses 3 points to calculate the derivative, using forward or backward at the edges of</span>
 <span class="sd">    the grid as appropriate, and centered elsewhere. The irregular spacing is handled</span>
@@ -1237,7 +1238,7 @@
 <span class="sd">        to 0. For reference, the current standard axis types are &#39;time&#39;, &#39;vertical&#39;, &#39;y&#39;, and</span>
 <span class="sd">        &#39;x&#39;.</span>
 <span class="sd">    x : array-like, optional</span>
-<span class="sd">        The coordinate values corresponding to the grid points in `f`.</span>
+<span class="sd">        The coordinate values corresponding to the grid points in `f`</span>
 <span class="sd">    delta : array-like, optional</span>
 <span class="sd">        Spacing between the grid points in `f`. There should be one item less than the size</span>
 <span class="sd">        of `f` along `axis`.</span>
@@ -1245,7 +1246,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
-<span class="sd">        The second derivative calculated along the selected axis.</span>
+<span class="sd">        The second derivative calculated along the selected axis</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1476,12 +1477,12 @@
     <span class="sd">&quot;&quot;&quot;Calculate the meteorological angle from directional text.</span>
 
 <span class="sd">    Works for abbrieviations or whole words (E -&gt; 90 | South -&gt; 180)</span>
-<span class="sd">    and also is able to parse 22.5 degreee angles such as ESE/East South East</span>
+<span class="sd">    and also is able to parse 22.5 degreee angles such as ESE/East South East.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    input_dir : string or array-like</span>
-<span class="sd">        Directional text such as west, [south-west, ne], etc</span>
+<span class="sd">        Directional text such as west, [south-west, ne], etc.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1537,7 +1538,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    input_angle : numeric or array-like numeric</span>
-<span class="sd">        Angles such as 0, 25, 45, 360, 410, etc</span>
+<span class="sd">        Angles such as 0, 25, 45, 360, 410, etc.</span>
 <span class="sd">    full : boolean</span>
 <span class="sd">        True returns full text (South), False returns abbrieviated text (S)</span>
 <span class="sd">    level : int</span>
@@ -1635,8 +1636,8 @@
 <span class="k">def</span> <span class="nf">_remove_nans</span><span class="p">(</span><span class="o">*</span><span class="n">variables</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Remove NaNs from arrays that cause issues with calculations.</span>
 
-<span class="sd">    Takes a variable number of arguments</span>
-<span class="sd">    Returns masked arrays in the same order as provided</span>
+<span class="sd">    Takes a variable number of arguments and returns masked arrays in the same</span>
+<span class="sd">    order as provided.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
@@ -1684,7 +1685,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

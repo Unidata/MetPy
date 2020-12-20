@@ -227,14 +227,15 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        dewpoint temperature</span>
+<span class="sd">        Dewpoint temperature</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        relative humidity</span>
+<span class="sd">        Relative humidity</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -255,14 +256,15 @@
 <span class="sd">    .. math:: \Pi = \left( \frac{p}{p_0} \right)^\kappa</span>
 
 <span class="sd">    This can be used to calculate potential temperature from temperature (and visa-versa),</span>
-<span class="sd">    since</span>
+<span class="sd">    since:</span>
 
 <span class="sd">    .. math:: \Pi = \frac{T}{\theta}</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        total atmospheric pressure</span>
+<span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    reference_pressure : `pint.Quantity`, optional</span>
 <span class="sd">        The reference pressure against which to calculate the Exner function, defaults to</span>
 <span class="sd">        metpy.constants.P0</span>
@@ -270,7 +272,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The value of the Exner function at the given pressure</span>
+<span class="sd">        Value of the Exner function at the given pressure</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -293,15 +295,15 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        total atmospheric pressure</span>
+<span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The potential temperature corresponding to the temperature and</span>
-<span class="sd">        pressure.</span>
+<span class="sd">        Potential temperature corresponding to the temperature and pressure</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -338,14 +340,15 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        total atmospheric pressure</span>
+<span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    potential_temperature : `pint.Quantity`</span>
-<span class="sd">        potential temperature</span>
+<span class="sd">        Potential temperature</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The temperature corresponding to the potential temperature and pressure.</span>
+<span class="sd">        Temperature corresponding to the potential temperature and pressure</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -380,23 +383,25 @@
 <span class="k">def</span> <span class="nf">dry_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">reference_pressure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vertical_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the temperature at a level assuming only dry processes.</span>
 
-<span class="sd">    This function lifts a parcel starting at `temperature`, conserving</span>
-<span class="sd">    potential temperature. The starting pressure can be given by `reference_pressure`.</span>
+<span class="sd">    This function lifts a parcel starting at ``temperature``, conserving</span>
+<span class="sd">    potential temperature. The starting pressure can be given by ``reference_pressure``.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest</span>
+<span class="sd">        Atmospheric pressure level(s) of interest</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The starting temperature</span>
+<span class="sd">        Starting temperature</span>
+
 <span class="sd">    reference_pressure : `pint.Quantity`, optional</span>
-<span class="sd">        The reference pressure. If not given, it defaults to the first element of the</span>
+<span class="sd">        Reference pressure; if not given, it defaults to the first element of the</span>
 <span class="sd">        pressure array.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">       The resulting parcel temperature at levels given by `pressure`</span>
+<span class="sd">       The parcel&#39;s resulting temperature at levels given by ``pressure``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -431,11 +436,13 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest</span>
+<span class="sd">        Atmospheric pressure level(s) of interest</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The starting temperature</span>
+<span class="sd">        Starting temperature</span>
+
 <span class="sd">    reference_pressure : `pint.Quantity`, optional</span>
-<span class="sd">        The reference pressure. If not given, it defaults to the first element of the</span>
+<span class="sd">        Reference pressure; if not given, it defaults to the first element of the</span>
 <span class="sd">        pressure array.</span>
 
 <span class="sd">    Returns</span>
@@ -522,23 +529,27 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The starting atmospheric pressure</span>
+<span class="sd">        Starting atmospheric pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The starting temperature</span>
+<span class="sd">        Starting temperature</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        The starting dewpoint</span>
+<span class="sd">        Starting dewpoint</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The LCL pressure</span>
+<span class="sd">        LCL pressure</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The LCL temperature</span>
+<span class="sd">        LCL temperature</span>
 
 <span class="sd">    Other Parameters</span>
 <span class="sd">    ----------------</span>
 <span class="sd">    max_iters : int, optional</span>
 <span class="sd">        The maximum number of iterations to use in calculation, defaults to 50.</span>
+
 <span class="sd">    eps : float, optional</span>
 <span class="sd">        The desired relative error in the calculated value, defaults to 1e-5.</span>
 
@@ -593,30 +604,36 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure</span>
+<span class="sd">        Atmospheric pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The temperature at the levels given by `pressure`</span>
+<span class="sd">        Temperature at the levels given by `pressure`</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        The dewpoint at the levels given by `pressure`</span>
+<span class="sd">        Dewpoint at the levels given by `pressure`</span>
+
 <span class="sd">    parcel_temperature_profile: `pint.Quantity`, optional</span>
-<span class="sd">        The parcel temperature profile from which to calculate the LFC. Defaults to the</span>
+<span class="sd">        The parcel&#39;s temperature profile from which to calculate the LFC. Defaults to the</span>
 <span class="sd">        surface parcel profile.</span>
+
 <span class="sd">    dewpoint_start: `pint.Quantity`, optional</span>
-<span class="sd">        The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface</span>
+<span class="sd">        Dewpoint of the parcel for which to calculate the LFC. Defaults to the surface</span>
 <span class="sd">        dewpoint.</span>
+
 <span class="sd">    which: str, optional</span>
-<span class="sd">        Pick which LFC to return. Options are &#39;top&#39;, &#39;bottom&#39;, &#39;wide&#39;, &#39;most_cape&#39;, and &#39;all&#39;.</span>
-<span class="sd">        &#39;top&#39; returns the lowest-pressure LFC, default.</span>
-<span class="sd">        &#39;bottom&#39; returns the highest-pressure LFC.</span>
-<span class="sd">        &#39;wide&#39; returns the LFC whose corresponding EL is farthest away.</span>
+<span class="sd">        Pick which LFC to return. Options are &#39;top&#39;, &#39;bottom&#39;, &#39;wide&#39;, &#39;most_cape&#39;, and &#39;all&#39;;</span>
+<span class="sd">        &#39;top&#39; returns the lowest-pressure LFC (default),</span>
+<span class="sd">        &#39;bottom&#39; returns the highest-pressure LFC,</span>
+<span class="sd">        &#39;wide&#39; returns the LFC whose corresponding EL is farthest away,</span>
 <span class="sd">        &#39;most_cape&#39; returns the LFC that results in the most CAPE in the profile.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The LFC pressure, or array of same if which=&#39;all&#39;</span>
+<span class="sd">        LFC pressure, or array of same if which=&#39;all&#39;</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The LFC temperature, or array of same if which=&#39;all&#39;</span>
+<span class="sd">        LFC temperature, or array of same if which=&#39;all&#39;</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -771,14 +788,18 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure profile</span>
+<span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The temperature at the levels given by `pressure`</span>
+<span class="sd">        Temperature at the levels given by `pressure`</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        The dewpoint at the levels given by `pressure`</span>
+<span class="sd">        Dewpoint at the levels given by `pressure`</span>
+
 <span class="sd">    parcel_temperature_profile: `pint.Quantity`, optional</span>
-<span class="sd">        The parcel temperature profile from which to calculate the EL. Defaults to the</span>
+<span class="sd">        The parcel&#39;s temperature profile from which to calculate the EL. Defaults to the</span>
 <span class="sd">        surface parcel profile.</span>
+
 <span class="sd">    which: str, optional</span>
 <span class="sd">        Pick which LFC to return. Options are &#39;top&#39;, &#39;bottom&#39;, &#39;wide&#39;, &#39;most_cape&#39;, and &#39;all&#39;.</span>
 <span class="sd">        &#39;top&#39; returns the lowest-pressure EL, default.</span>
@@ -789,9 +810,10 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The EL pressure, or array of same if which=&#39;all&#39;</span>
+<span class="sd">        EL pressure, or array of same if which=&#39;all&#39;</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The EL temperature, or array of same if which=&#39;all&#39;</span>
+<span class="sd">        EL temperature, or array of same if which=&#39;all&#39;</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -842,17 +864,19 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest. This array must be from</span>
+<span class="sd">        Atmospheric pressure level(s) of interest. This array must be from</span>
 <span class="sd">        high to low pressure.</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The starting temperature</span>
+<span class="sd">        Starting temperature</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        The starting dewpoint</span>
+<span class="sd">        Starting dewpoint</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The parcel temperatures at the specified pressure levels.</span>
+<span class="sd">        The parcel&#39;s temperatures at the specified pressure levels</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -881,26 +905,31 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest. This array must be from</span>
+<span class="sd">        Atmospheric pressure level(s) of interest. This array must be from</span>
 <span class="sd">        high to low pressure.</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The atmospheric temperature at the levels in `pressure`. The first entry should be at</span>
+<span class="sd">        Atmospheric temperature at the levels in `pressure`. The first entry should be at</span>
 <span class="sd">        the same level as the first `pressure` data point.</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        The atmospheric dewpoint at the levels in `pressure`. The first entry should be at</span>
+<span class="sd">        Atmospheric dewpoint at the levels in `pressure`. The first entry should be at</span>
 <span class="sd">        the same level as the first `pressure` data point.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        The parcel profile pressures, which includes the specified levels and the LCL</span>
+
 <span class="sd">    ambient_temperature : `pint.Quantity`</span>
-<span class="sd">        The atmospheric temperature values, including the value interpolated to the LCL level</span>
+<span class="sd">        Atmospheric temperature values, including the value interpolated to the LCL level</span>
+
 <span class="sd">    ambient_dew_point : `pint.Quantity`</span>
-<span class="sd">        The atmospheric dewpoint values, including the value interpolated to the LCL level</span>
+<span class="sd">        Atmospheric dewpoint values, including the value interpolated to the LCL level</span>
+
 <span class="sd">    profile_temperature : `pint.Quantity`</span>
 <span class="sd">        The parcel profile temperatures at all of the levels in the returned pressures array,</span>
-<span class="sd">        including the LCL.</span>
+<span class="sd">        including the LCL</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1039,21 +1068,21 @@
 <span class="k">def</span> <span class="nf">vapor_pressure</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate water vapor (partial) pressure.</span>
 
-<span class="sd">    Given total `pressure` and water vapor `mixing_ratio`, calculates the</span>
+<span class="sd">    Given total ``pressure`` and water vapor ``mixing_ratio``, calculates the</span>
 <span class="sd">    partial pressure of water vapor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        total atmospheric pressure</span>
+<span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    mixing_ratio : `pint.Quantity`</span>
-<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">        Dimensionless mass mixing ratio</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The ambient water vapor (partial) pressure in the same units as</span>
-<span class="sd">        `pressure`.</span>
+<span class="sd">        Ambient water vapor (partial) pressure in the same units as ``pressure``</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1079,12 +1108,12 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The saturation water vapor (partial) pressure</span>
+<span class="sd">        Saturation water vapor (partial) pressure</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1115,14 +1144,15 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
+
 <span class="sd">    relative_humidity : `pint.Quantity`</span>
-<span class="sd">        relative humidity expressed as a ratio in the range 0 &lt; relative_humidity &lt;= 1</span>
+<span class="sd">        Relative humidity expressed as a ratio in the range 0 &lt; relative_humidity &lt;= 1</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The dewpoint temperature</span>
+<span class="sd">        Dewpoint temperature</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1148,7 +1178,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        dewpoint temperature</span>
+<span class="sd">        Dewpoint temperature</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1181,8 +1211,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    partial_press : `pint.Quantity`</span>
 <span class="sd">        Partial pressure of the constituent gas</span>
+
 <span class="sd">    total_press : `pint.Quantity`</span>
 <span class="sd">        Total air pressure</span>
+
 <span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
 <span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
 <span class="sd">        for air. Defaults to the ratio for water vapor to dry air</span>
@@ -1221,6 +1253,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    total_press: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
 
@@ -1270,15 +1303,17 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Temperature of parcel</span>
+
 <span class="sd">    dewpoint: `pint.Quantity`</span>
 <span class="sd">        Dewpoint of parcel</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The equivalent potential temperature of the parcel</span>
+<span class="sd">        Equivalent potential temperature of the parcel</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1308,11 +1343,11 @@
 <span class="sd">    equivalent potential temperature, and assumes a saturated process.</span>
 
 <span class="sd">    First, because we assume a saturated process, the temperature at the LCL is</span>
-<span class="sd">    equivalent to the current temperature. Therefore the following equation</span>
+<span class="sd">    equivalent to the current temperature. Therefore the following equation.</span>
 
 <span class="sd">    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{ln(T_{K}/T_{D})}{800}}+56</span>
 
-<span class="sd">    reduces to</span>
+<span class="sd">    reduces to:</span>
 
 <span class="sd">    .. math:: T_{L} = T_{K}</span>
 
@@ -1321,11 +1356,11 @@
 <span class="sd">    .. math:: \theta_{DL}=T_{K}\left(\frac{1000}{p-e}\right)^k</span>
 <span class="sd">              \left(\frac{T_{K}}{T_{L}}\right)^{.28r}</span>
 
-<span class="sd">    However, because</span>
+<span class="sd">    However, because:</span>
 
 <span class="sd">    .. math:: T_{L} = T_{K}</span>
 
-<span class="sd">    it follows that</span>
+<span class="sd">    it follows that:</span>
 
 <span class="sd">    .. math:: \theta_{DL}=T_{K}\left(\frac{1000}{p-e}\right)^k</span>
 
@@ -1338,13 +1373,14 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Temperature of parcel</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The saturation equivalent potential temperature of the parcel</span>
+<span class="sd">        Saturation equivalent potential temperature of the parcel</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1376,18 +1412,20 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    temperature: `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
+
 <span class="sd">    mixing_ratio : `pint.Quantity`</span>
-<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">        Mass mixing ratio (dimensionless)</span>
+
 <span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
 <span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
 <span class="sd">        for air. Defaults to the ratio for water vapor to dry air.</span>
-<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding virtual temperature of the parcel</span>
+<span class="sd">        Corresponding virtual temperature of the parcel</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1415,19 +1453,22 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
+
 <span class="sd">    mixing_ratio : `pint.Quantity`</span>
-<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">        Dimensionless mass mixing ratio</span>
+
 <span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
 <span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
 <span class="sd">        for air. Defaults to the ratio for water vapor to dry air.</span>
-<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding virtual potential temperature of the parcel</span>
+<span class="sd">        Corresponding virtual potential temperature of the parcel</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1454,19 +1495,22 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
-<span class="sd">        air temperature</span>
+<span class="sd">        Air temperature</span>
+
 <span class="sd">    mixing_ratio : `pint.Quantity`</span>
-<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">        Mass mixing ratio (dimensionless)</span>
+
 <span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
 <span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
 <span class="sd">        for air. Defaults to the ratio for water vapor to dry air.</span>
-<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding density of the parcel</span>
+<span class="sd">        Corresponding density of the parcel</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1494,8 +1538,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    dry_bulb_temperature: `pint.Quantity`</span>
 <span class="sd">        Dry bulb temperature</span>
+
 <span class="sd">    wet_bulb_temperature: `pint.Quantity`</span>
 <span class="sd">        Wet bulb temperature</span>
 
@@ -1506,9 +1552,9 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    .. math:: relative_humidity = \frac{e}{e_s}</span>
+<span class="sd">    .. math:: RH = \frac{e}{e_s}</span>
 
-<span class="sd">    * :math:`relative_humidity` is relative humidity as a unitless ratio</span>
+<span class="sd">    * :math:`RH` is relative humidity as a unitless ratio</span>
 <span class="sd">    * :math:`e` is vapor pressure from the wet psychrometric calculation</span>
 <span class="sd">    * :math:`e_s` is the saturation vapor pressure</span>
 
@@ -1539,10 +1585,13 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    dry_bulb_temperature: `pint.Quantity`</span>
 <span class="sd">        Dry bulb temperature</span>
+
 <span class="sd">    wet_bulb_temperature: `pint.Quantity`</span>
 <span class="sd">        Wet bulb temperature</span>
+
 <span class="sd">    psychrometer_coefficient: `pint.Quantity`, optional</span>
 <span class="sd">        Psychrometer coefficient. Defaults to 6.21e-4 K^-1.</span>
 
@@ -1588,8 +1637,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    relative_humidity: array_like</span>
 <span class="sd">        The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass</span>
 <span class="sd">        a percentage if proper units are attached.</span>
@@ -1597,7 +1648,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Dimensionless mixing ratio</span>
+<span class="sd">        Mixing ratio (dimensionless)</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1631,8 +1682,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    mixing_ratio: `pint.Quantity`</span>
 <span class="sd">        Dimensionless mass mixing ratio</span>
 
@@ -1705,7 +1758,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    mixing_ratio: `pint.Quantity`</span>
-<span class="sd">        mixing ratio</span>
+<span class="sd">        Mixing ratio</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1746,8 +1799,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    specific_humidity: `pint.Quantity`</span>
 <span class="sd">        Specific humidity of air</span>
 
@@ -1790,17 +1845,22 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest, in order from highest to</span>
-<span class="sd">        lowest pressure.</span>
+<span class="sd">        Atmospheric pressure level(s) of interest, in order from highest to</span>
+<span class="sd">        lowest pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The atmospheric temperature corresponding to pressure.</span>
+<span class="sd">        Atmospheric temperature corresponding to pressure</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        The atmospheric dewpoint corresponding to pressure.</span>
+<span class="sd">        Atmospheric dewpoint corresponding to pressure</span>
+
 <span class="sd">    parcel_profile : `pint.Quantity`</span>
-<span class="sd">        The temperature profile of the parcel.</span>
+<span class="sd">        Temperature profile of the parcel</span>
+
 <span class="sd">    which_lfc : str</span>
 <span class="sd">        Choose which LFC to integrate from. Valid options are &#39;top&#39;, &#39;bottom&#39;, &#39;wide&#39;,</span>
 <span class="sd">        and &#39;most_cape&#39;. Default is &#39;bottom&#39;.</span>
+
 <span class="sd">    which_el : str</span>
 <span class="sd">        Choose which EL to integrate to. Valid options are &#39;top&#39;, &#39;bottom&#39;, &#39;wide&#39;,</span>
 <span class="sd">        and &#39;most_cape&#39;. Default is &#39;top&#39;.</span>
@@ -1808,9 +1868,10 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Convective Available Potential Energy (CAPE).</span>
+<span class="sd">        Convective Available Potential Energy (CAPE)</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Convective INhibition (CIN).</span>
+<span class="sd">        Convective Inhibition (CIN)</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1821,16 +1882,16 @@
 <span class="sd">    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)</span>
 
 
-<span class="sd">    * :math:`CAPE` Convective available potential energy</span>
-<span class="sd">    * :math:`CIN` Convective inhibition</span>
-<span class="sd">    * :math:`LFC` Pressure of the level of free convection</span>
-<span class="sd">    * :math:`EL` Pressure of the equilibrium level</span>
-<span class="sd">    * :math:`SFC` Level of the surface or beginning of parcel path</span>
-<span class="sd">    * :math:`R_d` Gas constant</span>
-<span class="sd">    * :math:`g` Gravitational acceleration</span>
-<span class="sd">    * :math:`T_{parcel}` Parcel temperature</span>
-<span class="sd">    * :math:`T_{env}` Environment temperature</span>
-<span class="sd">    * :math:`p` Atmospheric pressure</span>
+<span class="sd">    * :math:`CAPE` is convective available potential energy</span>
+<span class="sd">    * :math:`CIN` is convective inhibition</span>
+<span class="sd">    * :math:`LFC` is pressure of the level of free convection</span>
+<span class="sd">    * :math:`EL` is pressure of the equilibrium level</span>
+<span class="sd">    * :math:`SFC` is the level of the surface or beginning of parcel path</span>
+<span class="sd">    * :math:`R_d` is the gas constant</span>
+<span class="sd">    * :math:`g` is gravitational acceleration</span>
+<span class="sd">    * :math:`T_{parcel}` is the parcel temperature</span>
+<span class="sd">    * :math:`T_{env}` is environment temperature</span>
+<span class="sd">    * :math:`p` is atmospheric pressure</span>
 
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
@@ -1901,16 +1962,17 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x : `pint.Quantity`</span>
-<span class="sd">        x values of data</span>
+<span class="sd">        X values of data</span>
+
 <span class="sd">    y : `pint.Quantity`</span>
-<span class="sd">        y values of data</span>
+<span class="sd">        Y values of data</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    x : `pint.Quantity`</span>
-<span class="sd">        x values of data</span>
+<span class="sd">        X values of data</span>
 <span class="sd">    y : `pint.Quantity`</span>
-<span class="sd">        y values of data</span>
+<span class="sd">        Y values of data</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">crossings</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">y</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">log_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1944,15 +2006,20 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Atmospheric temperature profile</span>
+
 <span class="sd">    dewpoint: `pint.Quantity`</span>
 <span class="sd">        Atmospheric dewpoint profile</span>
+
 <span class="sd">    height: `pint.Quantity`, optional</span>
 <span class="sd">        Atmospheric height profile. Standard atmosphere assumed when None (the default).</span>
+
 <span class="sd">    bottom: `pint.Quantity`, optional</span>
 <span class="sd">        Bottom of the layer to consider for the calculation in pressure or height.</span>
 <span class="sd">        Defaults to using the bottom pressure or height.</span>
+
 <span class="sd">    depth: `pint.Quantity`, optional</span>
 <span class="sd">        Depth of the layer to consider for the calculation in pressure or height. Defaults</span>
 <span class="sd">        to 300 hPa.</span>
@@ -1960,7 +2027,8 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Pressure, temperature, and dewpoint of most unstable parcel in the profile.</span>
+<span class="sd">        Pressure, temperature, and dewpoint of most unstable parcel in the profile</span>
+
 <span class="sd">    integer</span>
 <span class="sd">        Index of the most unstable parcel in the given profile</span>
 
@@ -1995,24 +2063,31 @@
 <span class="sd">    ----------</span>
 <span class="sd">    levels : array</span>
 <span class="sd">        One-dimensional array of desired potential temperature surfaces</span>
+
 <span class="sd">    pressure : array</span>
 <span class="sd">        One-dimensional array of pressure levels</span>
+
 <span class="sd">    temperature : array</span>
 <span class="sd">        Array of temperature</span>
 <span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to the vertical in the temperature array, defaults to 0.</span>
+
 <span class="sd">    temperature_out : bool, optional</span>
 <span class="sd">        If true, will calculate temperature and output as the last item in the output list.</span>
 <span class="sd">        Defaults to False.</span>
+
 <span class="sd">    max_iters : int, optional</span>
-<span class="sd">        The maximum number of iterations to use in calculation, defaults to 50.</span>
+<span class="sd">        Maximum number of iterations to use in calculation, defaults to 50.</span>
+
 <span class="sd">    eps : float, optional</span>
 <span class="sd">        The desired absolute error in the calculated value, defaults to 1e-6.</span>
+
 <span class="sd">    bottom_up_search : bool, optional</span>
 <span class="sd">        Controls whether to search for levels bottom-up, or top-down. Defaults to</span>
 <span class="sd">        True, which is bottom-up search.</span>
+
 <span class="sd">    args : array, optional</span>
-<span class="sd">        Any additional variables will be interpolated to each isentropic level.</span>
+<span class="sd">        Any additional variables will be interpolated to each isentropic level</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2262,17 +2337,20 @@
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile. The first entry should be the starting</span>
 <span class="sd">        (surface) observation, with the array going from high to low pressure.</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        Temperature profile corresponding to the `pressure` profile.</span>
+<span class="sd">        Temperature profile corresponding to the `pressure` profile</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        Dewpoint profile corresponding to the `pressure` profile.</span>
+<span class="sd">        Dewpoint profile corresponding to the `pressure` profile</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Surface based Convective Available Potential Energy (CAPE).</span>
+<span class="sd">        Surface based Convective Available Potential Energy (CAPE)</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Surface based Convective INhibition (CIN).</span>
+<span class="sd">        Surface based Convective Inhibition (CIN)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2306,19 +2384,23 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Pressure profile</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Temperature profile</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
 <span class="sd">        Dew point profile</span>
+
 <span class="sd">    kwargs</span>
 <span class="sd">        Additional keyword arguments to pass to `most_unstable_parcel`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Most unstable Convective Available Potential Energy (CAPE).</span>
+<span class="sd">        Most unstable Convective Available Potential Energy (CAPE)</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Most unstable Convective INhibition (CIN).</span>
+<span class="sd">        Most unstable Convective Inhibition (CIN)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2356,19 +2438,22 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Pressure profile</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Temperature profile</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
 <span class="sd">        Dewpoint profile</span>
+
 <span class="sd">    kwargs</span>
 <span class="sd">        Additional keyword arguments to pass to `mixed_parcel`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Mixed-layer Convective Available Potential Energy (CAPE).</span>
+<span class="sd">        Mixed-layer Convective Available Potential Energy (CAPE)</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Mixed-layer Convective INhibition (CIN).</span>
+<span class="sd">        Mixed-layer Convective INhibition (CIN)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2411,31 +2496,39 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Atmospheric temperature profile</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
 <span class="sd">        Atmospheric dewpoint profile</span>
+
 <span class="sd">    parcel_start_pressure : `pint.Quantity`, optional</span>
 <span class="sd">        Pressure at which the mixed parcel should begin (default None)</span>
+
 <span class="sd">    height: `pint.Quantity`, optional</span>
 <span class="sd">        Atmospheric heights corresponding to the given pressures (default None)</span>
+
 <span class="sd">    bottom : `pint.Quantity`, optional</span>
 <span class="sd">        The bottom of the layer as a pressure or height above the surface pressure</span>
 <span class="sd">        (default None)</span>
+
 <span class="sd">    depth : `pint.Quantity`, optional</span>
 <span class="sd">        The thickness of the layer as a pressure or height above the bottom of the layer</span>
 <span class="sd">        (default 100 hPa)</span>
+
 <span class="sd">    interpolate : bool, optional</span>
 <span class="sd">        Interpolate the top and bottom points if they are not in the given data</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The pressure of the mixed parcel</span>
+<span class="sd">        Pressure of the mixed parcel</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The temperature of the mixed parcel</span>
+<span class="sd">        Temperature of the mixed parcel</span>
+
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The dewpoint of the mixed parcel</span>
+<span class="sd">        Dewpoint of the mixed parcel</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -2485,23 +2578,28 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : array-like</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    datavar : array-like</span>
 <span class="sd">        Atmospheric variable measured at the given pressures</span>
+
 <span class="sd">    height: array-like, optional</span>
 <span class="sd">        Atmospheric heights corresponding to the given pressures (default None)</span>
+
 <span class="sd">    bottom : `pint.Quantity`, optional</span>
 <span class="sd">        The bottom of the layer as a pressure or height above the surface pressure</span>
 <span class="sd">        (default None)</span>
+
 <span class="sd">    depth : `pint.Quantity`, optional</span>
 <span class="sd">        The thickness of the layer as a pressure or height above the bottom of the layer</span>
 <span class="sd">        (default 100 hPa)</span>
+
 <span class="sd">    interpolate : bool, optional</span>
 <span class="sd">        Interpolate the top and bottom points if they are not in the given data (default True)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The mixed value of the data variable.</span>
+<span class="sd">        The mixed value of the data variable</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -2543,13 +2641,14 @@
 <span class="sd">    ----------</span>
 <span class="sd">    height : `pint.Quantity`</span>
 <span class="sd">        Atmospheric height</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The dry static energy</span>
+<span class="sd">        Dry static energy</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2583,15 +2682,17 @@
 <span class="sd">    ----------</span>
 <span class="sd">    height : `pint.Quantity`</span>
 <span class="sd">        Atmospheric height</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    specific_humidity : `pint.Quantity`</span>
 <span class="sd">        Atmospheric specific humidity</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The moist static energy</span>
+<span class="sd">        Moist static energy</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">dry_static_energy</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
@@ -2606,31 +2707,34 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the thickness of a layer via the hypsometric equation.</span>
 
 <span class="sd">    This thickness calculation uses the pressure and temperature profiles (and optionally</span>
-<span class="sd">    mixing ratio) via the hypsometric equation with virtual temperature adjustment</span>
+<span class="sd">    mixing ratio) via the hypsometric equation with virtual temperature adjustment.</span>
 
 <span class="sd">    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,</span>
 
-<span class="sd">    which is based off of Equation 3.24 in [Hobbs2006]_.</span>
+<span class="sd">    Which is based off of Equation 3.24 in [Hobbs2006]_.</span>
 
-<span class="sd">    This assumes a hydrostatic atmosphere.</span>
-
-<span class="sd">    Layer bottom and depth specified in pressure.</span>
+<span class="sd">    This assumes a hydrostatic atmosphere. Layer bottom and depth specified in pressure.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Atmospheric temperature profile</span>
+
 <span class="sd">    mixing_ratio : `pint.Quantity`, optional</span>
 <span class="sd">        Profile of dimensionless mass mixing ratio. If none is given, virtual temperature</span>
 <span class="sd">        is simply set to be the given temperature.</span>
+
 <span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
 <span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
 <span class="sd">        for air. Defaults to the ratio for water vapor to dry air.</span>
-<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`)</span>
+
 <span class="sd">    bottom : `pint.Quantity`, optional</span>
 <span class="sd">        The bottom of the layer in pressure. Defaults to the first observation.</span>
+
 <span class="sd">    depth : `pint.Quantity`, optional</span>
 <span class="sd">        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,</span>
 <span class="sd">        and 100 hPa if bottom is given.</span>
@@ -2638,7 +2742,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The thickness of the layer in meters.</span>
+<span class="sd">        The thickness of the layer in meters</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2683,7 +2787,7 @@
 
 <span class="sd">    Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,</span>
 <span class="sd">    temperature, and relative humidity profiles via the hypsometric equation with virtual</span>
-<span class="sd">    temperature adjustment.</span>
+<span class="sd">    temperature adjustment</span>
 
 <span class="sd">    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,</span>
 
@@ -2698,14 +2802,18 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Atmospheric temperature profile</span>
+
 <span class="sd">    relative_humidity : `pint.Quantity`</span>
 <span class="sd">        Atmospheric relative humidity profile. The relative humidity is expressed as a</span>
 <span class="sd">        unitless ratio in the range [0, 1]. Can also pass a percentage if proper units are</span>
 <span class="sd">        attached.</span>
+
 <span class="sd">    bottom : `pint.Quantity`, optional</span>
 <span class="sd">        The bottom of the layer in pressure. Defaults to the first observation.</span>
+
 <span class="sd">    depth : `pint.Quantity`, optional</span>
 <span class="sd">        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,</span>
 <span class="sd">        and 100 hPa if bottom is given.</span>
@@ -2713,7 +2821,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The thickness of the layer in meters.</span>
+<span class="sd">        The thickness of the layer in meters</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2751,8 +2859,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    height : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric (geopotential) height</span>
+
 <span class="sd">    potential_temperature : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
+
 <span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0,</span>
 <span class="sd">        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case</span>
@@ -2801,8 +2911,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    height : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric (geopotential) height</span>
+
 <span class="sd">    potential_temperature : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
+
 <span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0,</span>
 <span class="sd">        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case</span>
@@ -2845,8 +2957,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    height : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric (geopotential) height</span>
+
 <span class="sd">    potential_temperature : `xarray.DataArray` or `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
+
 <span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to vertical in the potential temperature array, defaults to 0,</span>
 <span class="sd">        unless `height` and `potential_temperature` given as `xarray.DataArray`, in which case</span>
@@ -2889,8 +3003,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Initial atmospheric pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Initial atmospheric temperature</span>
+
 <span class="sd">    dewpoint : `pint.Quantity`</span>
 <span class="sd">        Initial atmospheric dewpoint</span>
 
@@ -2949,8 +3065,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Profile of atmospheric pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        Profile of temperature</span>
+
 <span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to vertical in the pressure and temperature arrays, defaults</span>
 <span class="sd">        to 0.</span>
@@ -2958,7 +3076,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The profile of static stability.</span>
+<span class="sd">        The profile of static stability</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
@@ -2983,8 +3101,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    specific_humidity: `pint.Quantity`</span>
 <span class="sd">        Specific humidity of air</span>
 
@@ -3025,12 +3145,15 @@
 <span class="sd">    ----------</span>
 <span class="sd">    w: `pint.Quantity`</span>
 <span class="sd">        Vertical velocity in terms of height</span>
+
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    mixing_ratio: `pint.Quantity`, optional</span>
-<span class="sd">        Mixing_ratio ratio of air</span>
+<span class="sd">        Mixing ratio of air</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -3074,10 +3197,13 @@
 <span class="sd">    ----------</span>
 <span class="sd">    omega: `pint.Quantity`</span>
 <span class="sd">        Vertical velocity in terms of pressure</span>
+
 <span class="sd">    pressure: `pint.Quantity`</span>
 <span class="sd">        Total atmospheric pressure</span>
+
 <span class="sd">    temperature: `pint.Quantity`</span>
 <span class="sd">        Air temperature</span>
+
 <span class="sd">    mixing_ratio: `pint.Quantity`, optional</span>
 <span class="sd">        Mixing ratio of air</span>
 
@@ -3104,10 +3230,10 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    dewpoint: `pint.Quantity`</span>
-<span class="sd">        dewpoint temperature</span>
+<span class="sd">        Dewpoint temperature</span>
 
 <span class="sd">    pressure: `pint.Quantity`</span>
-<span class="sd">        pressure</span>
+<span class="sd">        Pressure</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -3131,9 +3257,11 @@
 
 <span class="sd">    Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:</span>
 <span class="sd">    LI = T500 - Tp500</span>
+
 <span class="sd">    where:</span>
-<span class="sd">    T500 is the measured temperature at 500 hPa.</span>
-<span class="sd">    Tp500 is the temperature of the lifted parcel at 500 hPa.</span>
+
+<span class="sd">    T500 is the measured temperature at 500 hPa</span>
+<span class="sd">    Tp500 is the temperature of the lifted parcel at 500 hPa</span>
 
 <span class="sd">    Calculation of the lifted index is defined as the temperature difference between the</span>
 <span class="sd">    observed 500 hPa temperature and the temperature of a parcel lifted from the</span>
@@ -3142,17 +3270,19 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest, in order from highest to</span>
-<span class="sd">        lowest pressure.</span>
+<span class="sd">        Atmospheric pressure level(s) of interest, in order from highest to</span>
+<span class="sd">        lowest pressure</span>
+
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The atmospheric temperature corresponding to pressure.</span>
+<span class="sd">        Atmospheric temperature corresponding to pressure</span>
+
 <span class="sd">    parcel_profile : `pint.Quantity`</span>
-<span class="sd">        The temperature profile of the parcel.</span>
+<span class="sd">        Temperature profile of the parcel</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        Lifted Index.</span>
+<span class="sd">        Lifted Index</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># find the index for the 500 hPa pressure level.</span>
@@ -3186,12 +3316,16 @@
 <span class="sd">    ----------</span>
 <span class="sd">    height : `pint.Quantity`</span>
 <span class="sd">        Atmospheric height</span>
+
 <span class="sd">    potential_temperature : `pint.Quantity`</span>
 <span class="sd">        Atmospheric potential temperature</span>
+
 <span class="sd">    u : `pint.Quantity`</span>
-<span class="sd">        x component of the wind</span>
+<span class="sd">        X component of the wind</span>
+
 <span class="sd">    v : `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
+
 <span class="sd">    vertical_dim : int, optional</span>
 <span class="sd">        The axis corresponding to vertical, defaults to 0. Automatically determined from</span>
 <span class="sd">        xarray DataArray arguments.</span>
@@ -3240,7 +3374,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

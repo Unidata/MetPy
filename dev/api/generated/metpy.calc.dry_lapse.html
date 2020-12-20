@@ -745,19 +745,19 @@
 <dt id="metpy.calc.dry_lapse">
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dry_lapse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pressure</span></em>, <em class="sig-param"><span class="n">temperature</span></em>, <em class="sig-param"><span class="n">reference_pressure</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vertical_dim</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dry_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dry_lapse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the temperature at a level assuming only dry processes.</p>
-<p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>, conserving
-potential temperature. The starting pressure can be given by <em class="xref py py-obj">reference_pressure</em>.</p>
+<p>This function lifts a parcel starting at <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, conserving
+potential temperature. The starting pressure can be given by <code class="docutils literal notranslate"><span class="pre">reference_pressure</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The atmospheric pressure level(s) of interest</p></li>
-<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – The starting temperature</p></li>
-<li><p><strong>reference_pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – The reference pressure. If not given, it defaults to the first element of the
+<li><p><strong>pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Atmospheric pressure level(s) of interest</p></li>
+<li><p><strong>temperature</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Starting temperature</p></li>
+<li><p><strong>reference_pressure</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, optional) – Reference pressure; if not given, it defaults to the first element of the
 pressure array.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The resulting parcel temperature at levels given by <em class="xref py py-obj">pressure</em></p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – The parcel’s resulting temperature at levels given by <code class="docutils literal notranslate"><span class="pre">pressure</span></code></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -812,7 +812,7 @@ grids) unless reference_pressure is specified.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

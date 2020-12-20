@@ -235,7 +235,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    wind speed: `pint.Quantity`</span>
-<span class="sd">        The speed of the wind</span>
+<span class="sd">        Speed of the wind</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -259,14 +259,14 @@
 <span class="sd">    v : `pint.Quantity`</span>
 <span class="sd">        Wind component in the Y (North-South) direction</span>
 <span class="sd">    convention : str</span>
-<span class="sd">        Convention to return direction. &#39;from&#39; returns the direction the wind is coming from</span>
-<span class="sd">        (meteorological convention). &#39;to&#39; returns the direction the wind is going towards</span>
-<span class="sd">        (oceanographic convention). Default is &#39;from&#39;.</span>
+<span class="sd">        Convention to return direction; &#39;from&#39; returns the direction the wind is coming from</span>
+<span class="sd">        (meteorological convention), &#39;to&#39; returns the direction the wind is going towards</span>
+<span class="sd">        (oceanographic convention), default is &#39;from&#39;.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    direction: `pint.Quantity`</span>
-<span class="sd">        The direction of the wind in interval [0, 360] degrees, with 360 being North, with the</span>
+<span class="sd">        The direction of the wind in intervals [0, 360] degrees, with 360 being North,</span>
 <span class="sd">        direction defined by the convention kwarg.</span>
 
 <span class="sd">    See Also</span>
@@ -309,9 +309,9 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    speed : `pint.Quantity`</span>
-<span class="sd">        The wind speed (magnitude)</span>
+<span class="sd">        Wind speed (magnitude)</span>
 <span class="sd">    wind_direction : `pint.Quantity`</span>
-<span class="sd">        The wind direction, specified as the direction from which the wind is</span>
+<span class="sd">        Wind direction, specified as the direction from which the wind is</span>
 <span class="sd">        blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.</span>
 
 <span class="sd">    Returns</span>
@@ -350,14 +350,14 @@
 <span class="sd">    Specifically, these formulas assume that wind speed is measured at</span>
 <span class="sd">    10m.  If, instead, the speeds are measured at face level, the winds</span>
 <span class="sd">    need to be multiplied by a factor of 1.5 (this can be done by specifying</span>
-<span class="sd">    `face_level_winds` as `True`.)</span>
+<span class="sd">    `face_level_winds` as `True`).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The air temperature</span>
+<span class="sd">        Air temperature</span>
 <span class="sd">    speed : `pint.Quantity`</span>
-<span class="sd">        The wind speed at 10m.  If instead the winds are at face level,</span>
+<span class="sd">        Wind speed at 10m. If instead the winds are at face level,</span>
 <span class="sd">        `face_level_winds` should be set to `True` and the 1.5 multiplicative</span>
 <span class="sd">        correction will be applied automatically.</span>
 <span class="sd">    face_level_winds : bool, optional</span>
@@ -373,7 +373,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding Wind Chill Temperature Index value(s)</span>
+<span class="sd">        Corresponding Wind Chill Temperature Index value(s)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -423,7 +423,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding Heat Index value(s)</span>
+<span class="sd">        Corresponding Heat Index value(s)</span>
 
 <span class="sd">    Other Parameters</span>
 <span class="sd">    ----------------</span>
@@ -519,12 +519,12 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The air temperature</span>
+<span class="sd">        Air temperature</span>
 <span class="sd">    relative_humidity : `pint.Quantity`</span>
-<span class="sd">        The relative humidity expressed as a unitless ratio in the range [0, 1].</span>
+<span class="sd">        Relative humidity expressed as a unitless ratio in the range [0, 1].</span>
 <span class="sd">        Can also pass a percentage if proper units are attached.</span>
 <span class="sd">    speed : `pint.Quantity`</span>
-<span class="sd">        The wind speed at 10m.  If instead the winds are at face level,</span>
+<span class="sd">        Wind speed at 10m.  If instead the winds are at face level,</span>
 <span class="sd">        `face_level_winds` should be set to `True` and the 1.5 multiplicative</span>
 <span class="sd">        correction will be applied automatically.</span>
 <span class="sd">    face_level_winds : bool, optional</span>
@@ -542,7 +542,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding apparent temperature value(s)</span>
+<span class="sd">        Corresponding apparent temperature value(s)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -601,7 +601,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding height value(s)</span>
+<span class="sd">        Corresponding height value(s)</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -626,7 +626,8 @@
 <span class="sd">    .. math:: \Phi = \frac{g R_e z}{R_e + z}</span>
 
 <span class="sd">    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth</span>
-<span class="sd">    radius, and :math:`g` is standard gravity.)</span>
+<span class="sd">    radius, and :math:`g` is standard gravity).</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -636,7 +637,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding geopotential value(s)</span>
+<span class="sd">        Corresponding geopotential value(s)</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -660,7 +661,7 @@
 <span class="sd">    centrifugal force and Earth&#39;s eccentricity.</span>
 
 <span class="sd">    (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton&#39;s Law of</span>
-<span class="sd">    Gravitation assuming a spherical Earth and no centrifugal force effects.)</span>
+<span class="sd">    Gravitation assuming a spherical Earth and no centrifugal force effects).</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -682,7 +683,8 @@
 <span class="sd">    .. math:: z = \frac{\Phi R_e}{gR_e - \Phi}</span>
 
 <span class="sd">    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth</span>
-<span class="sd">    radius, and :math:`g` is standard gravity.)</span>
+<span class="sd">    radius, and :math:`g` is standard gravity).</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -692,7 +694,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding value(s) of height above sea level</span>
+<span class="sd">        Corresponding value(s) of height above sea level</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -746,7 +748,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding pressure value(s)</span>
+<span class="sd">        Corresponding pressure value(s)</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -772,7 +774,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding coriolis force at each point</span>
+<span class="sd">        Corresponding coriolis force at each point</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">latitude</span> <span class="o">=</span> <span class="n">_check_radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -797,7 +799,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The corresponding pressure value for the height above the pressure level</span>
+<span class="sd">        Corresponding pressure value for the height above the pressure level</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -846,22 +848,22 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sigma : ndarray</span>
-<span class="sd">        The sigma levels to be converted to pressure levels.</span>
+<span class="sd">        Sigma levels to be converted to pressure levels</span>
 
 <span class="sd">    pressure_sfc : `pint.Quantity`</span>
-<span class="sd">        The surface pressure value.</span>
+<span class="sd">        Surface pressure value</span>
 
 <span class="sd">    pressure_top : `pint.Quantity`</span>
-<span class="sd">        The pressure value at the top of the model domain.</span>
+<span class="sd">        Pressure value at the top of the model domain</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The pressure values at the given sigma levels.</span>
+<span class="sd">        Pressure values at the given sigma levels</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Sigma definition adapted from [Philips1957]_.</span>
+<span class="sd">    Sigma definition adapted from [Philips1957]_:</span>
 
 <span class="sd">    .. math:: p = \sigma * (p_{sfc} - p_{top}) + p_{top}</span>
 
@@ -901,7 +903,7 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This function is a close replication of the GEMPAK function GWFS,</span>
+<span class="sd">    This function is a close replication of the GEMPAK function ``GWFS``,</span>
 <span class="sd">    but is not identical.  The following notes are incorporated from</span>
 <span class="sd">    the GEMPAK source code:</span>
 
@@ -909,9 +911,9 @@
 <span class="sd">    low-pass filter whose weights are determined by the normal</span>
 <span class="sd">    (Gaussian) probability distribution function for two dimensions.</span>
 <span class="sd">    The weight given to any grid point within the area covered by the</span>
-<span class="sd">    moving average for a target grid point is proportional to</span>
+<span class="sd">    moving average for a target grid point is proportional to:</span>
 
-<span class="sd">                    EXP [ -( D ** 2 ) ],</span>
+<span class="sd">    .. math:: e^{-D^2}</span>
 
 <span class="sd">    where D is the distance from that point to the target point divided</span>
 <span class="sd">    by the standard deviation of the normal distribution.  The value of</span>
@@ -980,10 +982,10 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    scalar_grid : array-like</span>
-<span class="sd">        N-dimensional scalar grid to be smoothed.</span>
+<span class="sd">        N-dimensional scalar grid to be smoothed</span>
 
 <span class="sd">    window : ndarray</span>
-<span class="sd">        The window to use in smoothing. Can have dimension less than or equal to N. If</span>
+<span class="sd">        Window to use in smoothing. Can have dimension less than or equal to N. If</span>
 <span class="sd">        dimension less than N, the scalar grid will be smoothed along its trailing dimensions.</span>
 <span class="sd">        Shape along each dimension must be odd.</span>
 
@@ -998,7 +1000,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
-<span class="sd">        The filtered scalar grid.</span>
+<span class="sd">        The filtered scalar grid</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1071,10 +1073,10 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    scalar_grid : array-like</span>
-<span class="sd">        N-dimensional scalar grid to be smoothed.</span>
+<span class="sd">        N-dimensional scalar grid to be smoothed</span>
 
 <span class="sd">    size : int or sequence of ints</span>
-<span class="sd">        Shape of rectangle along the trailing dimension(s) of the scalar grid.</span>
+<span class="sd">        Shape of rectangle along the trailing dimension(s) of the scalar grid</span>
 
 <span class="sd">    passes : int</span>
 <span class="sd">        The number of times to apply the filter to the grid. Defaults to 1.</span>
@@ -1082,7 +1084,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
-<span class="sd">        The filtered scalar grid.</span>
+<span class="sd">        The filtered scalar grid</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1121,7 +1123,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
-<span class="sd">        The filtered scalar grid.</span>
+<span class="sd">        The filtered scalar grid</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1167,7 +1169,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like or `pint.Quantity`</span>
-<span class="sd">        The filtered scalar grid.</span>
+<span class="sd">        The filtered scalar grid</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -1222,14 +1224,15 @@
 <span class="sd">    altimeter_value : `pint.Quantity`</span>
 <span class="sd">        The altimeter setting value as defined by the METAR or other observation,</span>
 <span class="sd">        which can be measured in either inches of mercury (in. Hg) or millibars (mb)</span>
+
 <span class="sd">    height: `pint.Quantity`</span>
-<span class="sd">        Elevation of the station measuring pressure.</span>
+<span class="sd">        Elevation of the station measuring pressure</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The station pressure in hPa or in. Hg, which can be used to calculate sea-level</span>
-<span class="sd">        pressure</span>
+<span class="sd">        The station pressure in hPa or in. Hg. Can be used to calculate sea-level</span>
+<span class="sd">        pressure.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1247,7 +1250,7 @@
 <span class="sd">     .. math::  F = \left [1 + \left(\frac{p_{0}^n a}{T_{0}} \right)</span>
 <span class="sd">                   \frac{H_{b}}{p_{1}^n} \right ] ^ \frac{1}{n}</span>
 
-<span class="sd">    Where</span>
+<span class="sd">    Where,</span>
 
 <span class="sd">    :math:`p_{0}` = standard sea-level pressure = 1013.25 mb</span>
 
@@ -1258,11 +1261,10 @@
 
 <span class="sd">    :math:`t_{0}` = standard sea-level temperature 288 K</span>
 
-<span class="sd">    :math:`H_{b} =` station elevation in meters (elevation for which station</span>
-<span class="sd">      pressure is given)</span>
+<span class="sd">    :math:`H_{b} =` station elevation in meters (elevation for which station pressure is given)</span>
 
-<span class="sd">    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas</span>
-<span class="sd">      constant for dry air</span>
+<span class="sd">    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas constant for dry</span>
+<span class="sd">    air</span>
 
 <span class="sd">    And solving for :math:`p_{mb}` results in the equation below, which is used to</span>
 <span class="sd">    calculate station pressure :math:`(p_{mb})`</span>
@@ -1291,7 +1293,7 @@
 <span class="sd">    This function is useful for working with METARs since most provide</span>
 <span class="sd">    altimeter values, but not sea-level pressure, which is often plotted</span>
 <span class="sd">    on surface maps. The following definitions of altimeter setting, station pressure, and</span>
-<span class="sd">    sea-level pressure are taken from [Smithsonian1951]_</span>
+<span class="sd">    sea-level pressure are taken from [Smithsonian1951]_.</span>
 <span class="sd">    Altimeter setting is the pressure value to which an aircraft altimeter scale</span>
 <span class="sd">    is set so that it will indicate the altitude above mean sea-level of an aircraft</span>
 <span class="sd">    on the ground at the location for which the value is determined. It assumes a standard</span>
@@ -1307,9 +1309,11 @@
 <span class="sd">    ----------</span>
 <span class="sd">    altimeter_value : &#39;pint.Quantity&#39;</span>
 <span class="sd">        The altimeter setting value is defined by the METAR or other observation,</span>
-<span class="sd">        with units of inches of mercury (in Hg) or millibars (hPa)</span>
+<span class="sd">        with units of inches of mercury (in Hg) or millibars (hPa).</span>
+
 <span class="sd">    height  : &#39;pint.Quantity&#39;</span>
 <span class="sd">        Elevation of the station measuring pressure. Often times measured in meters</span>
+
 <span class="sd">    temperature : &#39;pint.Quantity&#39;</span>
 <span class="sd">        Temperature at the station</span>
 
@@ -1317,7 +1321,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    &#39;pint.Quantity&#39;</span>
 <span class="sd">        The sea-level pressure in hPa and makes pressure values easier to compare</span>
-<span class="sd">        between different stations</span>
+<span class="sd">        between different stations.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1325,7 +1329,7 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This function is implemented using the following equations from Wallace and Hobbs (1977)</span>
+<span class="sd">    This function is implemented using the following equations from Wallace and Hobbs (1977).</span>
 
 <span class="sd">    Equation 2.29:</span>
 <span class="sd">     .. math::</span>
@@ -1359,15 +1363,15 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    value : `pint.Quantity`</span>
-<span class="sd">        The input value to check.</span>
+<span class="sd">        Input value to check</span>
 
 <span class="sd">    max_radians : float</span>
-<span class="sd">        Maximum absolute value of radians before warning.</span>
+<span class="sd">        Maximum absolute value of radians before warning</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The input value</span>
+<span class="sd">        Input value</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1412,7 +1416,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>

@@ -751,7 +751,7 @@ attached coordinate and projection information. If <em class="xref py py-obj">f<
 <em class="xref py py-obj">delta</em> are given, <em class="xref py py-obj">f</em> will be converted to a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> and the derivative returned
 as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, otherwise, if neither <em class="xref py py-obj">x</em> nor <em class="xref py py-obj">delta</em> are given, the attached
 coordinate information belonging to <em class="xref py py-obj">axis</em> will be used and the derivative will be returned
-as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></p>
 <p>This uses 3 points to calculate the derivative, using forward or backward at the edges of
 the grid as appropriate, and centered elsewhere. The irregular spacing is handled
 explicitly, using the formulation as specified by <a class="reference internal" href="../references.html#bowen2005" id="id1"><span>[Bowen2005]</span></a>.</p>
@@ -765,13 +765,13 @@ dimension name or the axis type) or integer (referring to axis number), unless u
 implicit conversion to <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, in which case it must be an integer. Defaults
 to 0. For reference, the current standard axis types are ‘time’, ‘vertical’, ‘y’, and
 ‘x’.</p></li>
-<li><p><strong>x</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em>.</p></li>
+<li><p><strong>x</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em></p></li>
 <li><p><strong>delta</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Spacing between the grid points in <em class="xref py py-obj">f</em>. There should be one item less than the size
 of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>array-like</em> – The second derivative calculated along the selected axis.</p>
+<dd class="field-even"><p><em>array-like</em> – The second derivative calculated along the selected axis</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -817,7 +817,7 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 18, 2020 at 23:07:17.<br/>
+        Last updated on Dec 20, 2020 at 21:25:24.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
     </p>
   </div>
