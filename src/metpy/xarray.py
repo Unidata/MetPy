@@ -436,17 +436,9 @@ class MetPyDataArrayAccessor:
 
     def coordinates_identical(self, other):
         """Return whether or not the coordinates of other match this DataArray's."""
-        # If the number of coordinates do not match, we know they can't match.
-        if len(self._data_array.coords) != len(other.coords):
-            return False
-
-        # If same length, iterate over all of them and check
-        for coord_name, coord_var in self._data_array.coords.items():
-            if coord_name not in other.coords or not other[coord_name].identical(coord_var):
-                return False
-
-        # Otherwise, they match.
-        return True
+        return (len(self._data_array.coords) == len(other.coords)
+                and all(coord_name in other.coords and other[coord_name].identical(coord_var)
+                        for coord_name, coord_var in self._data_array.coords.items()))
 
     @property
     def time_deltas(self):
@@ -1034,10 +1026,10 @@ def check_axis(var, *axes):
         #   - _CoordinateAxisType (from THREDDS)
         #   - axis (CF option)
         #   - positive (CF standard for non-pressure vertical coordinate)
-        for criterion in ('standard_name', '_CoordinateAxisType', 'axis', 'positive'):
-            if (var.attrs.get(criterion, 'absent') in
-                    coordinate_criteria[criterion].get(axis, set())):
-                return True
+        if any(var.attrs.get(criterion, 'absent')
+               in coordinate_criteria[criterion].get(axis, set())
+               for criterion in ('standard_name', '_CoordinateAxisType', 'axis', 'positive')):
+            return True
 
         # Check for units, either by dimensionality or name
         with contextlib.suppress(UndefinedUnitError):
