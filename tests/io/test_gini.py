@@ -171,7 +171,7 @@ def test_unidata_composite():
     assert datetime(2018, 3, 9, 22, 25) == f.prod_desc.datetime
 
     # Check data value
-    assert 66 == f.data[2160, 2130]
+    assert f.data[2160, 2130] == 66
 
 
 def test_percent_normal():
