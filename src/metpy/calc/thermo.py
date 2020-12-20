@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
+import contextlib
 import warnings
 
 import numpy as np
@@ -1550,10 +1551,8 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     mixing_ratio, specific_humidity_from_mixing_ratio
 
     """
-    try:
+    with contextlib.suppress(AttributeError):
         specific_humidity = specific_humidity.to('dimensionless')
-    except AttributeError:
-        pass
     return specific_humidity / (1 - specific_humidity)
 
 
@@ -1587,10 +1586,8 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     mixing_ratio, mixing_ratio_from_specific_humidity
 
     """
-    try:
+    with contextlib.suppress(AttributeError):
         mixing_ratio = mixing_ratio.to('dimensionless')
-    except AttributeError:
-        pass
     return mixing_ratio / (1 + mixing_ratio)
 
 

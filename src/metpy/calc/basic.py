@@ -9,6 +9,7 @@ These include:
 * heat index
 * windchill
 """
+import contextlib
 from itertools import product
 import warnings
 
@@ -1182,10 +1183,8 @@ def _check_radians(value, max_radians=2 * np.pi):
         Input value
 
     """
-    try:
+    with contextlib.suppress(AttributeError):
         value = value.to('radians').m
-    except AttributeError:
-        pass
     if np.any(np.greater(np.abs(value), max_radians)):
         warnings.warn('Input over {} radians. '
                       'Ensure proper units are given.'.format(np.nanmax(max_radians)))

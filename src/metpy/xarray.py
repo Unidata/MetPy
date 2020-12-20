@@ -15,6 +15,7 @@ Dataset.
 
 See Also: :doc:`xarray with MetPy Tutorial </tutorials/xarray_tutorial>`.
 """
+import contextlib
 import functools
 from inspect import signature
 import logging
@@ -1039,7 +1040,7 @@ def check_axis(var, *axes):
                 return True
 
         # Check for units, either by dimensionality or name
-        try:
+        with contextlib.suppress(UndefinedUnitError):
             if (axis in coordinate_criteria['units'] and (
                     (
                         coordinate_criteria['units'][axis]['match'] == 'dimensionality'
@@ -1052,8 +1053,6 @@ def check_axis(var, *axes):
                         in coordinate_criteria['units'][axis]['units']
                     ))):
                 return True
-        except UndefinedUnitError:
-            pass
 
         # Check if name matches regular expression (non-CF failsafe)
         if re.match(coordinate_criteria['regular_expression'][axis], var.name.lower()):

@@ -5,6 +5,7 @@
 
 import bz2
 from collections import namedtuple
+import contextlib
 import gzip
 from io import BytesIO
 import logging
@@ -35,10 +36,8 @@ def open_as_needed(filename, mode='rb'):
             filename = BytesIO(lead + filename.read())
 
         # If the leading bytes match one of the signatures, pass into the appropriate class.
-        try:
+        with contextlib.suppress(AttributeError):
             lead = lead.encode('ascii')
-        except AttributeError:
-            pass
         if lead.startswith(b'\x1f\x8b'):
             filename = gzip.GzipFile(fileobj=filename)
         elif lead.startswith(b'BZh'):

@@ -3,6 +3,7 @@
 #  SPDX-License-Identifier: BSD-3-Clause
 """Declarative plotting tools."""
 
+import contextlib
 from datetime import datetime, timedelta
 
 import matplotlib.pyplot as plt
@@ -544,10 +545,8 @@ class PanelContainer(HasTraits):
         self.figure.canvas.draw()
 
         # Flush out interactive events--only ok on Agg for newer matplotlib
-        try:
+        with contextlib.suppress(NotImplementedError):
             self.figure.canvas.flush_events()
-        except NotImplementedError:
-            pass
 
     def draw(self):
         """Draw the collection of panels."""
