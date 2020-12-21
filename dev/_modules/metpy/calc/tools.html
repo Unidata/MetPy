@@ -647,6 +647,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Also, this will return Pint Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Make sure pressure and datavars are the same length</span>
     <span class="k">for</span> <span class="n">datavar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
@@ -747,6 +750,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Also, this will return Pint Quantities even when given xarray DataArray profiles.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># If we get the depth kwarg, but it&#39;s None, set it to the default as well</span>
@@ -991,6 +997,9 @@
 <span class="sd">    This function will only return `pint.Quantity` arrays (not `xarray.DataArray` or another</span>
 <span class="sd">    array-like type). It will also &quot;densify&quot; your data if using Dask or lazy-loading.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(longitude, latitude, **kwargs)``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Inputs must be the same number of dimensions</span>
     <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="n">longitude</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
@@ -1157,6 +1166,10 @@
 <span class="sd">    array-like</span>
 <span class="sd">        The first derivative calculated along the selected axis</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(f, **kwargs)``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    second_derivative</span>
@@ -1247,6 +1260,10 @@
 <span class="sd">    array-like</span>
 <span class="sd">        The second derivative calculated along the selected axis</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(f, **kwargs)``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    first_derivative</span>
@@ -1332,14 +1349,17 @@
 <span class="sd">    tuple of array-like</span>
 <span class="sd">        The first derivative calculated along each specified axis of the original array</span>
 
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    laplacian, first_derivative</span>
-
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    If this function is used without the `axes` parameter, the length of `coordinates` or</span>
 <span class="sd">    `deltas` (as applicable) should match the number of dimensions of `f`.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(f, **kwargs)``</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    laplacian, first_derivative</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">deltas</span><span class="p">)</span>
@@ -1383,14 +1403,17 @@
 <span class="sd">    array-like</span>
 <span class="sd">        The laplacian</span>
 
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    gradient, second_derivative</span>
-
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    If this function is used without the `axes` parameter, the length of `coordinates` or</span>
 <span class="sd">    `deltas` (as applicable) should match the number of dimensions of `f`.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(f, **kwargs)``</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    gradient, second_derivative</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">deltas</span><span class="p">)</span>
@@ -1684,7 +1707,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

@@ -765,13 +765,16 @@ parsed from input if using <a class="reference external" href="https://xarray.py
 <dd class="field-even"><p>(…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> – Total Deformation</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
+of (x, y) or trailing dimensions of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation" title="metpy.calc.shearing_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shearing_deformation</span></code></a>, <a class="reference internal" href="metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stretching_deformation</span></code></a></p>
 </div>
-<p class="rubric">Notes</p>
-<p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
-of (x, y) or trailing dimensions of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -811,7 +814,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

@@ -771,13 +771,16 @@ of <em class="xref py py-obj">f</em> along the applicable axis.</p></li>
 <dd class="field-even"><p><em>array-like</em> – The laplacian</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>If this function is used without the <em class="xref py py-obj">axes</em> parameter, the length of <em class="xref py py-obj">coordinates</em> or
+<em class="xref py py-obj">deltas</em> (as applicable) should match the number of dimensions of <em class="xref py py-obj">f</em>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">**kwargs)</span></code></p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient</span></code></a>, <a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">second_derivative</span></code></a></p>
 </div>
-<p class="rubric">Notes</p>
-<p>If this function is used without the <em class="xref py py-obj">axes</em> parameter, the length of <em class="xref py py-obj">coordinates</em> or
-<em class="xref py py-obj">deltas</em> (as applicable) should match the number of dimensions of <em class="xref py py-obj">f</em>.</p>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -817,7 +820,7 @@ of <em class="xref py py-obj">f</em> along the applicable axis.</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

@@ -237,6 +237,10 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Relative humidity</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt`` parameter to ``dewpoint``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    saturation_vapor_pressure</span>
@@ -370,6 +374,9 @@
 <span class="sd">    &gt;&gt;&gt; p = 850 * units.mbar</span>
 <span class="sd">    &gt;&gt;&gt; T = temperature_from_potential_temperature(p, theta)</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``theta`` parameter to ``potential_temperature``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">potential_temperature</span> <span class="o">*</span> <span class="n">exner_function</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span></div>
 
@@ -413,6 +420,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or</span>
 <span class="sd">    grids) unless reference_pressure is specified.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``ref_pressure`` parameter to ``reference_pressure``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">reference_pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -467,6 +477,9 @@
 
 <span class="sd">    Only reliably functions on 1D profiles (not higher-dimension vertical cross sections or</span>
 <span class="sd">    grids).</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``ref_pressure`` parameter to ``reference_pressure``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
@@ -572,6 +585,9 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt`` parameter to ``dewpoint``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">_lcl_iter</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="n">td</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">](</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">),</span> <span class="n">w</span><span class="p">))</span>
@@ -644,6 +660,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt``,``dewpoint_start`` parameters to ``dewpoint``, ``dewpoint_start``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
@@ -825,6 +844,9 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt`` parameter to ``dewpoint``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span> <span class="o">=</span> <span class="n">_remove_nans</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
     <span class="c1"># Default to surface parcel if no profile or starting pressure level is given</span>
@@ -886,6 +908,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt`` parameter to ``dewpoint``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">t_l</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">t_u</span> <span class="o">=</span> <span class="n">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">t_l</span><span class="p">,</span> <span class="n">t_u</span><span class="p">))</span></div>
@@ -940,6 +965,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Also, will only return Pint Quantities, even when given xarray DataArray profiles. To</span>
 <span class="sd">    obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt`` parameter to ``dewpoint``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p_l</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">,</span> <span class="n">p_u</span><span class="p">,</span> <span class="n">t_l</span><span class="p">,</span> <span class="n">t_lcl</span><span class="p">,</span> <span class="n">t_u</span> <span class="o">=</span> <span class="n">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -1091,6 +1119,9 @@
 
 <span class="sd">    .. math:: e = p \frac{r}{r + \epsilon}</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``mixing`` parameter to ``mixing_ratio``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    saturation_vapor_pressure, dewpoint</span>
@@ -1154,6 +1185,10 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Dewpoint temperature</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``rh`` parameter to ``relative_humidity``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    dewpoint, saturation_vapor_pressure</span>
@@ -1191,6 +1226,9 @@
 <span class="sd">    formula for dewpoint in degrees Celsius:</span>
 
 <span class="sd">    .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``e`` parameter to ``vapor_pressure``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">vapor_pressure</span> <span class="o">/</span> <span class="n">sat_pressure_0c</span><span class="p">)</span>
@@ -1232,6 +1270,9 @@
 
 <span class="sd">    .. math:: r = \epsilon \frac{e}{p - e}</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``part_press``, ``tot_press`` parameters to ``partial_press``, ``total_press``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    saturation_mixing_ratio, vapor_pressure</span>
@@ -1268,6 +1309,9 @@
 <span class="sd">    such as [Hobbs1977]_ pg.73:</span>
 
 <span class="sd">    .. math:: r_s = \epsilon \frac{e_s}{p - e_s}</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``tot_press`` parameter to ``total_press``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">temperature</span><span class="p">),</span> <span class="n">total_press</span><span class="p">)</span></div>
@@ -1431,6 +1475,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``mixing`` parameter to ``mixing_ratio``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">temperature</span> <span class="o">*</span> <span class="p">((</span><span class="n">mixing_ratio</span> <span class="o">+</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span>
                           <span class="o">/</span> <span class="p">(</span><span class="n">molecular_weight_ratio</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">mixing_ratio</span><span class="p">)))</span></div>
@@ -1474,6 +1521,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``mixing`` parameter to ``mixing_ratio``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pottemp</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">virtual_temperature</span><span class="p">(</span><span class="n">pottemp</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span></div>
@@ -1516,6 +1566,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    .. math:: \rho = \frac{p}{R_dT_v}</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``mixing`` parameter to ``mixing_ratio``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">virttemp</span> <span class="o">=</span> <span class="n">virtual_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">mixing_ratio</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">virttemp</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">kilogram</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span></div>
@@ -1557,6 +1610,10 @@
 <span class="sd">    * :math:`RH` is relative humidity as a unitless ratio</span>
 <span class="sd">    * :math:`e` is vapor pressure from the wet psychrometric calculation</span>
 <span class="sd">    * :math:`e_s` is the saturation vapor pressure</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from</span>
+<span class="sd">       ``(dry_bulb_temperature, web_bulb_temperature, pressure, **kwargs)``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1615,6 +1672,10 @@
 <span class="sd">    Psychrometer coefficient depends on the specific instrument being used and the ventilation</span>
 <span class="sd">    of the instrument.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from</span>
+<span class="sd">       ``(dry_bulb_temperature, wet_bulb_temperature, pressure, psychrometer_coefficient)``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    saturation_vapor_pressure</span>
@@ -1660,6 +1721,9 @@
 <span class="sd">    * :math:`relative_humidity` is relative humidity as a unitless ratio</span>
 <span class="sd">    * :math:`w_s` is the saturation mixing ratio</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(relative_humidity, temperature, pressure)``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    relative_humidity_from_mixing_ratio, saturation_mixing_ratio</span>
@@ -1703,6 +1767,9 @@
 <span class="sd">    * :math:`relative_humidity` is relative humidity as a unitless ratio</span>
 <span class="sd">    * :math:`w` is mixing ratio</span>
 <span class="sd">    * :math:`w_s` is the saturation mixing ratio</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(mixing_ratio, temperature, pressure)``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -1817,6 +1884,9 @@
 <span class="sd">    * :math:`q` is specific humidity</span>
 <span class="sd">    * :math:`w_s` is the saturation mixing ratio</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(specific_humidity, temperature, pressure)``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    relative_humidity_from_mixing_ratio</span>
@@ -1892,6 +1962,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``dewpt`` parameter to ``dewpoint``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2038,6 +2111,9 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p_layer</span><span class="p">,</span> <span class="n">t_layer</span><span class="p">,</span> <span class="n">td_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span>
                                            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2102,6 +2178,9 @@
 
 <span class="sd">    Will only return Pint Quantities, even when given xarray DataArray profiles. To</span>
 <span class="sd">    obtain a xarray Dataset instead, use `isentropic_interpolation_as_dataset` instead.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``theta_levels``, ``axis`` parameters to ``levels``, ``vertical_dim``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -2532,6 +2611,10 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``p``, ``dewpt``, ``heights`` parameters to</span>
+<span class="sd">       ``pressure``, ``dewpoint``, ``height``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># If a parcel starting pressure is not provided, use the surface</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">parcel_start_pressure</span><span class="p">:</span>
@@ -2603,6 +2686,9 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``p``, ``heights`` parameters to ``pressure``, ``height``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span>
                       <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
@@ -2646,6 +2732,10 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Dry static energy</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    montgomery_streamfunction</span>
@@ -2666,14 +2756,6 @@
 <span class="sd">    This function will calculate the moist static energy following</span>
 <span class="sd">    equation 3.72 in [Hobbs2006]_.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q</span>
-
-<span class="sd">    * :math:`T` is temperature</span>
-<span class="sd">    * :math:`z` is height</span>
-<span class="sd">    * :math:`q` is specific humidity</span>
-
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    height : `pint.Quantity`</span>
@@ -2689,6 +2771,17 @@
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Moist static energy</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q</span>
+
+<span class="sd">    * :math:`T` is temperature</span>
+<span class="sd">    * :math:`z` is height</span>
+<span class="sd">    * :math:`q` is specific humidity</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">dry_static_energy</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
@@ -2749,6 +2842,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``mixing`` parameter to ``mixing_ratio``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the data for the layer, conditional upon bottom/depth being specified and mixing</span>
@@ -2871,6 +2967,10 @@
 <span class="sd">        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in</span>
 <span class="sd">        which case will be `xarray.DataArray`.</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights``, ``axis`` parameters to ``height``, ``vertical_dim``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    brunt_vaisala_frequency, brunt_vaisala_period, potential_temperature</span>
@@ -2923,6 +3023,10 @@
 <span class="sd">        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in</span>
 <span class="sd">        which case will be `xarray.DataArray`.</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights``, ``axis`` parameters to ``height``, ``vertical_dim``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    brunt_vaisala_frequency_squared, brunt_vaisala_period, potential_temperature</span>
@@ -2969,6 +3073,9 @@
 <span class="sd">        `height` and `potential_temperature` arguments are given as `xarray.DataArray`, in</span>
 <span class="sd">        which case will be `xarray.DataArray`.</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights``, ``axis`` parameters to ``height``, ``vertical_dim``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -3074,6 +3181,10 @@
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        The profile of static stability</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``axis`` parameter ``vertical_dim``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
 
@@ -3108,6 +3219,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Dew point temperature</span>
+
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(specific_humidity, temperature, pressure)``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -3235,6 +3350,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Specific humidity</span>
+
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Changed signature from ``(dewpoint, pressure)``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -3370,7 +3489,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

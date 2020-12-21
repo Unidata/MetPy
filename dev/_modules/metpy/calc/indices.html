@@ -246,6 +246,9 @@
 <span class="sd">    -----</span>
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Signature changed from ``(dewpt, pressure, bottom=None, top=None)``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Sort pressure and dewpoint to be in decreasing pressure order (increasing height)</span>
     <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -311,6 +314,9 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Returned variable means in layer</span>
     <span class="n">layer_arg</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
@@ -366,6 +372,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># mean wind from sfc-6km</span>
@@ -442,6 +451,9 @@
 <span class="sd">    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).</span>
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">u_layer</span><span class="p">,</span> <span class="n">v_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
@@ -598,6 +610,9 @@
 <span class="sd">    Since this function returns scalar values when given a profile, this will return Pint</span>
 <span class="sd">    Quantities even when given xarray DataArray profiles.</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``heights`` parameter to ``height``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Convert everything to m/s</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
@@ -658,7 +673,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

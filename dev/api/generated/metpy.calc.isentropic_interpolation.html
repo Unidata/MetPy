@@ -774,6 +774,9 @@ vertical to find the pressure at each isentropic level. Interpolation method fro
 be linearly interpolated to the new isentropic levels.</p>
 <p>Will only return Pint Quantities, even when given xarray DataArray profiles. To
 obtain a xarray Dataset instead, use <a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html#metpy.calc.isentropic_interpolation_as_dataset" title="metpy.calc.isentropic_interpolation_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isentropic_interpolation_as_dataset</span></code></a> instead.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">theta_levels</span></code>, <code class="docutils literal notranslate"><span class="pre">axis</span></code> parameters to <code class="docutils literal notranslate"><span class="pre">levels</span></code>, <code class="docutils literal notranslate"><span class="pre">vertical_dim</span></code></p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_temperature</span></code></a>, <a class="reference internal" href="metpy.calc.isentropic_interpolation_as_dataset.html#metpy.calc.isentropic_interpolation_as_dataset" title="metpy.calc.isentropic_interpolation_as_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isentropic_interpolation_as_dataset</span></code></a></p>
@@ -817,7 +820,7 @@ obtain a xarray Dataset instead, use <a class="reference internal" href="metpy.c
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

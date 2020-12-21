@@ -331,6 +331,9 @@
 <span class="sd">    &gt;&gt;&gt; metpy.calc.wind_components(10. * units(&#39;m/s&#39;), 225. * units.deg)</span>
 <span class="sd">     (&lt;Quantity(7.07106781, &#39;meter / second&#39;)&gt;, &lt;Quantity(7.07106781, &#39;meter / second&#39;)&gt;)</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``wdir`` parameter to ``wind_direction``</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">wind_direction</span> <span class="o">=</span> <span class="n">_check_radians</span><span class="p">(</span><span class="n">wind_direction</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
     <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">wind_direction</span><span class="p">)</span>
@@ -377,7 +380,7 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    heat_index</span>
+<span class="sd">    heat_index, apparent_temperature</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Correct for lower height measurement of winds if necessary</span>
@@ -431,9 +434,13 @@
 <span class="sd">        A flag indicating whether a masked array should be returned with</span>
 <span class="sd">        values masked where the temperature &lt; 80F. Defaults to `True`.</span>
 
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``rh`` parameter to ``relative_humidity``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    windchill</span>
+<span class="sd">    windchill, apparent_temperature</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
@@ -543,6 +550,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
 <span class="sd">        Corresponding apparent temperature value(s)</span>
+
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``rh`` parameter to ``relative_humidity``</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -724,6 +735,9 @@
 <span class="sd">    (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton&#39;s Law of</span>
 <span class="sd">    Gravitation assuming a spherical Earth and no centrifugal force effects.)</span>
 
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``geopot`` parameter to ``geopotential``</span>
+
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    height_to_geopotential</span>
@@ -871,6 +885,9 @@
 <span class="sd">    * :math:`\sigma` is non-dimensional, scaled pressure</span>
 <span class="sd">    * :math:`p_{sfc}` is pressure at the surface or model floor</span>
 <span class="sd">    * :math:`p_{top}` is pressure at the top of the model domain</span>
+
+<span class="sd">    .. versionchanged:: 1.0</span>
+<span class="sd">       Renamed ``psfc``, ``ptop`` parameters to ``pressure_sfc``, ``pressure_top``</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
@@ -1414,7 +1431,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 19:18:13.<br/>
+        Last updated on Dec 21, 2020 at 19:45:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>
