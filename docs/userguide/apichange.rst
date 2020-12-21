@@ -9,46 +9,14 @@ code might need to change in upgrading to MetPy 1.0. You might find some functio
 categories. You can search this page for some of your commonly used functions to find any
 relevant breakages you might encounter.
 
-Moved, renamed, miscellaneous
------------------------------
+Xarray support for function input/output
+----------------------------------------
 
-*placeholder*
-
-.. container:: api-table
-
-  +-----------------------------------------------------------------+
-  | :func:`~metpy.calc.dewpoint_rh`                                 |
-  +-----------------------------------------------------------------+
-  | Removed. See :func:`~metpy.calc.dewpoint_from_relative_humidity`|
-  +-----------------------------------------------------------------+
-  | :func:`~metpy.calc.grid_deltas_from_dataarray`                  |
-  +-----------------------------------------------------------------+
-  | Moved from calc to xarray                                       |
-  +-----------------------------------------------------------------+
-  | :func:`~metpy.calc.first_derivative`                            |
-  +-----------------------------------------------------------------+
-  | ``(f, **kwargs)``                                               |
-  +-----------------------------------------------------------------+
-  | ``(f, axis=None, x=None, delta=None)``                          |
-  +-----------------------------------------------------------------+
-  | :func:`~metpy.calc.second_derivative`                           |
-  +-----------------------------------------------------------------+
-  | ``(f, **kwargs)``                                               |
-  +-----------------------------------------------------------------+
-  | ``(f, axis=None, x=None, delta=None)``                          |
-  +-----------------------------------------------------------------+
-  | :func:`~metpy.calc.gradient`                                    |
-  +-----------------------------------------------------------------+
-  | ``(f, **kwargs)``                                               |
-  +-----------------------------------------------------------------+
-  | ``(f, axes=None, coordinates=None, deltas=None)``               |
-  +-----------------------------------------------------------------+
-  | :func:`~metpy.calc.laplacian`                                   |
-  +-----------------------------------------------------------------+
-  | ``(f, **kwargs)``                                               |
-  +-----------------------------------------------------------------+
-  | ``(f, axes=None, coordinates=None, deltas=None)``               |
-  +-----------------------------------------------------------------+
+One of the most important changes you may run into is that many of the functions in
+:mod:`metpy.calc` would have only returned :class:`pint.Quantity` even when provided
+:class:`xarray.DataArray`. Now, MetPy will properly return a :class:`~xarray.DataArray` when
+provided one where able, except where otherwise explicitly stated. See the
+:doc:`MetPy xarray tutorial </tutorials/xarray_tutorial>` for more information.
 
 Positional argument name changes
 --------------------------------
@@ -377,7 +345,7 @@ keyword-only arguments. As such, any use of these positionally, e.g.
 
 will break, and you must specify
 
-.. code-block:: python
+.. parsed-literal::
 
    vorticity(u, v, **dx=my_dx_values**, **dy=my_dy_values**)
 
@@ -385,12 +353,6 @@ going forward.
 
 .. container:: api-table
 
-  +--------------------------------------------------------------------------------------------------------------------------------------------------+
-  | Function                                                                                                                                         |
-  +--------------------------------------------------------------------------------------------------------------------------------------------------+
-  | Pre-release parameters                                                                                                                           |
-  +--------------------------------------------------------------------------------------------------------------------------------------------------+
-  | Release parameters                                                                                                                               |
   +--------------------------------------------------------------------------------------------------------------------------------------------------+
   | :func:`~metpy.calc.precipitable_water`                                                                                                           |
   +--------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -632,15 +594,45 @@ taken from your latitude coordinate information, if possible.
   | ``(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2)``|
   +------------------------------------------------------------------------+
 
-Xarray support for function input/output
-----------------------------------------
+Moved, renamed, miscellaneous
+-----------------------------
 
-One of the most important changes you may run into is that many of the functions in
-:mod:`metpy.calc` would have only returned :class:`pint.Quantity` even when provided
-:class:`xarray.DataArray`. Now, MetPy will properly return a :class:`~xarray.DataArray` when
-provided one where able, except where otherwise explicitly stated. Notably, many of the indices
-and scalar thermodynamic quantities calculated from profiles, e.g. :func:`~metpy.calc.lcl` and
-:func:`~metpy.calc.cape_cin`, as well as :func:`~metpy.calc.isentropic_interpolation` will
-still return a :class:`pint.Quantity` regardless of input. We have added in new functionality
-for some of these cases, such as :func:`~metpy.calc.parcel_profile_with_lcl_as_dataset` and
-:func:`~metpy.calc.isentropic_interpolation_as_dataset`.
+Functions that have been moved, replaced, or had their function signatures drastically altered.
+
+.. container:: api-table
+
+  +-----------------------------------------------------------------+
+  | ``dewpoint_rh()``                                               |
+  +-----------------------------------------------------------------+
+  +-----------------------------------------------------------------+
+  | :func:`~metpy.calc.dewpoint_from_relative_humidity`             |
+  +-----------------------------------------------------------------+
+  | ``grid_deltas_from_dataarray``                                  |
+  +-----------------------------------------------------------------+
+  +-----------------------------------------------------------------+
+  | ``metpy.xarray``                                                |
+  +-----------------------------------------------------------------+
+  | :func:`~metpy.calc.first_derivative`                            |
+  +-----------------------------------------------------------------+
+  | ``(f, **kwargs)``                                               |
+  +-----------------------------------------------------------------+
+  | ``(f, axis=None, x=None, delta=None)``                          |
+  +-----------------------------------------------------------------+
+  | :func:`~metpy.calc.second_derivative`                           |
+  +-----------------------------------------------------------------+
+  | ``(f, **kwargs)``                                               |
+  +-----------------------------------------------------------------+
+  | ``(f, axis=None, x=None, delta=None)``                          |
+  +-----------------------------------------------------------------+
+  | :func:`~metpy.calc.gradient`                                    |
+  +-----------------------------------------------------------------+
+  | ``(f, **kwargs)``                                               |
+  +-----------------------------------------------------------------+
+  | ``(f, axes=None, coordinates=None, deltas=None)``               |
+  +-----------------------------------------------------------------+
+  | :func:`~metpy.calc.laplacian`                                   |
+  +-----------------------------------------------------------------+
+  | ``(f, **kwargs)``                                               |
+  +-----------------------------------------------------------------+
+  | ``(f, axes=None, coordinates=None, deltas=None)``               |
+  +-----------------------------------------------------------------+
