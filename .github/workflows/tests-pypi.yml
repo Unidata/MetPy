@@ -19,14 +19,14 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
-        dep-versions: [Current.txt]
+        dep-versions: [requirements.txt]
         no-extras: ['']
         include:
           - python-version: 3.6
             dep-versions: Minimum
             no-extras: ''
           - python-version: 3.9
-            dep-versions: Current.txt
+            dep-versions: requirements.txt
             no-extras: 'No Extras'
           - python-version: 3.9
             dep-versions: Prerelease
@@ -66,7 +66,7 @@ jobs:
     # TODO: Remove this when we drop Python 3.6
     - name: Adjust traitlets dependency for Python 3.6
       if: ${{ matrix.python-version == 3.6 }}
-      run: sed -e "s/traitlets==.*/traitlets==4.3.3/" -i.bak ci/Current.txt
+      run: sed -e "s/traitlets==.*/traitlets==4.3.3/" -i.bak ci/requirements.txt
 
     - name: Add extras to requirements
       if: ${{ matrix.no-extras != 'No Extras' }}
@@ -118,7 +118,7 @@ jobs:
         python -m coverage xml
 
     - name: Run doctests
-      if: ${{ matrix.dep-versions == 'Current.txt' && matrix.no-extras != 'No Extras' }}
+      if: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
       env:
         PY_IGNORE_IMPORTMISMATCH: 1
       run: python -m pytest --doctest-modules -k "not test" src;
