@@ -26,12 +26,12 @@ jobs:
         include:
           - python-version: 3.8
             check-links: false
-            dep-versions: Current.txt
+            dep-versions: requirements.txt
             git-versions: ''
             experimental: false
           - python-version: 3.9
             check-links: true
-            dep-versions: Current.txt
+            dep-versions: requirements.txt
             git-versions: ''
             experimental: false
           - python-version: 3.9
