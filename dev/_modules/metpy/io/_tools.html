@@ -196,6 +196,7 @@
 
 <span class="kn">import</span> <span class="nn">bz2</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -226,10 +227,8 @@
             <span class="n">filename</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">lead</span> <span class="o">+</span> <span class="n">filename</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
         <span class="c1"># If the leading bytes match one of the signatures, pass into the appropriate class.</span>
-        <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
             <span class="n">lead</span> <span class="o">=</span> <span class="n">lead</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">pass</span>
         <span class="k">if</span> <span class="n">lead</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x1f\x8b</span><span class="s1">&#39;</span><span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">lead</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;BZh&#39;</span><span class="p">):</span>
@@ -588,7 +587,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 18:35:24.<br/>
+        Last updated on Dec 21, 2020 at 19:18:13.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

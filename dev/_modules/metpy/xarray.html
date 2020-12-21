@@ -206,6 +206,7 @@
 
 <span class="sd">See Also: :doc:`xarray with MetPy Tutorial &lt;/tutorials/xarray_tutorial&gt;`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -626,17 +627,9 @@
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.coordinates_identical"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.coordinates_identical">[docs]</a>    <span class="k">def</span> <span class="nf">coordinates_identical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return whether or not the coordinates of other match this DataArray&#39;s.&quot;&quot;&quot;</span>
-        <span class="c1"># If the number of coordinates do not match, we know they can&#39;t match.</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">coords</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="c1"># If same length, iterate over all of them and check</span>
-        <span class="k">for</span> <span class="n">coord_name</span><span class="p">,</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">coord_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">coords</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">other</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">identical</span><span class="p">(</span><span class="n">coord_var</span><span class="p">):</span>
-                <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="c1"># Otherwise, they match.</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">coord_name</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="n">other</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span><span class="o">.</span><span class="n">identical</span><span class="p">(</span><span class="n">coord_var</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">coord_name</span><span class="p">,</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_deltas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1224,13 +1217,13 @@
         <span class="c1">#   - _CoordinateAxisType (from THREDDS)</span>
         <span class="c1">#   - axis (CF option)</span>
         <span class="c1">#   - positive (CF standard for non-pressure vertical coordinate)</span>
-        <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;standard_name&#39;</span><span class="p">,</span> <span class="s1">&#39;_CoordinateAxisType&#39;</span><span class="p">,</span> <span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">criterion</span><span class="p">,</span> <span class="s1">&#39;absent&#39;</span><span class="p">)</span> <span class="ow">in</span>
-                    <span class="n">coordinate_criteria</span><span class="p">[</span><span class="n">criterion</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">set</span><span class="p">())):</span>
-                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">criterion</span><span class="p">,</span> <span class="s1">&#39;absent&#39;</span><span class="p">)</span>
+               <span class="ow">in</span> <span class="n">coordinate_criteria</span><span class="p">[</span><span class="n">criterion</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+               <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;standard_name&#39;</span><span class="p">,</span> <span class="s1">&#39;_CoordinateAxisType&#39;</span><span class="p">,</span> <span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
         <span class="c1"># Check for units, either by dimensionality or name</span>
-        <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="n">UndefinedUnitError</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">axis</span> <span class="ow">in</span> <span class="n">coordinate_criteria</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
                     <span class="p">(</span>
                         <span class="n">coordinate_criteria</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="n">axis</span><span class="p">][</span><span class="s1">&#39;match&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dimensionality&#39;</span>
@@ -1243,8 +1236,6 @@
                         <span class="ow">in</span> <span class="n">coordinate_criteria</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">][</span><span class="n">axis</span><span class="p">][</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
                     <span class="p">))):</span>
                 <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="n">UndefinedUnitError</span><span class="p">:</span>
-            <span class="k">pass</span>
 
         <span class="c1"># Check if name matches regular expression (non-CF failsafe)</span>
         <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">coordinate_criteria</span><span class="p">[</span><span class="s1">&#39;regular_expression&#39;</span><span class="p">][</span><span class="n">axis</span><span class="p">],</span> <span class="n">var</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
@@ -1747,7 +1738,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 21, 2020 at 18:35:24.<br/>
+        Last updated on Dec 21, 2020 at 19:18:13.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>
