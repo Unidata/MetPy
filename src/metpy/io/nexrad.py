@@ -452,31 +452,27 @@ class Level2File:
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
         if data:
-            data = list(Struct('>{:d}h'.format(len(data) // 2)).unpack(data))
-            bmap = {}
-            date, time, num_el = data[:3]
-            bmap['datetime'] = nexrad_to_datetime(date, time)
+            date, time, num_el, *data = Struct('>{:d}h'.format(len(data) // 2)).unpack(data)
+            self.clutter_filter_bypass_map = {'datetime': nexrad_to_datetime(date, time),
+                                              'data': []}
 
-            offset = 3
-            bmap['data'] = []
+            num_az = 360
+            chunk_size = 32
             bit_conv = Bits(16)
             for e in range(num_el):
+                offset = e * num_az * chunk_size
                 seg_num = data[offset]
-                offset += 1
                 if seg_num != (e + 1):
                     log.warning('Message 13 segments out of sync -- read {} but on {}'.format(
                         seg_num, e + 1))
 
                 az_data = []
-                for _ in range(360):
+                for _ in range(num_az):
                     gates = []
-                    for _ in range(32):
-                        gates.extend(bit_conv(data[offset]))
-                        offset += 1
+                    for i in range(1, chunk_size + 1):
+                        gates.extend(bit_conv(data[offset + i]))
                     az_data.append(gates)
-                bmap['data'].append(az_data)
-
-            self.clutter_filter_bypass_map = bmap
+                self.clutter_filter_bypass_map['data'].append(az_data)
 
             if offset != len(data):
                 log.warning('Message 13 left data -- Used: %d Avail: %d', offset, len(data))
@@ -489,28 +485,20 @@ class Level2File:
         # will be returned concatenated when this is the case
         data = self._buffer_segment(msg_hdr)
         if data:
-            data = list(Struct('>{:d}h'.format(len(data) // 2)).unpack(data))
-            cmap = {}
-            date, time, num_el = data[:3]
-            cmap['datetime'] = nexrad_to_datetime(date, time)
+            date, time, num_el, *data = Struct('>{:d}h'.format(len(data) // 2)).unpack(data)
+            self.clutter_filter_map = {'datetime': nexrad_to_datetime(date, time), 'data': []}
 
-            offset = 3
-            cmap['data'] = []
+            offset = 0
             for _ in range(num_el):
                 az_data = []
                 for _ in range(360):
                     num_rng = data[offset]
-                    offset += 1
-
-                    codes = data[offset:2 * num_rng + offset:2]
-                    offset += 1
-
-                    ends = data[offset:2 * num_rng + offset:2]
-                    offset += 2 * num_rng - 1
+                    codes = data[offset + 1:offset + 1 + 2 * num_rng:2]
+                    ends = data[offset + 2:offset + 2 + 2 * num_rng:2]
                     az_data.append(list(zip(ends, codes)))
-                cmap['data'].append(az_data)
+                    offset += 2 * num_rng + 1
+                self.clutter_filter_map['data'].append(az_data)
 
-            self.clutter_filter_map = cmap
             if offset != len(data):
                 log.warning('Message 15 left data -- Used: %d Avail: %d', offset, len(data))
 
@@ -2234,7 +2222,7 @@ class Level3File:
                 scale = 1
             vals = self._read_trends()
             if code in (1, 2):
-                ret[f'{key} Limited'] = [True if v > 700 else False for v in vals]
+                ret[f'{key} Limited'] = [bool(v > 700) for v in vals]
                 vals = [v - 1000 if v > 700 else v for v in vals]
             ret[key] = [v * scale for v in vals]
 
@@ -2421,4 +2409,4 @@ def is_precip_mode(vcp_num):
         True if the VCP corresponds to precipitation mode, False otherwise
 
     """
-    return not vcp_num // 10 == 3
+    return vcp_num // 10 != 3

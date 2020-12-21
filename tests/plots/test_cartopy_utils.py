@@ -2,15 +2,14 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the cartopy utilities."""
+import contextlib
 
 import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
-try:
+with contextlib.suppress(ImportError):
     from metpy.plots import USCOUNTIES, USSTATES
-except ImportError:
-    pass  # No CartoPy
 from metpy.plots.cartopy_utils import import_cartopy
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
