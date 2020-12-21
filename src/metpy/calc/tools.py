@@ -456,6 +456,9 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Also, this will return Pint Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
+
     """
     # Make sure pressure and datavars are the same length
     for datavar in args:
@@ -556,6 +559,9 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Also, this will return Pint Quantities even when given xarray DataArray profiles.
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
 
     """
     # If we get the depth kwarg, but it's None, set it to the default as well
@@ -800,6 +806,9 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     This function will only return `pint.Quantity` arrays (not `xarray.DataArray` or another
     array-like type). It will also "densify" your data if using Dask or lazy-loading.
 
+    .. versionchanged:: 1.0
+       Changed signature from ``(longitude, latitude, **kwargs)``
+
     """
     # Inputs must be the same number of dimensions
     if latitude.ndim != longitude.ndim:
@@ -966,6 +975,10 @@ def first_derivative(f, axis=None, x=None, delta=None):
     array-like
         The first derivative calculated along the selected axis
 
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(f, **kwargs)``
+
     See Also
     --------
     second_derivative
@@ -1056,6 +1069,10 @@ def second_derivative(f, axis=None, x=None, delta=None):
     array-like
         The second derivative calculated along the selected axis
 
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(f, **kwargs)``
+
     See Also
     --------
     first_derivative
@@ -1141,14 +1158,17 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
     tuple of array-like
         The first derivative calculated along each specified axis of the original array
 
-    See Also
-    --------
-    laplacian, first_derivative
-
     Notes
     -----
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(f, **kwargs)``
+
+    See Also
+    --------
+    laplacian, first_derivative
 
     """
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
@@ -1192,14 +1212,17 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
     array-like
         The laplacian
 
-    See Also
-    --------
-    gradient, second_derivative
-
     Notes
     -----
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(f, **kwargs)``
+
+    See Also
+    --------
+    gradient, second_derivative
 
     """
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)

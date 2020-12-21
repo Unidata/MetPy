@@ -47,6 +47,10 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         vertical vorticity
 
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
+
     See Also
     --------
     divergence
@@ -89,6 +93,10 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     -------
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The horizontal divergence
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
 
     See Also
     --------
@@ -133,6 +141,10 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Shearing Deformation
 
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
+
     See Also
     --------
     stretching_deformation, total_deformation
@@ -175,6 +187,10 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     -------
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Stretching Deformation
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
 
     See Also
     --------
@@ -219,14 +235,17 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Total Deformation
 
-    See Also
-    --------
-    shearing_deformation, stretching_deformation
-
     Notes
     -----
     If inputs have more than two dimensions, they are assumed to have either leading dimensions
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
+
+    See Also
+    --------
+    shearing_deformation, stretching_deformation
 
     """
     dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
@@ -285,6 +304,10 @@ def advection(
     -------
     `pint.Quantity` or `xarray.DataArray`
         An N-dimensional array containing the advection at all grid points.
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(scalar, wind, deltas)``
 
     """
     return -sum(
@@ -352,6 +375,9 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
     :math:`1.08e4*1.e5`
 
+    .. versionchanged:: 1.0
+       Changed signature from ``(thta, u, v, dx, dy, dim_order='yx')``
+
     """
     # Get gradients of potential temperature in both x and y
     ddy_thta = first_derivative(potential_temperature, delta=dy, axis=y_dim)
@@ -410,6 +436,10 @@ def geostrophic_wind(height, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the geostrophic wind.
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(heights, f, dx, dy)``
 
     """
     f = coriolis_parameter(latitude)
@@ -471,6 +501,10 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the ageostrophic wind
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(heights, f, dx, dy, u, v, dim_order='yx')``
 
     """
     u_geostrophic, v_geostrophic = geostrophic_wind(
@@ -583,6 +617,10 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height`` and converted ``bottom``, ``storm_u``, and
+       ``storm_v`` parameters to keyword-only arguments
+
     """
     _, u, v = get_layer_heights(height, depth, u, v, with_agl=True, bottom=bottom)
 
@@ -642,6 +680,10 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
     -------
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         absolute vorticity
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy, lats, dim_order='yx')``
 
     """
     f = coriolis_parameter(latitude)
@@ -728,6 +770,9 @@ def potential_vorticity_baroclinic(
     one-dimensional, and not given as `xarray.DataArray`, p[:, None, None] can be used to make
     it appear multi-dimensional.)
 
+    .. versionchanged:: 1.0
+       Changed signature from ``(potential_temperature, pressure, u, v, dx, dy, lats)``
+
     """
     if (
         np.shape(potential_temperature)[vertical_dim] < 3
@@ -808,6 +853,10 @@ def potential_vorticity_barotropic(
     -------
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         barotropic potential vorticity
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(heights, u, v, dx, dy, lats, dim_order='yx')``
 
     """
     avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
@@ -890,6 +939,9 @@ def inertial_advective_wind(
     wind to both be the geostrophic wind. To do so, pass the x and y components
     of the geostrophic wind for u and u_geostrophic/v and v_geostrophic.
 
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, u_geostrophic, v_geostrophic, dx, dy, lats)``
+
     """
     f = coriolis_parameter(latitude)
 
@@ -969,6 +1021,10 @@ def q_vector(
     -------
     tuple of (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The components of the Q-vector in the u- and v-directions respectively
+
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, temperature, pressure, dx, dy, static_stability=1)``
 
     See Also
     --------

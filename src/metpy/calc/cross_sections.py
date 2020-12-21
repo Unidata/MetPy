@@ -287,6 +287,9 @@ def absolute_momentum(u, v, index='index'):
     -----
     The coordinates of `u` and `v` must match.
 
+    .. versionchanged:: 1.0
+       Renamed ``u_wind``, ``v_wind`` parameters to ``u``, ``v``
+
     """
     # Get the normal component of the wind
     norm_wind = normal_component(u, v, index=index).metpy.convert_units('m/s')

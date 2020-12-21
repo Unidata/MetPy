@@ -196,6 +196,12 @@ def _check_argument_units(args, defaults, dimensionality):
                 yield arg, 'none', need
 
 
+def _get_changed_version(docstring):
+    """Find the most recent version in which the docs say a function changed."""
+    matches = re.findall(r'.. versionchanged:: ([\d.]+)', docstring)
+    return max(matches) if matches else None
+
+
 def check_units(*units_by_pos, **units_by_name):
     """Create a decorator to check units of function arguments."""
     def dec(func):
@@ -228,7 +234,14 @@ def check_units(*units_by_pos, **units_by_name):
                 if 'none' in msg:
                     msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
                             '    from metpy.units import units\n'
-                            '    x = x * units.meter / units.second')
+                            '    x = units.Quantity(x, "m/s")')
+
+                # If function has changed, mention that fact
+                if func.__doc__:
+                    changed_version = _get_changed_version(func.__doc__)
+                    if changed_version:
+                        msg = (f'This function changed in {changed_version}--double check '
+                               'that the function is being called properly.\n') + msg
                 raise ValueError(msg)
             return func(*args, **kwargs)
 

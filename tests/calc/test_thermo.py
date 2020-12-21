@@ -1475,12 +1475,21 @@ def test_static_stability_cross_section():
 
 
 def test_dewpoint_specific_humidity():
-    """Test relative humidity from specific humidity."""
+    """Test dewpoint from specific humidity."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012 * units.dimensionless
     td = dewpoint_from_specific_humidity(p, temperature, q)
     assert_almost_equal(td, 16.973 * units.degC, 3)
+
+
+def test_dewpoint_specific_humidity_old_signature():
+    """Test dewpoint from specific humidity using old signature issues specific error."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    with pytest.raises(ValueError, match='changed in 1.0'):
+        dewpoint_from_specific_humidity(q, temperature, p)
 
 
 def test_lfc_not_below_lcl():
