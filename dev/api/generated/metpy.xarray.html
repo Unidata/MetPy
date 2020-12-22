@@ -366,7 +366,7 @@ otherwise, raise a RuntimeError if such coordinates exist.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
-<li><p><strong>tolerance</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
@@ -518,7 +518,7 @@ name (string) or a standard axis type (string).</p>
 <dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.quantify">
 <code class="sig-name descname">quantify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.quantify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.quantify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a new DataArray with the data converted to a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
+<dd><p>Return a new DataArray with the data converted to a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
 <p class="rubric">Notes</p>
 <p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
 by this operation. Do not utilize on moderate- to large-sized remote datasets before
@@ -546,9 +546,9 @@ subsetting!</p>
 <dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.unit_array">
 <em class="property">property </em><code class="sig-name descname">unit_array</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.unit_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the data values of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>.</p>
+<dd><p>Return the data values of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
 <p class="rubric">Notes</p>
-<p>If not already existing as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> or Dask array, the data of this DataArray
+<p>If not already existing as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or Dask array, the data of this DataArray
 will be loaded into memory by this operation. Do not utilize on moderate- to
 large-sized remote datasets before subsetting!</p>
 </dd></dl>
@@ -556,7 +556,7 @@ large-sized remote datasets before subsetting!</p>
 <dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.units">
 <em class="property">property </em><code class="sig-name descname">units</code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the units of this DataArray as a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code>.</p>
+<dd><p>Return the units of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Unit" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -650,7 +650,7 @@ variables with y and x coordinates.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
-<li><p><strong>tolerance</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
@@ -800,7 +800,7 @@ is not present/the callable returns None, the attribute will not be updated.</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 01:52:35.<br/>
+        Last updated on Dec 22, 2020 at 02:34:31.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

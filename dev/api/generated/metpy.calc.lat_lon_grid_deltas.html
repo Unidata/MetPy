@@ -747,9 +747,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>longitude</strong> (<em>array_like</em>) – Array of longitudes defining the grid. If not a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, assumed to be in
+<li><p><strong>longitude</strong> (<em>array_like</em>) – Array of longitudes defining the grid. If not a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, assumed to be in
 degrees.</p></li>
-<li><p><strong>latitude</strong> (<em>array_like</em>) – Array of latitudes defining the grid. If not a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, assumed to be in
+<li><p><strong>latitude</strong> (<em>array_like</em>) – Array of latitudes defining the grid. If not a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, assumed to be in
 degrees.</p></li>
 <li><p><strong>x_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – axis number for the x dimension, defaults to -1.</p></li>
 <li><p><strong>y_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – axis number for the y dimesion, defaults to -2.</p></li>
@@ -766,7 +766,7 @@ direction</p>
 <p>Accepts 1D, 2D, or higher arrays for latitude and longitude
 Assumes […, Y, X] dimension order for input and output, unless keyword arguments <em class="xref py py-obj">y_dim</em>
 and <em class="xref py py-obj">x_dim</em> are otherwise specified.</p>
-<p>This function will only return <code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code> arrays (not <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or another
+<p>This function will only return <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> arrays (not <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or another
 array-like type). It will also “densify” your data if using Dask or lazy-loading.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(longitude,</span> <span class="pre">latitude,</span> <span class="pre">**kwargs)</span></code></p>
@@ -810,7 +810,7 @@ array-like type). It will also “densify” your data if using Dask or lazy-loa
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 01:52:35.<br/>
+        Last updated on Dec 22, 2020 at 02:34:31.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

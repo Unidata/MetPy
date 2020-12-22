@@ -391,11 +391,11 @@ a value for vapor pressure assuming both 1000mb and 850mb ambient air
 pressure values. It also demonstrates converting the resulting dewpoint
 temperature to degrees Fahrenheit.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a>
 </pre></div>
 </div>
 <p>Create a test value of mixing ratio in grams per kilogram</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mixing</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mixing</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -405,7 +405,7 @@ temperature to degrees Fahrenheit.</p>
 </div>
 <p>Now throw that value with units into the function to calculate
 the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -414,7 +414,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Take the odd units and force them to millibars</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">e</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -431,7 +431,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Which can of course be converted to Fahrenheit</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">td</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -439,8 +439,8 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Now do the same thing for 850 mb, approximately the pressure of Denver</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">850.</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="../../api/generated/metpy.units.html#metpy.units.units" title="metpy.units.units" class="sphx-glr-backref-module-metpy-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">850.</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">e</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -449,14 +449,14 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </div>
 <p>And print the corresponding dewpoint</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint</span></a><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">td</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">td</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>11.376545231347285 degree_Celsius 52.47778141642504 degree_Fahrenheit
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.007 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.006 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-dewpoint-and-mixing-ratio-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ef9db045537ab447d17e6adc36ae158d/Dewpoint_and_Mixing_Ratio.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Dewpoint_and_Mixing_Ratio.py</span></code></a></p>
@@ -503,7 +503,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 01:52:35.<br/>
+        Last updated on Dec 22, 2020 at 02:34:31.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>
