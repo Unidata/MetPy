@@ -90,7 +90,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
  .. code-block:: none
 
-    15823.283396314564 gram * millibar / kilogram
+    15823.863685716977 gram * millibar / kilogram
 
 
 
@@ -115,7 +115,7 @@ Take the odd units and force them to millibars
 
  .. code-block:: none
 
-    15.823283396314565 millibar
+    15.823863685716978 millibar
 
 
 
@@ -141,7 +141,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
  .. code-block:: none
 
-    13.854135353732214 degree_Celsius
+    13.854699858753728 degree_Celsius
 
 
 
@@ -166,7 +166,7 @@ Which can of course be converted to Fahrenheit
 
  .. code-block:: none
 
-    56.9374436367179 degree_Fahrenheit
+    56.93845974575668 degree_Fahrenheit
 
 
 
@@ -192,7 +192,7 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
  .. code-block:: none
 
-    13.449790886867381 millibar
+    13.45028413285943 millibar
 
 
 
@@ -217,7 +217,7 @@ And print the corresponding dewpoint
 
  .. code-block:: none
 
-    11.376545231347285 degree_Celsius 52.47778141642504 degree_Fahrenheit
+    11.377098919513376 degree_Celsius 52.47877805512405 degree_Fahrenheit
 
 
 
@@ -225,7 +225,7 @@ And print the corresponding dewpoint
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.006 seconds)
+   **Total running time of the script:** ( 0 minutes  0.005 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py:

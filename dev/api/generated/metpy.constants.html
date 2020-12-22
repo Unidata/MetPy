@@ -267,16 +267,16 @@
                 
   <div class="section" id="module-metpy.constants">
 <span id="constants"></span><h1>constants<a class="headerlink" href="#module-metpy.constants" title="Permalink to this headline">¶</a></h1>
-<p>A collection of meteorologically significant constants.</p>
+<p>A collection of meteorologically significant constant and thermophysical property values.</p>
 <div class="section" id="earth">
 <h2>Earth<a class="headerlink" href="#earth" title="Permalink to this headline">¶</a></h2>
 <table class="table">
 <colgroup>
-<col style="width: 19%" />
-<col style="width: 12%" />
-<col style="width: 9%" />
-<col style="width: 30%" />
-<col style="width: 31%" />
+<col style="width: 16%" />
+<col style="width: 10%" />
+<col style="width: 7%" />
+<col style="width: 26%" />
+<col style="width: 41%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Name</p></td>
@@ -289,37 +289,37 @@
 <td><p><span class="math notranslate nohighlight">\(R_e\)</span></p></td>
 <td><p>Re</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m}\)</span></p></td>
-<td><p>Avg. radius of the Earth</p></td>
+<td><p>Avg. radius of the Earth <a class="footnote-reference brackets" href="#id18" id="id1">1</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>earth_gravity</p></td>
 <td><p><span class="math notranslate nohighlight">\(g\)</span></p></td>
 <td><p>g</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m s}^{-2}\)</span></p></td>
-<td><p>Avg. gravity acceleration on Earth</p></td>
+<td><p>Avg. gravity acceleration on Earth <a class="footnote-reference brackets" href="#id20" id="id2">2</a></p></td>
 </tr>
 <tr class="row-even"><td><p>gravitational_constant</p></td>
 <td><p><span class="math notranslate nohighlight">\(G\)</span></p></td>
 <td><p>G</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m}^{3} {kg}^{-1} {s}^{-2}\)</span></p></td>
-<td><p>Gravitational constant</p></td>
+<td><p>Gravitational constant <a class="footnote-reference brackets" href="#id20" id="id3">2</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>earth_avg_angular_vel</p></td>
 <td><p><span class="math notranslate nohighlight">\(\Omega\)</span></p></td>
 <td><p>omega</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{rad s}^{-1}\)</span></p></td>
-<td><p>Avg. angular velocity of Earth</p></td>
+<td><p>Avg. angular velocity of Earth <a class="footnote-reference brackets" href="#id18" id="id4">1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>earth_sfc_avg_dist_sun</p></td>
 <td><p><span class="math notranslate nohighlight">\(d\)</span></p></td>
 <td><p>d</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{m}\)</span></p></td>
-<td><p>Avg. distance of the Earth from the Sun</p></td>
+<td><p>Avg. distance of the Earth from the Sun <a class="footnote-reference brackets" href="#id22" id="id5">3</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>earth_solar_irradiance</p></td>
 <td><p><span class="math notranslate nohighlight">\(S\)</span></p></td>
 <td><p>S</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{W m}^{-2}\)</span></p></td>
-<td><p>Avg. solar irradiance of Earth</p></td>
+<td><p>Avg. solar irradiance of Earth <a class="footnote-reference brackets" href="#id24" id="id6">4</a></p></td>
 </tr>
 <tr class="row-even"><td><p>earth_max_declination</p></td>
 <td><p><span class="math notranslate nohighlight">\(\delta\)</span></p></td>
@@ -337,7 +337,7 @@
 <td><p><span class="math notranslate nohighlight">\(m_e\)</span></p></td>
 <td><p>me</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{kg}\)</span></p></td>
-<td><p>Total mass of the Earth (approx)</p></td>
+<td><p>Total mass of the Earth (approx) <a class="footnote-reference brackets" href="#id18" id="id7">1</a> <a class="footnote-reference brackets" href="#id20" id="id8">2</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -346,11 +346,11 @@
 <h2>Water<a class="headerlink" href="#water" title="Permalink to this headline">¶</a></h2>
 <table class="table">
 <colgroup>
-<col style="width: 18%" />
+<col style="width: 17%" />
 <col style="width: 12%" />
 <col style="width: 8%" />
-<col style="width: 22%" />
-<col style="width: 40%" />
+<col style="width: 21%" />
+<col style="width: 42%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Name</p></td>
@@ -363,19 +363,19 @@
 <td><p><span class="math notranslate nohighlight">\(M_w\)</span></p></td>
 <td><p>Mw</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{g mol}^{-1}\)</span></p></td>
-<td><p>Molecular weight of water</p></td>
+<td><p>Molecular weight of water <a class="footnote-reference brackets" href="#id26" id="id9">5</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>water_gas_constant</p></td>
 <td><p><span class="math notranslate nohighlight">\(R_v\)</span></p></td>
 <td><p>Rv</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
-<td><p>Gas constant for water vapor</p></td>
+<td><p>Gas constant for water vapor <a class="footnote-reference brackets" href="#id20" id="id10">2</a> <a class="footnote-reference brackets" href="#id26" id="id11">5</a></p></td>
 </tr>
 <tr class="row-even"><td><p>density_water</p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho_l\)</span></p></td>
 <td><p>rho_l</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></p></td>
-<td><p>Nominal density of liquid water at 0C</p></td>
+<td><p>Maximum recommended density of liquid water, 0-40C <a class="footnote-reference brackets" href="#id26" id="id12">5</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>wv_specific_heat_press</p></td>
 <td><p><span class="math notranslate nohighlight">\(C_{pv}\)</span></p></td>
@@ -393,25 +393,25 @@
 <td><p><span class="math notranslate nohighlight">\(Cp_l\)</span></p></td>
 <td><p>Cp_l</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
-<td><p>Specific heat of liquid water at 0C</p></td>
+<td><p>Specific heat of liquid water at 0C <a class="footnote-reference brackets" href="#id28" id="id13">6</a></p></td>
 </tr>
 <tr class="row-even"><td><p>water_heat_vaporization</p></td>
 <td><p><span class="math notranslate nohighlight">\(L_v\)</span></p></td>
 <td><p>Lv</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
-<td><p>Latent heat of vaporization for liquid water at 0C</p></td>
+<td><p>Latent heat of vaporization for liquid water at 0C <a class="footnote-reference brackets" href="#id30" id="id14">7</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>water_heat_fusion</p></td>
 <td><p><span class="math notranslate nohighlight">\(L_f\)</span></p></td>
 <td><p>Lf</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
-<td><p>Latent heat of fusion for liquid water at 0C</p></td>
+<td><p>Latent heat of fusion for liquid water at 0C <a class="footnote-reference brackets" href="#id30" id="id15">7</a></p></td>
 </tr>
 <tr class="row-even"><td><p>ice_specific_heat</p></td>
 <td><p><span class="math notranslate nohighlight">\(C_{pi}\)</span></p></td>
 <td><p>Cp_i</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
-<td><p>Specific heat of ice at 0C</p></td>
+<td><p>Specific heat of ice at 0C <a class="footnote-reference brackets" href="#id30" id="id16">7</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>density_ice</p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho_i\)</span></p></td>
@@ -426,11 +426,11 @@
 <h2>Dry Air<a class="headerlink" href="#dry-air" title="Permalink to this headline">¶</a></h2>
 <table class="table">
 <colgroup>
-<col style="width: 17%" />
+<col style="width: 16%" />
 <col style="width: 11%" />
 <col style="width: 9%" />
 <col style="width: 19%" />
-<col style="width: 44%" />
+<col style="width: 46%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Name</p></td>
@@ -443,7 +443,7 @@
 <td><p><span class="math notranslate nohighlight">\(M_d\)</span></p></td>
 <td><p>Md</p></td>
 <td><p><span class="math notranslate nohighlight">\(\text{g / mol}\)</span></p></td>
-<td><p>Nominal molecular weight of dry air at the surface of th Earth</p></td>
+<td><p>Nominal molecular weight of dry air at the surface of th Earth <a class="footnote-reference brackets" href="#id32" id="id17">8</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>dry_air_gas_constant</p></td>
 <td><p><span class="math notranslate nohighlight">\(R_d\)</span></p></td>
@@ -515,6 +515,32 @@
 </tr>
 </tbody>
 </table>
+<dl class="footnote brackets">
+<dt class="label" id="id18"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id4">2</a>,<a href="#id7">3</a>)</span></dt>
+<dd><p><a class="reference internal" href="../references.html#moritz2000" id="id19"><span>[Moritz2000]</span></a></p>
+</dd>
+<dt class="label" id="id20"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>,<a href="#id8">3</a>,<a href="#id10">4</a>)</span></dt>
+<dd><p><a class="reference internal" href="../references.html#codata2018" id="id21"><span>[CODATA2018]</span></a></p>
+</dd>
+<dt class="label" id="id22"><span class="brackets"><a class="fn-backref" href="#id5">3</a></span></dt>
+<dd><p><a class="reference internal" href="../references.html#iau2012" id="id23"><span>[IAU2012]</span></a></p>
+</dd>
+<dt class="label" id="id24"><span class="brackets"><a class="fn-backref" href="#id6">4</a></span></dt>
+<dd><p><a class="reference internal" href="../references.html#kopp2011" id="id25"><span>[Kopp2011]</span></a></p>
+</dd>
+<dt class="label" id="id26"><span class="brackets">5</span><span class="fn-backref">(<a href="#id9">1</a>,<a href="#id11">2</a>,<a href="#id12">3</a>)</span></dt>
+<dd><p><a class="reference internal" href="../references.html#iapws2001" id="id27"><span>[IAPWS2001]</span></a></p>
+</dd>
+<dt class="label" id="id28"><span class="brackets"><a class="fn-backref" href="#id13">6</a></span></dt>
+<dd><p><a class="reference internal" href="../references.html#iapws1995" id="id29"><span>[IAPWS1995]</span></a></p>
+</dd>
+<dt class="label" id="id30"><span class="brackets">7</span><span class="fn-backref">(<a href="#id14">1</a>,<a href="#id15">2</a>,<a href="#id16">3</a>)</span></dt>
+<dd><p><a class="reference internal" href="../references.html#wmo1966" id="id31"><span>[WMO1966]</span></a></p>
+</dd>
+<dt class="label" id="id32"><span class="brackets"><a class="fn-backref" href="#id17">8</a></span></dt>
+<dd><p><a class="reference internal" href="../references.html#picard2008" id="id33"><span>[Picard2008]</span></a></p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -553,7 +579,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 02:34:31.<br/>
+        Last updated on Dec 22, 2020 at 04:40:27.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>

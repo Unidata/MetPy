@@ -39,6 +39,12 @@ References
            doi:`10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2
            <https://doi.org/10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2>`_.
 
+.. [CODATA2018] Tiesinga, Eite, Peter J. Mohr, David B. Newell, and Barry N. Taylor, 2020:
+           The 2018 CODATA Recommended Values of the Fundamental Physical Constants
+           (Web Version 8.1). Database developed by J. Baker, M. Douma, and S. Kotochigova.
+           Available at http://physics.nist.gov/constants, National Institute of Standards
+           and Technology, Gaithersburg, MD 20899.
+
 .. [Cressman1959] Cressman, G. P., 1959: An operational objective analysis system. *Mon.
            Wea. Rev.*, **87**, 367-374,
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
@@ -56,21 +62,6 @@ References
 .. [Esterheld2008] Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
            Non-Tornadic Supercells: A New Hodograph Technique. *E-Journal Of Severe Storms
            Meteorology*, **3(2)**, Retrieved May 10, 2018.
-
-.. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
-           Introductory Survey*. Academic Press, 350 pp.
-
-.. [Hobbs2006] Hobbs, P. V., and J. M. Wallace, 2006: *Atmospheric Science: An Introductory
-           Survey*. 2nd ed. Academic Press, 504 pp.
-
-.. [Knox2017] Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
-              Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
-              Forecasting Applications. *Bulletin of the American Meteorological Society*,
-              **98.9**, 1897-1906, doi:
-              `10.1175/BAMS-D-16-0246.1 <https://doi.org/10.1175/BAMS-D-16-0246.1>`_.
-
-.. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
-           345 pp.
 
 .. [Fan1987] Fan, J., 1987: Determination of the psychrometer coefficient A of the WMO
            reference psychrometer by comparison with a standard gravimetric hygrometer.
@@ -92,8 +83,33 @@ References
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
 
+.. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
+           Introductory Survey*. Academic Press, 350 pp.
+
+.. [Hobbs2006] Hobbs, P. V., and J. M. Wallace, 2006: *Atmospheric Science: An Introductory
+           Survey*. 2nd ed. Academic Press, 504 pp.
+
 .. [Holton2004] Holton, J. R., 2004: *An Introduction to Dynamic Meteorology*. 4th ed.
            Academic Press, 535 pp.
+
+.. [IAPWS1995] The International Association for the Properties of Water and Steam, 1995:
+           `Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties
+           of Ordinary Water Substance for General and Scientific Use (updated
+           2018) <http://www.iapws.org/relguide/IAPWS95-2018.pdf>`_.
+
+.. [IAPWS2001] The International Association for the Properties of Water and Steam, 2001:
+           `Guideline on the Use of Fundamental Physical Constants and Basic Constants of
+           Water (updated 2020) <http://www.iapws.org/relguide/fundam.pdf>`_.
+
+.. [IAU2012] IAU Division I Working Group Numerical Standards, 2012: `RESOLUTION B2 on
+           the re-definition of the astronomical unit of length
+           <https://www.iau.org/static/resolutions/IAU2012_English.pdf>`_.
+
+.. [Knox2017] Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
+              Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
+              Forecasting Applications. *Bulletin of the American Meteorological Society*,
+              **98.9**, 1897-1906, doi:
+              `10.1175/BAMS-D-16-0246.1 <https://doi.org/10.1175/BAMS-D-16-0246.1>`_.
 
 .. [Koch1983] Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
            objective map analysis scheme for use with satellite and conventional data.
@@ -101,12 +117,23 @@ References
            doi:`10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2>`_.
 
+.. [Kopp2011] Kopp, G., and Lean, J. L., 2011: A new, lower value of total solar irradiance:
+           Evidence and climate significance. *Geophys. Res. Lett.*, **38**, L01706,
+           `doi:10.1029/2010GL045777 <https://doi.org/10.1029/2010GL045777>`_.
+
+.. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
+           345 pp.
+
 .. [Liang2010] Liang, L., and D. Hale, 2010: *A Stable and Fast Implementation
            of Natural Neighbor Interpolation*. Center for Wave Phenomena `CWP-657
            <https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf>`_, 14 pp.
 
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.
+
+.. [Moritz2000] Moritz, H., 2000: Geodetic Reference System 1980.
+           *Journal of Geodesy* **74**, 128-133, doi:`10.1007/s001900050278
+           <https://doi.org/10.1007/s001900050278>`_.
 
 .. [NOAA1976] National Oceanic and Atmospheric Administration, National Aeronautics and
            Space Administration, and U. S. Air Force, 1976: `U. S. Standard Atmosphere 1976
@@ -119,6 +146,10 @@ References
            advantages for numerical forecasting. *J. Meteor.*, **14**, 184-185,
            doi:`10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2>`_.
+
+.. [Picard2008] Picard, A., R. S. Davis, M. Gläser, and K. Fujii, 2008: Revised formula
+           for the density of moist air (CIPM-2007), *Metrologia*, **45**, No. 2, `doi:
+           10.1088/0026-1394/45/2/004 <http://dx.doi.org/10.1088/0026-1394/45/2/004>`_.
 
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
@@ -160,3 +191,6 @@ References
 
 .. [WMO8] WMO, 2018: Guide to Meteorological Instruments and Methods of Observation.
            `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=10179>`_.
+
+.. [WMO1966] WMO, 1966: International Meteorological Tables, `WMO-No. 188.TP.94
+           <https://library.wmo.int/doc_num.php?explnum_id=7997>`_.

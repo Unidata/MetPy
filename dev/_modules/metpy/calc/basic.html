@@ -217,6 +217,7 @@
 <span class="c1"># The following variables are constants for a standard atmosphere</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="mf">288.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
 <span class="n">p0</span> <span class="o">=</span> <span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">6.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;K/km&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="wind_speed"><a class="viewcode-back" href="../../../api/generated/metpy.calc.wind_speed.html#metpy.calc.wind_speed">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -619,7 +620,6 @@
 <span class="sd">    .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">gamma</span> <span class="o">=</span> <span class="mf">6.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;K/km&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">t0</span> <span class="o">/</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span><span class="o">**</span><span class="p">(</span>
         <span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span><span class="p">))</span></div>
 
@@ -657,9 +657,9 @@
 <span class="sd">    &gt;&gt;&gt; height = np.linspace(0, 10000, num=11) * units.m</span>
 <span class="sd">    &gt;&gt;&gt; geopot = metpy.calc.height_to_geopotential(height)</span>
 <span class="sd">    &gt;&gt;&gt; geopot</span>
-<span class="sd">    &lt;Quantity([     0.           9805.11102602  19607.14506998  29406.10358006</span>
-<span class="sd">    39201.98800351  48994.79978671  58784.54037509  68571.21121319</span>
-<span class="sd">    78354.81374467  88135.34941224  97912.81965774], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
+<span class="sd">    &lt;Quantity([     0.           9805.11097983 19607.1448853  29406.10316465</span>
+<span class="sd">    39201.98726524 48994.79863351 58784.53871501 68571.20895435</span>
+<span class="sd">    78354.81079527 88135.34568058 97912.81505219], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -714,9 +714,9 @@
 <span class="sd">    &gt;&gt;&gt; height = np.linspace(0, 10000, num=11) * units.m</span>
 <span class="sd">    &gt;&gt;&gt; geopot = metpy.calc.height_to_geopotential(height)</span>
 <span class="sd">    &gt;&gt;&gt; geopot</span>
-<span class="sd">    &lt;Quantity([     0.           9805.11102602  19607.14506998  29406.10358006</span>
-<span class="sd">    39201.98800351  48994.79978671  58784.54037509  68571.21121319</span>
-<span class="sd">    78354.81374467  88135.34941224  97912.81965774], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
+<span class="sd">    &lt;Quantity([     0.           9805.11097983 19607.1448853  29406.10316465</span>
+<span class="sd">    39201.98726524 48994.79863351 58784.53871501 68571.20895435</span>
+<span class="sd">    78354.81079527 88135.34568058 97912.81505219], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
 <span class="sd">    &gt;&gt;&gt; height = metpy.calc.geopotential_to_height(geopot)</span>
 <span class="sd">    &gt;&gt;&gt; height</span>
 <span class="sd">    &lt;Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.</span>
@@ -769,7 +769,6 @@
 <span class="sd">    .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">gamma</span> <span class="o">=</span> <span class="mf">6.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;K/km&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">p0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">/</span> <span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">))</span></div>
 
 
@@ -1290,9 +1289,6 @@
 <span class="sd">                       \right) \right] ^ \frac{1}{n} + 0.3</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Gamma Value for this case</span>
-    <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.0065</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;K/m&#39;</span><span class="p">)</span>
-
     <span class="c1"># N-Value</span>
     <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
 
@@ -1431,7 +1427,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 02:34:31.<br/>
+        Last updated on Dec 22, 2020 at 04:40:27.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>
