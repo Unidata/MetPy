@@ -92,7 +92,6 @@ with exporter:
     # molar gas constant
     R = 8.314462618 * units('J / mol / K')
 
-
     # Water
     Mw = water_molecular_weight = 18.015268 * units('g / mol')
     Rv = water_gas_constant = R / Mw
