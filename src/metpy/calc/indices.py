@@ -15,7 +15,7 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='dewpoint')
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', bottom='[pressure]', top='[pressure]')
 def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.

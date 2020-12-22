@@ -18,6 +18,7 @@ See Also: :doc:`xarray with MetPy Tutorial </tutorials/xarray_tutorial>`.
 import contextlib
 import functools
 from inspect import signature
+from itertools import chain
 import logging
 import re
 import warnings
@@ -1177,13 +1178,13 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
 
             # Cast all Variables to their data and warn
             # (need to do before match finding, since we don't want to rewrap as Variable)
-            for arg_name in bound_args.arguments:
-                if isinstance(bound_args.arguments[arg_name], xr.Variable):
-                    warnings.warn(
-                        f'Argument {arg_name} given as xarray Variable...casting to its data. '
-                        'xarray DataArrays are recommended instead.'
-                    )
-                    bound_args.arguments[arg_name] = bound_args.arguments[arg_name].data
+            def cast_variables(arg, arg_name):
+                warnings.warn(
+                    f'Argument {arg_name} given as xarray Variable...casting to its data. '
+                    'xarray DataArrays are recommended instead.'
+                )
+                return arg.data
+            _mutate_arguments(bound_args, xr.Variable, cast_variables)
 
             # Obtain proper match if referencing an input
             match = list(wrap_like) if isinstance(wrap_like, tuple) else wrap_like
@@ -1195,17 +1196,11 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                         match[i] = bound_args.arguments[arg]
 
             # Cast all DataArrays to Pint Quantities
-            for arg_name in bound_args.arguments:
-                if isinstance(bound_args.arguments[arg_name], xr.DataArray):
-                    bound_args.arguments[arg_name] = (
-                        bound_args.arguments[arg_name].metpy.unit_array
-                    )
+            _mutate_arguments(bound_args, xr.DataArray, lambda arg, _: arg.metpy.unit_array)
 
             # Optionally cast all Quantities to their magnitudes
             if to_magnitude:
-                for arg_name in bound_args.arguments:
-                    if isinstance(bound_args.arguments[arg_name], units.Quantity):
-                        bound_args.arguments[arg_name] = bound_args.arguments[arg_name].m
+                _mutate_arguments(bound_args, units.Quantity, lambda arg, _: arg.m)
 
             # Evaluate inner calculation
             result = func(*bound_args.args, **bound_args.kwargs)
@@ -1225,6 +1220,22 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                     return wrapping(result, match)
         return wrapper
     return decorator
+
+
+def _mutate_arguments(bound_args, check_type, mutate_arg):
+    """Handle adjusting bound arguments.
+
+    Calls ``mutate_arg`` on every argument, including those passed as ``*args``, if they are
+    of type ``check_type``.
+    """
+    for arg_name, arg_val in bound_args.arguments.items():
+        if isinstance(arg_val, check_type):
+            bound_args.arguments[arg_name] = mutate_arg(arg_val, arg_name)
+
+    if isinstance(bound_args.arguments.get('args'), tuple):
+        bound_args.arguments['args'] = tuple(
+            mutate_arg(arg_val, '(unnamed)') if isinstance(arg_val, check_type) else arg_val
+            for arg_val in bound_args.arguments['args'])
 
 
 def _wrap_output_like_matching_units(result, match):
@@ -1384,6 +1395,13 @@ def grid_deltas_from_dataarray(f, kind='default'):
     return dx, dy
 
 
+def dataarray_arguments(bound_args):
+    """Get any dataarray arguments in the bound function arguments."""
+    for value in chain(bound_args.args, bound_args.kwargs.values()):
+        if isinstance(value, xr.DataArray):
+            yield value
+
+
 def add_grid_arguments_from_xarray(func):
     """Fill in optional arguments like dx/dy from DataArray arguments."""
     @functools.wraps(func)
@@ -1393,12 +1411,8 @@ def add_grid_arguments_from_xarray(func):
 
         # Search for DataArray with valid latitude and longitude coordinates to find grid
         # deltas and any other needed parameter
-        dataarray_arguments = [
-            value for value in bound_args.arguments.values()
-            if isinstance(value, xr.DataArray)
-        ]
         grid_prototype = None
-        for da in dataarray_arguments:
+        for da in dataarray_arguments(bound_args):
             if hasattr(da.metpy, 'latitude') and hasattr(da.metpy, 'longitude'):
                 grid_prototype = da
                 break
@@ -1487,26 +1501,17 @@ def add_vertical_dim_from_xarray(func):
         bound_args = signature(func).bind(*args, **kwargs)
         bound_args.apply_defaults()
 
-        # Search for DataArray in arguments
-        dataarray_arguments = [
-            value for value in bound_args.arguments.values()
-            if isinstance(value, xr.DataArray)
-        ]
-
         # Fill in vertical_dim
-        if (
-            len(dataarray_arguments) > 0
-            and 'vertical_dim' in bound_args.arguments
-        ):
-            try:
-                bound_args.arguments['vertical_dim'] = (
-                    dataarray_arguments[0].metpy.find_axis_number('vertical')
-                )
-            except AttributeError:
-                # If axis number not found, fall back to default but warn.
-                warnings.warn(
-                    'Vertical dimension number not found. Defaulting to initial dimension.'
-                )
+        if 'vertical_dim' in bound_args.arguments:
+            a = next(dataarray_arguments(bound_args), None)
+            if a is not None:
+                try:
+                    bound_args.arguments['vertical_dim'] = a.metpy.find_axis_number('vertical')
+                except AttributeError:
+                    # If axis number not found, fall back to default but warn.
+                    warnings.warn(
+                        'Vertical dimension number not found. Defaulting to initial dimension.'
+                    )
 
         return func(*bound_args.args, **bound_args.kwargs)
     return wrapper

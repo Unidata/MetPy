@@ -6,6 +6,7 @@
 from datetime import datetime
 
 import numpy as np
+import xarray as xr
 
 from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water,
@@ -83,6 +84,16 @@ def test_mean_pressure_weighted_elevated():
                                   bottom=data['height'][0] + 3000 * units('meter'))
     assert_almost_equal(u, 8.270829843626476 * units('m/s'), 7)
     assert_almost_equal(v, 1.7392601775853547 * units('m/s'), 7)
+
+
+def test_precipitable_water_xarray():
+    """Test precipitable water with xarray input."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    press = xr.DataArray(data['pressure'], attrs={'units': str(data['pressure'].units)})
+    dewp = xr.DataArray(data['dewpoint'], dims=('press',), coords=(press,))
+    pw = precipitable_water(press, dewp, top=400 * units.hPa)
+    truth = (0.8899441949243486 * units('inches')).to('millimeters')
+    assert_array_equal(pw, truth)
 
 
 def test_bunkers_motion():
