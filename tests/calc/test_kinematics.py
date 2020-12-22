@@ -386,7 +386,7 @@ def test_streamfunc():
     t = 287. * units.kelvin
     hgt = 5000. * units.meter
     msf = montgomery_streamfunction(hgt, t)
-    assert_almost_equal(msf, 337468.2500 * units('m^2 s^-2'), 4)
+    assert_almost_equal(msf, 337372.45469 * units('m^2 s^-2'), 4)
 
 
 def test_storm_relative_helicity_no_storm_motion():
@@ -720,7 +720,7 @@ def test_potential_vorticity_baroclinic_isentropic_real_data():
                          1.72018062e-06]]]) * (units.kelvin * units.meter ** 2
                                                / (units.second * units.kilogram))
 
-    assert_almost_equal(pvor, true_pv, 14)
+    assert_almost_equal(pvor, true_pv, 10)
 
 
 def test_potential_vorticity_baroclinic_isobaric_real_data():
@@ -1017,8 +1017,8 @@ def test_inertial_advective_wind_diffluent():
 
     dx, dy = lat_lon_grid_deltas(lons, lats)
     uiaw, viaw = inertial_advective_wind(ug, vg, ug, vg, dx, dy, lats)
-    assert_almost_equal(uiaw, uiaw_truth, 7)
-    assert_almost_equal(viaw, viaw_truth, 7)
+    assert_almost_equal(uiaw, uiaw_truth, 5)
+    assert_almost_equal(viaw, viaw_truth, 5)
 
 
 @pytest.fixture
@@ -1071,8 +1071,8 @@ def test_q_vector_without_static_stability(q_vector_data):
                           [8.6038280e-14, 4.6968342e-13, -4.6968342e-13, -8.6038280e-14]])
                 * units('m^2 kg^-1 s^-1'))
 
-    assert_almost_equal(q1, q1_truth, 18)
-    assert_almost_equal(q2, q2_truth, 18)
+    assert_almost_equal(q1, q1_truth, 16)
+    assert_almost_equal(q2, q2_truth, 16)
 
 
 def test_q_vector_with_static_stability(q_vector_data):
@@ -1089,14 +1089,14 @@ def test_q_vector_with_static_stability(q_vector_data):
                           [-1.0785670e-07, -1.2403513e-08, -1.2403513e-08, -1.0364793e-07],
                           [-2.9186946e-08, -1.7577703e-07, -1.6937879e-07, -2.6112047e-08]])
                 * units('kg m^-2 s^-3'))
-    q2_truth = (np.array([[-2.3194263e-08, -2.3380160e-07, 2.4357380e-07, 2.6229040e-08],
+    q2_truth = (np.array([[-2.31770213e-08, -2.33621439e-07, 2.43378967e-07, 2.62072251e-08],
                           [-1.4936626e-07, -1.8050836e-08, 1.8050836e-08, 1.5516129e-07],
                           [1.6903373e-07, 1.9457964e-08, -1.9457964e-08, -1.6243771e-07],
-                          [4.4714390e-08, 2.3490489e-07, -2.2635441e-07, -4.0003646e-08]])
+                          [4.46812456e-08, 2.34736724e-07, -2.26197708e-07, -3.99768328e-08]])
                 * units('kg m^-2 s^-3'))
 
-    assert_almost_equal(q1, q1_truth, 12)
-    assert_almost_equal(q2, q2_truth, 12)
+    assert_almost_equal(q1, q1_truth, 10)
+    assert_almost_equal(q2, q2_truth, 10)
 
 
 @pytest.fixture
@@ -1292,7 +1292,7 @@ def test_stretching_deformation_4d(data_4d):
                         [6.70904325e-06, 9.42414527e-06, -1.74726096e-06, 4.66995059e-06],
                         [1.75937571e-05, 1.24577364e-05, -1.28423144e-05,
                          7.34171029e-06]]]]) * units('s^-1')
-    assert_array_almost_equal(stdef.data, truth, 12)
+    assert_array_almost_equal(stdef.data, truth, 10)
 
 
 def test_total_deformation_4d(data_4d):
@@ -1347,6 +1347,7 @@ def test_frontogenesis_4d(data_4d):
         'latitude',
         'longitude'
     )
+
     truth = np.array([[[[4.23682388e-10, -6.60428594e-12, -2.16700227e-10, -3.80960666e-10],
                         [-5.28427593e-10, -7.11496293e-12, -4.77951513e-11, 2.94985981e-10],
                         [7.86953679e-10, 3.54196972e-10, 2.07842740e-11, -5.25487973e-10],
@@ -1384,7 +1385,7 @@ def test_frontogenesis_4d(data_4d):
                         [-5.84859130e-11, 7.43545248e-13, 9.37957614e-12, 1.74102020e-10],
                         [-2.38469755e-11, 1.01414977e-10, 4.18826651e-12,
                          5.18914848e-10]]]]) * units('K/m/s')
-    assert_array_almost_equal(frnt.data, truth, 16)
+    assert_array_almost_equal(frnt.data, truth, 13)
 
 
 def test_geostrophic_wind_4d(data_4d):
@@ -1498,8 +1499,8 @@ def test_geostrophic_wind_4d(data_4d):
                              -2.45382867e+00],
                             [-1.09261218e+01, -1.03837731e+01, -7.37319328e+00,
                              -1.89438246e+00]]]]) * units('m/s')
-    assert_array_almost_equal(u_g.data, u_g_truth, 6)
-    assert_array_almost_equal(v_g.data, v_g_truth, 6)
+    assert_array_almost_equal(u_g.data, u_g_truth, 4)
+    assert_array_almost_equal(v_g.data, v_g_truth, 4)
 
 
 def test_inertial_advective_wind_4d(data_4d):
@@ -1586,8 +1587,8 @@ def test_inertial_advective_wind_4d(data_4d):
                             [-6.48734332e-02, 5.81810137e-01, 4.66189458e-01, 3.71854388e-02],
                             [-2.11996986e-01, 5.16093087e-01, -4.15633085e-01,
                              6.96457035e-01]]]]) * units('m/s')
-    assert_array_almost_equal(u_i.data, u_i_truth, 6)
-    assert_array_almost_equal(v_i.data, v_i_truth, 6)
+    assert_array_almost_equal(u_i.data, u_i_truth, 4)
+    assert_array_almost_equal(v_i.data, v_i_truth, 4)
 
 
 def test_q_vector_4d(data_4d):
@@ -1676,5 +1677,5 @@ def test_q_vector_4d(data_4d):
                            [-1.06649917e-13, -2.19937033e-13, -8.38223242e-14, 1.87904895e-13],
                            [-2.27100932e-13, -2.74536001e-13, -1.10779552e-13,
                             -3.90314768e-13]]]]) * units('m^2 kg^-1 s^-1')
-    assert_array_almost_equal(q1.data, q1_truth, 18)
-    assert_array_almost_equal(q2.data, q2_truth, 18)
+    assert_array_almost_equal(q1.data, q1_truth, 15)
+    assert_array_almost_equal(q2.data, q2_truth, 15)
