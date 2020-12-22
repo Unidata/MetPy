@@ -92,3 +92,27 @@ display: block !important;
   border: none;
   box-shadow: none;
 }
+
+
+/* Styling the API Changes Table */
+.api-table tr:nth-child(3n + 1){
+    background: #EEF5F5;
+}
+
+.api-table tr:nth-child(3n + 2){
+    opacity: 0.65;
+}
+
+code.literal:not(.xref) span.pre {
+    color: #000;
+}
+
+.api-table tr:nth-child(3n + 2)>td span:first-child::before{
+    content: url(old.png);
+    zoom: 0.25;
+}
+
+.api-table tr:nth-child(3n + 3)>td span:first-child::before{
+    content: url(new.png);
+    zoom: 0.21;
+}
