@@ -293,8 +293,8 @@ def test_height_to_geopotential():
 def test_height_to_geopotential_32bit():
     """Test conversion to geopotential with 32-bit values."""
     heights = np.linspace(20597, 20598, 11, dtype=np.float32) * units.m
-    truth = np.array([201336.67, 201337.66, 201338.62, 201339.61, 201340.58, 201341.56,
-                      201342.53, 201343.52, 201344.48, 201345.44, 201346.42],
+    truth = np.array([201336.64, 201337.62, 201338.6, 201339.58, 201340.55, 201341.53,
+                      201342.5, 201343.48, 201344.45, 201345.44, 201346.39],
                      dtype=np.float32) * units('J/kg')
     assert_almost_equal(height_to_geopotential(heights), truth, 2)
 
@@ -370,7 +370,7 @@ def test_heights_to_pressure_basic():
 
 def test_pressure_to_heights_units():
     """Test that passing non-mbar units works."""
-    assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.859 * units.meter, 3)
+    assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.8498 * units.meter, 3)
 
 
 def test_coriolis_force():
@@ -385,13 +385,13 @@ def test_coriolis_force():
 def test_add_height_to_pressure():
     """Test the pressure at height above pressure calculation."""
     pressure = add_height_to_pressure(1000 * units.hPa, 877.17421094 * units.meter)
-    assert_almost_equal(pressure, 900 * units.hPa, 5)
+    assert_almost_equal(pressure, 900 * units.hPa, 2)
 
 
 def test_add_pressure_to_height():
     """Test the height at pressure above height calculation."""
     height = add_pressure_to_height(110.8286757 * units.m, 100 * units.hPa)
-    assert_almost_equal(height, 988.0028867 * units.meter, 3)
+    assert_almost_equal(height, 987.971601 * units.meter, 3)
 
 
 def test_sigma_to_pressure():
@@ -765,7 +765,7 @@ def test_altimeter_to_station_pressure_inhg():
     altim = 29.8 * units.inHg
     elev = 500 * units.m
     res = altimeter_to_station_pressure(altim, elev)
-    truth = 950.967 * units.hectopascal
+    truth = 950.96498 * units.hectopascal
     assert_almost_equal(res, truth, 3)
 
 
@@ -774,7 +774,7 @@ def test_altimeter_to_station_pressure_hpa():
     altim = 1013 * units.hectopascal
     elev = 500 * units.m
     res = altimeter_to_station_pressure(altim, elev)
-    truth = 954.641 * units.hectopascal
+    truth = 954.639265 * units.hectopascal
     assert_almost_equal(res, truth, 3)
 
 

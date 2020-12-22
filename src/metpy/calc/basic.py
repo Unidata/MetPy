@@ -26,6 +26,7 @@ exporter = Exporter(globals())
 # The following variables are constants for a standard atmosphere
 t0 = 288. * units.kelvin
 p0 = 1013.25 * units.hPa
+gamma = 6.5 * units('K/km')
 
 
 @exporter.export
@@ -428,7 +429,6 @@ def pressure_to_height_std(pressure):
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
 
     """
-    gamma = 6.5 * units('K/km')
     return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
         mpconsts.Rd * gamma / mpconsts.g))
 
@@ -466,9 +466,9 @@ def height_to_geopotential(height):
     >>> height = np.linspace(0, 10000, num=11) * units.m
     >>> geopot = metpy.calc.height_to_geopotential(height)
     >>> geopot
-    <Quantity([     0.           9805.11102602  19607.14506998  29406.10358006
-    39201.98800351  48994.79978671  58784.54037509  68571.21121319
-    78354.81374467  88135.34941224  97912.81965774], 'meter ** 2 / second ** 2')>
+    <Quantity([     0.           9805.11097983 19607.1448853  29406.10316465
+    39201.98726524 48994.79863351 58784.53871501 68571.20895435
+    78354.81079527 88135.34568058 97912.81505219], 'meter ** 2 / second ** 2')>
 
     Notes
     -----
@@ -523,9 +523,9 @@ def geopotential_to_height(geopotential):
     >>> height = np.linspace(0, 10000, num=11) * units.m
     >>> geopot = metpy.calc.height_to_geopotential(height)
     >>> geopot
-    <Quantity([     0.           9805.11102602  19607.14506998  29406.10358006
-    39201.98800351  48994.79978671  58784.54037509  68571.21121319
-    78354.81374467  88135.34941224  97912.81965774], 'meter ** 2 / second ** 2')>
+    <Quantity([     0.           9805.11097983 19607.1448853  29406.10316465
+    39201.98726524 48994.79863351 58784.53871501 68571.20895435
+    78354.81079527 88135.34568058 97912.81505219], 'meter ** 2 / second ** 2')>
     >>> height = metpy.calc.geopotential_to_height(geopot)
     >>> height
     <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.
@@ -578,7 +578,6 @@ def height_to_pressure_std(height):
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
     """
-    gamma = 6.5 * units('K/km')
     return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
@@ -1099,9 +1098,6 @@ def altimeter_to_station_pressure(altimeter_value, height):
                        \right) \right] ^ \frac{1}{n} + 0.3
 
     """
-    # Gamma Value for this case
-    gamma = 0.0065 * units('K/m')
-
     # N-Value
     n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
 

@@ -2,52 +2,52 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-r"""A collection of meteorologically significant constants.
+r"""A collection of meteorologically significant constant and thermophysical property values.
 
 Earth
 -----
-======================== =============== =========== ======================================= ========================================
+======================== =============== =========== ======================================= ===============================================================
 Name                     Symbol          Short Name  Units                                   Description
------------------------- --------------- ----------- --------------------------------------- ----------------------------------------
-earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`                        Avg. radius of the Earth
-earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`                 Avg. gravity acceleration on Earth
-gravitational_constant   :math:`G`       G           :math:`\text{m}^{3} {kg}^{-1} {s}^{-2}` Gravitational constant
-earth_avg_angular_vel    :math:`\Omega`  omega       :math:`\text{rad s}^{-1}`               Avg. angular velocity of Earth
-earth_sfc_avg_dist_sun   :math:`d`       d           :math:`\text{m}`                        Avg. distance of the Earth from the Sun
-earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`                 Avg. solar irradiance of Earth
+------------------------ --------------- ----------- --------------------------------------- ---------------------------------------------------------------
+earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`                        Avg. radius of the Earth [1]_
+earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`                 Avg. gravity acceleration on Earth [2]_
+gravitational_constant   :math:`G`       G           :math:`\text{m}^{3} {kg}^{-1} {s}^{-2}` Gravitational constant [2]_
+earth_avg_angular_vel    :math:`\Omega`  omega       :math:`\text{rad s}^{-1}`               Avg. angular velocity of Earth [1]_
+earth_sfc_avg_dist_sun   :math:`d`       d           :math:`\text{m}`                        Avg. distance of the Earth from the Sun [3]_
+earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`                 Avg. solar irradiance of Earth [4]_
 earth_max_declination    :math:`\delta`  delta       :math:`\text{degrees}`                  Max. solar declination angle of Earth
 earth_orbit_eccentricity :math:`e`                   :math:`\text{None}`                     Avg. eccentricity of Earth's orbit
-earth_mass               :math:`m_e`     me          :math:`\text{kg}`                       Total mass of the Earth (approx)
-======================== =============== =========== ======================================= ========================================
+earth_mass               :math:`m_e`     me          :math:`\text{kg}`                       Total mass of the Earth (approx) [1]_ [2]_
+======================== =============== =========== ======================================= ===============================================================
 
 Water
 -----
 ======================= ================ ========== ============================ ====================================================
 Name                    Symbol           Short Name Units                        Description
 ----------------------- ---------------- ---------- ---------------------------- ----------------------------------------------------
-water_molecular_weight  :math:`M_w`      Mw         :math:`\text{g mol}^{-1}`    Molecular weight of water
-water_gas_constant      :math:`R_v`      Rv         :math:`\text{J (K kg)}^{-1}` Gas constant for water vapor
-density_water           :math:`\rho_l`   rho_l      :math:`\text{kg m}^{-3}`     Nominal density of liquid water at 0C
+water_molecular_weight  :math:`M_w`      Mw         :math:`\text{g mol}^{-1}`    Molecular weight of water [5]_
+water_gas_constant      :math:`R_v`      Rv         :math:`\text{J (K kg)}^{-1}` Gas constant for water vapor [2]_ [5]_
+density_water           :math:`\rho_l`   rho_l      :math:`\text{kg m}^{-3}`     Maximum recommended density of liquid water, 0-40C [5]_
 wv_specific_heat_press  :math:`C_{pv}`   Cp_v       :math:`\text{J (K kg)}^{-1}` Specific heat at constant pressure for water vapor
 wv_specific_heat_vol    :math:`C_{vv}`   Cv_v       :math:`\text{J (K kg)}^{-1}` Specific heat at constant volume for water vapor
-water_specific_heat     :math:`Cp_l`     Cp_l       :math:`\text{J (K kg)}^{-1}` Specific heat of liquid water at 0C
-water_heat_vaporization :math:`L_v`      Lv         :math:`\text{J kg}^{-1}`     Latent heat of vaporization for liquid water at 0C
-water_heat_fusion       :math:`L_f`      Lf         :math:`\text{J kg}^{-1}`     Latent heat of fusion for liquid water at 0C
-ice_specific_heat       :math:`C_{pi}`   Cp_i       :math:`\text{J (K kg)}^{-1}` Specific heat of ice at 0C
+water_specific_heat     :math:`Cp_l`     Cp_l       :math:`\text{J (K kg)}^{-1}` Specific heat of liquid water at 0C [6]_
+water_heat_vaporization :math:`L_v`      Lv         :math:`\text{J kg}^{-1}`     Latent heat of vaporization for liquid water at 0C [7]_
+water_heat_fusion       :math:`L_f`      Lf         :math:`\text{J kg}^{-1}`     Latent heat of fusion for liquid water at 0C [7]_
+ice_specific_heat       :math:`C_{pi}`   Cp_i       :math:`\text{J (K kg)}^{-1}` Specific heat of ice at 0C [7]_
 density_ice             :math:`\rho_i`   rho_i      :math:`\text{kg m}^{-3}`     Density of ice at 0C
 ======================= ================ ========== ============================ ====================================================
 
 Dry Air
 -------
-======================== ================ ============= ============================ ===============================================================
+======================== ================ ============= ============================ ====================================================================
 Name                     Symbol           Short Name    Units                        Description
------------------------- ---------------- ------------- ---------------------------- ---------------------------------------------------------------
-dry_air_molecular_weight :math:`M_d`      Md            :math:`\text{g / mol}`       Nominal molecular weight of dry air at the surface of th Earth
+------------------------ ---------------- ------------- ---------------------------- --------------------------------------------------------------------
+dry_air_molecular_weight :math:`M_d`      Md            :math:`\text{g / mol}`       Nominal molecular weight of dry air at the surface of th Earth [8]_
 dry_air_gas_constant     :math:`R_d`      Rd            :math:`\text{J (K kg)}^{-1}` Gas constant for dry air at the surface of the Earth
 dry_air_spec_heat_press  :math:`C_{pd}`   Cp_d          :math:`\text{J (K kg)}^{-1}` Specific heat at constant pressure for dry air
 dry_air_spec_heat_vol    :math:`C_{vd}`   Cv_d          :math:`\text{J (K kg)}^{-1}` Specific heat at constant volume for dry air
 dry_air_density_stp      :math:`\rho_d`   rho_d         :math:`\text{kg m}^{-3}`     Density of dry air at 0C and 1000mb
-======================== ================ ============= ============================ ===============================================================
+======================== ================ ============= ============================ ====================================================================
 
 General Meteorology Constants
 -----------------------------
@@ -59,6 +59,15 @@ poisson_exponent         :math:`\kappa`    kappa       :math:`\text{None}`      
 dry_adiabatic_lapse_rate :math:`\gamma_d`  gamma_d     :math:`\text{K km}^{-1}`  The dry adiabatic lapse rate
 molecular_weight_ratio   :math:`\epsilon`  epsilon     :math:`\text{None}`       Ratio of molecular weight of water to that of dry air
 ======================== ================= =========== ========================= =======================================================
+
+.. [1] [Moritz2000]_
+.. [2] [CODATA2018]_
+.. [3] [IAU2012]_
+.. [4] [Kopp2011]_
+.. [5] [IAPWS2001]_
+.. [6] [IAPWS1995]_
+.. [7] [WMO1966]_
+.. [8] [Picard2008]_
 """  # noqa: E501
 
 from .package_tools import Exporter
@@ -69,49 +78,49 @@ exporter = Exporter(globals())
 # Export all the variables defined in this block
 with exporter:
     # Earth
-    earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
-    # Taken from GEMPAK constants
-    Re = earth_avg_radius = 6.3712e6 * units.m
-    G = gravitational_constant = (units.Quantity(1, units.
-                                                 newtonian_constant_of_gravitation)
-                                  .to('m^3 / kg / s^2'))
-    omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
-    d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
-    S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
-    delta = earth_max_declination = 23.45 * units.deg
-    earth_orbit_eccentricity = 0.0167
-    earth_mass = me = 5.9722e24 * units.kg
+    earth_gravity = g = 9.80665 * units('m / s^2')
+    Re = earth_avg_radius = 6371008.7714 * units('m')
+    G = gravitational_constant = 6.67430e-11 * units('m^3 / kg / s^2')
+    GM = geocentric_gravitational_constant = 3986005e8 * units('m^3 / s^2')
+    omega = earth_avg_angular_vel = 7292115e-11 * units('rad / s')
+    d = earth_sfc_avg_dist_sun = 149597870700. * units('m')
+    S = earth_solar_irradiance = 1360.8 * units('W / m^2')
+    delta = earth_max_declination = 23.45 * units('degrees')
+    earth_orbit_eccentricity = 0.0167 * units('dimensionless')
+    earth_mass = me = geocentric_gravitational_constant / gravitational_constant
 
     # molar gas constant
-    R = units.Quantity(1.0, units.R).to('J / K / mol')
+    R = 8.314462618 * units('J / mol / K')
 
-    #
     # Water
-    #
-    # From: https://pubchem.ncbi.nlm.nih.gov/compound/water
-    Mw = water_molecular_weight = units.Quantity(18.01528, 'g / mol')
+    Mw = water_molecular_weight = 18.015268 * units('g / mol')
     Rv = water_gas_constant = R / Mw
-    # Nominal density of liquid water at 0C
-    rho_l = density_water = units.Quantity(1e3, 'kg / m^3')
-    Cp_v = wv_specific_heat_press = units.Quantity(1952., 'm^2 / s^2 / K')
-    Cv_v = wv_specific_heat_vol = units.Quantity(1463., 'm^2 / s^2 / K')
-    Cp_l = water_specific_heat = units.Quantity(4218., 'm^2 / s^2 / K')  # at 0C
-    Lv = water_heat_vaporization = units.Quantity(2.501e6, 'm^2 / s^2')  # at 0C
-    Lf = water_heat_fusion = units.Quantity(3.34e5, 'm^2 / s^2')  # at 0C
-    Cp_i = ice_specific_heat = units.Quantity(2106, 'm^2 / s^2 / K')  # at 0C
-    rho_i = density_ice = units.Quantity(917, 'kg / m^3')  # at 0C
+    rho_l = density_water = 999.97495 * units('kg / m^3')
+    wv_specific_heat_ratio = 1.330 * units('dimensionless')
+    Cp_v = wv_specific_heat_press = (
+        wv_specific_heat_ratio * Rv / (wv_specific_heat_ratio - 1)
+    )
+    Cv_v = wv_specific_heat_vol = Cp_v / wv_specific_heat_ratio
+    Cp_l = water_specific_heat = 4.2194 * units('kJ / kg / K')
+    Lv = water_heat_vaporization = 2.50084e6 * units('J / kg')
+    Lf = water_heat_fusion = 3.337e5 * units('J / kg')
+    Cp_i = ice_specific_heat = 2090 * units('J / kg / K')
+    rho_i = density_ice = 917 * units('kg / m^3')
 
-    # Dry air -- standard atmosphere
-    Md = dry_air_molecular_weight = units.Quantity(28.9644, 'g / mol')
+    # Dry air
+    Md = dry_air_molecular_weight = 28.96546e-3 * units('kg / mol')
     Rd = dry_air_gas_constant = R / Md
-    dry_air_spec_heat_ratio = 1.4
-    Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
+    dry_air_spec_heat_ratio = 1.4 * units('dimensionless')
+    Cp_d = dry_air_spec_heat_press = (
+        dry_air_spec_heat_ratio * Rd / (dry_air_spec_heat_ratio - 1)
+    )
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
-    rho_d = dry_air_density_stp = ((1000. * units.mbar)
-                                   / (Rd * 273.15 * units.K)).to('kg / m^3')
+    rho_d = dry_air_density_stp = (
+        (1000. * units('mbar')) / (Rd * 273.15 * units('K'))
+    ).to('kg / m^3')
 
     # General meteorology constants
-    P0 = pot_temp_ref_press = 1000. * units.mbar
+    P0 = pot_temp_ref_press = 1000. * units('mbar')
     kappa = poisson_exponent = (Rd / Cp_d).to('dimensionless')
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
     epsilon = molecular_weight_ratio = (Mw / Md).to('dimensionless')

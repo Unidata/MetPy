@@ -246,7 +246,7 @@ def get_bounds_data():
 def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
     """Test getting bounds in layers with various parameter combinations."""
     bounds = _get_bound_pressure_height(pressure, bound, height=hgts, interpolate=interp)
-    assert_array_almost_equal(bounds[0], expected[0], 4)
+    assert_array_almost_equal(bounds[0], expected[0], 2)
     assert_array_almost_equal(bounds[1], expected[1], 4)
 
 
@@ -309,9 +309,9 @@ def test_get_layer_float32_no_heights():
     p_l, u_l, v_l = get_layer(p, u, v, depth=1000 * units.meter)
     assert_array_equal(p_l[:-1], p[:-1])
     assert_array_almost_equal(u_l[:-1], u[:-1], 7)
-    assert_almost_equal(u_l[-1], 3.0449828 * units('m/s'), 4)
+    assert_almost_equal(u_l[-1], 3.0455916 * units('m/s'), 4)
     assert_array_almost_equal(v_l[:-1], v[:-1], 7)
-    assert_almost_equal(v_l[-1], 20.215168 * units('m/s'), 4)
+    assert_almost_equal(v_l[-1], 20.2149378 * units('m/s'), 4)
     assert p_l.dtype == p.dtype
     assert u_l.dtype == u.dtype
     assert v_l.dtype == v.dtype
@@ -354,8 +354,8 @@ def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected)
     """Test get_layer functionality."""
     p_layer, y_layer = get_layer(pressure, variable, height=heights, bottom=bottom,
                                  depth=depth, interpolate=interp)
-    assert_array_almost_equal(p_layer, expected[0], 4)
-    assert_array_almost_equal(y_layer, expected[1], 4)
+    assert_array_almost_equal(p_layer, expected[0], 2)
+    assert_array_almost_equal(y_layer, expected[1], 3)
 
 
 def test_greater_or_close():

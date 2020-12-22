@@ -15,7 +15,11 @@ from metpy.testing import set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare(tolerance=.0202, remove_text=True, style='default')
+MPL_VERSION = matplotlib.__version__[:3]
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, style='default',
+                               tolerance={'2.1': 1.118}.get(MPL_VERSION, 0.02))
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -46,8 +50,8 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=.0272 if matplotlib.__version__ < '3.2' else 34.4,
-                               remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(remove_text=True, style='default',
+                               tolerance={'2.1': 34.37}.get(MPL_VERSION, 0.02))
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
