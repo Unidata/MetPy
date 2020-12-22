@@ -6,295 +6,344 @@ xarray with MetPy Tutorial
 ==========================
 
 `xarray <http://xarray.pydata.org/>`_ is a powerful Python package that provides N-dimensional
-labeled arrays and datasets following the Common Data Model. While the process of integrating
-xarray features into MetPy is ongoing, this tutorial demonstrates how xarray can be used
-within the current version of MetPy. MetPy's integration primarily works through accessors
-which allow simplified projection handling and coordinate identification. Unit and calculation
-support is currently available in a limited fashion, but should be improved in future
-versions.
+labeled arrays and datasets following the Common Data Model. MetPy's suite of meteorological
+calculations are designed to integrate with xarray DataArrays as one of its two primary data
+models (the other being Pint Quantities). MetPy also provides DataArray and Dataset
+*accessors* (collections of methods and properties attached to the ``.metpy`` property) for
+coordinate/CRS and unit operations.
+
+Full information on MetPy's accessors is available in the :doc:`appropriate section of the
+reference guide </api/generated/metpy.xarray>`, otherwise, continue on in this
+tutorial for a demonstration of the three main components of MetPy's integration with xarray
+(coordinates/coordinate reference systems, units, and calculations), as well as instructive
+examples for both CF-compliant and non-compliant datasets.
+
+First, some general imports...
 """
 
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-import matplotlib.pyplot as plt
+import numpy as np
 import xarray as xr
 
 # Any import of metpy will activate the accessors
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.units import units
-from metpy.xarray import grid_deltas_from_dataarray
 
 #########################################################################
-# Getting Data
-# ------------
-#
-# While xarray can handle a wide variety of n-dimensional data (essentially anything that can
-# be stored in a netCDF file), a common use case is working with model output. Such model
-# data can be obtained from a THREDDS Data Server using the siphon package, but for this
-# tutorial, we will use an example subset of GFS data from Hurrican Irma (September 5th,
-# 2017).
+# ...and opening some sample data to work with.
 
 # Open the netCDF file as a xarray Dataset
 data = xr.open_dataset(get_test_data('irma_gfs_example.nc', False))
 
 # View a summary of the Dataset
-print(data)
+data
 
 #########################################################################
-# Preparing Data
-# --------------
+# While xarray can handle a wide variety of n-dimensional data (essentially anything that can
+# be stored in a netCDF file), a common use case is working with gridded model output. Such
+# model data can be obtained from a THREDDS Data Server using the `siphon package
+# <https://unidata.github.io/siphon/>`_, but here we've used an example subset of GFS data
+# from Hurrican Irma (September 5th, 2017) included in MetPy's test suite. Generally,
+# a local file (or remote file via OPeNDAP) can be opened with ``xr.open_dataset("path")``.
 #
-# To make use of the data within MetPy, we need to parse the dataset for projection
-# information following the CF conventions. For this, we use the
-# ``data.metpy.parse_cf()`` method, which will return a new, parsed ``DataArray`` or
-# ``Dataset``.
+# Going back to the above object, this ``Dataset`` consists of *dimensions* and their
+# associated *coordinates*, which in turn make up the axes along which the *data variables*
+# are defined. The dataset also has a dictionary-like collection of *attributes*. What happens
+# if we look at just a single data variable?
+
+temperature = data['Temperature_isobaric']
+temperature
+
+#########################################################################
+# This is a ``DataArray``, which stores just a single data variable with its associated
+# coordinates and attributes. These individual ``DataArray``\s are the kinds of objects that
+# MetPy's calculations take as input (more on that in  `Calculations`_ section below).
 #
-# Additionally, we rename our data variables for easier reference.
+# If you are more interested in learning about xarray's terminology and data structures, see
+# the `terminology section <http://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
+# documenation.
+#
+# Coordinates and Coordinate Reference Systems
+# --------------------------------------------
+#
+# MetPy's first set of helpers comes with identifying *coordinate types*. In a given dataset,
+# coordinates can have a variety of different names and yet refer to the same type (such as
+# "isobaric1" and "isobaric3" both referring to vertical isobaric coordinates). Following
+# CF conventions, as well as using some fall-back regular expressions, MetPy can
+# systematically identify coordinates of the following types:
+#
+# - time
+# - vertical
+# - latitude
+# - y
+# - longitude
+# - x
+#
+# When identifying a single coordinate, it is best to use the property directly associated
+# with that type
 
-# To parse the full dataset, we can call parse_cf without an argument, and assign the returned
-# Dataset.
-data = data.metpy.parse_cf()
+temperature.metpy.time
 
-# If we instead want just a single variable, we can pass that variable name to parse_cf and
-# it will return just that data variable as a DataArray.
-data_var = data.metpy.parse_cf('Temperature_isobaric')
+#########################################################################
+# When accessing multiple coordinate types simultaneously, you can use the ``.coordinates()``
+# method to yield a generator for the respective coordinates
 
-# If we want only a subset of variables, we can pass a list of variable names as well.
-data_subset = data.metpy.parse_cf(['u-component_of_wind_isobaric',
-                                   'v-component_of_wind_isobaric'])
+x, y = temperature.metpy.coordinates('x', 'y')
 
-# To rename variables, supply a dictionary between old and new names to the rename method
-data = data.rename({
-    'Vertical_velocity_pressure_isobaric': 'omega',
-    'Relative_humidity_isobaric': 'relative_humidity',
-    'Temperature_isobaric': 'temperature',
-    'u-component_of_wind_isobaric': 'u',
-    'v-component_of_wind_isobaric': 'v',
-    'Geopotential_height_isobaric': 'height'
-})
+#########################################################################
+# These coordinate type aliases can also be used in MetPy's wrapped ``.sel`` and ``.loc``
+# for indexing and selecting on ``DataArray``\s. For example, to access 500 hPa heights at
+# 1800Z,
+
+heights = data['Geopotential_height_isobaric'].metpy.sel(
+    time='2017-09-05 18:00',
+    vertical=50000.
+)
+
+#########################################################################
+# (Notice how we specified 50000 here without units...we'll go over a better alternative in
+# the next section on units.)
+#
+# One point of warning: xarray's selection and indexing only works if these coordinates are
+# *dimension coordinates*, meaning that they are 1D and share the name of their associated
+# dimension. In practice, this means that you can't index a dataset that has 2D latitude and
+# longitude coordinates by latitudes and longitudes, instead, you must index by the 1D y and x
+# dimension coordinates. (What if these coordinates are missing, you may ask? See the final
+# subsection on ``.assign_y_x`` for more details.)
+#
+# Beyond just the coordinates themselves, a common need for both calculations with and plots
+# of geospatial data is knowing the coordinate reference system (CRS) on which the horizontal
+# spatial coordinates are defined. MetPy follows the `CF Conventions
+# <http://cfconventions.org/Data/cf-conventions/cf-conventions-1.8/cf-conventions.html#grid-mappings-and-projections>`_
+# for its CRS definitions, which it then caches on the ``metpy_crs`` coordinate in order for
+# it to persist through calculations and other array operations. There are two ways to do so
+# in MetPy:
+#
+# First, if your dataset is already conforming to the CF Conventions, it will have a grid
+# mapping variable that is associated with the other data variables by the ``grid_mapping``
+# attribute. This is automatically parsed via the ``.parse_cf()`` method:
+
+# Parse full dataset
+data_parsed = data.metpy.parse_cf()
+
+# Parse subset of dataset
+data_subset = data.metpy.parse_cf([
+    'u-component_of_wind_isobaric',
+    'v-component_of_wind_isobaric',
+    'Vertical_velocity_pressure_isobaric'
+])
+
+# Parse single variable
+relative_humidity = data.metpy.parse_cf('Relative_humidity_isobaric')
+
+#########################################################################
+# If your dataset doesn't have a CF-conforming grid mapping variable, you can manually specify
+# the CRS using the ``.assign_crs()`` method:
+
+temperature = data['Temperature_isobaric'].metpy.assign_crs(
+    grid_mapping_name='latitude_longitude',
+    earth_radius=6371229.0
+)
+
+temperature
+
+#########################################################################
+# Notice the newly added ``metpy_crs`` non-dimension coordinate. Now how can we use this in
+# practice? For individual ``DataArrays``\s, we can access the cartopy and pyproj objects
+# corresponding to this CRS:
+
+# Cartopy CRS, useful for plotting
+relative_humidity.metpy.cartopy_crs
+
+#########################################################################
+
+# pyproj CRS, useful for projection transformations and forward/backward azimuth and great
+# circle calculations
+temperature.metpy.pyproj_crs
+
+#########################################################################
+# Finally, there are times when a certain horizontal coordinate type is missing from your
+# dataset, and you need the other, that is, you have latitude/longitude and need y/x, or visa
+# versa. This is where the ``.assign_y_x`` and ``.assign_latitude_longitude`` methods come in
+# handy. Our current GFS sample won't work to demonstrate this (since, on its
+# latitude-longitude grid, y is latitude and x is longitude), so for more information, take
+# a look at the `Non-Compliant Dataset Example`_ below, or view the accessor documentation.
 
 #########################################################################
 # Units
 # -----
 #
-# MetPy's DataArray accessor has a ``unit_array`` property to obtain a ``pint.Quantity`` array
-# of just the data from the DataArray (metadata is removed) and a ``convert_units`` method to
-# convert the the data from one unit to another (keeping it as a DataArray). For now, we'll
-# just use ``convert_units`` to convert our temperature to ``degC``.
+# Since unit-aware calculations are a major part of the MetPy library, unit support is a major
+# part of MetPy's xarray integration!
+#
+# One very important point of consideration is that xarray data variables (in both
+# ``Dataset``\s and ``DataArray``\s) can store both unit-aware and unit-naive array types.
+# Unit-naive array types will be used by default in xarray, so we need to convert to a
+# unit-aware type if we want to use xarray operations while preserving unit correctness. MetPy
+# provides the ``.quantify()`` method for this (named since we are turning the data stored
+# inside the xarray object into a Pint ``Quantity`` object)
 
-data['temperature'] = data['temperature'].metpy.convert_units('degC')
+heights = heights.metpy.quantify()
+heights
 
 #########################################################################
-# Coordinates
-# -----------
-#
-# You may have noticed how we directly accessed the vertical coordinates above using their
-# names. However, in general, if we are working with a particular DataArray, we don't have to
-# worry about that since MetPy is able to parse the coordinates and so obtain a particular
-# coordinate type directly. There are two ways to do this:
-#
-# 1. Use the ``data_var.metpy.coordinates`` method
-# 2. Use the ``data_var.metpy.x``, ``data_var.metpy.y``, ``data_var.metpy.longitude``,
-#    ``data_var.metpy.latitude``, ``data_var.metpy.vertical``,  ``data_var.metpy.time``
-#    properties
-#
-# The valid coordinate types are:
-#
-# - x
-# - y
-# - longitude
-# - latitude
-# - vertical
-# - time
-#
-# (Both approaches are shown below)
-#
-# The ``x``, ``y``, ``vertical``, and ``time`` coordinates cannot be multidimensional,
-# however, the ``longitude`` and ``latitude`` coordinates can (which is often the case for
-# gridded weather data in its native projection). Note that for gridded data on an
-# equirectangular projection, such as the GFS data in this example, ``x`` and ``longitude``
-# will be identical (as will ``y`` and ``latitude``).
+# Notice how the units are now represented in the data itself, rather than as a text
+# attribute. Now, even if we perform some kind of xarray operation (such as taking the zonal
+# mean), the units are preserved
 
-# Get multiple coordinates (for example, in just the x and y direction)
-x, y = data['temperature'].metpy.coordinates('x', 'y')
-
-# If we want to get just a single coordinate from the coordinates method, we have to use
-# tuple unpacking because the coordinates method returns a generator
-vertical, = data['temperature'].metpy.coordinates('vertical')
-
-# Or, we can just get a coordinate from the property
-time = data['temperature'].metpy.time
-
-# To verify, we can inspect all their names
-print([coord.name for coord in (x, y, vertical, time)])
+heights_mean = heights.mean('longitude')
+heights_mean
 
 #########################################################################
-# Indexing and Selecting Data
-# ---------------------------
+# However, this "quantification" is not without its consequences. By default, xarray loads its
+# data lazily to conserve memory usage. Unless your data is chunked into a Dask array (using
+# the ``chunks`` argument), this ``.quantify()`` method will load data into memory, which
+# could slow your script or even cause your process to run out of memory. And so, we recommend
+# subsetting your data before quantifying it.
 #
-# MetPy provides wrappers for the usual xarray indexing and selection routines that can handle
-# quantities with units. For DataArrays, MetPy also allows using the coordinate axis types
-# mentioned above as aliases for the coordinates. And so, if we wanted 850 hPa heights,
-# we would take:
+# Also, these Pint ``Quantity`` data objects are not properly handled by xarray when writing
+# to disk. And so, if you want to safely export your data, you will need to undo the
+# quantification with the ``.dequantify()`` method, which converts your data back to a
+# unit-naive array with the unit as a text attribute
 
-print(data['height'].metpy.sel(vertical=850 * units.hPa))
-
-#########################################################################
-# For full details on xarray indexing/selection, see
-# `xarray's documentation <http://xarray.pydata.org/en/stable/indexing.html>`_.
+heights_mean_str_units = heights_mean.metpy.dequantify()
+heights_mean_str_units
 
 #########################################################################
-# Projections
-# -----------
+# Other useful unit integration features include:
 #
-# Getting the cartopy coordinate reference system (CRS) of the projection of a DataArray is as
-# straightforward as using the ``data_var.metpy.cartopy_crs`` property:
+# Unit-based selection/indexing:
 
-cartopy_crs = data['temperature'].metpy.cartopy_crs
-print(cartopy_crs)
-
-#########################################################################
-# Likewise, the PyProj CRS can be obtained with the ``.pyproj_crs`` property:
-
-pyproj_crs = data['temperature'].metpy.pyproj_crs
-print(pyproj_crs)
+heights_at_45_north = data['Geopotential_height_isobaric'].metpy.sel(
+    latitude=45 * units.degrees_north,
+    vertical=300 * units.hPa
+)
+heights_at_45_north
 
 #########################################################################
-# The cartopy ``Globe`` can similarly be accessed via the ``data_var.metpy.cartopy_globe``
-# property:
+# Unit conversion:
 
-cartopy_globe = data['temperature'].metpy.cartopy_globe
-print(cartopy_globe)
+temperature_degC = temperature[0].metpy.convert_units('degC')
+temperature_degC
+
+#########################################################################
+# Unit conversion for coordinates:
+heights_on_hPa_levels = heights.metpy.convert_coordinate_units('isobaric3', 'hPa')
+heights_on_hPa_levels['isobaric3']
+
+#########################################################################
+# Accessing just the underlying unit array:
+heights_unit_array = heights.metpy.unit_array
+heights_unit_array
+
+#########################################################################
+# Accessing just the underlying units:
+height_units = heights.metpy.units
+height_units
 
 #########################################################################
 # Calculations
 # ------------
 #
-# TODO: The below section is out of date as of PR #1490. Updates are needed as a part of the
-# 1.0 Upgrade Guide and Doc Update (Issue #1385).
-#
-# Most of the calculations in `metpy.calc` will accept DataArrays by converting them
-# into their corresponding unit arrays. While this may often work without any issues, we must
-# keep in mind that because the calculations are working with unit arrays and not DataArrays:
-#
-# - The calculations will return unit arrays rather than DataArrays
-# - Broadcasting must be taken care of outside of the calculation, as it would only recognize
-#   dimensions by order, not name
-#
-# As an example, we calculate geostropic wind at 500 hPa below:
+# MetPy's xarray integration extends to its calcuation suite as well. Most grid-capable
+# calculations (such as thermodynamics, kinematics, and smoothers) fully support xarray
+# ``DataArray``\s by accepting them as inputs, returning them as outputs, and automatically
+# using the attached coordinate data/metadata to determine grid arguments
 
-lat, lon = xr.broadcast(y, x)
-dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, geod=pyproj_crs.get_geod())
-heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
-u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
-print(u_geo)
-print(v_geo)
+heights = data_parsed.metpy.parse_cf('Geopotential_height_isobaric').metpy.sel(
+    time='2017-09-05 18:00',
+    vertical=500 * units.hPa
+)
+u_g, v_g = mpcalc.geostrophic_wind(heights)
+u_g
 
 #########################################################################
-# Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
-# can accept *and* return xarray objects). Right now, this includes
-#
-# - Derivative functions
-#     - ``first_derivative``
-#     - ``second_derivative``
-#     - ``gradient``
-#     - ``laplacian``
-# - Cross-section functions
-#     - ``cross_section_components``
-#     - ``normal_component``
-#     - ``tangential_component``
-#     - ``absolute_momentum``
-# - Smoothing functions
-#     - ``smooth_gaussian``
-#     - ``smooth_n_point``
-#     - ``smooth_window``
-#     - ``smooth_rectangular``
-#     - ``smooth_circular``
-#
-# More details can be found by looking at the documentation for the specific function of
-# interest.
+# For profile-based calculations (and most remaining calculations in the ``metpy.calc``
+# module), xarray ``DataArray``\s are accepted as inputs, but the outputs remain Pint
+# Quantities (typically scalars)
+
+data_at_point = data.metpy.sel(
+    time1='2017-09-05 12:00',
+    latitude=40 * units.degrees_north,
+    longitude=260 * units.degrees_east
+)
+dewpoint = mpcalc.dewpoint_from_relative_humidity(
+    data_at_point['Temperature_isobaric'],
+    data_at_point['Relative_humidity_isobaric']
+)
+cape, cin = mpcalc.surface_based_cape_cin(
+    data_at_point['isobaric3'],
+    data_at_point['Temperature_isobaric'],
+    dewpoint
+)
+cape
 
 #########################################################################
-# There is also the special case of the helper function, ``grid_deltas_from_dataarray``, which
-# takes a ``DataArray`` input, but returns unit arrays for use in other calculations. We could
-# rewrite the above geostrophic wind example using this helper function as follows:
-
-heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
-lat, lon = xr.broadcast(y, x)
-dx, dy = grid_deltas_from_dataarray(heights)
-u_geo, v_geo = mpcalc.geostrophic_wind(heights, dx, dy, lat)
-print(u_geo)
-print(v_geo)
-
-#########################################################################
-# Plotting
-# --------
+# A few remaining portions of MetPy's calculations (mainly the interpolation module and a few
+# other functions) do not fully support xarray, and so, use of ``.values`` may be needed to
+# convert to a bare NumPy array. For full information on xarray support for your function of
+# interest, see the :doc:`/api/index`.
 #
-# Like most meteorological data, we want to be able to plot these data. DataArrays can be used
-# like normal numpy arrays in plotting code, which is the recommended process at the current
-# point in time, or we can use some of xarray's plotting functionality for quick inspection of
-# the data.
+# CF-Compliant Dataset Example
+# ----------------------------
 #
-# (More detail beyond the following can be found at `xarray's plotting reference
-# <http://xarray.pydata.org/en/stable/plotting.html>`_.)
+# The GFS sample used throughout this tutorial so far has been an example of a CF-compliant
+# dataset. These kinds of datasets are easiest to work with it MetPy, since most of the
+# "xarray magic" uses CF metadata. For this kind of dataset, a typical workflow looks like the
+# following
 
-# A very simple example example of a plot of 500 hPa heights
-data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}].plot()
-plt.show()
+# Load data, parse it for a CF grid mapping, and promote lat/lon data variables to coordinates
+data = xr.open_dataset(
+    get_test_data('narr_example.nc', False)
+).metpy.parse_cf().set_coords(['lat', 'lon'])
+
+# Subset to only the data you need to save on memory usage
+subset = data.metpy.sel(isobaric=500 * units.hPa)
+
+# Quantify if you plan on performing xarray operations that need to maintain unit correctness
+subset = subset.metpy.quantify()
+
+# Perform calculations
+heights = mpcalc.smooth_gaussian(subset['Geopotential_height'], 5)
+subset['u_geo'], subset['v_geo'] = mpcalc.geostrophic_wind(heights)
+
+# Plot
+heights.plot()
 
 #########################################################################
 
-# Let's add a projection and coastlines to it
-ax = plt.axes(projection=ccrs.LambertConformal())
-data['height'].metpy.loc[{'time': time[0],
-                          'vertical': 500. * units.hPa}].plot(ax=ax, transform=cartopy_crs)
-ax.coastlines()
-plt.show()
+# Save output
+subset.metpy.dequantify().drop_vars('metpy_crs').to_netcdf('500hPa_analysis.nc')
 
 #########################################################################
+# Non-Compliant Dataset Example
+# -----------------------------
+#
+# When CF metadata (such as grid mapping, coordinate attributes, etc.) are missing, a bit more
+# work is required to manually supply the required information, for example,
 
-# Or, let's make a full 500 hPa map with heights, temperature, winds, and humidity
+nonstandard = xr.Dataset({
+    'temperature': (('y', 'x'), np.arange(0, 9).reshape(3, 3) * units.degC),
+    'y': ('y', np.arange(0, 3) * 1e5, {'units': 'km'}),
+    'x': ('x', np.arange(0, 3) * 1e5, {'units': 'km'})
+})
 
-# Select the data for this time and level
-data_level = data.metpy.loc[{time.name: time[0], vertical.name: 500. * units.hPa}]
+# Add both CRS and then lat/lon coords using chained methods
+data = nonstandard.metpy.assign_crs(
+    grid_mapping_name='lambert_conformal_conic',
+    latitude_of_projection_origin=38.5,
+    longitude_of_central_meridian=262.5,
+    standard_parallel=38.5,
+    earth_radius=6371229.0
+).metpy.assign_latitude_longitude()
 
-# Create the matplotlib figure and axis
-fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': cartopy_crs})
-
-# Plot RH as filled contours
-rh = ax.contourf(x, y, data_level['relative_humidity'], levels=[70, 80, 90, 100],
-                 colors=['#99ff00', '#00ff00', '#00cc00'])
-
-# Plot wind barbs, but not all of them
-wind_slice = slice(5, -5, 5)
-ax.barbs(x[wind_slice], y[wind_slice],
-         data_level['u'].metpy.unit_array[wind_slice, wind_slice].to('knots'),
-         data_level['v'].metpy.unit_array[wind_slice, wind_slice].to('knots'),
-         length=6)
-
-# Plot heights and temperature as contours
-h_contour = ax.contour(x, y, data_level['height'], colors='k', levels=range(5400, 6000, 60))
-h_contour.clabel(fontsize=8, colors='k', inline=1, inline_spacing=8,
-                 fmt='%i', rightside_up=True, use_clabeltext=True)
-t_contour = ax.contour(x, y, data_level['temperature'], colors='xkcd:deep blue',
-                       levels=range(-26, 4, 2), alpha=0.8, linestyles='--')
-t_contour.clabel(fontsize=8, colors='xkcd:deep blue', inline=1, inline_spacing=8,
-                 fmt='%i', rightside_up=True, use_clabeltext=True)
-
-# Add geographic features
-ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor=cfeature.COLORS['land'])
-ax.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor=cfeature.COLORS['water'])
-ax.add_feature(cfeature.STATES.with_scale('50m'), edgecolor='#c7c783', zorder=0)
-ax.add_feature(cfeature.LAKES.with_scale('50m'), facecolor=cfeature.COLORS['water'],
-               edgecolor='#c7c783', zorder=0)
-
-# Set a title and show the plot
-ax.set_title('500 hPa Heights (m), Temperature (\u00B0C), Humidity (%) at '
-             + time[0].dt.strftime('%Y-%m-%d %H:%MZ').item())
-plt.show()
+# Preview the changes
+data
 
 #########################################################################
+# Once the CRS and additional coordinates are assigned, you can generally proceed as you would
+# for a CF-compliant dataset.
+#
 # What Could Go Wrong?
 # --------------------
 #
@@ -304,7 +353,7 @@ plt.show()
 # - Multiple coordinate conflict
 # - An axis not being available
 # - An axis not being interpretable
-# - Arrays not broadcasting in calculations
+# - ``UndefinedUnitError``
 #
 # **Coordinate Conflict**
 #
@@ -382,37 +431,11 @@ plt.show()
 # identification of a new coordinate type, we welcome pull requests for such new functionality
 # on GitHub!
 #
-# **Broadcasting in Calculations**
+# **Undefined Unit Error**
 #
-# Code:
-#
-# ::
-#
-#     theta = mpcalc.potential_temperature(data['isobaric3'], data['temperature'])
-#
-# Error Message:
-#
-# ::
-#
-#     ValueError: operands could not be broadcast together with shapes (9,31,81,131) (31,)
-#
-# This is a symptom of the incomplete integration of xarray with MetPy's calculations; the
-# calculations currently convert the DataArrays to unit arrays that do not recognize which
-# coordinates match with which. And so, we must do some manipulations.
-#
-# Fix 1 (xarray broadcasting):
-#
-# ::
-#
-#     pressure, temperature = xr.broadcast(data['isobaric3'], data['temperature'])
-#     theta = mpcalc.potential_temperature(pressure, temperature)
-#
-# Fix 2 (unit array broadcasting):
-#
-# ::
-#
-#     theta = mpcalc.potential_temperature(
-#         data['isobaric3'].metpy.unit_array[None, :, None, None],
-#         data['temperature'].metpy.unit_array
-#     )
-#
+# If the units attribute on your xarray data is not recognizable by Pint, you will likely
+# recieve an ``UndefinedUnitError``. In this case, you will likely have to update the units
+# attribute to one that can be parsed properly by Pint. It is our aim to have all valid
+# CF/UDUNITS unit strings be parseable, but this work is ongoing. If many variables in your
+# dataset are not parseable, the ``.update_attribute`` method on the MetPy accessor may come
+# in handy.

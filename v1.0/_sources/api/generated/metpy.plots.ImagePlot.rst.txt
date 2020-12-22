@@ -54,9 +54,12 @@ ImagePlot
       ~ImagePlot.on_trait_change
       ~ImagePlot.set_trait
       ~ImagePlot.setup_instance
+      ~ImagePlot.trait_defaults
       ~ImagePlot.trait_events
+      ~ImagePlot.trait_has_value
       ~ImagePlot.trait_metadata
       ~ImagePlot.trait_names
+      ~ImagePlot.trait_values
       ~ImagePlot.traits
       ~ImagePlot.unobserve
       ~ImagePlot.unobserve_all
@@ -111,9 +114,12 @@ ImagePlot
    .. automethod:: on_trait_change
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all

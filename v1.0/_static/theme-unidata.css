@@ -1,0 +1,118 @@
+/* UCAR style heading towards use of Poppins font */
+ .header-style, h1, h2, h3, h4, h5, h6 {
+   font-family: Poppins, sans-serif;
+ }
+
+/* Unidata header color */
+.bg-unidata {
+    background-color: #06778F;
+}
+
+/* Override the default color set in the original theme */
+.navbar-nav>.active>.nav-link {
+    color: #fff !important;
+    font-weight: 400 !important;
+}
+
+/* Override the default logo height */
+.navbar-brand {
+    height: 50px;
+}
+
+/* Enhance the links to function docs in the gallery examples */
+div[class^="highlight"] a {
+    background-color: #EEEEEE;
+}
+
+/* Control the appearance of the version alert banner */
+#banner .alert-version, .alert-news {
+    margin: 1em;
+    padding: 0.5em;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600; font-size: 16px;
+}
+
+.intro-card {
+    background: #d8e5e8;
+    border: none;
+    border-radius: 0;
+    padding: 30px 10px 10px 10px;
+    margin: 10px 0px;
+}
+
+.intro-card .card-text {
+    margin: 20px 0px;
+}
+
+.card-button {
+    background-color: #fafafa;
+    border: none;
+    color: #484848;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    max-width: 220px;
+    padding: 0.5rem 0rem;
+    margin-top: auto;
+}
+
+.card-button a {
+    color: #484848;
+}
+
+.card-button p {
+    margin-top: 0;
+    margin-bottom: 0rem;
+    color: #484848;
+}
+
+/* Tweaks to the appearance of the sidebars */
+.bd-sidebar {
+    flex: 0 0 20%;
+    border-right: none;
+}
+
+.bd-toc .tocsection {
+    border-left: none;
+}
+
+.bd-toc .section-nav {
+    border-left: none;
+}
+
+/* Can remove once theme releases new version */
+/* xarray output display in bootstrap */
+.xr-wrap[hidden] {
+display: block !important;
+}
+
+.xr-var-data pre {
+  border: none;
+  box-shadow: none;
+}
+
+
+/* Styling the API Changes Table */
+.api-table tr:nth-child(3n + 1){
+    background: #EEF5F5;
+}
+
+.api-table tr:nth-child(3n + 2){
+    opacity: 0.65;
+}
+
+code.literal:not(.xref) span.pre {
+    color: #000;
+}
+
+.api-table tr:nth-child(3n + 2)>td span:first-child::before{
+    content: url(old.png);
+    zoom: 0.25;
+}
+
+.api-table tr:nth-child(3n + 3)>td span:first-child::before{
+    content: url(new.png);
+    zoom: 0.21;
+}

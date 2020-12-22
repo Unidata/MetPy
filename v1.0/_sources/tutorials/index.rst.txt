@@ -21,7 +21,7 @@ common meteorological tasks.
 .. only:: html
 
  .. figure:: /tutorials/images/thumb/sphx_glr_unit_tutorial_thumb.png
-     :alt: Units Tutorial
+     :alt: Working With Units
 
      :ref:`sphx_glr_tutorials_unit_tutorial.py`
 
@@ -76,6 +76,27 @@ common meteorological tasks.
    :hidden:
 
    /tutorials/xarray_tutorial
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data e...">
+
+.. only:: html
+
+ .. figure:: /tutorials/images/thumb/sphx_glr_declarative_tutorial_thumb.png
+     :alt: MetPy Declarative Syntax Tutorial
+
+     :ref:`sphx_glr_tutorials_declarative_tutorial.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /tutorials/declarative_tutorial
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

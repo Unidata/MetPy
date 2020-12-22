@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infrastructure Guide &#8212; MetPy 1.0</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/doc_shared.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example Gallery" href="../examples/index.html" />
+    <link rel="prev" title="MetPy Roadmap" href="roadmap.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/infrastructureguide.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <img src="../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api/index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+          
+            
+                <li class="">
+                    <a href="CONTRIBUTING.html">Contributors Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="roadmap.html">MetPy Roadmap</a>
+                </li>
+            
+          
+            
+                <li class="active">
+                    <a href="">Infrastructure Guide</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#versioning" class="nav-link">Versioning</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#documentation" class="nav-link">Documentation</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#other-tools" class="nav-link">Other Tools</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#releasing" class="nav-link">Releasing</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#pypi" class="nav-link">PyPI</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#conda" class="nav-link">Conda</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="infrastructure-guide">
+<h1>Infrastructure Guide<a class="headerlink" href="#infrastructure-guide" title="Permalink to this headline">¶</a></h1>
+<p>This guide serves as an advanced version of the contributing documentation and contains the
+information on how we manage MetPy and the infrastructure behind it.</p>
+<div class="section" id="versioning">
+<h2>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h2>
+<p>To manage identifying the version of the code, MetPy relies upon <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>. <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> takes the current version of the
+source from git tags and any additional commits. For development, the version will have a
+string like <code class="docutils literal notranslate"><span class="pre">0.10.0.post209+gff2e549f.d20190918</span></code>, which comes from <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>. This
+version means that the current code is 209 commits past the 0.10.0 tag, on git hash
+<code class="docutils literal notranslate"><span class="pre">ff2e549f</span></code>, with local changes on top, last made on a date (indicated by <code class="docutils literal notranslate"><span class="pre">d20190918</span></code>). For
+a release, or non-git repo source dir, the version will just come from the most recent tag
+(i.e. <code class="docutils literal notranslate"><span class="pre">v0.10.0</span></code>). Our main versioning scheme matches <code class="docutils literal notranslate"><span class="pre">vMajor.Minor.Bugfix</span></code>.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>MetPy’s documentation is built using sphinx &gt;= 2.1. API documentation is automatically
+generated from docstrings, written using the
+<a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">NumPy docstring standard</a>.
+There are also example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory, as well as our
+<a class="reference internal" href="../userguide/index.html"><span class="doc">User Guide</span></a> tutorials in the <code class="docutils literal notranslate"><span class="pre">tutorials</span></code>. Using the <code class="docutils literal notranslate"><span class="pre">sphinx-gallery</span></code>
+extension, these scripts are executed and turned into a gallery of thumbnails. The
+extension also makes these scripts available as Jupyter notebooks.</p>
+<p>The documentation is hosted on <a class="reference external" href="https://unidata.github.io/MetPy">GitHub Pages</a>. The docs are
+built automatically and uploaded upon pushes or merges to GitHub. Commits to <code class="docutils literal notranslate"><span class="pre">master</span></code> end up
+in our development version docs, while commits to versioned branches will update the
+docs for the corresponding version, which are located in the appropriately named subidrectory
+on the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch. We only maintain docs at the minor level, not the bugfix one.
+The docs rely on the <code class="docutils literal notranslate"><span class="pre">pydata-sphinx-theme</span></code> package for styling the docs, which needs to be
+installed for any local doc builds.</p>
+</div>
+<div class="section" id="other-tools">
+<h2>Other Tools<a class="headerlink" href="#other-tools" title="Permalink to this headline">¶</a></h2>
+<p>Continuous integration is performed by
+<a class="reference external" href="https://github.com/Unidata/MetPy/actions?query=workflow%3ACI">GitHub Actions</a>.
+This integration runs the unit tests on Linux for all supported versions of Python, as well
+as runs against the minimum package versions, using PyPI packages. This also runs against
+a (non-exhaustive) matrix of python versions on macOS and Windows. In addition to these tests,
+GitHub actions also builds the documentation and runs the examples across multiple platforms
+and Python versions, as well as checks for any broken web links. <code class="docutils literal notranslate"><span class="pre">flake8</span></code> (along with a
+variety of plugins found in <code class="docutils literal notranslate"><span class="pre">ci/linting.txt</span></code>) is also run against the code to check
+formatting using another job on GitHub Actions. As part of this linting job, the docs are also
+checked using the <code class="docutils literal notranslate"><span class="pre">doc8</span></code> tool. Configurations for these are in a variety of files in
+<code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code>.</p>
+<p>Test coverage is monitored by <a class="reference external" href="https://codecov.io/github/Unidata/MetPy">codecov.io</a>.</p>
+<p>The following services are used to track code quality:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://app.codacy.com/project/Unidata/MetPy/dashboard">Codacy</a></p></li>
+<li><p><a class="reference external" href="https://codeclimate.com/github/Unidata/MetPy">Code Climate</a></p></li>
+<li><p><a class="reference external" href="https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)">Scrutinizer</a></p></li>
+</ul>
+<p>We also maintain custom GitHub actions that automate additional tasks. Besides what’s
+mentioned below as part of the release process, we have a script that automatically assigns
+the most recent milestone to unmilestoned merged PRs (<code class="docutils literal notranslate"><span class="pre">assign-milestone.yml</span></code>).
+Additional automation is encouraged, and GitHub Actions, using the javascript and the
+<code class="docutils literal notranslate"><span class="pre">actions/github-script</span></code> action can greatly streamline the process of automating processes
+using the GitHub API. For more information see:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://octokit.github.io/rest.js/v18">Octokit Docs</a> which is the built-in library for
+doing GitHub API work in javascript</p></li>
+<li><p><a class="reference external" href="https://github.com/actions/github-script">github-script action repo</a> which is the action
+that simplifies writing custom scripting</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/free-pro-team&#64;latest/actions">GitHub Actions Docs</a> for all
+other things relating to GitHub Actions, like available events and workflow syntax</p></li>
+</ul>
+</div>
+<div class="section" id="releasing">
+<h2>Releasing<a class="headerlink" href="#releasing" title="Permalink to this headline">¶</a></h2>
+<p>MetPy releases are managed using
+<a class="reference external" href="https://github.com/Unidata/MetPy/milestones">milestones on GitHub</a>. Each release should have
+a milestone named with the appropriate version. All issues and Pull Requests that are included,
+or intended to be included, should be tagged with this milestone. While this helps with
+planning, and making sure things are not overlooked, it’s also a significant part of the
+release. Once all items are done, the release process is started by closing the corresponding
+milestone. This triggers a GitHub Action (<code class="docutils literal notranslate"><span class="pre">draft-release.yml</span></code>) that creates a new <em>draft</em>
+release, titled based on the name of the milestone and pointing to a corresponding tag. The
+body of the release is pre-populated with some release notes based on the milestone’s issues,
+Pull Requests, and code contributors. These should be supplemented at the top with bullets
+summarizing the highlights of the release that are of interest to our users.</p>
+<p>If for some reason this needs to be done manually, go to the GitHub page and create a new
+release. The tag should be a adhere to our versioning, like v1.0.0. Add a name for the release
+(can just be the version) and add some release notes on what the big changes are.</p>
+<p>Once the release notes are completed, click the “Publish release” button. This will actually
+create the tag on GitHub, triggering the package builds described below as well as new
+documentation builds.</p>
+<div class="section" id="pypi">
+<h3>PyPI<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
+<p>Once the new release is published on GitHub, this will create the tag, which will trigger
+new builds GitHub actions (see <code class="docutils literal notranslate"><span class="pre">release.yml</span></code>). This runs no tests, but assumes those were
+all working before the release was officially tagged. This action takes care of building
+PyPI packages (the wheel and source distribution) and uploads to PyPI.</p>
+<p>To build and upload manually (if for some reason it is necessary):</p>
+<ol class="arabic simple">
+<li><p>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> will give
+you the proper version.</p></li>
+<li><p>(optional) Perform a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-f</span> <span class="pre">-x</span> <span class="pre">-d</span></code> from the root of the repository. This will
+<strong>delete</strong> everything not tracked by git, but will also ensure clean source distribution.
+<code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> is set to include/exclude mostly correctly, but could miss some things.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code> (this requires that <code class="docutils literal notranslate"><span class="pre">wheel</span></code> is installed).</p></li>
+<li><p>Upload using <code class="docutils literal notranslate"><span class="pre">twine</span></code>: <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code>, assuming the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> directory contains
+only files for this release. This upload process will include any changes to the <code class="docutils literal notranslate"><span class="pre">README</span></code>
+as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p></li>
+</ol>
+</div>
+<div class="section" id="conda">
+<h3>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h3>
+<p>MetPy conda packages are automatically produced and uploaded to
+<a class="reference external" href="https://anaconda.org/conda-forge/MetPy">Anaconda.org</a> thanks to conda-forge. Once the
+release is built and uploaded to PyPI, conda-forge’s automated bot infrastructure should
+(within anywhere from 30 minutes to a couple hours) produce a Pull Request on the
+<a class="reference external" href="https://github.com/conda-forge/metpy-feedstock">MetPy feedstock</a>, which handles updating
+the package. This repository contains the recipe for building MetPy’s conda packages.</p>
+<p>If for some reason the bots fail or are delayed, a PR for the version update can be done
+manually. This should:</p>
+<ol class="arabic simple">
+<li><p>Update the version</p></li>
+<li><p>Update the hash to match that of the new source distribution <strong>uploaded to PyPI</strong></p></li>
+<li><p>Reset the build number to 0 (if necessary)</p></li>
+<li><p>Update the dependencies (and their versions) as necessary</p></li>
+</ol>
+<p>The Pull Request will test building the packages on all the platforms. Once this succeeds,
+the Pull Request can be merged, which will trigger the final build and upload of the
+packages to anaconda.org.</p>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="roadmap.html" title="previous page">MetPy Roadmap</a>
+    <a class='right-next' id="next-link" href="../examples/index.html" title="next page">Example Gallery</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 22, 2020 at 00:57:16.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -47,9 +47,12 @@ MapPanel
       ~MapPanel.refresh
       ~MapPanel.set_trait
       ~MapPanel.setup_instance
+      ~MapPanel.trait_defaults
       ~MapPanel.trait_events
+      ~MapPanel.trait_has_value
       ~MapPanel.trait_metadata
       ~MapPanel.trait_names
+      ~MapPanel.trait_values
       ~MapPanel.traits
       ~MapPanel.unobserve
       ~MapPanel.unobserve_all
@@ -97,9 +100,12 @@ MapPanel
    .. automethod:: refresh
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all

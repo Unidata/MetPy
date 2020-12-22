@@ -1,0 +1,974 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MetPy 1.0 API Changes &#8212; MetPy 1.0</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/doc_shared.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GEMPAK Comparison Guide" href="gempak.html" />
+    <link rel="prev" title="MetPy 1.0 Upgrade Guide" href="upgradeguide.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/apichange.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <img src="../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../api/index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+          
+            
+                <li class="">
+                    <a href="installguide.html">Install Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="startingguide.html">Getting Started with MetPy</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../tutorials/index.html">Tutorials</a>
+                </li>
+            
+          
+            
+  
+                <li class="active">
+                    <a href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a>
+                    <ul>
+                    
+                        <li class="active">
+                            <a href="">MetPy 1.0 API Changes</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="gempak.html">GEMPAK Comparison Guide</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="SUPPORT.html">Support</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="citing.html">Citing MetPy</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="media.html">Talks and Other Media</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#xarray-support-for-function-input-output" class="nav-link">Xarray support for function input/output</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#positional-argument-name-changes" class="nav-link">Positional argument name changes</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#keyword-only-argument-name-changes" class="nav-link">Keyword-only argument name changes</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#new-keyword-only-arguments" class="nav-link">New keyword-only arguments</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#parameter-re-ordering" class="nav-link">Parameter re-ordering</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#deltas-and-grid-specification" class="nav-link">Deltas and grid specification</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#latitude-and-f" class="nav-link">Latitude and f</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#moved-renamed-miscellaneous" class="nav-link">Moved, renamed, miscellaneous</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="metpy-1-0-api-changes">
+<h1>MetPy 1.0 API Changes<a class="headerlink" href="#metpy-1-0-api-changes" title="Permalink to this headline">¶</a></h1>
+<p>This is the overview of the changes to MetPy’s programming interface that are coming with the
+1.0 release of MetPy. These include changes made to unify and clarify MetPy’s API to be more
+consistent throughout. Changes are categorized to help you find breakages and see how your
+code might need to change in upgrading to MetPy 1.0. You might find some functions in multiple
+categories. You can search this page for some of your commonly used functions to find any
+relevant breakages you might encounter.</p>
+<div class="section" id="xarray-support-for-function-input-output">
+<h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Permalink to this headline">¶</a></h2>
+<p>One of the most important changes you may run into is that many of the functions in
+<a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> would have only returned <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> even when provided
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>. Now, MetPy will properly return a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.16.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> when
+provided one where able, except where otherwise explicitly stated. See the
+<a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">MetPy xarray tutorial</span></a> for more information.</p>
+</div>
+<div class="section" id="positional-argument-name-changes">
+<h2>Positional argument name changes<a class="headerlink" href="#positional-argument-name-changes" title="Permalink to this headline">¶</a></h2>
+<p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had changes to the names of their positional
+arguments to make parameter names consistent among functions and make the documentation of
+parameters clearer for users. Functions in your code with only this change will be unaffected
+by the upgrade to MetPy 1.0 if the values are only specified positionally. For example,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will work the same on MetPy before and after the upgrade to 1.0. However, if you specify these
+arguments by name, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_components</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="n">wdir</span><span class="o">=</span><span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then you will see breakage upgrading to MetPy 1.0, where the <code class="docutils literal notranslate"><span class="pre">wdir</span></code> argument has been
+expanded as <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code>. Common arguments changed here include <code class="docutils literal notranslate"><span class="pre">rh</span></code> to
+<code class="docutils literal notranslate"><span class="pre">relative_humidity</span></code>, <code class="docutils literal notranslate"><span class="pre">heights</span></code> to <code class="docutils literal notranslate"><span class="pre">height</span></code>, and <code class="docutils literal notranslate"><span class="pre">dewpt</span></code> to <code class="docutils literal notranslate"><span class="pre">dewpoint</span></code>, among others.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components"><code class="xref py py-func docutils literal notranslate"><span class="pre">wind_components()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(speed,</span> <span class="pre">wdir)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(speed,</span> <span class="pre">wind_direction)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.heat_index.html#metpy.calc.heat_index" title="metpy.calc.heat_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">heat_index()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">rh,</span> <span class="pre">mask_undefined=True)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">relative_humidity,</span> <span class="pre">mask_undefined=True)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.apparent_temperature.html#metpy.calc.apparent_temperature" title="metpy.calc.apparent_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">apparent_temperature()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">rh,</span> <span class="pre">speed,</span> <span class="pre">face_level_winds=False,</span> <span class="pre">mask_undefined=True)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">relative_humidity,</span> <span class="pre">speed,</span> <span class="pre">face_level_winds=False,</span> <span class="pre">mask_undefined=True)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.geopotential_to_height.html#metpy.calc.geopotential_to_height" title="metpy.calc.geopotential_to_height"><code class="xref py py-func docutils literal notranslate"><span class="pre">geopotential_to_height()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(geopot)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(geopotential)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.sigma_to_pressure.html#metpy.calc.sigma_to_pressure" title="metpy.calc.sigma_to_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">sigma_to_pressure()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(sigma,</span> <span class="pre">psfc,</span> <span class="pre">ptop)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(sigma,</span> <span class="pre">pressure_sfc,</span> <span class="pre">pressure_top)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum" title="metpy.calc.absolute_momentum"><code class="xref py py-func docutils literal notranslate"><span class="pre">absolute_momentum()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u_wind,</span> <span class="pre">v_wind,</span> <span class="pre">index='index')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">index='index')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.bunkers_storm_motion.html#metpy.calc.bunkers_storm_motion" title="metpy.calc.bunkers_storm_motion"><code class="xref py py-func docutils literal notranslate"><span class="pre">bunkers_storm_motion()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">heights)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">height)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.bulk_shear.html#metpy.calc.bulk_shear" title="metpy.calc.bulk_shear"><code class="xref py py-func docutils literal notranslate"><span class="pre">bulk_shear()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">heights=None,</span> <span class="pre">bottom=None,</span> <span class="pre">depth=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">height=None,</span> <span class="pre">bottom=None,</span> <span class="pre">depth=None)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.critical_angle.html#metpy.calc.critical_angle" title="metpy.calc.critical_angle"><code class="xref py py-func docutils literal notranslate"><span class="pre">critical_angle()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">heights,</span> <span class="pre">stormu,</span> <span class="pre">stormv)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">height,</span> <span class="pre">u_storm,</span> <span class="pre">v_storm)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity" title="metpy.calc.storm_relative_helicity"><code class="xref py py-func docutils literal notranslate"><span class="pre">storm_relative_helicity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">heights,</span> <span class="pre">depth,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">depth,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic" title="metpy.calc.potential_vorticity_baroclinic"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_vorticity_baroclinic()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(potential_temperature,</span> <span class="pre">pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">lats)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(potential_temperature,</span> <span class="pre">pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2,</span> <span class="pre">vertical_dim=-3)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint" title="metpy.calc.relative_humidity_from_dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_dewpoint()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">dewpt)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">dewpoint)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.temperature_from_potential_temperature.html#metpy.calc.temperature_from_potential_temperature" title="metpy.calc.temperature_from_potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">temperature_from_potential_temperature()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">theta)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">potential_temperature)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">dry_lapse()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">ref_pressure=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">reference_pressure=None,</span> <span class="pre">vertical_dim=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_lapse()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">ref_pressure=None)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">reference_pressure=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-func docutils literal notranslate"><span class="pre">lcl()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpt,</span> <span class="pre">max_iters=50,</span> <span class="pre">eps=1e-05)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">max_iters=50,</span> <span class="pre">eps=1e-05)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.lfc.html#metpy.calc.lfc" title="metpy.calc.lfc"><code class="xref py py-func docutils literal notranslate"><span class="pre">lfc()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpt,</span> <span class="pre">parcel_temperature_profile=None,</span> <span class="pre">dewpt_start=None,</span> <span class="pre">which='top')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">parcel_temperature_profile=None,</span> <span class="pre">dewpoint_start=None,</span> <span class="pre">which='top')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.el.html#metpy.calc.el" title="metpy.calc.el"><code class="xref py py-func docutils literal notranslate"><span class="pre">el()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpt,</span> <span class="pre">parcel_temperature_profile=None,</span> <span class="pre">which='top')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">parcel_temperature_profile=None,</span> <span class="pre">which='top')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpt)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl" title="metpy.calc.parcel_profile_with_lcl"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile_with_lcl()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpt)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">vapor_pressure()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">mixing)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">mixing_ratio)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_from_relative_humidity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">rh)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">relative_humidity)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(e)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(vapor_pressure)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio" title="metpy.calc.mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">mixing_ratio()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(part_press,</span> <span class="pre">tot_press,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(partial_press,</span> <span class="pre">total_press,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_mixing_ratio()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(tot_press,</span> <span class="pre">temperature)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(total_press,</span> <span class="pre">temperature)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature" title="metpy.calc.virtual_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">virtual_temperature()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">mixing,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(temperature,</span> <span class="pre">mixing_ratio,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.virtual_potential_temperature.html#metpy.calc.virtual_potential_temperature" title="metpy.calc.virtual_potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">virtual_potential_temperature()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing_ratio,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.density.html#metpy.calc.density" title="metpy.calc.density"><code class="xref py py-func docutils literal notranslate"><span class="pre">density()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing_ratio,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.cape_cin.html#metpy.calc.cape_cin" title="metpy.calc.cape_cin"><code class="xref py py-func docutils literal notranslate"><span class="pre">cape_cin()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpt,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.most_unstable_parcel.html#metpy.calc.most_unstable_parcel" title="metpy.calc.most_unstable_parcel"><code class="xref py py-func docutils literal notranslate"><span class="pre">most_unstable_parcel()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">heights=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">height=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.mixed_parcel.html#metpy.calc.mixed_parcel" title="metpy.calc.mixed_parcel"><code class="xref py py-func docutils literal notranslate"><span class="pre">mixed_parcel()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">temperature,</span> <span class="pre">dewpt,</span> <span class="pre">parcel_start_pressure=None,</span> <span class="pre">heights=None,</span> <span class="pre">....)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">dewpoint,</span> <span class="pre">parcel_start_pressure=None,</span> <span class="pre">height=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.dry_static_energy.html#metpy.calc.dry_static_energy" title="metpy.calc.dry_static_energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">dry_static_energy()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">temperature)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">temperature)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.moist_static_energy.html#metpy.calc.moist_static_energy" title="metpy.calc.moist_static_energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_static_energy()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">temperature,</span> <span class="pre">specific_humidity)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">temperature,</span> <span class="pre">specific_humidity)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.thickness_hydrostatic.html#metpy.calc.thickness_hydrostatic" title="metpy.calc.thickness_hydrostatic"><code class="xref py py-func docutils literal notranslate"><span class="pre">thickness_hydrostatic()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing_ratio=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared" title="metpy.calc.brunt_vaisala_frequency_squared"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_frequency_squared()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">potential_temperature,</span> <span class="pre">axis=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">potential_temperature,</span> <span class="pre">vertical_dim=0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency" title="metpy.calc.brunt_vaisala_frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_frequency()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">potential_temperature,</span> <span class="pre">axis=0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">potential_temperature,</span> <span class="pre">vertical_dim=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period" title="metpy.calc.brunt_vaisala_period"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_period()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">potential_temperature,</span> <span class="pre">axis=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">potential_temperature,</span> <span class="pre">vertical_dim=0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.static_stability.html#metpy.calc.static_stability" title="metpy.calc.static_stability"><code class="xref py py-func docutils literal notranslate"><span class="pre">static_stability()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">axis=0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">vertical_dim=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.vertical_velocity_pressure.html#metpy.calc.vertical_velocity_pressure" title="metpy.calc.vertical_velocity_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">vertical_velocity_pressure()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(w,</span> <span class="pre">pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(w,</span> <span class="pre">pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing_ratio=0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.vertical_velocity.html#metpy.calc.vertical_velocity" title="metpy.calc.vertical_velocity"><code class="xref py py-func docutils literal notranslate"><span class="pre">vertical_velocity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(omega,</span> <span class="pre">pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing=0)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(omega,</span> <span class="pre">pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing_ratio=0)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.get_layer_heights.html#metpy.calc.get_layer_heights" title="metpy.calc.get_layer_heights"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_layer_heights()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">depth,</span> <span class="pre">*args,</span> <span class="pre">bottom=None,</span> <span class="pre">interpolate=True,</span> <span class="pre">with_agl=False)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">depth,</span> <span class="pre">*args,</span> <span class="pre">bottom=None,</span> <span class="pre">interpolate=True,</span> <span class="pre">with_agl=False)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="keyword-only-argument-name-changes">
+<h2>Keyword-only argument name changes<a class="headerlink" href="#keyword-only-argument-name-changes" title="Permalink to this headline">¶</a></h2>
+<p>Similar to the <a class="reference internal" href="#positional-argument-name-changes">positional argument name changes</a> above, some of the functions in
+<a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had names changed for keyword-only arguments. If you have specified
+any of the affected parameters in your code, these functions will break with the upgrade to
+MetPy 1.0. For example,</p>
+<pre class="literal-block">mean_pressure_weighted(pressure, temperature, <strong>heights=my_height_values</strong>)</pre>
+<p>will break as the <code class="docutils literal notranslate"><span class="pre">heights</span></code> keyword has changed to <code class="docutils literal notranslate"><span class="pre">height</span></code>.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.mean_pressure_weighted.html#metpy.calc.mean_pressure_weighted" title="metpy.calc.mean_pressure_weighted"><code class="xref py py-func docutils literal notranslate"><span class="pre">mean_pressure_weighted()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">*args,</span> <span class="pre">heights=None,</span> <span class="pre">bottom=None,</span> <span class="pre">depth=None)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">*args,</span> <span class="pre">height=None,</span> <span class="pre">bottom=None,</span> <span class="pre">depth=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation" title="metpy.calc.isentropic_interpolation"><code class="xref py py-func docutils literal notranslate"><span class="pre">isentropic_interpolation()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(theta_levels,</span> <span class="pre">pressure,</span> <span class="pre">temperature,</span> <span class="pre">*args,</span> <span class="pre">axis=0,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(levels,</span> <span class="pre">pressure,</span> <span class="pre">temperature,</span> <span class="pre">*args,</span> <span class="pre">vertical_dim=0,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer" title="metpy.calc.mixed_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">mixed_layer()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">*args,</span> <span class="pre">heights=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">*args,</span> <span class="pre">height=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.get_layer.html#metpy.calc.get_layer" title="metpy.calc.get_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_layer()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">*args,</span> <span class="pre">heights=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">*args,</span> <span class="pre">height=None,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="new-keyword-only-arguments">
+<h2>New keyword-only arguments<a class="headerlink" href="#new-keyword-only-arguments" title="Permalink to this headline">¶</a></h2>
+<p>The following functions have had some of their positional or optional arguments changed to
+keyword-only arguments. As such, any use of these positionally, e.g.</p>
+<pre class="literal-block">vorticity(u, v, <strong>my_dx_values</strong>, <strong>my_dy_values</strong>)</pre>
+<p>will break, and you must specify</p>
+<pre class="literal-block">vorticity(u, v, <strong>dx=my_dx_values</strong>, <strong>dy=my_dy_values</strong>)</pre>
+<p>going forward.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water" title="metpy.calc.precipitable_water"><code class="xref py py-func docutils literal notranslate"><span class="pre">precipitable_water()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(dewpt,</span> <span class="pre">pressure,</span> <span class="pre">bottom=None,</span> <span class="pre">top=None)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">dewpoint,</span> <span class="pre">*,</span> <span class="pre">bottom=None,</span> <span class="pre">top=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity" title="metpy.calc.storm_relative_helicity"><code class="xref py py-func docutils literal notranslate"><span class="pre">storm_relative_helicity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">heights,</span> <span class="pre">depth,</span> <span class="pre">bottom=&lt;Quantity(0,</span> <span class="pre">'meter')&gt;,</span> <span class="pre">storm_u=&lt;Quantity(0.0,</span> <span class="pre">'meter</span> <span class="pre">/</span> <span class="pre">second')&gt;,</span> <span class="pre">storm_v=&lt;Quantity(0.0,</span> <span class="pre">'meter</span> <span class="pre">/</span> <span class="pre">second')&gt;)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">depth,</span> <span class="pre">*,</span> <span class="pre">bottom=&lt;Quantity(0,</span> <span class="pre">'meter')&gt;,</span> <span class="pre">storm_u=&lt;Quantity(0.0,</span> <span class="pre">'meter</span> <span class="pre">/</span> <span class="pre">second')&gt;,</span> <span class="pre">storm_v=&lt;Quantity(0.0,</span> <span class="pre">'meter</span> <span class="pre">/</span> <span class="pre">second')&gt;)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.vorticity.html#metpy.calc.vorticity" title="metpy.calc.vorticity"><code class="xref py py-func docutils literal notranslate"><span class="pre">vorticity()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">*,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.divergence.html#metpy.calc.divergence" title="metpy.calc.divergence"><code class="xref py py-func docutils literal notranslate"><span class="pre">divergence()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">*,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="parameter-re-ordering">
+<h2>Parameter re-ordering<a class="headerlink" href="#parameter-re-ordering" title="Permalink to this headline">¶</a></h2>
+<p>Some functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had the ordering of their arguments rearranged.
+If you are specifying values positionally, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span> <span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+                                    <span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>these will break, as the signature ordering has changed from
+<code class="docutils literal notranslate"><span class="pre">(relative_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code> to
+<code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">relative_humidity)</span></code>. If you have specified these arguments by name,
+however, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">relative_humidity</span><span class="o">=</span><span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span>
+                                    <span class="n">pressure</span><span class="o">=</span><span class="mi">1015</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then your code will function as before even with the updated signature ordering in MetPy 1.0.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water" title="metpy.calc.precipitable_water"><code class="xref py py-func docutils literal notranslate"><span class="pre">precipitable_water()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(dewpt,</span> <span class="pre">pressure,</span> <span class="pre">bottom=None,</span> <span class="pre">top=None)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">dewpoint,</span> <span class="pre">*,</span> <span class="pre">bottom=None,</span> <span class="pre">top=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity" title="metpy.calc.storm_relative_helicity"><code class="xref py py-func docutils literal notranslate"><span class="pre">storm_relative_helicity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">heights,</span> <span class="pre">depth,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">depth,</span> <span class="pre">...)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.relative_humidity_wet_psychrometric.html#metpy.calc.relative_humidity_wet_psychrometric" title="metpy.calc.relative_humidity_wet_psychrometric"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_wet_psychrometric()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(dry_bulb_temperature,</span> <span class="pre">web_bulb_temperature,</span> <span class="pre">pressure,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">dry_bulb_temperature,</span> <span class="pre">wet_bulb_temperature,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.psychrometric_vapor_pressure_wet.html#metpy.calc.psychrometric_vapor_pressure_wet" title="metpy.calc.psychrometric_vapor_pressure_wet"><code class="xref py py-func docutils literal notranslate"><span class="pre">psychrometric_vapor_pressure_wet()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(dry_bulb_temperature,</span> <span class="pre">wet_bulb_temperature,</span> <span class="pre">pressure,</span> <span class="pre">...</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">dry_bulb_temperature,</span> <span class="pre">wet_bulb_temperature,</span> <span class="pre">...</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.mixing_ratio_from_relative_humidity.html#metpy.calc.mixing_ratio_from_relative_humidity" title="metpy.calc.mixing_ratio_from_relative_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">mixing_ratio_from_relative_humidity()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(relative_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">relative_humidity)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(mixing_ratio,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">mixing_ratio)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="metpy.calc.relative_humidity_from_specific_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_specific_humidity()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(specific_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">specific_humidity)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.dewpoint_from_specific_humidity.html#metpy.calc.dewpoint_from_specific_humidity" title="metpy.calc.dewpoint_from_specific_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_from_specific_humidity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(specific_humidity,</span> <span class="pre">temperature,</span> <span class="pre">pressure)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">temperature,</span> <span class="pre">specific_humidity)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.specific_humidity_from_dewpoint.html#metpy.calc.specific_humidity_from_dewpoint" title="metpy.calc.specific_humidity_from_dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">specific_humidity_from_dewpoint()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(dewpoint,</span> <span class="pre">pressure)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(pressure,</span> <span class="pre">dewpoint)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="deltas-and-grid-specification">
+<h2>Deltas and grid specification<a class="headerlink" href="#deltas-and-grid-specification" title="Permalink to this headline">¶</a></h2>
+<p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> relating to vorticity and advection require
+information about the space between your data points. MetPy has generally standardized the
+interface for these functions to more explicitly receive dimension information and ordering
+with consistent parameter names across the board. Particularly, anywhere you may have been
+specifying <code class="docutils literal notranslate"><span class="pre">dim_order</span></code> before, you will now need to specify the particular axis number for
+the requisite dimensions explicitly. Importantly, MetPy’s new
+<a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">xarray functionality</span></a> in 1.0 can handle these grid
+specifications for you if you are using it, and these signature updates were made to coincide
+with that functionality. Please see the the documentation for the following functions for more
+information.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation" title="metpy.calc.shearing_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">shearing_deformation()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">stretching_deformation()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">total_deformation()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.advection.html#metpy.calc.advection" title="metpy.calc.advection"><code class="xref py py-func docutils literal notranslate"><span class="pre">advection()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(scalar,</span> <span class="pre">wind,</span> <span class="pre">deltas)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(scalar,</span> <span class="pre">u=None,</span> <span class="pre">v=None,</span> <span class="pre">w=None,</span> <span class="pre">*,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">dz=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2,</span> <span class="pre">vertical_dim=-3)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis" title="metpy.calc.frontogenesis"><code class="xref py py-func docutils literal notranslate"><span class="pre">frontogenesis()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(thta,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">dim_order='yx')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(potential_temperature,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">geostrophic_wind()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">f,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">ageostrophic_wind()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">f,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dim_order='yx')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.absolute_vorticity.html#metpy.calc.absolute_vorticity" title="metpy.calc.absolute_vorticity"><code class="xref py py-func docutils literal notranslate"><span class="pre">absolute_vorticity()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">lats,</span> <span class="pre">dim_order='yx')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic" title="metpy.calc.potential_vorticity_baroclinic"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_vorticity_baroclinic()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(potential_temperature,</span> <span class="pre">pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">lats)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(potential_temperature,</span> <span class="pre">pressure,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2,</span> <span class="pre">vertical_dim=-3)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.potential_vorticity_barotropic.html#metpy.calc.potential_vorticity_barotropic" title="metpy.calc.potential_vorticity_barotropic"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_vorticity_barotropic()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">lats,</span> <span class="pre">dim_order='yx')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.inertial_advective_wind.html#metpy.calc.inertial_advective_wind" title="metpy.calc.inertial_advective_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">inertial_advective_wind()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">u_geostrophic,</span> <span class="pre">v_geostrophic,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">lats)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">u_geostrophic,</span> <span class="pre">v_geostrophic,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector" title="metpy.calc.q_vector"><code class="xref py py-func docutils literal notranslate"><span class="pre">q_vector()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">temperature,</span> <span class="pre">pressure,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">static_stability=1)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">temperature,</span> <span class="pre">pressure,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">static_stability=1,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.vorticity.html#metpy.calc.vorticity" title="metpy.calc.vorticity"><code class="xref py py-func docutils literal notranslate"><span class="pre">vorticity()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">*,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.divergence.html#metpy.calc.divergence" title="metpy.calc.divergence"><code class="xref py py-func docutils literal notranslate"><span class="pre">divergence()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v,</span> <span class="pre">*,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="metpy.calc.lat_lon_grid_deltas"><code class="xref py py-func docutils literal notranslate"><span class="pre">lat_lon_grid_deltas()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(longitude,</span> <span class="pre">latitude,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(longitude,</span> <span class="pre">latitude,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2,</span> <span class="pre">geod=None)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="latitude-and-f">
+<h2>Latitude and f<a class="headerlink" href="#latitude-and-f" title="Permalink to this headline">¶</a></h2>
+<p>In MetPy 1.0, <a class="reference internal" href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">geostrophic_wind()</span></code></a> and <a class="reference internal" href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">ageostrophic_wind()</span></code></a>
+have been changed to expect <code class="docutils literal notranslate"><span class="pre">latitude</span></code> instead of the coriolis parameter <code class="docutils literal notranslate"><span class="pre">f</span></code>, where we
+will calculate <code class="docutils literal notranslate"><span class="pre">f</span></code> using <a class="reference internal" href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="metpy.calc.coriolis_parameter"><code class="xref py py-func docutils literal notranslate"><span class="pre">coriolis_parameter()</span></code></a>. These have also been
+updated with the same new <a class="reference internal" href="#deltas-and-grid-specification">deltas and grid specification</a> as above. If you are using MetPy’s
+new <a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">xarray functionality</span></a> in 1.0, this can be automatically
+taken from your latitude coordinate information, if possible.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">geostrophic_wind()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">f,</span> <span class="pre">dx,</span> <span class="pre">dy)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">ageostrophic_wind()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">f,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dim_order='yx')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(height,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dx=None,</span> <span class="pre">dy=None,</span> <span class="pre">latitude=None,</span> <span class="pre">x_dim=-1,</span> <span class="pre">y_dim=-2)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="moved-renamed-miscellaneous">
+<h2>Moved, renamed, miscellaneous<a class="headerlink" href="#moved-renamed-miscellaneous" title="Permalink to this headline">¶</a></h2>
+<p>Functions that have been moved, replaced, or had their function signatures drastically altered.</p>
+<div class="api-table docutils container">
+<table class="table">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dewpoint_rh()</span></code></p></td>
+</tr>
+<tr class="row-even"><td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_from_relative_humidity()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code></p></td>
+</tr>
+<tr class="row-odd"><td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">metpy.xarray</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.first_derivative.html#metpy.calc.first_derivative" title="metpy.calc.first_derivative"><code class="xref py py-func docutils literal notranslate"><span class="pre">first_derivative()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">axis=None,</span> <span class="pre">x=None,</span> <span class="pre">delta=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-func docutils literal notranslate"><span class="pre">second_derivative()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">axis=None,</span> <span class="pre">x=None,</span> <span class="pre">delta=None)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">gradient()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">axes=None,</span> <span class="pre">coordinates=None,</span> <span class="pre">deltas=None)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian" title="metpy.calc.laplacian"><code class="xref py py-func docutils literal notranslate"><span class="pre">laplacian()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">**kwargs)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(f,</span> <span class="pre">axes=None,</span> <span class="pre">coordinates=None,</span> <span class="pre">deltas=None)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="upgradeguide.html" title="previous page">MetPy 1.0 Upgrade Guide</a>
+    <a class='right-next' id="next-link" href="gempak.html" title="next page">GEMPAK Comparison Guide</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 22, 2020 at 00:57:16.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

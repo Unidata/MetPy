@@ -1,228 +1,340 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>plots &mdash; MetPy 1.0</title>
-  
 
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>plots &#8212; MetPy 1.0</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
-  
-  
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/doc_shared.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
-  
-  
-  
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.html"/>
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script src="../../_static/pop_ver.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html" />
-    <link rel="prev" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="prev" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html" />
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.html" />
 
-          
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> MetPy
-          
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
 
-          
-            
-            <img src="../../_static/metpy_150x150.png" class="logo" alt="Logo"/>
-          
+    <a class="navbar-brand" href="../../index.html">
+    
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
           </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
 
-          
-            
-            
-              <div class="version">
-                1.0
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
 
         
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-training/gallery/gallery-home">Python Gallery (separate site)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">metpy.io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">plots</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotObs.html">PlotObs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
-</ul>
-
-            
-          
-        </div>
         
-      </div>
-    </nav>
+        <li class="nav-item ">
+            <a class="nav-link" href="../../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+
+      <ul class="navbar-nav">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">MetPy</a>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
         
-      </nav>
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
 
 
-      <div class="wy-nav-content">
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
         
-        <div class="rst-content">
+        
+        
         
           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
-        
-      <li>plots</li>
-    
-    
-    <li class="source-link">
-        
             
-                
-                
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.plots&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
-                   class="fa fa-github"> Improve this page</a>
+                <li class="">
+                    <a href="metpy.constants.html">constants</a>
+                </li>
             
-        
-    </li>
-
-  </ul>
-
+          
+            
+                <li class="">
+                    <a href="metpy.units.html">units</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.io.html">metpy.io</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.calc.html">calc</a>
+                </li>
+            
+          
+            
   
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+                <li class="active">
+                    <a href="">plots</a>
+                    <ul>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_timestamp.html">add_timestamp</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.read_colortable.html">read_colortable</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.wx_code_to_numeric.html">wx_code_to_numeric</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.BarbPlot.html">BarbPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.ContourPlot.html">ContourPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.Hodograph.html">Hodograph</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.ImagePlot.html">ImagePlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.MapPanel.html">MapPanel</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PanelContainer.html">PanelContainer</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotObs.html">PlotObs</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotScalar.html">PlotScalar</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.PlotVector.html">PlotVector</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.Plots2D.html">Plots2D</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.SkewT.html">SkewT</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.StationPlot.html">StationPlot</a>
+                        </li>
+                    
+                        <li class="">
+                            <a href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a>
+                        </li>
+                    
+                    </ul>
+                </li>
             
+          
+            
+                <li class="">
+                    <a href="metpy.plots.ctables.html">ctables</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.interpolate.html">interpolate</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="metpy.xarray.html">xarray</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="../references.html">References</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="module-metpy.plots">
 <span id="plots"></span><h1>plots<a class="headerlink" href="#module-metpy.plots" title="Permalink to this headline">¶</a></h1>
 <p>Contains functionality for making meteorological plots.</p>
 <p class="rubric">Functions</p>
-<table class="longtable docutils align-default">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -249,43 +361,43 @@
 </tbody>
 </table>
 <p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
+<table class="longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BarbPlot</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BarbPlot</span></code></a>(**kwargs)</p></td>
 <td><p>Make plots of wind barbs on a map with traits to refine the look of plotted elements.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>(**kwargs)</p></td>
 <td><p>Make contour plots by defining specific traits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>(**kwargs)</p></td>
 <td><p>Make color-filled contours plots by defining appropriate traits.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax, component_range])</p></td>
 <td><p>Make a hodograph of wind data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Make raster image using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.3.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(**kwargs)</p></td>
+<td><p>Make raster image using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.3.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(**kwargs)</p></td>
 <td><p>Set figure related elements for an individual panel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(**kwargs)</p></td>
 <td><p>Collects panels and set complete figure related settings (e.g., size).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotObs</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotObs</span></code></a>(**kwargs)</p></td>
 <td><p>The highest level class related to plotting observed surface and upperair data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotScalar.html#metpy.plots.PlotScalar" title="metpy.plots.PlotScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotScalar</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotScalar.html#metpy.plots.PlotScalar" title="metpy.plots.PlotScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotScalar</span></code></a>(**kwargs)</p></td>
 <td><p>Defines the common elements of 2D scalar plots for single scalar value fields.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotVector.html#metpy.plots.PlotVector" title="metpy.plots.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotVector.html#metpy.plots.PlotVector" title="metpy.plots.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(**kwargs)</p></td>
 <td><p>Defines common elements for 2D vector plots.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Plots2D.html#metpy.plots.Plots2D" title="metpy.plots.Plots2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plots2D</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Plots2D.html#metpy.plots.Plots2D" title="metpy.plots.Plots2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plots2D</span></code></a>(**kwargs)</p></td>
 <td><p>The highest level class related to plotting 2D data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
@@ -302,74 +414,44 @@
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="metpy.plots.add_metpy_logo.html" class="btn btn-neutral float-right" title="add_metpy_logo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="metpy.calc.resample_nn_1d.html" class="btn btn-neutral float-left" title="resample_nn_1d" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="metpy.calc.resample_nn_1d.html" title="previous page">resample_nn_1d</a>
+    <a class='right-next' id="next-link" href="metpy.plots.add_metpy_logo.html" title="next page">add_metpy_logo</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
     </div>
-  
 
-  <hr/>
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
 
-  <div role="contentinfo">
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     <p>
-        
-        &copy; Copyright 2008-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.
-      <span class="lastupdated">
-        Last updated on Oct 09, 2020 at 00:33:10.
-      </span>
-
+          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Dec 22, 2020 at 00:57:16.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-     
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-92978945-1', 'auto');
-  ga('send', 'pageview');
-</script>
-<script>var version_json_loc = "../../../versions.json";</script>
-
-
 </footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+  </body>
 </html>

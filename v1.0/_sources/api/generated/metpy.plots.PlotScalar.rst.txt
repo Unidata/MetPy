@@ -51,9 +51,12 @@ PlotScalar
       ~PlotScalar.on_trait_change
       ~PlotScalar.set_trait
       ~PlotScalar.setup_instance
+      ~PlotScalar.trait_defaults
       ~PlotScalar.trait_events
+      ~PlotScalar.trait_has_value
       ~PlotScalar.trait_metadata
       ~PlotScalar.trait_names
+      ~PlotScalar.trait_values
       ~PlotScalar.traits
       ~PlotScalar.unobserve
       ~PlotScalar.unobserve_all
@@ -105,9 +108,12 @@ PlotScalar
    .. automethod:: on_trait_change
    .. automethod:: set_trait
    .. automethod:: setup_instance
+   .. automethod:: trait_defaults
    .. automethod:: trait_events
+   .. automethod:: trait_has_value
    .. automethod:: trait_metadata
    .. automethod:: trait_names
+   .. automethod:: trait_values
    .. automethod:: traits
    .. automethod:: unobserve
    .. automethod:: unobserve_all
