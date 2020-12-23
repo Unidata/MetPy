@@ -146,7 +146,7 @@ assign units.
  .. code-block:: none
 
 
-    <matplotlib.image.FigureImage object at 0x7f33f0a16910>
+    <matplotlib.image.FigureImage object at 0x7ff5e1906ca0>
 
 
 
@@ -198,7 +198,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.955 seconds)
+   **Total running time of the script:** ( 0 minutes  0.949 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:
