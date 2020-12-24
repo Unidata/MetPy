@@ -123,7 +123,7 @@ Georgia.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.870 seconds)
+   **Total running time of the script:** ( 0 minutes  1.880 seconds)
 
 
 .. _sphx_glr_download_examples_plots_surface_declarative.py:
