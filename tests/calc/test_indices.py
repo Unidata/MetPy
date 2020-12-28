@@ -73,6 +73,16 @@ def test_mean_pressure_weighted():
     assert_almost_equal(v, 7.966031839967931 * units('m/s'), 7)
 
 
+def test_mean_pressure_weighted_temperature():
+    """Test pressure-weighted mean temperature function with vertical interpolation."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    T, = mean_pressure_weighted(data['pressure'],
+                                data['temperature'],
+                                height=data['height'],
+                                depth=6000 * units('meter'))
+    assert_almost_equal(T, 281.535035296836 * units('kelvin'), 7)
+
+
 def test_mean_pressure_weighted_elevated():
     """Test pressure-weighted mean wind function with a base above the surface."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
