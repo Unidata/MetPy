@@ -1,5 +1,5 @@
 importlib_metadata==3.3.0
-importlib_resources==4.1.0
+importlib_resources==4.1.1
 matplotlib==3.3.3
 numpy==1.19.4
 pandas==1.1.5
