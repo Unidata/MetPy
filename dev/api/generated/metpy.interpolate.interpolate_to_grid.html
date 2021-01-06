@@ -334,7 +334,7 @@
 <li><p><strong>y</strong> (<em>array_like</em>) – y coordinate, can have units of linear distance or degrees</p></li>
 <li><p><strong>z</strong> (<em>array_like</em>) – observation value</p></li>
 <li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.5.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
+1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.6.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</p></li>
 <li><p><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – The horizontal resolution of the generated grid, given in the same units as the
@@ -349,7 +349,7 @@ If search_radius is not specified, it will default to the average spacing of
 observations.</p></li>
 <li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.5.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
+‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.6.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</p></li>
 <li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
 <li><p><strong>boundary_coords</strong> (<em>dictionary</em>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
@@ -423,8 +423,8 @@ are provided.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 28, 2020 at 23:46:01.<br/>
+          &copy; Copyright 2021-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Jan 06, 2021 at 16:48:56.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.1.<br/>
     </p>
   </div>
