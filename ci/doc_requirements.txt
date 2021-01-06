@@ -1,7 +1,7 @@
 sphinx==3.4.2
 pydata-sphinx-theme==0.4.1
 sphinx-gallery==0.8.2
-myst-parser==0.13.0
+myst-parser==0.13.1
 netCDF4==1.5.5.1
 # Needed for sphinx-gallery, which refuses to list dependencies
 pillow==8.1.0
