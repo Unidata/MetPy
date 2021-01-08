@@ -33,7 +33,7 @@ def get_test_data(fname, as_file_obj=True, mode='rb'):
     # If we want a file object, open it, trying to guess whether this should be binary mode
     # or not
     if as_file_obj:
-        return open(path, mode)
+        return open(path, mode)  # noqa: SIM115
 
     return path
 
