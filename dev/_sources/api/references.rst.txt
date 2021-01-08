@@ -95,11 +95,11 @@ References
 .. [IAPWS1995] The International Association for the Properties of Water and Steam, 1995:
            `Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties
            of Ordinary Water Substance for General and Scientific Use (updated
-           2018) <http://www.iapws.org/relguide/IAPWS95-2018.pdf>`_.
+           2018) <../_static/IAPWS95-2018.pdf>`_.
 
 .. [IAPWS2001] The International Association for the Properties of Water and Steam, 2001:
            `Guideline on the Use of Fundamental Physical Constants and Basic Constants of
-           Water (updated 2020) <http://www.iapws.org/relguide/fundam.pdf>`_.
+           Water (updated 2020) <../_static/fundam.pdf>`_.
 
 .. [IAU2012] IAU Division I Working Group Numerical Standards, 2012: `RESOLUTION B2 on
            the re-definition of the astronomical unit of length
