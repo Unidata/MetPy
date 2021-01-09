@@ -245,7 +245,7 @@
         <span class="k">return</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="s1">&#39;surrogateescape&#39;</span><span class="p">}</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s1">&#39;rb&#39;</span> <span class="k">else</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># noqa: SIM115</span>
 
 
 <span class="k">class</span> <span class="nc">NamedStruct</span><span class="p">(</span><span class="n">Struct</span><span class="p">):</span>
@@ -587,7 +587,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2021-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jan 08, 2021 at 23:51:14.<br/>
+        Last updated on Jan 09, 2021 at 22:41:02.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>
