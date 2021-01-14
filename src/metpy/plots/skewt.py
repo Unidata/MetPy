@@ -372,6 +372,20 @@ class SkewT:
         # Skew-T logP plotting
         t, pressure = _delete_masked_points(t, pressure)
         return self.ax.plot(t, pressure, *args, **kwargs)
+    
+        # Run a check to ensure that plotted pressures are monotonic
+        def monotonic_increasing(L):
+            return all(x >= y for x,y in zip(L, L[1:]))
+        def monotonic_decreasing(L):
+            return all(x <= y for x,y in zip(L, L[1:]))
+        def monotonic(L):
+            return monotonic_increasing(L) or monotonic_decreasing(L)
+        if monotonic(L) is True:
+            pass
+        else:
+            Raise ValueError('Invalid Sounding: Pressure should behave monotonically.
+                             'Use scipy.signal.medfilt.') 
+            
 
     def plot_barbs(self, pressure, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
