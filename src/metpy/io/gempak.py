@@ -455,7 +455,8 @@ class GempakGrid(GempakFile):
         # No need to jump to any position as this follows parts information
         self._buffer.jump_to(start, _word_to_position(self.prod_desc.parts_ptr
                                                       + self.prod_desc.parts * 4))
-        self.parameters = [{key: [] for key, _ in PARAM_ATTR}] * self.prod_desc.parts
+        self.parameters = [{key: [] for key, _ in PARAM_ATTR}
+                           for n in range(self.prod_desc.parts)]
         for attr, fmt in PARAM_ATTR:
             fmt = (fmt[0], self.prefmt + fmt[1])
             for n, part in enumerate(self.parts):
@@ -807,7 +808,8 @@ class GempakSounding(GempakFile):
         # No need to jump to any position as this follows parts information
         self._buffer.jump_to(start, _word_to_position(self.prod_desc.parts_ptr
                                                       + self.prod_desc.parts * 4))
-        self.parameters = [{key: [] for key, _ in PARAM_ATTR}] * self.prod_desc.parts
+        self.parameters = [{key: [] for key, _ in PARAM_ATTR}
+                           for n in range(self.prod_desc.parts)]
         for attr, fmt in PARAM_ATTR:
             fmt = (fmt[0], self.prefmt + fmt[1])
             for n, part in enumerate(self.parts):
