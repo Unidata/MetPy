@@ -274,7 +274,7 @@ class GempakFile():
                                                                     'DataManagement'))
 
     def _swap_bytes(self, binary):
-        self.swaped_bytes = not (struct.pack('@i', 1) == binary)
+        self.swaped_bytes = (struct.pack('@i', 1) != binary)
 
         if self.swaped_bytes:
             if sys.byteorder == 'little':
@@ -381,10 +381,10 @@ class GempakGrid(GempakFile):
         super().__init__(file)
         self.packing_type_from_user = kwargs.get('packing_type', None)
 
-        DATETIME_NAMES = ['GDT1', 'GDT2']
-        LEVEL_NAMES = ['GLV1', 'GLV2']
-        FTIME_NAMES = ['GTM1', 'GTM2']
-        STRING_NAMES = ['GPM1', 'GPM2', 'GPM3']
+        datetime_names = ['GDT1', 'GDT2']
+        level_names = ['GLV1', 'GLV2']
+        ftime_names = ['GTM1', 'GTM2']
+        string_names = ['GPM1', 'GPM2', 'GPM3']
 
         start = self._buffer._bookmarks[0]
 
@@ -421,11 +421,11 @@ class GempakGrid(GempakFile):
         # Column Headers
         self._buffer.jump_to(start, _word_to_position(self.prod_desc.column_headers_ptr))
         self.column_headers = []
-        column_headers_info = [(key, 'i', self._convert_level) if key in LEVEL_NAMES
+        column_headers_info = [(key, 'i', self._convert_level) if key in level_names
                                else (key, 'i', self._convert_vertical_coord) if key == 'GVCD'
-                               else (key, 'i', self._convert_dattim) if key in DATETIME_NAMES
-                               else (key, 'i', self._convert_ftime) if key in FTIME_NAMES
-                               else (key, '4s', self._convert_parms) if key in STRING_NAMES
+                               else (key, 'i', self._convert_dattim) if key in datetime_names
+                               else (key, 'i', self._convert_ftime) if key in ftime_names
+                               else (key, '4s', self._convert_parms) if key in string_names
                                else (key, 'i')
                                for key in self.column_keys]
         column_headers_info.extend([(None, None)])
@@ -455,8 +455,7 @@ class GempakGrid(GempakFile):
         # No need to jump to any position as this follows parts information
         self._buffer.jump_to(start, _word_to_position(self.prod_desc.parts_ptr
                                                       + self.prod_desc.parts * 4))
-        self.parameters = [{key: [] for key, _ in PARAM_ATTR}
-                           for n in range(self.prod_desc.parts)]
+        self.parameters = [{key: [] for key, _ in PARAM_ATTR}] * self.prod_desc.parts
         for attr, fmt in PARAM_ATTR:
             fmt = (fmt[0], self.prefmt + fmt[1])
             for n, part in enumerate(self.parts):
@@ -609,7 +608,7 @@ class GempakGrid(GempakFile):
 
             return grid
 
-        elif packing_type == PackingType.grib or packing_type == PackingType.dec:
+        elif packing_type in [PackingType.grib, PackingType.dec]:
             integer_meta_fmt = [('bits', 'i'), ('missing_flag', 'i'), ('kxky', 'i')]
             real_meta_fmt = [('reference', 'f'), ('scale', 'f')]
             self.grid_meta_int = self._buffer.read_struct(NamedStruct(integer_meta_fmt,
@@ -808,8 +807,7 @@ class GempakSounding(GempakFile):
         # No need to jump to any position as this follows parts information
         self._buffer.jump_to(start, _word_to_position(self.prod_desc.parts_ptr
                                                       + self.prod_desc.parts * 4))
-        self.parameters = [{key: [] for key, _ in PARAM_ATTR}
-                           for n in range(self.prod_desc.parts)]
+        self.parameters = [{key: [] for key, _ in PARAM_ATTR}] * self.prod_desc.parts
         for attr, fmt in PARAM_ATTR:
             fmt = (fmt[0], self.prefmt + fmt[1])
             for n, part in enumerate(self.parts):
