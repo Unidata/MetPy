@@ -1,5 +1,5 @@
 sphinx==3.4.3
-pydata-sphinx-theme==0.4.1
+pydata-sphinx-theme==0.4.3
 sphinx-gallery==0.8.2
 myst-parser==0.13.3
 netCDF4==1.5.5.1
