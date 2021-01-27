@@ -215,7 +215,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span>
+<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">CRS</span><span class="p">,</span> <span class="n">Proj</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">._vendor.xarray</span> <span class="kn">import</span> <span class="n">either_dict_or_kwargs</span><span class="p">,</span> <span class="n">expanded_indexer</span><span class="p">,</span> <span class="n">is_dict_like</span>
@@ -940,16 +940,26 @@
 
         <span class="k">if</span> <span class="n">crs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">):</span>
             <span class="c1"># This isn&#39;t a lat or lon coordinate itself, so determine if we need to fall back</span>
-            <span class="c1"># to creating a latitude_longitude CRS. We do so if there exists valid coordinates</span>
-            <span class="c1"># for latitude and longitude, even if they are not the dimension coordinates of</span>
-            <span class="c1"># the variable.</span>
-            <span class="k">def</span> <span class="nf">_has_coord</span><span class="p">(</span><span class="n">coord_type</span><span class="p">):</span>
-                <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="n">coord_type</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">_has_coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_has_coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">):</span>
-                <span class="n">crs</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found valid latitude/longitude coordinates, assuming &#39;</span>
-                            <span class="s1">&#39;latitude_longitude for projection grid_mapping variable&#39;</span><span class="p">)</span>
+            <span class="c1"># to creating a latitude_longitude CRS. We do so if there exists valid *at most</span>
+            <span class="c1"># 1D* coordinates for latitude and longitude (usually dimension coordinates, but</span>
+            <span class="c1"># that is not strictly required, for example, for DSG&#39;s). What is required is that</span>
+            <span class="c1"># x == latitude and y == latitude (so that all assumptions about grid coordinates</span>
+            <span class="c1"># and CRS line up).</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">latitude</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span>
+                    <span class="s1">&#39;latitude&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;y&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;longitude&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;x&#39;</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># This means that we don&#39;t even have sufficient coordinates, so skip</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">identical</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="n">longitude</span><span class="o">.</span><span class="n">identical</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                    <span class="n">crs</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found valid latitude/longitude coordinates, assuming &#39;</span>
+                                <span class="s1">&#39;latitude_longitude for projection grid_mapping variable&#39;</span><span class="p">)</span>
 
         <span class="c1"># Rebuild the coordinates of the dataarray, and return quantified DataArray</span>
         <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_coords</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span>
@@ -1546,9 +1556,17 @@
     <span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">lat_lon_grid_deltas</span>
 
     <span class="c1"># Determine behavior</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">crs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span>
+        <span class="ow">and</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="p">,</span> <span class="s1">&#39;crs&#39;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">crs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;latitude_longitude&#39;</span>
+        <span class="p">)</span>
+    <span class="p">):</span>
+        <span class="c1"># Use actual grid deltas by default with latitude_longitude or missing CRS</span>
         <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;actual&#39;</span>
     <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+        <span class="c1"># Otherwise, use grid deltas in projected grid space by default</span>
         <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;nominal&#39;</span>
     <span class="k">elif</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;actual&#39;</span><span class="p">,</span> <span class="s1">&#39;nominal&#39;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;kind&quot; argument must be specified as &quot;default&quot;, &quot;actual&quot;, or &#39;</span>
@@ -1564,11 +1582,17 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;y and x dimensions unable to be identified. Assuming [..., y, x] &#39;</span>
                           <span class="s1">&#39;dimension order.&#39;</span><span class="p">)</span>
             <span class="n">y_dim</span><span class="p">,</span> <span class="n">x_dim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># Get geod if it exists, otherwise fall back to PyProj default</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">geod</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">geod</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="n">from_cf</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()</span>
         <span class="c1"># Obtain grid deltas as xarray Variables</span>
         <span class="p">(</span><span class="n">dx_var</span><span class="p">,</span> <span class="n">dx_units</span><span class="p">),</span> <span class="p">(</span><span class="n">dy_var</span><span class="p">,</span> <span class="n">dy_units</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="n">latitude</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">deltas</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span> <span class="n">deltas</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">deltas</span> <span class="ow">in</span> <span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">x_dim</span><span class="o">=</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">y_dim</span><span class="p">,</span>
-                                              <span class="n">geod</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()))</span>
+                                              <span class="n">geod</span><span class="o">=</span><span class="n">geod</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Obtain y/x coordinate differences</span>
         <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
@@ -1743,7 +1767,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2021-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jan 27, 2021 at 21:05:47.<br/>
+        Last updated on Jan 27, 2021 at 21:06:58.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>
