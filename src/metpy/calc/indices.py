@@ -134,11 +134,11 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
     layer_arg = layer_arg[1:]
     # Taking the integral of the weights (pressure) to feed into the weighting
     # function. Said integral works out to this function:
-    pres_int = 0.5 * (layer_p[-1].magnitude**2 - layer_p[0].magnitude**2)
-    for i, datavar in enumerate(args):
-        arg_mean = np.trapz((layer_arg[i] * layer_p).magnitude,
-                            x=layer_p.magnitude) / pres_int
-        ret.append(arg_mean * datavar.units)
+    pres_int = 0.5 * (layer_p[-1]**2 - layer_p[0]**2)
+    for i, _datavar in enumerate(args):
+        arg_mean = np.trapz((layer_arg[i] * layer_p),
+                            x=layer_p) / pres_int
+        ret.append(arg_mean)
 
     return ret
 
