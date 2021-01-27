@@ -23,11 +23,10 @@ MetPy
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
 
-MetPy follows [semantic versioning](https://semver.org) in its version number. With our
-current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
-still evolving (we won't break things just for fun, but many things are still changing as we
-work through design issues). Also, for a version `0.x.y`, we change `x` when we
-release new features, and `y` when we make a release with only bug fixes.
+MetPy follows [semantic versioning](https://semver.org) in its version number. This means
+that any MetPy ``1.x`` release will be backwards compatible with an earlier ``1.y`` release. By
+"backward compatible", we mean that **correct** code that works on a ``1.y`` version will work
+on a future ``1.x`` version.
 
 For additional MetPy examples not included in this repository, please see the [Unidata Python
 Gallery](https://unidata.github.io/python-gallery/).
