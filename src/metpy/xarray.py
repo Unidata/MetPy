@@ -24,7 +24,7 @@ import re
 import warnings
 
 import numpy as np
-from pyproj import Proj
+from pyproj import CRS, Proj
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
@@ -749,16 +749,26 @@ class MetPyDatasetAccessor:
 
         if crs is None and not check_axis(var, 'latitude', 'longitude'):
             # This isn't a lat or lon coordinate itself, so determine if we need to fall back
-            # to creating a latitude_longitude CRS. We do so if there exists valid coordinates
-            # for latitude and longitude, even if they are not the dimension coordinates of
-            # the variable.
-            def _has_coord(coord_type):
-                return any(check_axis(coord_var, coord_type)
-                           for coord_var in var.coords.values())
-            if _has_coord('latitude') and _has_coord('longitude'):
-                crs = CFProjection({'grid_mapping_name': 'latitude_longitude'})
-                log.warning('Found valid latitude/longitude coordinates, assuming '
-                            'latitude_longitude for projection grid_mapping variable')
+            # to creating a latitude_longitude CRS. We do so if there exists valid *at most
+            # 1D* coordinates for latitude and longitude (usually dimension coordinates, but
+            # that is not strictly required, for example, for DSG's). What is required is that
+            # x == latitude and y == latitude (so that all assumptions about grid coordinates
+            # and CRS line up).
+            try:
+                latitude, y, longitude, x = var.metpy.coordinates(
+                    'latitude',
+                    'y',
+                    'longitude',
+                    'x'
+                )
+            except AttributeError:
+                # This means that we don't even have sufficient coordinates, so skip
+                pass
+            else:
+                if latitude.identical(y) and longitude.identical(x):
+                    crs = CFProjection({'grid_mapping_name': 'latitude_longitude'})
+                    log.warning('Found valid latitude/longitude coordinates, assuming '
+                                'latitude_longitude for projection grid_mapping variable')
 
         # Rebuild the coordinates of the dataarray, and return quantified DataArray
         var = self._rebuild_coords(var, crs)
@@ -1355,9 +1365,17 @@ def grid_deltas_from_dataarray(f, kind='default'):
     from metpy.calc import lat_lon_grid_deltas
 
     # Determine behavior
-    if kind == 'default' and f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
+    if (
+        kind == 'default'
+        and (
+            not hasattr(f.metpy, 'crs')
+            or f.metpy.crs['grid_mapping_name'] == 'latitude_longitude'
+        )
+    ):
+        # Use actual grid deltas by default with latitude_longitude or missing CRS
         kind = 'actual'
     elif kind == 'default':
+        # Otherwise, use grid deltas in projected grid space by default
         kind = 'nominal'
     elif kind not in ('actual', 'nominal'):
         raise ValueError('"kind" argument must be specified as "default", "actual", or '
@@ -1373,11 +1391,17 @@ def grid_deltas_from_dataarray(f, kind='default'):
             warnings.warn('y and x dimensions unable to be identified. Assuming [..., y, x] '
                           'dimension order.')
             y_dim, x_dim = -2, -1
+
+        # Get geod if it exists, otherwise fall back to PyProj default
+        try:
+            geod = f.metpy.pyproj_crs.get_geod()
+        except AttributeError:
+            geod = CRS.from_cf({'grid_mapping_name': 'latitude_longitude'}).get_geod()
         # Obtain grid deltas as xarray Variables
         (dx_var, dx_units), (dy_var, dy_units) = (
             (xr.Variable(dims=latitude.dims, data=deltas.magnitude), deltas.units)
             for deltas in lat_lon_grid_deltas(longitude, latitude, x_dim=x_dim, y_dim=y_dim,
-                                              geod=f.metpy.pyproj_crs.get_geod()))
+                                              geod=geod))
     else:
         # Obtain y/x coordinate differences
         y, x = f.metpy.coordinates('y', 'x')

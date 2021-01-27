@@ -220,8 +220,8 @@ def test_radian_projection_coords():
     assert data_var.coords['y'].metpy.unit_array[1] == 3 * units.meter
 
 
-def test_missing_grid_mapping():
-    """Test falling back to implicit lat/lon projection."""
+def test_missing_grid_mapping_valid():
+    """Test falling back to implicit lat/lon projection when valid."""
     lon = xr.DataArray(-np.arange(3),
                        attrs={'standard_name': 'longitude', 'units': 'degrees_east'})
     lat = xr.DataArray(np.arange(2),
@@ -230,7 +230,16 @@ def test_missing_grid_mapping():
     ds = xr.Dataset({'data': data})
 
     data_var = ds.metpy.parse_cf('data')
-    assert 'metpy_crs' in data_var.coords
+    assert (
+        'metpy_crs' in data_var.coords
+        and data_var.metpy.crs['grid_mapping_name'] == 'latitude_longitude'
+    )
+
+
+def test_missing_grid_mapping_invalid(test_var_multidim_no_xy):
+    """Test not falling back to implicit lat/lon projection when invalid."""
+    data_var = test_var_multidim_no_xy.to_dataset(name='data').metpy.parse_cf('data')
+    assert 'metpy_crs' not in data_var.coords
 
 
 def test_missing_grid_mapping_var(caplog):
