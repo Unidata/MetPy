@@ -3,8 +3,14 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of various derived indices."""
 import numpy as np
+import xarray as xr
 
-from .thermo import mixing_ratio, saturation_vapor_pressure
+from .basic import add_height_to_pressure
+from .thermo import (mixing_ratio, saturation_vapor_pressure,
+                     temperature_from_potential_temperature,
+                     mixing_ratio_from_relative_humidity,
+                     relative_humidity_from_mixing_ratio,
+                     dewpoint_from_relative_humidity)
 from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
 from ..package_tools import Exporter
@@ -449,81 +455,117 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
 
     return critical_angle.to('degrees')
 
-@exporter.export
-@preprocess_xarray
-def WK82(pressure_sfc=1000*units.hPa, altitude=np.arange(18000)*units.m, altitude_tropopause = 12000.*units.m, potential_temperature_sfc=300.*units.degK, potential_temperature_tropopause=343.*units.degK, temperature_tropopause=213.*units.degK, mixing_ratio_pbl = 0.014*units('kg/kg')):
-    r"""Calculate the Weisman and Klemp analytical thermodynamic profile used for idealized cloud models.
 
-    This calculation has the default quantities that can be changed as the arguments in the function. 
-    The implementation uses the formula outlined in [WeismanKlemp1982] pg.506.
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[length]', '[length]', '[temperature]', '[temperature]',
+             '[temperature]', '[dimensionless]')
+def WK82(pressure_sfc=1000. * units.hPa,
+         altitude=18000. * units.m,
+         altitude_tropopause=12000. * units.m,
+         potential_temperature_sfc=300. * units.degK,
+         potential_temperature_tropopause=343. * units.degK,
+         temperature_tropopause=213. * units.degK,
+         mixing_ratio_pbl=0.014 * units('kg/kg')):
+    r"""Calculate the Weisman and Klemp analytical thermodynamic profile used for idealized
+        cloud models.
+
+    This calculation has the default quantities that can be changed as the keyword
+    arguments in the function. The implementation uses the formula outlined in
+    [WeismanKlemp1982] pg.506.
 
     Parameters
     ----------
-    altitude : `pint.Quantity`
-        Heights AGL
-    potential_temperature_sfc : `pint.Quantity`
-        Potential Temperature at the surface
-    mixing_ratio_pbl : `pint.Quantity`
-        Constant mixing ratio in the planetary boundary layer
-    altitude_tropopause : `pint.Quantity`
-        Altitude of tropopause
-    temperature_tropopause : `pint.Quantity`
-        Temperature at tropopause
-    potential_temperature_tropopause : `pint.Quantity`
-        Potential temperature at tropopause
     pressure_sfc : `pint.Quantity`
-        Pressure at the surface
+        Pressure at the surface, default = 1000 hPa
+
+    altitude : `pint.Quantity`
+        Highest altitude with data AGL, default = 18000 m
+
+    altitude_tropopause : `pint.Quantity`
+        Altitude of tropopause, default  = 12000 m
+
+    potential_temperature_sfc : `pint.Quantity`
+        Potential Temperature at the surface, default = 300 K
+
+    potential_temperature_tropopause : `pint.Quantity`
+        Potential temperature at tropopause, default = 343 K
+
+    temperature_tropopause : `pint.Quantity`
+        Temperature at tropopause, default = 213 K
+
+    mixing_ratio_pbl : `pint.Quantity`
+        Constant mixing ratio in the planetary boundary layer, default = 0.014 kg/kg
 
     Returns
     -------
     xarray Dataset, attributes contain units
-    
+
     altitude :
         Heights AGL
+
     pressure :
         Pressure values at every height level
-    potential_temperature : 
+
+    potential_temperature :
         Potential temperature values at every height level
-    temperature : 
+
+    temperature :
         Temperature values at every height level
+
     dewpoint :
         Dewpoint temperature values at every height level
+
     relative_humidity :
         Relative humidity values at every height level
+
     mixing_ratio :
         Mixing ratio values at every height level
-        
+
     """
 
-    potential_temperature = potential_temperature_sfc + (potential_temperature_tropopause - potential_temperature_sfc)*((altitude/altitude_tropopause)**(1.25))
-    rh = 1.0-0.75*((altitude/altitude_tropopause)**1.25)
+    altitude = np.arange(altitude.m) * altitude.units
 
-    potential_temperature[int(altitude_tropopause.m):] = potential_temperature_tropopause * np.exp((mpconst.g/(mpconst.Cp_d*temperature_tropopause))*(altitude[int(altitude_tropopause.m):]-altitude_tropopause))
+    altitude_ratio = (altitude / altitude_tropopause) ** 1.25
+    sfc2EL_pot_temp_diff = potential_temperature_tropopause - potential_temperature_sfc
+    potential_temperature = potential_temperature_sfc + sfc2EL_pot_temp_diff * altitude_ratio
+
+    rh = 1.0 - 0.75 * (altitude_ratio)
+
+    # sets isothermal lapse rate above the tropopause
+    LR_ratio = (mpconsts.g / (mpconsts.Cp_d * temperature_tropopause))
+    isoT_LR = np.exp(LR_ratio * (altitude[int(altitude_tropopause.m):] - altitude_tropopause))
+    stratosphere_pot_temp = potential_temperature_tropopause * isoT_LR
+    potential_temperature[int(altitude_tropopause.m):] = stratosphere_pot_temp
+
     rh[int(altitude_tropopause.m):] = rh[int(altitude_tropopause.m)]
-    
-    pressure = mpcalc.add_height_to_pressure(pressure_sfc, altitude)
-    temperature = mpcalc.temperature_from_potential_temperature(pressure,potential_temperature)
-    qv = mpcalc.mixing_ratio_from_relative_humidity(rh,temperature,pressure)
 
-    #sets PBL mixing ratio constant up until it is near equal to previous profile
-    qv[:(np.abs(qv.m - mixing_ratio_pbl.m)).argmin()]=mixing_ratio_pbl 
-    
-    rh=mpcalc.relative_humidity_from_mixing_ratio(qv,temperature,pressure)
-    dewpoint=mpcalc.dewpoint_from_relative_humidity(temperature,rh)
-    
+    pressure = add_height_to_pressure(pressure_sfc, altitude)
+    temperature = temperature_from_potential_temperature(pressure, potential_temperature)
+    qv = mixing_ratio_from_relative_humidity(rh, temperature, pressure)
+
+    # sets PBL mixing ratio constant up until it is near equal to previous profile
+    qv[:(np.abs(qv.m - mixing_ratio_pbl.m)).argmin()] = mixing_ratio_pbl
+
+    rh = relative_humidity_from_mixing_ratio(qv, temperature, pressure)
+    dewpoint = dewpoint_from_relative_humidity(temperature, rh)
+
+    # create an xarray DataArray with vertical points as the dimension
     dims = ['nk']
     coords = {
-        'altitude': (dims,altitude.m, {'units':altitude.units})
+        'altitude': (dims, altitude.m, {'units': altitude.units})
     }
 
     data_vars = {
-        'pressure': (dims, pressure.m, {'units':pressure.units}),
-        'potential_temperature': (dims, potential_temperature.m, {'units':potential_temperature.units}),
-        'temperature': (dims, temperature.m, {'units':temperature.units}),
-        'dewpoint': (dims, dewpoint.m, {'units':dewpoint.units}),
-        'relative_humidity': (dims, rh.m, {'units':rh.units}),
-        'mixing_ratio': (dims, qv.m, {'units':qv.units})
+        'pressure': (dims, pressure.m, {'units': pressure.units}),
+        'potential_temperature': (dims, potential_temperature.m,
+                                  {'units': potential_temperature.units}),
+        'temperature': (dims, temperature.m, {'units': temperature.units}),
+        'dewpoint': (dims, dewpoint.m, {'units': dewpoint.units}),
+        'relative_humidity': (dims, rh.m, {'units': rh.units}),
+        'mixing_ratio': (dims, qv.m, {'units': qv.units})
     }
+
     ds = xr.Dataset(data_vars, coords)
 
     return ds
