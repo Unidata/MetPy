@@ -6,11 +6,9 @@ import numpy as np
 import xarray as xr
 
 from .basic import add_height_to_pressure
-from .thermo import (mixing_ratio, saturation_vapor_pressure,
-                     temperature_from_potential_temperature,
-                     mixing_ratio_from_relative_humidity,
-                     relative_humidity_from_mixing_ratio,
-                     dewpoint_from_relative_humidity)
+from .thermo import (dewpoint_from_relative_humidity, mixing_ratio,
+                     mixing_ratio_from_relative_humidity, relative_humidity_from_mixing_ratio,
+                     saturation_vapor_pressure, temperature_from_potential_temperature)
 from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
 from ..package_tools import Exporter
@@ -467,8 +465,7 @@ def WK82(pressure_sfc=1000. * units.hPa,
          potential_temperature_tropopause=343. * units.degK,
          temperature_tropopause=213. * units.degK,
          mixing_ratio_pbl=0.014 * units('kg/kg')):
-    r"""Calculate the Weisman and Klemp analytical thermodynamic profile used for idealized
-        cloud models.
+    r"""Calculate the Weisman and Klemp analytical thermodynamic profile.
 
     This calculation has the default quantities that can be changed as the keyword
     arguments in the function. The implementation uses the formula outlined in
@@ -523,7 +520,6 @@ def WK82(pressure_sfc=1000. * units.hPa,
         Mixing ratio values at every height level
 
     """
-
     altitude = np.arange(altitude.m) * altitude.units
 
     altitude_ratio = (altitude / altitude_tropopause) ** 1.25
