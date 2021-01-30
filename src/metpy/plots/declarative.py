@@ -949,12 +949,6 @@ class PlotScalar(Plots2D):
         x = self.griddata.metpy.x
         y = self.griddata.metpy.y
 
-        if 'degree' in x.units:
-            x, y, _ = self.griddata.metpy.cartopy_crs.transform_points(ccrs.PlateCarree(),
-                                                                       *np.meshgrid(x, y)).T
-            x = x[:, 0]
-            y = y[0, :]
-
         return x, y, self.griddata
 
     def draw(self):
