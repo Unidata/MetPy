@@ -53,7 +53,7 @@ jobs:
       run: echo "::set-output name=dir::$(pip cache dir)"
 
     - name: Setup caching
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
@@ -96,7 +96,7 @@ jobs:
 
     - name: Setup mapdata caching
       if: ${{ steps.cartopy-cache.outputs.dir != '' }}
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.4
       env:
         # Increase to reset cache of map data
         CACHE_NUMBER: 0
