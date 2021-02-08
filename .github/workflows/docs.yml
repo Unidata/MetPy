@@ -61,7 +61,7 @@ jobs:
       run: echo "::set-output name=dir::$(pip cache dir)"
 
     - name: Setup pip cache
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: pip-docs-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
@@ -88,7 +88,7 @@ jobs:
       run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
 
     - name: Setup mapdata caching
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.4
       env:
         # Increase to reset cache of map data
         CACHE_NUMBER: 0
