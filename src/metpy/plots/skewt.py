@@ -23,6 +23,7 @@ import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
+from .._vendor.matplotlib import _TransformedBoundsLocator
 from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
 from ..interpolate import interpolate_1d
@@ -264,7 +265,7 @@ class SkewT:
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5, **kwargs):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -289,6 +290,8 @@ class SkewT:
             Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
+        kwargs
+            Additional keyword arguments passed when creating the axes.
 
         """
         if fig is None:
@@ -301,7 +304,7 @@ class SkewT:
             raise ValueError("Specify only one of `rect' and `subplot', but not both")
 
         elif rect:
-            self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation)
+            self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation, **kwargs)
 
         else:
             if subplot is not None:
@@ -313,7 +316,12 @@ class SkewT:
             else:
                 subplot = (1, 1, 1)
 
-            self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
+            self.ax = fig.add_subplot(
+                *subplot,
+                projection='skewx',
+                rotation=rotation,
+                **kwargs
+            )
 
         # Set the yaxis as inverted with log scaling
         self.ax.set_yscale('log')
@@ -341,6 +349,73 @@ class SkewT:
         # Maintain a reasonable ratio of data limits. Only works on Matplotlib >= 3.2
         if matplotlib.__version__[:3] > '3.1':
             self.ax.set_aspect(aspect, adjustable='box')
+
+    @classmethod
+    def inset(cls, ax, bounds, transform=None, zorder=5, rotation=30, aspect=80.5, **kwargs):
+        r"""Create SkewT - logP plot as an inset.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes
+            Source axes on which to place the inset SkewT.
+        bounds : tuple[float, float, float, float]
+            Rectangle (left, bottom, width, height) in which to place the axes. This
+            allows the user to place the axes at an arbitrary point on the figure. See the
+            ``transform`` argument for controlling the coordinate system used in these bounds.
+        transform : matplotlib.transforms.Transform, optional
+            Defaults to ``ax.transData``, the coordinate system for the data. Other options
+            include ``ax.transAxes`` for axes-relative coordinates, ``fig.transFirgure`` for
+            figure-relative coordinates, or
+            ``ax.get_x_axis_transform()``/``ax.get_y_axis_transform()`` for blended
+            coordinates (data coordinates on one axis and axes coordinates on the other).
+        zorder : number, optional
+            Defaults to 5. Adjust higher or lower to change whether it is above or below data
+            plotted on the parent axes.
+        rotation : float or int, optional
+            Controls the rotation of temperature relative to horizontal. Given
+            in degrees counterclockwise from x-axis. Defaults to 30 degrees.
+        aspect : float, int, or 'auto', optional
+            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+            Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
+            the aspect ratio automatically (this is not recommended for SkewT).
+        kwargs
+            Additional keyword arguments passed when creating the axes.
+
+        Returns
+        -------
+        SkewT
+
+        """
+        if transform is None:
+            transform = ax.transData
+
+        # This segement copied with modification from matplotlib: Copyright (c) 2012-2013
+        # Matplotlib Development Team; All Rights Reserved. See license agreement in
+        # _vendor/matplotlib.py. Modified from original to have parent Axes be an argument
+        # rather than self, create a SkewT object rather than Axes directly, and use Axes from
+        # that SkewT instance instead of directly created Axes.
+
+        # This puts the rectangle into figure-relative coordinates.
+        inset_locator = _TransformedBoundsLocator(bounds, transform)
+        bounds = inset_locator(ax, None).bounds
+
+        # Create the skewT using the transformed bounds
+        skew_t = cls(
+            ax.figure,
+            rotation=rotation,
+            rect=bounds,
+            aspect=aspect,
+            zorder=zorder,
+            **kwargs
+        )
+
+        # this locator lets the axes move if in data coordinates.
+        # it gets called in `ax.apply_aspect() (of all places)
+        skew_t.ax.set_axes_locator(inset_locator)
+
+        # End copy
+
+        return skew_t
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
