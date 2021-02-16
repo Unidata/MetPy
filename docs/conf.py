@@ -66,7 +66,7 @@ plot_rcparams = {'savefig.bbox': 'tight'}
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
                        'pint': ('https://pint.readthedocs.io/en/stable/', None),
-                       'matplotlib': ('https://matplotlib.org/', None),
+                       'matplotlib': ('https://matplotlib.org/stable/', None),
                        'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://numpy.org/doc/stable/', None),
                        'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
