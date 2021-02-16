@@ -115,13 +115,30 @@ Plot the data on a map
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/110m/physical/ne_110m_ocean.zip
+      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
+      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip
+      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_1_states_provinces_lakes.zip
+      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
+      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.187 seconds)
+   **Total running time of the script:** ( 0 minutes  2.324 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:

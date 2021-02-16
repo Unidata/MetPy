@@ -41,6 +41,8 @@ Plots a sample satellite image file.
  .. code-block:: none
 
     Adjusting bad PDB size from 0 to 512.
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/110m/physical/ne_110m_coastline.zip
+      warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 
 
 
@@ -75,7 +77,7 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.577 seconds)
+   **Total running time of the script:** ( 0 minutes  0.598 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simplified_Image_Plot.py:
