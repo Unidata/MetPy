@@ -31,7 +31,7 @@ extension, these scripts are executed and turned into a gallery of thumbnails. T
 extension also makes these scripts available as Jupyter notebooks.
 
 The documentation is hosted on `GitHub Pages <https://unidata.github.io/MetPy>`_. The docs are
-built automatically and uploaded upon pushes or merges to GitHub. Commits to ``master`` end up
+built automatically and uploaded upon pushes or merges to GitHub. Commits to ``main`` end up
 in our development version docs, while commits to versioned branches will update the
 docs for the corresponding version, which are located in the appropriately named subidrectory
 on the ``gh-pages`` branch. We only maintain docs at the minor level, not the bugfix one.
@@ -60,7 +60,6 @@ The following services are used to track code quality:
 
 * `Codacy <https://app.codacy.com/project/Unidata/MetPy/dashboard>`_
 * `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
-* `Scrutinizer <https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)>`_
 
 We also maintain custom GitHub actions that automate additional tasks. Besides what's
 mentioned below as part of the release process, we have a script that automatically assigns

@@ -3,7 +3,7 @@ name: Build Docs (Conda)
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   #

@@ -3,9 +3,9 @@ name: PyPI Tests
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   #

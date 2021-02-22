@@ -93,7 +93,7 @@ autosummary_imported_members = True
 # source_encoding = 'utf-8-sig'
 cur_date = datetime.utcnow()
 
-# The master toctree document.
+# The main toctree document.
 master_doc = 'index'
 
 # General information about the project.
@@ -193,7 +193,7 @@ html_context = {
     'api_dir': 'api/generated',
     'github_user': 'Unidata',
     'github_repo': 'MetPy',
-    'github_version': 'master',  # Make changes to the master branch
+    'github_version': 'main',  # Make changes to the main branch
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
