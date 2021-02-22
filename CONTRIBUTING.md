@@ -37,7 +37,7 @@ MetPy contributions. We're glad you're here!
 
 The goal is to maintain a diverse community that's pleasant for everyone. Please
 be considerate and respectful of others by following our
-[code of conduct](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md).
+[code of conduct](https://github.com/Unidata/MetPy/blob/main/CODE_OF_CONDUCT.md).
 
 Other items:
 
@@ -100,17 +100,17 @@ terminal or your system. If you want to get back to the root environment, run
 ## Pull Requests
 
 The changes to the MetPy source (and documentation) should be made via GitHub pull requests
-against ``master``, even for those with administration rights. While it's tempting to
-make changes directly to ``master`` and push them up, it is better to make a pull request so
+against ``main``, even for those with administration rights. While it's tempting to
+make changes directly to ``main`` and push them up, it is better to make a pull request so
 that others can give feedback. If nothing else, this gives a chance for the automated tests to
-run on the PR. This can eliminate "brown paper bag" moments with buggy commits on the master
+run on the PR. This can eliminate "brown paper bag" moments with buggy commits on the main
 branch.
 
 During the Pull Request process, before the final merge, it's a good idea to rebase the branch
 and squash together smaller commits. It's not necessary to flatten the entire branch, but it
 can be nice to eliminate small fixes and get the merge down to logically arranged commits. This
 can also be used to hide sins from history--this is the only chance, since once it hits
-``master``, it's there forever!
+``main``, it's there forever!
 
 **Working on your first Pull Request?** You can learn how from this *free* video series
 [How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github),
@@ -124,7 +124,7 @@ Push to your fork and [submit a pull request]( https://github.com/Unidata/metpy/
 For the Pull Request to be accepted, you need to agree to the
 MetPy Contributor License Agreement (CLA). This will be handled automatically
 upon submission of a Pull Request.
-See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
+See [here](https://github.com/Unidata/MetPy/blob/main/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
 ## Source Code

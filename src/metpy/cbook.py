@@ -15,7 +15,7 @@ POOCH = pooch.create(
     path=pooch.os_cache('metpy'),
     base_url='https://github.com/Unidata/MetPy/raw/{version}/staticdata/',
     version='v' + __version__,
-    version_dev='master')
+    version_dev='main')
 
 # Check if we have the data available directly from a git checkout, either from the
 # TEST_DATA_DIR variable, or looking relative to the path of this module's file. Use this

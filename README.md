@@ -14,8 +14,8 @@ MetPy
 
 [![PyPI Tests](https://github.com/Unidata/MetPy/workflows/PyPI%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22PyPI+Tests%22)
 [![Conda Tests](https://github.com/Unidata/MetPy/workflows/Conda%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22Conda+Tests%22)
-[![Travis Build Status](https://travis-ci.com/Unidata/MetPy.svg?branch=master)](https://travis-ci.com/Unidata/MetPy)
-[![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=master)](https://codecov.io/github/Unidata/MetPy?branch=master)
+[![Travis Build Status](https://travis-ci.com/Unidata/MetPy.svg?branch=main)](https://travis-ci.com/Unidata/MetPy)
+[![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=main)](https://codecov.io/github/Unidata/MetPy?branch=main)
 
 [![Codacy issues](https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d)](https://www.codacy.com/app/dopplershift/MetPy)
 [![Code Climate](https://codeclimate.com/github/Unidata/MetPy/badges/gpa.svg)](https://codeclimate.com/github/Unidata/MetPy)
@@ -34,14 +34,14 @@ Gallery](https://unidata.github.io/python-gallery/).
 We support Python >= 3.6.
 
 0.12 is the first version to drop support for Python 2.7 in Fall 2019. See
-[here](https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst) for more
+[here](https://github.com/Unidata/MetPy/blob/main/docs/installguide.rst) for more
 information.
 
 Need Help?
 ----------
 
 Need help using MetPy? Found an issue? Have a feature request? Checkout our
-[support page](https://github.com/Unidata/MetPy/blob/master/SUPPORT.md).
+[support page](https://github.com/Unidata/MetPy/blob/main/SUPPORT.md).
 
 Important Links
 ---------------
@@ -74,7 +74,7 @@ Code of Conduct
 ---------------
 
 We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
-spirit please have a look at our [Code of Conduct](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md).
+spirit please have a look at our [Code of Conduct](https://github.com/Unidata/MetPy/blob/main/CODE_OF_CONDUCT.md).
 
 Contributing
 ------------
@@ -97,7 +97,7 @@ includes giving feedback about the contribution process). Some of these contribu
 the most valuable to the project as a whole, because you're coming to the project with fresh
 eyes, so you can see the errors and assumptions that seasoned contributors have glossed over.
 
-For more information, please read the see the [contributing guide](https://github.com/Unidata/MetPy/blob/master/CONTRIBUTING.md).
+For more information, please read the see the [contributing guide](https://github.com/Unidata/MetPy/blob/main/CONTRIBUTING.md).
 
 Philosophy
 ----------
