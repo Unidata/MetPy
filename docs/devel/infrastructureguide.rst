@@ -60,7 +60,6 @@ The following services are used to track code quality:
 
 * `Codacy <https://app.codacy.com/project/Unidata/MetPy/dashboard>`_
 * `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
-* `Scrutinizer <https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=main)>`_
 
 We also maintain custom GitHub actions that automate additional tasks. Besides what's
 mentioned below as part of the release process, we have a script that automatically assigns

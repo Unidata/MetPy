@@ -14,7 +14,6 @@ MetPy
 
 [![PyPI Tests](https://github.com/Unidata/MetPy/workflows/PyPI%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22PyPI+Tests%22)
 [![Conda Tests](https://github.com/Unidata/MetPy/workflows/Conda%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22Conda+Tests%22)
-[![Travis Build Status](https://travis-ci.com/Unidata/MetPy.svg?branch=main)](https://travis-ci.com/Unidata/MetPy)
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=main)](https://codecov.io/github/Unidata/MetPy?branch=main)
 
 [![Codacy issues](https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d)](https://www.codacy.com/app/dopplershift/MetPy)
