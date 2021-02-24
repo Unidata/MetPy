@@ -122,7 +122,7 @@ variable for plotting.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.8.7/x64/lib/python3.8/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
+    /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -189,7 +189,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.440 seconds)
+   **Total running time of the script:** ( 0 minutes  5.189 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
