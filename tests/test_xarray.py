@@ -376,12 +376,12 @@ def test_resolve_axis_conflict_double_lonlat(test_ds_generic):
     test_ds_generic['d'].attrs['_CoordinateAxisType'] = 'Lat'
     test_ds_generic['e'].attrs['_CoordinateAxisType'] = 'Lon'
 
-    with pytest.warns(UserWarning, match='More than one x coordinate'):
-        with pytest.raises(AttributeError):
-            test_ds_generic['test'].metpy.x
-    with pytest.warns(UserWarning, match='More than one y coordinate'):
-        with pytest.raises(AttributeError):
-            test_ds_generic['test'].metpy.y
+    with pytest.warns(UserWarning, match='More than one x coordinate'),\
+            pytest.raises(AttributeError):
+        test_ds_generic['test'].metpy.x
+    with pytest.warns(UserWarning, match='More than one y coordinate'),\
+            pytest.raises(AttributeError):
+        test_ds_generic['test'].metpy.y
 
 
 def test_resolve_axis_conflict_double_xy(test_ds_generic):
@@ -391,12 +391,12 @@ def test_resolve_axis_conflict_double_xy(test_ds_generic):
     test_ds_generic['d'].attrs['standard_name'] = 'projection_x_coordinate'
     test_ds_generic['e'].attrs['standard_name'] = 'projection_y_coordinate'
 
-    with pytest.warns(UserWarning, match='More than one x coordinate'):
-        with pytest.raises(AttributeError):
-            test_ds_generic['test'].metpy.x
-    with pytest.warns(UserWarning, match='More than one y coordinate'):
-        with pytest.raises(AttributeError):
-            test_ds_generic['test'].metpy.y
+    with pytest.warns(UserWarning, match='More than one x coordinate'),\
+            pytest.raises(AttributeError):
+        test_ds_generic['test'].metpy.x
+    with pytest.warns(UserWarning, match='More than one y coordinate'),\
+            pytest.raises(AttributeError):
+        test_ds_generic['test'].metpy.y
 
 
 def test_resolve_axis_conflict_double_x_with_single_dim(test_ds_generic):
@@ -413,9 +413,9 @@ def test_resolve_axis_conflict_double_vertical(test_ds_generic):
     test_ds_generic['b'].attrs['units'] = 'hPa'
     test_ds_generic['c'].attrs['units'] = 'Pa'
 
-    with pytest.warns(UserWarning, match='More than one vertical coordinate'):
-        with pytest.raises(AttributeError):
-            test_ds_generic['test'].metpy.vertical
+    with pytest.warns(UserWarning, match='More than one vertical coordinate'),\
+            pytest.raises(AttributeError):
+        test_ds_generic['test'].metpy.vertical
 
 
 criterion_matches = [
