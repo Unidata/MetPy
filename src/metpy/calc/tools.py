@@ -786,7 +786,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     x_dim: int
         axis number for the x dimension, defaults to -1.
     y_dim : int
-        axis number for the y dimesion, defaults to -2.
+        axis number for the y dimension, defaults to -2.
     geod : `pyproj.Geod` or ``None``
         PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a
         default spherical ellipsoid.
