@@ -3293,35 +3293,96 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 
 
 @exporter.export
+@preprocess_and_wrap(
+    wrap_like='temp_bot',
+    broadcast=('temp_bot', 'temp_top')
+)
+@check_units('[temperature]', '[temperature]')
+def scale_height(temp_bot, temp_top):
+    r"""Calculate the scale height of a layer.
+
+    .. math::   H = \frac{R_d \overline{T}}{g}
+
+    This function assumes dry air, but can be used with the virtual temperature
+    to account for moisture.
+
+    Parameters
+    ----------
+    temp_bot : `pint.Quantity`
+        Temperature at bottom of layer
+
+    temp_top : `pint.Quantity`
+        Temperature at top of layer
+
+    Returns
+    -------
+    `pint.Quantity`
+        Scale height of layer
+    """
+    t_bar = 0.5 * (temp_bot + temp_top)
+
+    return (mpconsts.Rd * t_bar) / mpconsts.g
+
+
+@exporter.export
+@preprocess_and_wrap(
+    wrap_like='z_bot',
+    broadcast=('z_bot', 'pres_bot', 'pres_top', 'scale_height')
+)
+@check_units('[length]', '[pressure]', '[pressure]', '[length]')
+def hydrostatic_height(z_bot, pres_bot, pres_top, scale_height):
+    r"""Calculate the moist hydrostatic height.
+
+    .. math::   Z_2 = Z_1 + H \ln\left(\frac{p_1}{p_2}\right)
+
+    This function assumes dry air, but the moist hydrostatic height can
+    be obtained if the scale height is calculated with the virtual temperature.
+
+    Parameters
+    ----------
+    z_bot : `pint.Quantity`
+        Height at bottom of layer
+
+    pres_bot : `pint.Quantity`
+        Pressure at bottom of layer
+
+    pres_top : `pint.Quantity`
+        Pressure at top of layer
+
+    scale_height : `pint.Quantity`
+        Scale height of layer
+
+    Returns
+    -------
+    `pint.Quantity`
+        Hydrostatic height at top of layer
+    """
+    return z_bot + scale_height * np.log(pres_bot / pres_top)
+
+
+@exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def showalter_index(pressure, temperature, dewpt):
     """Calculate Showalter Index from pressure temperature and 850 hPa lcl.
-
     Showalter Index derived from [Galway1956]_:
     SI = T500 - Tp500
-
     where:
     T500 is the measured temperature at 500 hPa
     Tp500 is the temperature of the lifted parcel at 500 hPa
-
     Parameters
     ----------
         pressure : `pint.Quantity`
             Atmospheric pressure level(s) of interest, in order from highest to
             lowest pressure
-
         temperature : `pint.Quantity`
             Parcel temperature for corresponding pressure
-
         dewpt : `pint.Quantity`
             Parcel dew point temperatures for corresponding pressure
-
     Returns
     -------
     `pint.Quantity`
         Showalter index
-
     """
     # find the measured temperature and dew point temperature at 850 hPa.
     t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpt)
