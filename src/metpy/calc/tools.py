@@ -295,7 +295,7 @@ def reduce_point_density(points, radius, priority=None):
         sorted_indices = range(len(points))
 
     # Keep all points initially
-    keep = np.ones(len(points), dtype=np.bool)
+    keep = np.ones(len(points), dtype=bool)
 
     # Loop over all the potential points
     for ind in sorted_indices:
@@ -672,8 +672,8 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     indices_shape[axis] = len(values)
 
     # Storage for the found indices and the mask for good locations
-    indices = np.empty(indices_shape, dtype=np.int)
-    good = np.empty(indices_shape, dtype=np.bool)
+    indices = np.empty(indices_shape, dtype=int)
+    good = np.empty(indices_shape, dtype=bool)
 
     # Used to put the output in the proper location
     take = make_take(arr.ndim, axis)
@@ -683,7 +683,7 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     for level_index, value in enumerate(values):
         # Look for changes in the value of the test for <= value in consecutive points
         # Taking abs() because we only care if there is a flip, not which direction.
-        switches = np.abs(np.diff((arr <= value).astype(np.int), axis=axis))
+        switches = np.abs(np.diff((arr <= value).astype(int), axis=axis))
 
         # Good points are those where it's not just 0's along the whole axis
         good_search = np.any(switches, axis=axis)

@@ -780,7 +780,7 @@ class DataMapper:
     MISSING = float('nan')
 
     def __init__(self, num=256):
-        self.lut = np.full(num, self.MISSING, dtype=np.float)
+        self.lut = np.full(num, self.MISSING, dtype=float)
 
     def __call__(self, data):
         """Convert the values."""

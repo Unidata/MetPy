@@ -138,13 +138,13 @@ def thin_point_data():
 
 @pytest.mark.parametrize('radius, truth',
                          [(2.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=bool)),
                           (1.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=bool)),
                           (0.3, np.array([1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0,
-                                          0, 0, 0, 0, 0, 1, 0, 0, 0, 0], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 1, 0, 0, 0, 0], dtype=bool)),
                           (0.1, np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.bool))
+                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=bool))
                           ])
 def test_reduce_point_density(thin_point_data, radius, truth):
     r"""Test that reduce_point_density works."""
@@ -153,13 +153,13 @@ def test_reduce_point_density(thin_point_data, radius, truth):
 
 @pytest.mark.parametrize('radius, truth',
                          [(2.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=bool)),
                           (1.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=bool)),
                           (0.3, np.array([1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0,
-                                          0, 0, 0, 0, 0, 1, 0, 0, 0, 0], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 1, 0, 0, 0, 0], dtype=bool)),
                           (0.1, np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.bool))
+                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=bool))
                           ])
 def test_reduce_point_density_units(thin_point_data, radius, truth):
     r"""Test that reduce_point_density works with units."""
@@ -169,13 +169,13 @@ def test_reduce_point_density_units(thin_point_data, radius, truth):
 
 @pytest.mark.parametrize('radius, truth',
                          [(2.0, np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 1], dtype=np.bool)),
+                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 1], dtype=bool)),
                           (0.7, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 1, 0, 0, 0, 0, 0, 1], dtype=np.bool)),
+                                          0, 0, 0, 1, 0, 0, 0, 0, 0, 1], dtype=bool)),
                           (0.3, np.array([1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0,
-                                          0, 0, 0, 1, 0, 0, 0, 1, 0, 1], dtype=np.bool)),
+                                          0, 0, 0, 1, 0, 0, 0, 1, 0, 1], dtype=bool)),
                           (0.1, np.array([1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.bool))
+                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=bool))
                           ])
 def test_reduce_point_density_priority(thin_point_data, radius, truth):
     r"""Test that reduce_point_density works properly with priority."""
@@ -187,7 +187,7 @@ def test_reduce_point_density_1d():
     r"""Test that reduce_point_density works with 1D points."""
     x = np.array([1, 3, 4, 8, 9, 10])
     assert_array_equal(reduce_point_density(x, 2.5),
-                       np.array([1, 0, 1, 1, 0, 0], dtype=np.bool))
+                       np.array([1, 0, 1, 1, 0, 0], dtype=bool))
 
 
 def test_delete_masked_points():
