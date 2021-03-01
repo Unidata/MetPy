@@ -79,7 +79,8 @@ class Meteogram:
         ln3 = ax7.plot(self.dates, wd, '.k', linewidth=0.5, label='Wind Direction')
         ax7.set_ylabel('Wind\nDirection\n(degrees)', multialignment='center')
         ax7.set_ylim(0, 360)
-        ax7.set_yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
+        ax7.set_yticks(np.arange(45, 405, 90))
+        ax7.set_yticklabels(['NE', 'SE', 'SW', 'NW'])
         lines = ln1 + ln2 + ln3
         labs = [line.get_label() for line in lines]
         ax7.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
