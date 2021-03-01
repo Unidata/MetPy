@@ -395,7 +395,7 @@ up of arrays based on a name) to be passed to <a class="reference internal" href
 <td><p>Plot a collection of data using this layout for a station plot.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.pop" title="metpy.plots.StationPlotLayout.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</p></td>
-<td><p>If key is not found, default is returned if given, otherwise KeyError is raised</p></td>
+<td><p>If key is not found, d is returned if given, otherwise KeyError is raised</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.StationPlotLayout.popitem" title="metpy.plots.StationPlotLayout.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a>()</p></td>
 <td><p>Remove and return a (key, value) pair as a 2-tuple.</p></td>
@@ -604,7 +604,7 @@ will be used to fill out the station plot.</p></li>
 <dl class="py method">
 <dt id="metpy.plots.StationPlotLayout.pop">
 <code class="sig-name descname"><span class="pre">pop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">k</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">d</span></em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; <span class="pre">v,</span> <span class="pre">remove</span> <span class="pre">specified</span> <span class="pre">key</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">the</span> <span class="pre">corresponding</span> <span class="pre">value.</span><a class="headerlink" href="#metpy.plots.StationPlotLayout.pop" title="Permalink to this definition">¶</a></dt>
-<dd><p>If key is not found, default is returned if given, otherwise KeyError is raised</p>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
 </dd></dl>
 
 <dl class="py method">
@@ -681,7 +681,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 01, 2021 at 17:53:09.<br/>
+        Last updated on Mar 01, 2021 at 17:53:34.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.1.<br/>
     </p>
   </div>
