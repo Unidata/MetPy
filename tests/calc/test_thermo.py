@@ -1852,5 +1852,5 @@ def test_showalter_index():
     tdc = np.linspace(10, -30, 25) * units.degC
     
     result = showalter_index(p, tc, tdc)
-    expected = 23.73036498600014 * units.degC
+    expected = 23.73036498600014 * delta_degree_Celsius
     assert_array_almost_equal(result, expected, 4)
