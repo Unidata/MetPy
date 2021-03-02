@@ -3318,7 +3318,7 @@ def showalter_index(pressure, temperature, dewpt):
     
     # Calculate parcel temp when raised dry adiabatically from surface to lcl
 
-    dl = dry_lapse(lcl_calc, tc[0], p[0])
+    dl = dry_lapse(lcl_calc, temperature[0], pressure[0])
     dl = (dl.magnitude - 273.15) * units.degC  # Change units to C
 
     # Calculate parcel temp when raised moist adiabatically from lcl to 500mb
