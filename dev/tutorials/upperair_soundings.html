@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upper Air Sounding Tutorial &#8212; MetPy 1.0dev</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,10 +24,6 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
@@ -38,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -145,97 +142,78 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-          
             
-                <li class="">
-                    <a href="../userguide/installguide.html">Install Guide</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/installguide.html">
+   Install Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/startingguide.html">
+   Getting Started with MetPy
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="index.html">
+   Tutorials
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="unit_tutorial.html">
+     Working With Units
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     Upper Air Sounding Tutorial
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="xarray_tutorial.html">
+     xarray with MetPy Tutorial
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="declarative_tutorial.html">
+     MetPy Declarative Syntax Tutorial
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/upgradeguide.html">
+   MetPy 1.0 Upgrade Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/gempak.html">
+   GEMPAK Comparison Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/SUPPORT.html">
+   Support
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/citing.html">
+   Citing MetPy
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/media.html">
+   Talks and Other Media
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="../userguide/startingguide.html">Getting Started with MetPy</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="index.html">Tutorials</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="unit_tutorial.html">Working With Units</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="">Upper Air Sounding Tutorial</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="xarray_tutorial.html">xarray with MetPy Tutorial</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="declarative_tutorial.html">MetPy Declarative Syntax Tutorial</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/upgradeguide.html">MetPy 1.0 Upgrade Guide</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/gempak.html">GEMPAK Comparison Guide</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/SUPPORT.html">Support</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/citing.html">Citing MetPy</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/media.html">Talks and Other Media</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -246,29 +224,34 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#getting-data" class="nav-link">Getting Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#thermodynamic-calculations" class="nav-link">Thermodynamic Calculations</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#basic-skew-t-plotting" class="nav-link">Basic Skew-T Plotting</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#advanced-skew-t-plotting" class="nav-link">Advanced Skew-T Plotting</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#adding-a-hodograph" class="nav-link">Adding a Hodograph</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-data">
+   Getting Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#thermodynamic-calculations">
+   Thermodynamic Calculations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-skew-t-plotting">
+   Basic Skew-T Plotting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#advanced-skew-t-plotting">
+   Advanced Skew-T Plotting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adding-a-hodograph">
+   Adding a Hodograph
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -276,6 +259,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -481,7 +467,7 @@ which are not drawn.</p>
 </pre></div>
 </div>
 <img alt="upperair soundings" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.712 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.265 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-upperair-soundings-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cf626a06a2e16be83be26aa926cd5642/upperair_soundings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></p>
@@ -512,7 +498,7 @@ which are not drawn.</p>
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     
@@ -529,7 +515,7 @@ which are not drawn.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 09, 2021 at 18:02:48.<br/>
+        Last updated on Mar 12, 2021 at 18:12:03.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.<br/>
     </p>
   </div>

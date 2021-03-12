@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cross Section Analysis &#8212; MetPy 1.0dev</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,10 +24,6 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
@@ -38,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -145,215 +142,171 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="XArray_Projections.html">XArray Projection Handling</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="XArray_Projections.html">
+   XArray Projection Handling
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="sigma_to_pressure_interpolation.html">
+   Sigma to Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Advanced_Sounding.html">
+   Advanced Sounding
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Cross Section Analysis
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Four_Panel_Map.html">
+   Four Panel Map
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="isentropic_example.html">
+   Isentropic Analysis
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="meteogram_metpy.html">
+   Meteogram
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Parse_Angles.html">
+   Parse angles
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Dewpoint_and_Mixing_Ratio.html">
+   Dewpoint and Mixing Ratio
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Angle_to_Direction.html">
+   Angle to Direction
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Gradient.html">
+   Gradient
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Smoothing.html">
+   Smoothing
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="formats/GINI_Water_Vapor.html">
+   GINI Water Vapor Imagery
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="formats/NEXRAD_Level_3_File.html">
+   NEXRAD Level 3 File
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="formats/NEXRAD_Level_2_File.html">
+   NEXRAD Level 2 File
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Find_Natural_Neighbors_Verification.html">
+   Find Natural Neighbors Verification
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Wind_SLP_Interpolation.html">
+   Wind and Sea Level Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Point_Interpolation.html">
+   Point Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Inverse_Distance_Verification.html">
+   Inverse Distance Verification: Cressman and Barnes
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Natural_Neighbor_Verification.html">
+   Natural Neighbor Verification
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Simplified_Image_Plot.html">
+   Simple Plotting
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/US_Counties.html">
+   US Counties
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Combined_plotting.html">
+   Combined Plotting
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/upperair_declarative.html">
+   Upper Air Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/surface_declarative.html">
+   Surface Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Skew-T_Layout.html">
+   Skew-T with Complex Layout
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Hodograph_Inset.html">
+   Hodograph Inset
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Simple_Sounding.html">
+   Simple Sounding
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Mesonet_Stationplot.html">
+   Mesonet Station Plot
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Station_Plot.html">
+   Station Plot
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Station_Plot_with_Layout.html">
+   Station Plot with Layout
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Advanced_Sounding.html">Advanced Sounding</a>
-                </li>
-            
-          
-            
-                <li class="active">
-                    <a href="">Cross Section Analysis</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Four_Panel_Map.html">Four Panel Map</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="isentropic_example.html">Isentropic Analysis</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="meteogram_metpy.html">Meteogram</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Parse_Angles.html">Parse angles</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Angle_to_Direction.html">Angle to Direction</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Gradient.html">Gradient</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Smoothing.html">Smoothing</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Point_Interpolation.html">Point Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Natural_Neighbor_Verification.html">Natural Neighbor Verification</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Simplified_Image_Plot.html">Simple Plotting</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/US_Counties.html">US Counties</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Combined_plotting.html">Combined Plotting</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/surface_declarative.html">Surface Analysis using Declarative Syntax</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Skew-T_Layout.html">Skew-T with Complex Layout</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Hodograph_Inset.html">Hodograph Inset</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Simple_Sounding.html">Simple Sounding</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Mesonet_Stationplot.html">Mesonet Station Plot</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Station_Plot.html">Station Plot</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Station_Plot_with_Layout.html">Station Plot with Layout</a>
-                </li>
-            
-          
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -361,9 +314,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -371,6 +322,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -620,7 +574,7 @@ Attributes:
 <p>Note: The x-axis can display any variable that is the same length as the
 plotted variables, including latitude. Additionally, arguments can be provided
 to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabels</span></code> to label lat/lon pairs, similar to the default NCL output.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.953 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.178 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cross-section-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/2b7cc27b99027ed24f4bcc2332422c1a/cross_section.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cross_section.py</span></code></a></p>
@@ -650,7 +604,7 @@ to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabe
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     
@@ -667,7 +621,7 @@ to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabe
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 09, 2021 at 18:02:48.<br/>
+        Last updated on Mar 12, 2021 at 18:12:03.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.<br/>
     </p>
   </div>

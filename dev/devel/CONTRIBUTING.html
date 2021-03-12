@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contributors Guide &#8212; MetPy 1.0dev</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,10 +24,6 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
@@ -38,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -145,47 +142,31 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-          
             
-                <li class="active">
-                    <a href="">Contributors Guide</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Contributors Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="roadmap.html">
+   MetPy Roadmap
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="infrastructureguide.html">
+   Infrastructure Guide
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="roadmap.html">MetPy Roadmap</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="infrastructureguide.html">Infrastructure Guide</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -196,93 +177,113 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#introduction" class="nav-link">Introduction</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#what-can-i-do" class="nav-link">What Can I Do?</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#ground-rules" class="nav-link">Ground Rules</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#reporting-a-bug" class="nav-link">Reporting a bug</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#setting-up-your-development-environment" class="nav-link">Setting up your development environment</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#pull-requests" class="nav-link">Pull Requests</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#source-code" class="nav-link">Source Code</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#documentation" class="nav-link">Documentation</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#tests" class="nav-link">Tests</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#running-tests" class="nav-link">Running Tests</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#writing-tests" class="nav-link">Writing Tests</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#image-tests" class="nav-link">Image tests</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#cached-data-files" class="nav-link">Cached Data Files</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#code-style" class="nav-link">Code Style</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#what-happens-after-the-pull-request" class="nav-link">What happens after the pull request</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#automated-testing" class="nav-link">Automated Testing</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#code-review" class="nav-link">Code Review</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#merging" class="nav-link">Merging</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#more-questions" class="nav-link">More Questions?</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#further-reading" class="nav-link">Further Reading</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-can-i-do">
+   What Can I Do?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ground-rules">
+   Ground Rules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reporting-a-bug">
+   Reporting a bug
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-your-development-environment">
+   Setting up your development environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pull-requests">
+   Pull Requests
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#source-code">
+   Source Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documentation">
+   Documentation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tests">
+   Tests
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-tests">
+     Running Tests
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#writing-tests">
+     Writing Tests
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#image-tests">
+     Image tests
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cached-data-files">
+   Cached Data Files
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-style">
+   Code Style
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-happens-after-the-pull-request">
+   What happens after the pull request
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#automated-testing">
+     Automated Testing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-review">
+     Code Review
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#merging">
+     Merging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-questions">
+   More Questions?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-reading">
+   Further Reading
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -290,6 +291,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -627,7 +631,7 @@ importance of writing tested and maintainable software.</p>
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     
@@ -644,7 +648,7 @@ importance of writing tested and maintainable software.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 09, 2021 at 18:02:48.<br/>
+        Last updated on Mar 12, 2021 at 18:12:03.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.<br/>
     </p>
   </div>

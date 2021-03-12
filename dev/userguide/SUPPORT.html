@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Support &#8212; MetPy 1.0dev</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.101715efdecc9b59cb6e1ddfa685c31f.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,10 +24,6 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
@@ -38,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.d8bbf5861d671d414e1a.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -101,7 +98,7 @@
         </li>
         
         <li class="nav-item active">
-            <a class="nav-link" href="">Support</a>
+            <a class="nav-link" href="#">Support</a>
         </li>
         
         
@@ -145,79 +142,56 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-          
             
-                <li class="">
-                    <a href="installguide.html">Install Guide</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="installguide.html">
+   Install Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="startingguide.html">
+   Getting Started with MetPy
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../tutorials/index.html">
+   Tutorials
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="upgradeguide.html">
+   MetPy 1.0 Upgrade Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gempak.html">
+   GEMPAK Comparison Guide
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Support
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="citing.html">
+   Citing MetPy
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="media.html">
+   Talks and Other Media
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="startingguide.html">Getting Started with MetPy</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../tutorials/index.html">Tutorials</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="upgradeguide.html">MetPy 1.0 Upgrade Guide</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gempak.html">GEMPAK Comparison Guide</a>
-                </li>
-            
-          
-            
-                <li class="active">
-                    <a href="">Support</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="citing.html">Citing MetPy</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="media.html">Talks and Other Media</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-        
-          
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -228,21 +202,24 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#help-using-metpy" class="nav-link">Help using MetPy</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#issues" class="nav-link">Issues</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#code-of-conduct" class="nav-link">Code of Conduct</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#help-using-metpy">
+   Help using MetPy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#issues">
+   Issues
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-of-conduct">
+   Code of Conduct
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -250,6 +227,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -313,7 +293,7 @@ spirit please have a look at our
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.d8bbf5861d671d414e1a.js"></script>
 
 
     
@@ -330,7 +310,7 @@ spirit please have a look at our
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 09, 2021 at 18:02:48.<br/>
+        Last updated on Mar 12, 2021 at 18:12:03.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.<br/>
     </p>
   </div>
