@@ -187,17 +187,17 @@ def bunkers_storm_motion(pressure, u, v, height):
 
     """
     # mean wind from sfc-6km
-    wind_mean = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
-                                                   depth=6000 * units('meter')))
+    _, u_mean, v_mean = get_layer(pressure, u, v, height=height, depth=6000 * units('meter'))
+    wind_mean = [np.mean(u_mean).m, np.mean(v_mean).m] * u_mean.units
 
     # mean wind from sfc-500m
-    wind_500m = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
-                                                   depth=500 * units('meter')))
+    _, u_500m, v_500m = get_layer(pressure, u, v, height=height, depth=500 * units('meter'))
+    wind_500m = [np.mean(u_500m).m, np.mean(v_500m).m] * u_500m.units
 
     # mean wind from 5.5-6km
-    wind_5500m = concatenate(mean_pressure_weighted(pressure, u, v, height=height,
-                                                    depth=500 * units('meter'),
-                                                    bottom=height[0] + 5500 * units('meter')))
+    _, u_5500m, v_5500m = get_layer(pressure, u, v, height=height, depth=500 * units('meter'),
+                                    bottom=height[0] + 5500 * units('meter'))
+    wind_5500m = [np.mean(u_5500m).m, np.mean(v_5500m).m] * u_5500m.units
 
     # Calculate the shear vector from sfc-500m to 5.5-6km
     shear = wind_5500m - wind_500m
