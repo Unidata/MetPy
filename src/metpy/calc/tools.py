@@ -1252,7 +1252,7 @@ def _process_gradient_args(f, axes, coordinates, deltas):
         if axes_given and len(positions) < len(axes):
             raise ValueError('Length of "coordinates" or "deltas" cannot be less than that '
                              'of "axes".')
-        elif not axes_given and len(positions) != len(axes):
+        if not axes_given and len(positions) != len(axes):
             raise ValueError('Length of "coordinates" or "deltas" must match the number of '
                              'dimensions of "f" when "axes" is not given.')
 

@@ -1672,7 +1672,8 @@ class Level3File:
         if self.header.code == 2:
             self.gsm = self._buffer.read_struct(self.gsm_fmt)
             self.product_name = 'General Status Message'
-            assert self.gsm.divider == -1
+            if self.gsm.divider != -1:
+                raise AssertionError
             if self.gsm.block_len > 82:
                 # Due to the way the structures read it in, one bit from the count needs
                 # to be popped off and added as the supplemental cut status for the 25th
@@ -1681,9 +1682,11 @@ class Level3File:
                 cut_count = more.supplemental_cut_count
                 more.supplemental_cut_map2.append(bool(cut_count & 0x1))
                 self.gsm_additional = more._replace(supplemental_cut_count=cut_count >> 1)
-                assert self.gsm.block_len == 178
+                if self.gsm.block_len != 178:
+                    raise AssertionError
             else:
-                assert self.gsm.block_len == 82
+                if self.gsm.block_len != 82:
+                    raise AssertionError
             return
 
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
@@ -1732,7 +1735,8 @@ class Level3File:
                 comp_start = self._buffer.set_mark()
                 decomp_data = self._buffer.read_func(bz2.decompress)
                 self._buffer.splice(comp_start, decomp_data)
-                assert self._buffer.check_remains(self.metadata['uncompressed_size'])
+                if not self._buffer.check_remains(self.metadata['uncompressed_size']):
+                    raise AssertionError
             except OSError:
                 pass
 
@@ -1800,7 +1804,8 @@ class Level3File:
     def _unpack_rcm(self, start, offset):
         self._buffer.jump_to(start, offset)
         header = self._buffer.read_ascii(10)
-        assert header == '1234 ROBUU'
+        if header != '1234 ROBUU':
+            raise AssertionError
         text_data = self._buffer.read_ascii()
         end = 0
         # Appendix B of ICD tells how to interpret this stuff, but that just
@@ -1817,13 +1822,16 @@ class Level3File:
         log.debug('Symbology block info: %s', blk)
 
         self.sym_block = []
-        assert blk.divider == -1, ('Bad divider for symbology block: {:d} should be -1'
-                                   .format(blk.divider))
-        assert blk.block_id == 1, ('Bad block ID for symbology block: {:d} should be 1'
-                                   .format(blk.block_id))
+        if blk.divider != -1:
+            raise AssertionError('Bad divider for symbology block: {:d} should be -1'
+                                 .format(blk.divider))
+        if blk.block_id != 1:
+            raise AssertionError('Bad block ID for symbology block: {:d} should be 1'
+                                 .format(blk.block_id))
         for _ in range(blk.nlayer):
             layer_hdr = self._buffer.read_struct(self.sym_layer_fmt)
-            assert layer_hdr.divider == -1
+            if layer_hdr.divider != -1:
+                raise AssertionError
             layer = []
             self.sym_block.append(layer)
             layer_start = self._buffer.set_mark()
@@ -1835,19 +1843,23 @@ class Level3File:
                     log.warning('%s: Unknown symbology packet type %d/%x.',
                                 self.filename, packet_code, packet_code)
                     self._buffer.jump_to(layer_start, layer_hdr.length)
-            assert self._buffer.offset_from(layer_start) == layer_hdr.length
+            if self._buffer.offset_from(layer_start) != layer_hdr.length:
+                raise AssertionError
 
     def _unpack_graphblock(self, start, offset):
         self._buffer.jump_to(start, offset)
         hdr = self._buffer.read_struct(self.graph_block_fmt)
-        assert hdr.divider == -1, ('Bad divider for graphical block: {:d} should be -1'
-                                   .format(hdr.divider))
-        assert hdr.block_id == 2, ('Bad block ID for graphical block: {:d} should be 1'
-                                   .format(hdr.block_id))
+        if hdr.divider != -1:
+            raise AssertionError('Bad divider for graphical block: {:d} should be -1'
+                                 .format(hdr.divider))
+        if hdr.block_id != 2:
+            raise AssertionError('Bad block ID for graphical block: {:d} should be 1'
+                                 .format(hdr.block_id))
         self.graph_pages = []
         for page in range(hdr.num_pages):
             page_num = self._buffer.read_int(2, 'big', signed=False)
-            assert page + 1 == page_num
+            if page + 1 != page_num:
+                raise AssertionError
             page_size = self._buffer.read_int(2, 'big', signed=False)
             page_start = self._buffer.set_mark()
             packets = []
@@ -1883,8 +1895,10 @@ class Level3File:
         # Read the header and validate if needed
         if have_header:
             header = self._buffer.read_struct(self.tab_header_fmt)
-            assert header.divider == -1
-            assert header.block_id == 3
+            if header.divider != -1:
+                raise AssertionError
+            if header.block_id != 3:
+                raise AssertionError
 
             # Read off secondary message and product description blocks,
             # but as far as I can tell, all we really need is the text that follows
@@ -1893,7 +1907,8 @@ class Level3File:
 
         # Get the start of the block with number of pages and divider
         blk = self._buffer.read_struct(self.tab_block_fmt)
-        assert blk.divider == -1
+        if blk.divider != -1:
+            raise AssertionError
 
         # Read the pages line by line, break pages on a -1 character count
         self.tab_pages = []
@@ -1965,8 +1980,10 @@ class Level3File:
                                ('yscale_int', 'h'), ('yscale_frac', 'h'),
                                ('num_rows', 'h'), ('packing', 'h')], '>', 'RasterData')
         hdr = self._buffer.read_struct(hdr_fmt)
-        assert hdr.code == 0x800000C0
-        assert hdr.packing == 2
+        if hdr.code != 0x800000C0:
+            raise AssertionError
+        if hdr.packing != 2:
+            raise AssertionError
         rows = []
         for _ in range(hdr.num_rows):
             num_bytes = self._buffer.read_int(2, 'big', signed=False)
@@ -2065,7 +2082,8 @@ class Level3File:
                 ret['type'] = type_map[code]
 
         # Check and return
-        assert self._buffer.offset_from(packet_data_start) == num_bytes
+        if self._buffer.offset_from(packet_data_start) != num_bytes:
+            raise AssertionError
 
         # Reduce dimensions of lists if possible
         reduce_lists(ret)
@@ -2118,7 +2136,8 @@ class Level3File:
                 row = []
                 for run, level in zip(row_bytes[::2], row_bytes[1::2]):
                     row.extend([level] * run)
-            assert len(row) == lfm_boxes
+            if len(row) != lfm_boxes:
+                raise AssertionError
             rows.append(row)
 
         return {'data': rows}
@@ -2149,14 +2168,16 @@ class Level3File:
 
     def _unpack_packet_contour_color(self, code, in_sym_block):
         # Check for color value indicator
-        assert self._buffer.read_int(2, 'big', signed=False) == 0x0002
+        if self._buffer.read_int(2, 'big', signed=False) != 0x0002:
+            raise AssertionError
 
         # Read and return value (level) of contour
         return {'color': self._buffer.read_int(2, 'big', signed=False)}
 
     def _unpack_packet_linked_contour(self, code, in_sym_block):
         # Check for initial point indicator
-        assert self._buffer.read_int(2, 'big', signed=False) == 0x8000
+        if self._buffer.read_int(2, 'big', signed=False) != 0x8000:
+            raise AssertionError
 
         scale = self.pos_scale(in_sym_block)
         startx = self._buffer.read_int(2, 'big', signed=True) * scale
@@ -2186,7 +2207,8 @@ class Level3File:
 
     def _unpack_packet_generic(self, code, in_sym_block):
         # Reserved HW
-        assert self._buffer.read_int(2, 'big', signed=True) == 0
+        if self._buffer.read_int(2, 'big', signed=True) != 0:
+            raise AssertionError
 
         # Read number of bytes (2 HW) and return
         num_bytes = self._buffer.read_int(4, 'big', signed=True)

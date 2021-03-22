@@ -493,13 +493,13 @@ def parse_metar_file(filename, *, year=None, month=None):
     def merge(x, key='     '):
         tmp = []
         for i in x:
-            if (i[0:len(key)] != key) and len(tmp):
+            if (i[0:len(key)] != key) and tmp:
                 yield ' '.join(tmp)
                 tmp = []
             if i.startswith(key):
                 i = i[5:]
             tmp.append(i)
-        if len(tmp):
+        if tmp:
             yield ' '.join(tmp)
 
     # Open the file

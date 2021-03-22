@@ -1502,8 +1502,7 @@ class PlotObs(HasTraits):
             if not dim_stns:
                 raise AttributeError('Station variable not found. Valid variable names are: '
                                      f'{stn_vars}')
-            else:
-                dim_stn = dim_stns[0]
+            dim_stn = dim_stns[0]
 
             # Make sure we only use one observation per station
             self._obsdata = data.groupby(dim_stn).tail(1)

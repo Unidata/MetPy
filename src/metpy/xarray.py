@@ -1071,7 +1071,7 @@ def _assign_crs(xarray_object, cf_attributes, cf_kwargs):
     # Handle argument options
     if cf_attributes is not None and len(cf_kwargs) > 0:
         raise ValueError('Cannot specify both attribute dictionary and kwargs.')
-    elif cf_attributes is None and len(cf_kwargs) == 0:
+    if cf_attributes is None and len(cf_kwargs) == 0:
         raise ValueError('Must specify either attribute dictionary or kwargs.')
     attrs = cf_attributes if cf_attributes is not None else cf_kwargs
 
@@ -1099,7 +1099,7 @@ def _build_y_x(da, tolerance):
     latitude, longitude = da.metpy.coordinates('latitude', 'longitude')
     if latitude.dims != longitude.dims:
         raise ValueError('Latitude and longitude must have same dimensionality')
-    elif latitude.ndim != 2:
+    if latitude.ndim != 2:
         raise ValueError('To build 1D y/x coordinates via assign_y_x, latitude/longitude '
                          'must be 2D')
 

@@ -300,7 +300,7 @@ class SkewT:
         if rect and subplot:
             raise ValueError("Specify only one of `rect' and `subplot', but not both")
 
-        elif rect:
+        if rect:
             self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation)
 
         else:
