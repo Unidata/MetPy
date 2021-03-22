@@ -288,7 +288,7 @@ to download the full example code</p>
 attention to units in our calculations. Unit conversions can still get the best
 of us and have caused more than one major technical disaster, including the
 crash and complete loss of the $327 million Mars Climate Orbiter.</p>
-<p>In MetPy, we use the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#module-pint" title="(in pint v0.16.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pint</span></code></a> library and a custom unit registry to help prevent
+<p>In MetPy, we use the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#module-pint" title="(in pint v0.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pint</span></code></a> library and a custom unit registry to help prevent
 unit mistakes in calculations. That means that every quantity you pass to MetPy
 should have units attached, just like if you were doing the calculation on
 paper! This simplifies the MetPy API by eliminating the need to specify units
@@ -321,7 +321,7 @@ units:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">meters</span>
 </pre></div>
 </div>
-<p>It is also possible to directly construct a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, with a full units string:</p>
+<p>It is also possible to directly construct a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, with a full units string:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="pint.Quantity" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class"><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;sec&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -376,8 +376,8 @@ operation can be performed:</p>
 </div>
 <div class="section" id="converting-units">
 <h2>Converting Units<a class="headerlink" href="#converting-units" title="Permalink to this headline">¶</a></h2>
-<p>Converting a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> between units can be accomplished by using the
-<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="(in pint v0.16.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> method call, which constructs a new <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> in the
+<p>Converting a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> between units can be accomplished by using the
+<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> method call, which constructs a new <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> in the
 desired units:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">mm</span><span class="p">))</span>
 </pre></div>
@@ -386,7 +386,7 @@ desired units:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>25.4 millimeter
 </pre></div>
 </div>
-<p>There is also the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.ito" title="(in pint v0.16.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ito()</span></code></a> method which performs the same operation
+<p>There is also the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.ito" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ito()</span></code></a> method which performs the same operation
 in-place:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mf">5.</span><span class="p">)</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">meter</span>
 <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.ito" title="pint.Quantity.ito" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">a</span><span class="o">.</span><span class="n">ito</span></a><span class="p">(</span><span class="s1">&#39;feet&#39;</span><span class="p">)</span>
@@ -397,7 +397,7 @@ in-place:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.0 3.2808398950131235 6.561679790026247 9.84251968503937 13.123359580052494] foot
 </pre></div>
 </div>
-<p>To simplify units, there is also the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to_base_units" title="(in pint v0.16.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code></a> method,
+<p>To simplify units, there is also the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to_base_units" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code></a> method,
 which converts a quantity to SI units, performing any needed cancellation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lf</span> <span class="o">=</span> <span class="mf">3.34e6</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">Lf</span><span class="p">,</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to_base_units" title="pint.Quantity.to_base_units" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">Lf</span><span class="o">.</span><span class="n">to_base_units</span></a><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -408,8 +408,8 @@ which converts a quantity to SI units, performing any needed cancellation:</p>
 3340000.0 meter ** 2 / second ** 2
 </pre></div>
 </div>
-<p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to_base_units" title="(in pint v0.16.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code></a> can also be done in-place via the
-<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.ito_base_units" title="(in pint v0.16.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ito_base_units()</span></code></a> method.</p>
+<p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to_base_units" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code></a> can also be done in-place via the
+<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.ito_base_units" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ito_base_units()</span></code></a> method.</p>
 <p>By default Pint does not do any more than simple unit simplification, so when you perform
 operations you could get some seemingly odd results:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="mf">10.4</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">inch</span>
@@ -422,7 +422,7 @@ operations you could get some seemingly odd results:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>52.0 centimeter * inch
 </pre></div>
 </div>
-<p>This is another place where <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="(in pint v0.16.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> comes in handy:</p>
+<p>This is another place where <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> comes in handy:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">area</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;m^2&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -521,7 +521,7 @@ ecosystem. The expected error will be
 <em class="xref py py-obj">AttributeError: ‘MaskedArray’ object has no attribute ‘units’</em> or calculation
 functions complaining about expecting a units and getting “dimensionless”.</p></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.013 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.014 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5efd259fad2625b979995a43ebbb8b81/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>
@@ -569,8 +569,8 @@ functions complaining about expecting a units and getting “dimensionless”.</
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 19, 2021 at 18:08:27.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.<br/>
+        Last updated on Mar 22, 2021 at 16:26:31.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>
 </footer>

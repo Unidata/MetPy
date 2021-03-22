@@ -850,9 +850,9 @@ bottom of the layer are not in the data, they are interpolated by default.</p>
 <li><p><strong>args</strong> (<em>array-like</em>) – Atmospheric variable(s) measured at the given pressures</p></li>
 <li><p><strong>height</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Atmospheric heights corresponding to the given pressures. Defaults to using
 heights calculated from <code class="docutils literal notranslate"><span class="pre">pressure</span></code> assuming a standard atmosphere <a class="reference internal" href="../references.html#noaa1976" id="id1"><span>[NOAA1976]</span></a>.</p></li>
-<li><p><strong>bottom</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Bottom of the layer as a pressure or height above the surface pressure. Defaults
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Bottom of the layer as a pressure or height above the surface pressure. Defaults
 to the highest pressure or lowest height given.</p></li>
-<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Thickness of the layer as a pressure or height above the bottom of the layer.
+<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Thickness of the layer as a pressure or height above the bottom of the layer.
 Defaults to 100 hPa.</p></li>
 <li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – Interpolate the top and bottom points if they are not in the given data. Defaults
 to True.</p></li>
@@ -907,8 +907,8 @@ Also, this will return Pint Quantities even when given xarray DataArray profiles
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Mar 19, 2021 at 18:08:27.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.<br/>
+        Last updated on Mar 22, 2021 at 16:26:31.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>
 </footer>
