@@ -123,7 +123,7 @@ Georgia.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.8.8/x64/lib/python3.8/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_boundary_lines_land.zip
+    /opt/hostedtoolcache/Python/3.9.2/x64/lib/python3.9/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_boundary_lines_land.zip
       warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 
 
@@ -132,7 +132,7 @@ Georgia.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.903 seconds)
+   **Total running time of the script:** ( 0 minutes  3.017 seconds)
 
 
 .. _sphx_glr_download_examples_plots_surface_declarative.py:
