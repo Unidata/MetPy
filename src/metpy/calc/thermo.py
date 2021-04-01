@@ -3319,7 +3319,7 @@ def scale_height(temp_bot, temp_top):
     `pint.Quantity`
         Scale height of layer
     """
-    t_bar = 0.5 * (temp_bot + temp_top)
+    t_bar = 0.5 * (temp_bot.to('kelvin') + temp_top.to('kelvin'))
 
     return (mpconsts.Rd * t_bar) / mpconsts.g
 

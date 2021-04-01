@@ -4,6 +4,8 @@
 """Tools to process GEMPAK-formatted products."""
 
 import bisect
+from collections import namedtuple
+from collections.abc import Iterable
 import contextlib
 import ctypes
 from datetime import datetime, timedelta
@@ -17,9 +19,6 @@ import sys
 import numpy as np
 import pyproj
 import xarray as xr
-# from xarray import Variable
-# from xarray.backends.common import AbstractDataStore
-# from xarray.core.utils import FrozenDict
 
 from ._tools import IOBuffer, NamedStruct, open_as_needed
 from ..calc import (hydrostatic_height, mixing_ratio_from_specific_humidity,
@@ -33,12 +32,7 @@ log = logging.getLogger(__name__)
 
 ANLB_SIZE = 128
 BYTES_PER_WORD = 4
-NAVB_SIZE = 256
-PARAM_ATTR = [('name', (4, 's')), ('scale', (1, 'i')),
-              ('offset', (1, 'i')), ('bits', (1, 'i'))]
-USED_FLAG = 9999
-UNUSED_FLAG = -9999
-
+GEMPAK_HEADER = 'GEMPAK DATA MANAGEMENT FILE '
 GEMPROJ_TO_PROJ = {
     'MER': ('merc', 'cyl'),
     'NPS': ('stere', 'azm'),
@@ -55,12 +49,16 @@ GEMPROJ_TO_PROJ = {
     'LEA': ('laea', 'azm'),
     'GNO': ('gnom', 'azm'),
 }
-
 GVCORD_TO_VAR = {
     'PRES': 'p',
     'HGHT': 'z',
     'THTA': 'theta',
 }
+NAVB_SIZE = 256
+PARAM_ATTR = [('name', (4, 's')), ('scale', (1, 'i')),
+              ('offset', (1, 'i')), ('bits', (1, 'i'))]
+USED_FLAG = 9999
+UNUSED_FLAG = -9999
 
 
 class FileTypes(Enum):
@@ -128,10 +126,46 @@ class DataSource(Enum):
     watch_by_county = 7
     unknown = 99
     text = 100
-    raob = 104
+    metar2 = 102
+    ship2 = 103
+    raob_buoy2 = 104
+    synop_raob_vas2 = 105
 
 
-GEMPAK_HEADER = 'GEMPAK DATA MANAGEMENT FILE '
+Grid = namedtuple('Grid', [
+    'GRIDNO',
+    'TYPE',
+    'DATTIM1',
+    'DATTIM2',
+    'PARM',
+    'LEVEL1',
+    'LEVEL2',
+    'COORD',
+])
+
+Sounding = namedtuple('Soungind', [
+    'DTNO',
+    'SNDNO',
+    'DATTIM',
+    'ID',
+    'NUMBER',
+    'LAT',
+    'LON',
+    'ELEV',
+])
+
+Surface = namedtuple('Surface', [
+    'ROW',
+    'COL',
+    'DATTIM',
+    'ID',
+    'NUMBER',
+    'LAT',
+    'LON',
+    'ELEV',
+    'STATE',
+    'COUNTRY',
+])
 
 
 def _word_to_position(word, bytes_per_word=BYTES_PER_WORD):
@@ -273,9 +307,9 @@ def _interp_logp_height(sounding, missing=-9999):
 
         for i in range(maxlev + 1, size):
             if sounding['HGHT'][i] == missing:
-                tt = sounding['TEMP'][i]
-                tdt = sounding['DWPT'][i]
-                pt = sounding['PRES'][i]
+                tt = sounding['TEMP'][i] * units.degC
+                tdt = sounding['DWPT'][i] * units.degC
+                pt = sounding['PRES'][i] * units.hPa
                 if tdb.magnitude == missing:
                     tvb = tb
                 else:
@@ -393,6 +427,8 @@ def _interp_logp_pressure(sounding, missing=-9999):
     ilev = -1
     klev = -1
     size = len(sounding['PRES'])
+    pt = missing
+    zt = missing
     pb = missing
     zb = missing
 
@@ -408,7 +444,7 @@ def _interp_logp_pressure(sounding, missing=-9999):
         if ilev != -1 and klev != -1:
             for j in range(ilev + 1, klev):
                 z = sounding['HGHT'][j]
-                if z != missing:
+                if z != missing and zb != missing and pb != missing:
                     sounding['PRES'][j] = (
                         pb * np.exp((z - zb) * np.log(pt / pb) / (zt - zb))
                     )
@@ -650,25 +686,23 @@ class GempakFile():
 
     @staticmethod
     def _convert_level(level):
-        if level and level >= 0:
+        if (isinstance(level, int)
+           or isinstance(level, float)):
             return level
         else:
             return None
 
     @staticmethod
     def _convert_vertical_coord(coord):
-        if coord:
-            if coord <= 8:
-                return VerticalCoordinates(coord).name.upper()
-            else:
-                return struct.pack('i', coord).decode()
+        if coord <= 8:
+            return VerticalCoordinates(coord).name.upper()
         else:
-            return None
+            return struct.pack('i', coord).decode()
 
     @staticmethod
     def _convert_parms(parm):
         dparm = parm.decode()
-        return dparm.strip() if dparm.strip() else None
+        return dparm.strip() if dparm.strip() else ''
 
     @staticmethod
     def _fortran_ishift(i, shift):
@@ -796,6 +830,21 @@ class GempakGrid(GempakFile):
         for _ in range(1, self.prod_desc.columns + 1):
             if self._buffer.read_int(4, self.endian, False) == USED_FLAG:
                 self.column_headers.append(self._buffer.read_struct(column_headers_fmt))
+
+        self._gdinfo = []
+        for n, head in enumerate(self.column_headers):
+            self._gdinfo.append(
+                Grid(
+                    n,
+                    head.GTM1[0],
+                    head.GDT1 + head.GTM1[1],
+                    head.GDT2 + head.GTM2[1] if head.GDT2 and head.GDTM2 else None,
+                    head.GPM1 + head.GPM2 + head.GPM3,
+                    head.GLV1,
+                    head.GLV2,
+                    head.GVCD,
+                )
+            )
 
         # Coordinates
         if self.navigation_block is not None:
@@ -1003,56 +1052,145 @@ class GempakGrid(GempakFile):
             raise NotImplementedError('No method for unknown grid packing {}'
                                       .format(packing_type.name))
 
-    def to_xarray(self):
-        """Output GempakGrids as a list of xarry DataArrays."""
+    def gdinfo(self):
+        """Return grid information."""
+        return self._gdinfo
+
+    def gdxarray(self, parameter=None, date_time=None, coordinate=None,
+                 level=None, date_time2=None, level2=None):
+        """Select grids and output as list of xarray DataArrays."""
+        if parameter is not None:
+            if (not isinstance(parameter, Iterable)
+               or isinstance(parameter, str)):
+                parameter = [parameter]
+            parameter = [p.upper() for p in parameter]
+
+        if date_time is not None:
+            if (not isinstance(date_time, Iterable)
+               or isinstance(date_time, str)):
+                date_time = [date_time]
+            for i, dt in enumerate(date_time):
+                if isinstance(dt, str):
+                    date_time[i] = datetime.strptime(dt, '%Y%m%d%H%M')
+
+        if coordinate is not None:
+            if (not isinstance(coordinate, Iterable)
+               or isinstance(coordinate, str)):
+                coordinate = [coordinate]
+            coordinate = [c.upper() for c in coordinate]
+
+        if level is not None:
+            if not isinstance(level, Iterable):
+                level = [level]
+
+        if date_time2 is not None:
+            if (not isinstance(date_time2, Iterable)
+               or isinstance(date_time2, str)):
+                date_time2 = [date_time2]
+            for i, dt in enumerate(date_time2):
+                if isinstance(dt, str):
+                    date_time2[i] = datetime.strptime(dt, '%Y%m%d%H%M')
+
+        if level2 is not None:
+            if not isinstance(level2, Iterable):
+                level2 = [level2]
+
+        # Figure out which columns to extract from the file
+        matched = self._gdinfo.copy()
+
+        if parameter is not None:
+            matched = filter(
+                lambda grid: grid if grid.PARM in parameter else False,
+                matched
+            )
+
+        if date_time is not None:
+            matched = filter(
+                lambda grid: grid if grid.DATTIM1 in date_time else False,
+                matched
+            )
+
+        if coordinate is not None:
+            matched = filter(
+                lambda grid: grid if grid.COORD in coordinate else False,
+                matched
+            )
+
+        if level is not None:
+            matched = filter(
+                lambda grid: grid if grid.LEVEL1 in level else False,
+                matched
+            )
+
+        if date_time2 is not None:
+            matched = filter(
+                lambda grid: grid if grid.DATTIM2 in date_time2 else False,
+                matched
+            )
+
+        if level2 is not None:
+            matched = filter(lambda grid: grid if grid.LEVEL2 in level2 else False, matched)
+
+        matched = list(matched)
+
+        if len(matched) < 1:
+            raise RuntimeError('No grids were matched.')
+
+        gridno = [g.GRIDNO for g in matched]
+
         grids = []
+        irow = 0  # Only one row for grids
         for icol, col_head in enumerate(self.column_headers):
-            for irow, _row_head in enumerate(self.row_headers):
-                for iprt, part in enumerate(self.parts):
-                    pointer = (self.prod_desc.data_block_ptr
-                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
-                               + (icol * self.prod_desc.parts + iprt))
-                    self._buffer.jump_to(self._start, _word_to_position(pointer))
-                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
-                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
-                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
-                    data_header = self._buffer.set_mark()
-                    self._buffer.jump_to(data_header,
-                                         _word_to_position(part.header_length + 1))
-                    packing_type = PackingType(self._buffer.read_int(4, self.endian, False))
+            if icol not in gridno:
+                continue
+            for iprt, part in enumerate(self.parts):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts + iprt))
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                data_header = self._buffer.set_mark()
+                self._buffer.jump_to(data_header,
+                                     _word_to_position(part.header_length + 1))
+                packing_type = PackingType(self._buffer.read_int(4, self.endian, False))
 
-                    ftype, ftime = col_head.GTM1
-                    init = col_head.GDT1
-                    valid = init + ftime
-                    gvcord = col_head.GVCD.lower() if col_head.GVCD is not None else 'none'
-                    var = (GVCORD_TO_VAR[col_head.GPM1]
-                           if col_head.GPM1 in GVCORD_TO_VAR
-                           else col_head.GPM1.lower()
-                           )
-                    data = self._unpack_grid(packing_type, part)
-                    if data is not None:
-                        if data.ndim < 2:
-                            data = np.ma.array(data.reshape((self.ky, self.kx)),
-                                               mask=data == self.prod_desc.missing_float)
-                        else:
-                            data = np.ma.array(data, mask=data == self.prod_desc.missing_float)
-
-                        xrda = xr.DataArray(
-                            data=data[np.newaxis, np.newaxis, ...],
-                            coords={
-                                'time': [valid],
-                                gvcord: [col_head.GLV1],
-                                'x': self.x,
-                                'y': self.y,
-                            },
-                            dims=['time', gvcord, 'y', 'x'],
-                            name=var,
-                            attrs=self.crs.to_cf(),
-                        )
-                        grids.append(xrda)
-
+                full_name = col_head.GPM1 + col_head.GPM2 + col_head.GPM3
+                ftype, ftime = col_head.GTM1
+                valid = col_head.GDT1 + ftime
+                gvcord = col_head.GVCD.lower() if col_head.GVCD is not None else 'none'
+                var = (GVCORD_TO_VAR[full_name]
+                       if full_name in GVCORD_TO_VAR
+                       else full_name.lower()
+                       )
+                data = self._unpack_grid(packing_type, part)
+                if data is not None:
+                    if data.ndim < 2:
+                        data = np.ma.array(data.reshape((self.ky, self.kx)),
+                                           mask=data == self.prod_desc.missing_float)
                     else:
-                        log.warning('Bad grid for %s', col_head.GPM1)
+                        data = np.ma.array(data, mask=data == self.prod_desc.missing_float)
+
+                    xrda = xr.DataArray(
+                        data=data[np.newaxis, np.newaxis, ...],
+                        coords={
+                            'time': [valid],
+                            gvcord: [col_head.GLV1],
+                            'x': self.x,
+                            'y': self.y,
+                        },
+                        dims=['time', gvcord, 'y', 'x'],
+                        name=var,
+                        attrs={
+                            **self.crs.to_cf(),
+                            'grid_type': ftype,
+                        }
+                    )
+                    grids.append(xrda)
+
+                else:
+                    log.warning('Bad grid for %s', col_head.GPM1)
         return grids
 
 
@@ -1097,10 +1235,33 @@ class GempakSounding(GempakFile):
 
         self.merged = 'SNDT' in (part.name for part in self.parts)
 
-    def _unpack_merged(self):
+        self._sninfo = []
+        for irow, row_head in enumerate(self.row_headers):
+            for icol, col_head in enumerate(self.column_headers):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts))
+
+                if pointer:
+                    self._sninfo.append(
+                        Sounding(
+                            irow,
+                            icol,
+                            datetime.combine(row_head.DATE, row_head.TIME),
+                            col_head.STID,
+                            col_head.STNM,
+                            col_head.SLAT,
+                            col_head.SLON,
+                            col_head.SELV,
+                        )
+                    )
+
+    def _unpack_merged(self, sndno):
         soundings = []
         for irow, row_head in enumerate(self.row_headers):
             for icol, col_head in enumerate(self.column_headers):
+                if (irow, icol) not in sndno:
+                    continue
                 sounding = {'STID': col_head.STID,
                             'STNM': col_head.STNM,
                             'SLAT': col_head.SLAT,
@@ -1152,10 +1313,12 @@ class GempakSounding(GempakFile):
                 soundings.append(sounding)
         return soundings
 
-    def _unpack_unmerged(self):
+    def _unpack_unmerged(self, sndno):
         soundings = []
         for irow, row_head in enumerate(self.row_headers):
             for icol, col_head in enumerate(self.column_headers):
+                if (irow, icol) not in sndno:
+                    continue
                 sounding = {'STID': col_head.STID,
                             'STNM': col_head.STNM,
                             'SLAT': col_head.SLAT,
@@ -1189,6 +1352,11 @@ class GempakSounding(GempakFile):
                         packed_buffer = (
                             self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
                         )
+                    elif part.data_type == DataTypes.character:
+                        packed_buffer_fmt = '{}s'.format(lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
                     else:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
@@ -1198,11 +1366,14 @@ class GempakSounding(GempakFile):
                     sounding[part.name] = {}
                     for iprm, param in enumerate(parameters['name']):
                         if part.data_type == DataTypes.realpack:
-                            # According to SNPRMF GEMPAK documentation, unmerged data
-                            # should not have this type of packing. This exception will
-                            # be kept here just in case that is incorrect.
-                            raise NotImplementedError('No method to unpack unmerged '
-                                                      'sounding integers.')
+                            unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                            for iprm, param in enumerate(parameters['name']):
+                                sounding[part.name][param] = unpacked[iprm::nparms]
+                        elif part.data_type == DataTypes.character:
+                            for iprm, param in enumerate(parameters['name']):
+                                sounding[part.name][param] = (
+                                    packed_buffer[iprm].decode().strip()
+                                )
                         else:
                             sounding[part.name][param] = packed_buffer[iprm::nparms]
 
@@ -1239,9 +1410,52 @@ class GempakSounding(GempakFile):
         num_above_sigw_levels = len(parts['PPDD']['SPED']) if 'PPDD' in parts else 0
         num_above_man_wind_levels = len(parts['PPCC']['SPED']) if 'PPCC' in parts else 0
 
+        total_data = (num_man_levels
+                      + num_man_wind_levels
+                      + num_trop_levels
+                      + num_max_wind_levels
+                      + num_sigt_levels
+                      + num_sigw_levels
+                      + num_above_man_levels
+                      + num_above_trop_levels
+                      + num_above_max_wind_levels
+                      + num_above_sigt_levels
+                      + num_above_sigw_levels
+                      + num_above_man_wind_levels
+                      )
+        if total_data == 0:
+            return None
+
         # Check SIG wind vertical coordinate
-        ppbb_is_z = 'HGHT' in parts['PPBB']
-        ppdd_is_z = 'HGHT' in parts['PPDD']
+        # For some reason, the pressure data can get put into the
+        # height array. Perhaps this is just a artifact of Python,
+        # as GEMPAK itself just uses array indices without any
+        # names involved. Since the first valid pressure of the
+        # array will be negative in the case of pressure coordinates,
+        # we can check for it and place data in the appropriate array.
+        ppbb_is_z = True
+        if num_sigw_levels:
+            if 'PRES' in parts['PPBB']:
+                ppbb_is_z = False
+            else:
+                for z in parts['PPBB']['HGHT']:
+                    if z != self.prod_desc.missing_float:
+                        if z < 0:
+                            ppbb_is_z = False
+                            parts['PPBB']['PRES'] = parts['PPBB']['HGHT']
+                            break
+
+        ppdd_is_z = True
+        if num_above_sigw_levels:
+            if 'PRES' in parts['PPDD']:
+                ppdd_is_z = False
+            else:
+                for z in parts['PPDD']['HGHT']:
+                    if z != self.prod_desc.missing_float:
+                        if z < 0:
+                            ppdd_is_z = False
+                            parts['PPDD']['PRES'] = parts['PPDD']['HGHT']
+                            break
 
         # Process surface data
         if num_man_levels < 1:
@@ -1262,14 +1476,15 @@ class GempakSounding(GempakFile):
         merged['HGHT'][0] = merged['SELV']
 
         first_man_p = self.prod_desc.missing_float
-        for mp, mt, mz in zip(parts['TTAA']['PRES'],
-                              parts['TTAA']['PRES'],
-                              parts['TTAA']['PRES']):
-            if (mp != self.prod_desc.missing_float
-               and mt != self.prod_desc.missing_float
-               and mz != self.prod_desc.missing_float):
-                first_man_p = mp
-                break
+        if num_man_levels >= 1:
+            for mp, mt, mz in zip(parts['TTAA']['PRES'],
+                                  parts['TTAA']['TEMP'],
+                                  parts['TTAA']['HGHT']):
+                if (mp != self.prod_desc.missing_float
+                   and mt != self.prod_desc.missing_float
+                   and mz != self.prod_desc.missing_float):
+                    first_man_p = mp
+                    break
 
         surface_p = merged['PRES'][0]
         if surface_p > 1060:
@@ -1285,7 +1500,7 @@ class GempakSounding(GempakFile):
             merged['DRCT'][0] = self.prod_desc.missing_float
             merged['SPED'][0] = self.prod_desc.missing_float
 
-        if (num_above_sigt_levels >= 1
+        if (num_sigt_levels >= 1
            and parts['TTBB']['PRES'][0] != self.prod_desc.missing_float
            and parts['TTBB']['TEMP'][0] != self.prod_desc.missing_float):
             first_man_p = merged['PRES'][0]
@@ -1297,13 +1512,13 @@ class GempakSounding(GempakFile):
                 merged['TEMP'][0] = parts['TTBB']['TEMP'][0]
 
         if ppbb_is_z:
-            if (num_above_sigw_levels >= 1
+            if (num_sigw_levels >= 1
                and parts['PPBB']['HGHT'][0] == 0
                and parts['PPBB']['DRCT'][0] != self.prod_desc.missing_float):
                 merged['DRCT'][0] = parts['PPBB']['DRCT'][0]
                 merged['SPED'][0] = parts['PPBB']['SPED'][0]
         else:
-            if (num_above_sigw_levels >= 1
+            if (num_sigw_levels >= 1
                and parts['PPBB']['PRES'][0] != self.prod_desc.missing_float
                and parts['PPBB']['DRCT'][0] != self.prod_desc.missing_float):
                 first_man_p = merged['PRES'][0]
@@ -1333,7 +1548,7 @@ class GempakSounding(GempakFile):
                 else:
                     bgl += 1
 
-            for i in range(1, num_above_man_levels):
+            for i in range(num_above_man_levels):
                 if (parts['TTCC']['PRES'][i] < plast
                    and parts['TTCC']['PRES'][i] != self.prod_desc.missing_float
                    and parts['TTCC']['TEMP'][i] != self.prod_desc.missing_float
@@ -1343,7 +1558,7 @@ class GempakSounding(GempakFile):
                     plast = merged['PRES'][-1]
 
         # Merge MAN wind
-        if num_man_wind_levels >= 1 and num_man_levels >= 2:
+        if num_man_wind_levels >= 1 and num_man_levels >= 1:
             for iwind, pres in enumerate(parts['PPAA']['PRES']):
                 if pres in merged['PRES'][1:]:
                     loc = merged['PRES'].index(pres)
@@ -1356,10 +1571,13 @@ class GempakSounding(GempakFile):
                     if loc >= size + 1:
                         loc = -1
                     merged['PRES'].insert(loc, pres)
+                    merged['TEMP'].insert(loc, self.prod_desc.missing_float)
+                    merged['DWPT'].insert(loc, self.prod_desc.missing_float)
                     merged['DRCT'].insert(loc, parts['PPAA']['DRCT'][iwind])
                     merged['SPED'].insert(loc, parts['PPAA']['SPED'][iwind])
+                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
 
-        if num_above_man_wind_levels >= 1 and num_man_levels >= 2:
+        if num_above_man_wind_levels >= 1 and num_man_levels >= 1:
             for iwind, pres in enumerate(parts['PPCC']['PRES']):
                 if pres in merged['PRES'][1:]:
                     loc = merged['PRES'].index(pres)
@@ -1372,8 +1590,11 @@ class GempakSounding(GempakFile):
                     if loc >= size + 1:
                         loc = -1
                     merged['PRES'].insert(loc, pres)
+                    merged['TEMP'].insert(loc, self.prod_desc.missing_float)
+                    merged['DWPT'].insert(loc, self.prod_desc.missing_float)
                     merged['DRCT'].insert(loc, parts['PPCC']['DRCT'][iwind])
                     merged['SPED'].insert(loc, parts['PPCC']['SPED'][iwind])
+                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
 
         # Merge TROP
         if num_trop_levels >= 1 or num_above_trop_levels >= 1:
@@ -1637,8 +1858,8 @@ class GempakSounding(GempakFile):
         if ppbb_is_z or ppdd_is_z:
             nsgw = num_sigw_levels if ppbb_is_z else 0
             nasw = num_above_sigw_levels if ppdd_is_z else 0
-            if ((nsgw >= 1 and parts['PPBB']['HGHT'][0] == 0)
-               or parts['PPBB']['HGHT'][0] == merged['HGHT'][0]):
+            if (nsgw >= 1 and (parts['PPBB']['HGHT'][0] == 0
+               or parts['PPBB']['HGHT'][0] == merged['HGHT'][0])):
                 istart = 1
             else:
                 istart = 0
@@ -1724,6 +1945,8 @@ class GempakSounding(GempakFile):
                         merged['TEMP'].insert(loc, self.prod_desc.missing_float)
                         merged['DWPT'].insert(loc, self.prod_desc.missing_float)
                         size += 1
+                        ilev += 1
+                        zold = hght
 
                 if not above and i == nsgw - 1:
                     above = True
@@ -1732,8 +1955,8 @@ class GempakSounding(GempakFile):
                 else:
                     i += 1
 
-        # Interpolate misssing pressure with height
-        _interp_logp_pressure(merged, self.prod_desc.missing_float)
+            # Interpolate misssing pressure with height
+            _interp_logp_pressure(merged, self.prod_desc.missing_float)
 
         # Interpolate missing data
         _interp_logp_data(merged, self.prod_desc.missing_float)
@@ -1753,27 +1976,99 @@ class GempakSounding(GempakFile):
                         merged['HGHT'].insert(loc, parts['TTAA']['HGHT'][ibgl])
                         size += 1
 
+        # Add text data, if it is included
+        if 'TXTA' in parts:
+            merged['TXTA'] = parts['TXTA']['TEXT']
+        if 'TXTB' in parts:
+            merged['TXTB'] = parts['TXTB']['TEXT']
+        if 'TXTC' in parts:
+            merged['TXTC'] = parts['TXTC']['TEXT']
+        if 'TXPB' in parts:
+            merged['TXPB'] = parts['TXPB']['TEXT']
+
         return merged
 
-    def to_xarray(self):
-        """Output GempakSoundings as a list of xarry Datasets."""
-        soundings = []
+    def snxarray(self, station_id=None, station_number=None,
+                 date_time=None):
+        """Select soundings and output as list of xarray Datasets."""
+        if station_id is not None:
+            if (not isinstance(station_id, Iterable)
+               or isinstance(station_id, str)):
+                station_id = [station_id]
+            station_id = [c.upper() for c in station_id]
 
-        if not self.merged:
-            data = self._unpack_unmerged()
+        if station_number is not None:
+            if not isinstance(station_number, Iterable):
+                station_number = [station_number]
+            station_number = [int(sn) for sn in station_number]
+
+        if date_time is not None:
+            if (not isinstance(date_time, Iterable)
+               or isinstance(date_time, str)):
+                date_time = [date_time]
+            for i, dt in enumerate(date_time):
+                if isinstance(dt, str):
+                    date_time[i] = datetime.strptime(dt, '%Y%m%d%H%M')
+
+        # Figure out which columns to extract from the file
+        matched = self._sninfo.copy()
+
+        if station_id is not None:
+            matched = filter(
+                lambda grid: grid if grid.ID in station_id else False,
+                matched
+            )
+
+        if station_number is not None:
+            matched = filter(
+                lambda grid: grid if grid.NUMBER in station_number else False,
+                matched
+            )
+
+        if date_time is not None:
+            matched = filter(
+                lambda grid: grid if grid.DATTIM in date_time else False,
+                matched
+            )
+
+        matched = list(matched)
+
+        if len(matched) < 1:
+            raise RuntimeError('No grids were matched.')
+
+        sndno = [(s.DTNO, s.SNDNO) for s in matched]
+
+        if self.merged:
+            data = self._unpack_merged(sndno)
         else:
-            data = self._unpack_merged()
+            data = self._unpack_unmerged(sndno)
 
+        soundings = []
         for snd in data:
-            if 'PRES' not in snd:
+            if snd is None or 'PRES' not in snd:
                 continue
+            station_pressure = snd['PRES'][0]
+            radat_text = {}
             attrs = {
                 'station_id': snd.pop('STID'),
                 'station_number': snd.pop('STNM'),
                 'lat': snd.pop('SLAT'),
                 'lon': snd.pop('SLON'),
                 'elevation': snd.pop('SELV'),
+                'station_pressure': station_pressure,
             }
+
+            if 'TXTA' in snd:
+                radat_text['txta'] = snd.pop('TXTA')
+            if 'TXTB' in snd:
+                radat_text['txtb'] = snd.pop('TXTB')
+            if 'TXTC' in snd:
+                radat_text['txtc'] = snd.pop('TXTC')
+            if 'TXPB' in snd:
+                radat_text['txpb'] = snd.pop('TXPB')
+            if radat_text:
+                attrs['RADAT'] = radat_text
+
             dt = datetime.combine(snd.pop('DATE'), snd.pop('TIME'))
             pres = np.array(snd.pop('PRES'))
 
@@ -1787,6 +2082,9 @@ class GempakSounding(GempakFile):
                               coords={'time': np.atleast_1d(dt), 'pres': pres},
                               attrs=attrs)
 
+            # Sort to fix GEMPAK surface data at first level
+            xrds = xrds.sortby('pres', ascending=False)
+
             soundings.append(xrds)
         return soundings
 
@@ -1794,4 +2092,427 @@ class GempakSounding(GempakFile):
 class GempakSurface(GempakFile):
     """Subclass of GempakFile specific to GEMPAK surface data."""
 
-    pass
+    def __init__(self, file, *args, **kwargs):
+        super().__init__(file)
+
+        # Row Headers
+        self._buffer.jump_to(self._start, _word_to_position(self.prod_desc.row_headers_ptr))
+        self.row_headers = []
+        row_headers_info = self._key_types(self.row_keys)
+        row_headers_info.extend([(None, None)])
+        row_headers_fmt = NamedStruct(row_headers_info, self.prefmt, 'RowHeaders')
+        for _ in range(1, self.prod_desc.rows + 1):
+            if self._buffer.read_int(4, self.endian, False) == USED_FLAG:
+                self.row_headers.append(self._buffer.read_struct(row_headers_fmt))
+
+        # Column Headers
+        self._buffer.jump_to(self._start, _word_to_position(self.prod_desc.column_headers_ptr))
+        self.column_headers = []
+        column_headers_info = self._key_types(self.column_keys)
+        column_headers_info.extend([(None, None)])
+        column_headers_fmt = NamedStruct(column_headers_info, self.prefmt, 'ColumnHeaders')
+        for _ in range(1, self.prod_desc.columns + 1):
+            if self._buffer.read_int(4, self.endian, False) == USED_FLAG:
+                self.column_headers.append(self._buffer.read_struct(column_headers_fmt))
+
+        self._get_surface_type()
+
+        self._sfinfo = []
+        if self.surface_type == 'standard':
+            for irow, row_head in enumerate(self.row_headers):
+                for icol, col_head in enumerate(self.column_headers):
+                    pointer = (self.prod_desc.data_block_ptr
+                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                               + (icol * self.prod_desc.parts))
+
+                    if pointer:
+                        self._sfinfo.append(
+                            Surface(
+                                irow,
+                                icol,
+                                datetime.combine(row_head.DATE, row_head.TIME),
+                                col_head.STID,
+                                col_head.STNM,
+                                col_head.SLAT,
+                                col_head.SLON,
+                                col_head.SELV,
+                                col_head.STAT,
+                                col_head.COUN,
+                            )
+                        )
+        elif self.surface_type == 'ship':
+            irow = 0
+            for icol, col_head in enumerate(self.column_headers):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts))
+
+                if pointer:
+                    self._sfinfo.append(
+                        Surface(
+                            irow,
+                            icol,
+                            datetime.combine(col_head.DATE, col_head.TIME),
+                            col_head.STID,
+                            col_head.STNM,
+                            col_head.SLAT,
+                            col_head.SLON,
+                            col_head.SELV,
+                            col_head.STAT,
+                            col_head.COUN,
+                        )
+                    )
+        elif self.surface_type == 'climate':
+            for icol, col_head in enumerate(self.column_headers):
+                for irow, row_head in enumerate(self.row_headers):
+                    pointer = (self.prod_desc.data_block_ptr
+                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                               + (icol * self.prod_desc.parts))
+
+                    if pointer:
+                        self._sfinfo.append(
+                            Surface(
+                                irow,
+                                icol,
+                                datetime.combine(col_head.DATE, col_head.TIME),
+                                row_head.STID,
+                                row_head.STNM,
+                                row_head.SLAT,
+                                row_head.SLON,
+                                row_head.SELV,
+                                row_head.STAT,
+                                row_head.COUN,
+                            )
+                        )
+        else:
+            raise TypeError('Unknown surface type {}'.format(self.surface_type))
+
+    def _get_surface_type(self):
+        if len(self.row_headers) == 1:
+            self.surface_type = 'ship'
+        elif 'DATE' in self.row_keys:
+            self.surface_type = 'standard'
+        elif 'DATE' in self.column_keys:
+            self.surface_type = 'climate'
+        else:
+            raise RuntimeError('Unknown surface data type')
+
+    def _key_types(self, keys):
+        header_info = [(key, '4s', self._decode_strip) if key == 'STID'
+                       else (key, 'i') if key == 'STNM'
+                       else (key, 'i', lambda x: x / 100) if key == 'SLAT'
+                       else (key, 'i', lambda x: x / 100) if key == 'SLON'
+                       else (key, 'i') if key == 'SELV'
+                       else (key, '4s', self._decode_strip) if key == 'STAT'
+                       else (key, '4s', self._decode_strip) if key == 'COUN'
+                       else (key, '4s', self._decode_strip) if key == 'STD2'
+                       else (key, 'i', self._make_date) if key == 'DATE'
+                       else (key, 'i', self._make_time) if key == 'TIME'
+                       else (key, 'i')
+                       for key in keys]
+
+        return header_info
+
+    def _unpack_climate(self, sfcno):
+        stations = []
+        for icol, col_head in enumerate(self.column_headers):
+            for irow, row_head in enumerate(self.row_headers):
+                if (irow, icol) not in sfcno:
+                    continue
+                station = {'STID': row_head.STID,
+                           'STNM': row_head.STNM,
+                           'SLAT': row_head.SLAT,
+                           'SLON': row_head.SLON,
+                           'SELV': row_head.SELV,
+                           'STAT': row_head.STAT,
+                           'STD2': row_head.STD2,
+                           'SPRI': row_head.SPRI,
+                           'DATE': col_head.DATE,
+                           'TIME': col_head.TIME,
+                           }
+                for iprt, part in enumerate(self.parts):
+                    pointer = (self.prod_desc.data_block_ptr
+                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                               + (icol * self.prod_desc.parts + iprt))
+                    self._buffer.jump_to(self._start, _word_to_position(pointer))
+                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                    if not self.data_ptr:
+                        continue
+                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                    data_header = self._buffer.set_mark()
+                    self._buffer.jump_to(data_header,
+                                         _word_to_position(part.header_length + 1))
+                    lendat = self.data_header_length - part.header_length
+
+                    if part.data_type == DataTypes.real:
+                        packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
+                    elif part.data_type == DataTypes.realpack:
+                        packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
+                    elif part.data_type == DataTypes.character:
+                        packed_buffer_fmt = '{}s'.format(lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
+                    else:
+                        raise NotImplementedError('No methods for data type {}'
+                                                  .format(part.data_type))
+
+                    parameters = self.parameters[iprt]
+
+                    if part.data_type == DataTypes.realpack:
+                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                        for iprm, param in enumerate(parameters['name']):
+                            station[param] = unpacked[iprm]
+                    elif part.data_type == DataTypes.character:
+                        for iprm, param in enumerate(parameters['name']):
+                            station[param] = packed_buffer[iprm].decode().strip()
+                    else:
+                        for iprm, param in enumerate(parameters['name']):
+                            station[param] = packed_buffer[iprm]
+
+                stations.append(station)
+        return stations
+
+    def _unpack_ship(self, sfcno):
+        stations = []
+        irow = 0
+        for icol, col_head in enumerate(self.column_headers):
+            if (irow, icol) not in sfcno:
+                continue
+            station = {'STID': col_head.STID,
+                       'STNM': col_head.STNM,
+                       'SLAT': col_head.SLAT,
+                       'SLON': col_head.SLON,
+                       'SELV': col_head.SELV,
+                       'STAT': col_head.STAT,
+                       'STD2': col_head.STD2,
+                       'SPRI': col_head.SPRI,
+                       'DATE': col_head.DATE,
+                       'TIME': col_head.TIME,
+                       }
+            for iprt, part in enumerate(self.parts):
+                pointer = (self.prod_desc.data_block_ptr
+                           + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                           + (icol * self.prod_desc.parts + iprt))
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                if not self.data_ptr:
+                    continue
+                self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                data_header = self._buffer.set_mark()
+                self._buffer.jump_to(data_header,
+                                     _word_to_position(part.header_length + 1))
+                lendat = self.data_header_length - part.header_length
+
+                if part.data_type == DataTypes.real:
+                    packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
+                    packed_buffer = (
+                        self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                    )
+                elif part.data_type == DataTypes.realpack:
+                    packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
+                    packed_buffer = (
+                        self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                    )
+                elif part.data_type == DataTypes.character:
+                    packed_buffer_fmt = '{}s'.format(lendat)
+                    packed_buffer = (
+                        self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                    )
+                else:
+                    raise NotImplementedError('No methods for data type {}'
+                                              .format(part.data_type))
+
+                parameters = self.parameters[iprt]
+
+                if part.data_type == DataTypes.realpack:
+                    unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = unpacked[iprm]
+                elif part.data_type == DataTypes.character:
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = packed_buffer[iprm].decode().strip()
+                else:
+                    for iprm, param in enumerate(parameters['name']):
+                        station[param] = packed_buffer[iprm]
+
+            stations.append(station)
+        return stations
+
+    def _unpack_standard(self, sfcno):
+        stations = []
+        for irow, row_head in enumerate(self.row_headers):
+            for icol, col_head in enumerate(self.column_headers):
+                if (irow, icol) not in sfcno:
+                    continue
+                station = {'STID': col_head.STID,
+                           'STNM': col_head.STNM,
+                           'SLAT': col_head.SLAT,
+                           'SLON': col_head.SLON,
+                           'SELV': col_head.SELV,
+                           'STAT': col_head.STAT,
+                           'STD2': col_head.STD2,
+                           'SPRI': col_head.SPRI,
+                           'DATE': row_head.DATE,
+                           'TIME': row_head.TIME,
+                           }
+                for iprt, part in enumerate(self.parts):
+                    pointer = (self.prod_desc.data_block_ptr
+                               + (irow * self.prod_desc.columns * self.prod_desc.parts)
+                               + (icol * self.prod_desc.parts + iprt))
+                    self._buffer.jump_to(self._start, _word_to_position(pointer))
+                    self.data_ptr = self._buffer.read_int(4, self.endian, False)
+                    if not self.data_ptr:
+                        continue
+                    self._buffer.jump_to(self._start, _word_to_position(self.data_ptr))
+                    self.data_header_length = self._buffer.read_int(4, self.endian, False)
+                    data_header = self._buffer.set_mark()
+                    self._buffer.jump_to(data_header,
+                                         _word_to_position(part.header_length + 1))
+                    lendat = self.data_header_length - part.header_length
+
+                    if part.data_type == DataTypes.real:
+                        packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
+                    elif part.data_type == DataTypes.realpack:
+                        packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
+                    elif part.data_type == DataTypes.character:
+                        packed_buffer_fmt = '{}s'.format(lendat)
+                        packed_buffer = (
+                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
+                        )
+                    else:
+                        raise NotImplementedError('No methods for data type {}'
+                                                  .format(part.data_type))
+
+                    parameters = self.parameters[iprt]
+
+                    if part.data_type == DataTypes.realpack:
+                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                        for iprm, param in enumerate(parameters['name']):
+                            station[param] = unpacked[iprm]
+                    elif part.data_type == DataTypes.character:
+                        for iprm, param in enumerate(parameters['name']):
+                            station[param] = packed_buffer[iprm].decode().strip()
+                    else:
+                        for iprm, param in enumerate(parameters['name']):
+                            station[param] = packed_buffer[iprm]
+
+                stations.append(station)
+        return stations
+
+    def sfjson(self, station_id=None, station_number=None,
+               date_time=None, state=None, country=None):
+        """Select surface stations and output as JSON."""
+        if station_id is not None:
+            if (not isinstance(station_id, Iterable)
+               or isinstance(station_id, str)):
+                station_id = [station_id]
+                station_id = [c.upper() for c in station_id]
+
+        if station_number is not None:
+            if not isinstance(station_number, Iterable):
+                station_number = [station_number]
+                station_number = [int(sn) for sn in station_number]
+
+        if date_time is not None:
+            if (not isinstance(date_time, Iterable)
+               or isinstance(date_time, str)):
+                date_time = [date_time]
+            for i, dt in enumerate(date_time):
+                if isinstance(dt, str):
+                    date_time[i] = datetime.strptime(dt, '%Y%m%d%H%M')
+
+        if state is not None:
+            if (not isinstance(state, Iterable)
+               or isinstance(state, str)):
+                state = [state]
+                state = [s.upper() for s in state]
+
+        if country is not None:
+            if (not isinstance(country, Iterable)
+               or isinstance(country, str)):
+                country = [country]
+                country = [c.upper() for c in country]
+
+        # Figure out which columns to extract from the file
+        matched = self._sfinfo.copy()
+
+        if station_id is not None:
+            matched = filter(
+                lambda grid: grid if grid.ID in station_id else False,
+                matched
+            )
+
+        if station_number is not None:
+            matched = filter(
+                lambda grid: grid if grid.NUMBER in station_number else False,
+                matched
+            )
+
+        if date_time is not None:
+            matched = filter(
+                lambda grid: grid if grid.DATTIM in date_time else False,
+                matched
+            )
+
+        if state is not None:
+            matched = filter(
+                lambda grid: grid if grid.STATE in state else False,
+                matched
+            )
+
+        if country is not None:
+            matched = filter(
+                lambda grid: grid if grid.COUNTRY in country else False,
+                matched
+            )
+
+        matched = list(matched)
+
+        if len(matched) < 1:
+            raise RuntimeError('No grids were matched.')
+
+        sfcno = [(s.ROW, s.COL) for s in matched]
+
+        if self.surface_type == 'standard':
+            data = self._unpack_standard(sfcno)
+        elif self.surface_type == 'ship':
+            data = self._unpack_ship(sfcno)
+        elif self.surface_type == 'climate':
+            data = self._unpack_climate(sfcno)
+
+        stnarr = []
+        for stn in data:
+            stnobj = {}
+            stnobj['properties'] = {}
+            stnobj['values'] = {}
+            stnobj['properties']['date_time'] = datetime.combine(stn.pop('DATE'),
+                                                                 stn.pop('TIME'))
+            stnobj['properties']['station_id'] = stn.pop('STID')
+            stnobj['properties']['station_number'] = stn.pop('STNM')
+            stnobj['properties']['longitude'] = stn.pop('SLON')
+            stnobj['properties']['latitude'] = stn.pop('SLAT')
+            stnobj['properties']['elevation'] = stn.pop('SELV')
+            stnobj['properties']['state'] = stn.pop('STAT')
+            stnobj['properties']['station_id_alt'] = stn.pop('STD2')
+            stnobj['properties']['priority'] = stn.pop('SPRI')
+            if stn:
+                for name, ob in stn.items():
+                    stnobj['values'][name.lower()] = ob
+                stnarr.append(stnobj)
+
+        return stnarr
