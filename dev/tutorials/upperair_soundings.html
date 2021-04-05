@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Upper Air Sounding Tutorial &#8212; MetPy 1.0dev</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
@@ -272,7 +273,7 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-upperair-soundings-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="upper-air-sounding-tutorial">
+<section class="sphx-glr-example-title" id="upper-air-sounding-tutorial">
 <span id="sphx-glr-tutorials-upperair-soundings-py"></span><h1>Upper Air Sounding Tutorial<a class="headerlink" href="#upper-air-sounding-tutorial" title="Permalink to this headline">¶</a></h1>
 <p>Upper air analysis is a staple of many synoptic and mesoscale analysis
 problems. In this tutorial we will gather weather balloon data, plot it,
@@ -290,7 +291,7 @@ air weather service guide.</p>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
-<div class="section" id="getting-data">
+<section id="getting-data">
 <h2>Getting Data<a class="headerlink" href="#getting-data" title="Permalink to this headline">¶</a></h2>
 <p>Upper air data can be obtained using the siphon package, but for this tutorial we will use
 some of MetPy’s sample data. This event is the Veterans Day tornado outbreak in 2002.</p>
@@ -315,8 +316,8 @@ some of MetPy’s sample data. This event is the Veterans Day tornado outbreak i
 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="thermodynamic-calculations">
+</section>
+<section id="thermodynamic-calculations">
 <h2>Thermodynamic Calculations<a class="headerlink" href="#thermodynamic-calculations" title="Permalink to this headline">¶</a></h2>
 <p>Often times we will want to calculate some thermodynamic parameters of a
 sounding. The MetPy calc module has many such calculations already implemented!</p>
@@ -340,8 +341,8 @@ reaching the LCL, then rising moist adiabatially.</p></li>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>923.1157642313736 hectopascal 15.595751336163428 degree_Celsius
 </pre></div>
 </div>
-</div>
-<div class="section" id="basic-skew-t-plotting">
+</section>
+<section id="basic-skew-t-plotting">
 <h2>Basic Skew-T Plotting<a class="headerlink" href="#basic-skew-t-plotting" title="Permalink to this headline">¶</a></h2>
 <p>The Skew-T (log-P) diagram is the standard way to view rawinsonde data. The
 y-axis is height in pressure coordinates and the x-axis is temperature. The
@@ -375,8 +376,8 @@ components.</p></li>
 </pre></div>
 </div>
 <img alt="upperair soundings" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_001.png" />
-</div>
-<div class="section" id="advanced-skew-t-plotting">
+</section>
+<section id="advanced-skew-t-plotting">
 <h2>Advanced Skew-T Plotting<a class="headerlink" href="#advanced-skew-t-plotting" title="Permalink to this headline">¶</a></h2>
 <p>Fiducial lines indicating dry adiabats, moist adiabats, and mixing ratio are
 useful when performing further analysis on the Skew-T diagram. Often the
@@ -416,8 +417,8 @@ useful when performing further analysis on the Skew-T diagram. Often the
 </pre></div>
 </div>
 <img alt="upperair soundings" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_002.png" />
-</div>
-<div class="section" id="adding-a-hodograph">
+</section>
+<section id="adding-a-hodograph">
 <h2>Adding a Hodograph<a class="headerlink" href="#adding-a-hodograph" title="Permalink to this headline">¶</a></h2>
 <p>A hodograph is a polar representation of the wind profile measured by the rawinsonde.
 Winds at different levels are plotted as vectors with their tails at the origin, the angle
@@ -467,7 +468,7 @@ which are not drawn.</p>
 </pre></div>
 </div>
 <img alt="upperair soundings" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.426 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.594 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-upperair-soundings-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cf626a06a2e16be83be26aa926cd5642/upperair_soundings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></p>
@@ -477,8 +478,8 @@ which are not drawn.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
@@ -515,7 +516,7 @@ which are not drawn.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 02, 2021 at 22:44:20.<br/>
+        Last updated on Apr 05, 2021 at 19:46:54.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>

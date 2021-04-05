@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Working With Units &#8212; MetPy 1.0dev</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
@@ -282,7 +283,7 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-unit-tutorial-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="working-with-units">
+<section class="sphx-glr-example-title" id="working-with-units">
 <span id="sphx-glr-tutorials-unit-tutorial-py"></span><h1>Working With Units<a class="headerlink" href="#working-with-units" title="Permalink to this headline">¶</a></h1>
 <p>Early in our scientific careers we all learn about the importance of paying
 attention to units in our calculations. Unit conversions can still get the best
@@ -298,7 +299,7 @@ more information on unit support, see the documentation for
 for <a class="reference external" href="https://pint.readthedocs.io/en/latest/nonmult.html">temperature units</a>.</p>
 <p>In this tutorial we’ll show some examples of working with units and get you on your way to
 utilizing the computation functions in MetPy.</p>
-<div class="section" id="getting-started">
+<section id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <p>To use units, the first step is to import the default MetPy units registry from the
 <a class="reference internal" href="../api/generated/metpy.units.html#module-metpy.units" title="metpy.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">units</span></code></a> module:</p>
@@ -313,8 +314,8 @@ The registry also understands unit prefixes and suffixes; this allows the regist
 understand <code class="docutils literal notranslate"><span class="pre">'kilometer'</span></code> and <code class="docutils literal notranslate"><span class="pre">'meters'</span></code> in addition to the base <code class="docutils literal notranslate"><span class="pre">'meter'</span></code> unit.</p>
 <p>In general, using units is only a small step on top of using the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>
 object.</p>
-</div>
-<div class="section" id="adding-units-to-data">
+</section>
+<section id="adding-units-to-data">
 <h2>Adding Units to Data<a class="headerlink" href="#adding-units-to-data" title="Permalink to this headline">¶</a></h2>
 <p>The easiest way to attach units to an array (or integer, float, etc.) is to multiply by the
 units:</p>
@@ -341,8 +342,8 @@ units:</p>
 9.81 meter/second<sup>2</sup>
 </div>
 <br />
-<br /></div>
-<div class="section" id="operations-with-units">
+<br /></section>
+<section id="operations-with-units">
 <h2>Operations With Units<a class="headerlink" href="#operations-with-units" title="Permalink to this headline">¶</a></h2>
 <p>With units attached, it is possible to perform mathematical operations, resulting in the
 proper units:</p>
@@ -373,8 +374,8 @@ operation can be performed:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>4.968503937007874 inch
 </pre></div>
 </div>
-</div>
-<div class="section" id="converting-units">
+</section>
+<section id="converting-units">
 <h2>Converting Units<a class="headerlink" href="#converting-units" title="Permalink to this headline">¶</a></h2>
 <p>Converting a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> between units can be accomplished by using the
 <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="(in pint v0.17)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code></a> method call, which constructs a new <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></a> in the
@@ -430,8 +431,8 @@ operations you could get some seemingly odd results:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.013208 meter ** 2
 </pre></div>
 </div>
-</div>
-<div class="section" id="temperature">
+</section>
+<section id="temperature">
 <h2>Temperature<a class="headerlink" href="#temperature" title="Permalink to this headline">¶</a></h2>
 <p>Temperature units are actually relatively tricky (more like absolutely tricky as
 you’ll see). Temperature is a non-multiplicative unit - they are in a system
@@ -481,8 +482,8 @@ delta version of the unit.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>263 kelvin
 </pre></div>
 </div>
-</div>
-<div class="section" id="metpy-calculations">
+</section>
+<section id="metpy-calculations">
 <h2>MetPy Calculations<a class="headerlink" href="#metpy-calculations" title="Permalink to this headline">¶</a></h2>
 <p>All MetPy calculations are unit-aware and rely on this information to ensure
 that the calculations operate correctly. For example, we can use units to take
@@ -507,8 +508,8 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>60.3072254862414 degree_Fahrenheit
 </pre></div>
 </div>
-</div>
-<div class="section" id="common-mistakes">
+</section>
+<section id="common-mistakes">
 <h2>Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permalink to this headline">¶</a></h2>
 <p>There are a few common mistakes the new users often make. Be sure to check
 these when you’re having issues.</p>
@@ -521,7 +522,7 @@ ecosystem. The expected error will be
 <em class="xref py py-obj">AttributeError: ‘MaskedArray’ object has no attribute ‘units’</em> or calculation
 functions complaining about expecting a units and getting “dimensionless”.</p></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.014 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.015 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5efd259fad2625b979995a43ebbb8b81/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>
@@ -531,8 +532,8 @@ functions complaining about expecting a units and getting “dimensionless”.</
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
@@ -569,7 +570,7 @@ functions complaining about expecting a units and getting “dimensionless”.</
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 02, 2021 at 22:44:20.<br/>
+        Last updated on Apr 05, 2021 at 19:46:54.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>

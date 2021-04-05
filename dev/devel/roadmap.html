@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>MetPy Roadmap &#8212; MetPy 1.0dev</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
@@ -232,9 +233,9 @@
               
               <div>
                 
-  <div class="section" id="metpy-roadmap">
+  <section id="metpy-roadmap">
 <h1>MetPy Roadmap<a class="headerlink" href="#metpy-roadmap" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="goal">
+<section id="goal">
 <h2>Goal<a class="headerlink" href="#goal" title="Permalink to this headline">¶</a></h2>
 <p>MetPy’s goal is to provide the domain-specific tools for building meteorological and
 atmospheric science applications in Python. This means supporting scripted workflows, like
@@ -242,8 +243,8 @@ those done previously using GEMPAK, NCL, etc. MetPy’s functionality is not lim
 supporting only static views, we also envision being used as the calculation core for graphical
 applications as well. Our focus on providing the domain-specific tools means that general
 functionality is moved upstream (to e.g. matplotlib, xarray) whenever sensible and possible.</p>
-</div>
-<div class="section" id="plans">
+</section>
+<section id="plans">
 <h2>Plans<a class="headerlink" href="#plans" title="Permalink to this headline">¶</a></h2>
 <p>We enumerate here general plans for how we plan to advance MetPy over the next couple of years.
 We have intentionally avoided assigning dates to any of these, acknowledging our complete
@@ -258,7 +259,7 @@ are specifically called out below.</p>
 of MetPy, visit the <a class="reference external" href="https://github.com/Unidata/MetPy/milestones">GitHub milestones page</a>.
 These represent our best idea of what’s planned for a specific upcoming version, though are
 subject to rapid change as release dates approach.</p>
-<div class="section" id="declarative-plotting">
+<section id="declarative-plotting">
 <h3>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Permalink to this headline">¶</a></h3>
 <p>One of GEMPAK’s successes is the simplicity with which plots can be created. Part of this
 simplicity is enforced by the interface to GEMPAK: setting variables. MetPy 0.10 introduced the
@@ -277,8 +278,8 @@ other features:</p>
 <p>Replicating all of matplotlib’s features is beyond the scope of this interface. We intend,
 instead, to aim for simplicity of the interface while replicating GEMPAK’s capabilities and
 being able to do what is needed for most common use cases.</p>
-</div>
-<div class="section" id="xarray-integration-and-unit-handling">
+</section>
+<section id="xarray-integration-and-unit-handling">
 <h3>Xarray Integration and Unit Handling<a class="headerlink" href="#xarray-integration-and-unit-handling" title="Permalink to this headline">¶</a></h3>
 <p>This item is the most important to having stable interfaces in advance of a 1.0 release of
 MetPy. Xarray has quickly proven to be a capable data model on which to base MetPy’s handling
@@ -302,8 +303,8 @@ but convert to numpy + pint; the benefit is that unit information can be reconst
 necessary from xarray, but all calculations will then have access to coordinate information.
 This is a 1.0 item because many calculations involving coordinate information will likely
 change to simplify their interfaces.</p>
-</div>
-<div class="section" id="calculations">
+</section>
+<section id="calculations">
 <h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h3>
 <p>In addition to the work at the calculation infrastructure level, we have identified some
 specific calculations that are necessary to consider MetPy a solution to the majority of the
@@ -330,8 +331,8 @@ well as by leveraging the netCDF Climate and Forecasting metadata standard’s c
 “standard names” for identifying the types of variables. The standard function interface will
 still exist for challenging cases. The solver will also enable the plotting of derived
 quantities through the simplified plotting interface.</p>
-</div>
-<div class="section" id="file-format-support">
+</section>
+<section id="file-format-support">
 <h3>File Format Support<a class="headerlink" href="#file-format-support" title="Permalink to this headline">¶</a></h3>
 <p>MetPy’s file format support is an important part of its feature set, and we want to continue to
 expand the set of formats to which MetPy facilitates access. This also fits with filling
@@ -358,8 +359,8 @@ like to explore providing a pure-python solution for GRIB.</p>
 National Weather Service distributes through text bulletins (e.g. hurricane dropsondes,
 aircraft reconnaissance, frontal positions). Support is planned, but considered secondary to
 those formats above.</p>
-</div>
-<div class="section" id="other-items">
+</section>
+<section id="other-items">
 <h3>Other Items<a class="headerlink" href="#other-items" title="Permalink to this headline">¶</a></h3>
 <p>Here are a few more items that did not fit above:</p>
 <ul class="simple">
@@ -372,9 +373,9 @@ been promising, though.</p></li>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
               </div>
@@ -411,7 +412,7 @@ been promising, though.</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 02, 2021 at 22:44:20.<br/>
+        Last updated on Apr 05, 2021 at 19:46:54.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>

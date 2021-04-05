@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>MetPy 1.0 API Changes &#8212; MetPy 1.0dev</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
@@ -267,7 +268,7 @@
               
               <div>
                 
-  <div class="section" id="metpy-1-0-api-changes">
+  <section id="metpy-1-0-api-changes">
 <h1>MetPy 1.0 API Changes<a class="headerlink" href="#metpy-1-0-api-changes" title="Permalink to this headline">¶</a></h1>
 <p>This is the overview of the changes to MetPy’s programming interface that are coming with the
 1.0 release of MetPy. These include changes made to unify and clarify MetPy’s API to be more
@@ -275,15 +276,15 @@ consistent throughout. Changes are categorized to help you find breakages and se
 code might need to change in upgrading to MetPy 1.0. You might find some functions in multiple
 categories. You can search this page for some of your commonly used functions to find any
 relevant breakages you might encounter.</p>
-<div class="section" id="xarray-support-for-function-input-output">
+<section id="xarray-support-for-function-input-output">
 <h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Permalink to this headline">¶</a></h2>
 <p>One of the most important changes you may run into is that many of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> would have only returned <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> even when provided
 <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>. Now, MetPy will properly return a <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> when
 provided one where able, except where otherwise explicitly stated. See the
 <a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">MetPy xarray tutorial</span></a> for more information.</p>
-</div>
-<div class="section" id="positional-argument-name-changes">
+</section>
+<section id="positional-argument-name-changes">
 <h2>Positional argument name changes<a class="headerlink" href="#positional-argument-name-changes" title="Permalink to this headline">¶</a></h2>
 <p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had changes to the names of their positional
 arguments to make parameter names consistent among functions and make the documentation of
@@ -555,8 +556,8 @@ expanded as <code class="docutils literal notranslate"><span class="pre">wind_di
 </tbody>
 </table>
 </div>
-</div>
-<div class="section" id="keyword-only-argument-name-changes">
+</section>
+<section id="keyword-only-argument-name-changes">
 <h2>Keyword-only argument name changes<a class="headerlink" href="#keyword-only-argument-name-changes" title="Permalink to this headline">¶</a></h2>
 <p>Similar to the <a class="reference internal" href="#positional-argument-name-changes">positional argument name changes</a> above, some of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had names changed for keyword-only arguments. If you have specified
@@ -597,8 +598,8 @@ MetPy 1.0. For example,</p>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section" id="new-keyword-only-arguments">
+</section>
+<section id="new-keyword-only-arguments">
 <h2>New keyword-only arguments<a class="headerlink" href="#new-keyword-only-arguments" title="Permalink to this headline">¶</a></h2>
 <p>The following functions have had some of their positional or optional arguments changed to
 keyword-only arguments. As such, any use of these positionally, e.g.</p>
@@ -639,8 +640,8 @@ keyword-only arguments. As such, any use of these positionally, e.g.</p>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section" id="parameter-re-ordering">
+</section>
+<section id="parameter-re-ordering">
 <h2>Parameter re-ordering<a class="headerlink" href="#parameter-re-ordering" title="Permalink to this headline">¶</a></h2>
 <p>Some functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had the ordering of their arguments rearranged.
 If you are specifying values positionally, e.g.</p>
@@ -720,8 +721,8 @@ however, e.g.</p>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section" id="deltas-and-grid-specification">
+</section>
+<section id="deltas-and-grid-specification">
 <h2>Deltas and grid specification<a class="headerlink" href="#deltas-and-grid-specification" title="Permalink to this headline">¶</a></h2>
 <p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> relating to vorticity and advection require
 information about the space between your data points. MetPy has generally standardized the
@@ -832,8 +833,8 @@ information.</p>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section" id="latitude-and-f">
+</section>
+<section id="latitude-and-f">
 <h2>Latitude and f<a class="headerlink" href="#latitude-and-f" title="Permalink to this headline">¶</a></h2>
 <p>In MetPy 1.0, <a class="reference internal" href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">geostrophic_wind()</span></code></a> and <a class="reference internal" href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">ageostrophic_wind()</span></code></a>
 have been changed to expect <code class="docutils literal notranslate"><span class="pre">latitude</span></code> instead of the coriolis parameter <code class="docutils literal notranslate"><span class="pre">f</span></code>, where we
@@ -862,8 +863,8 @@ taken from your latitude coordinate information, if possible.</p>
 </tbody>
 </table>
 </div>
-</div>
-<div class="section" id="moved-renamed-miscellaneous">
+</section>
+<section id="moved-renamed-miscellaneous">
 <h2>Moved, renamed, miscellaneous<a class="headerlink" href="#moved-renamed-miscellaneous" title="Permalink to this headline">¶</a></h2>
 <p>Functions that have been moved, replaced, or had their function signatures drastically altered.</p>
 <div class="api-table docutils container">
@@ -911,8 +912,8 @@ taken from your latitude coordinate information, if possible.</p>
 </tbody>
 </table>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
@@ -949,7 +950,7 @@ taken from your latitude coordinate information, if possible.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 02, 2021 at 22:44:20.<br/>
+        Last updated on Apr 05, 2021 at 19:46:54.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>

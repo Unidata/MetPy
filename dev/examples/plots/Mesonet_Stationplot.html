@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Mesonet Station Plot &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -350,7 +351,7 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-mesonet-stationplot-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="mesonet-station-plot">
+<section class="sphx-glr-example-title" id="mesonet-station-plot">
 <span id="sphx-glr-examples-plots-mesonet-stationplot-py"></span><h1>Mesonet Station Plot<a class="headerlink" href="#mesonet-station-plot" title="Permalink to this headline">¶</a></h1>
 <p>Make a surface station plot with Oklahoma Mesonet data.</p>
 <p>The station plot itself is pretty straightforward, but there is a bit of code to perform the
@@ -366,7 +367,7 @@ data-wrangling.</p>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
-<div class="section" id="read-in-the-data-and-wrangle-it">
+<section id="read-in-the-data-and-wrangle-it">
 <h2>Read in the data and wrangle it<a class="headerlink" href="#read-in-the-data-and-wrangle-it" title="Permalink to this headline">¶</a></h2>
 <p>First read in the data. We use pandas because it simplifies a lot of tasks, like dealing
 with strings. We’ll also convert any blank cells to NaNs, and then drop rows with NaNs
@@ -408,8 +409,8 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span></a><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.to" title="pint.Quantity.to" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-method"><span class="n">wind_speed</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">),</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_direction</span></a><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="create-the-figure">
+</section>
+<section id="create-the-figure">
 <h2>Create the figure<a class="headerlink" href="#create-the-figure" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the figure and an axes set to the projection.</span>
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -450,7 +451,7 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
 </pre></div>
 </div>
 <img alt="Oklahoma Mesonet Observations, Time: 2100 UTC 09 September 2019" class="sphx-glr-single-img" src="../../_images/sphx_glr_Mesonet_Stationplot_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.511 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.013 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-mesonet-stationplot-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8e3f0d6d0a780d741147b0c22a0b8a22/Mesonet_Stationplot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Mesonet_Stationplot.py</span></code></a></p>
@@ -460,8 +461,8 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
@@ -498,7 +499,7 @@ The number of stations plotted will be reduced using <em class="xref py py-obj">
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 02, 2021 at 22:44:20.<br/>
+        Last updated on Apr 05, 2021 at 19:46:54.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>
