@@ -35,6 +35,7 @@ Moist Thermodynamics
       dewpoint_from_relative_humidity
       dewpoint_from_specific_humidity
       equivalent_potential_temperature
+      hydrostatic_height
       mixing_ratio
       mixing_ratio_from_relative_humidity
       mixing_ratio_from_specific_humidity
@@ -46,6 +47,7 @@ Moist Thermodynamics
       relative_humidity_from_mixing_ratio
       relative_humidity_from_specific_humidity
       relative_humidity_wet_psychrometric
+      scale_height
       saturation_equivalent_potential_temperature
       saturation_mixing_ratio
       saturation_vapor_pressure
