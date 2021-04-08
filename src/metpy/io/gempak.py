@@ -1460,17 +1460,18 @@ class GempakSounding(GempakFile):
                     parameters = self.parameters[iprt]
                     nparms = len(parameters['name'])
                     sounding[part.name] = {}
-                    for iprm, param in enumerate(parameters['name']):
-                        if part.data_type == DataTypes.realpack:
-                            unpacked = self._unpack_real(packed_buffer, parameters, lendat)
-                            for iprm, param in enumerate(parameters['name']):
-                                sounding[part.name][param] = unpacked[iprm::nparms]
-                        elif part.data_type == DataTypes.character:
-                            for iprm, param in enumerate(parameters['name']):
-                                sounding[part.name][param] = (
-                                    packed_buffer[iprm].decode().strip()
-                                )
-                        else:
+
+                    if part.data_type == DataTypes.realpack:
+                        unpacked = self._unpack_real(packed_buffer, parameters, lendat)
+                        for iprm, param in enumerate(parameters['name']):
+                            sounding[part.name][param] = unpacked[iprm::nparms]
+                    elif part.data_type == DataTypes.character:
+                        for iprm, param in enumerate(parameters['name']):
+                            sounding[part.name][param] = (
+                                packed_buffer[iprm].decode().strip()
+                            )
+                    else:
+                        for iprm, param in enumerate(parameters['name']):
                             sounding[part.name][param] = (
                                 np.array(packed_buffer[iprm::nparms], dtype=np.float32)
                             )
@@ -2242,6 +2243,7 @@ class GempakSounding(GempakFile):
         return soundings
 
 
+@exporter.export
 class GempakSurface(GempakFile):
     """Subclass of GempakFile specific to GEMPAK surface data."""
 

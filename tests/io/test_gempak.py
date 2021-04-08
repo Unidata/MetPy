@@ -31,11 +31,73 @@ def test_grid_loading(grid_name):
     assert_allclose(gio, gempak, rtol=1e-6, atol=0)
 
 
+def test_merged_sounding():
+    """Test loading a merged sounding.
+
+    These are most often from models.
+    """
+    g = get_test_data('gem_model_mrg.snd')
+    d = get_test_data('gem_model_mrg.csv')
+
+    gso = GempakSounding(g).snxarray(station_id='KMSN')[0]
+    gpres = gso.pres.values
+    gtemp = gso.tmpc.values.squeeze()
+    gdwpt = gso.dwpc.values.squeeze()
+    gdrct = gso.drct.values.squeeze()
+    gsped = gso.sped.values.squeeze()
+    ghght = gso.hght.values.squeeze()
+    gomeg = gso.omeg.values.squeeze()
+    gcwtr = gso.cwtr.values.squeeze()
+    gdtcp = gso.dtcp.values.squeeze()
+    gdtgp = gso.dtgp.values.squeeze()
+    gdtsw = gso.dtsw.values.squeeze()
+    gdtlw = gso.dtlw.values.squeeze()
+    gcfrl = gso.cfrl.values.squeeze()
+    gtkel = gso.tkel.values.squeeze()
+    gimxr = gso.imxr.values.squeeze()
+    gdtar = gso.dtar.values.squeeze()
+
+    gempak = pd.read_csv(d, na_values=-9999)
+    dpres = gempak.PRES.values
+    dtemp = gempak.TMPC.values
+    ddwpt = gempak.DWPC.values
+    ddrct = gempak.DRCT.values
+    dsped = gempak.SPED.values
+    dhght = gempak.HGHT.values
+    domeg = gempak.OMEG.values
+    dcwtr = gempak.CWTR.values
+    ddtcp = gempak.DTCP.values
+    ddtgp = gempak.DTGP.values
+    ddtsw = gempak.DTSW.values
+    ddtlw = gempak.DTLW.values
+    dcfrl = gempak.CFRL.values
+    dtkel = gempak.TKEL.values
+    dimxr = gempak.IMXR.values
+    ddtar = gempak.DTAR.values
+
+    np.testing.assert_allclose(gpres, dpres, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gtemp, dtemp, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdwpt, ddwpt, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdrct, ddrct, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gsped, dsped, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gomeg, domeg, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gcwtr, dcwtr, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdtcp, ddtcp, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdtgp, ddtgp, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdtsw, ddtsw, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdtlw, ddtlw, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gcfrl, dcfrl, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gtkel, dtkel, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gimxr, dimxr, rtol=1e-10, atol=1e-2)
+    np.testing.assert_allclose(gdtar, ddtar, rtol=1e-10, atol=1e-2)
+
+
 @pytest.mark.parametrize('gem,gio,station', [
     ('gem_sigw_hght_unmrg.csv', 'gem_sigw_hght_unmrg.snd', 'TOP'),
     ('gem_sigw_pres_unmrg.csv', 'gem_sigw_pres_unmrg.snd', 'WAML')
 ])
-def test_loading_unmerged_sigw_hght(gem, gio, station):
+def test_unmerged_sounding(gem, gio, station):
     """Test loading an unmerged sounding.
 
     PPBB and PPDD groups will be in height coordinates.
