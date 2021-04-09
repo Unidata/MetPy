@@ -2578,9 +2578,7 @@ class GempakSurface(GempakFile):
                             station[param] = packed_buffer[iprm].decode().strip()
                     else:
                         for iprm, param in enumerate(parameters['name']):
-                            station[param] = np.array(
-                                packed_buffer[iprm], dtype=np.float32
-                            )
+                            station[param] = packed_buffer[iprm]
 
                 stations.append(station)
         return stations
