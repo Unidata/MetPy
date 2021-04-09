@@ -665,11 +665,13 @@ class GempakFile():
         self.parameters = [{key: [] for key, _ in PARAM_ATTR}
                            for n in range(self.prod_desc.parts)]
         for attr, fmt in PARAM_ATTR:
-            fmt = (fmt[0], self.prefmt + fmt[1])
+            fmt = (fmt[0], self.prefmt + fmt[1] if fmt[1] != 's' else fmt[1])
             for n, part in enumerate(self.parts):
                 for _ in range(part.parameter_count):
-                    if fmt[1] == 's':
-                        self.parameters[n][attr] += [self._buffer.read_binary(*fmt)[0].decode()]  # noqa: E501
+                    if 's' in fmt[1]:
+                        self.parameters[n][attr] += [
+                            self._buffer.read_binary(*fmt)[0].decode().strip()
+                        ]
                     else:
                         self.parameters[n][attr] += self._buffer.read_binary(*fmt)
 
