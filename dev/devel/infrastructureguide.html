@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Infrastructure Guide &#8212; MetPy 1.0dev</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
@@ -228,11 +227,11 @@
               
               <div>
                 
-  <section id="infrastructure-guide">
+  <div class="section" id="infrastructure-guide">
 <h1>Infrastructure Guide<a class="headerlink" href="#infrastructure-guide" title="Permalink to this headline">¶</a></h1>
 <p>This guide serves as an advanced version of the contributing documentation and contains the
 information on how we manage MetPy and the infrastructure behind it.</p>
-<section id="versioning">
+<div class="section" id="versioning">
 <h2>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h2>
 <p>To manage identifying the version of the code, MetPy relies upon <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>. <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> takes the current version of the
 source from git tags and any additional commits. For development, the version will have a
@@ -241,8 +240,8 @@ version means that the current code is 209 commits past the 0.10.0 tag, on git h
 <code class="docutils literal notranslate"><span class="pre">ff2e549f</span></code>, with local changes on top, last made on a date (indicated by <code class="docutils literal notranslate"><span class="pre">d20190918</span></code>). For
 a release, or non-git repo source dir, the version will just come from the most recent tag
 (i.e. <code class="docutils literal notranslate"><span class="pre">v0.10.0</span></code>). Our main versioning scheme matches <code class="docutils literal notranslate"><span class="pre">vMajor.Minor.Bugfix</span></code>.</p>
-</section>
-<section id="documentation">
+</div>
+<div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>MetPy’s documentation is built using sphinx &gt;= 2.1. API documentation is automatically
 generated from docstrings, written using the
@@ -258,8 +257,8 @@ docs for the corresponding version, which are located in the appropriately named
 on the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch. We only maintain docs at the minor level, not the bugfix one.
 The docs rely on the <code class="docutils literal notranslate"><span class="pre">pydata-sphinx-theme</span></code> package for styling the docs, which needs to be
 installed for any local doc builds.</p>
-</section>
-<section id="other-tools">
+</div>
+<div class="section" id="other-tools">
 <h2>Other Tools<a class="headerlink" href="#other-tools" title="Permalink to this headline">¶</a></h2>
 <p>Continuous integration is performed by
 <a class="reference external" href="https://github.com/Unidata/MetPy/actions?query=workflow%3ACI">GitHub Actions</a>.
@@ -292,8 +291,8 @@ that simplifies writing custom scripting</p></li>
 <li><p><a class="reference external" href="https://docs.github.com/en/free-pro-team&#64;latest/actions">GitHub Actions Docs</a> for all
 other things relating to GitHub Actions, like available events and workflow syntax</p></li>
 </ul>
-</section>
-<section id="releasing">
+</div>
+<div class="section" id="releasing">
 <h2>Releasing<a class="headerlink" href="#releasing" title="Permalink to this headline">¶</a></h2>
 <p>MetPy releases are managed using
 <a class="reference external" href="https://github.com/Unidata/MetPy/milestones">milestones on GitHub</a>. Each release should have
@@ -312,7 +311,7 @@ release. The tag should be a adhere to our versioning, like v1.0.0. Add a name f
 <p>Once the release notes are completed, click the “Publish release” button. This will actually
 create the tag on GitHub, triggering the package builds described below as well as new
 documentation builds.</p>
-<section id="pypi">
+<div class="section" id="pypi">
 <h3>PyPI<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h3>
 <p>Once the new release is published on GitHub, this will create the tag, which will trigger
 new builds GitHub actions (see <code class="docutils literal notranslate"><span class="pre">release.yml</span></code>). This runs no tests, but assumes those were
@@ -330,8 +329,8 @@ you the proper version.</p></li>
 only files for this release. This upload process will include any changes to the <code class="docutils literal notranslate"><span class="pre">README</span></code>
 as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p></li>
 </ol>
-</section>
-<section id="conda">
+</div>
+<div class="section" id="conda">
 <h3>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h3>
 <p>MetPy conda packages are automatically produced and uploaded to
 <a class="reference external" href="https://anaconda.org/conda-forge/MetPy">Anaconda.org</a> thanks to conda-forge. Once the
@@ -350,9 +349,9 @@ manually. This should:</p>
 <p>The Pull Request will test building the packages on all the platforms. Once this succeeds,
 the Pull Request can be merged, which will trigger the final build and upload of the
 packages to anaconda.org.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
               </div>
@@ -389,8 +388,8 @@ packages to anaconda.org.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 05, 2021 at 19:48:00.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
+        Last updated on Apr 12, 2021 at 17:36:05.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>
