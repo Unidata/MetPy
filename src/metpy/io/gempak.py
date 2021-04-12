@@ -1136,7 +1136,6 @@ class GempakGrid(GempakFile):
                  level=None, date_time2=None, level2=None):
         """Select grids and output as list of xarray DataArrays.
 
-
         Subset the data by parameter values. The default is to not
         subset and return the entire dataset.
 
@@ -2129,7 +2128,6 @@ class GempakSounding(GempakFile):
     def snxarray(self, station_id=None, station_number=None,
                  date_time=None, state=None, country=None):
         """Select soundings and output as list of xarray Datasets.
-
 
         Subset the data by parameter values. The default is to not
         subset and return the entire dataset.
