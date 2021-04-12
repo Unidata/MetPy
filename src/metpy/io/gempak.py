@@ -32,6 +32,11 @@ log = logging.getLogger(__name__)
 
 ANLB_SIZE = 128
 BYTES_PER_WORD = 4
+NAVB_SIZE = 256
+PARAM_ATTR = [('name', (4, 's')), ('scale', (1, 'i')),
+              ('offset', (1, 'i')), ('bits', (1, 'i'))]
+USED_FLAG = 9999
+UNUSED_FLAG = -9999
 GEMPAK_HEADER = 'GEMPAK DATA MANAGEMENT FILE '
 GEMPROJ_TO_PROJ = {
     'MER': ('merc', 'cyl'),
@@ -48,17 +53,14 @@ GEMPROJ_TO_PROJ = {
     'ORT': ('ortho', 'azm'),
     'LEA': ('laea', 'azm'),
     'GNO': ('gnom', 'azm'),
+    'TVM': ('tmerc', 'obq'),
+    'UTM': ('utm', 'obq'),
 }
 GVCORD_TO_VAR = {
     'PRES': 'p',
     'HGHT': 'z',
     'THTA': 'theta',
 }
-NAVB_SIZE = 256
-PARAM_ATTR = [('name', (4, 's')), ('scale', (1, 'i')),
-              ('offset', (1, 'i')), ('bits', (1, 'i'))]
-USED_FLAG = 9999
-UNUSED_FLAG = -9999
 
 
 class FileTypes(Enum):
@@ -168,6 +170,18 @@ Surface = namedtuple('Surface', [
     'STATE',
     'COUNTRY',
 ])
+
+
+def _data_source(source):
+    """Get data source from stored integer."""
+    try:
+        DataSource(source)
+    except ValueError:
+        log.warning('Could not interpret data source `%s`. '
+                    'Setting to `Unknown`.', source)
+        return DataSource(99)
+    else:
+        return DataSource(source)
 
 
 def _word_to_position(word, bytes_per_word=BYTES_PER_WORD):
@@ -504,7 +518,7 @@ class GempakFile():
                      ('parts_ptr', 'i'), ('data_mgmt_ptr', 'i'),
                      ('data_mgmt_length', 'i'), ('data_block_ptr', 'i'),
                      ('file_type', 'i', FileTypes),
-                     ('data_source', 'i', DataSource),
+                     ('data_source', 'i', _data_source),
                      ('machine_type', 'i'), ('missing_int', 'i'),
                      (None, '12x'), ('missing_float', 'f')]
 
@@ -1122,13 +1136,18 @@ class GempakGrid(GempakFile):
                  level=None, date_time2=None, level2=None):
         """Select grids and output as list of xarray DataArrays.
 
+
+        Subset the data by parameter values. The default is to not
+        subset and return the entire dataset.
+
         Parameters
         ----------
         parameter : str or array-like of str
             Name of GEMPAK parameter.
 
         date_time : datetime or array-like of datetime
-            Valid datetime of the grid.
+            Valid datetime of the grid. Alternatively can be
+            a string with the format YYYYmmddHHMM.
 
         coordinate : str or array-like of str
             Vertical coordinate.
@@ -1137,7 +1156,8 @@ class GempakGrid(GempakFile):
             Vertical level.
 
         date_time2 : datetime or array-like of datetime
-            Secondary valid datetime of the grid.
+            Secondary valid datetime of the grid. Alternatively can be
+            a string with the format YYYYmmddHHMM.
 
         level2: float or array_like of float
             Secondary vertical level. Typically used for layers.
@@ -1215,7 +1235,10 @@ class GempakGrid(GempakFile):
             )
 
         if level2 is not None:
-            matched = filter(lambda grid: grid if grid.LEVEL2 in level2 else False, matched)
+            matched = filter(
+                lambda grid: grid if grid.LEVEL2 in level2 else False,
+                matched
+            )
 
         matched = list(matched)
 
@@ -1330,7 +1353,10 @@ class GempakSounding(GempakFile):
                            + (irow * self.prod_desc.columns * self.prod_desc.parts)
                            + (icol * self.prod_desc.parts))
 
-                if pointer:
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                data_ptr = self._buffer.read_int(4, self.endian, False)
+
+                if data_ptr:
                     self._sninfo.append(
                         Sounding(
                             irow,
@@ -1345,6 +1371,10 @@ class GempakSounding(GempakFile):
                             col_head.COUN,
                         )
                     )
+
+    def sninfo(self):
+        """Return sounding information."""
+        return self._sninfo
 
     def _unpack_merged(self, sndno):
         """Unpack merged sounding data."""
@@ -2100,6 +2130,10 @@ class GempakSounding(GempakFile):
                  date_time=None, state=None, country=None):
         """Select soundings and output as list of xarray Datasets.
 
+
+        Subset the data by parameter values. The default is to not
+        subset and return the entire dataset.
+
         Parameters
         ----------
         station_id : str or array-like of str
@@ -2109,7 +2143,8 @@ class GempakSounding(GempakFile):
             Station number of sounding site.
 
         date_time : datetime or array-like of datetime
-            Valid/observed datetime of the sounding.
+            Valid datetime of the grid. Alternatively can be
+            a string with the format YYYYmmddHHMM.
 
         state : str or array-like of str
             State where sounding site is located.
@@ -2158,7 +2193,9 @@ class GempakSounding(GempakFile):
 
         if station_id is not None:
             matched = filter(
-                lambda snd: snd if snd.ID in station_id else False, matched)
+                lambda snd: snd if snd.ID in station_id else False,
+                matched
+            )
 
         if station_number is not None:
             matched = filter(
@@ -2282,7 +2319,10 @@ class GempakSurface(GempakFile):
                                + (irow * self.prod_desc.columns * self.prod_desc.parts)
                                + (icol * self.prod_desc.parts))
 
-                    if pointer:
+                    self._buffer.jump_to(self._start, _word_to_position(pointer))
+                    data_ptr = self._buffer.read_int(4, self.endian, False)
+
+                    if data_ptr:
                         self._sfinfo.append(
                             Surface(
                                 irow,
@@ -2304,7 +2344,10 @@ class GempakSurface(GempakFile):
                            + (irow * self.prod_desc.columns * self.prod_desc.parts)
                            + (icol * self.prod_desc.parts))
 
-                if pointer:
+                self._buffer.jump_to(self._start, _word_to_position(pointer))
+                data_ptr = self._buffer.read_int(4, self.endian, False)
+
+                if data_ptr:
                     self._sfinfo.append(
                         Surface(
                             irow,
@@ -2326,7 +2369,10 @@ class GempakSurface(GempakFile):
                                + (irow * self.prod_desc.columns * self.prod_desc.parts)
                                + (icol * self.prod_desc.parts))
 
-                    if pointer:
+                    self._buffer.jump_to(self._start, _word_to_position(pointer))
+                    data_ptr = self._buffer.read_int(4, self.endian, False)
+
+                    if data_ptr:
                         self._sfinfo.append(
                             Surface(
                                 irow,
@@ -2343,6 +2389,10 @@ class GempakSurface(GempakFile):
                         )
         else:
             raise TypeError('Unknown surface type {}'.format(self.surface_type))
+
+    def sfinfo(self):
+        """Return station information."""
+        return self._sfinfo
 
     def _get_surface_type(self):
         """Determine type of surface file."""
@@ -2587,6 +2637,9 @@ class GempakSurface(GempakFile):
                date_time=None, state=None, country=None):
         """Select surface stations and output as list of JSON objects.
 
+        Subset the data by parameter values. The default is to not
+        subset and return the entire dataset.
+
         Parameters
         ----------
         station_id : str or array-like of str
@@ -2596,7 +2649,8 @@ class GempakSurface(GempakFile):
             Station number of the surface station.
 
         date_time : datetime or array-like of datetime
-            Valid/observed datetime of the surface station.
+            Valid datetime of the grid. Alternatively can be
+            a string with the format YYYYmmddHHMM.
 
         state : str or array-like of str
             State where surface station is located.
