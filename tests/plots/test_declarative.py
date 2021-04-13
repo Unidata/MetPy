@@ -535,6 +535,35 @@ def test_declarative_gridded_scale():
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
+def test_declarative_global_gfs():
+    """Test making a global contour plot using GFS."""
+    data = xr.open_dataset(get_test_data('GFS_global.nc', as_file_obj=False))
+
+    cntr = ContourPlot()
+    cntr.data = data
+    cntr.time = datetime(2021, 1, 30, 12)
+    cntr.field = 'Geopotential_height_isobaric'
+    cntr.level = 300 * units.hPa
+    cntr.contours = np.arange(0, 100000, 120).tolist()
+    cntr.linecolor = 'darkblue'
+    cntr.linewidth = 1
+
+    panel = MapPanel()
+    panel.area = [-180, 180, 10, 90]
+    panel.projection = 'ps'
+    panel.layers = ['coastline']
+    panel.plots = [cntr]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
+@needs_cartopy
 def test_declarative_barb_gfs():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
