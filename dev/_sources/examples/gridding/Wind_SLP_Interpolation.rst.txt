@@ -245,7 +245,7 @@ Set up the map and plot the interpolated grids appropriately.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  14.957 seconds)
+   **Total running time of the script:** ( 0 minutes  11.615 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py:

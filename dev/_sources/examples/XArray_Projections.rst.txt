@@ -66,7 +66,7 @@ data on a map using CartoPy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.712 seconds)
+   **Total running time of the script:** ( 0 minutes  2.906 seconds)
 
 
 .. _sphx_glr_download_examples_XArray_Projections.py:
