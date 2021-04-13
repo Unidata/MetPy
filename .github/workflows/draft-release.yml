@@ -27,13 +27,13 @@ jobs:
             // Get just the issues and format into a section for the release notes
             const issues = items.data.filter(i => !i.pull_request);
             const issue_text = '### Issues Closed\n' +
-                               issues.map(i => `* [Issue ${i.number}](${i.url}) - ${i.title}\n`)
+                               issues.map(i => `* [Issue ${i.number}](${i.html_url}) - ${i.title}\n`)
                                .join('') + `\nIn this release ${issues.length} issues were closed.`;
 
             // Now do the same for the PRs
             const prs = items.data.filter(i => !!i.pull_request);
             const pr_text = '### Pull Requests Merged\n' +
-                            prs.map(i => `* [PR ${i.number}](${i.url}) - ${i.title}, by @${i.user.login}\n`)
+                            prs.map(i => `* [PR ${i.number}](${i.html_url}) - ${i.title}, by @${i.user.login}\n`)
                             .join('') + `\nIn this release ${prs.length} pull requests were closed.`;
 
             // Add the list of people who contributed PRs
@@ -44,7 +44,7 @@ jobs:
             // Assemble into the body of the release
             const body = [milestone.description, contrib_text, issue_text, pr_text].join('\n');
 
-            // Allows us to optionally pass in a branch of if there's one specified in the
+            // Allows us to optionally pass in a branch if there's one specified in the
             // text of the milestone
             params = {
               owner: context.repo.owner,
