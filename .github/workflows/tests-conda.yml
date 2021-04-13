@@ -34,7 +34,7 @@ jobs:
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
     - name: Setup conda caching
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       with:
         path: ~/conda_pkgs_dir
         key: conda-tests-${{ runner.os }}-${{ matrix.python-version}}-${{ hashFiles('ci/*') }}
@@ -67,7 +67,7 @@ jobs:
       run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
 
     - name: Setup mapdata caching
-      uses: actions/cache@v2.1.4
+      uses: actions/cache@v2.1.5
       env:
         # Increase to reset cache of map data
         CACHE_NUMBER: 0
