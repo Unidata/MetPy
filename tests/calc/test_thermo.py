@@ -153,6 +153,18 @@ def test_moist_lapse_uniform():
     assert_almost_equal(temp, np.array([20., 20., 20.]) * units.degC, 7)
 
 
+def test_moist_lapse_nan_temp():
+    """Test moist_lapse when given nan for temperature."""
+    temp = moist_lapse(40 * units.hPa, np.nan * units.degC, 400 * units.hPa)
+    assert_nan(temp, units.degC)
+
+
+def test_moist_lapse_nan_ref_press():
+    """Test moist_lapse when given nans for reference pressure."""
+    temp = moist_lapse(40 * units.hPa, -20 * units.degC, np.nan * units.hPa)
+    assert_nan(temp, units.degC)
+
+
 def test_parcel_profile():
     """Test parcel profile calculation."""
     levels = np.array([1000., 900., 800., 700., 600., 500., 400.]) * units.mbar
@@ -334,6 +346,19 @@ def test_lcl_convergence():
     """Test LCL calculation convergence failure."""
     with pytest.raises(RuntimeError):
         lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC, max_iters=2)
+
+
+def test_lcl_nans():
+    """Test LCL calculation on data with nans."""
+    press = np.array([900., 900., 900., 900.]) * units.hPa
+    temp = np.array([np.nan, 25., 25., 25.]) * units.degC
+    dewp = np.array([20., 20., np.nan, 20.]) * units.degC
+    lcl_press, lcl_temp = lcl(press, temp, dewp)
+
+    assert_array_almost_equal(lcl_press, np.array([np.nan, 836.4098648012595,
+                                                   np.nan, 836.4098648012595]) * units.hPa)
+    assert_array_almost_equal(lcl_temp, np.array([np.nan, 18.82281982535794,
+                                                  np.nan, 18.82281982535794]) * units.degC)
 
 
 def test_lfc_basic():
@@ -1465,6 +1490,40 @@ def test_wet_bulb_temperature_2d():
              [20.50205, 15.80108, 11.13603]] * units.degC
     # 21.58, 16.86, 12.18
     # 20.6, 15.9, 11.2 from NWS Calculator
+    assert_array_almost_equal(val, truth, 5)
+
+
+def test_wet_bulb_nan():
+    """Test wet bulb calculation with nans."""
+    pressure = [1000.0, 975.0, 950.0, 925.0, 900.0, 850.0, 800.0, 750.0, 700.0, 650.0, 600.0,
+                550.0, 500.0, 450.0, 400.0, 350.0, 300.0, 250.0, 200.0, 150.0, 100.0, 70.0,
+                50.0, 40.0, 30.0, 20.0, 15.0, 10.0, 7.0, 5.0, 3.0, 2.0, 1.0, 0.4] * units.hPa
+    dewpoint = [18.26819029083491, 17.461145433226555, 16.336553308346822, 13.115820973342743,
+                6.143452735189838, -0.2623966010678873, -3.3370926082535926,
+                -6.550658968811679, -9.53219938820244, -14.238884651017894, -22.66240089860936,
+                -30.84751911458423, -33.68444429930677, -33.758997581695766,
+                -44.84378577284087, -43.464276398501696, -60.91091595765517,
+                -59.34560239336541, -77.78116414272493, -77.3133221938806, -82.27649829610058,
+                -83.63567550304444, -84.52241968178798, np.nan, -90.08663879090643,
+                -88.4437696852317, np.nan, -89.92561301616831, np.nan, np.nan, np.nan, np.nan,
+                np.nan, np.nan] * units.degC
+    temperature = [21.38790283, 19.25753174, 17.29430542, 16.52999878, 16.88999023,
+                   15.28999634, 12.13189697, 8.73193359, 5.1416748, 1.52350464, -2.15553589,
+                   -6.14998169, -11.08999634, -17.96802979, -25.26040649, -32.41000061,
+                   -41.09917908, -45.71267395, -48.46999512, -59.97120056, -74.6106781,
+                   -79.78999329, -74.53684082, -63.49831848, -58.1831604, -53.39454041,
+                   -48.2122467, -39.66942444, -34.30999451, -33.35002747, -23.31001892,
+                   -14.55002441, -11.74678955, -25.58999634] * units.degC
+
+    val = wet_bulb_temperature(pressure, temperature, dewpoint)
+    truth = [19.238071735308814, 18.033294139060633, 16.65179610640866, 14.341431051131467,
+             10.713278865013098, 7.2703265785039, 4.63234087372236, 1.8324379627895773,
+             -1.0154897545814394, -4.337334561885717, -8.23596994210175, -11.902727397896111,
+             -15.669313544076992, -20.78875735056887, -27.342629368898884, -33.42946313024462,
+             -41.8026422159221, -46.17279371976847, -48.99179569697857, -60.13602538549741,
+             -74.63516192059605, -79.80028104362006, -74.59295016865613, np.nan,
+             -59.20059644897026, -55.76040402608365, np.nan, -49.692666440433335, np.nan,
+             np.nan, np.nan, np.nan, np.nan, np.nan] * units.degC
     assert_array_almost_equal(val, truth, 5)
 
 
