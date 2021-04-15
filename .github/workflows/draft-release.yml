@@ -52,7 +52,8 @@ jobs:
               tag_name: 'v' + milestone.title,
               name: milestone.title,
               draft: true,
-              body: body
+              body: body,
+              discussion_category_name: 'Announcements'
             };
             const match = milestone.description.match(/branch:\s*([^\s]+)/);
             if (!!match) {
