@@ -92,7 +92,7 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
     res = {}
     for column in df:
         if column in column_units and column_units[column]:
-            res[column] = df[column].values * units(column_units[column])
+            res[column] = units.Quantity(df[column].values, column_units[column])
         else:
             res[column] = df[column].values
     return res

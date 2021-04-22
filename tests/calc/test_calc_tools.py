@@ -358,6 +358,17 @@ def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected)
     assert_array_almost_equal(y_layer, expected[1], 3)
 
 
+def test_get_layer_masked():
+    """Test get_layer with masked arrays as input."""
+    p = units.Quantity(np.ma.array([1000, 500, 400]), 'hPa')
+    u = units.Quantity(np.arange(3), 'm/s')
+    p_layer, u_layer = get_layer(p, u, depth=units.Quantity(6000, 'm'))
+    true_p_layer = units.Quantity([1000., 500., 464.4742], 'hPa')
+    true_u_layer = units.Quantity([0., 1., 1.3303], 'm/s')
+    assert_array_almost_equal(p_layer, true_p_layer, 4)
+    assert_array_almost_equal(u_layer, true_u_layer, 4)
+
+
 def test_greater_or_close():
     """Test floating point greater or close to."""
     x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])

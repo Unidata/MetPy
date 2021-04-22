@@ -444,8 +444,8 @@ class MetPyDataArrayAccessor:
     @property
     def time_deltas(self):
         """Return the time difference of the data in seconds (to microsecond precision)."""
-        return (np.diff(self._data_array.values).astype('timedelta64[us]').astype('int64')
-                / 1e6 * units.s)
+        us_diffs = np.diff(self._data_array.values).astype('timedelta64[us]').astype('int64')
+        return units.Quantity(us_diffs / 1e6, 's')
 
     def find_axis_name(self, axis):
         """Return the name of the axis corresponding to the given identifier.
@@ -790,7 +790,7 @@ class MetPyDatasetAccessor:
                         new_coord_var = coord_var.copy(
                             data=(
                                 coord_var.metpy.unit_array
-                                * (height * units.meter)
+                                * units.Quantity(height, 'meter')
                             ).m_as('meter')
                         )
                         new_coord_var.attrs['units'] = 'meter'
@@ -1411,10 +1411,12 @@ def grid_deltas_from_dataarray(f, kind='default'):
         dy_units = units(y.attrs.get('units'))
 
     # Broadcast to input and attach units
-    dx = dx_var.set_dims(f.dims, shape=[dx_var.sizes[dim] if dim in dx_var.dims else 1
-                                        for dim in f.dims]).data * dx_units
-    dy = dy_var.set_dims(f.dims, shape=[dy_var.sizes[dim] if dim in dy_var.dims else 1
-                                        for dim in f.dims]).data * dy_units
+    dx_var = dx_var.set_dims(f.dims, shape=[dx_var.sizes[dim] if dim in dx_var.dims else 1
+                                            for dim in f.dims])
+    dx = units.Quantity(dx_var.data, dx_units)
+    dy_var = dy_var.set_dims(f.dims, shape=[dy_var.sizes[dim] if dim in dy_var.dims else 1
+                                            for dim in f.dims])
+    dy = units.Quantity(dy_var.data, dy_units)
 
     return dx, dy
 

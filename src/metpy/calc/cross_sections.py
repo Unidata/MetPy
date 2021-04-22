@@ -48,8 +48,8 @@ def distances_from_cross_section(cross):
         y = distance * np.cos(np.deg2rad(forward_az))
 
         # Build into DataArrays
-        x = xr.DataArray(x * units.meter, coords=lon.coords, dims=lon.dims)
-        y = xr.DataArray(y * units.meter, coords=lat.coords, dims=lat.dims)
+        x = xr.DataArray(units.Quantity(x, 'meter'), coords=lon.coords, dims=lon.dims)
+        y = xr.DataArray(units.Quantity(y, 'meter'), coords=lat.coords, dims=lat.dims)
 
     elif check_axis(cross.metpy.x, 'x') and check_axis(cross.metpy.y, 'y'):
 
@@ -88,8 +88,8 @@ def latitude_from_cross_section(cross):
             inverse=True,
             radians=False
         )[1]
-        latitude = xr.DataArray(latitude * units.degrees_north, coords=y.coords, dims=y.dims)
-        return latitude
+        return xr.DataArray(units.Quantity(latitude, 'degrees_north'), coords=y.coords,
+                            dims=y.dims)
 
 
 @exporter.export

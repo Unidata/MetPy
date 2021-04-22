@@ -113,7 +113,8 @@ def _read_airports_file(input_file=None):
     station_map = pd.DataFrame({'id': df.ident.values, 'synop_id': 99999,
                                 'latitude': df.latitude_deg.values,
                                 'longitude': df.longitude_deg.values,
-                                'altitude': ((df.elevation_ft.values * units.ft).to('m')).m,
+                                'altitude': units.Quantity(
+                                    df.elevation_ft.values, 'ft').to('m').m,
                                 'country': df.iso_region.str.split('-', n=1,
                                                                    expand=True)[1].values,
                                 'source': input_file

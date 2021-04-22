@@ -84,12 +84,12 @@ def get_upper_air_data(date, station):
 
     p, z, t, td, direc, spd = np.array(arr_data).T
 
-    p = p * units.hPa
-    z = z * units.meters
-    t = t * units.degC
-    td = td * units.degC
-    direc = direc * units.degrees
-    spd = spd * units.knots
+    p = units.Quantity(p, 'hPa')
+    z = units.Quantity(z, 'meters')
+    t = units.Quantity(t, 'degC')
+    td = units.Quantity(td, 'degC')
+    direc = units.Quantity(direc, 'degrees')
+    spd = units.Quantity(spd, 'knots')
 
     u, v = wind_components(spd, direc)
 
@@ -158,9 +158,9 @@ def check_mask(actual, desired):
     np.testing.assert_array_equal(actual_mask, desired_mask)
 
 
-def assert_nan(value, units):
+def assert_nan(value, value_units):
     """Check for nan with proper units."""
-    value, _ = check_and_drop_units(value, np.nan * units)
+    value, _ = check_and_drop_units(value, units.Quantity(np.nan, value_units))
     assert np.isnan(value)
 
 
