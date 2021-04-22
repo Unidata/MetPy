@@ -9,7 +9,7 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v4.0.1
         name: Run script
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
