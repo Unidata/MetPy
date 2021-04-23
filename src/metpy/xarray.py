@@ -128,8 +128,8 @@ class MetPyDataArrayAccessor:
     @property
     def units(self):
         """Return the units of this DataArray as a `pint.Unit`."""
-        if isinstance(self._data_array.data, units.Quantity):
-            return self._data_array.data.units
+        if isinstance(self._data_array.variable._data, units.Quantity):
+            return self._data_array.variable._data.units
         else:
             return units.parse_units(self._data_array.attrs.get('units', 'dimensionless'))
 
