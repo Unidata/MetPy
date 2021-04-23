@@ -747,7 +747,7 @@ class MetPyDatasetAccessor:
             else:
                 crs = CFProjection(proj_var.attrs)
 
-        if crs is None and not check_axis(var, 'latitude', 'longitude'):
+        if crs is None:
             # This isn't a lat or lon coordinate itself, so determine if we need to fall back
             # to creating a latitude_longitude CRS. We do so if there exists valid *at most
             # 1D* coordinates for latitude and longitude (usually dimension coordinates, but
