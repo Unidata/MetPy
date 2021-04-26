@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the operation of MetPy's XArray accessors."""
 from collections import OrderedDict
+from unittest.mock import patch, PropertyMock
 
 import numpy as np
 import pyproj
@@ -113,6 +114,13 @@ def test_unit_array(test_var):
 def test_units(test_var):
     """Test the units property on the accessor."""
     assert test_var.metpy.units == units.kelvin
+
+
+def test_units_data(test_var):
+    """Test units property fetching does not touch variable.data."""
+    with patch.object(xr.Variable, 'data', new_callable=PropertyMock) as mock_data_property:
+        test_var.metpy.units
+        mock_data_property.assert_not_called()
 
 
 def test_units_percent():
