@@ -459,8 +459,8 @@ class Level2File:
             num_az = 360
             chunk_size = 32
             bit_conv = Bits(16)
+            offset = 0
             for e in range(num_el):
-                offset = e * num_az * chunk_size
                 seg_num = data[offset]
                 if seg_num != (e + 1):
                     log.warning('Message 13 segments out of sync -- read {} but on {}'.format(
@@ -473,6 +473,7 @@ class Level2File:
                         gates.extend(bit_conv(data[offset + i]))
                     az_data.append(gates)
                 self.clutter_filter_bypass_map['data'].append(az_data)
+                offset += num_az * chunk_size + 1
 
             if offset != len(data):
                 log.warning('Message 13 left data -- Used: %d Avail: %d', offset, len(data))
