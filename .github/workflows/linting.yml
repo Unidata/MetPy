@@ -19,9 +19,6 @@ jobs:
       - name: Install flake8
         run: python -m pip install -r ci/linting_requirements.txt
 
-      - name: Install MetPy Flake8 Plugin
-        run: python -m pip install tools/flake8-metpy
-
       - name: Set up reviewdog
         run: |
           mkdir -p $HOME/bin

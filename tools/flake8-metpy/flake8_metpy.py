@@ -11,12 +11,6 @@ masked arrays and is slower than calling ``Quantity()``.
 import ast
 from collections import namedtuple
 
-try:
-    from importlib.metadata import version
-except ImportError:
-    from importlib_metadata import version
-
-
 Error = namedtuple('Error', 'lineno col code')
 
 
@@ -58,7 +52,7 @@ class MetPyChecker:
     """Flake8 plugin class to check MetPy style/best practice."""
 
     name = __name__
-    version = version(__name__)
+    version = '1.0'
 
     def __init__(self, tree):
         """Initialize the plugin."""
@@ -74,5 +68,5 @@ class MetPyChecker:
     def error(self, err):
         """Format errors into Flake8's required format."""
         return (err.lineno, err.col,
-                f'METPY{err.code:03d}: Multiplying/dividing by units--use units.Quantity()',
+                f'MPY{err.code:03d}: Multiplying/dividing by units--use units.Quantity()',
                 type(self))
