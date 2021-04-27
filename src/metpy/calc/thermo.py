@@ -304,6 +304,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     if reference_pressure is None:
         reference_pressure = pressure[0]
 
+    if np.isnan(reference_pressure):
+        return units.Quantity(np.full(pressure.shape, np.nan), temperature.units)
+
     pressure = pressure.to('mbar')
     reference_pressure = reference_pressure.to('mbar')
     temperature = np.atleast_1d(temperature)
@@ -342,7 +345,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
-    r"""Calculate the lifted condensation level (LCL) using from the starting point.
+    r"""Calculate the lifted condensation level (LCL) from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpoint`,
     and `pressure`. If these are arrays, this function will return a LCL
@@ -399,12 +402,19 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     """
     def _lcl_iter(p, p0, w, t):
+        nonlocal nan_mask
         td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
-        return (p0 * (td / t) ** (1. / mpconsts.kappa)).m
+        p_new = (p0 * (td / t) ** (1. / mpconsts.kappa)).m
+        nan_mask = nan_mask | np.isnan(p_new)
+        return np.where(np.isnan(p_new), p, p_new)
 
+    # Handle nans by creating a mask that gets set by our _lcl_iter function if it
+    # ever encounters a nan, at which point pressure is set to p, stopping iteration.
+    nan_mask = False
     w = mixing_ratio(saturation_vapor_pressure(dewpoint), pressure)
     lcl_p = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
                            xtol=eps, maxiter=max_iters)
+    lcl_p = np.where(nan_mask, np.nan, lcl_p)
 
     # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
