@@ -442,8 +442,8 @@
 
         <span class="c1"># Check if we have any message segments still in the buffer</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Remaining buffered messages segments for message type(s): </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="p">)))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Remaining buffered message segments for message type(s): </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rem</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span> <span class="k">for</span> <span class="n">typ</span><span class="p">,</span> <span class="n">rem</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
 
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span>
 
@@ -480,14 +480,14 @@
                                                  <span class="n">hdr</span><span class="o">.</span><span class="n">surv_gate_width</span><span class="p">,</span>
                                                  <span class="n">hdr</span><span class="o">.</span><span class="n">surv_num_gates</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">66.0</span><span class="p">)))</span>
 
-        <span class="k">if</span> <span class="n">hdr</span><span class="o">.</span><span class="n">vel_offset</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_num_gates</span> <span class="ow">and</span> <span class="n">hdr</span><span class="o">.</span><span class="n">vel_offset</span><span class="p">:</span>
             <span class="n">read_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">hdr</span><span class="o">.</span><span class="n">vel_offset</span><span class="p">,</span>
                               <span class="bp">self</span><span class="o">.</span><span class="n">msg1_data_hdr</span><span class="p">(</span><span class="s1">&#39;VEL&#39;</span><span class="p">,</span> <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_first_gate</span><span class="p">,</span>
                                                  <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_gate_width</span><span class="p">,</span>
                                                  <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_num_gates</span><span class="p">,</span>
                                                  <span class="mf">1.</span> <span class="o">/</span> <span class="n">hdr</span><span class="o">.</span><span class="n">dop_res</span><span class="p">,</span> <span class="mf">129.0</span><span class="p">)))</span>
 
-        <span class="k">if</span> <span class="n">hdr</span><span class="o">.</span><span class="n">sw_offset</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_num_gates</span> <span class="ow">and</span> <span class="n">hdr</span><span class="o">.</span><span class="n">sw_offset</span><span class="p">:</span>
             <span class="n">read_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">hdr</span><span class="o">.</span><span class="n">sw_offset</span><span class="p">,</span>
                               <span class="bp">self</span><span class="o">.</span><span class="n">msg1_data_hdr</span><span class="p">(</span><span class="s1">&#39;SW&#39;</span><span class="p">,</span> <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_first_gate</span><span class="p">,</span>
                                                  <span class="n">hdr</span><span class="o">.</span><span class="n">doppler_gate_width</span><span class="p">,</span>
@@ -627,15 +627,24 @@
     <span class="k">def</span> <span class="nf">_decode_msg13</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;</span><span class="si">{:d}</span><span class="s1">h&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">clutter_filter_bypass_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="n">nexrad_to_datetime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">),</span>
-                                              <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;</span><span class="si">{:d}</span><span class="s1">h&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># Legacy format doesn&#39;t have date/time and has fewer azimuths</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">num_el</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">dt</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">num_az</span> <span class="o">=</span> <span class="mi">256</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+                <span class="c1"># time is in &quot;minutes since midnight&quot;, need to pass as ms since midnight</span>
+                <span class="n">dt</span> <span class="o">=</span> <span class="n">nexrad_to_datetime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
+                <span class="n">num_az</span> <span class="o">=</span> <span class="mi">360</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="mi">3</span>
 
-            <span class="n">num_az</span> <span class="o">=</span> <span class="mi">360</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clutter_filter_bypass_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[]}</span>
             <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">32</span>
             <span class="n">bit_conv</span> <span class="o">=</span> <span class="n">Bits</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_el</span><span class="p">):</span>
-                <span class="n">offset</span> <span class="o">=</span> <span class="n">e</span> <span class="o">*</span> <span class="n">num_az</span> <span class="o">*</span> <span class="n">chunk_size</span>
                 <span class="n">seg_num</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">seg_num</span> <span class="o">!=</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message 13 segments out of sync -- read </span><span class="si">{}</span><span class="s1"> but on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -648,6 +657,7 @@
                         <span class="n">gates</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bit_conv</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]))</span>
                     <span class="n">az_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gates</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clutter_filter_bypass_map</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">az_data</span><span class="p">)</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">num_az</span> <span class="o">*</span> <span class="n">chunk_size</span> <span class="o">+</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="n">offset</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message 13 left data -- Used: </span><span class="si">%d</span><span class="s1"> Avail: </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -661,7 +671,14 @@
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;</span><span class="si">{:d}</span><span class="s1">h&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">clutter_filter_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="n">nexrad_to_datetime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="k">if</span> <span class="n">num_el</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Message 15 num_el is 0--likely legacy clutter filter notch width. &#39;</span>
+                         <span class="s1">&#39;Skipping...&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="c1"># time is in &quot;minutes since midnight&quot;, need to pass as ms since midnight</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clutter_filter_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="n">nexrad_to_datetime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">time</span><span class="p">),</span>
+                                       <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[]}</span>
 
             <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_el</span><span class="p">):</span>
@@ -681,14 +698,18 @@
         <span class="c1"># buffer the segments until we have the whole thing. The data</span>
         <span class="c1"># will be returned concatenated when this is the case</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+
+        <span class="c1"># Legacy versions don&#39;t even document this:</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">vol_hdr</span><span class="o">.</span><span class="n">version</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="sa">b</span><span class="s1">&#39;ARCHIVE2&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;AR2V0001&#39;</span><span class="p">):</span>
             <span class="kn">from</span> <span class="nn">._nexrad_msgs.msg18</span> <span class="kn">import</span> <span class="n">descriptions</span><span class="p">,</span> <span class="n">fields</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rda_adaptation_desc</span> <span class="o">=</span> <span class="n">descriptions</span>
 
             <span class="c1"># Can&#39;t use NamedStruct because we have more than 255 items--this</span>
             <span class="c1"># is a CPython limit for arguments.</span>
             <span class="n">msg_fmt</span> <span class="o">=</span> <span class="n">DictStruct</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rda</span> <span class="o">=</span> <span class="n">msg_fmt</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="c1"># Be extra paranoid about passing too much data in case of legacy files</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rda</span> <span class="o">=</span> <span class="n">msg_fmt</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">msg_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">301</span><span class="p">):</span>
                 <span class="n">attr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;VCPAT</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="n">dat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rda</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
@@ -2619,7 +2640,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 26, 2021 at 19:23:04.<br/>
+        Last updated on Apr 27, 2021 at 18:24:44.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
