@@ -126,7 +126,7 @@ We'll start this tutorial by reading in a gridded dataset using Xarray.
         u-component_of_wind_height_above_ground  (time, height_above_ground1, lat, lon) float32 ...
         Temperature_height_above_ground          (time, height_above_ground, lat, lon) float32 ...
         Geopotential_height_isobaric             (time, isobaric3, lat, lon) float32 ...
-        Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 1.002e+...
+        Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 ...
 
 
 
@@ -927,7 +927,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  17.704 seconds)
+   **Total running time of the script:** ( 0 minutes  18.797 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
