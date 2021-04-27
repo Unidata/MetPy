@@ -267,8 +267,8 @@ class Level2File:
 
         # Check if we have any message segments still in the buffer
         if self._msg_buf:
-            log.warning('Remaining buffered messages segments for message type(s): %s',
-                        ' '.join(map(str, self._msg_buf)))
+            log.warning('Remaining buffered message segments for message type(s): %s',
+                        ' '.join(f'{typ} ({len(rem)})' for typ, rem in self._msg_buf.items()))
 
         del self._msg_buf
 
@@ -305,14 +305,14 @@ class Level2File:
                                                  hdr.surv_gate_width,
                                                  hdr.surv_num_gates, 2.0, 66.0)))
 
-        if hdr.vel_offset:
+        if hdr.doppler_num_gates and hdr.vel_offset:
             read_info.append((hdr.vel_offset,
                               self.msg1_data_hdr('VEL', hdr.doppler_first_gate,
                                                  hdr.doppler_gate_width,
                                                  hdr.doppler_num_gates,
                                                  1. / hdr.dop_res, 129.0)))
 
-        if hdr.sw_offset:
+        if hdr.doppler_num_gates and hdr.sw_offset:
             read_info.append((hdr.sw_offset,
                               self.msg1_data_hdr('SW', hdr.doppler_first_gate,
                                                  hdr.doppler_gate_width,
@@ -452,14 +452,23 @@ class Level2File:
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
         if data:
-            date, time, num_el, *data = Struct('>{:d}h'.format(len(data) // 2)).unpack(data)
-            self.clutter_filter_bypass_map = {'datetime': nexrad_to_datetime(date, time),
-                                              'data': []}
+            data = Struct('>{:d}h'.format(len(data) // 2)).unpack(data)
+            # Legacy format doesn't have date/time and has fewer azimuths
+            if data[0] <= 5:
+                num_el = data[0]
+                dt = None
+                num_az = 256
+                offset = 1
+            else:
+                date, time, num_el = data[:3]
+                # time is in "minutes since midnight", need to pass as ms since midnight
+                dt = nexrad_to_datetime(date, 60 * 1000 * time)
+                num_az = 360
+                offset = 3
 
-            num_az = 360
+            self.clutter_filter_bypass_map = {'datetime': dt, 'data': []}
             chunk_size = 32
             bit_conv = Bits(16)
-            offset = 0
             for e in range(num_el):
                 seg_num = data[offset]
                 if seg_num != (e + 1):
@@ -487,7 +496,14 @@ class Level2File:
         data = self._buffer_segment(msg_hdr)
         if data:
             date, time, num_el, *data = Struct('>{:d}h'.format(len(data) // 2)).unpack(data)
-            self.clutter_filter_map = {'datetime': nexrad_to_datetime(date, time), 'data': []}
+            if num_el == 0:
+                log.info('Message 15 num_el is 0--likely legacy clutter filter notch width. '
+                         'Skipping...')
+                return
+
+            # time is in "minutes since midnight", need to pass as ms since midnight
+            self.clutter_filter_map = {'datetime': nexrad_to_datetime(date, 60 * 1000 * time),
+                                       'data': []}
 
             offset = 0
             for _ in range(num_el):
@@ -507,14 +523,18 @@ class Level2File:
         # buffer the segments until we have the whole thing. The data
         # will be returned concatenated when this is the case
         data = self._buffer_segment(msg_hdr)
-        if data:
+
+        # Legacy versions don't even document this:
+        if data and self.vol_hdr.version[:8] not in (b'ARCHIVE2', b'AR2V0001'):
             from ._nexrad_msgs.msg18 import descriptions, fields
             self.rda_adaptation_desc = descriptions
 
             # Can't use NamedStruct because we have more than 255 items--this
             # is a CPython limit for arguments.
             msg_fmt = DictStruct(fields, '>')
-            self.rda = msg_fmt.unpack(data)
+
+            # Be extra paranoid about passing too much data in case of legacy files
+            self.rda = msg_fmt.unpack(data[:msg_fmt.size])
             for num in (11, 21, 31, 32, 300, 301):
                 attr = f'VCPAT{num}'
                 dat = self.rda[attr]

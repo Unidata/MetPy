@@ -34,7 +34,8 @@ level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)
                 ('TDAL20191021021543V08.raw.gz', datetime(2019, 10, 21, 2, 15, 43), 10, 1,
                  3, 0),
                 ('Level2_FOP1_20191223_003655.ar2v', datetime(2019, 12, 23, 0, 36, 55, 649000),
-                 16, 5, 7, 0)]
+                 16, 5, 7, 0),
+                ('KVWX_20050626_221551.gz', datetime(2005, 6, 26, 22, 15, 51), 11, 1, 3, 23)]
 
 
 # ids here fixes how things are presented in pycharm
@@ -95,7 +96,7 @@ def test_msg15():
     f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
     data = f.clutter_filter_map['data']
     assert isinstance(data[0][0], list)
-    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
+    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 5, 15, 0, 0)
 
 
 def test_single_chunk(caplog):
