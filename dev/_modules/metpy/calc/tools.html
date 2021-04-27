@@ -205,8 +205,8 @@
     <span class="n">UND</span>
 <span class="p">)</span>  <span class="c1"># note the order matters!</span>
 
-<span class="n">MAX_DEGREE_ANGLE</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degree</span>
-<span class="n">BASE_DEGREE_MULTIPLIER</span> <span class="o">=</span> <span class="mf">22.5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degree</span>
+<span class="n">MAX_DEGREE_ANGLE</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span>
+<span class="n">BASE_DEGREE_MULTIPLIER</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">22.5</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span>
 
 <span class="n">DIR_DICT</span> <span class="o">=</span> <span class="p">{</span><span class="n">dir_str</span><span class="p">:</span> <span class="n">i</span> <span class="o">*</span> <span class="n">BASE_DEGREE_MULTIPLIER</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dir_str</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">DIR_STRS</span><span class="p">)}</span>
 <span class="n">DIR_DICT</span><span class="p">[</span><span class="n">UND</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -563,9 +563,9 @@
                     <span class="c1"># Need to cast back to the input type since interp (up to at least numpy</span>
                     <span class="c1"># 1.13 always returns float64. This can cause upstream users problems,</span>
                     <span class="c1"># resulting in something like np.append() to upcast.</span>
-                    <span class="n">bound_pressure</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">bound</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">height</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
-                                                <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">result_type</span><span class="p">(</span><span class="n">bound</span><span class="p">))</span>
-                                      <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+                    <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">bound</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">height</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                                                    <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">result_type</span><span class="p">(</span><span class="n">bound</span><span class="p">)),</span>
+                                                    <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="n">bound</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
                     <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
@@ -696,8 +696,7 @@
 <div class="viewcode-block" id="get_layer"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_layer.html#metpy.calc.get_layer">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
-              <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an atmospheric layer from upper air data with the requested bottom and depth.</span>
 
 <span class="sd">    This function will subset an upper air dataset to contain only the specified layer. The</span>
@@ -741,7 +740,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># If we get the depth kwarg, but it&#39;s None, set it to the default as well</span>
     <span class="k">if</span> <span class="n">depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">depth</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;hPa&#39;</span><span class="p">)</span>
 
     <span class="c1"># Make sure pressure and datavars are the same length</span>
     <span class="k">for</span> <span class="n">datavar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
@@ -782,9 +781,11 @@
     <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
         <span class="c1"># If we don&#39;t have the bottom or top requested, append them</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">top_pressure</span><span class="p">,</span> <span class="n">p_interp</span><span class="p">)):</span>
-            <span class="n">p_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">top_pressure</span><span class="o">.</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+            <span class="n">p_interp</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">top_pressure</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span>
+                                      <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">bottom_pressure</span><span class="p">,</span> <span class="n">p_interp</span><span class="p">)):</span>
-            <span class="n">p_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">bottom_pressure</span><span class="o">.</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+            <span class="n">p_interp</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">bottom_pressure</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span>
+                                      <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
     <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
@@ -1022,7 +1023,7 @@
                               <span class="n">latitude</span><span class="p">[</span><span class="n">take_x</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">))])</span>
     <span class="n">dx</span><span class="p">[(</span><span class="n">forward_az</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">forward_az</span> <span class="o">&gt;</span> <span class="mf">180.</span><span class="p">)]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
 
-    <span class="k">return</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span></div>
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span class="p">),</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="azimuth_range_to_lat_lon"><a class="viewcode-back" href="../../../api/generated/metpy.calc.azimuth_range_to_lat_lon.html#metpy.calc.azimuth_range_to_lat_lon">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1465,7 +1466,7 @@
             <span class="n">delta_units</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">diff_size</span><span class="p">,</span> <span class="n">subok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">delta_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">delta_units</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">delta_units</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">delta</span> <span class="o">=</span> <span class="n">_broadcast_to_axis</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1568,13 +1569,9 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">scalar</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="c1"># clean any numeric strings, negatives, and None</span>
-    <span class="c1"># does not handle strings with alphabet</span>
-    <span class="n">input_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_angle</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>  <span class="c1"># warns about the np.nan</span>
-        <span class="n">input_angle</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">input_angle</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-
-    <span class="n">input_angle</span> <span class="o">=</span> <span class="n">input_angle</span> <span class="o">*</span> <span class="n">origin_units</span>
+    <span class="c1"># clean any numeric strings, negatives, and None does not handle strings with alphabet</span>
+    <span class="n">input_angle</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_angle</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">origin_units</span><span class="p">)</span>
+    <span class="n">input_angle</span><span class="p">[</span><span class="n">input_angle</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">origin_units</span><span class="p">)</span>
 
     <span class="c1"># normalizer used for angles &gt; 360 degree to normalize between 0 - 360</span>
     <span class="n">normalizer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_angle</span><span class="o">.</span><span class="n">m</span> <span class="o">/</span> <span class="n">MAX_DEGREE_ANGLE</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -1691,7 +1688,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 27, 2021 at 18:25:08.<br/>
+        Last updated on Apr 27, 2021 at 20:09:30.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

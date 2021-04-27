@@ -288,7 +288,8 @@
     <span class="n">station_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">ident</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s1">&#39;synop_id&#39;</span><span class="p">:</span> <span class="mi">99999</span><span class="p">,</span>
                                 <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">latitude_deg</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
                                 <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">longitude_deg</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                                <span class="s1">&#39;altitude&#39;</span><span class="p">:</span> <span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">elevation_ft</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">ft</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                                <span class="s1">&#39;altitude&#39;</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span>
+                                    <span class="n">df</span><span class="o">.</span><span class="n">elevation_ft</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s1">&#39;ft&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
                                 <span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">iso_region</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                                                    <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
                                 <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="n">input_file</span>
@@ -381,7 +382,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 27, 2021 at 18:25:08.<br/>
+        Last updated on Apr 27, 2021 at 20:09:30.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
