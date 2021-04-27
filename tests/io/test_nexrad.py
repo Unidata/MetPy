@@ -23,28 +23,33 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 
 # 1999 file tests old message 1
 # KFTG tests bzip compression and newer format for a part of message 31
-# KTLX 2015 has missing segments for message 18, which was causing exception
-level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17, 4, 6),
-                ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16, 1, 3),
+# KTLX 20150530 has missing segments for message 18, which was causing exception
+# KICX has message type 29 (MDM)
+level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17, 4, 6, 0),
+                ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16, 1, 3, 0),
                 ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11),
-                 12, 4, 6),
-                ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3), 14, 4, 6),
-                ('KICX_20170712_1458', datetime(2017, 7, 12, 14, 58, 5), 14, 4, 6),
-                ('TDAL20191021021543V08.raw.gz', datetime(2019, 10, 21, 2, 15, 43), 10, 1, 3),
+                 12, 4, 6, 0),
+                ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3), 14, 4, 6, 2),
+                ('KICX_20170712_1458', datetime(2017, 7, 12, 14, 58, 5), 14, 4, 6, 1),
+                ('TDAL20191021021543V08.raw.gz', datetime(2019, 10, 21, 2, 15, 43), 10, 1,
+                 3, 0),
                 ('Level2_FOP1_20191223_003655.ar2v', datetime(2019, 12, 23, 0, 36, 55, 649000),
-                 16, 5, 7)]
+                 16, 5, 7, 0),
+                ('KVWX_20050626_221551.gz', datetime(2005, 6, 26, 22, 15, 51), 11, 1, 3, 23)]
 
 
 # ids here fixes how things are presented in pycharm
-@pytest.mark.parametrize('fname, voltime, num_sweeps, mom_first, mom_last', level2_files,
-                         ids=[i[0].replace('.', '_') for i in level2_files])
-def test_level2(fname, voltime, num_sweeps, mom_first, mom_last):
+@pytest.mark.parametrize('fname, voltime, num_sweeps, mom_first, mom_last, expected_logs',
+                         level2_files, ids=[i[0].replace('.', '_') for i in level2_files])
+def test_level2(fname, voltime, num_sweeps, mom_first, mom_last, expected_logs, caplog):
     """Test reading NEXRAD level 2 files from the filename."""
+    caplog.set_level(logging.WARNING, 'metpy.io.nexrad')
     f = Level2File(get_test_data(fname, as_file_obj=False))
     assert f.dt == voltime
     assert len(f.sweeps) == num_sweeps
     assert len(f.sweeps[0][0][-1]) == mom_first
     assert len(f.sweeps[-1][0][-1]) == mom_last
+    assert len(caplog.records) == expected_logs
 
 
 @pytest.mark.parametrize('filename', ['Level2_KFTG_20150430_1419.ar2v',
@@ -91,7 +96,7 @@ def test_msg15():
     f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
     data = f.clutter_filter_map['data']
     assert isinstance(data[0][0], list)
-    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
+    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 5, 15, 0, 0)
 
 
 def test_single_chunk(caplog):
