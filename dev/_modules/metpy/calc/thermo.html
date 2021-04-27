@@ -479,6 +479,9 @@
     <span class="k">if</span> <span class="n">reference_pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">reference_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">reference_pressure</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
     <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;mbar&#39;</span><span class="p">)</span>
     <span class="n">reference_pressure</span> <span class="o">=</span> <span class="n">reference_pressure</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;mbar&#39;</span><span class="p">)</span>
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
@@ -517,7 +520,7 @@
 <span class="nd">@preprocess_and_wrap</span><span class="p">()</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the lifted condensation level (LCL) using from the starting point.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the lifted condensation level (LCL) from the starting point.</span>
 
 <span class="sd">    The starting state for the parcel is defined by `temperature`, `dewpoint`,</span>
 <span class="sd">    and `pressure`. If these are arrays, this function will return a LCL</span>
@@ -574,12 +577,19 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">_lcl_iter</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">nan_mask</span>
         <span class="n">td</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">](</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">),</span> <span class="n">w</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">p0</span> <span class="o">*</span> <span class="p">(</span><span class="n">td</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">kappa</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">p_new</span> <span class="o">=</span> <span class="p">(</span><span class="n">p0</span> <span class="o">*</span> <span class="p">(</span><span class="n">td</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">kappa</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">nan_mask</span> <span class="o">=</span> <span class="n">nan_mask</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">p_new</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">p_new</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="n">p_new</span><span class="p">)</span>
 
+    <span class="c1"># Handle nans by creating a mask that gets set by our _lcl_iter function if it</span>
+    <span class="c1"># ever encounters a nan, at which point pressure is set to p, stopping iteration.</span>
+    <span class="n">nan_mask</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dewpoint</span><span class="p">),</span> <span class="n">pressure</span><span class="p">)</span>
     <span class="n">lcl_p</span> <span class="o">=</span> <span class="n">so</span><span class="o">.</span><span class="n">fixed_point</span><span class="p">(</span><span class="n">_lcl_iter</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">temperature</span><span class="p">),</span>
                            <span class="n">xtol</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iters</span><span class="p">)</span>
+    <span class="n">lcl_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nan_mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">lcl_p</span><span class="p">)</span>
 
     <span class="c1"># np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.</span>
     <span class="c1"># Causes issues with parcel_profile_with_lcl if removed. Issue #1187</span>
@@ -3489,7 +3499,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 27, 2021 at 21:24:23.<br/>
+        Last updated on Apr 27, 2021 at 22:02:22.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
