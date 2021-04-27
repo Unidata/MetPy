@@ -727,7 +727,7 @@ class GempakFile():
     @staticmethod
     def _convert_ftime(ftime):
         """Convert GEMPAK forecast time and type integer."""
-        if ftime:
+        if ftime >= 0:
             iftype = ForecastType(ftime // 100000)
             iftime = ftime - iftype.value * 100000
             hours = iftime // 100
@@ -2630,6 +2630,75 @@ class GempakSurface(GempakFile):
 
                 stations.append(station)
         return stations
+
+    def nearest_time(self, date_time, station_id=None, station_number=None):
+        """Get nearest observation to given time for selected stations.
+
+        Parameters
+        ----------
+        date_time : datetime or array-like of datetime
+            Valid/observed datetime of the surface station. Alternatively
+            object or a string with the format YYYYmmddHHMM.
+
+        station_id : str or array-like of str
+            Station ID of the surface station.
+
+        station_number : int or array-like of int
+            Station number of the surface station.
+
+        Returns
+        -------
+        list
+            List of dicts/JSONs for each surface station.
+
+        Notes
+        -----
+        One of either station_id or station_number must be used. If both
+        are present, station_id will take precedence.
+        """
+        if isinstance(date_time, str):
+            date_time = datetime.strptime(date_time, '%Y%m%d%H%M')
+
+        if station_id is None and station_number is None:
+            raise ValueError('Must have either station_id or station_number')
+
+        if station_id is not None and station_number is not None:
+            station_number = None
+
+        if (station_id is not None
+           and (not isinstance(station_id, Iterable)
+                or isinstance(station_id, str))):
+            station_id = [station_id]
+            station_id = [c.upper() for c in station_id]
+
+        if station_number is not None and not isinstance(station_number, Iterable):
+            station_number = [station_number]
+            station_number = [int(sn) for sn in station_number]
+
+        time_matched = []
+        if station_id:
+            for stn in station_id:
+                matched = self.sfjson(station_id=stn)
+
+                nearest = min(
+                    matched,
+                    key=lambda d: abs(d['properties']['date_time'] - date_time)
+                )
+
+                time_matched.append(nearest)
+
+        if station_number:
+            for stn in station_id:
+                matched = self.sfjson(station_number=stn)
+
+                nearest = min(
+                    matched,
+                    key=lambda d: abs(d['properties']['date_time'] - date_time)
+                )
+
+                time_matched.append(nearest)
+
+        return time_matched
 
     def sfjson(self, station_id=None, station_number=None,
                date_time=None, state=None, country=None):
