@@ -5,6 +5,7 @@
 .vscode/
 
 *.pyc
+venv/
 
 .coverage
 .coverage.*
