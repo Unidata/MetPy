@@ -24,9 +24,9 @@ from ..xarray import preprocess_and_wrap
 exporter = Exporter(globals())
 
 # The following variables are constants for a standard atmosphere
-t0 = 288. * units.kelvin
-p0 = 1013.25 * units.hPa
-gamma = 6.5 * units('K/km')
+t0 = units.Quantity(288., 'kelvin')
+p0 = units.Quantity(1013.25, 'hPa')
+gamma = units.Quantity(6.5, 'K/km')
 
 
 @exporter.export
@@ -89,24 +89,24 @@ def wind_direction(u, v, convention='from'):
     of 0.
 
     """
-    wdir = 90. * units.deg - np.arctan2(-v, -u)
+    wdir = units.Quantity(90., 'deg') - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = np.atleast_1d(wdir)
 
     # Handle oceanographic convection
     if convention == 'to':
-        wdir -= 180 * units.deg
+        wdir -= units.Quantity(180., 'deg')
     elif convention not in ('to', 'from'):
         raise ValueError('Invalid kwarg for "convention". Valid options are "from" or "to".')
 
     mask = wdir <= 0
     if np.any(mask):
-        wdir[mask] += 360. * units.deg
+        wdir[mask] += units.Quantity(360., 'deg')
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude
     calm_mask = (np.asarray(u.magnitude) == 0.) & (np.asarray(v.magnitude) == 0.)
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
     if np.any(calm_mask):
-        wdir[calm_mask] = 0. * units.deg
+        wdir[calm_mask] = units.Quantity(0., 'deg')
     return wdir.reshape(origshape).to('degrees')
 
 
@@ -199,7 +199,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
         # noinspection PyAugmentAssignment
         speed = speed * 1.5
 
-    temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
+    temp_limit, speed_limit = units.Quantity(10., 'degC'), units.Quantity(3, 'mph')
     speed_factor = speed.to('km/hr').magnitude ** 0.16
     wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude
                           - 11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
@@ -257,38 +257,39 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     relative_humidity = np.atleast_1d(relative_humidity)
     # assign units to relative_humidity if they currently are not present
     if not hasattr(relative_humidity, 'units'):
-        relative_humidity = relative_humidity * units.dimensionless
-    delta = temperature.to(units.degF) - 0. * units.degF
+        relative_humidity = units.Quantity(relative_humidity, 'dimensionless')
+    delta = temperature.to(units.degF) - units.Quantity(0., 'degF')
     rh2 = relative_humidity * relative_humidity
     delta2 = delta * delta
 
     # Simplifed Heat Index -- constants converted for relative_humidity in [0, 1]
-    a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * relative_humidity
+    a = (units.Quantity(-10.3, 'degF') + 1.1 * delta
+         + units.Quantity(4.7, 'delta_degF') * relative_humidity)
 
     # More refined Heat Index -- constants converted for relative_humidity in [0, 1]
-    b = (-42.379 * units.degF
+    b = (units.Quantity(-42.379, 'degF')
          + 2.04901523 * delta
-         + 1014.333127 * units.delta_degF * relative_humidity
+         + units.Quantity(1014.333127, 'delta_degF') * relative_humidity
          - 22.475541 * delta * relative_humidity
-         - 6.83783e-3 / units.delta_degF * delta2
-         - 5.481717e2 * units.delta_degF * rh2
-         + 1.22874e-1 / units.delta_degF * delta2 * relative_humidity
+         - units.Quantity(6.83783e-3, '1/delta_degF') * delta2
+         - units.Quantity(5.481717e2, 'delta_degF') * rh2
+         + units.Quantity(1.22874e-1, '1/delta_degF') * delta2 * relative_humidity
          + 8.5282 * delta * rh2
-         - 1.99e-2 / units.delta_degF * delta2 * rh2)
+         - units.Quantity(1.99e-2, '1/delta_degF') * delta2 * rh2)
 
     # Create return heat index
-    hi = np.full(np.shape(temperature), np.nan) * units.degF
+    hi = units.Quantity(np.full(np.shape(temperature), np.nan), 'degF')
     # Retain masked status of temperature with resulting heat index
     if hasattr(temperature, 'mask'):
         hi = masked_array(hi)
 
     # If T <= 40F, Heat Index is T
-    sel = (temperature <= 40. * units.degF)
+    sel = (temperature <= units.Quantity(40., 'degF'))
     if np.any(sel):
         hi[sel] = temperature[sel].to(units.degF)
 
     # If a < 79F and hi is unset, Heat Index is a
-    sel = (a < 79. * units.degF) & np.isnan(hi)
+    sel = (a < units.Quantity(79., 'degF')) & np.isnan(hi)
     if np.any(sel):
         hi[sel] = a[sel]
 
@@ -298,26 +299,28 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         hi[sel] = b[sel]
 
     # Adjustment for RH <= 13% and 80F <= T <= 112F
-    sel = ((relative_humidity <= 13. * units.percent) & (temperature >= 80. * units.degF)
-           & (temperature <= 112. * units.degF))
+    sel = ((relative_humidity <= units.Quantity(13., 'percent'))
+           & (temperature >= units.Quantity(80., 'degF'))
+           & (temperature <= units.Quantity(112., 'degF')))
     if np.any(sel):
         rh15adj = ((13. - relative_humidity[sel] * 100.) / 4.
-                   * np.sqrt((17. * units.delta_degF
-                              - np.abs(delta[sel] - 95. * units.delta_degF))
-                             / 17. * units.delta_degF))
-        hi[sel] = hi[sel] - rh15adj
+                   * np.sqrt((units.Quantity(17., 'delta_degF')
+                              - np.abs(delta[sel] - units.Quantity(95., 'delta_degF')))
+                             / units.Quantity(17., 'delta_degF')))
+        hi[sel] = hi[sel] - units.Quantity(rh15adj, 'delta_degF')
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
-    sel = ((relative_humidity > 85. * units.percent) & (temperature >= 80. * units.degF)
-           & (temperature <= 87. * units.degF))
+    sel = ((relative_humidity > units.Quantity(85., 'percent'))
+           & (temperature >= units.Quantity(80., 'degF'))
+           & (temperature <= units.Quantity(87., 'degF')))
     if np.any(sel):
-        rh85adj = 0.02 * (relative_humidity[sel] * 100. - 85.) * (87. * units.delta_degF
-                                                                  - delta[sel])
+        rh85adj = (0.02 * (relative_humidity[sel] * 100. - 85.)
+                   * (units.Quantity(87., 'delta_degF') - delta[sel]))
         hi[sel] = hi[sel] + rh85adj
 
     # See if we need to mask any undefined values
     if mask_undefined:
-        mask = np.array(temperature < 80. * units.degF)
+        mask = np.array(temperature < units.Quantity(80., 'degF'))
         if mask.any():
             hi = masked_array(hi, mask=mask)
     return hi
@@ -398,7 +401,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     # If no values are masked and provided temperature does not have a mask
     # we should return a non-masked array
     if not np.any(app_temperature.mask) and not hasattr(temperature, 'mask'):
-        app_temperature = np.array(app_temperature.m) * temperature.units
+        app_temperature = units.Quantity(np.array(app_temperature.m), temperature.units)
 
     if is_not_scalar:
         return app_temperature
@@ -1103,7 +1106,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
     return ((altimeter_value ** n
              - ((p0.to(altimeter_value.units) ** n * gamma * height) / t0)) ** (1 / n)
-            + 0.3 * units.hPa)
+            + units.Quantity(0.3, 'hPa'))
 
 
 @exporter.export

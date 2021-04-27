@@ -485,14 +485,15 @@ class SkewT:
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.arange(xmin, xmax + 1, 10) * units.degC
+            t0 = units.Quantity(np.arange(xmin, xmax + 1, 10), 'degC')
 
         # Get pressure levels based on ylims if necessary
         if pressure is None:
-            pressure = np.linspace(*self.ax.get_ylim()) * units.mbar
+            pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), 'mbar')
 
         # Assemble into data for plotting
-        t = dry_lapse(pressure, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        t = dry_lapse(pressure, t0[:, np.newaxis],
+                      units.Quantity(1000., 'mbar')).to(units.degC)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
@@ -542,15 +543,16 @@ class SkewT:
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.concatenate((np.arange(xmin, 0, 10),
-                                 np.arange(0, xmax + 1, 5))) * units.degC
+            t0 = units.Quantity(np.concatenate((np.arange(xmin, 0, 10),
+                                                np.arange(0, xmax + 1, 5))), 'degC')
 
         # Get pressure levels based on ylims if necessary
         if pressure is None:
-            pressure = np.linspace(*self.ax.get_ylim()) * units.mbar
+            pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), 'mbar')
 
         # Assemble into data for plotting
-        t = moist_lapse(pressure, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        t = moist_lapse(pressure, t0[:, np.newaxis],
+                        units.Quantity(1000., 'mbar')).to(units.degC)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
@@ -600,7 +602,7 @@ class SkewT:
 
         # Set pressure range if necessary
         if pressure is None:
-            pressure = np.linspace(600, max(self.ax.get_ylim())) * units.mbar
+            pressure = units.Quantity(np.linspace(600, max(self.ax.get_ylim())), 'mbar')
 
         # Assemble data for plotting
         td = dewpoint(vapor_pressure(pressure, mixing_ratio))
@@ -930,10 +932,10 @@ class Hodograph:
             if intervals.dimensionality == {'[length]': 1.0}:
 
                 # Find any intervals not in the data and interpolate them
-                interpolation_heights = [bound.m for bound in intervals if bound not in c]
-                interpolation_heights = np.array(interpolation_heights) * intervals.units
-                interpolation_heights = (np.sort(interpolation_heights.magnitude)
-                                         * interpolation_heights.units)
+                interpolation_heights = np.array([bound.m for bound in intervals
+                                                  if bound not in c])
+                interpolation_heights = units.Quantity(np.sort(interpolation_heights),
+                                                       intervals.units)
                 (interpolated_heights, interpolated_u,
                  interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)
 
@@ -952,7 +954,7 @@ class Hodograph:
                 intervals = intervals.to_base_units()
             # If segmenting by anything else, do not interpolate, just use the data
             else:
-                intervals = np.asarray(intervals) * intervals.units
+                intervals = units.Quantity(np.asarray(intervals), intervals.units)
 
             norm = mcolors.BoundaryNorm(intervals.magnitude, cmap.N)
             cmap.set_over('none')

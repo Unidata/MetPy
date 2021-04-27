@@ -158,17 +158,16 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     try:
         # Create a field for sea-level pressure and make sure it is a float
         df['air_pressure_at_sea_level'] = float(altimeter_to_sea_level_pressure(
-            df.altimeter.values * units('inHg'),
-            df.elevation.values * units('meters'),
-            df.temperature.values * units('degC')).to('hPa').magnitude)
+            units.Quantity(df.altimeter.values, 'inHg'),
+            units.Quantity(df.elevation.values, 'meters'),
+            units.Quantity(df.temperature.values, 'degC')).to('hPa').magnitude)
     except AttributeError:
         df['air_pressure_at_sea_level'] = [np.nan]
 
     # Use get wind components and assign them to u and v variables
-    df['eastward_wind'], df['northward_wind'] = wind_components((df.wind_speed.values
-                                                                 * units.kts),
-                                                                df.wind_direction.values
-                                                                * units.degree)
+    df['eastward_wind'], df['northward_wind'] = wind_components(
+        units.Quantity(df.wind_speed.values, 'kts'),
+        units.Quantity(df.wind_direction.values, 'degree'))
 
     # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
@@ -424,7 +423,7 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
         if (float(tree.altim.text.strip()[1:5])) > 1100:
             altim = float(tree.altim.text.strip()[1:5]) / 100
         else:
-            altim = (int(tree.altim.text.strip()[1:5]) * units.hPa).to('inHg').magnitude
+            altim = units.Quantity(int(tree.altim.text.strip()[1:5]), 'hPa').to('inHg').m
 
     # Returns a named tuple with all the relevant variables
     return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd,
@@ -617,15 +616,14 @@ def parse_metar_file(filename, *, year=None, month=None):
 
     # Calculate sea-level pressure from function in metpy.calc
     df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(
-        altim * units('inHg'),
-        elev * units('meters'),
-        temp * units('degC')).to('hPa').magnitude
+        units.Quantity(altim, 'inHg'),
+        units.Quantity(elev, 'meters'),
+        units.Quantity(temp, 'degC')).to('hPa').magnitude
 
     # Use get wind components and assign them to eastward and northward winds
-    df['eastward_wind'], df['northward_wind'] = wind_components((df.wind_speed.values
-                                                                 * units.kts),
-                                                                df.wind_direction.values
-                                                                * units.degree)
+    df['eastward_wind'], df['northward_wind'] = wind_components(
+        units.Quantity(df.wind_speed.values, 'kts'),
+        units.Quantity(df.wind_direction.values, 'degree'))
 
     # Drop duplicate values
     df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')

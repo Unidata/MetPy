@@ -78,8 +78,7 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
     w = mixing_ratio(saturation_vapor_pressure(dewpoint_layer), pres_layer)
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
-    pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units)
-                / (mpconsts.g * mpconsts.rho_l))
+    pw = -np.trapz(w, pres_layer) / (mpconsts.g * mpconsts.rho_l)
     return pw.to('millimeters')
 
 
@@ -187,26 +186,29 @@ def bunkers_storm_motion(pressure, u, v, height):
 
     """
     # mean wind from sfc-6km
-    _, u_mean, v_mean = get_layer(pressure, u, v, height=height, depth=6000 * units('meter'))
-    wind_mean = [np.mean(u_mean).m, np.mean(v_mean).m] * u_mean.units
+    _, u_mean, v_mean = get_layer(pressure, u, v, height=height,
+                                  depth=units.Quantity(6000, 'meter'))
+    wind_mean = units.Quantity([np.mean(u_mean).m, np.mean(v_mean).m], u_mean.units)
 
     # mean wind from sfc-500m
-    _, u_500m, v_500m = get_layer(pressure, u, v, height=height, depth=500 * units('meter'))
-    wind_500m = [np.mean(u_500m).m, np.mean(v_500m).m] * u_500m.units
+    _, u_500m, v_500m = get_layer(pressure, u, v, height=height,
+                                  depth=units.Quantity(500, 'meter'))
+    wind_500m = units.Quantity([np.mean(u_500m).m, np.mean(v_500m).m], u_500m.units)
 
     # mean wind from 5.5-6km
-    _, u_5500m, v_5500m = get_layer(pressure, u, v, height=height, depth=500 * units('meter'),
-                                    bottom=height[0] + 5500 * units('meter'))
-    wind_5500m = [np.mean(u_5500m).m, np.mean(v_5500m).m] * u_5500m.units
+    _, u_5500m, v_5500m = get_layer(pressure, u, v, height=height,
+                                    depth=units.Quantity(500, 'meter'),
+                                    bottom=height[0] + units.Quantity(5500, 'meter'))
+    wind_5500m = units.Quantity([np.mean(u_5500m).m, np.mean(v_5500m).m], u_5500m.units)
 
     # Calculate the shear vector from sfc-500m to 5.5-6km
     shear = wind_5500m - wind_500m
 
     # Take the cross product of the wind shear and k, and divide by the vector magnitude and
-    # multiply by the deviaton empirically calculated in Bunkers (2000) (7.5 m/s)
+    # multiply by the deviation empirically calculated in Bunkers (2000) (7.5 m/s)
     shear_cross = concatenate([shear[1], -shear[0]])
-    shear_mag = np.hypot(*(arg.magnitude for arg in shear)) * shear.units
-    rdev = shear_cross * (7.5 * units('m/s').to(u.units) / shear_mag)
+    shear_mag = units.Quantity(np.hypot(*(arg.magnitude for arg in shear)), shear.units)
+    rdev = shear_cross * (units.Quantity(7.5, 'm/s').to(u.units) / shear_mag)
 
     # Add the deviations to the layer average wind to get the RM motion
     right_mover = wind_mean + rdev
@@ -309,12 +311,12 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
         Supercell composite
 
     """
-    effective_shear = np.clip(np.atleast_1d(effective_shear), None, 20 * units('m/s'))
-    effective_shear[effective_shear < 10 * units('m/s')] = 0 * units('m/s')
-    effective_shear = effective_shear / (20 * units('m/s'))
+    effective_shear = np.clip(np.atleast_1d(effective_shear), None, units.Quantity(20, 'm/s'))
+    effective_shear[effective_shear < units.Quantity(10, 'm/s')] = units.Quantity(0, 'm/s')
+    effective_shear = effective_shear / units.Quantity(20, 'm/s')
 
-    return ((mucape / (1000 * units('J/kg')))
-            * (effective_storm_helicity / (50 * units('m^2/s^2')))
+    return ((mucape / units.Quantity(1000, 'J/kg'))
+            * (effective_storm_helicity / units.Quantity(50, 'm^2/s^2'))
             * effective_shear).to('dimensionless')
 
 
@@ -361,17 +363,18 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
 
     """
     surface_based_lcl_height = np.clip(np.atleast_1d(surface_based_lcl_height),
-                                       1000 * units.m, 2000 * units.m)
-    surface_based_lcl_height[surface_based_lcl_height > 2000 * units.m] = 0 * units.m
-    surface_based_lcl_height = ((2000. * units.m - surface_based_lcl_height)
-                                / (1000. * units.m))
-    shear_6km = np.clip(np.atleast_1d(shear_6km), None, 30 * units('m/s'))
-    shear_6km[shear_6km < 12.5 * units('m/s')] = 0 * units('m/s')
-    shear_6km /= 20 * units('m/s')
+                                       units.Quantity(1000., 'm'), units.Quantity(2000., 'm'))
+    surface_based_lcl_height[surface_based_lcl_height > units.Quantity(2000., 'm')] = \
+        units.Quantity(0, 'm')
+    surface_based_lcl_height = ((units.Quantity(2000., 'm') - surface_based_lcl_height)
+                                / units.Quantity(1000., 'm'))
+    shear_6km = np.clip(np.atleast_1d(shear_6km), None, units.Quantity(30, 'm/s'))
+    shear_6km[shear_6km < units.Quantity(12.5, 'm/s')] = units.Quantity(0, 'm/s')
+    shear_6km /= units.Quantity(20, 'm/s')
 
-    return ((sbcape / (1500. * units('J/kg')))
+    return ((sbcape / units.Quantity(1500., 'J/kg'))
             * surface_based_lcl_height
-            * (storm_helicity_1km / (150. * units('m^2/s^2')))
+            * (storm_helicity_1km / units.Quantity(150., 'm^2/s^2'))
             * shear_6km)
 
 
@@ -436,7 +439,7 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     v = v[sort_inds]
 
     # Calculate sfc-500m shear vector
-    shr5 = bulk_shear(pressure, u, v, height=height, depth=500 * units('meter'))
+    shr5 = bulk_shear(pressure, u, v, height=height, depth=units.Quantity(500, 'meter'))
 
     # Make everything relative to the sfc wind orientation
     umn = u_storm - u[0]
@@ -445,6 +448,6 @@ def critical_angle(pressure, u, v, height, u_storm, v_storm):
     vshr = np.asarray([shr5[0].magnitude, shr5[1].magnitude])
     vsm = np.asarray([umn.magnitude, vmn.magnitude])
     angle_c = np.dot(vshr, vsm) / (np.linalg.norm(vshr) * np.linalg.norm(vsm))
-    critical_angle = np.arccos(angle_c) * units('radian')
+    critical_angle = units.Quantity(np.arccos(angle_c), 'radian')
 
     return critical_angle.to('degrees')

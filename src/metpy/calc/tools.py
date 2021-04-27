@@ -30,8 +30,8 @@ DIR_STRS = (
     UND
 )  # note the order matters!
 
-MAX_DEGREE_ANGLE = 360 * units.degree
-BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
+MAX_DEGREE_ANGLE = units.Quantity(360, 'degree')
+BASE_DEGREE_MULTIPLIER = units.Quantity(22.5, 'degree')
 
 DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
 DIR_DICT[UND] = np.nan
@@ -388,9 +388,9 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
                     # Need to cast back to the input type since interp (up to at least numpy
                     # 1.13 always returns float64. This can cause upstream users problems,
                     # resulting in something like np.append() to upcast.
-                    bound_pressure = (np.interp(np.atleast_1d(bound.m), height.m,
-                                                pressure.m).astype(np.result_type(bound))
-                                      * pressure.units)
+                    bound_pressure = units.Quantity(np.interp(np.atleast_1d(bound.m), height.m,
+                                                    pressure.m).astype(np.result_type(bound)),
+                                                    pressure.units)
                 else:
                     idx = (np.abs(height - bound)).argmin()
                     bound_pressure = pressure[idx]
@@ -521,8 +521,7 @@ def get_layer_heights(height, depth, *args, bottom=None, interpolate=True, with_
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]')
-def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
-              interpolate=True):
+def get_layer(pressure, *args, height=None, bottom=None, depth=None, interpolate=True):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer. The
@@ -566,7 +565,7 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     """
     # If we get the depth kwarg, but it's None, set it to the default as well
     if depth is None:
-        depth = 100 * units.hPa
+        depth = units.Quantity(100, 'hPa')
 
     # Make sure pressure and datavars are the same length
     for datavar in args:
@@ -607,9 +606,11 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if not np.any(np.isclose(top_pressure, p_interp)):
-            p_interp = np.sort(np.append(p_interp.m, top_pressure.m)) * pressure.units
+            p_interp = units.Quantity(np.sort(np.append(p_interp.m, top_pressure.m)),
+                                      pressure.units)
         if not np.any(np.isclose(bottom_pressure, p_interp)):
-            p_interp = np.sort(np.append(p_interp.m, bottom_pressure.m)) * pressure.units
+            p_interp = units.Quantity(np.sort(np.append(p_interp.m, bottom_pressure.m)),
+                                      pressure.units)
 
     ret.append(p_interp[::-1])
 
@@ -847,7 +848,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
                               latitude[take_x(slice(1, None))])
     dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
-    return dx * units.meter, dy * units.meter
+    return units.Quantity(dx, 'meter'), units.Quantity(dy, 'meter')
 
 
 @exporter.export
@@ -1290,7 +1291,7 @@ def _process_deriv_args(f, axis, x, delta):
             delta_units = getattr(delta, 'units', None)
             delta = np.broadcast_to(delta, diff_size, subok=True)
             if not hasattr(delta, 'units') and delta_units is not None:
-                delta = delta * delta_units
+                delta = units.Quantity(delta, delta_units)
         else:
             delta = _broadcast_to_axis(delta, axis, n)
     elif x is not None:
@@ -1393,13 +1394,9 @@ def angle_to_direction(input_angle, full=False, level=3):
     else:
         scalar = False
 
-    # clean any numeric strings, negatives, and None
-    # does not handle strings with alphabet
-    input_angle = np.array(input_angle).astype(float)
-    with np.errstate(invalid='ignore'):  # warns about the np.nan
-        input_angle[np.where(input_angle < 0)] = np.nan
-
-    input_angle = input_angle * origin_units
+    # clean any numeric strings, negatives, and None does not handle strings with alphabet
+    input_angle = units.Quantity(np.array(input_angle).astype(float), origin_units)
+    input_angle[input_angle < 0] = units.Quantity(np.nan, origin_units)
 
     # normalizer used for angles > 360 degree to normalize between 0 - 360
     normalizer = np.array(input_angle.m / MAX_DEGREE_ANGLE.m, dtype=int)

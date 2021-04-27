@@ -563,8 +563,7 @@ def montgomery_streamfunction(height, temperature):
 @preprocess_and_wrap()
 @check_units('[length]', '[speed]', '[speed]', '[length]',
              bottom='[length]', storm_u='[speed]', storm_v='[speed]')
-def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
-                            storm_u=0 * units('m/s'), storm_v=0 * units('m/s')):
+def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, storm_v=None):
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
@@ -622,6 +621,13 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
        ``storm_v`` parameters to keyword-only arguments
 
     """
+    if bottom is None:
+        bottom = units.Quantity(0, 'm')
+    if storm_u is None:
+        storm_u = units.Quantity(0, 'm/s')
+    if storm_v is None:
+        storm_v = units.Quantity(0, 'm/s')
+
     _, u, v = get_layer_heights(height, depth, u, v, with_agl=True, bottom=bottom)
 
     storm_relative_u = u - storm_u
@@ -634,10 +640,10 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=0 * units.m,
     # mask will return a masked value rather than 0. See numpy/numpy#11736
     positive_srh = int_layers[int_layers.magnitude > 0.].sum()
     if np.ma.is_masked(positive_srh):
-        positive_srh = 0.0 * units('meter**2 / second**2')
+        positive_srh = units.Quantity(0.0, 'meter**2 / second**2')
     negative_srh = int_layers[int_layers.magnitude < 0.].sum()
     if np.ma.is_masked(negative_srh):
-        negative_srh = 0.0 * units('meter**2 / second**2')
+        negative_srh = units.Quantity(0.0, 'meter**2 / second**2')
 
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),
@@ -789,8 +795,8 @@ def potential_vorticity_baroclinic(
         (np.shape(potential_temperature)[y_dim] == 1)
         and (np.shape(potential_temperature)[x_dim] == 1)
     ):
-        dthtady = 0 * units.K / units.m  # axis=y_dim only has one dimension
-        dthtadx = 0 * units.K / units.m  # axis=x_dim only has one dimension
+        dthtady = units.Quantity(0, 'K/m')  # axis=y_dim only has one dimension
+        dthtadx = units.Quantity(0, 'K/m')  # axis=x_dim only has one dimension
     else:
         dthtady = first_derivative(potential_temperature, delta=dy, axis=y_dim)
         dthtadx = first_derivative(potential_temperature, delta=dx, axis=x_dim)
@@ -798,8 +804,7 @@ def potential_vorticity_baroclinic(
     dvdp = first_derivative(v, x=pressure, axis=vertical_dim)
 
     return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx
-                           + avor * dthtadp)).to(units.kelvin * units.meter**2
-                                                 / (units.second * units.kilogram))
+                           + avor * dthtadp)).to('K * m**2 / (s * kg)')
 
 
 @exporter.export

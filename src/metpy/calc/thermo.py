@@ -21,7 +21,7 @@ from ..xarray import add_vertical_dim_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
 
-sat_pressure_0c = 6.112 * units.millibar
+sat_pressure_0c = units.Quantity(6.112, 'millibar')
 
 
 @exporter.export
@@ -408,7 +408,8 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p) * pressure.units
+    lcl_p = units.Quantity(np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p),
+                           pressure.units)
 
     return lcl_p, globals()['dewpoint'](vapor_pressure(lcl_p, w)).to(temperature.units)
 
@@ -508,7 +509,8 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
         mask = pressure < this_lcl[0]
         if np.all(_less_or_close(parcel_temperature_profile[mask], temperature[mask])):
             # LFC doesn't exist
-            x, y = np.nan * pressure.units, np.nan * temperature.units
+            x = units.Quantity(np.nan, pressure.units)
+            y = units.Quantity(np.nan, temperature.units)
         else:  # LFC = LCL
             x, y = this_lcl
         return x, y
@@ -522,7 +524,8 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
                                             temperature[1:], direction='decreasing',
                                             log_x=True)
             if np.min(el_pres) > this_lcl[0]:
-                x, y = np.nan * pressure.units, np.nan * temperature.units
+                x = units.Quantity(np.nan, pressure.units)
+                y = units.Quantity(np.nan, temperature.units)
             else:
                 x, y = this_lcl
             return x, y
@@ -666,7 +669,8 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
 
     # If the top of the sounding parcel is warmer than the environment, there is no EL
     if parcel_temperature_profile[-1] > temperature[-1]:
-        return np.nan * pressure.units, np.nan * temperature.units
+        return (units.Quantity(np.nan, pressure.units),
+                units.Quantity(np.nan, temperature.units))
 
     # Interpolate in log space to find the appropriate pressure - units have to be stripped
     # and reassigned to allow np.log() to function properly.
@@ -679,7 +683,8 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
                                         parcel_temperature_profile, temperature, dewpoint,
                                         intersect_type='EL')
     else:
-        return np.nan * pressure.units, np.nan * temperature.units
+        return (units.Quantity(np.nan, pressure.units),
+                units.Quantity(np.nan, temperature.units))
 
 
 @exporter.export
@@ -896,7 +901,7 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
     # Pressure needs to be increasing for searchsorted, so flip it and then convert
     # the index back to the original array
     loc = pressure.size - pressure[::-1].searchsorted(lcl_pressure)
-    return temperature.units * np.insert(temperature.m, loc, interp_temp.m)
+    return units.Quantity(np.insert(temperature.m, loc, interp_temp.m), temperature.units)
 
 
 @exporter.export
@@ -971,8 +976,8 @@ def saturation_vapor_pressure(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
-    return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin)
-                                    / (temperature - 29.65 * units.kelvin))
+    return sat_pressure_0c * np.exp(17.67 * (temperature - units.Quantity(273.15, 'kelvin'))
+                                    / (temperature - units.Quantity(29.65, 'kelvin')))
 
 
 @exporter.export
@@ -1041,7 +1046,8 @@ def dewpoint(vapor_pressure):
 
     """
     val = np.log(vapor_pressure / sat_pressure_0c)
-    return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
+    return (units.Quantity(0., 'degC')
+            + units.Quantity(243.5, 'delta_degC') * val / (17.67 - val))
 
 
 @exporter.export
@@ -1380,7 +1386,7 @@ def density(pressure, temperature, mixing_ratio, molecular_weight_ratio=mpconsts
 
     """
     virttemp = virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio)
-    return (pressure / (mpconsts.Rd * virttemp)).to(units.kilogram / units.meter ** 3)
+    return (pressure / (mpconsts.Rd * virttemp)).to('kg/m**3')
 
 
 @exporter.export
@@ -1441,7 +1447,7 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
 )
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_temperature,
-                                     psychrometer_coefficient=6.21e-4 / units.kelvin):
+                                     psychrometer_coefficient=None):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
     This uses a psychrometric relationship as outlined in [WMO8]_, with
@@ -1490,6 +1496,8 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     saturation_vapor_pressure
 
     """
+    if psychrometer_coefficient is None:
+        psychrometer_coefficient = units.Quantity(6.21e-4, '1/K')
     return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient
             * pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
 
@@ -1788,7 +1796,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
-        return 0 * units('J/kg'), 0 * units('J/kg')
+        return units.Quantity(0, 'J/kg'), units.Quantity(0, 'J/kg')
     else:
         lfc_pressure = lfc_pressure.magnitude
 
@@ -1814,7 +1822,7 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     x_clipped = x[p_mask].magnitude
     y_clipped = y[p_mask].magnitude
     cape = (mpconsts.Rd
-            * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+            * units.Quantity(np.trapz(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
 
     # CIN
     # Only use data between the surface and LFC for calculation
@@ -1822,11 +1830,11 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     x_clipped = x[p_mask].magnitude
     y_clipped = y[p_mask].magnitude
     cin = (mpconsts.Rd
-           * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+           * units.Quantity(np.trapz(y_clipped, np.log(x_clipped)), 'K')).to(units('J/kg'))
 
     # Set CIN to 0 if it's returned as a positive value (#1190)
-    if cin > 0 * units('J/kg'):
-        cin = 0 * units('J/kg')
+    if cin > units.Quantity(0, 'J/kg'):
+        cin = units.Quantity(0, 'J/kg')
     return cape, cin
 
 
@@ -1853,7 +1861,8 @@ def _find_append_zero_crossings(x, y):
         Y values of data
 
     """
-    crossings = find_intersections(x[1:], y[1:], y.units * np.zeros_like(y[1:]), log_x=True)
+    crossings = find_intersections(x[1:], y[1:],
+                                   units.Quantity(np.zeros_like(y[1:]), y.units), log_x=True)
     x = concatenate((x, crossings[0]))
     y = concatenate((y, crossings[1]))
 
@@ -1872,8 +1881,8 @@ def _find_append_zero_crossings(x, y):
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
-                         bottom=None, depth=300 * units.hPa):
+def most_unstable_parcel(pressure, temperature, dewpoint, height=None, bottom=None,
+                         depth=None):
     """
     Determine the most unstable parcel in a layer.
 
@@ -1924,6 +1933,8 @@ def most_unstable_parcel(pressure, temperature, dewpoint, height=None,
        Renamed ``heights`` parameter to ``height``
 
     """
+    if depth is None:
+        depth = units.Quantity(300, 'hPa')
     p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, height=height, interpolate=False)
     theta_e = equivalent_potential_temperature(p_layer, t_layer, td_layer)
@@ -2016,7 +2027,8 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     slices = [np.newaxis] * ndim
     slices[vertical_dim] = slice(None)
     slices = tuple(slices)
-    pres = np.broadcast_to(pres[slices].magnitude, temperature.shape) * pres.units
+    pres = units.Quantity(np.broadcast_to(pres[slices].magnitude, temperature.shape),
+                          pres.units)
 
     # Sort input data
     sort_pres = np.argsort(pres.m, axis=vertical_dim)
@@ -2077,11 +2089,11 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     isentprs[~(good & _less_or_close(isentprs, np.max(pres.m)))] = np.nan
 
     # create list for storing output data
-    ret = [isentprs * units.hPa]
+    ret = [units.Quantity(isentprs, 'hPa')]
 
     # if temperature_out = true, calculate temperature and output as last item in list
     if temperature_out:
-        ret.append((isentlevs_nd / ((mpconsts.P0.m / isentprs) ** ka)) * units.kelvin)
+        ret.append(units.Quantity((isentlevs_nd / ((mpconsts.P0.m / isentprs) ** ka)), 'K'))
 
     # do an interpolation for each additional argument
     if args:
@@ -2350,7 +2362,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Quantities even when given xarray DataArray profiles.
 
     """
-    depth = kwargs.get('depth', 100 * units.hPa)
+    depth = kwargs.get('depth', units.Quantity(100, 'hPa'))
     parcel_pressure, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
                                                                  dewpoint, **kwargs)
 
@@ -2370,7 +2382,7 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
-                 height=None, bottom=None, depth=100 * units.hPa, interpolate=True):
+                 height=None, bottom=None, depth=None, interpolate=True):
     r"""Calculate the properties of a parcel mixed from a layer.
 
     Determines the properties of an air parcel that is the result of complete mixing of a
@@ -2429,6 +2441,9 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
     if not parcel_start_pressure:
         parcel_start_pressure = pressure[0]
 
+    if depth is None:
+        depth = units.Quantity(100, 'hPa')
+
     # Calculate the potential temperature and mixing ratio over the layer
     theta = potential_temperature(pressure, temperature)
     mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
@@ -2455,8 +2470,7 @@ def mixed_parcel(pressure, temperature, dewpoint, parcel_start_pressure=None,
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]')
-def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa,
-                interpolate=True):
+def mixed_layer(pressure, *args, height=None, bottom=None, depth=None, interpolate=True):
     r"""Mix variable(s) over a layer, yielding a mass-weighted average.
 
     This function will integrate a data variable with respect to pressure and determine the
@@ -2499,6 +2513,8 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
        Renamed ``p``, ``heights`` parameters to ``pressure``, ``height``
 
     """
+    if depth is None:
+        depth = units.Quantity(100, 'hPa')
     layer = get_layer(pressure, *args, height=height, bottom=bottom,
                       depth=depth, interpolate=interpolate)
     p_layer = layer[0]
@@ -2507,8 +2523,8 @@ def mixed_layer(pressure, *args, height=None, bottom=None, depth=100 * units.hPa
     ret = []
     for datavar_layer in datavars_layer:
         actual_depth = abs(p_layer[0] - p_layer[-1])
-        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer.m, p_layer.m)
-                   * datavar_layer.units)
+        ret.append(units.Quantity(np.trapz(datavar_layer.m, p_layer.m) / -actual_depth.m,
+                   datavar_layer.units))
     return ret
 
 
@@ -2675,8 +2691,9 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
             layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
     # Take the integral (with unit handling) and return the result in meters
-    return (- mpconsts.Rd / mpconsts.g * np.trapz(
-        layer_virttemp.m_as('K'), x=np.log(layer_p.m_as('hPa'))) * units.K).to('m')
+    integral = units.Quantity(np.trapz(layer_virttemp.m_as('K'), np.log(layer_p.m_as('hPa'))),
+                              units.K)
+    return (-mpconsts.Rd / mpconsts.g * integral).to('m')
 
 
 @exporter.export
@@ -2949,17 +2966,16 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
                    flags=['buffered'])
 
     for press, lpress, ltemp, ret in it:
-        press = press * pressure.units
-        lpress = lpress * lcl_press.units
-        ltemp = ltemp * lcl_temp.units
-        moist_adiabat_temperatures = moist_lapse(press, ltemp, lpress)
+        moist_adiabat_temperatures = moist_lapse(units.Quantity(press, pressure.units),
+                                                 units.Quantity(ltemp, lcl_temp.units),
+                                                 units.Quantity(lpress, lcl_press.units))
         ret[...] = moist_adiabat_temperatures.magnitude
 
     # If we started with a scalar, return a scalar
     ret = it.operands[3]
     if ret.size == 1:
         ret = ret[0]
-    return ret * moist_adiabat_temperatures.units
+    return units.Quantity(ret, moist_adiabat_temperatures.units)
 
 
 @exporter.export
@@ -3210,7 +3226,7 @@ def lifted_index(pressure, temperature, parcel_profile):
 
     """
     # find the index for the 500 hPa pressure level.
-    idx = np.where(pressure == 500 * units.hPa)
+    idx = np.where(pressure == units.Quantity(500, 'hPa'))
     # find the measured temperature at 500 hPa.
     T500 = temperature[idx]
     # find the parcel profile temperature at 500 hPa.

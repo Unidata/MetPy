@@ -1570,7 +1570,8 @@ class PlotObs(HasTraits):
             else:
                 field_kwargs['plot_units'] = self.plot_units[0]
             if hasattr(self.data, 'units') and (field_kwargs['plot_units'] is not None):
-                parameter = data[ob_type][subset].values * units(self.data.units[ob_type])
+                parameter = units.Quantity(data[ob_type][subset].values,
+                                           self.data.units[ob_type])
             else:
                 parameter = data[ob_type][subset]
             if field_kwargs['formatter'] is not None:
@@ -1592,10 +1593,10 @@ class PlotObs(HasTraits):
             vector_kwargs['color'] = self.vector_field_color
             vector_kwargs['plot_units'] = self.vector_plot_units
             if hasattr(self.data, 'units') and (vector_kwargs['plot_units'] is not None):
-                u = (data[self.vector_field[0]][subset].values
-                     * units(self.data.units[self.vector_field[0]]))
-                v = (data[self.vector_field[1]][subset].values
-                     * units(self.data.units[self.vector_field[1]]))
+                u = units.Quantity(data[self.vector_field[0]][subset].values,
+                                   self.data.units[self.vector_field[0]])
+                v = units.Quantity(data[self.vector_field[1]][subset].values,
+                                   self.data.units[self.vector_field[1]])
             else:
                 vector_kwargs.pop('plot_units')
                 u = data[self.vector_field[0]][subset]
