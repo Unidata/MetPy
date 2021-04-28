@@ -253,10 +253,13 @@ extension also makes these scripts available as Jupyter notebooks.</p>
 <p>The documentation is hosted on <a class="reference external" href="https://unidata.github.io/MetPy">GitHub Pages</a>. The docs are
 built automatically and uploaded upon pushes or merges to GitHub. Commits to <code class="docutils literal notranslate"><span class="pre">main</span></code> end up
 in our development version docs, while commits to versioned branches will update the
-docs for the corresponding version, which are located in the appropriately named subidrectory
+docs for the corresponding version, which are located in the appropriately named subdirectory
 on the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch. We only maintain docs at the minor level, not the bugfix one.
 The docs rely on the <code class="docutils literal notranslate"><span class="pre">pydata-sphinx-theme</span></code> package for styling the docs, which needs to be
-installed for any local doc builds.</p>
+installed for any local doc builds. The <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch has a GitHub Actions workflow that
+handles generating a <code class="docutils literal notranslate"><span class="pre">versions.json</span></code> file that controls what versions are displayed in the
+selector on the website, as well as update the <code class="docutils literal notranslate"><span class="pre">latest</span></code> symlink that points to the latest
+version of the docs.</p>
 </div>
 <div class="section" id="other-tools">
 <h2>Other Tools<a class="headerlink" href="#other-tools" title="Permalink to this headline">¶</a></h2>
@@ -388,7 +391,7 @@ packages to anaconda.org.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 27, 2021 at 22:51:00.<br/>
+        Last updated on Apr 28, 2021 at 23:04:16.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
