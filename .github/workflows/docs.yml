@@ -9,6 +9,7 @@ on:
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
   pull_request:
+  release:
 
 jobs:
   #
@@ -133,7 +134,7 @@ jobs:
       run: echo "DOC_VERSION=v$(python -c 'import metpy; print(metpy.__version__.rsplit(".", maxsplit=2)[0])')" >> $GITHUB_ENV
 
     - name: Upload to GitHub Pages
-      if: ${{ github.event_name != 'pull_request' && matrix.experimental == false }}
+      if: ${{ github.event_name != 'pull_request' && matrix.experimental == false && matrix.python-version == '3.9' }}
       uses: peaceiris/actions-gh-pages@v3.8.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

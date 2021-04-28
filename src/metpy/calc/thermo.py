@@ -1542,10 +1542,10 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     -----
     Formula adapted from [Hobbs1977]_ pg. 74.
 
-    .. math:: w = (relative_humidity)(w_s)
+    .. math:: w = (rh)(w_s)
 
     * :math:`w` is mixing ratio
-    * :math:`relative_humidity` is relative humidity as a unitless ratio
+    * :math:`rh` is relative humidity as a unitless ratio
     * :math:`w_s` is the saturation mixing ratio
 
     .. versionchanged:: 1.0
@@ -1589,9 +1589,9 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     -----
     Formula based on that from [Hobbs1977]_ pg. 74.
 
-    .. math:: relative_humidity = \frac{w}{w_s}
+    .. math:: rh = \frac{w}{w_s}
 
-    * :math:`relative_humidity` is relative humidity as a unitless ratio
+    * :math:`rh` is relative humidity as a unitless ratio
     * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
 
