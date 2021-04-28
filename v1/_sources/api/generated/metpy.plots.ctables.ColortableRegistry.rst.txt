@@ -1,0 +1,79 @@
+ColortableRegistry
+======================================
+
+.. currentmodule:: metpy.plots.ctables
+
+.. autoclass:: ColortableRegistry
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~ColortableRegistry.__init__
+      ~ColortableRegistry.add_colortable
+      ~ColortableRegistry.clear
+      ~ColortableRegistry.copy
+      ~ColortableRegistry.fromkeys
+      ~ColortableRegistry.get
+      ~ColortableRegistry.get_colortable
+      ~ColortableRegistry.get_with_boundaries
+      ~ColortableRegistry.get_with_range
+      ~ColortableRegistry.get_with_steps
+      ~ColortableRegistry.items
+      ~ColortableRegistry.keys
+      ~ColortableRegistry.pop
+      ~ColortableRegistry.popitem
+      ~ColortableRegistry.scan_dir
+      ~ColortableRegistry.scan_resource
+      ~ColortableRegistry.setdefault
+      ~ColortableRegistry.update
+      ~ColortableRegistry.values
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_colortable
+   .. automethod:: clear
+   .. automethod:: copy
+   .. automethod:: fromkeys
+   .. automethod:: get
+   .. automethod:: get_colortable
+   .. automethod:: get_with_boundaries
+   .. automethod:: get_with_range
+   .. automethod:: get_with_steps
+   .. automethod:: items
+   .. automethod:: keys
+   .. automethod:: pop
+   .. automethod:: popitem
+   .. automethod:: scan_dir
+   .. automethod:: scan_resource
+   .. automethod:: setdefault
+   .. automethod:: update
+   .. automethod:: values
+
+   
+   
+
+.. include:: metpy.plots.ctables.ColortableRegistry.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

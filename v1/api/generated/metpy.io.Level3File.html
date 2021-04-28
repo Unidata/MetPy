@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level3File &#8212; MetPy 1.0</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+
+    
+
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="calc" href="metpy.calc.html" />
+    <link rel="prev" title="Level2File" href="metpy.io.Level2File.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.Level3File.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+    <a class="navbar-brand" href="../../index.html">
+    
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.units.html">
+   units
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="metpy.io.html">
+   metpy.io
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
+     add_station_lat_lon
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.is_precip_mode.html">
+     is_precip_mode
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.parse_metar_file.html">
+     parse_metar_file
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
+     parse_metar_to_dataframe
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.GiniFile.html">
+     GiniFile
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.Level2File.html">
+     Level2File
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     Level3File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.ctables.html">
+   ctables
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.xarray.html">
+   xarray
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-metpy-io-level3file">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     metpy.io.Level3File
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="level3file">
+<h1>Level3File<a class="headerlink" href="#level3file" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="metpy.io.Level3File">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metpy.io.</span></code><code class="sig-name descname"><span class="pre">Level3File</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level3File"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level3File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</p>
+<p>This class attempts to decode every byte that is in a given product file.
+It supports all of the various compression formats that exist for these
+products in the wild.</p>
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.metadata">
+<code class="sig-name descname"><span class="pre">metadata</span></code><a class="headerlink" href="#metpy.io.Level3File.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Various general metadata available from the product</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.header">
+<code class="sig-name descname"><span class="pre">header</span></code><a class="headerlink" href="#metpy.io.Level3File.header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decoded product header</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.prod_desc">
+<code class="sig-name descname"><span class="pre">prod_desc</span></code><a class="headerlink" href="#metpy.io.Level3File.prod_desc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decoded product description block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.siteID">
+<code class="sig-name descname"><span class="pre">siteID</span></code><a class="headerlink" href="#metpy.io.Level3File.siteID" title="Permalink to this definition">¶</a></dt>
+<dd><p>ID of the site found in the header, empty string if none found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.lat">
+<code class="sig-name descname"><span class="pre">lat</span></code><a class="headerlink" href="#metpy.io.Level3File.lat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radar site latitude</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.lon">
+<code class="sig-name descname"><span class="pre">lon</span></code><a class="headerlink" href="#metpy.io.Level3File.lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radar site longitude</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.height">
+<code class="sig-name descname"><span class="pre">height</span></code><a class="headerlink" href="#metpy.io.Level3File.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radar site height AMSL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.product_name">
+<code class="sig-name descname"><span class="pre">product_name</span></code><a class="headerlink" href="#metpy.io.Level3File.product_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the product contained in file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.max_range">
+<code class="sig-name descname"><span class="pre">max_range</span></code><a class="headerlink" href="#metpy.io.Level3File.max_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum range of the product, taken from the NIDS ICD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.map_data">
+<code class="sig-name descname"><span class="pre">map_data</span></code><a class="headerlink" href="#metpy.io.Level3File.map_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class instance mapping data int values to proper floating point values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Mapper</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.sym_block">
+<code class="sig-name descname"><span class="pre">sym_block</span></code><a class="headerlink" href="#metpy.io.Level3File.sym_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Any symbology block packets that were found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.tab_pages">
+<code class="sig-name descname"><span class="pre">tab_pages</span></code><a class="headerlink" href="#metpy.io.Level3File.tab_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Any tabular pages that were found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.graph_pages">
+<code class="sig-name descname"><span class="pre">graph_pages</span></code><a class="headerlink" href="#metpy.io.Level3File.graph_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Any graphical pages that were found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The internal data structure that things are decoded into is still to be
+determined.</p>
+<p>Create instance of <a class="reference internal" href="#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level3File</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. If file-like object,
+this will be read from directly.</p>
+</dd>
+</dl>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.additional_gsm_fmt" title="metpy.io.Level3File.additional_gsm_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">additional_gsm_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.digital_radial_fmt" title="metpy.io.Level3File.digital_radial_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">digital_radial_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.digital_radial_hdr_fmt" title="metpy.io.Level3File.digital_radial_hdr_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">digital_radial_hdr_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.graph_block_fmt" title="metpy.io.Level3File.graph_block_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_block_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.gsm_fmt" title="metpy.io.Level3File.gsm_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gsm_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.header_fmt" title="metpy.io.Level3File.header_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">header_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.ij_to_km" title="metpy.io.Level3File.ij_to_km"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ij_to_km</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.packet_map" title="metpy.io.Level3File.packet_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">packet_map</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.prod_desc_fmt" title="metpy.io.Level3File.prod_desc_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod_desc_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.prod_spec_map" title="metpy.io.Level3File.prod_spec_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod_spec_map</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.standalone_tabular" title="metpy.io.Level3File.standalone_tabular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standalone_tabular</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.sym_block_fmt" title="metpy.io.Level3File.sym_block_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sym_block_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.sym_layer_fmt" title="metpy.io.Level3File.sym_layer_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sym_layer_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.tab_block_fmt" title="metpy.io.Level3File.tab_block_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tab_block_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.tab_header_fmt" title="metpy.io.Level3File.tab_header_fmt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tab_header_fmt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.wmo_finder" title="metpy.io.Level3File.wmo_finder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wmo_finder</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.Level3File.__init__" title="metpy.io.Level3File.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filename)</p></td>
+<td><p>Create instance of <a class="reference internal" href="#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level3File</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.Level3File.pos_scale" title="metpy.io.Level3File.pos_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pos_scale</span></code></a>(is_sym_block)</p></td>
+<td><p>Scale of the position information in km.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.additional_gsm_fmt">
+<code class="sig-name descname"><span class="pre">additional_gsm_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.additional_gsm_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.digital_radial_fmt">
+<code class="sig-name descname"><span class="pre">digital_radial_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.digital_radial_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.digital_radial_hdr_fmt">
+<code class="sig-name descname"><span class="pre">digital_radial_hdr_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.digital_radial_hdr_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.graph_block_fmt">
+<code class="sig-name descname"><span class="pre">graph_block_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.graph_block_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.gsm_fmt">
+<code class="sig-name descname"><span class="pre">gsm_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.gsm_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.header_fmt">
+<code class="sig-name descname"><span class="pre">header_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.header_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.ij_to_km">
+<code class="sig-name descname"><span class="pre">ij_to_km</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0.25</span></em><a class="headerlink" href="#metpy.io.Level3File.ij_to_km" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.packet_map">
+<code class="sig-name descname"><span class="pre">packet_map</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{1:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_uniform_text&gt;,</span> <span class="pre">2:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_text_symbol&gt;,</span> <span class="pre">3:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">4:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_wind_barbs&gt;,</span> <span class="pre">6:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_linked_vector&gt;,</span> <span class="pre">8:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_uniform_text&gt;,</span> <span class="pre">10:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_vector&gt;,</span> <span class="pre">11:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">12:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">13:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">14:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">15:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">16:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_digital_radial&gt;,</span> <span class="pre">17:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_digital_precipitation&gt;,</span> <span class="pre">18:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_digital_precipitation&gt;,</span> <span class="pre">19:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">20:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">21:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_cell_trend&gt;,</span> <span class="pre">22:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_trend_times&gt;,</span> <span class="pre">23:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_scit&gt;,</span> <span class="pre">24:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_scit&gt;,</span> <span class="pre">25:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">26:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_special_graphic_symbol&gt;,</span> <span class="pre">28:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_generic&gt;,</span> <span class="pre">29:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_generic&gt;,</span> <span class="pre">2050:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_contour_color&gt;,</span> <span class="pre">3587:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_linked_contour&gt;,</span> <span class="pre">44831:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_radial_data&gt;,</span> <span class="pre">47623:</span> <span class="pre">&lt;function</span> <span class="pre">Level3File._unpack_packet_raster_data&gt;}</span></em><a class="headerlink" href="#metpy.io.Level3File.packet_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.prod_desc_fmt">
+<code class="sig-name descname"><span class="pre">prod_desc_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.prod_desc_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.prod_spec_map">
+<code class="sig-name descname"><span class="pre">prod_spec_map</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{16:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">17:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">18:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">19:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">20:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">21:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">22:</span> <span class="pre">('Base</span> <span class="pre">Velocity',</span> <span class="pre">60.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4))),</span> <span class="pre">23:</span> <span class="pre">('Base</span> <span class="pre">Velocity',</span> <span class="pre">115.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4))),</span> <span class="pre">24:</span> <span class="pre">('Base</span> <span class="pre">Velocity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4))),</span> <span class="pre">25:</span> <span class="pre">('Base</span> <span class="pre">Velocity',</span> <span class="pre">60.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4))),</span> <span class="pre">26:</span> <span class="pre">('Base</span> <span class="pre">Velocity',</span> <span class="pre">115.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4))),</span> <span class="pre">27:</span> <span class="pre">('Base</span> <span class="pre">Velocity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">28:</span> <span class="pre">('Base</span> <span class="pre">Spectrum</span> <span class="pre">Width',</span> <span class="pre">60.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3))),</span> <span class="pre">29:</span> <span class="pre">('Base</span> <span class="pre">Spectrum</span> <span class="pre">Width',</span> <span class="pre">115.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3))),</span> <span class="pre">30:</span> <span class="pre">('Base</span> <span class="pre">Spectrum</span> <span class="pre">Width',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">31:</span> <span class="pre">('User</span> <span class="pre">Selectable</span> <span class="pre">Storm</span> <span class="pre">Total</span> <span class="pre">Precipitation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('end_hour',</span> <span class="pre">0),</span> <span class="pre">('hour_span',</span> <span class="pre">1),</span> <span class="pre">('null_product',</span> <span class="pre">2),</span> <span class="pre">('max_rainfall',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">32:</span> <span class="pre">('Digital</span> <span class="pre">Hybrid</span> <span class="pre">Scan</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalRefMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">3),</span> <span class="pre">('avg_time',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">33:</span> <span class="pre">('Hybrid</span> <span class="pre">Scan</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">3),</span> <span class="pre">('avg_time',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">34:</span> <span class="pre">('Clutter</span> <span class="pre">Filter</span> <span class="pre">Control',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('clutter_bitmap',</span> <span class="pre">0),</span> <span class="pre">('cmd_map',</span> <span class="pre">1),</span> <span class="pre">('bypass_map_date',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('notchwidth_map_date',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">35:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">36:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">37:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">38:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">41:</span> <span class="pre">('Echo</span> <span class="pre">Tops',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">48:</span> <span class="pre">('VAD</span> <span class="pre">Wind</span> <span class="pre">Profile',</span> <span class="pre">None,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">3),</span> <span class="pre">('dir_max',</span> <span class="pre">4),</span> <span class="pre">('alt_max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">50:</span> <span class="pre">('Cross</span> <span class="pre">Section</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('azimuth1',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('range1',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('azimuth2',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('range2',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">51:</span> <span class="pre">('Cross</span> <span class="pre">Section</span> <span class="pre">Velocity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('azimuth1',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('range1',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('azimuth2',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('range2',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">55:</span> <span class="pre">('Storm</span> <span class="pre">Relative</span> <span class="pre">Mean</span> <span class="pre">Radial</span> <span class="pre">Velocity',</span> <span class="pre">50.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('window_az',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('window_range',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('source',</span> <span class="pre">5),</span> <span class="pre">('height',</span> <span class="pre">6),</span> <span class="pre">('avg_speed',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('avg_dir',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('alert_category',</span> <span class="pre">9))),</span> <span class="pre">56:</span> <span class="pre">('Storm</span> <span class="pre">Relative</span> <span class="pre">Mean</span> <span class="pre">Radial</span> <span class="pre">Velocity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('source',</span> <span class="pre">5),</span> <span class="pre">('avg_speed',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('avg_dir',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">57:</span> <span class="pre">('Vertically</span> <span class="pre">Integrated</span> <span class="pre">Liquid',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3))),</span> <span class="pre">58:</span> <span class="pre">('Storm</span> <span class="pre">Tracking</span> <span class="pre">Information',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('num_storms',</span> <span class="pre">3),)),</span> <span class="pre">59:</span> <span class="pre">('Hail</span> <span class="pre">Index',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">()),</span> <span class="pre">61:</span> <span class="pre">('Tornado</span> <span class="pre">Vortex</span> <span class="pre">Signature',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('num_tvs',</span> <span class="pre">3),</span> <span class="pre">('num_etvs',</span> <span class="pre">4))),</span> <span class="pre">62:</span> <span class="pre">('Storm</span> <span class="pre">Structure',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">()),</span> <span class="pre">63:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">(Layer</span> <span class="pre">1</span> <span class="pre">Average)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">64:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">(Layer</span> <span class="pre">2</span> <span class="pre">Average)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">65:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">(Layer</span> <span class="pre">1</span> <span class="pre">Max)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">66:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">(Layer</span> <span class="pre">2</span> <span class="pre">Max)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">67:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">-</span> <span class="pre">AP</span> <span class="pre">Removed',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">74:</span> <span class="pre">('Radar</span> <span class="pre">Coded</span> <span class="pre">Message',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">()),</span> <span class="pre">78:</span> <span class="pre">('Surface</span> <span class="pre">Rainfall</span> <span class="pre">Accumulation</span> <span class="pre">(1</span> <span class="pre">hour)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max_rainfall',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">79:</span> <span class="pre">('Surface</span> <span class="pre">Rainfall</span> <span class="pre">Accumulation</span> <span class="pre">(3</span> <span class="pre">hour)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max_rainfall',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">80:</span> <span class="pre">('Storm</span> <span class="pre">Total</span> <span class="pre">Rainfall</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max_rainfall',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">81:</span> <span class="pre">('Hourly</span> <span class="pre">Digital</span> <span class="pre">Precipitation</span> <span class="pre">Array',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.PrecipArrayMapper'&gt;,</span> <span class="pre">(('max_rainfall',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">82:</span> <span class="pre">('Supplemental</span> <span class="pre">Precipitation</span> <span class="pre">Data',</span> <span class="pre">None,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">()),</span> <span class="pre">89:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">(Layer</span> <span class="pre">3</span> <span class="pre">Average)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">90:</span> <span class="pre">('Layer</span> <span class="pre">Composite</span> <span class="pre">Reflectivity</span> <span class="pre">(Layer</span> <span class="pre">3</span> <span class="pre">Max)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('layer_bottom',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('layer_top',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">93:</span> <span class="pre">('ITWS</span> <span class="pre">Digital</span> <span class="pre">Base</span> <span class="pre">Velocity',</span> <span class="pre">115.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalVelMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('precision',</span> <span class="pre">6))),</span> <span class="pre">94:</span> <span class="pre">('Base</span> <span class="pre">Reflectivity</span> <span class="pre">Data</span> <span class="pre">Array',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalRefMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">95:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity</span> <span class="pre">Edited</span> <span class="pre">for</span> <span class="pre">AP',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">96:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity</span> <span class="pre">Edited</span> <span class="pre">for</span> <span class="pre">AP',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">97:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity</span> <span class="pre">Edited</span> <span class="pre">for</span> <span class="pre">AP',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">98:</span> <span class="pre">('Composite</span> <span class="pre">Reflectivity</span> <span class="pre">Edited</span> <span class="pre">for</span> <span class="pre">AP',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('calib_const',</span> <span class="pre">&lt;function</span> <span class="pre">float_elem.&lt;locals&gt;.&lt;lambda&gt;&gt;))),</span> <span class="pre">99:</span> <span class="pre">('Base</span> <span class="pre">Velocity</span> <span class="pre">Data</span> <span class="pre">Array',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalVelMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">113:</span> <span class="pre">('Power</span> <span class="pre">Removed</span> <span class="pre">Control',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('rpg_cut_num',</span> <span class="pre">0),</span> <span class="pre">('cmd_generated',</span> <span class="pre">1),</span> <span class="pre">('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('clutter_filter_map_dt',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">132:</span> <span class="pre">('Clutter</span> <span class="pre">Likelihood</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">133:</span> <span class="pre">('Clutter</span> <span class="pre">Likelihood</span> <span class="pre">Doppler',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">134:</span> <span class="pre">('High</span> <span class="pre">Resolution</span> <span class="pre">VIL',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalVILMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('num_edited',</span> <span class="pre">4),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">135:</span> <span class="pre">('Enhanced</span> <span class="pre">Echo</span> <span class="pre">Tops',</span> <span class="pre">345.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalEETMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('num_edited',</span> <span class="pre">4),</span> <span class="pre">('ref_thresh',</span> <span class="pre">5),</span> <span class="pre">('points_removed',</span> <span class="pre">6),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">138:</span> <span class="pre">('Digital</span> <span class="pre">Storm</span> <span class="pre">Total</span> <span class="pre">Precipitation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalStormPrecipMapper'&gt;,</span> <span class="pre">(('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">141:</span> <span class="pre">('Mesocyclone</span> <span class="pre">Detection',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('min_ref_thresh',</span> <span class="pre">0),</span> <span class="pre">('overlap_display_filter',</span> <span class="pre">1),</span> <span class="pre">('min_strength_rank',</span> <span class="pre">2))),</span> <span class="pre">152:</span> <span class="pre">('Archive</span> <span class="pre">III</span> <span class="pre">Status</span> <span class="pre">Product',</span> <span class="pre">None,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">153:</span> <span class="pre">('Super</span> <span class="pre">Resolution</span> <span class="pre">Reflectivity</span> <span class="pre">Data</span> <span class="pre">Array',</span> <span class="pre">460.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalRefMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">154:</span> <span class="pre">('Super</span> <span class="pre">Resolution</span> <span class="pre">Velocity</span> <span class="pre">Data</span> <span class="pre">Array',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalVelMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">155:</span> <span class="pre">('Super</span> <span class="pre">Resolution</span> <span class="pre">Spectrum</span> <span class="pre">Width</span> <span class="pre">Data</span> <span class="pre">Array',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalSPWMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">156:</span> <span class="pre">('Turbulence</span> <span class="pre">Detection</span> <span class="pre">(Eddy</span> <span class="pre">Dissipation</span> <span class="pre">Rate)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.EDRMapper'&gt;,</span> <span class="pre">(('el_start_time',</span> <span class="pre">0),</span> <span class="pre">('el_end_time',</span> <span class="pre">1),</span> <span class="pre">('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min_el',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('mean_el',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max_el',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">157:</span> <span class="pre">('Turbulence</span> <span class="pre">Detection</span> <span class="pre">(Eddy</span> <span class="pre">Dissipation</span> <span class="pre">Rate</span> <span class="pre">Confidence)',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.EDRMapper'&gt;,</span> <span class="pre">(('el_start_time',</span> <span class="pre">0),</span> <span class="pre">('el_end_time',</span> <span class="pre">1),</span> <span class="pre">('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min_el',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('mean_el',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max_el',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">158:</span> <span class="pre">('Differential</span> <span class="pre">Reflectivity',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">159:</span> <span class="pre">('Digital</span> <span class="pre">Differential</span> <span class="pre">Reflectivity',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">160:</span> <span class="pre">('Correlation</span> <span class="pre">Coefficient',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">161:</span> <span class="pre">('Digital</span> <span class="pre">Correlation</span> <span class="pre">Coefficient',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">162:</span> <span class="pre">('Specific</span> <span class="pre">Differential</span> <span class="pre">Phase',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">163:</span> <span class="pre">('Digital</span> <span class="pre">Specific</span> <span class="pre">Differential</span> <span class="pre">Phase',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">164:</span> <span class="pre">('Hydrometeor</span> <span class="pre">Classification',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),)),</span> <span class="pre">165:</span> <span class="pre">('Digital</span> <span class="pre">Hydrometeor</span> <span class="pre">Classification',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalHMCMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">166:</span> <span class="pre">('Melting</span> <span class="pre">Layer',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">167:</span> <span class="pre">('Super</span> <span class="pre">Res</span> <span class="pre">Digital</span> <span class="pre">Correlation</span> <span class="pre">Coefficient',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">168:</span> <span class="pre">('Super</span> <span class="pre">Res</span> <span class="pre">Digital</span> <span class="pre">Phi',</span> <span class="pre">300.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('delta_time',</span> <span class="pre">&lt;function</span> <span class="pre">delta_time.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('supplemental_scan',</span> <span class="pre">&lt;function</span> <span class="pre">supplemental_scan.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">169:</span> <span class="pre">('One</span> <span class="pre">Hour</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('null_product',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">170:</span> <span class="pre">('Digital</span> <span class="pre">Accumulation</span> <span class="pre">Array',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('null_product',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">171:</span> <span class="pre">('Storm</span> <span class="pre">Total</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('null_product',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('gr_pairs',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">172:</span> <span class="pre">('Digital</span> <span class="pre">Storm</span> <span class="pre">Total</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('null_product',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">173:</span> <span class="pre">('Digital</span> <span class="pre">User-Selectable</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('period',</span> <span class="pre">1),</span> <span class="pre">('missing_period',</span> <span class="pre">&lt;function</span> <span class="pre">high_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('null_product',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('start_time',</span> <span class="pre">5),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">174:</span> <span class="pre">('Digital</span> <span class="pre">One-Hour</span> <span class="pre">Difference</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">175:</span> <span class="pre">('Digital</span> <span class="pre">Storm</span> <span class="pre">Total</span> <span class="pre">Difference</span> <span class="pre">Accumulation',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('null_product',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('rainfall_end',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">176:</span> <span class="pre">('Digital</span> <span class="pre">Instantaneous</span> <span class="pre">Precipitation</span> <span class="pre">Rate',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.GenericDigitalMapper'&gt;,</span> <span class="pre">(('rainfall_begin',</span> <span class="pre">&lt;function</span> <span class="pre">date_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('precip_detected',</span> <span class="pre">&lt;function</span> <span class="pre">high_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('need_bias',</span> <span class="pre">&lt;function</span> <span class="pre">low_byte.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('percent_filled',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max_elev',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('bias',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">177:</span> <span class="pre">('Hybrid</span> <span class="pre">Hydrometeor</span> <span class="pre">Classification',</span> <span class="pre">230.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalHMCMapper'&gt;,</span> <span class="pre">(('mode_filter_size',</span> <span class="pre">3),</span> <span class="pre">('hybrid_percent_filled',</span> <span class="pre">4),</span> <span class="pre">('max_elev',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">180:</span> <span class="pre">('TDWR</span> <span class="pre">Base</span> <span class="pre">Reflectivity',</span> <span class="pre">90.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalRefMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">181:</span> <span class="pre">('TDWR</span> <span class="pre">Base</span> <span class="pre">Reflectivity',</span> <span class="pre">90.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3))),</span> <span class="pre">182:</span> <span class="pre">('TDWR</span> <span class="pre">Base</span> <span class="pre">Velocity',</span> <span class="pre">90.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalVelMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">183:</span> <span class="pre">('TDWR</span> <span class="pre">Base</span> <span class="pre">Velocity',</span> <span class="pre">90.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('min',</span> <span class="pre">3),</span> <span class="pre">('max',</span> <span class="pre">4))),</span> <span class="pre">185:</span> <span class="pre">('TDWR</span> <span class="pre">Base</span> <span class="pre">Spectrum</span> <span class="pre">Width',</span> <span class="pre">90.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3))),</span> <span class="pre">186:</span> <span class="pre">('TDWR</span> <span class="pre">Long</span> <span class="pre">Range</span> <span class="pre">Base</span> <span class="pre">Reflectivity',</span> <span class="pre">416.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.DigitalRefMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3),</span> <span class="pre">('compression',</span> <span class="pre">7),</span> <span class="pre">('uncompressed_size',</span> <span class="pre">&lt;function</span> <span class="pre">combine_elem.&lt;locals&gt;.inner&gt;))),</span> <span class="pre">187:</span> <span class="pre">('TDWR</span> <span class="pre">Long</span> <span class="pre">Range</span> <span class="pre">Base</span> <span class="pre">Reflectivity',</span> <span class="pre">416.0,</span> <span class="pre">&lt;class</span> <span class="pre">'metpy.io.nexrad.LegacyMapper'&gt;,</span> <span class="pre">(('el_angle',</span> <span class="pre">&lt;function</span> <span class="pre">scaled_elem.&lt;locals&gt;.inner&gt;),</span> <span class="pre">('max',</span> <span class="pre">3)))}</span></em><a class="headerlink" href="#metpy.io.Level3File.prod_spec_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.standalone_tabular">
+<code class="sig-name descname"><span class="pre">standalone_tabular</span></code><em class="property"> <span class="pre">=</span> <span class="pre">[62,</span> <span class="pre">73,</span> <span class="pre">75,</span> <span class="pre">82]</span></em><a class="headerlink" href="#metpy.io.Level3File.standalone_tabular" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.sym_block_fmt">
+<code class="sig-name descname"><span class="pre">sym_block_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.sym_block_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.sym_layer_fmt">
+<code class="sig-name descname"><span class="pre">sym_layer_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.sym_layer_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.tab_block_fmt">
+<code class="sig-name descname"><span class="pre">tab_block_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.tab_block_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.tab_header_fmt">
+<code class="sig-name descname"><span class="pre">tab_header_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level3File.tab_header_fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.io.Level3File.wmo_finder">
+<code class="sig-name descname"><span class="pre">wmo_finder</span></code><em class="property"> <span class="pre">=</span> <span class="pre">re.compile('((?:NX|SD|NO)US)\\d{2}[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')</span></em><a class="headerlink" href="#metpy.io.Level3File.wmo_finder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt id="metpy.io.Level3File.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level3File.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level3File.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create instance of <a class="reference internal" href="#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level3File</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>file-like object</em>) – If str, the name of the file to be opened. If file-like object,
+this will be read from directly.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.io.Level3File.pos_scale">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">pos_scale</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_sym_block</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level3File.pos_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level3File.pos_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale of the position information in km.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="examples-using-metpy-io-level3file">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.io.Level3File</span></code><a class="headerlink" href="#examples-using-metpy-io-level3file" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot"><div class="figure align-default" id="id1">
+<img alt="NEXRAD Level 3 File" src="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="metpy.io.Level2File.html" title="previous page">Level2File</a>
+    <a class='right-next' id="next-link" href="metpy.calc.html" title="next page">calc</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

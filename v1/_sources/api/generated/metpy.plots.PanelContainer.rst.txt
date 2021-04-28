@@ -1,0 +1,116 @@
+PanelContainer
+==========================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: PanelContainer
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~PanelContainer.cross_validation_lock
+      ~PanelContainer.figure
+      ~PanelContainer.panel
+      ~PanelContainer.panels
+      ~PanelContainer.size
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PanelContainer.__init__
+      ~PanelContainer.add_traits
+      ~PanelContainer.class_own_trait_events
+      ~PanelContainer.class_own_traits
+      ~PanelContainer.class_trait_names
+      ~PanelContainer.class_traits
+      ~PanelContainer.draw
+      ~PanelContainer.has_trait
+      ~PanelContainer.hold_trait_notifications
+      ~PanelContainer.notify_change
+      ~PanelContainer.observe
+      ~PanelContainer.on_trait_change
+      ~PanelContainer.refresh
+      ~PanelContainer.save
+      ~PanelContainer.set_trait
+      ~PanelContainer.setup_instance
+      ~PanelContainer.show
+      ~PanelContainer.trait_defaults
+      ~PanelContainer.trait_events
+      ~PanelContainer.trait_has_value
+      ~PanelContainer.trait_metadata
+      ~PanelContainer.trait_names
+      ~PanelContainer.trait_values
+      ~PanelContainer.traits
+      ~PanelContainer.unobserve
+      ~PanelContainer.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: figure
+   .. autoattribute:: panel
+   .. autoattribute:: panels
+   .. autoattribute:: size
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: refresh
+   .. automethod:: save
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: show
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.PanelContainer.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

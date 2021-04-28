@@ -1,0 +1,12 @@
+convert_gempak_color
+================================
+
+.. currentmodule:: metpy.plots
+
+.. autofunction:: convert_gempak_color
+
+.. include:: metpy.plots.convert_gempak_color.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

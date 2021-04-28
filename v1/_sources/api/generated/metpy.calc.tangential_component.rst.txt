@@ -1,0 +1,12 @@
+tangential_component
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: tangential_component
+
+.. include:: metpy.calc.tangential_component.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

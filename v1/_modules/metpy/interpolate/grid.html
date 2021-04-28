@@ -1,0 +1,575 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>metpy.interpolate.grid &#8212; MetPy 1.0</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+
+    
+
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/theme-unidata.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/interpolate/grid.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+    <a class="navbar-brand" href="../../../index.html">
+    
+      <img src="../../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../api/index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      <form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for metpy.interpolate.grid</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018,2019 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Tools and calculations for interpolating specifically to a grid.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.points</span> <span class="kn">import</span> <span class="p">(</span><span class="n">interpolate_to_points</span><span class="p">,</span> <span class="n">inverse_distance_to_points</span><span class="p">,</span>
+                     <span class="n">natural_neighbor_to_points</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..pandas</span> <span class="kn">import</span> <span class="n">preprocess_pandas</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">generate_grid</span><span class="p">(</span><span class="n">horiz_dim</span><span class="p">,</span> <span class="n">bbox</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a meshgrid based on bounding box and x &amp; y resolution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    horiz_dim: integer</span>
+<span class="sd">        Horizontal resolution</span>
+<span class="sd">    bbox: dictionary</span>
+<span class="sd">        Dictionary containing coordinates for corners of study area.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    grid_x: (X, Y) ndarray</span>
+<span class="sd">        X dimension meshgrid defined by given bounding box</span>
+<span class="sd">    grid_y: (X, Y) ndarray</span>
+<span class="sd">        Y dimension meshgrid defined by given bounding box</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_steps</span><span class="p">,</span> <span class="n">y_steps</span> <span class="o">=</span> <span class="n">get_xy_steps</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">horiz_dim</span><span class="p">)</span>
+
+    <span class="n">grid_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;west&#39;</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">],</span> <span class="n">x_steps</span><span class="p">)</span>
+    <span class="n">grid_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">],</span> <span class="n">y_steps</span><span class="p">)</span>
+
+    <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span>
+
+
+<span class="k">def</span> <span class="nf">generate_grid_coords</span><span class="p">(</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate x,y coordinates of each grid cell.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gx: numeric</span>
+<span class="sd">        x coordinates in meshgrid</span>
+<span class="sd">    gy: numeric</span>
+<span class="sd">        y coordinates in meshgrid</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (X, Y) ndarray</span>
+<span class="sd">        List of coordinates in meshgrid</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">gx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">gy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_xy_range</span><span class="p">(</span><span class="n">bbox</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return x and y ranges in meters based on bounding box.</span>
+
+<span class="sd">    bbox: dictionary</span>
+<span class="sd">        dictionary containing coordinates for corners of study area</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x_range: float</span>
+<span class="sd">        Range in meters in x dimension.</span>
+<span class="sd">    y_range: float</span>
+<span class="sd">        Range in meters in y dimension.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_range</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;west&#39;</span><span class="p">]</span>
+    <span class="n">y_range</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bbox</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span>
+
+
+<span class="k">def</span> <span class="nf">get_xy_steps</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">h_dim</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return meshgrid spacing based on bounding box.</span>
+
+<span class="sd">    bbox: dictionary</span>
+<span class="sd">        Dictionary containing coordinates for corners of study area.</span>
+<span class="sd">    h_dim: integer</span>
+<span class="sd">        Horizontal resolution in meters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x_steps, (X, ) ndarray</span>
+<span class="sd">        Number of grids in x dimension.</span>
+<span class="sd">    y_steps: (Y, ) ndarray</span>
+<span class="sd">        Number of grids in y dimension.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span> <span class="o">=</span> <span class="n">get_xy_range</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+
+    <span class="n">x_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">x_range</span> <span class="o">/</span> <span class="n">h_dim</span><span class="p">)</span>
+    <span class="n">y_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">y_range</span> <span class="o">/</span> <span class="n">h_dim</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_steps</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_steps</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_boundary_coords</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">spatial_pad</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return bounding box based on given x and y coordinates assuming northern hemisphere.</span>
+
+<span class="sd">    x: numeric</span>
+<span class="sd">        x coordinates.</span>
+<span class="sd">    y: numeric</span>
+<span class="sd">        y coordinates.</span>
+<span class="sd">    spatial_pad: numeric</span>
+<span class="sd">        Number of meters to add to the x and y dimensions to reduce</span>
+<span class="sd">        edge effects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bbox: dictionary</span>
+<span class="sd">        dictionary containing coordinates for corners of study area</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">west</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">spatial_pad</span>
+    <span class="n">east</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">spatial_pad</span>
+    <span class="n">north</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">spatial_pad</span>
+    <span class="n">south</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">spatial_pad</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;west&#39;</span><span class="p">:</span> <span class="n">west</span><span class="p">,</span> <span class="s1">&#39;south&#39;</span><span class="p">:</span> <span class="n">south</span><span class="p">,</span> <span class="s1">&#39;east&#39;</span><span class="p">:</span> <span class="n">east</span><span class="p">,</span> <span class="s1">&#39;north&#39;</span><span class="p">:</span> <span class="n">north</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="natural_neighbor_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.natural_neighbor_to_grid.html#metpy.interpolate.natural_neighbor_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">natural_neighbor_to_grid</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a natural neighbor interpolation of the given points to a regular grid.</span>
+
+<span class="sd">    This assigns values to the given grid using the Liang and Hale [Liang2010]_.</span>
+<span class="sd">    approach.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xp: (N, ) ndarray</span>
+<span class="sd">        x-coordinates of observations</span>
+<span class="sd">    yp: (N, ) ndarray</span>
+<span class="sd">        y-coordinates of observations</span>
+<span class="sd">    variable: (N, ) ndarray</span>
+<span class="sd">        observation values associated with (xp, yp) pairs.</span>
+<span class="sd">        IE, variable[i] is a unique observation at (xp[i], yp[i])</span>
+<span class="sd">    grid_x: (M, 2) ndarray</span>
+<span class="sd">        Meshgrid associated with x dimension</span>
+<span class="sd">    grid_y: (M, 2) ndarray</span>
+<span class="sd">        Meshgrid associated with y dimension</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img: (M, N) ndarray</span>
+<span class="sd">        Interpolated values on a 2-dimensional grid</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    natural_neighbor_to_points</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle grid-to-points conversion, and use function from `interpolation`</span>
+    <span class="n">points_obs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">))</span>
+    <span class="n">points_grid</span> <span class="o">=</span> <span class="n">generate_grid_coords</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">natural_neighbor_to_points</span><span class="p">(</span><span class="n">points_obs</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">points_grid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="inverse_distance_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.inverse_distance_to_grid.html#metpy.interpolate.inverse_distance_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">inverse_distance_to_grid</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">min_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate an inverse distance interpolation of the given points to a regular grid.</span>
+
+<span class="sd">    Values are assigned to the given grid using inverse distance weighting based on either</span>
+<span class="sd">    [Cressman1959]_ or [Barnes1964]_. The Barnes implementation used here based on [Koch1983]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xp: (N, ) ndarray</span>
+<span class="sd">        x-coordinates of observations.</span>
+<span class="sd">    yp: (N, ) ndarray</span>
+<span class="sd">        y-coordinates of observations.</span>
+<span class="sd">    variable: (N, ) ndarray</span>
+<span class="sd">        observation values associated with (xp, yp) pairs.</span>
+<span class="sd">        IE, variable[i] is a unique observation at (xp[i], yp[i]).</span>
+<span class="sd">    grid_x: (M, 2) ndarray</span>
+<span class="sd">        Meshgrid associated with x dimension.</span>
+<span class="sd">    grid_y: (M, 2) ndarray</span>
+<span class="sd">        Meshgrid associated with y dimension.</span>
+<span class="sd">    r: float</span>
+<span class="sd">        Radius from grid center, within which observations</span>
+<span class="sd">        are considered and weighted.</span>
+<span class="sd">    gamma: float</span>
+<span class="sd">        Adjustable smoothing parameter for the barnes interpolation. Default None.</span>
+<span class="sd">    kappa: float</span>
+<span class="sd">        Response parameter for barnes interpolation. Default None.</span>
+<span class="sd">    min_neighbors: int</span>
+<span class="sd">        Minimum number of neighbors needed to perform barnes or cressman interpolation</span>
+<span class="sd">        for a point. Default is 3.</span>
+<span class="sd">    kind: str</span>
+<span class="sd">        Specify what inverse distance weighting interpolation to use.</span>
+<span class="sd">        Options: &#39;cressman&#39; or &#39;barnes&#39;. Default &#39;cressman&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img: (M, N) ndarray</span>
+<span class="sd">        Interpolated values on a 2-dimensional grid</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    inverse_distance_to_points</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle grid-to-points conversion, and use function from `interpolation`</span>
+    <span class="n">points_obs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">))</span>
+    <span class="n">points_grid</span> <span class="o">=</span> <span class="n">generate_grid_coords</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">inverse_distance_to_points</span><span class="p">(</span><span class="n">points_obs</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">points_grid</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
+                                     <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span> <span class="n">min_neighbors</span><span class="o">=</span><span class="n">min_neighbors</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="interpolate_to_grid"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_pandas</span>
+<span class="k">def</span> <span class="nf">interpolate_to_grid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
+                        <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">kappa_star</span><span class="o">=</span><span class="mf">5.052</span><span class="p">,</span>
+                        <span class="n">search_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rbf_func</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">rbf_smooth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">boundary_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: array_like</span>
+<span class="sd">        x coordinate, can have units of linear distance or degrees</span>
+<span class="sd">    y: array_like</span>
+<span class="sd">        y coordinate, can have units of linear distance or degrees</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">        observation value</span>
+<span class="sd">    interp_type: str</span>
+<span class="sd">        What type of interpolation to use. Available options include:</span>
+<span class="sd">        1) &quot;linear&quot;, &quot;nearest&quot;, &quot;cubic&quot;, or &quot;rbf&quot; from `scipy.interpolate`.</span>
+<span class="sd">        2) &quot;natural_neighbor&quot;, &quot;barnes&quot;, or &quot;cressman&quot; from `metpy.interpolate`.</span>
+<span class="sd">        Default &quot;linear&quot;.</span>
+<span class="sd">    hres: float</span>
+<span class="sd">        The horizontal resolution of the generated grid, given in the same units as the</span>
+<span class="sd">        x and y parameters. Default 50000.</span>
+<span class="sd">    minimum_neighbors: int</span>
+<span class="sd">        Minimum number of neighbors needed to perform barnes or cressman interpolation for a</span>
+<span class="sd">        point. Default is 3.</span>
+<span class="sd">    gamma: float</span>
+<span class="sd">        Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</span>
+<span class="sd">    kappa_star: float</span>
+<span class="sd">        Response parameter for barnes interpolation, specified nondimensionally</span>
+<span class="sd">        in terms of the Nyquist. Default 5.052</span>
+<span class="sd">    search_radius: float</span>
+<span class="sd">        A search radius to use for the barnes and cressman interpolation schemes.</span>
+<span class="sd">        If search_radius is not specified, it will default to the average spacing of</span>
+<span class="sd">        observations.</span>
+<span class="sd">    rbf_func: str</span>
+<span class="sd">        Specifies which function to use for Rbf interpolation.</span>
+<span class="sd">        Options include: &#39;multiquadric&#39;, &#39;inverse&#39;, &#39;gaussian&#39;, &#39;linear&#39;, &#39;cubic&#39;,</span>
+<span class="sd">        &#39;quintic&#39;, and &#39;thin_plate&#39;. Defualt &#39;linear&#39;. See `scipy.interpolate.Rbf` for more</span>
+<span class="sd">        information.</span>
+<span class="sd">    rbf_smooth: float</span>
+<span class="sd">        Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</span>
+<span class="sd">    boundary_coords: dictionary</span>
+<span class="sd">        Optional dictionary containing coordinates of the study area boundary. Dictionary</span>
+<span class="sd">        should be in format: {&#39;west&#39;: west, &#39;south&#39;: south, &#39;east&#39;: east, &#39;north&#39;: north}</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    grid_x: (N, 2) ndarray</span>
+<span class="sd">        Meshgrid for the resulting interpolation in the x dimension</span>
+<span class="sd">    grid_y: (N, 2) ndarray</span>
+<span class="sd">        Meshgrid for the resulting interpolation in the y dimension ndarray</span>
+<span class="sd">    img: (M, N) ndarray</span>
+<span class="sd">        2-dimensional array representing the interpolated values for each grid.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function acts as a wrapper for `interpolate_points` to allow it to generate a regular</span>
+<span class="sd">    grid.</span>
+
+<span class="sd">    This function interpolates points to a Cartesian plane, even if lat/lon coordinates</span>
+<span class="sd">    are provided.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    interpolate_to_points</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate the grid</span>
+    <span class="k">if</span> <span class="n">boundary_coords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">boundary_coords</span> <span class="o">=</span> <span class="n">get_boundary_coords</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span> <span class="o">=</span> <span class="n">generate_grid</span><span class="p">(</span><span class="n">hres</span><span class="p">,</span> <span class="n">boundary_coords</span><span class="p">)</span>
+
+    <span class="c1"># Handle grid-to-points conversion, and use function from `interpolation`</span>
+    <span class="n">points_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
+    <span class="n">points_grid</span> <span class="o">=</span> <span class="n">generate_grid_coords</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">interpolate_to_points</span><span class="p">(</span><span class="n">points_obs</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">points_grid</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="n">interp_type</span><span class="p">,</span>
+                                <span class="n">minimum_neighbors</span><span class="o">=</span><span class="n">minimum_neighbors</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
+                                <span class="n">kappa_star</span><span class="o">=</span><span class="n">kappa_star</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="n">search_radius</span><span class="p">,</span>
+                                <span class="n">rbf_func</span><span class="o">=</span><span class="n">rbf_func</span><span class="p">,</span> <span class="n">rbf_smooth</span><span class="o">=</span><span class="n">rbf_smooth</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="interpolate_to_isosurface"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.interpolate_to_isosurface.html#metpy.interpolate.interpolate_to_isosurface">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_pandas</span>
+<span class="k">def</span> <span class="nf">interpolate_to_isosurface</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="n">interp_var</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">bottom_up_search</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Linear interpolation of a variable to a given vertical level from given values.</span>
+
+<span class="sd">    This function assumes that highest vertical level (lowest pressure) is zeroth index.</span>
+<span class="sd">    A classic use of this function would be to compute the potential temperature on the</span>
+<span class="sd">    dynamic tropopause (2 PVU surface).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    level_var: array_like (P, M, N)</span>
+<span class="sd">        Level values in 3D grid on common vertical coordinate (e.g., PV values on</span>
+<span class="sd">        isobaric levels). Assumes height dimension is highest to lowest in atmosphere.</span>
+<span class="sd">    interp_var: array_like (P, M, N)</span>
+<span class="sd">        Variable on 3D grid with same vertical coordinate as level_var to interpolate to</span>
+<span class="sd">        given level (e.g., potential temperature on isobaric levels)</span>
+<span class="sd">    level: int or float</span>
+<span class="sd">        Desired interpolated level (e.g., 2 PVU surface)</span>
+<span class="sd">    bottom_up_search : bool, optional</span>
+<span class="sd">        Controls whether to search for levels bottom-up, or top-down. Defaults to</span>
+<span class="sd">        True, which is bottom-up search.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    interp_level: (M, N) ndarray</span>
+<span class="sd">        The interpolated variable (e.g., potential temperature) on the desired level (e.g.,</span>
+<span class="sd">        2 PVU surface)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function implements a linear interpolation to estimate values on a given surface.</span>
+<span class="sd">    The prototypical example is interpolation of potential temperature to the dynamic</span>
+<span class="sd">    tropopause (e.g., 2 PVU surface)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">find_bounding_indices</span>
+    <span class="c1"># Find index values above and below desired interpolated surface value</span>
+    <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span> <span class="o">=</span> <span class="n">find_bounding_indices</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="p">[</span><span class="n">level</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                               <span class="n">from_below</span><span class="o">=</span><span class="n">bottom_up_search</span><span class="p">)</span>
+
+    <span class="c1"># Linear interpolation of variable to interpolated surface value</span>
+    <span class="n">interp_level</span> <span class="o">=</span> <span class="p">(((</span><span class="n">level</span> <span class="o">-</span> <span class="n">level_var</span><span class="p">[</span><span class="n">above</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">level_var</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">-</span> <span class="n">level_var</span><span class="p">[</span><span class="n">above</span><span class="p">]))</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="n">interp_var</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">-</span> <span class="n">interp_var</span><span class="p">[</span><span class="n">above</span><span class="p">]))</span> <span class="o">+</span> <span class="n">interp_var</span><span class="p">[</span><span class="n">above</span><span class="p">]</span>
+
+    <span class="c1"># Handle missing values and instances where no values for surface exist above and below</span>
+    <span class="n">interp_level</span><span class="p">[</span><span class="o">~</span><span class="n">good</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">minvar</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">maxvar</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">level_var</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">interp_level</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">minvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">interp_var</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">minvar</span><span class="p">]</span>
+    <span class="n">interp_level</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">maxvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">interp_var</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">maxvar</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">interp_level</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../../_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

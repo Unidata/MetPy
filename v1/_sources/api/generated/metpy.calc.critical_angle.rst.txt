@@ -1,0 +1,12 @@
+critical_angle
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: critical_angle
+
+.. include:: metpy.calc.critical_angle.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

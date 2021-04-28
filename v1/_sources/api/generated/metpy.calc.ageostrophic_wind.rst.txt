@@ -1,0 +1,12 @@
+ageostrophic_wind
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: ageostrophic_wind
+
+.. include:: metpy.calc.ageostrophic_wind.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

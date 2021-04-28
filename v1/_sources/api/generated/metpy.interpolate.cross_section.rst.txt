@@ -1,0 +1,12 @@
+cross_section
+===============================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: cross_section
+
+.. include:: metpy.interpolate.cross_section.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

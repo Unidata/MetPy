@@ -1,0 +1,12 @@
+unit_vectors_from_cross_section
+==========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: unit_vectors_from_cross_section
+
+.. include:: metpy.calc.unit_vectors_from_cross_section.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

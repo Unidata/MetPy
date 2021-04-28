@@ -1,0 +1,134 @@
+ImagePlot
+=====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: ImagePlot
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~ImagePlot.colorbar
+      ~ImagePlot.colormap
+      ~ImagePlot.cross_validation_lock
+      ~ImagePlot.data
+      ~ImagePlot.field
+      ~ImagePlot.griddata
+      ~ImagePlot.image_range
+      ~ImagePlot.level
+      ~ImagePlot.name
+      ~ImagePlot.parent
+      ~ImagePlot.plot_units
+      ~ImagePlot.plotdata
+      ~ImagePlot.scale
+      ~ImagePlot.time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~ImagePlot.__init__
+      ~ImagePlot.add_traits
+      ~ImagePlot.class_own_trait_events
+      ~ImagePlot.class_own_traits
+      ~ImagePlot.class_trait_names
+      ~ImagePlot.class_traits
+      ~ImagePlot.clear
+      ~ImagePlot.clear_collections
+      ~ImagePlot.clear_handle
+      ~ImagePlot.draw
+      ~ImagePlot.has_trait
+      ~ImagePlot.hold_trait_notifications
+      ~ImagePlot.notify_change
+      ~ImagePlot.observe
+      ~ImagePlot.on_trait_change
+      ~ImagePlot.set_trait
+      ~ImagePlot.setup_instance
+      ~ImagePlot.trait_defaults
+      ~ImagePlot.trait_events
+      ~ImagePlot.trait_has_value
+      ~ImagePlot.trait_metadata
+      ~ImagePlot.trait_names
+      ~ImagePlot.trait_values
+      ~ImagePlot.traits
+      ~ImagePlot.unobserve
+      ~ImagePlot.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: colorbar
+   .. autoattribute:: colormap
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: image_range
+   .. autoattribute:: level
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: scale
+   .. autoattribute:: time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.ImagePlot.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

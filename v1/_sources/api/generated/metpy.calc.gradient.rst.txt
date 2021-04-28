@@ -1,0 +1,12 @@
+gradient
+===================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: gradient
+
+.. include:: metpy.calc.gradient.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

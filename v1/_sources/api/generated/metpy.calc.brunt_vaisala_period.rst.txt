@@ -1,0 +1,12 @@
+brunt_vaisala_period
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: brunt_vaisala_period
+
+.. include:: metpy.calc.brunt_vaisala_period.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+exner_function
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: exner_function
+
+.. include:: metpy.calc.exner_function.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

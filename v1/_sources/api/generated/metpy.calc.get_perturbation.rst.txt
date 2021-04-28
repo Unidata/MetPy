@@ -1,0 +1,12 @@
+get_perturbation
+===========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: get_perturbation
+
+.. include:: metpy.calc.get_perturbation.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

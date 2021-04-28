@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parameter &#8212; MetPy 1.0</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+
+    
+
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DimensionalityError" href="metpy.units.DimensionalityError.html" />
+    <link rel="prev" title="signature" href="metpy.units.signature.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.units.Parameter.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+    <a class="navbar-brand" href="../../index.html">
+    
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="metpy.units.html">
+   units
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.check_units.html">
+     check_units
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.concatenate.html">
+     concatenate
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.masked_array.html">
+     masked_array
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">
+     pandas_dataframe_to_unit_arrays
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.signature.html">
+     signature
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     Parameter
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.DimensionalityError.html">
+     DimensionalityError
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.UndefinedUnitError.html">
+     UndefinedUnitError
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.io.html">
+   metpy.io
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.ctables.html">
+   ctables
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.xarray.html">
+   xarray
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="parameter">
+<h1>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="metpy.units.Parameter">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metpy.units.</span></code><code class="sig-name descname"><span class="pre">Parameter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/inspect.html#Parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a parameter in a function signature.</p>
+<p>Has the following public attributes:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the parameter as a string.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>default<span class="classifier">object</span></dt><dd><p>The default value for the parameter if specified.  If the
+parameter has no default value, this attribute is set to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.empty</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>annotation</dt><dd><p>The annotation for the parameter if specified.  If the
+parameter has no annotation, this attribute is set to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.empty</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>kind<span class="classifier">str</span></dt><dd><p>Describes how argument values are bound to the parameter.
+Possible values: <a class="reference internal" href="#metpy.units.Parameter.POSITIONAL_ONLY" title="metpy.units.Parameter.POSITIONAL_ONLY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.POSITIONAL_ONLY</span></code></a>,
+<a class="reference internal" href="#metpy.units.Parameter.POSITIONAL_OR_KEYWORD" title="metpy.units.Parameter.POSITIONAL_OR_KEYWORD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.POSITIONAL_OR_KEYWORD</span></code></a>, <a class="reference internal" href="#metpy.units.Parameter.VAR_POSITIONAL" title="metpy.units.Parameter.VAR_POSITIONAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.VAR_POSITIONAL</span></code></a>,
+<a class="reference internal" href="#metpy.units.Parameter.KEYWORD_ONLY" title="metpy.units.Parameter.KEYWORD_ONLY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.KEYWORD_ONLY</span></code></a>, <a class="reference internal" href="#metpy.units.Parameter.VAR_KEYWORD" title="metpy.units.Parameter.VAR_KEYWORD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter.VAR_KEYWORD</span></code></a>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.units.Parameter.KEYWORD_ONLY" title="metpy.units.Parameter.KEYWORD_ONLY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KEYWORD_ONLY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.units.Parameter.POSITIONAL_ONLY" title="metpy.units.Parameter.POSITIONAL_ONLY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">POSITIONAL_ONLY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.units.Parameter.POSITIONAL_OR_KEYWORD" title="metpy.units.Parameter.POSITIONAL_OR_KEYWORD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">POSITIONAL_OR_KEYWORD</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.units.Parameter.VAR_KEYWORD" title="metpy.units.Parameter.VAR_KEYWORD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VAR_KEYWORD</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.units.Parameter.VAR_POSITIONAL" title="metpy.units.Parameter.VAR_POSITIONAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VAR_POSITIONAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.units.Parameter.annotation" title="metpy.units.Parameter.annotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotation</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.units.Parameter.default" title="metpy.units.Parameter.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.units.Parameter.kind" title="metpy.units.Parameter.kind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kind</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.units.Parameter.name" title="metpy.units.Parameter.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.units.Parameter.__init__" title="metpy.units.Parameter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(name, kind, *, default, annotation)</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.units.Parameter.replace" title="metpy.units.Parameter.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(*[, name, kind, annotation, default])</p></td>
+<td><p>Creates a customized copy of the Parameter.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.KEYWORD_ONLY">
+<code class="sig-name descname"><span class="pre">KEYWORD_ONLY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#metpy.units.Parameter.KEYWORD_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.POSITIONAL_ONLY">
+<code class="sig-name descname"><span class="pre">POSITIONAL_ONLY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#metpy.units.Parameter.POSITIONAL_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.POSITIONAL_OR_KEYWORD">
+<code class="sig-name descname"><span class="pre">POSITIONAL_OR_KEYWORD</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#metpy.units.Parameter.POSITIONAL_OR_KEYWORD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.VAR_KEYWORD">
+<code class="sig-name descname"><span class="pre">VAR_KEYWORD</span></code><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#metpy.units.Parameter.VAR_KEYWORD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.VAR_POSITIONAL">
+<code class="sig-name descname"><span class="pre">VAR_POSITIONAL</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#metpy.units.Parameter.VAR_POSITIONAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.annotation">
+<code class="sig-name descname"><span class="pre">annotation</span></code><a class="headerlink" href="#metpy.units.Parameter.annotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.default">
+<code class="sig-name descname"><span class="pre">default</span></code><a class="headerlink" href="#metpy.units.Parameter.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.kind">
+<code class="sig-name descname"><span class="pre">kind</span></code><a class="headerlink" href="#metpy.units.Parameter.kind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.units.Parameter.name">
+<code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#metpy.units.Parameter.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt id="metpy.units.Parameter.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/inspect.html#Parameter.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.Parameter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.units.Parameter.replace">
+<code class="sig-name descname"><span class="pre">replace</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">name=&lt;class</span> <span class="pre">'inspect._void'&gt;</span></em>, <em class="sig-param"><span class="pre">kind=&lt;class</span> <span class="pre">'inspect._void'&gt;</span></em>, <em class="sig-param"><span class="pre">annotation=&lt;class</span> <span class="pre">'inspect._void'&gt;</span></em>, <em class="sig-param"><span class="pre">default=&lt;class</span> <span class="pre">'inspect._void'&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/inspect.html#Parameter.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.Parameter.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a customized copy of the Parameter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="metpy.units.signature.html" title="previous page">signature</a>
+    <a class='right-next' id="next-link" href="metpy.units.DimensionalityError.html" title="next page">DimensionalityError</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+moist_static_energy
+==============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: moist_static_energy
+
+.. include:: metpy.calc.moist_static_energy.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

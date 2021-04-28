@@ -1,0 +1,138 @@
+BarbPlot
+====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: BarbPlot
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~BarbPlot.barblength
+      ~BarbPlot.color
+      ~BarbPlot.cross_validation_lock
+      ~BarbPlot.data
+      ~BarbPlot.earth_relative
+      ~BarbPlot.field
+      ~BarbPlot.griddata
+      ~BarbPlot.level
+      ~BarbPlot.name
+      ~BarbPlot.parent
+      ~BarbPlot.pivot
+      ~BarbPlot.plot_units
+      ~BarbPlot.plotdata
+      ~BarbPlot.scale
+      ~BarbPlot.skip
+      ~BarbPlot.time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~BarbPlot.__init__
+      ~BarbPlot.add_traits
+      ~BarbPlot.class_own_trait_events
+      ~BarbPlot.class_own_traits
+      ~BarbPlot.class_trait_names
+      ~BarbPlot.class_traits
+      ~BarbPlot.clear
+      ~BarbPlot.clear_collections
+      ~BarbPlot.clear_handle
+      ~BarbPlot.draw
+      ~BarbPlot.has_trait
+      ~BarbPlot.hold_trait_notifications
+      ~BarbPlot.notify_change
+      ~BarbPlot.observe
+      ~BarbPlot.on_trait_change
+      ~BarbPlot.set_trait
+      ~BarbPlot.setup_instance
+      ~BarbPlot.trait_defaults
+      ~BarbPlot.trait_events
+      ~BarbPlot.trait_has_value
+      ~BarbPlot.trait_metadata
+      ~BarbPlot.trait_names
+      ~BarbPlot.trait_values
+      ~BarbPlot.traits
+      ~BarbPlot.unobserve
+      ~BarbPlot.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: barblength
+   .. autoattribute:: color
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: earth_relative
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: level
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: pivot
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: scale
+   .. autoattribute:: skip
+   .. autoattribute:: time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.BarbPlot.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

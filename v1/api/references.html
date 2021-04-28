@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>References &#8212; MetPy 1.0</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>
+    
+      
+
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer’s Guide" href="../devel/index.html" />
+    <link rel="prev" title="grid_deltas_from_dataarray" href="generated/metpy.xarray.grid_deltas_from_dataarray.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/references.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <img src="../_static/metpy_horizontal.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version 1.0
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div>
+        </li>
+
+
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../userguide/index.html">User Guide</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Reference Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../devel/index.html">Developer’s Guide</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../examples/index.html">Example Gallery</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../userguide/SUPPORT.html">Support</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+        </li>
+        
+      </ul>
+
+
+      <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      
+
+      <ul class="navbar-nav">
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Unidata/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-github-square"></i></span>
+            </a>
+          </li>
+        
+        
+          <li class="nav-item">
+            <a class="nav-link" href="https://twitter.com/MetPy" target="_blank" rel="noopener">
+              <span><i class="fab fa-twitter-square"></i></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.units.html">
+   units
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.io.html">
+   metpy.io
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.plots.ctables.html">
+   ctables
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="generated/metpy.xarray.html">
+   xarray
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<dl class="citation">
+<dt class="label" id="anderson2013"><span class="brackets">Anderson2013</span></dt>
+<dd><p>Anderson, G. B., M. L. Bell, and R. D. Peng, 2013: Methods to
+Calculate the Heat Index as an Exposure Metric in Environmental Health
+Research. <em>Environmental Health Perspectives</em>, <strong>121</strong>, 1111-1119,
+doi: <a class="reference external" href="https://doi.org/10.1289/ehp.1206273">10.1289/ehp.1206273</a>.</p>
+</dd>
+<dt class="label" id="bakhshaii2013"><span class="brackets">Bakhshaii2013</span></dt>
+<dd><p>Bakhshaii, A. and R. Stull, 2013: Saturated pseudoadiabats–A
+noniterative approximation. <em>J. Appl. Meteor. Clim.</em>, <strong>52</strong>, 5-15,
+doi:<a class="reference external" href="https://doi.org/10.1175/JAMC-D-12-062.1">10.1175/JAMC-D-12-062.1</a>.</p>
+</dd>
+<dt class="label" id="barnes1964"><span class="brackets">Barnes1964</span></dt>
+<dd><p>Barnes, S. L., 1964: A technique for maximizing details in numerical weather
+map analysis. <em>J. Appl. Meteor. Climatol.</em>, <strong>3</strong>, 396-409,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2">10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="bluestein1992"><span class="brackets">Bluestein1992</span></dt>
+<dd><p>Bluestein, H. B., 1992: <em>Principles of Kinematics and Dynamics.
+Vol. 1, Synoptic-Dynamic Meteorology in Midlatitudes</em>. Oxford University Press,
+448 pp.</p>
+</dd>
+<dt class="label" id="bluestein1993"><span class="brackets">Bluestein1993</span></dt>
+<dd><p>Bluestein, H. B., 1993: <em>Observations and Theory of Weather Systems.
+Vol. 2, Synoptic-Dynamic Meteorology in Midlatitudes</em>. Oxford University Press,
+608 pp.</p>
+</dd>
+<dt class="label" id="bolton1980"><span class="brackets">Bolton1980</span></dt>
+<dd><p>Bolton, D., 1980: The computation of equivalent potential
+temperature. <em>Mon. Wea. Rev.</em>, <strong>108</strong>, 1046-1053,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2">10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="bowen2005"><span class="brackets">Bowen2005</span></dt>
+<dd><p>Bowen, M. K. and R. Smith, 2005: Derivative formulae and errors for
+non-uniformly spaced points. <em>Proc. R. Soc. A</em>, <strong>461</strong>, 1975-1997,
+doi:<a class="reference external" href="https://doi.org/10.1098/rspa.2004.1430">10.1098/rspa.2004.1430</a>.</p>
+</dd>
+<dt class="label" id="bunkers2000"><span class="brackets">Bunkers2000</span></dt>
+<dd><p>Bunkers, M. J., B. A. Klimowski, J. W. Zeitler, R. L. Thompson,
+and M. L. Weisman, 2000: Predicting supercell motion using a new hodograph
+technique. <em>Wea. Forecasting.</em>, <strong>15</strong>, 61–79,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0434(2000)015&lt;0061:PSMUAN&gt;2.0.CO;2">10.1175/1520-0434(2000)015&lt;0061:PSMUAN&gt;2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="codata2018"><span class="brackets">CODATA2018</span></dt>
+<dd><p>Tiesinga, Eite, Peter J. Mohr, David B. Newell, and Barry N. Taylor, 2020:
+The 2018 CODATA Recommended Values of the Fundamental Physical Constants
+(Web Version 8.1). Database developed by J. Baker, M. Douma, and S. Kotochigova.
+Available at <a class="reference external" href="http://physics.nist.gov/constants">http://physics.nist.gov/constants</a>, National Institute of Standards
+and Technology, Gaithersburg, MD 20899.</p>
+</dd>
+<dt class="label" id="cressman1959"><span class="brackets">Cressman1959</span></dt>
+<dd><p>Cressman, G. P., 1959: An operational objective analysis system. <em>Mon.
+Wea. Rev.</em>, <strong>87</strong>, 367-374,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2">10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="daviesjones2009"><span class="brackets">DaviesJones2009</span></dt>
+<dd><p>Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
+<em>Mon. Wea. Rev.</em>, <strong>137</strong>, 3137-3148,
+doi: <a class="reference external" href="https://doi.org/10.1175/2009MWR2774.1">10.1175/2009mwr2774.1</a>.</p>
+</dd>
+<dt class="label" id="doswellschultz2006"><span class="brackets">DoswellSchultz2006</span></dt>
+<dd><p>Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
+Parameters in Forecasting Severe Storms. <em>Electronic Journal of Severe Storms
+Meteorology</em>,
+<a class="reference external" href="https://ejssm.org/ojs/index.php/ejssm/issue/view/3">EJSSM</a>.</p>
+</dd>
+<dt class="label" id="esterheld2008"><span class="brackets">Esterheld2008</span></dt>
+<dd><p>Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
+Non-Tornadic Supercells: A New Hodograph Technique. <em>E-Journal Of Severe Storms
+Meteorology</em>, <strong>3(2)</strong>, Retrieved May 10, 2018.</p>
+</dd>
+<dt class="label" id="fan1987"><span class="brackets">Fan1987</span></dt>
+<dd><p>Fan, J., 1987: Determination of the psychrometer coefficient A of the WMO
+reference psychrometer by comparison with a standard gravimetric hygrometer.
+<em>J. Atmos. Oceanic Technol.</em>, <strong>4</strong>, 239-244,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2">10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="fcmr192003"><span class="brackets">FCMR192003</span></dt>
+<dd><p>Federal Coordinator for Meteorological Services and Supporting Research: Report
+on Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
+Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
+Services and Supporting Research, 2003.
+<a class="reference external" href="../_static/FCM-R19-2003-WindchillReport.pdf">FCM-R19-2003</a>, 75 pp.</p>
+</dd>
+<dt class="label" id="galway1956"><span class="brackets">Galway1956</span></dt>
+<dd><p>Galway, J. G., 1956: The Lifted Index as a Predictor of Latent Instability.
+<em>American Meteorology Society</em>,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0477-37.10.528">10.1175/1520-0477-37.10.528</a>.</p>
+</dd>
+<dt class="label" id="garratt1994"><span class="brackets">Garratt1994</span></dt>
+<dd><p>Garratt, J.R., 1994: <em>The Atmospheric Boundary Layer</em>. Cambridge
+University Press, 316 pp.</p>
+</dd>
+<dt class="label" id="hobbs1977"><span class="brackets">Hobbs1977</span></dt>
+<dd><p>Hobbs, P. V., and J. M. Wallace, 1977: <em>Atmospheric Science: An
+Introductory Survey</em>. Academic Press, 350 pp.</p>
+</dd>
+<dt class="label" id="hobbs2006"><span class="brackets">Hobbs2006</span></dt>
+<dd><p>Hobbs, P. V., and J. M. Wallace, 2006: <em>Atmospheric Science: An Introductory
+Survey</em>. 2nd ed. Academic Press, 504 pp.</p>
+</dd>
+<dt class="label" id="holton2004"><span class="brackets">Holton2004</span></dt>
+<dd><p>Holton, J. R., 2004: <em>An Introduction to Dynamic Meteorology</em>. 4th ed.
+Academic Press, 535 pp.</p>
+</dd>
+<dt class="label" id="iapws1995"><span class="brackets">IAPWS1995</span></dt>
+<dd><p>The International Association for the Properties of Water and Steam, 1995:
+<a class="reference external" href="../_static/IAPWS95-2018.pdf">Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties
+of Ordinary Water Substance for General and Scientific Use (updated
+2018)</a>.</p>
+</dd>
+<dt class="label" id="iapws2001"><span class="brackets">IAPWS2001</span></dt>
+<dd><p>The International Association for the Properties of Water and Steam, 2001:
+<a class="reference external" href="../_static/fundam.pdf">Guideline on the Use of Fundamental Physical Constants and Basic Constants of
+Water (updated 2020)</a>.</p>
+</dd>
+<dt class="label" id="iau2012"><span class="brackets">IAU2012</span></dt>
+<dd><p>IAU Division I Working Group Numerical Standards, 2012: <a class="reference external" href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">RESOLUTION B2 on
+the re-definition of the astronomical unit of length</a>.</p>
+</dd>
+<dt class="label" id="knox2017"><span class="brackets">Knox2017</span></dt>
+<dd><p>Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
+Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
+Forecasting Applications. <em>Bulletin of the American Meteorological Society</em>,
+<strong>98.9</strong>, 1897-1906, doi:
+<a class="reference external" href="https://doi.org/10.1175/BAMS-D-16-0246.1">10.1175/BAMS-D-16-0246.1</a>.</p>
+</dd>
+<dt class="label" id="koch1983"><span class="brackets">Koch1983</span></dt>
+<dd><p>Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
+objective map analysis scheme for use with satellite and conventional data.
+<strong>J. Appl. Meteor. Climatol.</strong>, <em>22</em>, 1487-1503,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2">10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="kopp2011"><span class="brackets">Kopp2011</span></dt>
+<dd><p>Kopp, G., and Lean, J. L., 2011: A new, lower value of total solar irradiance:
+Evidence and climate significance. <em>Geophys. Res. Lett.</em>, <strong>38</strong>, L01706,
+<a class="reference external" href="https://doi.org/10.1029/2010GL045777">doi:10.1029/2010GL045777</a>.</p>
+</dd>
+<dt class="label" id="lackmann2011"><span class="brackets">Lackmann2011</span></dt>
+<dd><p>Lackmann, G., 2011: <em>Midlatitude Synoptic Meteorology</em>. Amer. Meteor. Soc.,
+345 pp.</p>
+</dd>
+<dt class="label" id="liang2010"><span class="brackets">Liang2010</span></dt>
+<dd><p>Liang, L., and D. Hale, 2010: <em>A Stable and Fast Implementation
+of Natural Neighbor Interpolation</em>. Center for Wave Phenomena <a class="reference external" href="https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf">CWP-657</a>, 14 pp.</p>
+</dd>
+<dt class="label" id="markowski2010"><span class="brackets">Markowski2010</span></dt>
+<dd><p>Markowski, P. and Y. Richardson, 2010: <em>Mesoscale Meteorology in the
+Midlatitudes</em>. Wiley, 430 pp.</p>
+</dd>
+<dt class="label" id="moritz2000"><span class="brackets">Moritz2000</span></dt>
+<dd><p>Moritz, H., 2000: Geodetic Reference System 1980.
+<em>Journal of Geodesy</em> <strong>74</strong>, 128-133, doi:<a class="reference external" href="https://doi.org/10.1007/s001900050278">10.1007/s001900050278</a>.</p>
+</dd>
+<dt class="label" id="noaa1976"><span class="brackets">NOAA1976</span></dt>
+<dd><p>National Oceanic and Atmospheric Administration, National Aeronautics and
+Space Administration, and U. S. Air Force, 1976: <a class="reference external" href="https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf">U. S. Standard Atmosphere 1976</a>,
+U.S. Government Printing Office, Washington, DC.</p>
+</dd>
+<dt class="label" id="nws10201"><span class="brackets">NWS10201</span></dt>
+<dd><p>2017: <a class="reference external" href="../_static/NWS_10-201.pdf">National Weather Service Instruction 10-201</a>.</p>
+</dd>
+<dt class="label" id="philips1957"><span class="brackets">Philips1957</span></dt>
+<dd><p>Philips, N. A., 1957: A coordinate system having some special
+advantages for numerical forecasting. <em>J. Meteor.</em>, <strong>14</strong>, 184-185,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2">10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="picard2008"><span class="brackets">Picard2008</span></dt>
+<dd><p>Picard, A., R. S. Davis, M. Gläser, and K. Fujii, 2008: Revised formula
+for the density of moist air (CIPM-2007), <em>Metrologia</em>, <strong>45</strong>, No. 2, <a class="reference external" href="http://dx.doi.org/10.1088/0026-1394/45/2/004">doi:
+10.1088/0026-1394/45/2/004</a>.</p>
+</dd>
+<dt class="label" id="rochette2006"><span class="brackets">Rochette2006</span></dt>
+<dd><p>Rochette, Scott M., and Patrick S. Market. “A primer on the
+ageostrophic wind.” Natl. Weather Dig. 30 (2006): 17-28.</p>
+</dd>
+<dt class="label" id="rothfusz1990"><span class="brackets">Rothfusz1990</span></dt>
+<dd><p>Rothfusz, L.P.: <em>The Heat Index “Equation”</em>. Fort Worth, TX: Scientific
+Services Division, NWS Southern Region Headquarters, 1990.
+<a class="reference external" href="../_static/rothfusz-1990-heat-index-equation.pdf">SR90-23</a>, 2 pp.</p>
+</dd>
+<dt class="label" id="salby1996"><span class="brackets">Salby1996</span></dt>
+<dd><p>Salby, M. L., 1996: <em>Fundamentals of Atmospheric Physics</em>.
+Academic Press, 627 pp.</p>
+</dd>
+<dt class="label" id="schultz1999"><span class="brackets">Schultz1999</span></dt>
+<dd><p>Schultz, D. M. and P. N. Schumacher, 1999: The Use and Misuse of Conditional
+Symmetric Instability. Mon. Wea. Rev., 127, 2709–2732,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2">10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="smithsonian1951"><span class="brackets">Smithsonian1951</span></dt>
+<dd><p>Smithsonian Institution and List, Robert J. 1951:
+<a class="reference external" href="../_static/Smithsonian1951.pdf">Smithsonian meteorological tables</a> <em>Smithsonian
+Miscellaneous Collections</em>, <strong>144</strong>, 151 pp.</p>
+</dd>
+<dt class="label" id="steadman1979"><span class="brackets">Steadman1979</span></dt>
+<dd><p>Steadman, R.G., 1979: The assessment of sultriness. Part I: A
+temperature-humidity index based on human physiology and clothing
+science. <em>J. Appl. Meteor.</em>, <strong>18</strong>, 861-873,
+doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2">10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="thompson2004"><span class="brackets">Thompson2004</span></dt>
+<dd><p>Thompson, R.L., R. Edwards, and C. M. Mead, 2004b: An update to the supercell
+composite and significant tornado parameters. Preprints, 22nd Conf. on Severe Local
+Storms, Hyannis, MA, Amer. Meteor. Soc.</p>
+</dd>
+<dt class="label" id="usaf1990"><span class="brackets">USAF1990</span></dt>
+<dd><p>United States Air Force, 1990: <a class="reference external" href="../_static/USAF_SkewT_manual.pdf">The Use of the Skew T Log P Diagram for Weather
+Forecasting</a>, Scott AFB,
+Illinois.</p>
+</dd>
+<dt class="label" id="ziv1994"><span class="brackets">Ziv1994</span></dt>
+<dd><p>Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors
+and Implication to Potential Vorticity Analysis. <em>J. Appl. Meteor.</em>, <strong>33</strong>,
+694-703, doi:<a class="reference external" href="https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2">10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2</a>.</p>
+</dd>
+<dt class="label" id="wmo8"><span class="brackets">WMO8</span></dt>
+<dd><p>WMO, 2018: Guide to Meteorological Instruments and Methods of Observation.
+<a class="reference external" href="https://library.wmo.int/doc_num.php?explnum_id=10179">WMO No.8</a>.</p>
+</dd>
+<dt class="label" id="wmo1966"><span class="brackets">WMO1966</span></dt>
+<dd><p>WMO, 1966: International Meteorological Tables, <a class="reference external" href="https://library.wmo.int/doc_num.php?explnum_id=7997">WMO-No. 188.TP.94</a>.</p>
+</dd>
+</dl>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="generated/metpy.xarray.grid_deltas_from_dataarray.html" title="previous page">grid_deltas_from_dataarray</a>
+    <a class='right-next' id="next-link" href="../devel/index.html" title="next page">Developer’s Guide</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92978945-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

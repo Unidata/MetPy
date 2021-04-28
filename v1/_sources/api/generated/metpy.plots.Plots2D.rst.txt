@@ -1,0 +1,120 @@
+Plots2D
+===================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: Plots2D
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~Plots2D.cross_validation_lock
+      ~Plots2D.data
+      ~Plots2D.level
+      ~Plots2D.name
+      ~Plots2D.parent
+      ~Plots2D.plot_units
+      ~Plots2D.scale
+      ~Plots2D.time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Plots2D.__init__
+      ~Plots2D.add_traits
+      ~Plots2D.class_own_trait_events
+      ~Plots2D.class_own_traits
+      ~Plots2D.class_trait_names
+      ~Plots2D.class_traits
+      ~Plots2D.clear
+      ~Plots2D.clear_collections
+      ~Plots2D.clear_handle
+      ~Plots2D.has_trait
+      ~Plots2D.hold_trait_notifications
+      ~Plots2D.notify_change
+      ~Plots2D.observe
+      ~Plots2D.on_trait_change
+      ~Plots2D.set_trait
+      ~Plots2D.setup_instance
+      ~Plots2D.trait_defaults
+      ~Plots2D.trait_events
+      ~Plots2D.trait_has_value
+      ~Plots2D.trait_metadata
+      ~Plots2D.trait_names
+      ~Plots2D.trait_values
+      ~Plots2D.traits
+      ~Plots2D.unobserve
+      ~Plots2D.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: level
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: plot_units
+   .. autoattribute:: scale
+   .. autoattribute:: time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.Plots2D.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
