@@ -35,7 +35,7 @@ jobs:
         # Set up our version dictionary
         versions = dict(versions=['latest', 'dev'],
                         latest=f'v{vers[-1].major}.{vers[-1].minor}', prereleases=[])
-        versions['versions'].extend(f'{v.major}.{v.minor}' for v in vers[-4:])
+        versions['versions'].extend(f'v{v.major}.{v.minor}' for v in vers[-4:])
 
         # Write to JSON file
         with open('versions.json', 'wt') as verfile:
