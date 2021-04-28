@@ -1,0 +1,56 @@
+name: Manage doc versions
+
+on:
+  push:
+    branches:
+      - gh-pages
+    paths-ignore:
+      - 'dev/**'
+
+jobs:
+  doc-versions:
+    name: Update Doc Versions
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+
+    - name: Install packaging
+      run: python -m pip install packaging
+
+    - name: Update listing of versions
+      run: |
+        python << EOF
+        import json
+        from pathlib import Path
+        from packaging import version
+
+        # Get all paths that are versions
+        vers = sorted(version.parse(str(p)) for p in Path().glob('v[0-9]*'))
+
+        # Set up our version dictionary
+        versions = dict(versions=['latest', 'dev'],
+                        latest=f'v{vers[-1].major}.{vers[-1].minor}', prereleases=[])
+        versions['versions'].extend(f'{v.major}.{v.minor}' for v in vers[-4:])
+
+        # Write to JSON file
+        with open('versions.json', 'wt') as verfile:
+            json.dump(versions, verfile)
+
+        # Update the 'latest' symlink
+        latest = Path('latest')
+        latest.unlink(missing_ok=True)
+        latest.symlink_to(versions['latest'], target_is_directory=True)
+        EOF
+
+    - name: Commit changes
+      run: |
+        git config user.name $GITHUB_ACTOR
+        git config user.email $GITHUB_ACTOR@users.noreply.github.com
+        git add latest versions.json
+        git commit -am "Update version listing and latest link" || true
+        git push
