@@ -301,12 +301,18 @@
     <span class="sd">&quot;&quot;&quot;Look up station information from multiple sources.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize different files.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sources</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">_read_station_table</span><span class="p">()),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_read_master_text_file</span><span class="p">()),</span>
-                         <span class="nb">dict</span><span class="p">(</span><span class="n">_read_station_text_file</span><span class="p">()),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_read_airports_file</span><span class="p">())]</span>
+        <span class="sd">&quot;&quot;&quot;Construct placeholder list to be loaded when needed later.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sources</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stid</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Lookup station information from the ID.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sources</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sources</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">_read_station_table</span><span class="p">()),</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">_read_master_text_file</span><span class="p">()),</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">_read_station_text_file</span><span class="p">()),</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">_read_airports_file</span><span class="p">()),</span>
+            <span class="p">]</span>
         <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sources</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stid</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">table</span><span class="p">[</span><span class="n">stid</span><span class="p">]</span>
@@ -382,7 +388,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 28, 2021 at 23:04:16.<br/>
+        Last updated on Apr 29, 2021 at 19:04:35.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
