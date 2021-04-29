@@ -126,12 +126,18 @@ class StationLookup:
     """Look up station information from multiple sources."""
 
     def __init__(self):
-        """Initialize different files."""
-        self._sources = [dict(_read_station_table()), dict(_read_master_text_file()),
-                         dict(_read_station_text_file()), dict(_read_airports_file())]
+        """Construct placeholder list to be loaded when needed later."""
+        self._sources = []
 
     def __getitem__(self, stid):
         """Lookup station information from the ID."""
+        if not self._sources:
+            self._sources = [
+                dict(_read_station_table()),
+                dict(_read_master_text_file()),
+                dict(_read_station_text_file()),
+                dict(_read_airports_file()),
+            ]
         for table in self._sources:
             if stid in table:
                 return table[stid]
