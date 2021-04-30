@@ -15,7 +15,7 @@ currently supports Python >= 3.7.
 * pint >= 0.10.1
 * pooch >= 0.1
 * pyproj >= 2.3.0
-* scipy >= 1.0.0
+* scipy >= 1.2.0
 * traitlets >= 4.3.0
 * xarray >= 0.14.1
 
