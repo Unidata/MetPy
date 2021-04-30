@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Infrastructure Guide &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -147,47 +142,31 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="CONTRIBUTING.html">Contributors Guide</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="CONTRIBUTING.html">
+   Contributors Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="roadmap.html">
+   MetPy Roadmap
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Infrastructure Guide
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="roadmap.html">MetPy Roadmap</a>
-                </li>
-            
-          
-            
-                <li class="active">
-                    <a href="">Infrastructure Guide</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -198,35 +177,41 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#versioning" class="nav-link">Versioning</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#documentation" class="nav-link">Documentation</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#other-tools" class="nav-link">Other Tools</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#releasing" class="nav-link">Releasing</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#pypi" class="nav-link">PyPI</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#conda" class="nav-link">Conda</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#versioning">
+   Versioning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documentation">
+   Documentation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#other-tools">
+   Other Tools
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#releasing">
+   Releasing
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pypi">
+     PyPI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conda">
+     Conda
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -234,6 +219,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -263,12 +251,15 @@ There are also example scripts in the <code class="docutils literal notranslate"
 extension, these scripts are executed and turned into a gallery of thumbnails. The
 extension also makes these scripts available as Jupyter notebooks.</p>
 <p>The documentation is hosted on <a class="reference external" href="https://unidata.github.io/MetPy">GitHub Pages</a>. The docs are
-built automatically and uploaded upon pushes or merges to GitHub. Commits to <code class="docutils literal notranslate"><span class="pre">master</span></code> end up
+built automatically and uploaded upon pushes or merges to GitHub. Commits to <code class="docutils literal notranslate"><span class="pre">main</span></code> end up
 in our development version docs, while commits to versioned branches will update the
-docs for the corresponding version, which are located in the appropriately named subidrectory
+docs for the corresponding version, which are located in the appropriately named subdirectory
 on the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch. We only maintain docs at the minor level, not the bugfix one.
 The docs rely on the <code class="docutils literal notranslate"><span class="pre">pydata-sphinx-theme</span></code> package for styling the docs, which needs to be
-installed for any local doc builds.</p>
+installed for any local doc builds. The <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch has a GitHub Actions workflow that
+handles generating a <code class="docutils literal notranslate"><span class="pre">versions.json</span></code> file that controls what versions are displayed in the
+selector on the website, as well as update the <code class="docutils literal notranslate"><span class="pre">latest</span></code> symlink that points to the latest
+version of the docs.</p>
 </div>
 <div class="section" id="other-tools">
 <h2>Other Tools<a class="headerlink" href="#other-tools" title="Permalink to this headline">¶</a></h2>
@@ -288,7 +279,6 @@ checked using the <code class="docutils literal notranslate"><span class="pre">d
 <ul class="simple">
 <li><p><a class="reference external" href="https://app.codacy.com/project/Unidata/MetPy/dashboard">Codacy</a></p></li>
 <li><p><a class="reference external" href="https://codeclimate.com/github/Unidata/MetPy">Code Climate</a></p></li>
-<li><p><a class="reference external" href="https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)">Scrutinizer</a></p></li>
 </ul>
 <p>We also maintain custom GitHub actions that automate additional tasks. Besides what’s
 mentioned below as part of the release process, we have a script that automatically assigns
@@ -384,7 +374,7 @@ packages to anaconda.org.</p>
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -400,9 +390,9 @@ packages to anaconda.org.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

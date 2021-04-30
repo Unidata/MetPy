@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GiniFile &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -147,115 +142,98 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="metpy.constants.html">constants</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.units.html">
+   units
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="metpy.io.html">
+   metpy.io
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
+     add_station_lat_lon
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.is_precip_mode.html">
+     is_precip_mode
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.parse_metar_file.html">
+     parse_metar_file
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
+     parse_metar_to_dataframe
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     GiniFile
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.Level2File.html">
+     Level2File
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.Level3File.html">
+     Level3File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.ctables.html">
+   ctables
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.xarray.html">
+   xarray
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="metpy.units.html">units</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="metpy.io.html">metpy.io</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="metpy.io.add_station_lat_lon.html">add_station_lat_lon</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.io.is_precip_mode.html">is_precip_mode</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.io.parse_metar_file.html">parse_metar_file</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.io.parse_metar_to_dataframe.html">parse_metar_to_dataframe</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="">GiniFile</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.io.Level2File.html">Level2File</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.io.Level3File.html">Level3File</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.calc.html">calc</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.html">plots</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.ctables.html">ctables</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.interpolate.html">interpolate</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.xarray.html">xarray</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../references.html">References</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -266,13 +244,19 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#examples-using-metpy-io-ginifile" class="nav-link">Examples using metpy.io.GiniFile</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-metpy-io-ginifile">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     metpy.io.GiniFile
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -280,6 +264,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -289,7 +276,7 @@
 <h1>GiniFile<a class="headerlink" href="#ginifile" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="metpy.io.GiniFile">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.io.</code><code class="sig-name descname">GiniFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metpy.io.</span></code><code class="sig-name descname"><span class="pre">GiniFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.GiniFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class that handles reading the GINI format satellite images from the NWS.</p>
 <p>This class attempts to decode every byte that is in a given GINI file.</p>
 <p class="rubric">Notes</p>
@@ -375,58 +362,58 @@ this will be read from directly.</p>
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.channels">
-<code class="sig-name descname">channels</code><em class="property"> = ['Unknown', 'Visible', 'IR (3.9 micron)', 'WV (6.5/6.7 micron)', 'IR (11 micron)', 'IR (12 micron)', 'IR (13 micron)', 'IR (1.3 micron)', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'LI (Imager)', 'PW (Imager)', 'Surface Skin Temp (Imager)', 'LI (Sounder)', 'PW (Sounder)', 'Surface Skin Temp (Sounder)', 'CAPE', 'Land-sea Temp', 'WINDEX', 'Dry Microburst Potential Index', 'Microburst Day Potential Index', 'Convective Inhibition', 'Volcano Imagery', 'Scatterometer', 'Cloud Top', 'Cloud Amount', 'Rainfall Rate', 'Surface Wind Speed', 'Surface Wetness', 'Ice Concentration', 'Ice Type', 'Ice Edge', 'Cloud Water Content', 'Surface Type', 'Snow Indicator', 'Snow/Water Content', 'Volcano Imagery', 'Reserved', 'Sounder (14.71 micron)', 'Sounder (14.37 micron)', 'Sounder (14.06 micron)', 'Sounder (13.64 micron)', 'Sounder (13.37 micron)', 'Sounder (12.66 micron)', 'Sounder (12.02 micron)', 'Sounder (11.03 micron)', 'Sounder (9.71 micron)', 'Sounder (7.43 micron)', 'Sounder (7.02 micron)', 'Sounder (6.51 micron)', 'Sounder (4.57 micron)', 'Sounder (4.52 micron)', 'Sounder (4.45 micron)', 'Sounder (4.13 micron)', 'Sounder (3.98 micron)', 'Sounder (3.74 micron)', 'Sounder (Visible)', 'Percent Normal TPW']</em><a class="headerlink" href="#metpy.io.GiniFile.channels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">channels</span></code><em class="property"> <span class="pre">=</span> <span class="pre">['Unknown',</span> <span class="pre">'Visible',</span> <span class="pre">'IR</span> <span class="pre">(3.9</span> <span class="pre">micron)',</span> <span class="pre">'WV</span> <span class="pre">(6.5/6.7</span> <span class="pre">micron)',</span> <span class="pre">'IR</span> <span class="pre">(11</span> <span class="pre">micron)',</span> <span class="pre">'IR</span> <span class="pre">(12</span> <span class="pre">micron)',</span> <span class="pre">'IR</span> <span class="pre">(13</span> <span class="pre">micron)',</span> <span class="pre">'IR</span> <span class="pre">(1.3</span> <span class="pre">micron)',</span> <span class="pre">'Reserved',</span> <span class="pre">'Reserved',</span> <span class="pre">'Reserved',</span> <span class="pre">'Reserved',</span> <span class="pre">'Reserved',</span> <span class="pre">'LI</span> <span class="pre">(Imager)',</span> <span class="pre">'PW</span> <span class="pre">(Imager)',</span> <span class="pre">'Surface</span> <span class="pre">Skin</span> <span class="pre">Temp</span> <span class="pre">(Imager)',</span> <span class="pre">'LI</span> <span class="pre">(Sounder)',</span> <span class="pre">'PW</span> <span class="pre">(Sounder)',</span> <span class="pre">'Surface</span> <span class="pre">Skin</span> <span class="pre">Temp</span> <span class="pre">(Sounder)',</span> <span class="pre">'CAPE',</span> <span class="pre">'Land-sea</span> <span class="pre">Temp',</span> <span class="pre">'WINDEX',</span> <span class="pre">'Dry</span> <span class="pre">Microburst</span> <span class="pre">Potential</span> <span class="pre">Index',</span> <span class="pre">'Microburst</span> <span class="pre">Day</span> <span class="pre">Potential</span> <span class="pre">Index',</span> <span class="pre">'Convective</span> <span class="pre">Inhibition',</span> <span class="pre">'Volcano</span> <span class="pre">Imagery',</span> <span class="pre">'Scatterometer',</span> <span class="pre">'Cloud</span> <span class="pre">Top',</span> <span class="pre">'Cloud</span> <span class="pre">Amount',</span> <span class="pre">'Rainfall</span> <span class="pre">Rate',</span> <span class="pre">'Surface</span> <span class="pre">Wind</span> <span class="pre">Speed',</span> <span class="pre">'Surface</span> <span class="pre">Wetness',</span> <span class="pre">'Ice</span> <span class="pre">Concentration',</span> <span class="pre">'Ice</span> <span class="pre">Type',</span> <span class="pre">'Ice</span> <span class="pre">Edge',</span> <span class="pre">'Cloud</span> <span class="pre">Water</span> <span class="pre">Content',</span> <span class="pre">'Surface</span> <span class="pre">Type',</span> <span class="pre">'Snow</span> <span class="pre">Indicator',</span> <span class="pre">'Snow/Water</span> <span class="pre">Content',</span> <span class="pre">'Volcano</span> <span class="pre">Imagery',</span> <span class="pre">'Reserved',</span> <span class="pre">'Sounder</span> <span class="pre">(14.71</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(14.37</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(14.06</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(13.64</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(13.37</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(12.66</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(12.02</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(11.03</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(9.71</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(7.43</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(7.02</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(6.51</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(4.57</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(4.52</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(4.45</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(4.13</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(3.98</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(3.74</span> <span class="pre">micron)',</span> <span class="pre">'Sounder</span> <span class="pre">(Visible)',</span> <span class="pre">'Percent</span> <span class="pre">Normal</span> <span class="pre">TPW']</span></em><a class="headerlink" href="#metpy.io.GiniFile.channels" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.crafts">
-<code class="sig-name descname">crafts</code><em class="property"> = ['Unknown', 'Unknown', 'Miscellaneous', 'JERS', 'ERS/QuikSCAT', 'POES/NPOESS', 'Composite', 'DMSP', 'GMS', 'METEOSAT', 'GOES-7', 'GOES-8', 'GOES-9', 'GOES-10', 'GOES-11', 'GOES-12', 'GOES-13', 'GOES-14', 'GOES-15', 'GOES-16']</em><a class="headerlink" href="#metpy.io.GiniFile.crafts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">crafts</span></code><em class="property"> <span class="pre">=</span> <span class="pre">['Unknown',</span> <span class="pre">'Unknown',</span> <span class="pre">'Miscellaneous',</span> <span class="pre">'JERS',</span> <span class="pre">'ERS/QuikSCAT',</span> <span class="pre">'POES/NPOESS',</span> <span class="pre">'Composite',</span> <span class="pre">'DMSP',</span> <span class="pre">'GMS',</span> <span class="pre">'METEOSAT',</span> <span class="pre">'GOES-7',</span> <span class="pre">'GOES-8',</span> <span class="pre">'GOES-9',</span> <span class="pre">'GOES-10',</span> <span class="pre">'GOES-11',</span> <span class="pre">'GOES-12',</span> <span class="pre">'GOES-13',</span> <span class="pre">'GOES-14',</span> <span class="pre">'GOES-15',</span> <span class="pre">'GOES-16']</span></em><a class="headerlink" href="#metpy.io.GiniFile.crafts" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.lc_ps_fmt">
-<code class="sig-name descname">lc_ps_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.GiniFile.lc_ps_fmt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">lc_ps_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.GiniFile.lc_ps_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.mercator_fmt">
-<code class="sig-name descname">mercator_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.GiniFile.mercator_fmt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">mercator_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.GiniFile.mercator_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.missing">
-<code class="sig-name descname">missing</code><em class="property"> = 255</em><a class="headerlink" href="#metpy.io.GiniFile.missing" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">missing</span></code><em class="property"> <span class="pre">=</span> <span class="pre">255</span></em><a class="headerlink" href="#metpy.io.GiniFile.missing" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.nav_fmt">
-<code class="sig-name descname">nav_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.GiniFile.nav_fmt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">nav_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.GiniFile.nav_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.prod_desc2_fmt">
-<code class="sig-name descname">prod_desc2_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.GiniFile.prod_desc2_fmt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">prod_desc2_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.GiniFile.prod_desc2_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.prod_desc_fmt">
-<code class="sig-name descname">prod_desc_fmt</code><em class="property"> = &lt;metpy.io._tools.NamedStruct object&gt;</em><a class="headerlink" href="#metpy.io.GiniFile.prod_desc_fmt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">prod_desc_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.GiniFile.prod_desc_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.sectors">
-<code class="sig-name descname">sectors</code><em class="property"> = ['NH Composite', 'East CONUS', 'West CONUS', 'Alaska Regional', 'Alaska National', 'Hawaii Regional', 'Hawaii National', 'Puerto Rico Regional', 'Puerto Rico National', 'Supernational', 'NH Composite', 'Central CONUS', 'East Floater', 'West Floater', 'Central Floater', 'Polar Floater']</em><a class="headerlink" href="#metpy.io.GiniFile.sectors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">sectors</span></code><em class="property"> <span class="pre">=</span> <span class="pre">['NH</span> <span class="pre">Composite',</span> <span class="pre">'East</span> <span class="pre">CONUS',</span> <span class="pre">'West</span> <span class="pre">CONUS',</span> <span class="pre">'Alaska</span> <span class="pre">Regional',</span> <span class="pre">'Alaska</span> <span class="pre">National',</span> <span class="pre">'Hawaii</span> <span class="pre">Regional',</span> <span class="pre">'Hawaii</span> <span class="pre">National',</span> <span class="pre">'Puerto</span> <span class="pre">Rico</span> <span class="pre">Regional',</span> <span class="pre">'Puerto</span> <span class="pre">Rico</span> <span class="pre">National',</span> <span class="pre">'Supernational',</span> <span class="pre">'NH</span> <span class="pre">Composite',</span> <span class="pre">'Central</span> <span class="pre">CONUS',</span> <span class="pre">'East</span> <span class="pre">Floater',</span> <span class="pre">'West</span> <span class="pre">Floater',</span> <span class="pre">'Central</span> <span class="pre">Floater',</span> <span class="pre">'Polar</span> <span class="pre">Floater']</span></em><a class="headerlink" href="#metpy.io.GiniFile.sectors" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metpy.io.GiniFile.wmo_finder">
-<code class="sig-name descname">wmo_finder</code><em class="property"> = re.compile('(T\\w{3}\\d{2})[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')</em><a class="headerlink" href="#metpy.io.GiniFile.wmo_finder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">wmo_finder</span></code><em class="property"> <span class="pre">=</span> <span class="pre">re.compile('(T\\w{3}\\d{2})[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')</span></em><a class="headerlink" href="#metpy.io.GiniFile.wmo_finder" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
 <dt id="metpy.io.GiniFile.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.GiniFile.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an instance of <a class="reference internal" href="#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -440,36 +427,36 @@ this will be read from directly.</p>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.close" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.get_attrs">
-<code class="sig-name descname">get_attrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_attrs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_attrs</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_attrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.GiniFile.get_attrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the global attributes.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.get_dimensions">
-<code class="sig-name descname">get_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_dimensions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_dimensions</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_dimensions" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.get_encoding">
-<code class="sig-name descname">get_encoding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_encoding" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_encoding</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.get_encoding" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.get_variables">
-<code class="sig-name descname">get_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.get_variables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_variables</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.get_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.GiniFile.get_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all variables in the file.</p>
-<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.16.3.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
+<p>This is used by <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.open_dataset</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metpy.io.GiniFile.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.load" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.GiniFile.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>This loads the variables and attributes simultaneously.
 A centralized loading function makes it easier to create
 data stores that do automatic encoding/decoding.</p>
@@ -522,7 +509,7 @@ are requested, so care should be taken to make sure its fast.</p>
     </div>
 
     
-  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -538,9 +525,9 @@ are requested, so care should be taken to make sure its fast.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

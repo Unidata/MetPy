@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>metpy.xarray &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -145,27 +140,15 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
     
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
+  </div>
+</nav>
+            </div>
+            
           
 
           
@@ -173,9 +156,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -183,6 +164,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -215,7 +199,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span>
+<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">CRS</span><span class="p">,</span> <span class="n">Proj</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">._vendor.xarray</span> <span class="kn">import</span> <span class="n">either_dict_or_kwargs</span><span class="p">,</span> <span class="n">expanded_indexer</span><span class="p">,</span> <span class="n">is_dict_like</span>
@@ -319,8 +303,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the units of this DataArray as a `pint.Unit`.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">units</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">units</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">parse_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">))</span>
 
@@ -635,8 +619,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_deltas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the time difference of the data in seconds (to microsecond precision).&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;timedelta64[us]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
-                <span class="o">/</span> <span class="mf">1e6</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">us_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;timedelta64[us]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">us_diffs</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MetPyDataArrayAccessor.find_axis_name"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.find_axis_name">[docs]</a>    <span class="k">def</span> <span class="nf">find_axis_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the name of the axis corresponding to the given identifier.</span>
@@ -938,18 +922,28 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">crs</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">(</span><span class="n">proj_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">crs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">crs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># This isn&#39;t a lat or lon coordinate itself, so determine if we need to fall back</span>
-            <span class="c1"># to creating a latitude_longitude CRS. We do so if there exists valid coordinates</span>
-            <span class="c1"># for latitude and longitude, even if they are not the dimension coordinates of</span>
-            <span class="c1"># the variable.</span>
-            <span class="k">def</span> <span class="nf">_has_coord</span><span class="p">(</span><span class="n">coord_type</span><span class="p">):</span>
-                <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">check_axis</span><span class="p">(</span><span class="n">coord_var</span><span class="p">,</span> <span class="n">coord_type</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">coord_var</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">_has_coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_has_coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">):</span>
-                <span class="n">crs</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found valid latitude/longitude coordinates, assuming &#39;</span>
-                            <span class="s1">&#39;latitude_longitude for projection grid_mapping variable&#39;</span><span class="p">)</span>
+            <span class="c1"># to creating a latitude_longitude CRS. We do so if there exists valid *at most</span>
+            <span class="c1"># 1D* coordinates for latitude and longitude (usually dimension coordinates, but</span>
+            <span class="c1"># that is not strictly required, for example, for DSG&#39;s). What is required is that</span>
+            <span class="c1"># x == latitude and y == latitude (so that all assumptions about grid coordinates</span>
+            <span class="c1"># and CRS line up).</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">latitude</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span>
+                    <span class="s1">&#39;latitude&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;y&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;longitude&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;x&#39;</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># This means that we don&#39;t even have sufficient coordinates, so skip</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">identical</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="n">longitude</span><span class="o">.</span><span class="n">identical</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                    <span class="n">crs</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found valid latitude/longitude coordinates, assuming &#39;</span>
+                                <span class="s1">&#39;latitude_longitude for projection grid_mapping variable&#39;</span><span class="p">)</span>
 
         <span class="c1"># Rebuild the coordinates of the dataarray, and return quantified DataArray</span>
         <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_coords</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span>
@@ -971,7 +965,7 @@
                         <span class="n">new_coord_var</span> <span class="o">=</span> <span class="n">coord_var</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
                             <span class="n">data</span><span class="o">=</span><span class="p">(</span>
                                 <span class="n">coord_var</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
-                                <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span>
+                                <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span class="p">)</span>
                             <span class="p">)</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span>
                         <span class="p">)</span>
                         <span class="n">new_coord_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;meter&#39;</span>
@@ -1546,9 +1540,17 @@
     <span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">lat_lon_grid_deltas</span>
 
     <span class="c1"># Determine behavior</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">crs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span>
+        <span class="ow">and</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="p">,</span> <span class="s1">&#39;crs&#39;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">crs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;latitude_longitude&#39;</span>
+        <span class="p">)</span>
+    <span class="p">):</span>
+        <span class="c1"># Use actual grid deltas by default with latitude_longitude or missing CRS</span>
         <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;actual&#39;</span>
     <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+        <span class="c1"># Otherwise, use grid deltas in projected grid space by default</span>
         <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;nominal&#39;</span>
     <span class="k">elif</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;actual&#39;</span><span class="p">,</span> <span class="s1">&#39;nominal&#39;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;kind&quot; argument must be specified as &quot;default&quot;, &quot;actual&quot;, or &#39;</span>
@@ -1564,11 +1566,17 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;y and x dimensions unable to be identified. Assuming [..., y, x] &#39;</span>
                           <span class="s1">&#39;dimension order.&#39;</span><span class="p">)</span>
             <span class="n">y_dim</span><span class="p">,</span> <span class="n">x_dim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># Get geod if it exists, otherwise fall back to PyProj default</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">geod</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">geod</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="n">from_cf</span><span class="p">({</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()</span>
         <span class="c1"># Obtain grid deltas as xarray Variables</span>
         <span class="p">(</span><span class="n">dx_var</span><span class="p">,</span> <span class="n">dx_units</span><span class="p">),</span> <span class="p">(</span><span class="n">dy_var</span><span class="p">,</span> <span class="n">dy_units</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="n">latitude</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">deltas</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span> <span class="n">deltas</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">deltas</span> <span class="ow">in</span> <span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">x_dim</span><span class="o">=</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">y_dim</span><span class="p">,</span>
-                                              <span class="n">geod</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">pyproj_crs</span><span class="o">.</span><span class="n">get_geod</span><span class="p">()))</span>
+                                              <span class="n">geod</span><span class="o">=</span><span class="n">geod</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Obtain y/x coordinate differences</span>
         <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
@@ -1578,10 +1586,12 @@
         <span class="n">dy_units</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">))</span>
 
     <span class="c1"># Broadcast to input and attach units</span>
-    <span class="n">dx</span> <span class="o">=</span> <span class="n">dx_var</span><span class="o">.</span><span class="n">set_dims</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">dx_var</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dx_var</span><span class="o">.</span><span class="n">dims</span> <span class="k">else</span> <span class="mi">1</span>
-                                        <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">])</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">dx_units</span>
-    <span class="n">dy</span> <span class="o">=</span> <span class="n">dy_var</span><span class="o">.</span><span class="n">set_dims</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">dy_var</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dy_var</span><span class="o">.</span><span class="n">dims</span> <span class="k">else</span> <span class="mi">1</span>
-                                        <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">])</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">dy_units</span>
+    <span class="n">dx_var</span> <span class="o">=</span> <span class="n">dx_var</span><span class="o">.</span><span class="n">set_dims</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">dx_var</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dx_var</span><span class="o">.</span><span class="n">dims</span> <span class="k">else</span> <span class="mi">1</span>
+                                            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">])</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">dx_var</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dx_units</span><span class="p">)</span>
+    <span class="n">dy_var</span> <span class="o">=</span> <span class="n">dy_var</span><span class="o">.</span><span class="n">set_dims</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">dy_var</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dy_var</span><span class="o">.</span><span class="n">dims</span> <span class="k">else</span> <span class="mi">1</span>
+                                            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">])</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">dy_var</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dy_units</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span></div>
 
@@ -1726,7 +1736,7 @@
     </div>
 
     
-  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -1742,9 +1752,9 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

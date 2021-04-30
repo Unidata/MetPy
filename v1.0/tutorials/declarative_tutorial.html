@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MetPy Declarative Syntax Tutorial &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -147,97 +142,78 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-          
             
-                <li class="">
-                    <a href="../userguide/installguide.html">Install Guide</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/installguide.html">
+   Install Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/startingguide.html">
+   Getting Started with MetPy
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="index.html">
+   Tutorials
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="unit_tutorial.html">
+     Working With Units
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="upperair_soundings.html">
+     Upper Air Sounding Tutorial
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="xarray_tutorial.html">
+     xarray with MetPy Tutorial
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     MetPy Declarative Syntax Tutorial
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/upgradeguide.html">
+   MetPy 1.0 Upgrade Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/gempak.html">
+   GEMPAK Comparison Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/SUPPORT.html">
+   Support
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/citing.html">
+   Citing MetPy
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../userguide/media.html">
+   Talks and Other Media
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="../userguide/startingguide.html">Getting Started with MetPy</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="index.html">Tutorials</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="unit_tutorial.html">Working With Units</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="upperair_soundings.html">Upper Air Sounding Tutorial</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="xarray_tutorial.html">xarray with MetPy Tutorial</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="">MetPy Declarative Syntax Tutorial</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/upgradeguide.html">MetPy 1.0 Upgrade Guide</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/gempak.html">GEMPAK Comparison Guide</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/SUPPORT.html">Support</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/citing.html">Citing MetPy</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../userguide/media.html">Talks and Other Media</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -248,69 +224,84 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#imports" class="nav-link">Imports</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#getting-data" class="nav-link">Getting Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#set-datetime" class="nav-link">Set Datetime</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#subsetting-data" class="nav-link">Subsetting Data</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#calculations" class="nav-link">Calculations</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#plotting" class="nav-link">Plotting</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#adding-wind-barbs" class="nav-link">Adding Wind Barbs</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#plot-surface-obs" class="nav-link">Plot Surface Obs</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#detailed-attribute-descriptions" class="nav-link">Detailed Attribute Descriptions</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#contourplot" class="nav-link">ContourPlot()</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#filledcontourplot" class="nav-link">FilledContourPlot()</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#panelcontainer" class="nav-link">PanelContainer()</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#mappanel" class="nav-link">MapPanel()</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#barbplot" class="nav-link">BarbPlot()</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#plotobs" class="nav-link">PlotObs()</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imports">
+   Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#getting-data">
+   Getting Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#set-datetime">
+   Set Datetime
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subsetting-data">
+   Subsetting Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculations">
+   Calculations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plotting">
+   Plotting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adding-wind-barbs">
+   Adding Wind Barbs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-surface-obs">
+   Plot Surface Obs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#detailed-attribute-descriptions">
+   Detailed Attribute Descriptions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contourplot">
+   ContourPlot()
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filledcontourplot">
+   FilledContourPlot()
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#panelcontainer">
+   PanelContainer()
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mappanel">
+   MapPanel()
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#barbplot">
+   BarbPlot()
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plotobs">
+   PlotObs()
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -318,6 +309,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -403,7 +397,7 @@ Data variables:
     u-component_of_wind_height_above_ground  (time, height_above_ground1, lat, lon) float32 ...
     Temperature_height_above_ground          (time, height_above_ground, lat, lon) float32 ...
     Geopotential_height_isobaric             (time, isobaric3, lat, lon) float32 ...
-    Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 1.002e+...
+    Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 ...
 </pre></div>
 </div>
 </div>
@@ -851,7 +845,7 @@ Acceptable colors are those available through Matplotlib:
 <p><code class="docutils literal notranslate"><span class="pre">reduce_points</span></code></p>
 <p>This attribute can be set to a real number to reduce the number of stations that are plotted.
 Default value is zero (e.g., no points are removed from the plot).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  18.662 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  17.837 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-declarative-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/900d76c7356d09e4ca20b90f94a0732e/declarative_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">declarative_tutorial.py</span></code></a></p>
@@ -882,7 +876,7 @@ Default value is zero (e.g., no points are removed from the plot).</p>
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -898,9 +892,9 @@ Default value is zero (e.g., no points are removed from the plot).</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

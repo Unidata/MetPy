@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>read_colortable &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -147,103 +142,83 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="metpy.constants.html">constants</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.units.html">
+   units
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.io.html">
+   metpy.io
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="metpy.plots.ctables.html">
+   ctables
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">
+     convert_gempak_table
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     read_colortable
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">
+     ColortableRegistry
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.plots.ctables.colortables.html">
+     colortables
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.xarray.html">
+   xarray
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="metpy.units.html">units</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.io.html">metpy.io</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.calc.html">calc</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.html">plots</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="metpy.plots.ctables.html">ctables</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="">read_colortable</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.plots.ctables.colortables.html">colortables</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.interpolate.html">interpolate</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.xarray.html">xarray</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../references.html">References</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -251,9 +226,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -261,6 +234,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -270,7 +246,7 @@
 <h1>read_colortable<a class="headerlink" href="#read-colortable" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="metpy.plots.ctables.read_colortable">
-<code class="sig-prename descclassname">metpy.plots.ctables.</code><code class="sig-name descname">read_colortable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fobj</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#read_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.read_colortable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">metpy.plots.ctables.</span></code><code class="sig-name descname"><span class="pre">read_colortable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#read_colortable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.ctables.read_colortable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read colortable information from a file.</p>
 <p>Reads a colortable, which consists of one color per line of the file, where
 a color can be one of: a tuple of 3 floats, a string with a HTML color name,
@@ -306,7 +282,7 @@ range of [0, 1].</p>
     </div>
 
     
-  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -322,9 +298,9 @@ range of [0, 1].</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

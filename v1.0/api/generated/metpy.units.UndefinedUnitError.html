@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UndefinedUnitError &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -147,119 +142,103 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="metpy.constants.html">constants</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="reference internal" href="metpy.units.html">
+   units
+  </a>
+  <ul class="current">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.check_units.html">
+     check_units
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.concatenate.html">
+     concatenate
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.masked_array.html">
+     masked_array
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">
+     pandas_dataframe_to_unit_arrays
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.signature.html">
+     signature
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.Parameter.html">
+     Parameter
+    </a>
+   </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.units.DimensionalityError.html">
+     DimensionalityError
+    </a>
+   </li>
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
+     UndefinedUnitError
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.io.html">
+   metpy.io
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.ctables.html">
+   ctables
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.xarray.html">
+   xarray
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-  
-                <li class="active">
-                    <a href="metpy.units.html">units</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="metpy.units.check_units.html">check_units</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.units.concatenate.html">concatenate</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.units.masked_array.html">masked_array</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.units.signature.html">signature</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.units.Parameter.html">Parameter</a>
-                        </li>
-                    
-                        <li class="">
-                            <a href="metpy.units.DimensionalityError.html">DimensionalityError</a>
-                        </li>
-                    
-                        <li class="active">
-                            <a href="">UndefinedUnitError</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.io.html">metpy.io</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.calc.html">calc</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.html">plots</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.ctables.html">ctables</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.interpolate.html">interpolate</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.xarray.html">xarray</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../references.html">References</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -267,9 +246,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -277,6 +254,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -286,7 +266,7 @@
 <h1>UndefinedUnitError<a class="headerlink" href="#undefineduniterror" title="Permalink to this headline">¶</a></h1>
 <dl class="py exception">
 <dt id="metpy.units.UndefinedUnitError">
-<em class="property">exception </em><code class="sig-prename descclassname">metpy.units.</code><code class="sig-name descname">UndefinedUnitError</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">unit_names</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pint/errors.html#UndefinedUnitError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.UndefinedUnitError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">metpy.units.</span></code><code class="sig-name descname"><span class="pre">UndefinedUnitError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">unit_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pint/errors.html#UndefinedUnitError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.UndefinedUnitError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when the units are not defined in the unit registry.</p>
 </dd></dl>
 
@@ -310,7 +290,7 @@
     </div>
 
     
-  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -326,9 +306,9 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simple Plotting &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -147,215 +142,171 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="../XArray_Projections.html">XArray Projection Handling</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="../XArray_Projections.html">
+   XArray Projection Handling
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../sigma_to_pressure_interpolation.html">
+   Sigma to Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../Advanced_Sounding.html">
+   Advanced Sounding
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../cross_section.html">
+   Cross Section Analysis
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../Four_Panel_Map.html">
+   Four Panel Map
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../isentropic_example.html">
+   Isentropic Analysis
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../meteogram_metpy.html">
+   Meteogram
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../calculations/Parse_Angles.html">
+   Parse angles
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../calculations/Dewpoint_and_Mixing_Ratio.html">
+   Dewpoint and Mixing Ratio
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../calculations/Angle_to_Direction.html">
+   Angle to Direction
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../calculations/Gradient.html">
+   Gradient
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../calculations/Smoothing.html">
+   Smoothing
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../formats/GINI_Water_Vapor.html">
+   GINI Water Vapor Imagery
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../formats/NEXRAD_Level_3_File.html">
+   NEXRAD Level 3 File
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../formats/NEXRAD_Level_2_File.html">
+   NEXRAD Level 2 File
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../gridding/Find_Natural_Neighbors_Verification.html">
+   Find Natural Neighbors Verification
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../gridding/Wind_SLP_Interpolation.html">
+   Wind and Sea Level Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../gridding/Point_Interpolation.html">
+   Point Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../gridding/Inverse_Distance_Verification.html">
+   Inverse Distance Verification: Cressman and Barnes
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../gridding/Natural_Neighbor_Verification.html">
+   Natural Neighbor Verification
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Simple Plotting
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="US_Counties.html">
+   US Counties
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Combined_plotting.html">
+   Combined Plotting
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="upperair_declarative.html">
+   Upper Air Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="surface_declarative.html">
+   Surface Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Skew-T_Layout.html">
+   Skew-T with Complex Layout
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Hodograph_Inset.html">
+   Hodograph Inset
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Simple_Sounding.html">
+   Simple Sounding
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Mesonet_Stationplot.html">
+   Mesonet Station Plot
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Station_Plot.html">
+   Station Plot
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Station_Plot_with_Layout.html">
+   Station Plot with Layout
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="../sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../Advanced_Sounding.html">Advanced Sounding</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../cross_section.html">Cross Section Analysis</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../Four_Panel_Map.html">Four Panel Map</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../isentropic_example.html">Isentropic Analysis</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../meteogram_metpy.html">Meteogram</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../calculations/Parse_Angles.html">Parse angles</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../calculations/Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../calculations/Angle_to_Direction.html">Angle to Direction</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../calculations/Gradient.html">Gradient</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../calculations/Smoothing.html">Smoothing</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../gridding/Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../gridding/Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../gridding/Point_Interpolation.html">Point Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../gridding/Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../gridding/Natural_Neighbor_Verification.html">Natural Neighbor Verification</a>
-                </li>
-            
-          
-            
-                <li class="active">
-                    <a href="">Simple Plotting</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="US_Counties.html">US Counties</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Combined_plotting.html">Combined Plotting</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="surface_declarative.html">Surface Analysis using Declarative Syntax</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Skew-T_Layout.html">Skew-T with Complex Layout</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Hodograph_Inset.html">Hodograph Inset</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Simple_Sounding.html">Simple Sounding</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Mesonet_Stationplot.html">Mesonet Station Plot</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Station_Plot.html">Station Plot</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Station_Plot_with_Layout.html">Station Plot with Layout</a>
-                </li>
-            
-          
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -363,9 +314,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -373,6 +322,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -416,7 +368,7 @@ to download the full example code</p>
 <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.386 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.572 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-simplified-image-plot-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/809005d7a1d6a933279bc1556eae1313/Simplified_Image_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simplified_Image_Plot.py</span></code></a></p>
@@ -446,7 +398,7 @@ to download the full example code</p>
     </div>
 
     
-  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -462,9 +414,9 @@ to download the full example code</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

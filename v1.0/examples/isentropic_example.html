@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Isentropic Analysis &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,26 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/doc_shared.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -147,215 +144,171 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="XArray_Projections.html">XArray Projection Handling</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="XArray_Projections.html">
+   XArray Projection Handling
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="sigma_to_pressure_interpolation.html">
+   Sigma to Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Advanced_Sounding.html">
+   Advanced Sounding
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="cross_section.html">
+   Cross Section Analysis
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="Four_Panel_Map.html">
+   Four Panel Map
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Isentropic Analysis
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="meteogram_metpy.html">
+   Meteogram
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Parse_Angles.html">
+   Parse angles
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Dewpoint_and_Mixing_Ratio.html">
+   Dewpoint and Mixing Ratio
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Angle_to_Direction.html">
+   Angle to Direction
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Gradient.html">
+   Gradient
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="calculations/Smoothing.html">
+   Smoothing
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="formats/GINI_Water_Vapor.html">
+   GINI Water Vapor Imagery
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="formats/NEXRAD_Level_3_File.html">
+   NEXRAD Level 3 File
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="formats/NEXRAD_Level_2_File.html">
+   NEXRAD Level 2 File
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Find_Natural_Neighbors_Verification.html">
+   Find Natural Neighbors Verification
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Wind_SLP_Interpolation.html">
+   Wind and Sea Level Pressure Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Point_Interpolation.html">
+   Point Interpolation
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Inverse_Distance_Verification.html">
+   Inverse Distance Verification: Cressman and Barnes
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="gridding/Natural_Neighbor_Verification.html">
+   Natural Neighbor Verification
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Simplified_Image_Plot.html">
+   Simple Plotting
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/US_Counties.html">
+   US Counties
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Combined_plotting.html">
+   Combined Plotting
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/upperair_declarative.html">
+   Upper Air Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/surface_declarative.html">
+   Surface Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Skew-T_Layout.html">
+   Skew-T with Complex Layout
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Hodograph_Inset.html">
+   Hodograph Inset
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Simple_Sounding.html">
+   Simple Sounding
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Mesonet_Stationplot.html">
+   Mesonet Station Plot
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Station_Plot.html">
+   Station Plot
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="plots/Station_Plot_with_Layout.html">
+   Station Plot with Layout
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Advanced_Sounding.html">Advanced Sounding</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="cross_section.html">Cross Section Analysis</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="Four_Panel_Map.html">Four Panel Map</a>
-                </li>
-            
-          
-            
-                <li class="active">
-                    <a href="">Isentropic Analysis</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="meteogram_metpy.html">Meteogram</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Parse_Angles.html">Parse angles</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Angle_to_Direction.html">Angle to Direction</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Gradient.html">Gradient</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="calculations/Smoothing.html">Smoothing</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Point_Interpolation.html">Point Interpolation</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="gridding/Natural_Neighbor_Verification.html">Natural Neighbor Verification</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Simplified_Image_Plot.html">Simple Plotting</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/US_Counties.html">US Counties</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Combined_plotting.html">Combined Plotting</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/upperair_declarative.html">Upper Air Analysis using Declarative Syntax</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/surface_declarative.html">Surface Analysis using Declarative Syntax</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Skew-T_Layout.html">Skew-T with Complex Layout</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Hodograph_Inset.html">Hodograph Inset</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Simple_Sounding.html">Simple Sounding</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Mesonet_Stationplot.html">Mesonet Station Plot</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Station_Plot.html">Station Plot</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="plots/Station_Plot_with_Layout.html">Station Plot with Layout</a>
-                </li>
-            
-          
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -363,9 +316,7 @@
               
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
     
-    </ul>
 </nav>
 
 
@@ -373,6 +324,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -442,7 +396,7 @@ logarithmicaly interpolated to isentropic space.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/repos/metpy/src/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.4/x64/lib/python3.9/site-packages/metpy/interpolate/one_dimension.py:147: UserWarning: Interpolation point out of data bounds encountered
   warnings.warn(&#39;Interpolation point out of data bounds encountered&#39;)
 </pre></div>
 </div>
@@ -817,7 +771,7 @@ Data variables:
     u_wind               (isentropic_level, y, x) float64 &lt;Quantity([[[-1.319...
     v_wind               (isentropic_level, y, x) float64 &lt;Quantity([[[ 0.064...
     Specific_humidity    (isentropic_level, y, x) float64 &lt;Quantity([[[0.0088...
-    Geopotential_height  (isentropic_level, y, x) float64 &lt;Quantity([[[1063.6...</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-3897083d-dd97-4be9-82c2-ed533bb02d82' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-3897083d-dd97-4be9-82c2-ed533bb02d82' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>isentropic_level</span>: 1</li><li><span class='xr-has-index'>x</span>: 292</li><li><span class='xr-has-index'>y</span>: 118</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-482f5289-9b12-4b5c-aa92-5c3c5676cdb6' class='xr-section-summary-in' type='checkbox'  checked><label for='section-482f5289-9b12-4b5c-aa92-5c3c5676cdb6' class='xr-section-summary' >Coordinates: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>isentropic_level</span></div><div class='xr-var-dims'>(isentropic_level)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>296.0</div><input id='attrs-752a94dc-10bb-4626-87f1-d867dc538ccc' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-752a94dc-10bb-4626-87f1-d867dc538ccc' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f1afca2d-ab77-4484-a183-7787a018dce3' class='xr-var-data-in' type='checkbox'><label for='data-f1afca2d-ab77-4484-a183-7787a018dce3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kelvin</dd><dt><span>positive :</span></dt><dd>up</dd></dl></div><div class='xr-var-data'><pre>array([296.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>time</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>1987-04-04T18:00:00</div><input id='attrs-a7b41839-56d7-4301-8fa5-eca0c901f84b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a7b41839-56d7-4301-8fa5-eca0c901f84b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-efe9aab3-7f38-49b4-9b40-b6e98f4c3f1f' class='xr-var-data-in' type='checkbox'><label for='data-efe9aab3-7f38-49b4-9b40-b6e98f4c3f1f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>forecast time</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Time</dd><dt><span>_metpy_axis :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array(&#x27;1987-04-04T18:00:00.000000000&#x27;, dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>y</span></div><div class='xr-var-dims'>(y)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.087e+03 -3.054e+03 ... 711.4</div><input id='attrs-aeb23733-9a76-44a7-8b2b-8039b6e258af' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-aeb23733-9a76-44a7-8b2b-8039b6e258af' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-743cd4cf-691e-427d-9a66-18fce7b45ff1' class='xr-var-data-in' type='checkbox'><label for='data-743cd4cf-691e-427d-9a66-18fce7b45ff1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>y coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_y_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoY</dd><dt><span>_metpy_axis :</span></dt><dd>y</dd></dl></div><div class='xr-var-data'><pre>array([-3.086806e+03, -3.054343e+03, -3.021880e+03, -2.989417e+03,
+    Geopotential_height  (isentropic_level, y, x) float64 &lt;Quantity([[[1063.6...</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-f619f6fe-144c-4464-8b6d-84153ff200f6' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-f619f6fe-144c-4464-8b6d-84153ff200f6' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>isentropic_level</span>: 1</li><li><span class='xr-has-index'>x</span>: 292</li><li><span class='xr-has-index'>y</span>: 118</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-e716c8e8-816d-4112-8d2d-811dc31d36f6' class='xr-section-summary-in' type='checkbox'  checked><label for='section-e716c8e8-816d-4112-8d2d-811dc31d36f6' class='xr-section-summary' >Coordinates: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>isentropic_level</span></div><div class='xr-var-dims'>(isentropic_level)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>296.0</div><input id='attrs-216a1eac-e38e-48e2-b39a-f14e9f91a2a7' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-216a1eac-e38e-48e2-b39a-f14e9f91a2a7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6fdd7616-41aa-4886-b282-4e5d09022acd' class='xr-var-data-in' type='checkbox'><label for='data-6fdd7616-41aa-4886-b282-4e5d09022acd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kelvin</dd><dt><span>positive :</span></dt><dd>up</dd></dl></div><div class='xr-var-data'><pre>array([296.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>time</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>1987-04-04T18:00:00</div><input id='attrs-0553d04f-036a-4d06-8544-56dbb159a2c3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-0553d04f-036a-4d06-8544-56dbb159a2c3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-39653478-3871-4866-8683-8192435f9da2' class='xr-var-data-in' type='checkbox'><label for='data-39653478-3871-4866-8683-8192435f9da2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>forecast time</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Time</dd><dt><span>_metpy_axis :</span></dt><dd>time</dd></dl></div><div class='xr-var-data'><pre>array(&#x27;1987-04-04T18:00:00.000000000&#x27;, dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>y</span></div><div class='xr-var-dims'>(y)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.087e+03 -3.054e+03 ... 711.4</div><input id='attrs-598c2592-26ee-4556-82fe-75c452f5d52a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-598c2592-26ee-4556-82fe-75c452f5d52a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1d4964b0-032b-4f20-86af-22138cac5b81' class='xr-var-data-in' type='checkbox'><label for='data-1d4964b0-032b-4f20-86af-22138cac5b81' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>y coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_y_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoY</dd><dt><span>_metpy_axis :</span></dt><dd>y</dd></dl></div><div class='xr-var-data'><pre>array([-3.086806e+03, -3.054343e+03, -3.021880e+03, -2.989417e+03,
        -2.956954e+03, -2.924491e+03, -2.892028e+03, -2.859565e+03,
        -2.827102e+03, -2.794639e+03, -2.762176e+03, -2.729713e+03,
        -2.697250e+03, -2.664787e+03, -2.632324e+03, -2.599861e+03,
@@ -846,8 +800,8 @@ Data variables:
         2.893464e+02,  3.218094e+02,  3.542724e+02,  3.867354e+02,
         4.191984e+02,  4.516614e+02,  4.841244e+02,  5.165874e+02,
         5.490504e+02,  5.815134e+02,  6.139764e+02,  6.464394e+02,
-        6.789024e+02,  7.113654e+02])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>x</span></div><div class='xr-var-dims'>(x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.977e+03 -3.945e+03 ... 5.47e+03</div><input id='attrs-1ac4ceb3-615e-4cb8-a86e-fcd38e962e7c' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1ac4ceb3-615e-4cb8-a86e-fcd38e962e7c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1fe8ad78-514e-4ff5-92a8-d8a27422565a' class='xr-var-data-in' type='checkbox'><label for='data-1fe8ad78-514e-4ff5-92a8-d8a27422565a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>x coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_x_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoX</dd><dt><span>_metpy_axis :</span></dt><dd>x</dd></dl></div><div class='xr-var-data'><pre>array([-3977.054864, -3944.591864, -3912.128864, ...,  5404.752136,
-        5437.215136,  5469.678136])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-140.0 -139.7 ... -42.28 -42.07</div><input id='attrs-e8438905-f3b4-44a1-9d1c-001f87502709' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-e8438905-f3b4-44a1-9d1c-001f87502709' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ef57494f-7b9c-40e2-ad98-bd81fd6262ce' class='xr-var-data-in' type='checkbox'><label for='data-ef57494f-7b9c-40e2-ad98-bd81fd6262ce' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>long_name :</span></dt><dd>longitude coordinate</dd><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lon</dd><dt><span>_metpy_axis :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><pre>array([[-139.97117095, -139.73522721, -139.49858484, ...,  -64.35749184,
+        6.789024e+02,  7.113654e+02])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>x</span></div><div class='xr-var-dims'>(x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.977e+03 -3.945e+03 ... 5.47e+03</div><input id='attrs-95872915-8d41-4954-be49-0d4d8c10b4aa' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-95872915-8d41-4954-be49-0d4d8c10b4aa' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-85602ee1-3a30-40e4-81f2-93504f54f639' class='xr-var-data-in' type='checkbox'><label for='data-85602ee1-3a30-40e4-81f2-93504f54f639' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>km</dd><dt><span>long_name :</span></dt><dd>x coordinate of projection</dd><dt><span>standard_name :</span></dt><dd>projection_x_coordinate</dd><dt><span>grid_spacing :</span></dt><dd>32.463 km</dd><dt><span>_CoordinateAxisType :</span></dt><dd>GeoX</dd><dt><span>_metpy_axis :</span></dt><dd>x</dd></dl></div><div class='xr-var-data'><pre>array([-3977.054864, -3944.591864, -3912.128864, ...,  5404.752136,
+        5437.215136,  5469.678136])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-140.0 -139.7 ... -42.28 -42.07</div><input id='attrs-4dc8fecf-0405-49fc-a8f7-59cb8d11b133' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-4dc8fecf-0405-49fc-a8f7-59cb8d11b133' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-25a1e7a1-c587-486c-a7c8-3476506f3455' class='xr-var-data-in' type='checkbox'><label for='data-25a1e7a1-c587-486c-a7c8-3476506f3455' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd><dt><span>long_name :</span></dt><dd>longitude coordinate</dd><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lon</dd><dt><span>_metpy_axis :</span></dt><dd>longitude</dd></dl></div><div class='xr-var-data'><pre>array([[-139.97117095, -139.73522721, -139.49858484, ...,  -64.35749184,
          -64.15372575,  -63.95067327],
        [-140.08267249, -139.84614797, -139.60891866, ...,  -64.2262598 ,
          -64.02216852,  -63.81879588],
@@ -859,7 +813,7 @@ Data variables:
        [-159.80950657, -159.50704632, -159.20250294, ...,  -42.76430663,
          -42.54286616,  -42.32294379],
        [-160.06757036, -159.76477488, -159.45987691, ...,  -42.50604802,
-         -42.28484357,  -42.06516454]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>16.07 16.18 16.28 ... 34.0 33.79</div><input id='attrs-6f9cd006-5fd3-4998-98e3-2dae8344d638' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6f9cd006-5fd3-4998-98e3-2dae8344d638' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-66c71636-37bc-46e0-bada-bd0b15fff544' class='xr-var-data-in' type='checkbox'><label for='data-66c71636-37bc-46e0-bada-bd0b15fff544' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>long_name :</span></dt><dd>latitude coordinate</dd><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lat</dd><dt><span>_metpy_axis :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><pre>array([[16.07179382, 16.17829321, 16.28417555, ..., 10.85897094,
+         -42.28484357,  -42.06516454]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>16.07 16.18 16.28 ... 34.0 33.79</div><input id='attrs-44be9e25-15e1-4281-a41b-ccd67919ff12' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-44be9e25-15e1-4281-a41b-ccd67919ff12' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-54d8f7bf-6b89-4b45-8cfc-813985397bc2' class='xr-var-data-in' type='checkbox'><label for='data-54d8f7bf-6b89-4b45-8cfc-813985397bc2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd><dt><span>long_name :</span></dt><dd>latitude coordinate</dd><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>_CoordinateAxisType :</span></dt><dd>Lat</dd><dt><span>_metpy_axis :</span></dt><dd>latitude</dd></dl></div><div class='xr-var-data'><pre>array([[16.07179382, 16.17829321, 16.28417555, ..., 10.85897094,
         10.73025246, 10.60116163],
        [16.29832737, 16.40537815, 16.51180952, ..., 11.05953224,
         10.93019697, 10.80048872],
@@ -871,7 +825,7 @@ Data variables:
        [42.94011162, 43.12785995, 43.31477863, ..., 34.03476205,
         33.82120554, 33.60730909],
        [43.16049685, 43.34908824, 43.53684968, ..., 34.21860642,
-        34.00424607, 33.78954748]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8e99acc5-6ffe-413d-a85b-9173a65b4079' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8e99acc5-6ffe-413d-a85b-9173a65b4079' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>pressure</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[900.34124661 900.62...</div><input id='attrs-aab94982-b84e-44f1-8d06-68c62cf1edfb' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-aab94982-b84e-44f1-8d06-68c62cf1edfb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-488db297-d3ae-4d2a-ab8e-d3e43bc0974f' class='xr-var-data-in' type='checkbox'><label for='data-488db297-d3ae-4d2a-ab8e-d3e43bc0974f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_pressure</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[900.3412466141666 900.6282002263883 902.6954128823945 ... nan nan nan]<br>  [898.7657927677703 899.3957330451849 901.1369631046779 ... nan nan nan]<br>  [893.4104553118616 894.6623958512805 896.9688329797301 ... nan nan nan]<br>  ...<br>  [582.3629328442938 575.0471009518434 567.6847140894419 ...<br>   802.8899086222864 803.7246159207159 804.6379705007769]<br>  [578.6096930396801 570.8991740469492 563.2216412523484 ...<br>   805.1512754403952 804.8142480497339 806.6181326510635]<br>  [574.5889551269233 566.5030728802834 558.5810569436891 ...<br>   806.337127284374 805.6222086748181 802.7520376016056]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>hectopascal</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>temperature</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[287.25340245 287.27...</div><input id='attrs-550e7ebe-6ad3-42e6-9c0c-96ef416553d5' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-550e7ebe-6ad3-42e6-9c0c-96ef416553d5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1bfce408-6194-4a20-b4c7-597dc5abfd75' class='xr-var-data-in' type='checkbox'><label for='data-1bfce408-6194-4a20-b4c7-597dc5abfd75' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_temperature</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[287.25340245256615 287.2795573040488 287.4678010688309 ... nan nan<br>   nan]<br>  [287.10969897713835 287.16717993275586 287.32591469161804 ... nan nan<br>   nan]<br>  [286.61986771514216 286.73456514566794 286.94557123352325 ... nan nan<br>   nan]<br>  ...<br>  [253.63209195921524 252.717632787544 251.78892602876513 ...<br>   278.003694857879 278.0862415261764 278.1764957251152]<br>  [253.16397872663083 252.19545647830967 251.22174909805472 ...<br>   278.2271864365298 278.19390637133625 278.37191674895575]<br>  [252.66008992959777 251.63907141231874 250.628598944255 ...<br>   278.34420537550375 278.27367248968466 277.9900544878668]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>kelvin</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[-1.31929409e+01 -1....</div><input id='attrs-da634c64-27e7-47dc-89c8-6900d5301f74' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-da634c64-27e7-47dc-89c8-6900d5301f74' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-292d4c82-c3a6-4552-9376-375b72c5e788' class='xr-var-data-in' type='checkbox'><label for='data-292d4c82-c3a6-4552-9376-375b72c5e788' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>u_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>u_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>UGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>33</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  33]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[-13.192940863873579 -13.65521105416572 -13.558986233473753 ... nan<br>   nan nan]<br>  [-13.154258338549946 -12.98898740158556 -13.336929044329297 ... nan<br>   nan nan]<br>  [-12.389387286673664 -12.847664967104013 -12.39843211370755 ... nan<br>   nan nan]<br>  ...<br>  [16.320100145853562 16.248921495708423 16.27194989717565 ...<br>   0.43525579995775154 0.4346660048174416 0.7816840383266616]<br>  [15.922591200947153 15.982942665930192 16.393562189156018 ...<br>   -0.32284152376445374 -0.008841481805421963 -0.713418414296644]<br>  [15.44181947114877 16.037097609603688 16.108870219801382 ...<br>   -1.6896393580322255 -1.4068366627204874 -0.6618929663249936]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[ 0.06423312  0.0747...</div><input id='attrs-a5c9d2f6-dfc2-4a2d-85d7-3e6f1404b47f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a5c9d2f6-dfc2-4a2d-85d7-3e6f1404b47f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7fbf171c-b0c5-4721-9baf-f64acc7d0786' class='xr-var-data-in' type='checkbox'><label for='data-7fbf171c-b0c5-4721-9baf-f64acc7d0786' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>v_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>v_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>VGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>34</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  34]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.06423312212716725 0.07479514517840302 -0.16838919556261756 ... nan<br>   nan nan]<br>  [1.1180292752741479 2.250400198749113 1.09121576156247 ... nan nan nan]<br>  [2.86035077803406 1.8788880201288263 2.9904647623598932 ... nan nan<br>   nan]<br>  ...<br>  [9.61300257672279 9.179177276496405 8.184948214882459 ...<br>   -3.193627618337275 -3.2024544913787394 -2.7355462054862016]<br>  [9.729327578400945 8.739680329084148 8.594322262130628 ...<br>   -2.9011261628292413 -2.4743690966545935 -1.4870536737766273]<br>  [9.750396540416503 9.148816761411762 8.764094179929574 ...<br>   -1.6580673585775016 -1.2225487839300855 -1.4803113138672654]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Specific_humidity</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[0.00884235 0.008867...</div><input id='attrs-9f8c4043-a928-4d46-928e-a1f8630a6825' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-9f8c4043-a928-4d46-928e-a1f8630a6825' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-28813cc0-764c-4f20-a7b7-b3e4dc77722f' class='xr-var-data-in' type='checkbox'><label for='data-28813cc0-764c-4f20-a7b7-b3e4dc77722f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kg/kg</dd><dt><span>long_name :</span></dt><dd>Specific_humidity @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Specific_humidity</dd><dt><span>GRIB_param_short_name :</span></dt><dd>SPFH</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>51</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  51]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.008842348434263451 0.008867832268411289 0.008968565810944646 ...<br>   nan nan nan]<br>  [0.008817476631944828 0.008827154165882183 0.008907068600540524 ...<br>   nan nan nan]<br>  [0.008702820998113198 0.008732749531454769 0.00879103717829932 ... nan<br>   nan nan]<br>  ...<br>  [0.0011029793308478734 0.001015732765712061 0.0009286300454721744 ...<br>   0.00512211463389555 0.005146296653073053 0.005172386155577593]<br>  [0.0010581905576279396 0.0009681548405628524 0.0008815840993866111 ...<br>   0.005132649195315607 0.005147182989988019 0.005189398218805244]<br>  [0.0010114271531914936 0.0009211118186668137 0.0008354252304436883 ...<br>   0.005119733826822016 0.0051194957281872145 0.005091090654842702]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>dimensionless</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Geopotential_height</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[1063.66065133 1061....</div><input id='attrs-99187708-6a1f-4301-a448-a3ff54c33074' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-99187708-6a1f-4301-a448-a3ff54c33074' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0c49b82c-f4b4-4dbd-9006-7fd8cb1558f0' class='xr-var-data-in' type='checkbox'><label for='data-0c49b82c-f4b4-4dbd-9006-7fd8cb1558f0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>gpm</dd><dt><span>long_name :</span></dt><dd>Geopotential_height @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Geopotential_height</dd><dt><span>GRIB_param_short_name :</span></dt><dd>HGT</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>7</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131   7]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[1063.6606513260513 1061.4421473443042 1041.4938116153148 ... nan nan<br>   nan]<br>  [1079.478028125831 1073.556038742922 1057.65625580821 ... nan nan nan]<br>  [1130.3143074681877 1119.0241948332116 1097.3894374693677 ... nan nan<br>   nan]<br>  ...<br>  [4295.995558709708 4389.615879082378 4484.595154991587 ...<br>   1937.4693639478376 1928.4660956108726 1918.677476615039]<br>  [4337.046065967439 4436.491575694289 4536.385003616522 ...<br>   1914.4659073478065 1916.8617994669883 1898.00906942551]<br>  [4381.873356400557 4486.902635937249 4590.036687709444 ...<br>   1902.9080146834517 1909.1451375862387 1937.4070179509758]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter</td></tr></tbody></table></div></li></ul></div></li><li class='xr-section-item'><input id='section-e023e163-868b-40fe-8dcc-0f9a5d9d007a' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-e023e163-868b-40fe-8dcc-0f9a5d9d007a' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
+        34.00424607, 33.78954748]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-fbf69ec3-1d6e-42cc-8c74-bec72d787ae9' class='xr-section-summary-in' type='checkbox'  checked><label for='section-fbf69ec3-1d6e-42cc-8c74-bec72d787ae9' class='xr-section-summary' >Data variables: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>pressure</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[900.34124661 900.62...</div><input id='attrs-38e83857-a13e-4ef2-8a1a-5fc225ac2c56' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-38e83857-a13e-4ef2-8a1a-5fc225ac2c56' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-539ee174-5b1d-462e-be3b-5012ebb287eb' class='xr-var-data-in' type='checkbox'><label for='data-539ee174-5b1d-462e-be3b-5012ebb287eb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_pressure</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[900.3412466141666 900.6282002263883 902.6954128823945 ... nan nan nan]<br>  [898.7657927677703 899.3957330451849 901.1369631046779 ... nan nan nan]<br>  [893.4104553118616 894.6623958512805 896.9688329797301 ... nan nan nan]<br>  ...<br>  [582.3629328442938 575.0471009518434 567.6847140894419 ...<br>   802.8899086222864 803.7246159207159 804.6379705007769]<br>  [578.6096930396801 570.8991740469492 563.2216412523484 ...<br>   805.1512754403952 804.8142480497339 806.6181326510635]<br>  [574.5889551269233 566.5030728802834 558.5810569436891 ...<br>   806.337127284374 805.6222086748181 802.7520376016056]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>hectopascal</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>temperature</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[287.25340245 287.27...</div><input id='attrs-0ca87ebc-669a-46dd-b074-f28f2024a094' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-0ca87ebc-669a-46dd-b074-f28f2024a094' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-653db537-d50b-45bc-b8c2-01482485c450' class='xr-var-data-in' type='checkbox'><label for='data-653db537-d50b-45bc-b8c2-01482485c450' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>air_temperature</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[287.25340245256615 287.2795573040488 287.4678010688309 ... nan nan<br>   nan]<br>  [287.10969897713835 287.16717993275586 287.32591469161804 ... nan nan<br>   nan]<br>  [286.61986771514216 286.73456514566794 286.94557123352325 ... nan nan<br>   nan]<br>  ...<br>  [253.63209195921524 252.717632787544 251.78892602876513 ...<br>   278.003694857879 278.0862415261764 278.1764957251152]<br>  [253.16397872663083 252.19545647830967 251.22174909805472 ...<br>   278.2271864365298 278.19390637133625 278.37191674895575]<br>  [252.66008992959777 251.63907141231874 250.628598944255 ...<br>   278.34420537550375 278.27367248968466 277.9900544878668]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>kelvin</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>u_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[-1.31929409e+01 -1....</div><input id='attrs-134dd098-c93f-40d9-933a-01045ae0e32c' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-134dd098-c93f-40d9-933a-01045ae0e32c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3b554c22-1fce-4062-93d7-b2dfdd568b2a' class='xr-var-data-in' type='checkbox'><label for='data-3b554c22-1fce-4062-93d7-b2dfdd568b2a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>u_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>u_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>UGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>33</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  33]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[-13.192940863873579 -13.65521105416572 -13.558986233473753 ... nan<br>   nan nan]<br>  [-13.154258338549946 -12.98898740158556 -13.336929044329297 ... nan<br>   nan nan]<br>  [-12.389387286673664 -12.847664967104013 -12.39843211370755 ... nan<br>   nan nan]<br>  ...<br>  [16.320100145853562 16.248921495708423 16.27194989717565 ...<br>   0.43525579995775154 0.4346660048174416 0.7816840383266616]<br>  [15.922591200947153 15.982942665930192 16.393562189156018 ...<br>   -0.32284152376445374 -0.008841481805421963 -0.713418414296644]<br>  [15.44181947114877 16.037097609603688 16.108870219801382 ...<br>   -1.6896393580322255 -1.4068366627204874 -0.6618929663249936]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>v_wind</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[ 0.06423312  0.0747...</div><input id='attrs-6b18366a-36d4-46db-8293-f595cf2c1249' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6b18366a-36d4-46db-8293-f595cf2c1249' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-13301d27-b151-418b-ac93-074b1619c54e' class='xr-var-data-in' type='checkbox'><label for='data-13301d27-b151-418b-ac93-074b1619c54e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>m/s</dd><dt><span>long_name :</span></dt><dd>v_wind @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>v_wind</dd><dt><span>GRIB_param_short_name :</span></dt><dd>VGRD</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>34</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  34]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.06423312212716725 0.07479514517840302 -0.16838919556261756 ... nan<br>   nan nan]<br>  [1.1180292752741479 2.250400198749113 1.09121576156247 ... nan nan nan]<br>  [2.86035077803406 1.8788880201288263 2.9904647623598932 ... nan nan<br>   nan]<br>  ...<br>  [9.61300257672279 9.179177276496405 8.184948214882459 ...<br>   -3.193627618337275 -3.2024544913787394 -2.7355462054862016]<br>  [9.729327578400945 8.739680329084148 8.594322262130628 ...<br>   -2.9011261628292413 -2.4743690966545935 -1.4870536737766273]<br>  [9.750396540416503 9.148816761411762 8.764094179929574 ...<br>   -1.6580673585775016 -1.2225487839300855 -1.4803113138672654]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter/second</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Specific_humidity</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[0.00884235 0.008867...</div><input id='attrs-ce95209a-e4f9-468f-abe1-88dd3774da34' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-ce95209a-e4f9-468f-abe1-88dd3774da34' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7371c852-09c1-4c60-9f9c-b6f7556c9b41' class='xr-var-data-in' type='checkbox'><label for='data-7371c852-09c1-4c60-9f9c-b6f7556c9b41' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>kg/kg</dd><dt><span>long_name :</span></dt><dd>Specific_humidity @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Specific_humidity</dd><dt><span>GRIB_param_short_name :</span></dt><dd>SPFH</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>51</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131  51]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[0.008842348434263451 0.008867832268411289 0.008968565810944646 ...<br>   nan nan nan]<br>  [0.008817476631944828 0.008827154165882183 0.008907068600540524 ...<br>   nan nan nan]<br>  [0.008702820998113198 0.008732749531454769 0.00879103717829932 ... nan<br>   nan nan]<br>  ...<br>  [0.0011029793308478734 0.001015732765712061 0.0009286300454721744 ...<br>   0.00512211463389555 0.005146296653073053 0.005172386155577593]<br>  [0.0010581905576279396 0.0009681548405628524 0.0008815840993866111 ...<br>   0.005132649195315607 0.005147182989988019 0.005189398218805244]<br>  [0.0010114271531914936 0.0009211118186668137 0.0008354252304436883 ...<br>   0.005119733826822016 0.0051194957281872145 0.005091090654842702]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>dimensionless</td></tr></tbody></table></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Geopotential_height</span></div><div class='xr-var-dims'>(isentropic_level, y, x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>&lt;Quantity([[[1063.66065133 1061....</div><input id='attrs-b2d58732-3975-40e5-8310-9e87993e174d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b2d58732-3975-40e5-8310-9e87993e174d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fdaa53b1-7268-40a4-aa3c-79fd43d3d79e' class='xr-var-data-in' type='checkbox'><label for='data-fdaa53b1-7268-40a4-aa3c-79fd43d3d79e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>gpm</dd><dt><span>long_name :</span></dt><dd>Geopotential_height @ isobaric</dd><dt><span>grid_mapping :</span></dt><dd>Lambert_Conformal</dd><dt><span>GRIB_param_name :</span></dt><dd>Geopotential_height</dd><dt><span>GRIB_param_short_name :</span></dt><dd>HGT</dd><dt><span>GRIB_center_id :</span></dt><dd>7</dd><dt><span>GRIB_table_id :</span></dt><dd>131</dd><dt><span>GRIB_param_number :</span></dt><dd>7</dd><dt><span>GRIB_param_id :</span></dt><dd>[  1   7 131   7]</dd><dt><span>GRIB_product_definition_type :</span></dt><dd>Initialized analysis product</dd><dt><span>GRIB_level_type :</span></dt><dd>100</dd><dt><span>GRIB_VectorComponentFlag :</span></dt><dd>gridRelative</dd></dl></div><div class='xr-var-data'><table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[[[1063.6606513260513 1061.4421473443042 1041.4938116153148 ... nan nan<br>   nan]<br>  [1079.478028125831 1073.556038742922 1057.65625580821 ... nan nan nan]<br>  [1130.3143074681877 1119.0241948332116 1097.3894374693677 ... nan nan<br>   nan]<br>  ...<br>  [4295.995558709708 4389.615879082378 4484.595154991587 ...<br>   1937.4693639478376 1928.4660956108726 1918.677476615039]<br>  [4337.046065967439 4436.491575694289 4536.385003616522 ...<br>   1914.4659073478065 1916.8617994669883 1898.00906942551]<br>  [4381.873356400557 4486.902635937249 4590.036687709444 ...<br>   1902.9080146834517 1909.1451375862387 1937.4070179509758]]]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>meter</td></tr></tbody></table></div></li></ul></div></li><li class='xr-section-item'><input id='section-5c449c8b-dbf2-4958-9f87-edad659b298a' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-5c449c8b-dbf2-4958-9f87-edad659b298a' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div>
 </div>
 <br />
 <br /><p>Note that the units on our wind variables are not ideal for plotting. Instead, let us
@@ -901,39 +855,39 @@ have to be calculated after the interpolation to isentropic space.</p>
 <span class="c1"># Choose a level to plot, in this case 296 K (our sole level in this example)</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a> <span class="o">=</span> <span class="mi">0</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
-<a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.add_subplot" title="matplotlib.figure.Figure.add_subplot" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="matplotlib.figure.Figure.add_subplot" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bounds</span></a><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c1"># Plot the surface</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clevisent</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
-<span class="n">cs</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">),</span>
+<span class="n">cs</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">),</span>
                 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clevisent</span></a><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span>
                 <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">cs</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a href="https://matplotlib.org/stable/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">cs</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
           <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Plot RH</span>
-<span class="n">cf</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;Relative_humidity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">),</span>
-                 <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.LinearSegmentedColormap.html#matplotlib.colors.LinearSegmentedColormap" title="matplotlib.colors.LinearSegmentedColormap" class="sphx-glr-backref-module-matplotlib-colors sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span></a><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cb</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.colorbar" title="matplotlib.figure.Figure.colorbar" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="n">cf</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;Relative_humidity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">),</span>
+                 <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.LinearSegmentedColormap.html#matplotlib.colors.LinearSegmentedColormap" title="matplotlib.colors.LinearSegmentedColormap" class="sphx-glr-backref-module-matplotlib-colors sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span></a><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<a href="https://matplotlib.org/stable/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cb</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.colorbar" title="matplotlib.figure.Figure.colorbar" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
                   <span class="n">extendrect</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase.set_label" title="matplotlib.colorbar.ColorbarBase.set_label" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-method"><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span></a><span class="p">(</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase.set_label" title="matplotlib.colorbar.ColorbarBase.set_label" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-method"><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span></a><span class="p">(</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot wind barbs</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="matplotlib.axes.Axes.barbs" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lon</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lat</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="matplotlib.axes.Axes.barbs" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lon</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lat</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
          <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
          <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
 <span class="c1"># Make some titles</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">isentlevs</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">]</span><span class="si">:</span><span class="s1">~.0f</span><span class="si">}</span><span class="s1"> Isentropic Pressure (hPa), Wind (kt), &#39;</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">isentlevs</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">]</span><span class="si">:</span><span class="s1">~.0f</span><span class="si">}</span><span class="s1"> Isentropic Pressure (hPa), Wind (kt), &#39;</span>
              <span class="s1">&#39;Relative Humidity (percent)&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
 <a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[ms]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">),</span>
               <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="296 K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (percent)" class="sphx-glr-single-img" src="../_images/sphx_glr_isentropic_example_001.png" />
@@ -950,49 +904,49 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
 <span class="c1"># Choose a level to plot, in this case 296 K</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a> <span class="o">=</span> <span class="mi">0</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
-<a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="matplotlib.pyplot.subplot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">(</span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="matplotlib.pyplot.subplot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bounds</span></a><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c1"># Plot the surface</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clevmsf</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">cs</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">msf</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clevmsf</span></a><span class="p">,</span>
+<span class="n">cs</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour" title="matplotlib.axes.Axes.contour" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">msf</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clevmsf</span></a><span class="p">,</span>
                 <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<a href="https://matplotlib.org/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">cs</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a href="https://matplotlib.org/stable/api/contour_api.html#matplotlib.contour.ContourLabeler.clabel" title="matplotlib.contour.ContourLabeler.clabel" class="sphx-glr-backref-module-matplotlib-contour sphx-glr-backref-type-py-method"><span class="n">cs</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
           <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Plot RH</span>
-<span class="n">cf</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;Relative_humidity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">),</span>
-                 <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.LinearSegmentedColormap.html#matplotlib.colors.LinearSegmentedColormap" title="matplotlib.colors.LinearSegmentedColormap" class="sphx-glr-backref-module-matplotlib-colors sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span></a><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cb</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.colorbar" title="matplotlib.figure.Figure.colorbar" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="n">cf</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.contourf.html#matplotlib.axes.Axes.contourf" title="matplotlib.axes.Axes.contourf" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lon</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lat</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;Relative_humidity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">),</span>
+                 <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.LinearSegmentedColormap.html#matplotlib.colors.LinearSegmentedColormap" title="matplotlib.colors.LinearSegmentedColormap" class="sphx-glr-backref-module-matplotlib-colors sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span></a><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<a href="https://matplotlib.org/stable/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cb</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.colorbar" title="matplotlib.figure.Figure.colorbar" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
                   <span class="n">extendrect</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase.set_label" title="matplotlib.colorbar.ColorbarBase.set_label" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-method"><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span></a><span class="p">(</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase.set_label" title="matplotlib.colorbar.ColorbarBase.set_label" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-method"><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span></a><span class="p">(</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot wind barbs</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="matplotlib.axes.Axes.barbs" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lon</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lat</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="matplotlib.axes.Axes.barbs" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lon</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">lat</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
          <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">isentropic_level</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
          <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
 <span class="c1"># Make some titles</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">isentlevs</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">]</span><span class="si">:</span><span class="s1">~.0f</span><span class="si">}</span><span class="s1"> Montgomery Streamfunction &#39;</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">isentlevs</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">level</span></a><span class="p">]</span><span class="si">:</span><span class="s1">~.0f</span><span class="si">}</span><span class="s1"> Montgomery Streamfunction &#39;</span>
              <span class="sa">r</span><span class="s1">&#39;($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
 <a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">isent_data</span></a><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[ms]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">),</span>
               <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="s1">&#39;Valid: &#39;</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="296 K Montgomery Streamfunction ($10^{-2} m^2 s^{-2}$), Wind (kt), Relative Humidity (percent)" class="sphx-glr-single-img" src="../_images/sphx_glr_isentropic_example_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/rmay/miniconda3/envs/py39/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1478: UserWarning: No contour levels were found within the data range.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.4/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1478: UserWarning: No contour levels were found within the data range.
   result = matplotlib.axes.Axes.contour(self, *args, **kwargs)
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.009 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.091 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-isentropic-example-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9dcdf4bbc3c0720b95e846f48b609c2e/isentropic_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">isentropic_example.py</span></code></a></p>
@@ -1022,7 +976,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -1038,9 +992,9 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>

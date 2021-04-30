@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contributors Guide &#8212; MetPy 1.0</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,30 +24,24 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/doc_shared.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -147,47 +142,31 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-        
-        
-          
             
-                <li class="active">
-                    <a href="">Contributors Guide</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Contributors Guide
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="roadmap.html">
+   MetPy Roadmap
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="infrastructureguide.html">
+   Infrastructure Guide
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="roadmap.html">MetPy Roadmap</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="infrastructureguide.html">Infrastructure Guide</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -198,93 +177,113 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#introduction" class="nav-link">Introduction</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#what-can-i-do" class="nav-link">What Can I Do?</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#ground-rules" class="nav-link">Ground Rules</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#reporting-a-bug" class="nav-link">Reporting a bug</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#setting-up-your-development-environment" class="nav-link">Setting up your development environment</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#pull-requests" class="nav-link">Pull Requests</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#source-code" class="nav-link">Source Code</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#documentation" class="nav-link">Documentation</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#tests" class="nav-link">Tests</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#running-tests" class="nav-link">Running Tests</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#writing-tests" class="nav-link">Writing Tests</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#image-tests" class="nav-link">Image tests</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#cached-data-files" class="nav-link">Cached Data Files</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#code-style" class="nav-link">Code Style</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#what-happens-after-the-pull-request" class="nav-link">What happens after the pull request</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#automated-testing" class="nav-link">Automated Testing</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#code-review" class="nav-link">Code Review</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#merging" class="nav-link">Merging</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#more-questions" class="nav-link">More Questions?</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#further-reading" class="nav-link">Further Reading</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-can-i-do">
+   What Can I Do?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ground-rules">
+   Ground Rules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reporting-a-bug">
+   Reporting a bug
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-your-development-environment">
+   Setting up your development environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pull-requests">
+   Pull Requests
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#source-code">
+   Source Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documentation">
+   Documentation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tests">
+   Tests
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-tests">
+     Running Tests
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#writing-tests">
+     Writing Tests
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#image-tests">
+     Image tests
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cached-data-files">
+   Cached Data Files
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-style">
+   Code Style
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-happens-after-the-pull-request">
+   What happens after the pull request
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#automated-testing">
+     Automated Testing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-review">
+     Code Review
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#merging">
+     Merging
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-questions">
+   More Questions?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-reading">
+   Further Reading
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -292,6 +291,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -335,7 +337,7 @@ things up, test it, etc.</p></li>
 <h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this headline">¶</a></h2>
 <p>The goal is to maintain a diverse community that’s pleasant for everyone. Please
 be considerate and respectful of others by following our
-<a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
+<a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
 <p>Other items:</p>
 <ul class="simple">
 <li><p>Each pull request should consist of a logical collection of changes. You can
@@ -401,16 +403,16 @@ terminal or your system. If you want to get back to the root environment, run
 <div class="section" id="pull-requests">
 <h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
 <p>The changes to the MetPy source (and documentation) should be made via GitHub pull requests
-against <code class="docutils literal notranslate"><span class="pre">master</span></code>, even for those with administration rights. While it’s tempting to
-make changes directly to <code class="docutils literal notranslate"><span class="pre">master</span></code> and push them up, it is better to make a pull request so
+against <code class="docutils literal notranslate"><span class="pre">main</span></code>, even for those with administration rights. While it’s tempting to
+make changes directly to <code class="docutils literal notranslate"><span class="pre">main</span></code> and push them up, it is better to make a pull request so
 that others can give feedback. If nothing else, this gives a chance for the automated tests to
-run on the PR. This can eliminate “brown paper bag” moments with buggy commits on the master
+run on the PR. This can eliminate “brown paper bag” moments with buggy commits on the main
 branch.</p>
 <p>During the Pull Request process, before the final merge, it’s a good idea to rebase the branch
 and squash together smaller commits. It’s not necessary to flatten the entire branch, but it
 can be nice to eliminate small fixes and get the merge down to logically arranged commits. This
 can also be used to hide sins from history–this is the only chance, since once it hits
-<code class="docutils literal notranslate"><span class="pre">master</span></code>, it’s there forever!</p>
+<code class="docutils literal notranslate"><span class="pre">main</span></code>, it’s there forever!</p>
 <p><strong>Working on your first Pull Request?</strong> You can learn how from this <em>free</em> video series
 <a class="reference external" href="https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github">How to Contribute to an Open Source Project on GitHub</a>,
 Aaron Meurer’s <a class="reference external" href="https://www.asmeurer.com/git-workflow/">tutorial on the git workflow</a>, or the
@@ -421,7 +423,7 @@ on how to write good commit messages.</p>
 For the Pull Request to be accepted, you need to agree to the
 MetPy Contributor License Agreement (CLA). This will be handled automatically
 upon submission of a Pull Request.
-See <a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/CLA.md">here</a> for more
+See <a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/CLA.md">here</a> for more
 explanation and rationale behind MetPy’s CLA.</p>
 </div>
 <div class="section" id="source-code">
@@ -629,7 +631,7 @@ importance of writing tested and maintainable software.</p>
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -645,9 +647,9 @@ importance of writing tested and maintainable software.</p>
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2020-2020, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Dec 22, 2020 at 00:57:16.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.0.<br/>
+          &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
+        Last updated on Apr 28, 2021 at 23:12:45.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
 </footer>
