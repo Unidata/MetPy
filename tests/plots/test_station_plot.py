@@ -459,7 +459,6 @@ def test_stationplot_unit_conversion():
 
 def test_scalar_unit_conversion_exception():
     """Test that errors are raise if unit conversion is requested on un-united data."""
-    T = 50
     x_pos = np.array([0])
     y_pos = np.array([0])
 
@@ -467,4 +466,4 @@ def test_scalar_unit_conversion_exception():
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
     with pytest.raises(ValueError):
-        stnplot.plot_parameter('C', T, plot_units='degC')
+        stnplot.plot_parameter('C', 50, plot_units='degC')

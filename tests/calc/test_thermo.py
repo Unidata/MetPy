@@ -1830,7 +1830,7 @@ def test_cape_cin_value_error():
     assert_almost_equal(cin, expected_cin, 3)
 
 
-def test_lcl_grid_surface_LCLs():
+def test_lcl_grid_surface_lcls():
     """Test surface grid where some values have LCLs at the surface."""
     pressure = np.array([1000, 990, 1010]) * units.hPa
     temperature = np.array([15, 14, 13]) * units.degC
@@ -1863,8 +1863,8 @@ def test_lifted_index():
                          -34.1, -37.3, -32.3, -34.1, -37.3, -41.1, -37.7, -58.1,
                          -57.5]) * units.degC
     parcel_prof = parcel_profile(pressure, temperature[0], dewpoint[0])
-    LI = lifted_index(pressure, temperature, parcel_prof)
-    assert_almost_equal(LI, -7.9176350 * units.delta_degree_Celsius, 2)
+    li = lifted_index(pressure, temperature, parcel_prof)
+    assert_almost_equal(li, -7.9176350 * units.delta_degree_Celsius, 2)
 
 
 def test_gradient_richardson_number():

@@ -111,7 +111,7 @@ def test_declarative_figsize():
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'2.1': 0.328}.get(MPL_VERSION, 0.022))
 @needs_cartopy
-def test_declarative_contour_CAM():
+def test_declarative_contour_cam():
     """Test making a contour plot with CAM data."""
     data = xr.open_dataset(get_test_data('CAM_test.nc', as_file_obj=False))
 
