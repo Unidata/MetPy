@@ -7,7 +7,7 @@ Requirements
 ------------
 In general, MetPy tries to support minor versions of dependencies released within the last two
 years. For Python itself, that generally means supporting the last two minor releases; MetPy
-currently supports Python >= 3.6.
+currently supports Python >= 3.7.
 
 * matplotlib >= 2.1.0
 * numpy >= 1.16.0

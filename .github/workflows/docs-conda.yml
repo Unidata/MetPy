@@ -7,7 +7,7 @@ on:
 
 jobs:
   #
-  # Build our docs on macOS and Windows on Python 3.6 and 3.7, respectively.
+  # Build our docs on macOS and Windows on Python 3.8 and 3.7, respectively.
   #
   Docs:
     name: ${{ matrix.os }} ${{ matrix.python-version }}
@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python-version: 3.6
+          - python-version: 3.8
             os: macOS
           - python-version: 3.7
             os: Windows
@@ -54,11 +54,6 @@ jobs:
         show-channel-urls: true
         # Needed for caching
         use-only-tar-bz2: true
-
-    # TODO: Remove this when we drop Python 3.6
-    - name: Adjust traitlets dependency for Python 3.6
-      if: ${{ matrix.python-version == 3.6 }}
-      run: sed -e "s/traitlets==.*/traitlets==4.3.3/" -i.bak ci/requirements.txt
 
     # TODO: Remove this when scipy>1.5.3 is available on conda-forge
     - name: Adjust scipy dependency for Conda
