@@ -24,7 +24,7 @@ Documentation
 
 MetPy's documentation is built using sphinx >= 2.1. API documentation is automatically
 generated from docstrings, written using the
-`NumPy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_.
+`NumPy docstring standard <https://github.com/numpy/numpy/blob/main/doc/HOWTO_DOCUMENT.rst.txt>`_.
 There are also example scripts in the ``examples`` directory, as well as our
 :doc:`/userguide/index` tutorials in the ``tutorials``. Using the ``sphinx-gallery``
 extension, these scripts are executed and turned into a gallery of thumbnails. The
@@ -61,7 +61,7 @@ Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/Met
 
 The following services are used to track code quality:
 
-* `Codacy <https://app.codacy.com/project/Unidata/MetPy/dashboard>`_
+* `Codacy <https://app.codacy.com/manual/Unidata/MetPy/dashboard>`_
 * `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
 
 We also maintain custom GitHub actions that automate additional tasks. Besides what's
@@ -75,7 +75,7 @@ using the GitHub API. For more information see:
   doing GitHub API work in javascript
 * `github-script action repo <https://github.com/actions/github-script>`_ which is the action
   that simplifies writing custom scripting
-* `GitHub Actions Docs <https://docs.github.com/en/free-pro-team@latest/actions>`_ for all
+* `GitHub Actions Docs <https://docs.github.com/en/actions>`_ for all
   other things relating to GitHub Actions, like available events and workflow syntax
 
 ---------
