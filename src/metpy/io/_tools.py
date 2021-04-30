@@ -264,7 +264,7 @@ class IOBuffer:
         else:
             order = '@'
 
-        return list(self.read_struct(Struct(order + '{:d}'.format(int(num)) + item_type)))
+        return list(self.read_struct(Struct(order + f'{int(num):d}' + item_type)))
 
     def read_int(self, size, endian, signed):
         """Parse the current buffer offset as the specified integer code."""
@@ -314,7 +314,7 @@ class IOBuffer:
 
     def __str__(self):
         """Return a string representation of the IOBuffer."""
-        return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
+        return f'Size: {len(self._data)} Offset: {self._offset}'
 
     def __len__(self):
         """Return the amount of data in the buffer."""
