@@ -131,7 +131,7 @@ jobs:
     # branch that's not main (which is confined to n.nn.x above) or on a tag.
     - name: Set doc version
       if: ${{ github.event_name != 'push' || !contains(github.ref, 'main') }}
-      run: echo "DOC_VERSION=v$(python -c 'import metpy; print(metpy.__version__.rsplit(".", maxsplit=2)[0])')" >> $GITHUB_ENV
+      run: echo "DOC_VERSION=v$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')" >> $GITHUB_ENV
 
     - name: Upload to GitHub Pages
       if: ${{ github.event_name != 'pull_request' && matrix.experimental == false && matrix.python-version == '3.9' }}
