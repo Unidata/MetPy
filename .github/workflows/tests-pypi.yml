@@ -67,6 +67,25 @@ jobs:
       if: ${{ matrix.no-extras != 'No Extras' }}
       run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
 
+    - name: Generate minimum dependencies
+      if: ${{ matrix.dep-versions == 'Minimum' }}
+      run: |
+        python << EOF
+        import configparser
+        from pathlib import Path
+
+        # Read our setup.cfg
+        config = configparser.ConfigParser()
+        config.read('setup.cfg')
+
+        # Generate a Minimum dependency file
+        with (Path('ci') / 'Minimum').open('wt') as out:
+          for dep in config['options']['install_requires'].split('\n'):
+            if dep:
+              dep = dep.split(';')[0]
+              out.write(dep.replace('>=', '==') + '\n')
+        EOF
+
     - name: Add git versions to requirements
       if: ${{ matrix.dep-versions == 'Prerelease' }}
       run: |
