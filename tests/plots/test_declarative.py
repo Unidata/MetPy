@@ -51,7 +51,7 @@ def test_declarative_image():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.256}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.022))
 @needs_cartopy
 def test_declarative_contour():
     """Test making a contour plot."""
@@ -80,7 +80,7 @@ def test_declarative_contour():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.256}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.216}.get(MPL_VERSION, 0.022))
 @needs_cartopy
 def test_declarative_figsize():
     """Test having an all float figsize."""
@@ -109,7 +109,7 @@ def test_declarative_figsize():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.328}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.328}.get(MPL_VERSION, 0.022))
 @needs_cartopy
 def test_declarative_contour_cam():
     """Test making a contour plot with CAM data."""
@@ -151,7 +151,7 @@ def fix_is_closed_polygon(monkeypatch):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 5.477}.get(MPL_VERSION, 0.035))
+                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.035))
 @needs_cartopy
 def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -182,7 +182,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 2.007}.get(MPL_VERSION, 0.035))
+                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.035))
 @needs_cartopy
 def test_declarative_contour_convert_units(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -354,7 +354,7 @@ def test_colorfill_horiz_colorbar(cfeature):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.355}.get(MPL_VERSION, 0.016))
+                               tolerance={'3.0': 0.355}.get(MPL_VERSION, 0.016))
 def test_colorfill_no_colorbar(cfeature):
     """Test that we can use ContourFillPlot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -433,7 +433,7 @@ def test_latlon():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.418}.get(MPL_VERSION, 0.37))
+                               tolerance={'3.0': 0.418}.get(MPL_VERSION, 0.37))
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -463,7 +463,7 @@ def test_declarative_barb_options():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.819}.get(MPL_VERSION, 0.612))
+                               tolerance={'3.0': 0.819}.get(MPL_VERSION, 0.612))
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
@@ -722,8 +722,7 @@ def test_plotobs_subset_time_window_level(sample_obs):
     pd.testing.assert_frame_equal(obs.obsdata, truth)
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.00142}.get(MPL_VERSION, 0))
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
 def test_plotobs_units_with_formatter(ccrs):
     """Test using PlotObs with a field that both has units and a custom formatter."""
     df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -760,7 +759,7 @@ def test_plotobs_units_with_formatter(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs(ccrs):
     """Test making a surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -793,7 +792,7 @@ def test_declarative_sfc_obs(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 8.09}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 8.09}.get(MPL_VERSION, 0.022))
 @needs_cartopy
 def test_declarative_sfc_text():
     """Test making a surface observation plot with text."""
@@ -828,7 +827,7 @@ def test_declarative_sfc_text():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs_changes(ccrs):
     """Test making a surface observation plot, changing the field."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -865,7 +864,7 @@ def test_declarative_sfc_obs_changes(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.378}.get(MPL_VERSION, 0.00586))
+                               tolerance={'3.0': 0.352}.get(MPL_VERSION, 0.00586))
 def test_declarative_colored_barbs(ccrs):
     """Test making a surface plot with a colored barb (gh-1274)."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -899,7 +898,7 @@ def test_declarative_colored_barbs(ccrs):
 
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'3.1': 9.771,
-                                          '2.1': 9.785}.get(MPL_VERSION, 0.00651))
+                                          '3.0': 9.409}.get(MPL_VERSION, 0.00651))
 def test_declarative_sfc_obs_full(ccrs):
     """Test making a full surface observation plot."""
     data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
@@ -1080,7 +1079,7 @@ def test_attribute_error_station(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.407}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.407}.get(MPL_VERSION, 0.022))
 def test_declarative_sfc_obs_change_units(ccrs):
     """Test making a surface observation plot."""
     data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
@@ -1114,7 +1113,7 @@ def test_declarative_sfc_obs_change_units(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'2.1': 0.09}.get(MPL_VERSION, 0.022))
+                               tolerance={'3.0': 0.09}.get(MPL_VERSION, 0.022))
 def test_declarative_multiple_sfc_obs_change_units(ccrs):
     """Test making a surface observation plot."""
     data = parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False),
