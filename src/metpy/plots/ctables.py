@@ -39,9 +39,8 @@ specific set of constraints (e.g. step size) for mapping.
 """
 
 import ast
-import glob
 import logging
-import os.path
+from pathlib import Path
 
 import matplotlib.colors as mcolors
 
@@ -152,15 +151,15 @@ class ColortableRegistry(dict):
             The path to the directory with the color tables
 
         """
-        for fname in glob.glob(os.path.join(path, '*' + TABLE_EXT)):
-            if os.path.isfile(fname):
-                with open(fname) as fobj:
+        for entry in Path(path).glob('*' + TABLE_EXT):
+            if entry.is_file():
+                with entry.open() as fobj:
                     try:
-                        self.add_colortable(fobj, os.path.splitext(os.path.basename(fname))[0])
-                        log.debug('Added colortable from file: %s', fname)
+                        self.add_colortable(fobj, entry.with_suffix('').name)
+                        log.debug('Added colortable from file: %s', entry)
                     except RuntimeError:
                         # If we get a file we can't handle, assume we weren't meant to.
-                        log.info('Skipping unparsable file: %s', fname)
+                        log.info('Skipping unparsable file: %s', entry)
 
     def add_colortable(self, fobj, name):
         r"""Add a color table from a file to the registry.
@@ -274,7 +273,7 @@ class ColortableRegistry(dict):
 
 registry = ColortableRegistry()
 registry.scan_resource('metpy.plots', 'colortable_files')
-registry.scan_dir(os.path.curdir)
+registry.scan_dir(Path.cwd())
 
 with exporter:
     colortables = registry
