@@ -3238,11 +3238,11 @@ def lifted_index(pressure, temperature, parcel_profile):
     # find the index for the 500 hPa pressure level.
     idx = np.where(pressure == units.Quantity(500, 'hPa'))
     # find the measured temperature at 500 hPa.
-    T500 = temperature[idx]
+    t500 = temperature[idx]
     # find the parcel profile temperature at 500 hPa.
-    Tp500 = parcel_profile[idx]
+    tp500 = parcel_profile[idx]
     # calculate the lifted index.
-    lifted_index = T500 - Tp500.to(units.degC)
+    lifted_index = t500 - tp500.to(units.degC)
     return lifted_index
 
 

@@ -11,6 +11,7 @@
 
 from datetime import datetime
 import os
+from pathlib import Path
 import re
 import sys
 
@@ -19,9 +20,10 @@ import metpy
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))
+# documentation root, use resolve() to make it absolute, like shown here.
+cwd = Path.cwd().resolve()
+sys.path.insert(0, str(cwd))
+sys.path.insert(0, str(cwd.parent.parent))
 
 # -- General configuration ------------------------------------------------
 
@@ -49,11 +51,11 @@ sphinx_gallery_conf = {
     'reference_url': {
         'metpy': None,
     },
-    'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
+    'examples_dirs': [str(cwd.parent / 'examples'), str(cwd.parent / 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
     'filename_pattern': r'\.py',
-    'backreferences_dir': os.path.join('api', 'generated'),
-    'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
+    'backreferences_dir': str(Path('api') / 'generated'),
+    'default_thumb_file': str(Path('_static') / 'metpy_150x150_white_bg.png'),
     'abort_on_example_error': True
 }
 
@@ -208,12 +210,12 @@ html_title = ' '.join((project, version))
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = os.path.join('_static', 'metpy_horizontal.png')
+html_logo = str(Path('_static') / 'metpy_horizontal.png')
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = os.path.join('_static', 'metpy_32x32.ico')
+html_favicon = str(Path('_static') / 'metpy_32x32.ico')
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

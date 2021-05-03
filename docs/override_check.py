@@ -4,9 +4,8 @@
 #
 # Verifies that any modules present in the _templates/overrides directory have all of their
 # their exported functions included in the doc file.
-import glob
 import importlib
-import os
+from pathlib import Path
 import sys
 
 
@@ -14,11 +13,9 @@ modules_to_skip = ['metpy.xarray']
 
 
 failed = False
-for full_path in glob.glob('_templates/overrides/metpy.*.rst'):
+for full_path in (Path('_templates') / 'overrides').glob('metpy.*.rst'):
 
-    filename = os.path.basename(full_path)
-    module = filename.split('.rst')[0]
-
+    module = full_path.with_suffix('').name
     if module in modules_to_skip:
         continue
 
@@ -37,7 +34,7 @@ for full_path in glob.glob('_templates/overrides/metpy.*.rst'):
     if missing_functions:
         failed = True
         print('ERROR - The following functions are missing from the override file ' +
-              filename + ': ' + ', '.join(missing_functions), file=sys.stderr)
+              str(full_path.name) + ': ' + ', '.join(missing_functions), file=sys.stderr)
 
 # Report status
 if failed:

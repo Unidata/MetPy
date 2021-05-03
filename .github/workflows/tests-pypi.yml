@@ -18,11 +18,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
         dep-versions: [requirements.txt]
         no-extras: ['']
         include:
-          - python-version: 3.6
+          - python-version: 3.7
             dep-versions: Minimum
             no-extras: ''
           - python-version: 3.9
@@ -62,11 +62,6 @@ jobs:
           pip-tests-${{ runner.os }}-${{ matrix.python-version }}-
           pip-tests-${{ runner.os }}-
           pip-tests-
-
-    # TODO: Remove this when we drop Python 3.6
-    - name: Adjust traitlets dependency for Python 3.6
-      if: ${{ matrix.python-version == 3.6 }}
-      run: sed -e "s/traitlets==.*/traitlets==4.3.3/" -i.bak ci/requirements.txt
 
     - name: Add extras to requirements
       if: ${{ matrix.no-extras != 'No Extras' }}

@@ -18,8 +18,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default',
-                               tolerance={'2.1': 1.118}.get(MPL_VERSION, 0.02))
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.02)
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -51,7 +50,7 @@ def test_skewt_api():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True, style='default',
-                               tolerance={'2.1': 34.37}.get(MPL_VERSION, 0.02))
+                               tolerance={'3.0': 34.37}.get(MPL_VERSION, 0.02))
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -485,8 +484,6 @@ def test_hodograph_wind_vectors():
     return fig
 
 
-@pytest.mark.skipif(matplotlib.__version__ < '3.0.1',
-                    reason="Earlier Matplotlib versions don't have a required fix.")
 def test_united_hodograph_range():
     """Tests making a hodograph with a united ranged."""
     fig = plt.figure(figsize=(6, 6))

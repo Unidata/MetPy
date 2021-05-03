@@ -76,11 +76,11 @@ def test_mean_pressure_weighted():
 def test_mean_pressure_weighted_temperature():
     """Test pressure-weighted mean temperature function with vertical interpolation."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
-    T, = mean_pressure_weighted(data['pressure'],
+    t, = mean_pressure_weighted(data['pressure'],
                                 data['temperature'],
                                 height=data['height'],
                                 depth=6000 * units('meter'))
-    assert_almost_equal(T, 281.535035296836 * units('kelvin'), 7)
+    assert_almost_equal(t, 281.535035296836 * units('kelvin'), 7)
 
 
 def test_mean_pressure_weighted_elevated():

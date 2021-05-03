@@ -4,7 +4,7 @@
 """Tests for the `ctables` module."""
 
 from io import StringIO
-import os.path
+from pathlib import Path
 import tempfile
 
 import numpy as np
@@ -31,22 +31,22 @@ def test_scan_dir(registry):
         kwargs = {'mode': 'w', 'dir': '.', 'suffix': '.tbl', 'delete': False, 'buffering': 1}
         with tempfile.NamedTemporaryFile(**kwargs) as fobj:
             fobj.write('"red"\n"lime"\n"blue"\n')
-            fname = fobj.name
+            good_file = Path(fobj.name)
 
         # Unrelated table file that *should not* impact the scan
         with tempfile.NamedTemporaryFile(**kwargs) as fobj:
             fobj.write('PADK     704540 ADAK NAS\n')
-            bad_file = fobj.name
+            bad_file = Path(fobj.name)
 
         # Needs to be outside with so it's closed on windows
-        registry.scan_dir(os.path.dirname(fname))
-        name = os.path.splitext(os.path.basename(fname))[0]
+        registry.scan_dir(good_file.parent)
+        name = good_file.with_suffix('').name
 
         assert name in registry
         assert registry[name] == [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
     finally:
-        os.remove(fname)
-        os.remove(bad_file)
+        good_file.unlink()
+        bad_file.unlink()
 
 
 def test_read_file(registry):

@@ -17,7 +17,7 @@ from metpy.testing import set_agg_backend  # noqa: F401, I202
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.161}.get(MPL_VERSION, 0.053),
+@pytest.mark.mpl_image_compare(tolerance={'3.0': 0.161}.get(MPL_VERSION, 0.053),
                                remove_text=True)
 def test_us_county_defaults(ccrs):
     """Test the default US county plotting."""
@@ -30,7 +30,7 @@ def test_us_county_defaults(ccrs):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.1994}.get(MPL_VERSION, 0.092),
+@pytest.mark.mpl_image_compare(tolerance={'3.0': 0.1994}.get(MPL_VERSION, 0.092),
                                remove_text=True)
 def test_us_county_scales(ccrs):
     """Test US county plotting with all scales."""
@@ -59,7 +59,7 @@ def test_us_states_defaults(ccrs):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.1': 0.991}.get(MPL_VERSION, 0.092),
+@pytest.mark.mpl_image_compare(tolerance={'3.0': 0.991}.get(MPL_VERSION, 0.092),
                                remove_text=True)
 def test_us_states_scales(ccrs):
     """Test the default US States plotting with all scales."""

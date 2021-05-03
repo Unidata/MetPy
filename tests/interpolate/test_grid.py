@@ -9,7 +9,6 @@ import logging
 import numpy as np
 from numpy.testing import assert_array_almost_equal
 import pytest
-import scipy
 
 from metpy.cbook import get_test_data
 from metpy.interpolate.grid import (generate_grid, generate_grid_coords, get_boundary_coords,
@@ -182,13 +181,8 @@ def test_inverse_distance_to_grid(method, test_data, test_grid):
     assert_array_almost_equal(truth, img)
 
 
-interp_methods = ['natural_neighbor', 'cressman', 'barnes',
-                  'linear', 'nearest', 'rbf',
-                  pytest.param('cubic',
-                               marks=pytest.mark.skipif(
-                                   scipy.__version__ < '1.2.0',
-                                   reason='Need Scipy >=1.2 for fixed cubic interpolation.'))]
-
+interp_methods = ['natural_neighbor', 'cressman', 'barnes', 'linear', 'nearest', 'rbf',
+                  'cubic']
 boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
                   None]
 

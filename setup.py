@@ -9,7 +9,7 @@ from setuptools import setup
 
 if sys.version_info[0] < 3:
     error = """
-    MetPy v0.12 and greater requires the Python 3.6 or above.
+    MetPy v1.1 and greater requires Python 3.7 or above.
     If you're using Python 2.7, please install MetPy v0.11.1,
     which is the last release of MetPy that supports Python 2.7,
     but it is no longer maintained.

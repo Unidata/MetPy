@@ -9,7 +9,6 @@ import logging
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pytest
-import scipy
 from scipy.spatial import cKDTree, Delaunay
 
 from metpy.cbook import get_test_data
@@ -143,16 +142,8 @@ def test_inverse_distance_to_points(method, test_data, test_points):
     assert_array_almost_equal(truth, img)
 
 
-# SciPy 1.2.0 fixed a bug in cubic interpolation, so we skip on older versions
-interp_methods = ['natural_neighbor', 'cressman', 'barnes',
-                  'linear', 'nearest', 'rbf', 'shouldraise',
-                  pytest.param('cubic',
-                               marks=pytest.mark.skipif(
-                                   scipy.__version__ < '1.2.0',
-                                   reason='Need Scipy >=1.2 for fixed cubic interpolation.'))]
-
-
-@pytest.mark.parametrize('method', interp_methods)
+@pytest.mark.parametrize('method', ['natural_neighbor', 'cressman', 'barnes', 'linear',
+                                    'nearest', 'rbf', 'shouldraise', 'cubic'])
 def test_interpolate_to_points(method, test_data):
     r"""Test main grid interpolation function."""
     xp, yp, z = test_data

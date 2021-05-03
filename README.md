@@ -30,11 +30,7 @@ on a future ``1.x`` version.
 For additional MetPy examples not included in this repository, please see the [Unidata Python
 Gallery](https://unidata.github.io/python-gallery/).
 
-We support Python >= 3.6.
-
-0.12 is the first version to drop support for Python 2.7 in Fall 2019. See
-[here](https://github.com/Unidata/MetPy/blob/main/docs/installguide.rst) for more
-information.
+We support Python >= 3.7.
 
 Need Help?
 ----------
