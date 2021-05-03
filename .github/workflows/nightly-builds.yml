@@ -96,3 +96,104 @@ jobs:
         name: pypi-${{ matrix.python-version }}-nightly-images
         path: test_output/
         retention-days: 5
+
+  Docs:
+    name: ${{ matrix.python-version }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # This uses pip to find the right cache dir and then sets up caching for it
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+
+    - name: Setup pip cache
+      uses: actions/cache@v2.1.5
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: pip-docs-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          pip-docs-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+          pip-docs-${{ runner.os }}-${{ matrix.python-version }}-
+          pip-docs-${{ runner.os }}-
+          pip-docs-
+
+    - name: Assemble doc requirements
+      run: |
+        cat ci/extra_requirements.txt >> ci/doc_requirements.txt
+        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
+        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/doc_requirements.txt
+
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # Need to install numpy first to make CartoPy happy.
+    - name: Install dependencies (PyPI)
+      if: ${{ runner.os == 'Linux' }}
+      run: |
+        sudo apt-get install libgeos-dev libproj-dev proj-bin
+        python -m pip install --upgrade pip setuptools
+        python -m pip install --no-binary :all: shapely
+        python -m pip install -c ci/Prerelease numpy
+        python -m pip install -r ci/doc_requirements.txt -c ci/Prerelease
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      uses: actions/cache@v2.1.5
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: docs-cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: docs-cartopy-
+
+    - name: Install self
+      run: python -m pip install -c ci/Prerelease .
+
+    - name: Build docs
+      run: |
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        pushd docs
+        make overridecheck html O=-W
+        popd
+
+    - name: Enable linkchecker for PRs
+      # Doing the linkchecker separately so that we avoid problems with vendored LICENSE
+      # files in the build directory
+      if: ${{ github.event_name == 'pull_request' && matrix.check-links == true }}
+      run: |
+        pushd docs
+        find build/html/_static -name LICENSE.md -delete
+        make linkcheck
+        popd
+
+    - name: Upload docs as artifact
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.python-version }}-nightly-docs
+        path: |
+          docs/build/html
+          !docs/_static/*.pdf
+        retention-days: 5
