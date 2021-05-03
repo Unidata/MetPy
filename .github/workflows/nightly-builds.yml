@@ -1,20 +1,24 @@
 name: Nightly Checks
 
 on:
-  # Runs at 09Z (3am MDT)
   schedule:
-    - cron: "0 9 * * *"
+  # Runs at 09Z (3am MDT)
+  # - cron: "0 9 * * *"
+  # Run every 10 minutes for testing
+    - cron: "0/10 * * * *"
+
   # Allow a manual run
   workflow_dispatch:
 
 jobs:
   Tests:
-    name: ${{ matrix.python-version }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.9]
+    outputs:
+      log_available: ${{ steps.tests.outputs.LOG_AVAILABLE }}
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -85,12 +89,23 @@ jobs:
 
     - name: Run tests
       run: |
+        set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
-        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
+        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ | tee tests-${{ matrix.python-version }}.log || (
+            echo '::set-output name=LOG_AVAILABLE::true' && false
+        )
+
+    - name: Upload test log
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: log-nightly-tests-${{ matrix.python-version }}
+        path: tests-${{ matrix.python-version }}.log
+        retention-days: 5
 
     - name: Upload test images
-      if: ${{ failure() }}
+      if: failure()
       uses: actions/upload-artifact@v2
       with:
         name: pypi-${{ matrix.python-version }}-nightly-images
@@ -98,12 +113,13 @@ jobs:
         retention-days: 5
 
   Docs:
-    name: ${{ matrix.python-version }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.9]
+    outputs:
+      log_available: ${{ steps.build.outputs.LOG_AVAILABLE }}
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -173,20 +189,21 @@ jobs:
 
     - name: Build docs
       run: |
+        set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         pushd docs
-        make overridecheck html O=-W
+        make overridecheck html O=-W | tee build-${{ matrix.python-version }}.log || (
+            echo '::set-output name=LOG_AVAILABLE::true' && false
+        )
         popd
 
-    - name: Enable linkchecker for PRs
-      # Doing the linkchecker separately so that we avoid problems with vendored LICENSE
-      # files in the build directory
-      if: ${{ github.event_name == 'pull_request' && matrix.check-links == true }}
-      run: |
-        pushd docs
-        find build/html/_static -name LICENSE.md -delete
-        make linkcheck
-        popd
+    - name: Upload build log
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: log-nightly-docs-${{ matrix.python-version }}
+        path: build-${{ matrix.python-version }}.log
+        retention-days: 5
 
     - name: Upload docs as artifact
       if: ${{ github.event_name == 'pull_request' }}
@@ -197,3 +214,51 @@ jobs:
           docs/build/html
           !docs/_static/*.pdf
         retention-days: 5
+
+  Report:
+    name: Report
+    needs: [Tests, Docs]
+    if: always() && (needs.Tests.outputs.log_available == 'true' || needs.Docs.outputs.log_available == 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download logs
+        uses: actions/download-artifact@v2
+        with:
+          path: /tmp/workspace/logs
+
+      - name: Group logs
+        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
+
+      - name: Report failures
+        uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const logs = fs.readFileSync('logs.txt', 'utf8');
+            const title = "Nightly build is failing"
+            const workflow_url = `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+
+            // See if we have an existing issue
+            const items = await github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              creator: 'github-actions[bot]'
+            });
+            existing = items.data.filter(i => i.title === title);
+
+            params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "The [Nightly workflow](${workflow_url}) is failing.\n```${logs}```",
+              title: title
+              labels: ['Type: Maintenance']
+            }
+            if (existing.length === 0) {
+                github.issues.create(params)
+            } else {
+                params.issue_number = existing[0].number
+                github.issues.update(params)
+            }
