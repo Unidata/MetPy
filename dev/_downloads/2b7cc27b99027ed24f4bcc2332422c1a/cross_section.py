@@ -120,11 +120,10 @@ ax_inset.add_feature(cfeature.STATES.with_scale('50m'), edgecolor='k', alpha=0.2
 
 # Set the titles and axes labels
 ax_inset.set_title('')
-ax.set_title('NARR Cross-Section \u2013 {} to {} \u2013 Valid: {}\n'
-             'Potential Temperature (K), Tangential/Normal Winds (knots), '
-             'Relative Humidity (dimensionless)\n'
-             'Inset: Cross-Section Path and 500 hPa Geopotential Height'.format(
-                 start, end, cross['time'].dt.strftime('%Y-%m-%d %H:%MZ').item()))
+ax.set_title(f'NARR Cross-Section \u2013 {start} to {end} \u2013 '
+             f'Valid: {cross["time"].dt.strftime("%Y-%m-%d %H:%MZ").item()}\n'
+             'Potential Temperature (K), Tangential/Normal Winds (knots), Relative Humidity '
+             '(dimensionless)\nInset: Cross-Section Path and 500 hPa Geopotential Height')
 ax.set_ylabel('Pressure (hPa)')
 ax.set_xlabel('Longitude (degrees east)')
 rh_colorbar.set_label('Relative Humidity (dimensionless)')

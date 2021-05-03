@@ -3413,11 +3413,11 @@
     <span class="c1"># find the index for the 500 hPa pressure level.</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pressure</span> <span class="o">==</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;hPa&#39;</span><span class="p">))</span>
     <span class="c1"># find the measured temperature at 500 hPa.</span>
-    <span class="n">T500</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">t500</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
     <span class="c1"># find the parcel profile temperature at 500 hPa.</span>
-    <span class="n">Tp500</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">tp500</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
     <span class="c1"># calculate the lifted index.</span>
-    <span class="n">lifted_index</span> <span class="o">=</span> <span class="n">T500</span> <span class="o">-</span> <span class="n">Tp500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+    <span class="n">lifted_index</span> <span class="o">=</span> <span class="n">t500</span> <span class="o">-</span> <span class="n">tp500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lifted_index</span></div>
 
 
@@ -3499,7 +3499,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 29, 2021 at 19:04:35.<br/>
+        Last updated on May 03, 2021 at 18:32:04.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

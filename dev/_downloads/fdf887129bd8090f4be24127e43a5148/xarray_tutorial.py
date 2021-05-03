@@ -223,13 +223,13 @@ heights_at_45_north
 #########################################################################
 # Unit conversion:
 
-temperature_degC = temperature[0].metpy.convert_units('degC')
-temperature_degC
+temperature_degc = temperature[0].metpy.convert_units('degC')
+temperature_degc
 
 #########################################################################
 # Unit conversion for coordinates:
-heights_on_hPa_levels = heights.metpy.convert_coordinate_units('isobaric3', 'hPa')
-heights_on_hPa_levels['isobaric3']
+heights_on_hpa_levels = heights.metpy.convert_coordinate_units('isobaric3', 'hPa')
+heights_on_hpa_levels['isobaric3']
 
 #########################################################################
 # Accessing just the underlying unit array:

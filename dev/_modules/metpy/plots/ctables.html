@@ -214,9 +214,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
 
@@ -287,7 +286,7 @@
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
-            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;(</span><span class="si">{:f}</span><span class="s1">, </span><span class="si">{:f}</span><span class="s1">, </span><span class="si">{:f}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="p">))</span></div>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="si">:</span><span class="s1">f</span><span class="si">}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ColortableRegistry"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry">[docs]</a><span class="k">class</span> <span class="nc">ColortableRegistry</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -327,15 +326,15 @@
 <span class="sd">            The path to the directory with the color tables</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">TABLE_EXT</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fobj</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">TABLE_EXT</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">fobj</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">add_colortable</span><span class="p">(</span><span class="n">fobj</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fname</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
-                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Added colortable from file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_colortable</span><span class="p">(</span><span class="n">fobj</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Added colortable from file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                         <span class="c1"># If we get a file we can&#39;t handle, assume we weren&#39;t meant to.</span>
-                        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping unparsable file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span></div>
+                        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping unparsable file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ColortableRegistry.add_colortable"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry.add_colortable">[docs]</a>    <span class="k">def</span> <span class="nf">add_colortable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fobj</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a color table from a file to the registry.</span>
@@ -449,7 +448,7 @@
 
 <span class="n">registry</span> <span class="o">=</span> <span class="n">ColortableRegistry</span><span class="p">()</span>
 <span class="n">registry</span><span class="o">.</span><span class="n">scan_resource</span><span class="p">(</span><span class="s1">&#39;metpy.plots&#39;</span><span class="p">,</span> <span class="s1">&#39;colortable_files&#39;</span><span class="p">)</span>
-<span class="n">registry</span><span class="o">.</span><span class="n">scan_dir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="n">registry</span><span class="o">.</span><span class="n">scan_dir</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">())</span>
 
 <span class="k">with</span> <span class="n">exporter</span><span class="p">:</span>
     <span class="n">colortables</span> <span class="o">=</span> <span class="n">registry</span>
@@ -487,7 +486,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 29, 2021 at 19:04:35.<br/>
+        Last updated on May 03, 2021 at 18:32:04.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

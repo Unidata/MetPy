@@ -627,7 +627,7 @@
     <span class="k">def</span> <span class="nf">_decode_msg13</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;</span><span class="si">{:d}</span><span class="s1">h&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="c1"># Legacy format doesn&#39;t have date/time and has fewer azimuths</span>
             <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
                 <span class="n">num_el</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -670,7 +670,7 @@
         <span class="c1"># will be returned concatenated when this is the case</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;</span><span class="si">{:d}</span><span class="s1">h&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">num_el</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Message 15 num_el is 0--likely legacy clutter filter notch width. &#39;</span>
                          <span class="s1">&#39;Skipping...&#39;</span><span class="p">)</span>
@@ -2640,7 +2640,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 29, 2021 at 19:04:35.<br/>
+        Last updated on May 03, 2021 at 18:32:04.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
