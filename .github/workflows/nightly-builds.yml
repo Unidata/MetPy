@@ -1,32 +1,20 @@
-name: PyPI Tests
+name: Nightly Checks
 
-# We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # Runs at 09Z (3am MDT)
+  schedule:
+    - cron: "0 9 * * *"
+  # Allow a manual run
+  workflow_dispatch:
 
 jobs:
-  #
-  # Run all tests on Linux using standard PyPI packages, including minimum requirements
-  #
-  PyPITests:
-    name: ${{ matrix.python-version }} ${{ matrix.dep-versions }} ${{ matrix.no-extras }}
+  Tests:
+    name: ${{ matrix.python-version }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9]
-        dep-versions: [requirements.txt]
-        no-extras: ['']
-        include:
-          - python-version: 3.7
-            dep-versions: Minimum
-            no-extras: ''
-          - python-version: 3.9
-            dep-versions: requirements.txt
-            no-extras: 'No Extras'
+        python-version: [3.9]
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -59,28 +47,11 @@ jobs:
           pip-tests-${{ runner.os }}-
           pip-tests-
 
-    - name: Add extras to requirements
-      if: ${{ matrix.no-extras != 'No Extras' }}
-      run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
-
-    - name: Generate minimum dependencies
-      if: ${{ matrix.dep-versions == 'Minimum' }}
+    - name: Assemble test requirements
       run: |
-        python << EOF
-        import configparser
-        from pathlib import Path
-
-        # Read our setup.cfg
-        config = configparser.ConfigParser()
-        config.read('setup.cfg')
-
-        # Generate a Minimum dependency file
-        with (Path('ci') / 'Minimum').open('wt') as out:
-          for dep in config['options']['install_requires'].split('\n'):
-            if dep:
-              dep = dep.split(';')[0]
-              out.write(dep.replace('>=', '==') + '\n')
-        EOF
+        cat ci/extra_requirements.txt >> ci/test_requirements.txt
+        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
+        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/test_requirements.txt
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     # Need to install numpy first to make CartoPy happy.
@@ -89,8 +60,8 @@ jobs:
         sudo apt-get install libgeos-dev libproj-dev proj-bin
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
-        python -m pip install -c ci/${{ matrix.dep-versions }} numpy
-        python -m pip install -r ci/test_requirements.txt -c ci/${{ matrix.dep-versions }}
+        python -m pip install -c ci/Prerelease numpy
+        python -m pip install -r ci/test_requirements.txt -c ci/Prerelease
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir
@@ -110,32 +81,18 @@ jobs:
         restore-keys: cartopy-
 
     - name: Install
-      run: python -m pip install -c ci/${{ matrix.dep-versions }} .
+      run: python -m pip install -c ci/Prerelease .
 
     - name: Run tests
       run: |
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
-        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
-        python -m coverage combine
-        python -m coverage report
-        python -m coverage xml
-
-    - name: Run doctests
-      if: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
-      env:
-        PY_IGNORE_IMPORTMISMATCH: 1
-      run: python -m pytest --doctest-modules -k "not test" src;
+        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
 
     - name: Upload test images
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
       with:
-        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-images
+        name: pypi-${{ matrix.python-version }}-nightly-images
         path: test_output/
-
-    - name: Upload coverage
-      if: ${{ always() }}
-      uses: codecov/codecov-action@v1
-      with:
-        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
+        retention-days: 5
