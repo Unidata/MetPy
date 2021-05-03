@@ -9,15 +9,9 @@ In general, MetPy tries to support minor versions of dependencies released withi
 years. For Python itself, that generally means supporting the last two minor releases; MetPy
 currently supports Python >= 3.7.
 
-* matplotlib >= 3.0.1
-* numpy >= 1.16.0
-* pandas >= 0.24.0
-* pint >= 0.10.1
-* pooch >= 0.1
-* pyproj >= 2.3.0
-* scipy >= 1.2.0
-* traitlets >= 4.3.0
-* xarray >= 0.14.1
+.. literalinclude:: ../../setup.cfg
+   :start-after: importlib_resources
+   :end-at: xarray
 
 ------------
 Installation

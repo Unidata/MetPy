@@ -42,8 +42,8 @@ References
 .. [CODATA2018] Tiesinga, Eite, Peter J. Mohr, David B. Newell, and Barry N. Taylor, 2020:
            The 2018 CODATA Recommended Values of the Fundamental Physical Constants
            (Web Version 8.1). Database developed by J. Baker, M. Douma, and S. Kotochigova.
-           Available at http://physics.nist.gov/constants, National Institute of Standards
-           and Technology, Gaithersburg, MD 20899.
+           Available at https://physics.nist.gov/cuu/Constants/index.html,
+           National Institute of Standards and Technology, Gaithersburg, MD 20899.
 
 .. [Cressman1959] Cressman, G. P., 1959: An operational objective analysis system. *Mon.
            Wea. Rev.*, **87**, 367-374,
