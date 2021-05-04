@@ -3,9 +3,7 @@ name: Nightly Checks
 on:
   schedule:
   # Runs at 09Z (3am MDT)
-  # - cron: "0 9 * * *"
-  # Run every 10 minutes for testing
-    - cron: "0/10 * * * *"
+    - cron: "0 9 * * *"
 
   # Allow a manual run
   workflow_dispatch:
@@ -260,8 +258,10 @@ jobs:
               labels: ['Type: Maintenance']
             };
             if (existing.length === 0) {
+                console.log('Creating new issue.')
                 github.issues.create(params)
             } else {
                 params.issue_number = existing[0].number;
+                console.log(`Updating existing issue: ${params.issue_number}`)
                 github.issues.update(params)
             }
