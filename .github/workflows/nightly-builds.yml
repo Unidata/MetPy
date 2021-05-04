@@ -239,8 +239,9 @@ jobs:
           script: |
             const fs = require('fs');
             const logs = fs.readFileSync('logs.txt', 'utf8');
-            const title = "Nightly build is failing"
-            const workflow_url = `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+            const title = "Nightly build is failing";
+            const workflow_url = `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            const body = `The [Nightly workflow](${workflow_url}) is failing.\n\`\`\`${logs}\`\`\``;
 
             // See if we have an existing issue
             const items = await github.issues.listForRepo({
@@ -249,18 +250,18 @@ jobs:
               state: 'open',
               creator: 'github-actions[bot]'
             });
-            existing = items.data.filter(i => i.title === title);
+            const existing = items.data.filter(i => i.title === title);
 
             params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "The [Nightly workflow](${workflow_url}) is failing.\n```${logs}```",
+              body: body,
               title: title
               labels: ['Type: Maintenance']
-            }
+            };
             if (existing.length === 0) {
                 github.issues.create(params)
             } else {
-                params.issue_number = existing[0].number
+                params.issue_number = existing[0].number;
                 github.issues.update(params)
             }
