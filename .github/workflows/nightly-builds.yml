@@ -1,0 +1,264 @@
+name: Nightly Checks
+
+on:
+  schedule:
+  # Runs at 09Z (3am MDT)
+  # - cron: "0 9 * * *"
+  # Run every 10 minutes for testing
+    - cron: "0/10 * * * *"
+
+  # Allow a manual run
+  workflow_dispatch:
+
+jobs:
+  Tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+    outputs:
+      log_available: ${{ steps.tests.outputs.LOG_AVAILABLE }}
+
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # This uses pip to find the right cache dir and then sets up caching for it
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+
+    - name: Setup caching
+      uses: actions/cache@v2.1.5
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-
+          pip-tests-${{ runner.os }}-
+          pip-tests-
+
+    - name: Assemble test requirements
+      run: |
+        cat ci/extra_requirements.txt >> ci/test_requirements.txt
+        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
+        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/test_requirements.txt
+
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # Need to install numpy first to make CartoPy happy.
+    - name: Install dependencies
+      run: |
+        sudo apt-get install libgeos-dev libproj-dev proj-bin
+        python -m pip install --upgrade pip setuptools
+        python -m pip install --no-binary :all: shapely
+        python -m pip install -c ci/Prerelease numpy
+        python -m pip install -r ci/test_requirements.txt -c ci/Prerelease
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      if: ${{ matrix.no-extras != 'No Extras' }}
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      if: ${{ steps.cartopy-cache.outputs.dir != '' }}
+      uses: actions/cache@v2.1.5
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: cartopy-
+
+    - name: Install
+      run: python -m pip install -c ci/Prerelease .
+
+    - name: Run tests
+      run: |
+        set -o pipefail
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
+        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ | tee tests-${{ matrix.python-version }}.log || (
+            echo '::set-output name=LOG_AVAILABLE::true' && false
+        )
+
+    - name: Upload test log
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: log-nightly-tests-${{ matrix.python-version }}
+        path: tests-${{ matrix.python-version }}.log
+        retention-days: 5
+
+    - name: Upload test images
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: pypi-${{ matrix.python-version }}-nightly-images
+        path: test_output/
+        retention-days: 5
+
+  Docs:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+    outputs:
+      log_available: ${{ steps.build.outputs.LOG_AVAILABLE }}
+
+    steps:
+    # We check out only a limited depth and then pull tags to save time
+    - name: Checkout source
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 100
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # This uses pip to find the right cache dir and then sets up caching for it
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+
+    - name: Setup pip cache
+      uses: actions/cache@v2.1.5
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: pip-docs-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+        restore-keys: |
+          pip-docs-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
+          pip-docs-${{ runner.os }}-${{ matrix.python-version }}-
+          pip-docs-${{ runner.os }}-
+          pip-docs-
+
+    - name: Assemble doc requirements
+      run: |
+        cat ci/extra_requirements.txt >> ci/doc_requirements.txt
+        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
+        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/doc_requirements.txt
+
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # Need to install numpy first to make CartoPy happy.
+    - name: Install dependencies (PyPI)
+      if: ${{ runner.os == 'Linux' }}
+      run: |
+        sudo apt-get install libgeos-dev libproj-dev proj-bin
+        python -m pip install --upgrade pip setuptools
+        python -m pip install --no-binary :all: shapely
+        python -m pip install -c ci/Prerelease numpy
+        python -m pip install -r ci/doc_requirements.txt -c ci/Prerelease
+
+    # This imports CartoPy to find its map data cache directory
+    - name: Get CartoPy maps dir
+      id: cartopy-cache
+      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
+
+    - name: Setup mapdata caching
+      uses: actions/cache@v2.1.5
+      env:
+        # Increase to reset cache of map data
+        CACHE_NUMBER: 0
+      with:
+        path: ${{ steps.cartopy-cache.outputs.dir }}
+        key: docs-cartopy-${{ env.CACHE_NUMBER }}
+        restore-keys: docs-cartopy-
+
+    - name: Install self
+      run: python -m pip install -c ci/Prerelease .
+
+    - name: Build docs
+      run: |
+        set -o pipefail
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        pushd docs
+        make overridecheck html O=-W | tee build-${{ matrix.python-version }}.log || (
+            echo '::set-output name=LOG_AVAILABLE::true' && false
+        )
+        popd
+
+    - name: Upload build log
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: log-nightly-docs-${{ matrix.python-version }}
+        path: build-${{ matrix.python-version }}.log
+        retention-days: 5
+
+    - name: Upload docs as artifact
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.python-version }}-nightly-docs
+        path: |
+          docs/build/html
+          !docs/_static/*.pdf
+        retention-days: 5
+
+  Report:
+    name: Report
+    needs: [Tests, Docs]
+    if: always() && (needs.Tests.outputs.log_available == 'true' || needs.Docs.outputs.log_available == 'true')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download logs
+        uses: actions/download-artifact@v2
+        with:
+          path: /tmp/workspace/logs
+
+      - name: Group logs
+        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
+
+      - name: Report failures
+        uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const logs = fs.readFileSync('logs.txt', 'utf8');
+            const title = "Nightly build is failing"
+            const workflow_url = `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+
+            // See if we have an existing issue
+            const items = await github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              creator: 'github-actions[bot]'
+            });
+            existing = items.data.filter(i => i.title === title);
+
+            params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "The [Nightly workflow](${workflow_url}) is failing.\n```${logs}```",
+              title: title
+              labels: ['Type: Maintenance']
+            }
+            if (existing.length === 0) {
+                github.issues.create(params)
+            } else {
+                params.issue_number = existing[0].number
+                github.issues.update(params)
+            }

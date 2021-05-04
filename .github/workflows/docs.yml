@@ -13,12 +13,11 @@ on:
 
 jobs:
   #
-  # Build our docs on Linux against multiple Pythons, including pre-releases
+  # Build our docs on Linux against multiple Pythons
   #
   Docs:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
     runs-on: ubuntu-20.04
-    continue-on-error: ${{ matrix.experimental }}
     env:
       DOC_VERSION: dev
     strategy:
@@ -28,18 +27,9 @@ jobs:
           - python-version: 3.8
             check-links: false
             dep-versions: requirements.txt
-            git-versions: ''
-            experimental: false
           - python-version: 3.9
             check-links: true
             dep-versions: requirements.txt
-            git-versions: ''
-            experimental: false
-          - python-version: 3.9
-            check-links: false
-            dep-versions: Prerelease
-            git-versions: 'git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray'
-            experimental: true
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -81,7 +71,7 @@ jobs:
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
-        python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }} ${{ matrix.git-versions }}
+        python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }}
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir
@@ -134,7 +124,7 @@ jobs:
       run: echo "DOC_VERSION=v$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')" >> $GITHUB_ENV
 
     - name: Upload to GitHub Pages
-      if: ${{ github.event_name != 'pull_request' && matrix.experimental == false && matrix.python-version == '3.9' }}
+      if: ${{ github.event_name != 'pull_request' && matrix.python-version == '3.9' }}
       uses: peaceiris/actions-gh-pages@v3.8.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
