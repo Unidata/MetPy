@@ -98,7 +98,7 @@ jobs:
         )
 
     - name: Upload test log
-      if: ${{ steps.tests.outputs.LOG_AVAILABLE  == 'true' }}
+      if: ${{ always() && steps.tests.outputs.LOG_AVAILABLE  == 'true' }}
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-tests-${{ matrix.python-version }}
@@ -200,7 +200,7 @@ jobs:
         popd
 
     - name: Upload build log
-      if: ${{ steps.build.outputs.LOG_AVAILABLE  == 'true' }}
+      if: ${{ always() && steps.build.outputs.LOG_AVAILABLE  == 'true' }}
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-docs-${{ matrix.python-version }}
