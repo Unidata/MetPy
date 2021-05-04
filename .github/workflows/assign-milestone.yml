@@ -2,7 +2,7 @@
 # one that's scheduled next.
 name: Assign Latest Milestone
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
 
 jobs:
