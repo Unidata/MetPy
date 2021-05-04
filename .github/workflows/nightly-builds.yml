@@ -256,7 +256,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: body,
-              title: title
+              title: title,
               labels: ['Type: Maintenance']
             };
             if (existing.length === 0) {
