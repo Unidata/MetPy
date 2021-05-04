@@ -88,6 +88,7 @@ jobs:
       run: python -m pip install -c ci/Prerelease .
 
     - name: Run tests
+      id: tests
       run: |
         set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
@@ -97,7 +98,7 @@ jobs:
         )
 
     - name: Upload test log
-      if: failure()
+      if: steps.tests.outputs.LOG_AVAILABLE
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-tests-${{ matrix.python-version }}
@@ -188,6 +189,7 @@ jobs:
       run: python -m pip install -c ci/Prerelease .
 
     - name: Build docs
+      id: build
       run: |
         set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
@@ -198,7 +200,7 @@ jobs:
         popd
 
     - name: Upload build log
-      if: failure()
+      if: steps.build.outputs.LOG_AVAILABLE
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-docs-${{ matrix.python-version }}
