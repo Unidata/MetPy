@@ -84,7 +84,8 @@ def test_add_logo_invalid_size():
         add_metpy_logo(fig, size='jumbo')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'3.0': 1.072}.get(MPL_VERSION, 0),
+                               remove_text=True)
 def test_gempak_color_image_compare():
     """Test creating a plot with all the GEMPAK colors."""
     c = range(32)
@@ -103,7 +104,8 @@ def test_gempak_color_image_compare():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'3.0': 1.215}.get(MPL_VERSION, 0),
+                               remove_text=True)
 def test_gempak_color_xw_image_compare():
     """Test creating a plot with all the GEMPAK colors using xw style."""
     c = range(32)

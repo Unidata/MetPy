@@ -151,7 +151,7 @@ def fix_is_closed_polygon(monkeypatch):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.035))
+                               tolerance={'3.0': 23.964}.get(MPL_VERSION, 0.0184))
 @needs_cartopy
 def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -182,7 +182,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.035))
+                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0134))
 @needs_cartopy
 def test_declarative_contour_convert_units(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -213,7 +213,8 @@ def test_declarative_contour_convert_units(fix_is_closed_polygon):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0))
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -503,7 +504,8 @@ def test_declarative_barb_earth_relative():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.612)
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.0': 11.481}.get(MPL_VERSION, 0.00936))
 @needs_cartopy
 def test_declarative_gridded_scale():
     """Test making a contour plot."""
