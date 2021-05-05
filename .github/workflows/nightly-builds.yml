@@ -220,6 +220,8 @@ jobs:
     needs: [Tests, Docs]
     if: always() && (needs.Tests.outputs.log_available == 'true' || needs.Docs.outputs.log_available == 'true')
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
 
     steps:
       - name: Download logs

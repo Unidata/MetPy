@@ -5,6 +5,9 @@ on:
   pull_request_target:
     types: [closed]
 
+permissions:
+  pull-requests: write
+
 jobs:
   sync:
     name: Assign Latest Milestone

@@ -4,6 +4,11 @@ on:
   milestone:
     types: [closed]
 
+permissions:
+  issues: read
+  pull-requests: read
+  contents: write
+
 jobs:
   sync:
     name: Create Release

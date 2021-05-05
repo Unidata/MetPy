@@ -11,6 +11,9 @@ on:
   pull_request:
   release:
 
+permissions:
+  contents: write
+
 jobs:
   #
   # Build our docs on Linux against multiple Pythons
