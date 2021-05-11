@@ -332,7 +332,7 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.657 seconds)
+   **Total running time of the script:** ( 0 minutes  2.548 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:
