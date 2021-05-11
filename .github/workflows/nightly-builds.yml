@@ -90,7 +90,6 @@ jobs:
       run: |
         set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        export NUMPY_EXPERIMENTAL_ARRAY_FUNCTION=1
         python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ | tee tests-${{ matrix.python-version }}.log || (
             echo '::set-output name=LOG_AVAILABLE::true' && false
         )
