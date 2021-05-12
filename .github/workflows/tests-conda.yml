@@ -46,7 +46,8 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       uses: conda-incubator/setup-miniconda@v2.1.1
       with:
-        miniconda-version: "latest"
+        miniforge-version: latest
+        miniforge-variant: mambaforge
         python-version: ${{ matrix.python-version }}
         channel-priority: strict
         channels: conda-forge/label/testing,conda-forge
@@ -55,7 +56,7 @@ jobs:
         use-only-tar-bz2: true
 
     - name: Install dependencies
-      run: conda install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
+      run: mamba install --quiet --yes --file ci/test_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
 
     # This imports CartoPy to find its map data cache directory
     - name: Get CartoPy maps dir
