@@ -45,7 +45,7 @@ jobs:
           conda-docs-
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@v2.1.1
       with:
         miniconda-version: "latest"
         python-version: ${{ matrix.python-version }}
