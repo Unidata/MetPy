@@ -52,8 +52,7 @@ def wind_speed(u, v):
     wind_components
 
     """
-    speed = np.sqrt(u * u + v * v)
-    return speed
+    return np.sqrt(u * u + v * v)
 
 
 @exporter.export
@@ -789,8 +788,7 @@ def smooth_gaussian(scalar_grid, n):
     """
     # Compute standard deviation in a manner consistent with GEMPAK
     n = int(round(n))
-    if n < 2:
-        n = 2
+    n = max(n, 2)
     sgma = n / (2 * np.pi)
 
     # Construct sigma sequence so smoothing occurs only in horizontal direction
