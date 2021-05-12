@@ -7,6 +7,7 @@ on:
 
 permissions:
   pull-requests: write
+  issues: write
 
 jobs:
   sync:
@@ -43,9 +44,11 @@ jobs:
               return;
             }
 
-            await github.issues.update({
+            console.log(`Adding to milestone: ${milestones.data[0].number}`);
+            result = await github.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
+              issue_number: context.payload.number,
               milestone: milestones.data[0].number
             });
+            console.log(result);
