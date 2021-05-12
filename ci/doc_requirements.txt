@@ -1,6 +1,6 @@
 sphinx==3.5.4
 # Jinja 3 breaks until we bump pydata-sphinx-theme (I think)
-jinja2<3
+jinja2<4
 pydata-sphinx-theme==0.5.2
 sphinx-gallery==0.9.0
 myst-parser==0.14.0
