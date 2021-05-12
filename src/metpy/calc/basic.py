@@ -306,8 +306,8 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         rh15adj = ((13. - relative_humidity[sel] * 100.) / 4.
                    * np.sqrt((units.Quantity(17., 'delta_degF')
                               - np.abs(delta[sel] - units.Quantity(95., 'delta_degF')))
-                             / units.Quantity(17., 'delta_degF')))
-        hi[sel] = hi[sel] - units.Quantity(rh15adj, 'delta_degF')
+                             / units.Quantity(17., '1/delta_degF')))
+        hi[sel] = hi[sel] - rh15adj
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
     sel = ((relative_humidity > units.Quantity(85., 'percent'))
