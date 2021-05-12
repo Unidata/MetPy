@@ -482,8 +482,8 @@
         <span class="n">rh15adj</span> <span class="o">=</span> <span class="p">((</span><span class="mf">13.</span> <span class="o">-</span> <span class="n">relative_humidity</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">*</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">4.</span>
                    <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="s1">&#39;delta_degF&#39;</span><span class="p">)</span>
                               <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">-</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">95.</span><span class="p">,</span> <span class="s1">&#39;delta_degF&#39;</span><span class="p">)))</span>
-                             <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="s1">&#39;delta_degF&#39;</span><span class="p">)))</span>
-        <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">=</span> <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">-</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">rh15adj</span><span class="p">,</span> <span class="s1">&#39;delta_degF&#39;</span><span class="p">)</span>
+                             <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="s1">&#39;1/delta_degF&#39;</span><span class="p">)))</span>
+        <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">=</span> <span class="n">hi</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">-</span> <span class="n">rh15adj</span>
 
     <span class="c1"># Adjustment for RH &gt; 85% and 80F &lt;= T &lt;= 87F</span>
     <span class="n">sel</span> <span class="o">=</span> <span class="p">((</span><span class="n">relative_humidity</span> <span class="o">&gt;</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">85.</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">))</span>
@@ -1415,7 +1415,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on May 12, 2021 at 17:10:20.<br/>
+        Last updated on May 12, 2021 at 19:06:29.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
