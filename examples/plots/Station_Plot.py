@@ -99,7 +99,7 @@ stationplot.plot_symbol('C', data['cloud_coverage'].values, sky_cover)
 
 # Same this time, but plot current weather to the left of center, using the
 # `current_weather` mapper to convert symbols to the right glyphs.
-stationplot.plot_symbol('W', data['present_weather'].values, current_weather)
+stationplot.plot_symbol('W', data['current_wx1_symbol'].values, current_weather)
 
 # Add wind barbs
 stationplot.plot_barb(data['eastward_wind'].values, data['northward_wind'].values)

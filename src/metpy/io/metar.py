@@ -609,9 +609,9 @@ def parse_metar_file(filename, *, year=None, month=None):
                        'air_temperature': temp,
                        'dew_point_temperature': dewp,
                        'altimeter': altim,
-                       'present_weather': current_wx1_symbol,
-                       'past_weather': current_wx2_symbol,
-                       'past_weather2': current_wx3_symbol},
+                       'current_wx1_symbol': current_wx1_symbol,
+                       'current_wx2_symbol': current_wx2_symbol,
+                       'current_wx3_symbol': current_wx3_symbol},
                       index=station_id)
 
     # Calculate sea-level pressure from function in metpy.calc
