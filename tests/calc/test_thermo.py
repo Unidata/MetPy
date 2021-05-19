@@ -1845,12 +1845,13 @@ def test_gradient_richardson_number_with_xarray():
     assert_array_almost_equal(result.data.m_as(''), data['Ri_g'].data)
 
 def test_showalter_index():
-    p_upper = np.arange(1000, 200, -50) * units.hPa 
-    p_lower = np.arange(175, 0, -25) * units.hPa 
+    """Test the Showalter index calculation."""
+    p_upper = np.arange(1000, 200, -50) * units.hPa
+    p_lower = np.arange(175, 0, -25) * units.hPa
     p = np.append(p_upper, p_lower,)
-    tc = np.linspace(30, -30, 25) * units.degC 
+    tc = np.linspace(30, -30, 25) * units.degC
     tdc = np.linspace(10, -30, 25) * units.degC
-    
+
     result = showalter_index(p, tc, tdc)
     expected = 23.73036498600014 * units.delta_degree_Celsius
     assert_array_almost_equal(result, expected, 4)
