@@ -1844,6 +1844,7 @@ def test_gradient_richardson_number_with_xarray():
     xr.testing.assert_identical(result['height'], data['Ri_g']['height'])
     assert_array_almost_equal(result.data.m_as(''), data['Ri_g'].data)
 
+
 def test_showalter_index():
     """Test the Showalter index calculation."""
     p_upper = np.arange(1000, 200, -50) * units.hPa
