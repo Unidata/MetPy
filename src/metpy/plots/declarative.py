@@ -4,6 +4,7 @@
 """Declarative plotting tools."""
 
 import contextlib
+import copy
 from datetime import datetime, timedelta
 
 import matplotlib.pyplot as plt
@@ -568,6 +569,10 @@ class PanelContainer(HasTraits):
         self.draw()
         plt.show()
 
+    def copy(self):
+        """Return a copy of the panel container."""
+        return copy.copy(self)
+
 
 @exporter.export
 class MapPanel(Panel):
@@ -579,7 +584,7 @@ class MapPanel(Panel):
     projection, graphics area, and title.
     """
 
-    parent = Instance(PanelContainer)
+    parent = Instance(PanelContainer, allow_none=True)
 
     layout = Tuple(Int(), Int(), Int(), default_value=(1, 1, 1))
     layout.__doc__ = """A tuple that contains the description (nrows, ncols, index) of the
@@ -754,6 +759,27 @@ class MapPanel(Panel):
             self.ax.set_title(title)
             self._need_redraw = False
 
+    def __copy__(self):
+        """Return a copy of this MapPanel."""
+        # Create new, blank instance of MapPanel
+        cls = self.__class__
+        obj = cls.__new__(cls)
+
+        # Copy each attribute from current MapPanel to new MapPanel
+        for name in self.trait_names():
+            # The 'plots' attribute is a list.
+            # A copy must be made for each plot in the list.
+            if name == 'plots':
+                obj.plots = [copy.copy(plot) for plot in self.plots]
+            else:
+                setattr(obj, name, getattr(self, name))
+
+        return obj
+
+    def copy(self):
+        """Return a copy of the panel."""
+        return copy.copy(self)
+
 
 @exporter.export
 class Plots2D(HasTraits):
@@ -879,6 +905,10 @@ class Plots2D(HasTraits):
         if self.level is not None:
             ret += f'@{self.level:d}'
         return ret
+
+    def copy(self):
+        """Return a copy of the plot."""
+        return copy.copy(self)
 
 
 @exporter.export
@@ -1604,3 +1634,7 @@ class PlotObs(HasTraits):
             if self.vector_field_length is not None:
                 vector_kwargs['length'] = self.vector_field_length
             self.handle.plot_barb(u, v, **vector_kwargs)
+
+    def copy(self):
+        """Return a copy of the plot."""
+        return copy.copy(self)

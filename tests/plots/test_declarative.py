@@ -1184,3 +1184,37 @@ def test_panel():
 
     pc.panel = panel
     assert pc.panel is panel
+
+
+@needs_cartopy
+def test_copy():
+    """Test that the copy method works for all classes in `declarative.py`."""
+    # Copies of plot objects
+    objects = [ImagePlot(), ContourPlot(), FilledContourPlot(), BarbPlot(), PlotObs()]
+
+    for obj in objects:
+        obj.time = datetime.now()
+        copied_obj = obj.copy()
+        assert obj is not copied_obj
+        assert obj.time == copied_obj.time
+
+    # Copies of MapPanel and PanelContainer
+    obj = MapPanel()
+    obj.title = 'Sample Text'
+    copied_obj = obj.copy()
+    assert obj is not copied_obj
+    assert obj.title == copied_obj.title
+
+    obj = PanelContainer()
+    obj.size = (10, 10)
+    copied_obj = obj.copy()
+    assert obj is not copied_obj
+    assert obj.size == copied_obj.size
+
+    # Copies of plots in MapPanels should not point to same location in memory
+    obj = MapPanel()
+    obj.plots = [PlotObs(), BarbPlot(), FilledContourPlot(), ContourPlot(), ImagePlot()]
+    copied_obj = obj.copy()
+
+    for i in range(len(obj.plots)):
+        assert obj.plots[i] is not copied_obj.plots[i]
