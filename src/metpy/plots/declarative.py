@@ -1596,7 +1596,7 @@ class PlotObs(HasTraits):
                 u = units.Quantity(data[self.vector_field[0]][subset].values,
                                    self.data.units[self.vector_field[0]])
                 v = units.Quantity(data[self.vector_field[1]][subset].values,
-                                   self.data.units[self.vector_field[1]])
+                                   units(self.data.units[self.vector_field[1]]))
             else:
                 vector_kwargs.pop('plot_units')
                 u = data[self.vector_field[0]][subset]
