@@ -647,6 +647,15 @@ class MapPanel(Panel):
     This trait sets a user-defined title that will plot at the top center of the figure.
     """
 
+    title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
+    title_fontsize.__doc__ = """An integer or string value for the font size of the title of the
+    figure.
+
+    This trait sets the font size for the title that will plot at the top center of the figure.
+    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+    """
+
     @observe('plots')
     def _plots_changed(self, change):
         """Handle when our collection of plots changes."""
@@ -756,7 +765,7 @@ class MapPanel(Panel):
 
             # Use the set title or generate one.
             title = self.title or ',\n'.join(plot.name for plot in self.plots)
-            self.ax.set_title(title)
+            self.ax.set_title(title, fontsize=self.title_fontsize)
             self._need_redraw = False
 
     def __copy__(self):
@@ -987,8 +996,9 @@ class PlotScalar(Plots2D):
             if getattr(self, 'handle', None) is None:
                 self._build()
             if getattr(self, 'colorbar', None) is not None:
-                self.parent.ax.figure.colorbar(
+                cbar = self.parent.ax.figure.colorbar(
                     self.handle, orientation=self.colorbar, pad=0, aspect=50)
+                cbar.ax.tick_params(labelsize=self.colorbar_fontsize)
             self._need_redraw = False
 
 
@@ -1008,6 +1018,14 @@ class ContourTraits(HasTraits):
     clabels.__doc__ = """A boolean (True/False) on whether to plot contour labels.
 
     To plot contour labels set this trait to ``True``, the default value is ``False``.
+    """
+
+    label_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
+    label_fontsize.__doc__ = """An integer, float, or string value to set the font size of labels for contours.
+
+    This trait sets the font size for labels that will plot along contour lines. Accepts
+    size in points or relative size. Allowed relative sizes are those of Matplotlib:
+    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
 
@@ -1035,6 +1053,15 @@ class ColorfillTraits(HasTraits):
     To add a colorbar associated with the plot, set the trait to ``horizontal`` or
     ``vertical``,specifying the orientation of the produced colorbar. The default value is
     ``None``.
+    """
+
+    colorbar_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
+    colorbar_fontsize.__doc__ = """An integer, float, or string value to set the font size of
+    labels for the colorbar.
+
+    This trait sets the font size of labels for the colorbar. Accepts size in points or
+    relative size. Allowed relative sizes are those of Matplotlib: 'xx-small', 'x-small',
+    'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
 
@@ -1115,7 +1142,7 @@ class ContourPlot(PlotScalar, ContourTraits):
     dashdot.
     """
 
-    @observe('contours', 'linecolor', 'linewidth', 'linestyle', 'clabels')
+    @observe('contours', 'linecolor', 'linewidth', 'linestyle', 'clabels', 'label_fontsize')
     def _set_need_rebuild(self, _):
         """Handle changes to attributes that need to regenerate everything."""
         # Because matplotlib doesn't let you just change these properties, we need
@@ -1131,7 +1158,7 @@ class ContourPlot(PlotScalar, ContourTraits):
                                              transform=imdata.metpy.cartopy_crs)
         if self.clabels:
             self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
-                               use_clabeltext=True)
+                               use_clabeltext=True, fontsize=self.label_fontsize)
 
 
 @exporter.export
@@ -1336,6 +1363,7 @@ class PlotObs(HasTraits):
       * vector_field_length (optional)
       * vector_plot_units (optional)
       * reduce_points (optional)
+      * fontsize (optional)
     """
 
     parent = Instance(Panel)
@@ -1430,6 +1458,10 @@ class PlotObs(HasTraits):
     Setting this attribute will convert the units of the field variable to the given units for
     plotting using the MetPy Units module, provided that units are attached to the DataFrame.
     """
+
+    fontsize = Int(10)
+    fontsize.__doc__ = """An integer value to set the font size of station plots. Default
+    is 10 pt."""
 
     def clear(self):
         """Clear the plot.
@@ -1579,7 +1611,7 @@ class PlotObs(HasTraits):
         subset = reduce_point_density(point_locs, self.reduce_points * scale)
 
         self.handle = StationPlot(self.parent.ax, lon[subset], lat[subset], clip_on=True,
-                                  transform=ccrs.PlateCarree(), fontsize=10)
+                                  transform=ccrs.PlateCarree(), fontsize=self.fontsize)
 
         for i, ob_type in enumerate(self.fields):
             field_kwargs = {}
