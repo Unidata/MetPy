@@ -60,11 +60,10 @@ def bzip_blocks_decompress_all(data):
     frames = bytearray()
     offset = 0
     while offset < len(data):
-        size_bytes = data[offset:offset + 4]
+        block_cmp_bytes = abs(int.from_bytes(data[offset:offset + 4], 'big', signed=True))
         offset += 4
-        block_cmp_bytes = abs(Struct('>l').unpack(size_bytes)[0])
         try:
-            frames.extend(bz2.decompress(data[offset:offset + block_cmp_bytes]))
+            frames += bz2.decompress(data[offset:offset + block_cmp_bytes])
             offset += block_cmp_bytes
         except OSError:
             # If we've decompressed any frames, this is an error mid-stream, so warn, stop
