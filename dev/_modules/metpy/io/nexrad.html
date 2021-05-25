@@ -236,11 +236,10 @@
     <span class="n">frames</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">offset</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-        <span class="n">size_bytes</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">block_cmp_bytes</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;big&#39;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="n">offset</span> <span class="o">+=</span> <span class="mi">4</span>
-        <span class="n">block_cmp_bytes</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;l&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">size_bytes</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">frames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bz2</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="n">block_cmp_bytes</span><span class="p">]))</span>
+            <span class="n">frames</span> <span class="o">+=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="n">block_cmp_bytes</span><span class="p">])</span>
             <span class="n">offset</span> <span class="o">+=</span> <span class="n">block_cmp_bytes</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
             <span class="c1"># If we&#39;ve decompressed any frames, this is an error mid-stream, so warn, stop</span>
@@ -2641,7 +2640,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on May 14, 2021 at 16:03:29.<br/>
+        Last updated on May 25, 2021 at 17:24:38.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
