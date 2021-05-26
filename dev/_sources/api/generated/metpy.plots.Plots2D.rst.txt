@@ -40,6 +40,7 @@ Plots2D
       ~Plots2D.clear
       ~Plots2D.clear_collections
       ~Plots2D.clear_handle
+      ~Plots2D.copy
       ~Plots2D.has_trait
       ~Plots2D.hold_trait_notifications
       ~Plots2D.notify_change
@@ -93,6 +94,7 @@ Plots2D
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications
    .. automethod:: notify_change

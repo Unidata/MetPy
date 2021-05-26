@@ -49,6 +49,7 @@ PlotObs
       ~PlotObs.class_trait_names
       ~PlotObs.class_traits
       ~PlotObs.clear
+      ~PlotObs.copy
       ~PlotObs.draw
       ~PlotObs.has_trait
       ~PlotObs.hold_trait_notifications
@@ -112,6 +113,7 @@ PlotObs
    .. automethod:: class_trait_names
    .. automethod:: class_traits
    .. automethod:: clear
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

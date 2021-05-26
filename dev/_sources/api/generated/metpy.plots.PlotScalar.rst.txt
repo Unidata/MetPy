@@ -43,6 +43,7 @@ PlotScalar
       ~PlotScalar.clear
       ~PlotScalar.clear_collections
       ~PlotScalar.clear_handle
+      ~PlotScalar.copy
       ~PlotScalar.draw
       ~PlotScalar.has_trait
       ~PlotScalar.hold_trait_notifications
@@ -100,6 +101,7 @@ PlotScalar
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

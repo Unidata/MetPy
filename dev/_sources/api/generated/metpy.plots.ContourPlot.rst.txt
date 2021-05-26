@@ -48,6 +48,7 @@ ContourPlot
       ~ContourPlot.clear
       ~ContourPlot.clear_collections
       ~ContourPlot.clear_handle
+      ~ContourPlot.copy
       ~ContourPlot.draw
       ~ContourPlot.has_trait
       ~ContourPlot.hold_trait_notifications
@@ -110,6 +111,7 @@ ContourPlot
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

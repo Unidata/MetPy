@@ -34,6 +34,7 @@ PanelContainer
       ~PanelContainer.class_own_traits
       ~PanelContainer.class_trait_names
       ~PanelContainer.class_traits
+      ~PanelContainer.copy
       ~PanelContainer.draw
       ~PanelContainer.has_trait
       ~PanelContainer.hold_trait_notifications
@@ -85,6 +86,7 @@ PanelContainer
    .. automethod:: class_own_traits
    .. automethod:: class_trait_names
    .. automethod:: class_traits
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

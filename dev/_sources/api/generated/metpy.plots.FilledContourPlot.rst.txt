@@ -48,6 +48,7 @@ FilledContourPlot
       ~FilledContourPlot.clear
       ~FilledContourPlot.clear_collections
       ~FilledContourPlot.clear_handle
+      ~FilledContourPlot.copy
       ~FilledContourPlot.draw
       ~FilledContourPlot.has_trait
       ~FilledContourPlot.hold_trait_notifications
@@ -110,6 +111,7 @@ FilledContourPlot
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

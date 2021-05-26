@@ -423,55 +423,58 @@ example. Similar issues for <a class="reference internal" href="metpy.plots.Imag
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.clear_handle" title="metpy.plots.PlotScalar.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</p></td>
 <td><p>Clear the handle to the plot instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.draw" title="metpy.plots.PlotScalar.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.copy" title="metpy.plots.PlotScalar.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>Return a copy of the plot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.draw" title="metpy.plots.PlotScalar.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.has_trait" title="metpy.plots.PlotScalar.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.has_trait" title="metpy.plots.PlotScalar.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
 <td><p>Returns True if the object has a trait with the specified name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.hold_trait_notifications" title="metpy.plots.PlotScalar.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.hold_trait_notifications" title="metpy.plots.PlotScalar.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
 <td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.notify_change" title="metpy.plots.PlotScalar.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.notify_change" title="metpy.plots.PlotScalar.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
 <td><p>Notify observers of a change event</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.observe" title="metpy.plots.PlotScalar.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.observe" title="metpy.plots.PlotScalar.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
 <td><p>Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.on_trait_change" title="metpy.plots.PlotScalar.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.on_trait_change" title="metpy.plots.PlotScalar.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
 <td><p>DEPRECATED: Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.set_trait" title="metpy.plots.PlotScalar.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.set_trait" title="metpy.plots.PlotScalar.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
 <td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.setup_instance" title="metpy.plots.PlotScalar.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(**kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.setup_instance" title="metpy.plots.PlotScalar.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(**kwargs)</p></td>
 <td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_defaults" title="metpy.plots.PlotScalar.trait_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code></a>(*names, **metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_defaults" title="metpy.plots.PlotScalar.trait_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code></a>(*names, **metadata)</p></td>
 <td><p>Return a trait’s default value or a dictionary of them</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_events" title="metpy.plots.PlotScalar.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_events" title="metpy.plots.PlotScalar.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_has_value" title="metpy.plots.PlotScalar.trait_has_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_has_value" title="metpy.plots.PlotScalar.trait_has_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code></a>(name)</p></td>
 <td><p>Returns True if the specified trait has a value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_metadata" title="metpy.plots.PlotScalar.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_metadata" title="metpy.plots.PlotScalar.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
 <td><p>Get metadata values for trait by key.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_names" title="metpy.plots.PlotScalar.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_names" title="metpy.plots.PlotScalar.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
 <td><p>Get a list of all the names of this class’ traits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_values" title="metpy.plots.PlotScalar.trait_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code></a>(**metadata)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.trait_values" title="metpy.plots.PlotScalar.trait_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code></a>(**metadata)</p></td>
 <td><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.traits" title="metpy.plots.PlotScalar.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.traits" title="metpy.plots.PlotScalar.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve" title="metpy.plots.PlotScalar.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve" title="metpy.plots.PlotScalar.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
 <td><p>Remove a trait change handler.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve_all" title="metpy.plots.PlotScalar.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.unobserve_all" title="metpy.plots.PlotScalar.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
 <td><p>Remove trait change handlers of any type for the specified name.</p></td>
 </tr>
 </tbody>
@@ -633,6 +636,12 @@ to the function.</p>
 <dt id="metpy.plots.PlotScalar.clear_handle">
 <code class="sig-name descname"><span class="pre">clear_handle</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.clear_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metpy.plots.PlotScalar.copy">
+<code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.PlotScalar.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the plot.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -903,7 +912,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on May 25, 2021 at 17:24:38.<br/>
+        Last updated on May 26, 2021 at 22:29:38.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

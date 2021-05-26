@@ -180,6 +180,7 @@
 <span class="sd">&quot;&quot;&quot;Declarative plotting tools.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -742,7 +743,11 @@
 <div class="viewcode-block" id="PanelContainer.show"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Show the constructed graphic on the screen.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PanelContainer.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the panel container.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="MapPanel"><a class="viewcode-back" href="../../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -755,7 +760,7 @@
 <span class="sd">    projection, graphics area, and title.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">PanelContainer</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">PanelContainer</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">layout</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">(),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">layout</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A tuple that contains the description (nrows, ncols, index) of the</span>
@@ -928,7 +933,28 @@
             <span class="c1"># Use the set title or generate one.</span>
             <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this MapPanel.&quot;&quot;&quot;</span>
+        <span class="c1"># Create new, blank instance of MapPanel</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+
+        <span class="c1"># Copy each attribute from current MapPanel to new MapPanel</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait_names</span><span class="p">():</span>
+            <span class="c1"># The &#39;plots&#39; attribute is a list.</span>
+            <span class="c1"># A copy must be made for each plot in the list.</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;plots&#39;</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+<div class="viewcode-block" id="MapPanel.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the panel.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Plots2D"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plots2D.html#metpy.plots.Plots2D">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1054,7 +1080,11 @@
             <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;@</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="Plots2D.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plots2D.html#metpy.plots.Plots2D.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the plot.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PlotScalar"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotScalar.html#metpy.plots.PlotScalar">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1779,7 +1809,11 @@
                 <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">vector_kwargs</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">vector_kwargs</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">vector_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PlotObs.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the plot.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
               </div>
@@ -1814,7 +1848,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on May 25, 2021 at 17:24:38.<br/>
+        Last updated on May 26, 2021 at 22:29:38.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

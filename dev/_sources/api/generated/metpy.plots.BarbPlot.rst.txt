@@ -48,6 +48,7 @@ BarbPlot
       ~BarbPlot.clear
       ~BarbPlot.clear_collections
       ~BarbPlot.clear_handle
+      ~BarbPlot.copy
       ~BarbPlot.draw
       ~BarbPlot.has_trait
       ~BarbPlot.hold_trait_notifications
@@ -110,6 +111,7 @@ BarbPlot
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications
