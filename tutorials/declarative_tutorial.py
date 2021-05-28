@@ -285,7 +285,7 @@ obs.time = obs_time
 obs.time_window = timedelta(minutes=15)
 obs.level = None
 obs.fields = ['cloud_coverage', 'air_temperature', 'dew_point_temperature',
-              'air_pressure_at_sea_level', 'present_weather']
+              'air_pressure_at_sea_level', 'current_wx1_symbol']
 obs.plot_units = [None, 'degF', 'degF', None, None]
 obs.locations = ['C', 'NW', 'SW', 'NE', 'W']
 obs.formats = ['sky_cover', None, None, lambda v: format(v * 10, '.0f')[-3:],

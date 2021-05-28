@@ -187,7 +187,7 @@ def test_simple_layout():
             'air_pressure_at_sea_level': np.array([29.92, 28.00]) * units.inHg,
             'eastward_wind': np.array([2, 0]) * units.knots,
             'northward_wind': np.array([0, 5]) * units.knots, 'cloud_coverage': [3, 8],
-            'present_weather': [65, 75], 'unused': [1, 2]}
+            'current_wx1_symbol': [65, 75], 'unused': [1, 2]}
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12)
@@ -212,7 +212,7 @@ def test_nws_layout():
             'air_pressure_at_sea_level': np.array([999.8]) * units('mbar'),
             'eastward_wind': np.array([15.]) * units.knots,
             'northward_wind': np.array([15.]) * units.knots, 'cloud_coverage': [7],
-            'present_weather': [80], 'high_cloud_type': [1], 'medium_cloud_type': [3],
+            'current_wx1_symbol': [80], 'high_cloud_type': [1], 'medium_cloud_type': [3],
             'low_cloud_type': [2], 'visibility_in_air': np.array([5.]) * units.mile,
             'tendency_of_air_pressure': np.array([-0.3]) * units('mbar'),
             'tendency_of_air_pressure_symbol': [8]}

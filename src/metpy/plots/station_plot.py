@@ -631,7 +631,7 @@ with exporter:
     simple_layout.add_value('NE', 'air_pressure_at_sea_level', units='mbar',
                             fmt=lambda v: format(10 * v, '03.0f')[-3:])
     simple_layout.add_symbol('C', 'cloud_coverage', sky_cover)
-    simple_layout.add_symbol('W', 'present_weather', current_weather)
+    simple_layout.add_symbol('W', 'current_wx1_symbol', current_weather)
 
     #: Full NWS station plot `layout`__
     #:
@@ -644,7 +644,7 @@ with exporter:
     nws_layout.add_value((1, 1), 'air_pressure_at_sea_level', units='mbar',
                          fmt=lambda v: format(10 * v, '03.0f')[-3:])
     nws_layout.add_value((-2, 0), 'visibility_in_air', fmt='.0f', units='miles')
-    nws_layout.add_symbol((-1, 0), 'present_weather', current_weather)
+    nws_layout.add_symbol((-1, 0), 'current_wx1_symbol', current_weather)
     nws_layout.add_symbol((0, 0), 'cloud_coverage', sky_cover)
     nws_layout.add_value((1, 0), 'tendency_of_air_pressure', units='mbar',
                          fmt=lambda v: ('-' if v < 0 else '') + format(10 * abs(v), '02.0f'))
@@ -653,4 +653,4 @@ with exporter:
     nws_layout.add_value((-1, -1), 'dew_point_temperature', units='degF')
 
     # TODO: Fix once we have the past weather symbols converted
-    nws_layout.add_symbol((1, -1), 'past_weather', current_weather)
+    nws_layout.add_symbol((1, -1), 'current_wx2_symbol', current_weather)

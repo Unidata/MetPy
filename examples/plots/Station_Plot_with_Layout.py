@@ -102,7 +102,7 @@ data['cloud_coverage'] = (8 * data_arr['cloud_fraction']).fillna(10).values.asty
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
 wx_text = data_arr['weather'].fillna('')
-data['present_weather'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
+data['current_wx1_symbol'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
 
 ###########################################
 # All the data wrangling is finished, just need to set up plotting and go:
