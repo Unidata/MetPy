@@ -408,7 +408,7 @@ a few from around the U.S. and pull those out of the data file.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;eastward_wind&#39;, &#39;northward_wind&#39;, &#39;air_temperature&#39;, &#39;dew_point_temperature&#39;, &#39;air_pressure_at_sea_level&#39;, &#39;cloud_coverage&#39;, &#39;present_weather&#39;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;eastward_wind&#39;, &#39;northward_wind&#39;, &#39;air_temperature&#39;, &#39;dew_point_temperature&#39;, &#39;air_pressure_at_sea_level&#39;, &#39;cloud_coverage&#39;, &#39;current_wx1_symbol&#39;]
 </pre></div>
 </div>
 <p>Next grab the simple variables out of the data we have (attaching correct units), and
@@ -446,7 +446,7 @@ layout is expecting.</p>
 <span class="c1"># Map weather strings to WMO codes, which we can use to convert to symbols</span>
 <span class="c1"># Only use the first symbol if there are multiple</span>
 <span class="n">wx_text</span> <span class="o">=</span> <span class="n">data_arr</span><span class="p">[</span><span class="s1">&#39;weather&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;present_weather&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wx_code_map</span></a><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">else</span> <span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">wx_text</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="s1">&#39;current_wx1_symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wx_code_map</span></a><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">else</span> <span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">wx_text</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>All the data wrangling is finished, just need to set up plotting and go:
@@ -542,7 +542,7 @@ Set up the map projection and set up a cartopy feature for state borders</p>
 </pre></div>
 </div>
 <img alt="Station Plot with Layout" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_with_Layout_002.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.527 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.172 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-with-layout-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/aedfcde5d540d021d02883dc8627add4/Station_Plot_with_Layout.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot_with_Layout.py</span></code></a></p>
@@ -589,7 +589,7 @@ Set up the map projection and set up a cartopy feature for state borders</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on May 28, 2021 at 16:51:01.<br/>
+        Last updated on May 28, 2021 at 18:53:26.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

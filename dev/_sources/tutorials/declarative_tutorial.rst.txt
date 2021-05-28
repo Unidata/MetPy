@@ -551,7 +551,7 @@ to plot the figure; similar to what you would do for a gridded plot.
            'medium_cloud_level', 'high_cloud_type', 'high_cloud_level',
            'highest_cloud_type', 'highest_cloud_level', 'cloud_coverage',
            'air_temperature', 'dew_point_temperature', 'altimeter',
-           'present_weather', 'past_weather', 'past_weather2',
+           'current_wx1_symbol', 'current_wx2_symbol', 'current_wx3_symbol',
            'air_pressure_at_sea_level', 'eastward_wind', 'northward_wind'],
           dtype='object')
 
@@ -585,7 +585,7 @@ fields, and location attributes.
     obs.time_window = timedelta(minutes=15)
     obs.level = None
     obs.fields = ['cloud_coverage', 'air_temperature', 'dew_point_temperature',
-                  'air_pressure_at_sea_level', 'present_weather']
+                  'air_pressure_at_sea_level', 'current_wx1_symbol']
     obs.plot_units = [None, 'degF', 'degF', None, None]
     obs.locations = ['C', 'NW', 'SW', 'NE', 'W']
     obs.formats = ['sky_cover', None, None, lambda v: format(v * 10, '.0f')[-3:],
@@ -927,7 +927,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.993 seconds)
+   **Total running time of the script:** ( 0 minutes  11.162 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:

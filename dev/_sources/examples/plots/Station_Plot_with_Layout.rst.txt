@@ -121,7 +121,7 @@ a few from around the U.S. and pull those out of the data file.
  .. code-block:: none
 
 
-    ['eastward_wind', 'northward_wind', 'air_temperature', 'dew_point_temperature', 'air_pressure_at_sea_level', 'cloud_coverage', 'present_weather']
+    ['eastward_wind', 'northward_wind', 'air_temperature', 'dew_point_temperature', 'air_pressure_at_sea_level', 'cloud_coverage', 'current_wx1_symbol']
 
 
 
@@ -182,7 +182,7 @@ Now perform a few conversions:
     # Map weather strings to WMO codes, which we can use to convert to symbols
     # Only use the first symbol if there are multiple
     wx_text = data_arr['weather'].fillna('')
-    data['present_weather'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
+    data['current_wx1_symbol'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
 
 
 
@@ -332,7 +332,7 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.527 seconds)
+   **Total running time of the script:** ( 0 minutes  2.172 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:

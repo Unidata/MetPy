@@ -619,7 +619,7 @@ to plot the figure; similar to what you would do for a gridded plot.</p>
        &#39;medium_cloud_level&#39;, &#39;high_cloud_type&#39;, &#39;high_cloud_level&#39;,
        &#39;highest_cloud_type&#39;, &#39;highest_cloud_level&#39;, &#39;cloud_coverage&#39;,
        &#39;air_temperature&#39;, &#39;dew_point_temperature&#39;, &#39;altimeter&#39;,
-       &#39;present_weather&#39;, &#39;past_weather&#39;, &#39;past_weather2&#39;,
+       &#39;current_wx1_symbol&#39;, &#39;current_wx2_symbol&#39;, &#39;current_wx3_symbol&#39;,
        &#39;air_pressure_at_sea_level&#39;, &#39;eastward_wind&#39;, &#39;northward_wind&#39;],
       dtype=&#39;object&#39;)
 </pre></div>
@@ -641,7 +641,7 @@ fields, and location attributes.</p>
 <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">time_window</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="datetime.timedelta" class="sphx-glr-backref-module-datetime sphx-glr-backref-type-py-class"><span class="n">timedelta</span></a><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 <a href="../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="kc">None</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">fields</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cloud_coverage&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">,</span>
-              <span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">,</span> <span class="s1">&#39;present_weather&#39;</span><span class="p">]</span>
+              <span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">,</span> <span class="s1">&#39;current_wx1_symbol&#39;</span><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">plot_units</span></a> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;degF&#39;</span><span class="p">,</span> <span class="s1">&#39;degF&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">locations</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;NW&#39;</span><span class="p">,</span> <span class="s1">&#39;SW&#39;</span><span class="p">,</span> <span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">formats</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sky_cover&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;.0f&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:],</span>
@@ -846,7 +846,7 @@ Acceptable colors are those available through Matplotlib:
 <p><code class="docutils literal notranslate"><span class="pre">reduce_points</span></code></p>
 <p>This attribute can be set to a real number to reduce the number of stations that are plotted.
 Default value is zero (e.g., no points are removed from the plot).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.993 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.162 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-declarative-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/900d76c7356d09e4ca20b90f94a0732e/declarative_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">declarative_tutorial.py</span></code></a></p>
@@ -894,7 +894,7 @@ Default value is zero (e.g., no points are removed from the plot).</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on May 28, 2021 at 16:51:01.<br/>
+        Last updated on May 28, 2021 at 18:53:26.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
