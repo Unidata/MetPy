@@ -3,6 +3,7 @@
 #  SPDX-License-Identifier: BSD-3-Clause
 """Declarative plotting tools."""
 
+from collections import Counter
 import contextlib
 import copy
 from datetime import datetime, timedelta
@@ -619,7 +620,10 @@ class MapPanel(Panel):
     This trait can also be set with a string value associated with the named geographic regions
     within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
     For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
-    For regional plots, US postal state abbreviations can be used.
+    For regional plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
+    et cetera. Providing a '+' or '-' suffix to the string value will zoom in or out,
+    respectivley. Providing multiple '+' or '-' characters will zoom in or out further.
+
     """
 
     projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
@@ -708,6 +712,39 @@ class MapPanel(Panel):
         """Watch traits and set the need redraw flag as necessary."""
         self._need_redraw = True
 
+    @staticmethod
+    def _zoom_extent(extent, zoom):
+        """Calculate new bounds for zooming in or out of a given extent.
+
+        ``extent`` is given as a tuple with four numeric values, in the same format as the
+        ``area`` trait.
+
+        If ``zoom`` = 0, the extent will not be changed from what was provided to the method
+        If ``zoom`` > 0, the returned extent will be smaller (zoomed in)
+        If ``zoom`` < 0, the returned extent will be larger (zoomed out)
+
+        """
+        # Measure the current extent
+        center_lon = (extent[0] + extent[1]) / 2
+        center_lat = (extent[2] + extent[3]) / 2
+        lon_range = extent[1] - extent[0]
+        lat_range = extent[3] - extent[2]
+
+        # Transforming zoom by e^-x prevents multiplication by zero or a negative number below
+        zoom_multiplier = np.exp(-0.5 * zoom)
+
+        # Calculate "width" and "height" of new, zoomed extent
+        new_lon_range = lon_range * zoom_multiplier
+        new_lat_range = lat_range * zoom_multiplier
+
+        # Calculate bounds for new, zoomed extent with new "width" and "height"
+        new_west_lon = center_lon - 0.5 * new_lon_range
+        new_east_lon = center_lon + 0.5 * new_lon_range
+        new_south_lat = center_lat - 0.5 * new_lat_range
+        new_north_lat = center_lat + 0.5 * new_lat_range
+
+        return (new_west_lon, new_east_lon, new_south_lat, new_north_lat)
+
     @property
     def ax(self):
         """Get the :class:`matplotlib.axes.Axes` to draw on.
@@ -746,13 +783,22 @@ class MapPanel(Panel):
             if self.area == 'global':
                 self.ax.set_global()
             elif self.area is not None:
-                # Try to look up if we have a string
-                if isinstance(self.area, str):
-                    area = _areas[self.area.lower()]
+                # Get extent from specified area and zoom in/out with '+' or '-' suffix
+                if isinstance(self.area, str) and ('+' in self.area or '-' in self.area):
+                    pos = [self.area.find('+'), self.area.find('-')]
+                    split_pos = min([i for i in pos if i > 0])
+                    area = self.area[:split_pos]
+                    modifier = self.area[split_pos:]
+                    extent = _areas[area.lower()]
+                    zoom = Counter(modifier)['+'] - Counter(modifier)['-']
+                    extent = self._zoom_extent(extent, zoom)
+                # Get extent from specified area
+                elif isinstance(self.area, str):
+                    extent = _areas[self.area.lower()]
                 # Otherwise, assume we have a tuple to use as the extent
                 else:
-                    area = self.area
-                self.ax.set_extent(area, ccrs.PlateCarree())
+                    extent = self.area
+                self.ax.set_extent(extent, ccrs.PlateCarree())
 
             # Draw all of the plots.
             for p in self.plots:

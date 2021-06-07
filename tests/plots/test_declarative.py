@@ -1281,6 +1281,54 @@ def test_declarative_contour_label_fontsize():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
+@needs_cartopy
+def test_declarative_region_modifier_zoom_in():
+    """Test that '+' suffix on area string properly decreases extent of map."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+
+    panel = MapPanel()
+    panel.area = 'sc++'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
+@needs_cartopy
+def test_declarative_region_modifier_zoom_out():
+    """Test that '-' suffix on area string properly expands extent of map."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+
+    panel = MapPanel()
+    panel.area = 'sc-'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 def test_save():
     """Test that our saving function works."""
     pc = PanelContainer()
