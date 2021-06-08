@@ -1579,3 +1579,21 @@ def test_declarative_plot_geometry_points(ccrs):
     pc.show()
 
     return pc.figure
+
+
+def test_drop_traitlets_dir():
+    """Test successful drop of inherited members from HasTraits and any '_' or '__' members."""
+    for plot_obj in (
+            BarbPlot,
+            ContourPlot,
+            FilledContourPlot,
+            ImagePlot,
+            MapPanel,
+            PanelContainer,
+            PlotGeometry,
+            PlotObs
+    ):
+        assert dir(plot_obj)[0].startswith('_')
+        assert not dir(plot_obj())[0].startswith('_')
+        assert 'cross_validation_lock' in dir(plot_obj)
+        assert 'cross_validation_lock' not in dir(plot_obj())
