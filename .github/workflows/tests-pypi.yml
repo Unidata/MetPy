@@ -135,6 +135,6 @@ jobs:
 
     - name: Upload coverage
       if: ${{ always() }}
-      uses: codecov/codecov-action@v1.5.0
+      uses: codecov/codecov-action@v1.5.2
       with:
         name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
