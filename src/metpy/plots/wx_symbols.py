@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Simplify using the weather symbol font.
 
-See WMO manual 485 Vol 1 for more info on the symbols.
+See WMO No.306 Attachment IV for more info on the symbols.
 """
 
 try:
@@ -185,9 +185,8 @@ with exporter:
     #####################################################################
     # This dictionary is for mapping METAR present weather text codes
     # to WMO codes for plotting wx symbols along with the station plots.
-    # Pages II-4-3 and II-4-4 of this document describes the difference between
-    # manned and automated stations:
-    # https://github.com/Unidata/MetPy/files/1151142/485_Vol_I_en.pdf
+    # See Attachment IV of WMO No.306 for more information:
+    # https://library.wmo.int/index.php?lvl=notice_display&id=13617
     # It may become necessary to add automated station wx_codes in the future,
     # but that will also require knowing the status of all stations.
 
