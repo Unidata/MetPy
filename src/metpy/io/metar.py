@@ -55,9 +55,9 @@ col_units = {'station_id': None,
              'dew_point_temperature': 'degC',
              'altimeter': 'inHg',
              'air_pressure_at_sea_level': 'hPa',
-             'present_weather': None,
-             'past_weather': None,
-             'past_weather2': None}
+             'current_wx1_symbol': None,
+             'current_wx2_symbol': None,
+             'current_wx3_symbol': None}
 
 
 @exporter.export
@@ -117,7 +117,7 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
       Attachment IV
     * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
-      and altimeter value, float
+      and altimeter value
     * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
     * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
 
@@ -155,9 +155,9 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
                        'air_temperature': metar_vars.temperature,
                        'dew_point_temperature': metar_vars.dewpoint,
                        'altimeter': metar_vars.altimeter,
-                       'present_weather': metar_vars.current_wx1_symbol,
-                       'past_weather': metar_vars.current_wx2_symbol,
-                       'past_weather2': metar_vars.current_wx3_symbol},
+                       'current_wx1_symbol': metar_vars.current_wx1_symbol,
+                       'current_wx2_symbol': metar_vars.current_wx2_symbol,
+                       'current_wx3_symbol': metar_vars.current_wx3_symbol},
                       index=[metar_vars.station_id])
 
     # Convert to sea level pressure using calculation in metpy.calc
@@ -491,9 +491,9 @@ def parse_metar_file(filename, *, year=None, month=None):
     * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
       Attachment IV
     * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
-      and altimeter value, float
+      and altimeter value
     * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
-    * 'northward_wind' Northward component (v-compoment) of the wind vector, measured in knots
+    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
 
     """
     # Defaults year and/or month to present reported date if not provided
