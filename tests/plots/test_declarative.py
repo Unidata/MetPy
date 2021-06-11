@@ -1329,6 +1329,24 @@ def test_declarative_region_modifier_zoom_out():
     return pc.figure
 
 
+@needs_cartopy
+def test_declarative_bad_area():
+    """Test that a invalid string or tuple provided to the area trait raises an error."""
+    panel = MapPanel()
+
+    # Test for string that cannot be grouped into a region and a modifier by regex
+    with pytest.raises(TraitError):
+        panel.area = 'a$z+'
+
+    # Test for string that is not in our list of areas
+    with pytest.raises(TraitError):
+        panel.area = 'PS'
+
+    # Test for nonsense coordinates
+    with pytest.raises(TraitError):
+        panel.area = (136, -452, -65, -88)
+
+
 def test_save():
     """Test that our saving function works."""
     pc = PanelContainer()
