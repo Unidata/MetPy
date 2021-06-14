@@ -3,5 +3,5 @@ sphinx==3.5.4
 jinja2<3
 pydata-sphinx-theme==0.5.2
 sphinx-gallery==0.9.0
-myst-parser==0.14.0
+myst-parser==0.15.0
 netCDF4==1.5.6
