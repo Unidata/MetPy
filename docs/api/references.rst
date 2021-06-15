@@ -176,9 +176,10 @@ References
            doi:`10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2>`_.
 
-.. [Thompson2004] Thompson, R.L., R. Edwards, and C. M. Mead, 2004b: An update to the supercell
-           composite and significant tornado parameters. Preprints, 22nd Conf. on Severe Local
-           Storms, Hyannis, MA, Amer. Meteor. Soc.
+.. [Thompson2004] Thompson, R.L., R. Edwards, and C. M. Mead, 2004b: `An update to the
+           supercell composite and significant tornado parameters
+           <https://www.spc.noaa.gov/publications/thompson/stp_scp.pdf>`_. Preprints,
+           22nd Conf. on Severe Local Storms, Hyannis, MA, Amer. Meteor. Soc.
 
 .. [USAF1990] United States Air Force, 1990: `The Use of the Skew T Log P Diagram for Weather
             Forecasting <../_static/USAF_SkewT_manual.pdf>`_, Scott AFB,
