@@ -357,26 +357,32 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colorbar" title="metpy.plots.FilledContourPlot.colorbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar</span></code></a></p></td>
 <td><p>A string (horizontal/vertical) on whether to add a colorbar to the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colormap" title="metpy.plots.FilledContourPlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colorbar_fontsize" title="metpy.plots.FilledContourPlot.colorbar_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar_fontsize</span></code></a></p></td>
+<td><p>An integer, float, or string value to set the font size of labels for the colorbar.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.colormap" title="metpy.plots.FilledContourPlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></p></td>
 <td><p>The string name for a Matplolib or MetPy colormap.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.contours" title="metpy.plots.FilledContourPlot.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.contours" title="metpy.plots.FilledContourPlot.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
 <td><p>A list of values to contour or an integer number of contour levels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.cross_validation_lock" title="metpy.plots.FilledContourPlot.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.cross_validation_lock" title="metpy.plots.FilledContourPlot.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
 <td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.data" title="metpy.plots.FilledContourPlot.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.data" title="metpy.plots.FilledContourPlot.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
 <td><p>Xarray dataset that contains the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.field" title="metpy.plots.FilledContourPlot.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.field" title="metpy.plots.FilledContourPlot.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a></p></td>
 <td><p>Name of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.griddata" title="metpy.plots.FilledContourPlot.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.griddata" title="metpy.plots.FilledContourPlot.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></p></td>
 <td><p>Return the internal cached data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.image_range" title="metpy.plots.FilledContourPlot.image_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_range</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.image_range" title="metpy.plots.FilledContourPlot.image_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_range</span></code></a></p></td>
 <td><p>A tuple of min and max values that represent the range of values to color the rasterized image.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.label_fontsize" title="metpy.plots.FilledContourPlot.label_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_fontsize</span></code></a></p></td>
+<td><p>An integer, float, or string value to set the font size of labels for contours.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.level" title="metpy.plots.FilledContourPlot.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
 <td><p>The level of the field to be plotted.</p></td>
@@ -509,6 +515,16 @@
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="metpy.plots.FilledContourPlot.colorbar_fontsize">
+<code class="sig-name descname"><span class="pre">colorbar_fontsize</span></code><a class="headerlink" href="#metpy.plots.FilledContourPlot.colorbar_fontsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer, float, or string value to set the font size of
+labels for the colorbar.</p>
+<p>This trait sets the font size of labels for the colorbar. Accepts size in points or
+relative size. Allowed relative sizes are those of Matplotlib: ‘xx-small’, ‘x-small’,
+‘small’, ‘medium’, ‘large’, ‘x-large’, ‘xx-large’.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="metpy.plots.FilledContourPlot.colormap">
 <code class="sig-name descname"><span class="pre">colormap</span></code><a class="headerlink" href="#metpy.plots.FilledContourPlot.colormap" title="Permalink to this definition">¶</a></dt>
 <dd><p>The string name for a Matplolib or MetPy colormap.</p>
@@ -565,6 +581,15 @@ variables with the following command assuming the dataset was read using xarray 
 to color the rasterized image.</p>
 <p>The min and max values entered as a tuple will be converted to a
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.4.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.plots.FilledContourPlot.label_fontsize">
+<code class="sig-name descname"><span class="pre">label_fontsize</span></code><a class="headerlink" href="#metpy.plots.FilledContourPlot.label_fontsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer, float, or string value to set the font size of labels for contours.</p>
+<p>This trait sets the font size for labels that will plot along contour lines. Accepts
+size in points or relative size. Allowed relative sizes are those of Matplotlib:
+‘xx-small’, ‘x-small’, ‘small’, ‘medium’, ‘large’, ‘x-large’, ‘xx-large’.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -958,7 +983,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 15, 2021 at 06:26:55.<br/>
+        Last updated on Jun 15, 2021 at 22:55:07.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

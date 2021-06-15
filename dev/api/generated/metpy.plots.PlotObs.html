@@ -361,6 +361,7 @@ surface data using station plots.</p>
 <li><p>vector_field_length (optional)</p></li>
 <li><p>vector_plot_units (optional)</p></li>
 <li><p>reduce_points (optional)</p></li>
+<li><p>fontsize (optional)</p></li>
 </ul>
 </dd>
 </dl>
@@ -383,49 +384,52 @@ surface data using station plots.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.fields" title="metpy.plots.PlotObs.fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fields</span></code></a></p></td>
 <td><p>Name of the scalar or symbol fields to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.formats" title="metpy.plots.PlotObs.formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formats</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.fontsize" title="metpy.plots.PlotObs.fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fontsize</span></code></a></p></td>
+<td><p>An integer value to set the font size of station plots.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.formats" title="metpy.plots.PlotObs.formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formats</span></code></a></p></td>
 <td><p>List of the scalar, symbol, and text field data formats.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.level" title="metpy.plots.PlotObs.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.level" title="metpy.plots.PlotObs.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
 <td><p>The level of the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.locations" title="metpy.plots.PlotObs.locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locations</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.locations" title="metpy.plots.PlotObs.locations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locations</span></code></a></p></td>
 <td><p>List of strings for scalar or symbol field plotting locations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.name" title="metpy.plots.PlotObs.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.name" title="metpy.plots.PlotObs.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.obsdata" title="metpy.plots.PlotObs.obsdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obsdata</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.obsdata" title="metpy.plots.PlotObs.obsdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obsdata</span></code></a></p></td>
 <td><p>Return the internal cached data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.parent" title="metpy.plots.PlotObs.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.parent" title="metpy.plots.PlotObs.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plot_units" title="metpy.plots.PlotObs.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plot_units" title="metpy.plots.PlotObs.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
 <td><p>A list of the desired units to plot the fields in.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plotdata" title="metpy.plots.PlotObs.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.plotdata" title="metpy.plots.PlotObs.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
 <td><p>Return the data for plotting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.reduce_points" title="metpy.plots.PlotObs.reduce_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.reduce_points" title="metpy.plots.PlotObs.reduce_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_points</span></code></a></p></td>
 <td><p>Float to reduce number of points plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time" title="metpy.plots.PlotObs.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time" title="metpy.plots.PlotObs.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time_window" title="metpy.plots.PlotObs.time_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.time_window" title="metpy.plots.PlotObs.time_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_window</span></code></a></p></td>
 <td><p>Set a range to look for data to plot as a timedelta object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field" title="metpy.plots.PlotObs.vector_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field" title="metpy.plots.PlotObs.vector_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field</span></code></a></p></td>
 <td><p>List of the vector field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_color" title="metpy.plots.PlotObs.vector_field_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_color</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_color" title="metpy.plots.PlotObs.vector_field_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_color</span></code></a></p></td>
 <td><p>String color name to plot the vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_length" title="metpy.plots.PlotObs.vector_field_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_length</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_field_length" title="metpy.plots.PlotObs.vector_field_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_field_length</span></code></a></p></td>
 <td><p>Integer value to set the length of the plotted vector.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_plot_units" title="metpy.plots.PlotObs.vector_plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_plot_units</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotObs.vector_plot_units" title="metpy.plots.PlotObs.vector_plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_plot_units</span></code></a></p></td>
 <td><p>The desired units to plot the vector field in.</p></td>
 </tr>
 </tbody>
@@ -543,6 +547,13 @@ prior to entering the block.</p>
 <code class="sig-name descname"><span class="pre">fields</span></code><a class="headerlink" href="#metpy.plots.PlotObs.fields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the scalar or symbol fields to be plotted.</p>
 <p>List of parameters to be plotted around station plot (e.g., temperature, dewpoint, skyc).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.plots.PlotObs.fontsize">
+<code class="sig-name descname"><span class="pre">fontsize</span></code><a class="headerlink" href="#metpy.plots.PlotObs.fontsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer value to set the font size of station plots. Default
+is 10 pt.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -995,7 +1006,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 15, 2021 at 06:26:55.<br/>
+        Last updated on Jun 15, 2021 at 22:55:07.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

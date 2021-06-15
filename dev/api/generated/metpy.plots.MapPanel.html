@@ -382,6 +382,9 @@ projection, graphics area, and title.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
 <td><p>A string to set a title for the figure.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title_fontsize" title="metpy.plots.MapPanel.title_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title_fontsize</span></code></a></p></td>
+<td><p>An integer or string value for the font size of the title of the figure.</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
@@ -553,6 +556,16 @@ Additionally, this trait can be set to a Cartopy projection object.</p>
 <code class="sig-name descname"><span class="pre">title</span></code><a class="headerlink" href="#metpy.plots.MapPanel.title" title="Permalink to this definition">¶</a></dt>
 <dd><p>A string to set a title for the figure.</p>
 <p>This trait sets a user-defined title that will plot at the top center of the figure.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metpy.plots.MapPanel.title_fontsize">
+<code class="sig-name descname"><span class="pre">title_fontsize</span></code><a class="headerlink" href="#metpy.plots.MapPanel.title_fontsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer or string value for the font size of the title of the
+figure.</p>
+<p>This trait sets the font size for the title that will plot at the top center of the figure.
+Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+‘xx-small’, ‘x-small’, ‘small’, ‘medium’, ‘large’, ‘x-large’, ‘xx-large’.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -894,7 +907,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 15, 2021 at 06:26:55.<br/>
+        Last updated on Jun 15, 2021 at 22:55:07.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

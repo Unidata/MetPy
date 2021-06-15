@@ -823,6 +823,15 @@
 <span class="s2">    This trait sets a user-defined title that will plot at the top center of the figure.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
+    <span class="n">title_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">title_fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer or string value for the font size of the title of the</span>
+<span class="s2">    figure.</span>
+
+<span class="s2">    This trait sets the font size for the title that will plot at the top center of the figure.</span>
+<span class="s2">    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:</span>
+<span class="s2">    &#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;plots&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_plots_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle when our collection of plots changes.&quot;&quot;&quot;</span>
@@ -932,7 +941,7 @@
 
             <span class="c1"># Use the set title or generate one.</span>
             <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title_fontsize</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1163,8 +1172,9 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;colorbar&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+                <span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+                <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar_fontsize</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 
 
@@ -1184,6 +1194,14 @@
     <span class="n">clabels</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A boolean (True/False) on whether to plot contour labels.</span>
 
 <span class="s2">    To plot contour labels set this trait to ``True``, the default value is ``False``.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">label_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">label_fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer, float, or string value to set the font size of labels for contours.</span>
+
+<span class="s2">    This trait sets the font size for labels that will plot along contour lines. Accepts</span>
+<span class="s2">    size in points or relative size. Allowed relative sizes are those of Matplotlib:</span>
+<span class="s2">    &#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
 
@@ -1211,6 +1229,15 @@
 <span class="s2">    To add a colorbar associated with the plot, set the trait to ``horizontal`` or</span>
 <span class="s2">    ``vertical``,specifying the orientation of the produced colorbar. The default value is</span>
 <span class="s2">    ``None``.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">colorbar_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">colorbar_fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer, float, or string value to set the font size of</span>
+<span class="s2">    labels for the colorbar.</span>
+
+<span class="s2">    This trait sets the font size of labels for the colorbar. Accepts size in points or</span>
+<span class="s2">    relative size. Allowed relative sizes are those of Matplotlib: &#39;xx-small&#39;, &#39;x-small&#39;,</span>
+<span class="s2">    &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
 
@@ -1291,7 +1318,7 @@
 <span class="s2">    dashdot.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;clabels&#39;</span><span class="p">)</span>
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;clabels&#39;</span><span class="p">,</span> <span class="s1">&#39;label_fontsize&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
         <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
@@ -1307,7 +1334,7 @@
                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clabels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                               <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+                               <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label_fontsize</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FilledContourPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1512,6 +1539,7 @@
 <span class="sd">      * vector_field_length (optional)</span>
 <span class="sd">      * vector_plot_units (optional)</span>
 <span class="sd">      * reduce_points (optional)</span>
+<span class="sd">      * fontsize (optional)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
@@ -1606,6 +1634,10 @@
 <span class="s2">    Setting this attribute will convert the units of the field variable to the given units for</span>
 <span class="s2">    plotting using the MetPy Units module, provided that units are attached to the DataFrame.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer value to set the font size of station plots. Default</span>
+<span class="s2">    is 10 pt.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PlotObs.clear"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the plot.</span>
@@ -1755,7 +1787,7 @@
         <span class="n">subset</span> <span class="o">=</span> <span class="n">reduce_point_density</span><span class="p">(</span><span class="n">point_locs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_points</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+                                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ob_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">):</span>
             <span class="n">field_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1848,7 +1880,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 15, 2021 at 06:26:55.<br/>
+        Last updated on Jun 15, 2021 at 22:55:07.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

@@ -21,6 +21,7 @@ MapPanel
       ~MapPanel.plots
       ~MapPanel.projection
       ~MapPanel.title
+      ~MapPanel.title_fontsize
 
    
    
@@ -76,6 +77,7 @@ MapPanel
    .. autoattribute:: plots
    .. autoattribute:: projection
    .. autoattribute:: title
+   .. autoattribute:: title_fontsize
 
    
    

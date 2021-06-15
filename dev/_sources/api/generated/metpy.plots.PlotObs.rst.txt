@@ -16,6 +16,7 @@ PlotObs
       ~PlotObs.cross_validation_lock
       ~PlotObs.data
       ~PlotObs.fields
+      ~PlotObs.fontsize
       ~PlotObs.formats
       ~PlotObs.level
       ~PlotObs.locations
@@ -81,6 +82,7 @@ PlotObs
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: data
    .. autoattribute:: fields
+   .. autoattribute:: fontsize
    .. autoattribute:: formats
    .. autoattribute:: level
    .. autoattribute:: locations

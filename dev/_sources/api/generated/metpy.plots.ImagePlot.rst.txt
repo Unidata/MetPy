@@ -13,6 +13,7 @@ ImagePlot
    .. autosummary::
    
       ~ImagePlot.colorbar
+      ~ImagePlot.colorbar_fontsize
       ~ImagePlot.colormap
       ~ImagePlot.cross_validation_lock
       ~ImagePlot.data
@@ -75,6 +76,7 @@ ImagePlot
 
    
    .. autoattribute:: colorbar
+   .. autoattribute:: colorbar_fontsize
    .. autoattribute:: colormap
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: data
