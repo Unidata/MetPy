@@ -1150,6 +1150,137 @@ def test_declarative_multiple_sfc_obs_change_units(ccrs):
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.607)
+@needs_cartopy
+def test_declarative_title_fontsize():
+    """Test adjusting the font size of a MapPanel's title text."""
+    data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height_isobaric'
+    contour.level = 300 * units.hPa
+    contour.linewidth = 2
+    contour.contours = list(range(0, 2000, 12))
+    contour.scale = 1e-1
+
+    panel = MapPanel()
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+    panel.title = '300 mb Geopotential Height'
+    panel.title_fontsize = 20
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=False,
+                               tolerance={'3.1': 11.49,
+                                          '3.0': 11.49}.get(MPL_VERSION, 0.607))
+@needs_cartopy
+def test_declarative_colorbar_fontsize():
+    """Test adjusting the font size of a colorbar."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    cfill = FilledContourPlot()
+    cfill.data = data
+    cfill.field = 'Temperature_isobaric'
+    cfill.level = 300 * units.hPa
+    cfill.time = datetime(2010, 10, 26, 12)
+    cfill.contours = list(range(210, 250, 2))
+    cfill.colormap = 'BuPu'
+    cfill.colorbar = 'horizontal'
+    cfill.colorbar_fontsize = 'x-small'
+
+    panel = MapPanel()
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [cfill]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.1': 2.12,
+                                          '3.0': 2.12}.get(MPL_VERSION, 0.607))
+@needs_cartopy
+def test_declarative_station_plot_fontsize():
+    """Test adjusting the font size for station plots in PlotObs."""
+    data = parse_metar_file(get_test_data('metar_20190701_1200.txt',
+                                          as_file_obj=False), year=2019, month=7)
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(2019, 7, 1, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['cloud_coverage', 'air_temperature', 'dew_point_temperature',
+                  'air_pressure_at_sea_level', 'current_wx1_symbol']
+    obs.plot_units = [None, 'degF', 'degF', None, None]
+    obs.locations = ['C', 'NW', 'SW', 'NE', 'W']
+    obs.formats = ['sky_cover', None, None, lambda v: format(v * 10, '.0f')[-3:],
+                   'current_weather']
+    obs.reduce_points = 3
+    obs.vector_field = ['eastward_wind', 'northward_wind']
+    obs.fontsize = 8
+
+    panel = MapPanel()
+    panel.area = 'centus'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [obs]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.1': 20.3,
+                                          '3.0': 20.3}.get(MPL_VERSION, 0.607))
+@needs_cartopy
+def test_declarative_contour_label_fontsize():
+    """Test adjusting the font size of contour labels."""
+    data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height_isobaric'
+    contour.level = 300 * units.hPa
+    contour.linewidth = 2
+    contour.contours = list(range(0, 2000, 12))
+    contour.scale = 1e-1
+    contour.clabels = True
+    contour.label_fontsize = 'xx-large'
+
+    panel = MapPanel()
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 def test_save():
     """Test that our saving function works."""
     pc = PanelContainer()
