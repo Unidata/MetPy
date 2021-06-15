@@ -126,20 +126,15 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
        Renamed ``heights`` parameter to ``height``
 
     """
-    ret = []  # Returned variable means in layer
-    layer_arg = get_layer(pressure, *args, height=height,
-                          bottom=bottom, depth=depth)
-    layer_p = layer_arg[0]
-    layer_arg = layer_arg[1:]
+    # Split pressure profile from other variables to average
+    pres_prof, *others = get_layer(pressure, *args, height=height, bottom=bottom, depth=depth)
+
     # Taking the integral of the weights (pressure) to feed into the weighting
     # function. Said integral works out to this function:
-    pres_int = 0.5 * (layer_p[-1]**2 - layer_p[0]**2)
-    for i, _datavar in enumerate(args):
-        arg_mean = np.trapz((layer_arg[i] * layer_p),
-                            x=layer_p) / pres_int
-        ret.append(arg_mean)
+    pres_int = 0.5 * (pres_prof[-1] ** 2 - pres_prof[0] ** 2)
 
-    return ret
+    # Perform integration on the profile for each variable
+    return [np.trapz(var_prof * pres_prof, x=pres_prof) / pres_int for var_prof in others]
 
 
 @exporter.export
