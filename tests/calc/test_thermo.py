@@ -1323,6 +1323,27 @@ def test_mixed_layer_cape_cin(multiple_intersections):
     assert_almost_equal(mlcin, -20.6727628 * units('joule / kilogram'), 2)
 
 
+def test_mixed_layer_cape_cin_with_depth_as_height():
+    """Test passing depth in units of height to mixed layer cape/cin calculation."""
+    pressure = np.array([1003., 1000., 972., 925., 901., 851., 850., 727., 708.]) * units.hPa
+    temperature = np.array([24.8, 24.4, 23., 20.6, 19.3, 16.4, 16.4, 11.4, 11.]) * units.degC
+    dewpoint = np.array([21.1, 21.5, 21., 20.2, 19., 16.3, 16.3, 8.1, 6.8]) * units.degC
+    height = np.array([140, 110, 358, 792, 1018, 1510, 1520, 2843, 3065]) * units.meter
+
+    # Test passing depth as height without a height profile
+    with pytest.warns(UserWarning):
+        mlcape, mlcin = mixed_layer_cape_cin(pressure, temperature, dewpoint,
+                                             depth=units.Quantity(500, 'm'))
+    assert_almost_equal(mlcape, 6.6591 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin, -24.0292 * units('joule / kilogram'), 2)
+
+    # Test passing depth as height with a height profile
+    mlcape, mlcin = mixed_layer_cape_cin(pressure, temperature, dewpoint, height=height,
+                                         depth=units.Quantity(500, 'm'))
+    assert_almost_equal(mlcape, 7.2832 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin, -23.3026 * units('joule / kilogram'), 2)
+
+
 def test_mixed_layer():
     """Test the mixed layer calculation."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa

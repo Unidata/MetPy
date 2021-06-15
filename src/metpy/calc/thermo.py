@@ -10,6 +10,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
+from .basic import height_to_pressure_std
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
@@ -2337,8 +2338,8 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     of a given upper air profile and mixed-layer parcel path. CIN is integrated between the
     surface and LFC, CAPE is integrated between the LFC and EL (or top of sounding).
     Intersection points of the measured temperature profile and parcel profile are
-    logarithmically interpolated. Kwargs for `mixed_parcel` can be provided, such as `depth`.
-    Default mixed-layer depth is 100 hPa.
+    logarithmically interpolated. Kwargs for `mixed_parcel` can be provided, such as `depth`
+    and `height`. Default mixed-layer depth is 100 hPa.
 
     Parameters
     ----------
@@ -2352,7 +2353,9 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
         Dewpoint profile
 
     kwargs
-        Additional keyword arguments to pass to `mixed_parcel`
+        Additional keyword arguments to pass to `mixed_parcel`. If `depth` is passed with units
+        of height without also passing a `height` profile, `depth` will be converted to a
+        pressure with `height_to_pressure_std`.
 
     Returns
     -------
@@ -2372,14 +2375,29 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Quantities even when given xarray DataArray profiles.
 
     """
+    height = kwargs.get('height')
     depth = kwargs.get('depth', units.Quantity(100, 'hPa'))
+
+    # Convert depth from a height to a presure if needed
+    if depth.check('[length]') and height is None:
+        depth = height_to_pressure_std(units.Quantity(0, 'm')) - height_to_pressure_std(depth)
+        kwargs['depth'] = depth
+        warnings.warn('Depth of the mixed layer was given as a height, but no height profile '
+                      'was provided. Depth of mixed layer was converted to '
+                      + str(round(depth, 2)) + ' using US standard atmosphere.')
+
     parcel_pressure, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
                                                                  dewpoint, **kwargs)
 
     # Remove values below top of mixed layer and add in the mixed layer values
-    pressure_prof = pressure[pressure < (pressure[0] - depth)]
-    temp_prof = temperature[pressure < (pressure[0] - depth)]
-    dew_prof = dewpoint[pressure < (pressure[0] - depth)]
+    if depth.check('[length]'):  # Depth is given as a height
+        pressure_prof = pressure[height > (depth - height[0])]
+        temp_prof = temperature[height > (depth - height[0])]
+        dew_prof = dewpoint[height > (depth - height[0])]
+    else:  # Depth is given as a pressure
+        pressure_prof = pressure[pressure < (pressure[0] - depth)]
+        temp_prof = temperature[pressure < (pressure[0] - depth)]
+        dew_prof = dewpoint[pressure < (pressure[0] - depth)]
     pressure_prof = concatenate([parcel_pressure, pressure_prof])
     temp_prof = concatenate([parcel_temp, temp_prof])
     dew_prof = concatenate([parcel_dewpoint, dew_prof])
