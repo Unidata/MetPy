@@ -165,9 +165,11 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
         df['air_pressure_at_sea_level'] = [np.nan]
 
     # Use get wind components and assign them to u and v variables
-    df['eastward_wind'], df['northward_wind'] = wind_components(
+    u, v = wind_components(
         units.Quantity(df.wind_speed.values, 'kts'),
         units.Quantity(df.wind_direction.values, 'degree'))
+    df['eastward_wind'] = u.m
+    df['northward_wind'] = v.m
 
     # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
@@ -621,9 +623,11 @@ def parse_metar_file(filename, *, year=None, month=None):
         units.Quantity(temp, 'degC')).to('hPa').magnitude
 
     # Use get wind components and assign them to eastward and northward winds
-    df['eastward_wind'], df['northward_wind'] = wind_components(
+    u, v = wind_components(
         units.Quantity(df.wind_speed.values, 'kts'),
         units.Quantity(df.wind_direction.values, 'degree'))
+    df['eastward_wind'] = u.m
+    df['northward_wind'] = v.m
 
     # Drop duplicate values
     df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')
