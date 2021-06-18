@@ -182,12 +182,13 @@
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span>
-                       <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span>
+                       <span class="n">Tuple</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">validate</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ctables</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wx_symbols</span>
@@ -795,7 +796,10 @@
 <span class="s2">    This trait can also be set with a string value associated with the named geographic regions</span>
 <span class="s2">    within MetPy. The tuples associated with the names are based on a PlatteCarree projection.</span>
 <span class="s2">    For a CONUS region, the following strings can be used: &#39;us&#39;, &#39;spcus&#39;, &#39;ncus&#39;, and &#39;afus&#39;.</span>
-<span class="s2">    For regional plots, US postal state abbreviations can be used.</span>
+<span class="s2">    For regional plots, US postal state abbreviations can be used, such as &#39;co&#39;, &#39;ny&#39;, &#39;ca&#39;,</span>
+<span class="s2">    et cetera. Providing a &#39;+&#39; or &#39;-&#39; suffix to the string value will zoom in or out,</span>
+<span class="s2">    respectivley. Providing multiple &#39;+&#39; or &#39;-&#39; characters will zoom in or out further.</span>
+
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">projection</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Instance</span><span class="p">(</span><span class="s1">&#39;cartopy.crs.Projection&#39;</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
@@ -831,6 +835,40 @@
 <span class="s2">    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:</span>
 <span class="s2">    &#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@validate</span><span class="p">(</span><span class="s1">&#39;area&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_valid_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that proposed string or tuple is valid and turn string into a tuple extent.&quot;&quot;&quot;</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">proposal</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Parse string, check that string is valid, and determine extent based on string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+)([-+]*)$&#39;</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+            <span class="n">region</span><span class="p">,</span> <span class="n">modifier</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">region</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span>
+            <span class="k">elif</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">_areas</span><span class="p">:</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="n">region</span><span class="p">]</span>
+                <span class="n">zoom</span> <span class="o">=</span> <span class="n">modifier</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">modifier</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zoom_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">zoom</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+        <span class="c1"># Otherwise, assume area is a tuple and check that latitudes/longitudes are valid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">west_lon</span><span class="p">,</span> <span class="n">east_lon</span><span class="p">,</span> <span class="n">south_lat</span><span class="p">,</span> <span class="n">north_lat</span> <span class="o">=</span> <span class="n">area</span>
+            <span class="n">valid_west</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span> <span class="o">&lt;=</span> <span class="n">west_lon</span> <span class="o">&lt;=</span> <span class="mi">180</span>
+            <span class="n">valid_east</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span> <span class="o">&lt;=</span> <span class="n">east_lon</span> <span class="o">&lt;=</span> <span class="mi">180</span>
+            <span class="n">valid_south</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">south_lat</span> <span class="o">&lt;=</span> <span class="mi">90</span>
+            <span class="n">valid_north</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">north_lat</span> <span class="o">&lt;=</span> <span class="mi">90</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">valid_west</span> <span class="ow">and</span> <span class="n">valid_east</span> <span class="ow">and</span> <span class="n">valid_south</span> <span class="ow">and</span> <span class="n">valid_north</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+            <span class="n">extent</span> <span class="o">=</span> <span class="n">area</span>
+
+        <span class="k">return</span> <span class="n">extent</span>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;plots&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_plots_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
@@ -884,6 +922,32 @@
         <span class="sd">&quot;&quot;&quot;Watch traits and set the need redraw flag as necessary.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_zoom_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">zoom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate new bounds for zooming in or out of a given extent.</span>
+
+<span class="sd">        ``extent`` is given as a tuple with four numeric values, in the same format as the</span>
+<span class="sd">        ``area`` trait.</span>
+
+<span class="sd">        If ``zoom`` = 0, the extent will not be changed from what was provided to the method</span>
+<span class="sd">        If ``zoom`` &gt; 0, the returned extent will be smaller (zoomed in)</span>
+<span class="sd">        If ``zoom`` &lt; 0, the returned extent will be larger (zoomed out)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">west_lon</span><span class="p">,</span> <span class="n">east_lon</span><span class="p">,</span> <span class="n">south_lat</span><span class="p">,</span> <span class="n">north_lat</span> <span class="o">=</span> <span class="n">extent</span>
+
+        <span class="c1"># Turn number of pluses and minuses into a number than can scale the latitudes and</span>
+        <span class="c1"># longitudes of our extent</span>
+        <span class="n">zoom_multiplier</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**-</span><span class="n">zoom</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="c1"># Calculate bounds for new, zoomed extent</span>
+        <span class="n">new_north_lat</span> <span class="o">=</span> <span class="n">north_lat</span> <span class="o">+</span> <span class="p">(</span><span class="n">south_lat</span> <span class="o">-</span> <span class="n">north_lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+        <span class="n">new_south_lat</span> <span class="o">=</span> <span class="n">south_lat</span> <span class="o">-</span> <span class="p">(</span><span class="n">south_lat</span> <span class="o">-</span> <span class="n">north_lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+        <span class="n">new_east_lon</span> <span class="o">=</span> <span class="n">east_lon</span> <span class="o">+</span> <span class="p">(</span><span class="n">west_lon</span> <span class="o">-</span> <span class="n">east_lon</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+        <span class="n">new_west_lon</span> <span class="o">=</span> <span class="n">west_lon</span> <span class="o">-</span> <span class="p">(</span><span class="n">west_lon</span> <span class="o">-</span> <span class="n">east_lon</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">new_west_lon</span><span class="p">,</span> <span class="n">new_east_lon</span><span class="p">,</span> <span class="n">new_south_lat</span><span class="p">,</span> <span class="n">new_north_lat</span><span class="p">)</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the :class:`matplotlib.axes.Axes` to draw on.</span>
@@ -918,17 +982,11 @@
         <span class="c1"># Only need to run if we&#39;ve actually changed.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
 
-            <span class="c1"># Set the extent as appropriate based on the area. One special case for &#39;global&#39;</span>
+            <span class="c1"># Set the extent as appropriate based on the area. One special case for &#39;global&#39;.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># Try to look up if we have a string</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">area</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-                <span class="c1"># Otherwise, assume we have a tuple to use as the extent</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
             <span class="c1"># Draw all of the plots.</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">:</span>
@@ -1880,7 +1938,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 18, 2021 at 21:37:56.<br/>
+        Last updated on Jun 18, 2021 at 21:40:42.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
