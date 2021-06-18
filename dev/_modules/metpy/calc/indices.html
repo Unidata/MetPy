@@ -535,8 +535,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">surface_based_lcl_height</span><span class="p">),</span>
                                        <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">1000.</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">2000.</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">))</span>
-    <span class="n">surface_based_lcl_height</span><span class="p">[</span><span class="n">surface_based_lcl_height</span> <span class="o">&gt;</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">2000.</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)]</span> <span class="o">=</span> \
-        <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
     <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="p">((</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">2000.</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">surface_based_lcl_height</span><span class="p">)</span>
                                 <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">1000.</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">))</span>
     <span class="n">shear_6km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">shear_6km</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
@@ -656,7 +654,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 18, 2021 at 16:45:10.<br/>
+        Last updated on Jun 18, 2021 at 19:39:11.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>

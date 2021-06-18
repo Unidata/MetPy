@@ -566,8 +566,8 @@
         <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="k">elif</span> <span class="s1">&#39;FEW&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
         <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;SKC&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;NCD&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> \
-            <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;NSC&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;CLR&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;SKC&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s1">&#39;NCD&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s1">&#39;NSC&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span>
+          <span class="ow">or</span> <span class="s1">&#39;CLR&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">skyc</span><span class="o">.</span><span class="n">text</span><span class="p">):</span>
         <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cloudcover</span> <span class="o">=</span> <span class="mi">10</span>
@@ -848,7 +848,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 18, 2021 at 16:45:10.<br/>
+        Last updated on Jun 18, 2021 at 19:39:11.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
