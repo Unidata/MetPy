@@ -6,12 +6,13 @@
 import contextlib
 import copy
 from datetime import datetime, timedelta
+import re
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, Tuple,
-                       Unicode, Union)
+from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, TraitError,
+                       Tuple, Unicode, Union, validate)
 
 from . import ctables
 from . import wx_symbols
@@ -619,7 +620,10 @@ class MapPanel(Panel):
     This trait can also be set with a string value associated with the named geographic regions
     within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
     For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
-    For regional plots, US postal state abbreviations can be used.
+    For regional plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
+    et cetera. Providing a '+' or '-' suffix to the string value will zoom in or out,
+    respectivley. Providing multiple '+' or '-' characters will zoom in or out further.
+
     """
 
     projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
@@ -655,6 +659,40 @@ class MapPanel(Panel):
     Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
     'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
+
+    @validate('area')
+    def _valid_area(self, proposal):
+        """Check that proposed string or tuple is valid and turn string into a tuple extent."""
+        area = proposal['value']
+
+        # Parse string, check that string is valid, and determine extent based on string
+        if isinstance(area, str):
+            match = re.match(r'(\w+)([-+]*)$', area)
+            if match is None:
+                raise TraitError(f'"{area}" is not a valid string area.')
+            region, modifier = match.groups()
+            region = region.lower()
+
+            if region == 'global':
+                extent = 'global'
+            elif region in _areas:
+                extent = _areas[region]
+                zoom = modifier.count('+') - modifier.count('-')
+                extent = self._zoom_extent(extent, zoom)
+            else:
+                raise TraitError(f'"{area}" is not a valid string area.')
+        # Otherwise, assume area is a tuple and check that latitudes/longitudes are valid
+        else:
+            west_lon, east_lon, south_lat, north_lat = area
+            valid_west = -180 <= west_lon <= 180
+            valid_east = -180 <= east_lon <= 180
+            valid_south = -90 <= south_lat <= 90
+            valid_north = -90 <= north_lat <= 90
+            if not (valid_west and valid_east and valid_south and valid_north):
+                raise TraitError(f'"{area}" is not a valid string area.')
+            extent = area
+
+        return extent
 
     @observe('plots')
     def _plots_changed(self, change):
@@ -708,6 +746,32 @@ class MapPanel(Panel):
         """Watch traits and set the need redraw flag as necessary."""
         self._need_redraw = True
 
+    @staticmethod
+    def _zoom_extent(extent, zoom):
+        """Calculate new bounds for zooming in or out of a given extent.
+
+        ``extent`` is given as a tuple with four numeric values, in the same format as the
+        ``area`` trait.
+
+        If ``zoom`` = 0, the extent will not be changed from what was provided to the method
+        If ``zoom`` > 0, the returned extent will be smaller (zoomed in)
+        If ``zoom`` < 0, the returned extent will be larger (zoomed out)
+
+        """
+        west_lon, east_lon, south_lat, north_lat = extent
+
+        # Turn number of pluses and minuses into a number than can scale the latitudes and
+        # longitudes of our extent
+        zoom_multiplier = (1 - 2**-zoom) / 2
+
+        # Calculate bounds for new, zoomed extent
+        new_north_lat = north_lat + (south_lat - north_lat) * zoom_multiplier
+        new_south_lat = south_lat - (south_lat - north_lat) * zoom_multiplier
+        new_east_lon = east_lon + (west_lon - east_lon) * zoom_multiplier
+        new_west_lon = west_lon - (west_lon - east_lon) * zoom_multiplier
+
+        return (new_west_lon, new_east_lon, new_south_lat, new_north_lat)
+
     @property
     def ax(self):
         """Get the :class:`matplotlib.axes.Axes` to draw on.
@@ -742,17 +806,11 @@ class MapPanel(Panel):
         # Only need to run if we've actually changed.
         if self._need_redraw:
 
-            # Set the extent as appropriate based on the area. One special case for 'global'
+            # Set the extent as appropriate based on the area. One special case for 'global'.
             if self.area == 'global':
                 self.ax.set_global()
             elif self.area is not None:
-                # Try to look up if we have a string
-                if isinstance(self.area, str):
-                    area = _areas[self.area.lower()]
-                # Otherwise, assume we have a tuple to use as the extent
-                else:
-                    area = self.area
-                self.ax.set_extent(area, ccrs.PlateCarree())
+                self.ax.set_extent(self.area, ccrs.PlateCarree())
 
             # Draw all of the plots.
             for p in self.plots:
