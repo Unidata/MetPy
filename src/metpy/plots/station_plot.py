@@ -10,6 +10,7 @@ import numpy as np
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
                          pressure_tendency, sky_cover, wx_symbol_font)
 from ..package_tools import Exporter
+from ..units import units
 
 exporter = Exporter(globals())
 
@@ -328,6 +329,12 @@ class StationPlot:
     @staticmethod
     def _vector_plotting_units(u, v, plotting_units):
         """Handle conversion to plotting units for barbs and arrows."""
+        # If u and v are arrays of Pint objects, put units outside array
+        if isinstance(u[0], units.Quantity):
+            u = units.Quantity(np.fromiter((obj.magnitude for obj in u), float), u[0].units)
+        if isinstance(v[0], units.Quantity):
+            v = units.Quantity(np.fromiter((obj.magnitude for obj in v), float), v[0].units)
+
         if plotting_units:
             if hasattr(u, 'units') and hasattr(v, 'units'):
                 u = u.to(plotting_units)
