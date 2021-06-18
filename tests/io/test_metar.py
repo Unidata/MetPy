@@ -10,6 +10,7 @@ import pytest
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_metar_file, parse_metar_to_dataframe
+from metpy.units import units
 
 
 def test_station_id_not_in_dictionary():
@@ -152,3 +153,14 @@ def test_parse_file_object():
     assert test.air_temperature.values == 21
     assert test.dew_point_temperature.values == 21
     assert test.altimeter.values == 30.03
+
+
+def test_parse_no_pint_objects_in_df():
+    """Test that there are no Pint quantities in dataframes created by parser."""
+    input_file = get_test_data('metar_20190701_1200.txt', mode='rt')
+    metar_str = ('KSLK 011151Z AUTO 21005KT 1/4SM FG VV002 14/13 A1013 RMK AO2 SLP151 70043 '
+                 'T01390133 10139 20094 53002=')
+
+    for df in (parse_metar_file(input_file), parse_metar_to_dataframe(metar_str)):
+        for column in df:
+            assert not isinstance(df[column][0], units.Quantity)
