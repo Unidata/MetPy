@@ -1164,13 +1164,13 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
 
     Equation 2.31:
      .. math::
-       p_{0} = p_{g}exp \left(\frac{Z_{g}}{\bar H} \right) \\
+       p_{0} = p_{g}exp \left(\frac{Z_{g}}{\bar H} \right)
        = p_{g}exp \left(\frac{g_{0}Z_{g}}{R_{d}\bar T_{v}} \right)
 
-    Then by substituting :math:`Delta_{Z}` for :math:`Z_{g}` in Equation 2.31:
-     .. math:: p_{sea_level} = p_{station} exp\left(\frac{\Delta z}{H}\right)
+    Then by substituting :math:`\Delta_{Z}` for :math:`Z_{g}` in Equation 2.31:
+     .. math:: p_{sealevel} = p_{station} exp\left(\frac{\Delta z}{H}\right)
 
-    where :math:`Delta_{Z}` is the elevation in meters and :math:`H = \frac{R_{d}T}{g}`
+    where :math:`\Delta_{Z}` is the elevation in meters and :math:`H = \frac{R_{d}T}{g}`
 
     """
     # Calculate the station pressure using function altimeter_to_station_pressure()

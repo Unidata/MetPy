@@ -359,8 +359,6 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
     """
     surface_based_lcl_height = np.clip(np.atleast_1d(surface_based_lcl_height),
                                        units.Quantity(1000., 'm'), units.Quantity(2000., 'm'))
-    surface_based_lcl_height[surface_based_lcl_height > units.Quantity(2000., 'm')] = \
-        units.Quantity(0, 'm')
     surface_based_lcl_height = ((units.Quantity(2000., 'm') - surface_based_lcl_height)
                                 / units.Quantity(1000., 'm'))
     shear_6km = np.clip(np.atleast_1d(shear_6km), None, units.Quantity(30, 'm/s'))

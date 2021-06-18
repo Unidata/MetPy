@@ -390,8 +390,8 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
         cloudcover = 4
     elif 'FEW' in tree.skyc.text:
         cloudcover = 2
-    elif ('SKC' in tree.skyc.text) or ('NCD' in tree.skyc.text) \
-            or ('NSC' in tree.skyc.text) or 'CLR' in tree.skyc.text:
+    elif ('SKC' in tree.skyc.text or 'NCD' in tree.skyc.text or 'NSC' in tree.skyc.text
+          or 'CLR' in tree.skyc.text):
         cloudcover = 0
     else:
         cloudcover = 10
