@@ -521,7 +521,7 @@
         <span class="n">height</span> <span class="o">=</span> <span class="n">height</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
 
     <span class="c1"># Bound is given in pressure</span>
-    <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[mass]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[time]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">}:</span>
+    <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s1">&#39;[length]**-1 * [mass] * [time]**-2&#39;</span><span class="p">):</span>
         <span class="c1"># If the bound is in the pressure data, we know the pressure bound exactly</span>
         <span class="k">if</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">pressure</span><span class="p">:</span>
             <span class="c1"># By making sure this is at least a 1D array we avoid the behavior in numpy</span>
@@ -551,7 +551,7 @@
                     <span class="n">bound_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">)</span>
 
     <span class="c1"># Bound is given in height</span>
-    <span class="k">elif</span> <span class="n">bound</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}:</span>
+    <span class="k">elif</span> <span class="n">bound</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">):</span>
         <span class="c1"># If there is height data, see if we have the bound or need to interpolate/find nearest</span>
         <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">height</span><span class="p">:</span>  <span class="c1"># Bound is in the height data</span>
@@ -757,9 +757,9 @@
                                                                 <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
 
     <span class="c1"># Calculate the top in whatever units depth is in</span>
-    <span class="k">if</span> <span class="n">depth</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[mass]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[time]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">}:</span>
+    <span class="k">if</span> <span class="n">depth</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s1">&#39;[length]**-1 * [mass] * [time]**-2&#39;</span><span class="p">):</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">bottom_pressure</span> <span class="o">-</span> <span class="n">depth</span>
-    <span class="k">elif</span> <span class="n">depth</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}:</span>
+    <span class="k">elif</span> <span class="n">depth</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">):</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">bottom_height</span> <span class="o">+</span> <span class="n">depth</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Depth must be specified in units of length or pressure&#39;</span><span class="p">)</span>
@@ -1689,7 +1689,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 18, 2021 at 21:40:42.<br/>
+        Last updated on Jun 21, 2021 at 19:51:40.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
     </p>
   </div>
