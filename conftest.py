@@ -17,6 +17,7 @@ import traitlets
 import xarray
 
 import metpy.calc
+import metpy.units
 
 # Need to disable fallback before importing pint
 os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
@@ -42,7 +43,9 @@ def doctest_available_modules(doctest_namespace):
     """Make modules available automatically to doctests."""
     doctest_namespace['metpy'] = metpy
     doctest_namespace['metpy.calc'] = metpy.calc
+    doctest_namespace['np'] = numpy
     doctest_namespace['plt'] = matplotlib.pyplot
+    doctest_namespace['units'] = metpy.units.units
 
 
 @pytest.fixture()
