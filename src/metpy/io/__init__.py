@@ -15,6 +15,8 @@ from .station_data import *  # noqa: F403
 from ..package_tools import set_module
 
 __all__ = gini.__all__[:]  # pylint: disable=undefined-variable
+__all__.extend(metar.__all__)  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
+__all__.extend(station_data.__all__)  # pylint: disable=undefined-variable
 
 set_module(globals())
