@@ -55,9 +55,9 @@ col_units = {'station_id': None,
              'dew_point_temperature': 'degC',
              'altimeter': 'inHg',
              'air_pressure_at_sea_level': 'hPa',
-             'present_weather': None,
-             'past_weather': None,
-             'past_weather2': None}
+             'current_wx1_symbol': None,
+             'current_wx2_symbol': None,
+             'current_wx3_symbol': None}
 
 
 @exporter.export
@@ -87,33 +87,39 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     Notes
     -----
     The output has the following columns:
-    'station_id': Station Identifier (ex. KLOT)
-    'latitude': Latitude of the observation, measured in degrees
-    'longitude': Longitude of the observation, measured in degrees
-    'elevation': Elevation of the observation above sea level, measured in meters
-    'date_time': Date and time of the observation, datetime object
-    'wind_direction': Direction the wind is coming from, measured in degrees
-    'wind_spd': Wind speed, measured in knots
-    'current_wx1': Current weather (1 of 3)
-    'current_wx2': Current weather (2 of 3)
-    'current_wx3': Current weather (3 of 3)
-    'skyc1': Sky cover (ex. FEW)
-    'skylev1': Height of sky cover 1, measured in feet
-    'skyc2': Sky cover (ex. OVC)
-    'skylev2': Height of sky cover 2, measured in feet
-    'skyc3': Sky cover (ex. FEW)
-    'skylev3': Height of sky cover 3, measured in feet
-    'skyc4': Sky cover (ex. CLR)
-    'skylev4:': Height of sky cover 4, measured in feet
-    'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
-    'temperature': Temperature, measured in degrees Celsius
-    'dewpoint': Dew point, measured in degrees Celsius
-    'altimeter': Altimeter value, measured in inches of mercury, float
-    'current_wx1_symbol': Current weather symbol (1 of 3), integer
-    'current_wx2_symbol': Current weather symbol (2 of 3), integer
-    'current_wx3_symbol': Current weather symbol (3 of 3), integer
-    'sea_level_pressure': Sea level pressure, derived from temperature, elevation
-    and altimeter value, float
+
+    * 'station_id': Station Identifier (ex. KLOT)
+    * 'latitude': Latitude of the observation, measured in degrees
+    * 'longitude': Longitude of the observation, measured in degrees
+    * 'elevation': Elevation of the observation above sea level, measured in meters
+    * 'date_time': Date and time of the observation, datetime object
+    * 'wind_direction': Direction the wind is coming from, measured in degrees
+    * 'wind_speed': Wind speed, measured in knots
+    * 'current_wx1': Current weather (1 of 3)
+    * 'current_wx2': Current weather (2 of 3)
+    * 'current_wx3': Current weather (3 of 3)
+    * 'low_cloud_type': Low-level sky cover (ex. FEW)
+    * 'low_cloud_level': Height of low-level sky cover, measured in feet
+    * 'medium_cloud_type': Medium-level sky cover (ex. OVC)
+    * 'medium_cloud_level': Height of medium-level sky cover, measured in feet
+    * 'high_cloud_type': High-level sky cover (ex. FEW)
+    * 'high_cloud_level': Height of high-level sky cover, measured in feet
+    * 'highest_cloud_type': Highest-level Sky cover (ex. CLR)
+    * 'highest_cloud_level:': Height of highest-level sky cover, measured in feet
+    * 'cloud_coverage': Cloud cover measured in oktas, taken from maximum of sky cover values
+    * 'air_temperature': Temperature, measured in degrees Celsius
+    * 'dew_point_temperature': Dew point, measured in degrees Celsius
+    * 'altimeter': Altimeter value, measured in inches of mercury
+    * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
+      and altimeter value
+    * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
+    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
 
     """
     # Defaults year and/or month to present reported date if not provided
@@ -149,9 +155,9 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
                        'air_temperature': metar_vars.temperature,
                        'dew_point_temperature': metar_vars.dewpoint,
                        'altimeter': metar_vars.altimeter,
-                       'present_weather': metar_vars.current_wx1_symbol,
-                       'past_weather': metar_vars.current_wx2_symbol,
-                       'past_weather2': metar_vars.current_wx3_symbol},
+                       'current_wx1_symbol': metar_vars.current_wx1_symbol,
+                       'current_wx2_symbol': metar_vars.current_wx2_symbol,
+                       'current_wx3_symbol': metar_vars.current_wx3_symbol},
                       index=[metar_vars.station_id])
 
     # Convert to sea level pressure using calculation in metpy.calc
@@ -205,33 +211,35 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
     Notes
     -----
     Returned data has named tuples with the following attributes:
-    'station_id': Station Identifier (ex. KLOT)
-    'latitude': Latitude of the observation, measured in degrees
-    'longitude': Longitude of the observation, measured in degrees
-    'elevation': Elevation of the observation above sea level, measured in meters
-    'date_time': Date and time of the observation, datetime object
-    'wind_direction': Direction the wind is coming from, measured in degrees
-    'wind_spd': Wind speed, measured in knots
-    'current_wx1': Current weather (1 of 3)
-    'current_wx2': Current weather (2 of 3)
-    'current_wx3': Current weather (3 of 3)
-    'skyc1': Sky cover (ex. FEW)
-    'skylev1': Height of sky cover 1, measured in feet
-    'skyc2': Sky cover (ex. OVC)
-    'skylev2': Height of sky cover 2, measured in feet
-    'skyc3': Sky cover (ex. FEW)
-    'skylev3': Height of sky cover 3, measured in feet
-    'skyc4': Sky cover (ex. CLR)
-    'skylev4:': Height of sky cover 4, measured in feet
-    'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
-    'temperature': Temperature, measured in degrees Celsius
-    'dewpoint': Dewpoint, measured in degrees Celsius
-    'altimeter': Altimeter value, measured in inches of mercury, float
-    'current_wx1_symbol': Current weather symbol (1 of 3), integer
-    'current_wx2_symbol': Current weather symbol (2 of 3), integer
-    'current_wx3_symbol': Current weather symbol (3 of 3), integer
-    'sea_level_pressure': Sea level pressure, derived from temperature, elevation
-    and altimeter value, float
+
+    * 'station_id': Station Identifier (ex. KLOT)
+    * 'latitude': Latitude of the observation, measured in degrees
+    * 'longitude': Longitude of the observation, measured in degrees
+    * 'elevation': Elevation of the observation above sea level, measured in meters
+    * 'date_time': Date and time of the observation, datetime object
+    * 'wind_direction': Direction the wind is coming from, measured in degrees
+    * 'wind_speed': Wind speed, measured in knots
+    * 'current_wx1': Current weather (1 of 3)
+    * 'current_wx2': Current weather (2 of 3)
+    * 'current_wx3': Current weather (3 of 3)
+    * 'skyc1': Sky cover (ex. FEW)
+    * 'skylev1': Height of sky cover 1, measured in feet
+    * 'skyc2': Sky cover (ex. OVC)
+    * 'skylev2': Height of sky cover 2, measured in feet
+    * 'skyc3': Sky cover (ex. FEW)
+    * 'skylev3': Height of sky cover 3, measured in feet
+    * 'skyc4': Sky cover (ex. CLR)
+    * 'skylev4:': Height of sky cover 4, measured in feet
+    * 'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
+    * 'temperature': Temperature, measured in degrees Celsius
+    * 'dewpoint': Dewpoint, measured in degrees Celsius
+    * 'altimeter': Altimeter value, measured in inches of mercury
+    * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
+      Attachment IV
 
     """
     # Decode the data using the parser (built using Canopy) the parser utilizes a grammar
@@ -455,33 +463,39 @@ def parse_metar_file(filename, *, year=None, month=None):
     Notes
     -----
     The returned `pandas.DataFrame` has the following columns:
-    'station_id': Station Identifier (ex. KLOT)
-    'latitude': Latitude of the observation, measured in degrees
-    'longitude': Longitude of the observation, measured in degrees
-    'elevation': Elevation of the observation above sea level, measured in meters
-    'date_time': Date and time of the observation, datetime object
-    'wind_direction': Direction the wind is coming from, measured in degrees
-    'wind_spd': Wind speed, measured in knots
-    'current_wx1': Current weather (1 of 3)
-    'current_wx2': Current weather (2 of 3)
-    'current_wx3': Current weather (3 of 3)
-    'skyc1': Sky cover (ex. FEW)
-    'skylev1': Height of sky cover 1, measured in feet
-    'skyc2': Sky cover (ex. OVC)
-    'skylev2': Height of sky cover 2, measured in feet
-    'skyc3': Sky cover (ex. FEW)
-    'skylev3': Height of sky cover 3, measured in feet
-    'skyc4': Sky cover (ex. CLR)
-    'skylev4:': Height of sky cover 4, measured in feet
-    'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
-    'temperature': Temperature, measured in degrees Celsius
-    'dewpoint': Dew point, measured in degrees Celsius
-    'altimeter': Altimeter value, measured in inches of mercury, float
-    'current_wx1_symbol': Current weather symbol (1 of 3), integer
-    'current_wx2_symbol': Current weather symbol (2 of 3), integer
-    'current_wx3_symbol': Current weather symbol (3 of 3), integer
-    'sea_level_pressure': Sea level pressure, derived from temperature, elevation
-    and altimeter value, float
+
+    * 'station_id': Station Identifier (ex. KLOT)
+    * 'latitude': Latitude of the observation, measured in degrees
+    * 'longitude': Longitude of the observation, measured in degrees
+    * 'elevation': Elevation of the observation above sea level, measured in meters
+    * 'date_time': Date and time of the observation, datetime object
+    * 'wind_direction': Direction the wind is coming from, measured in degrees
+    * 'wind_speed': Wind speed, measured in knots
+    * 'current_wx1': Current weather (1 of 3)
+    * 'current_wx2': Current weather (2 of 3)
+    * 'current_wx3': Current weather (3 of 3)
+    * 'low_cloud_type': Low-level sky cover (ex. FEW)
+    * 'low_cloud_level': Height of low-level sky cover, measured in feet
+    * 'medium_cloud_type': Medium-level sky cover (ex. OVC)
+    * 'medium_cloud_level': Height of medium-level sky cover, measured in feet
+    * 'high_cloud_type': High-level sky cover (ex. FEW)
+    * 'high_cloud_level': Height of high-level sky cover, measured in feet
+    * 'highest_cloud_type': Highest-level Sky cover (ex. CLR)
+    * 'highest_cloud_level:': Height of highest-level sky cover, measured in feet
+    * 'cloud_coverage': Cloud cover measured in oktas, taken from maximum of sky cover values
+    * 'air_temperature': Temperature, measured in degrees Celsius
+    * 'dew_point_temperature': Dew point, measured in degrees Celsius
+    * 'altimeter': Altimeter value, measured in inches of mercury
+    * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
+      Attachment IV
+    * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
+      and altimeter value
+    * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
+    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
 
     """
     # Defaults year and/or month to present reported date if not provided
