@@ -929,7 +929,7 @@ class Hodograph:
         if colors:
             cmap = mcolors.ListedColormap(colors)
             # If we are segmenting by height (a length), interpolate the contour intervals
-            if intervals.dimensionality == {'[length]': 1.0}:
+            if intervals.check('[length]'):
 
                 # Find any intervals not in the data and interpolate them
                 interpolation_heights = np.array([bound.m for bound in intervals
