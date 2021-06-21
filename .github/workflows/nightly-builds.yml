@@ -90,7 +90,7 @@ jobs:
       run: |
         set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ | tee tests-${{ matrix.python-version }}.log || (
+        python -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ |& tee tests-${{ matrix.python-version }}.log || (
             echo '::set-output name=LOG_AVAILABLE::true' && false
         )
 
@@ -191,7 +191,7 @@ jobs:
         set -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         pushd docs
-        make overridecheck html O=-W | tee build-${{ matrix.python-version }}.log || (
+        make overridecheck html O=-W |& tee build-${{ matrix.python-version }}.log || (
             echo '::set-output name=LOG_AVAILABLE::true' && false
         )
         popd
