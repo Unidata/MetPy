@@ -345,7 +345,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
         height = height[sort_inds]
 
     # Bound is given in pressure
-    if bound.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
+    if bound.check('[length]**-1 * [mass] * [time]**-2'):
         # If the bound is in the pressure data, we know the pressure bound exactly
         if bound in pressure:
             # By making sure this is at least a 1D array we avoid the behavior in numpy
@@ -375,7 +375,7 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
                     bound_height = pressure_to_height_std(bound_pressure)
 
     # Bound is given in height
-    elif bound.dimensionality == {'[length]': 1.0}:
+    elif bound.check('[length]'):
         # If there is height data, see if we have the bound or need to interpolate/find nearest
         if height is not None:
             if bound in height:  # Bound is in the height data
@@ -581,9 +581,9 @@ def get_layer(pressure, *args, height=None, bottom=None, depth=None, interpolate
                                                                 interpolate=interpolate)
 
     # Calculate the top in whatever units depth is in
-    if depth.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
+    if depth.check('[length]**-1 * [mass] * [time]**-2'):
         top = bottom_pressure - depth
-    elif depth.dimensionality == {'[length]': 1}:
+    elif depth.check('[length]'):
         top = bottom_height + depth
     else:
         raise ValueError('Depth must be specified in units of length or pressure')
