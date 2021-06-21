@@ -27,8 +27,8 @@
 
     
 
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
@@ -38,7 +38,7 @@
     
   <link rel="preload" as="script" href="../../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -231,9 +231,9 @@
              <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;degC&#39;</span><span class="p">,</span>
              <span class="s1">&#39;altimeter&#39;</span><span class="p">:</span> <span class="s1">&#39;inHg&#39;</span><span class="p">,</span>
              <span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">:</span> <span class="s1">&#39;hPa&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;present_weather&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-             <span class="s1">&#39;past_weather&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-             <span class="s1">&#39;past_weather2&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+             <span class="s1">&#39;current_wx1_symbol&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;current_wx2_symbol&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">&#39;current_wx3_symbol&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="parse_metar_to_dataframe"><a class="viewcode-back" href="../../../api/generated/metpy.io.parse_metar_to_dataframe.html#metpy.io.parse_metar_to_dataframe">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -263,33 +263,39 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    The output has the following columns:</span>
-<span class="sd">    &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
-<span class="sd">    &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
-<span class="sd">    &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
-<span class="sd">    &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
-<span class="sd">    &#39;date_time&#39;: Date and time of the observation, datetime object</span>
-<span class="sd">    &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
-<span class="sd">    &#39;wind_spd&#39;: Wind speed, measured in knots</span>
-<span class="sd">    &#39;current_wx1&#39;: Current weather (1 of 3)</span>
-<span class="sd">    &#39;current_wx2&#39;: Current weather (2 of 3)</span>
-<span class="sd">    &#39;current_wx3&#39;: Current weather (3 of 3)</span>
-<span class="sd">    &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
-<span class="sd">    &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
-<span class="sd">    &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
-<span class="sd">    &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
-<span class="sd">    &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
-<span class="sd">    &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
-<span class="sd">    &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
-<span class="sd">    &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
-<span class="sd">    &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
-<span class="sd">    &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
-<span class="sd">    &#39;dewpoint&#39;: Dew point, measured in degrees Celsius</span>
-<span class="sd">    &#39;altimeter&#39;: Altimeter value, measured in inches of mercury, float</span>
-<span class="sd">    &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), integer</span>
-<span class="sd">    &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), integer</span>
-<span class="sd">    &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), integer</span>
-<span class="sd">    &#39;sea_level_pressure&#39;: Sea level pressure, derived from temperature, elevation</span>
-<span class="sd">    and altimeter value, float</span>
+
+<span class="sd">    * &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
+<span class="sd">    * &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
+<span class="sd">    * &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
+<span class="sd">    * &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
+<span class="sd">    * &#39;date_time&#39;: Date and time of the observation, datetime object</span>
+<span class="sd">    * &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
+<span class="sd">    * &#39;wind_speed&#39;: Wind speed, measured in knots</span>
+<span class="sd">    * &#39;current_wx1&#39;: Current weather (1 of 3)</span>
+<span class="sd">    * &#39;current_wx2&#39;: Current weather (2 of 3)</span>
+<span class="sd">    * &#39;current_wx3&#39;: Current weather (3 of 3)</span>
+<span class="sd">    * &#39;low_cloud_type&#39;: Low-level sky cover (ex. FEW)</span>
+<span class="sd">    * &#39;low_cloud_level&#39;: Height of low-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;medium_cloud_type&#39;: Medium-level sky cover (ex. OVC)</span>
+<span class="sd">    * &#39;medium_cloud_level&#39;: Height of medium-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;high_cloud_type&#39;: High-level sky cover (ex. FEW)</span>
+<span class="sd">    * &#39;high_cloud_level&#39;: Height of high-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;highest_cloud_type&#39;: Highest-level Sky cover (ex. CLR)</span>
+<span class="sd">    * &#39;highest_cloud_level:&#39;: Height of highest-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;cloud_coverage&#39;: Cloud cover measured in oktas, taken from maximum of sky cover values</span>
+<span class="sd">    * &#39;air_temperature&#39;: Temperature, measured in degrees Celsius</span>
+<span class="sd">    * &#39;dew_point_temperature&#39;: Dew point, measured in degrees Celsius</span>
+<span class="sd">    * &#39;altimeter&#39;: Altimeter value, measured in inches of mercury</span>
+<span class="sd">    * &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;air_pressure_at_sea_level&#39;: Sea level pressure, derived from temperature, elevation</span>
+<span class="sd">      and altimeter value</span>
+<span class="sd">    * &#39;eastward_wind&#39;: Eastward component (u-compoment) of the wind vector, measured in knots</span>
+<span class="sd">    * &#39;northward_wind&#39;: Northward component (v-compoment) of the wind vector, measured in knots</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Defaults year and/or month to present reported date if not provided</span>
@@ -325,9 +331,9 @@
                        <span class="s1">&#39;air_temperature&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
                        <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">dewpoint</span><span class="p">,</span>
                        <span class="s1">&#39;altimeter&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">altimeter</span><span class="p">,</span>
-                       <span class="s1">&#39;present_weather&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx1_symbol</span><span class="p">,</span>
-                       <span class="s1">&#39;past_weather&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx2_symbol</span><span class="p">,</span>
-                       <span class="s1">&#39;past_weather2&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx3_symbol</span><span class="p">},</span>
+                       <span class="s1">&#39;current_wx1_symbol&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx1_symbol</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx2_symbol&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx2_symbol</span><span class="p">,</span>
+                       <span class="s1">&#39;current_wx3_symbol&#39;</span><span class="p">:</span> <span class="n">metar_vars</span><span class="o">.</span><span class="n">current_wx3_symbol</span><span class="p">},</span>
                       <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">metar_vars</span><span class="o">.</span><span class="n">station_id</span><span class="p">])</span>
 
     <span class="c1"># Convert to sea level pressure using calculation in metpy.calc</span>
@@ -381,33 +387,35 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    Returned data has named tuples with the following attributes:</span>
-<span class="sd">    &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
-<span class="sd">    &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
-<span class="sd">    &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
-<span class="sd">    &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
-<span class="sd">    &#39;date_time&#39;: Date and time of the observation, datetime object</span>
-<span class="sd">    &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
-<span class="sd">    &#39;wind_spd&#39;: Wind speed, measured in knots</span>
-<span class="sd">    &#39;current_wx1&#39;: Current weather (1 of 3)</span>
-<span class="sd">    &#39;current_wx2&#39;: Current weather (2 of 3)</span>
-<span class="sd">    &#39;current_wx3&#39;: Current weather (3 of 3)</span>
-<span class="sd">    &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
-<span class="sd">    &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
-<span class="sd">    &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
-<span class="sd">    &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
-<span class="sd">    &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
-<span class="sd">    &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
-<span class="sd">    &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
-<span class="sd">    &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
-<span class="sd">    &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
-<span class="sd">    &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
-<span class="sd">    &#39;dewpoint&#39;: Dewpoint, measured in degrees Celsius</span>
-<span class="sd">    &#39;altimeter&#39;: Altimeter value, measured in inches of mercury, float</span>
-<span class="sd">    &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), integer</span>
-<span class="sd">    &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), integer</span>
-<span class="sd">    &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), integer</span>
-<span class="sd">    &#39;sea_level_pressure&#39;: Sea level pressure, derived from temperature, elevation</span>
-<span class="sd">    and altimeter value, float</span>
+
+<span class="sd">    * &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
+<span class="sd">    * &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
+<span class="sd">    * &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
+<span class="sd">    * &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
+<span class="sd">    * &#39;date_time&#39;: Date and time of the observation, datetime object</span>
+<span class="sd">    * &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
+<span class="sd">    * &#39;wind_speed&#39;: Wind speed, measured in knots</span>
+<span class="sd">    * &#39;current_wx1&#39;: Current weather (1 of 3)</span>
+<span class="sd">    * &#39;current_wx2&#39;: Current weather (2 of 3)</span>
+<span class="sd">    * &#39;current_wx3&#39;: Current weather (3 of 3)</span>
+<span class="sd">    * &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    * &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
+<span class="sd">    * &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
+<span class="sd">    * &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
+<span class="sd">    * &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
+<span class="sd">    * &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
+<span class="sd">    * &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
+<span class="sd">    * &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
+<span class="sd">    * &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
+<span class="sd">    * &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
+<span class="sd">    * &#39;dewpoint&#39;: Dewpoint, measured in degrees Celsius</span>
+<span class="sd">    * &#39;altimeter&#39;: Altimeter value, measured in inches of mercury</span>
+<span class="sd">    * &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Decode the data using the parser (built using Canopy) the parser utilizes a grammar</span>
@@ -631,33 +639,39 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    The returned `pandas.DataFrame` has the following columns:</span>
-<span class="sd">    &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
-<span class="sd">    &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
-<span class="sd">    &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
-<span class="sd">    &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
-<span class="sd">    &#39;date_time&#39;: Date and time of the observation, datetime object</span>
-<span class="sd">    &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
-<span class="sd">    &#39;wind_spd&#39;: Wind speed, measured in knots</span>
-<span class="sd">    &#39;current_wx1&#39;: Current weather (1 of 3)</span>
-<span class="sd">    &#39;current_wx2&#39;: Current weather (2 of 3)</span>
-<span class="sd">    &#39;current_wx3&#39;: Current weather (3 of 3)</span>
-<span class="sd">    &#39;skyc1&#39;: Sky cover (ex. FEW)</span>
-<span class="sd">    &#39;skylev1&#39;: Height of sky cover 1, measured in feet</span>
-<span class="sd">    &#39;skyc2&#39;: Sky cover (ex. OVC)</span>
-<span class="sd">    &#39;skylev2&#39;: Height of sky cover 2, measured in feet</span>
-<span class="sd">    &#39;skyc3&#39;: Sky cover (ex. FEW)</span>
-<span class="sd">    &#39;skylev3&#39;: Height of sky cover 3, measured in feet</span>
-<span class="sd">    &#39;skyc4&#39;: Sky cover (ex. CLR)</span>
-<span class="sd">    &#39;skylev4:&#39;: Height of sky cover 4, measured in feet</span>
-<span class="sd">    &#39;cloudcover&#39;: Cloud coverage measured in oktas, taken from maximum of sky cover values</span>
-<span class="sd">    &#39;temperature&#39;: Temperature, measured in degrees Celsius</span>
-<span class="sd">    &#39;dewpoint&#39;: Dew point, measured in degrees Celsius</span>
-<span class="sd">    &#39;altimeter&#39;: Altimeter value, measured in inches of mercury, float</span>
-<span class="sd">    &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), integer</span>
-<span class="sd">    &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), integer</span>
-<span class="sd">    &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), integer</span>
-<span class="sd">    &#39;sea_level_pressure&#39;: Sea level pressure, derived from temperature, elevation</span>
-<span class="sd">    and altimeter value, float</span>
+
+<span class="sd">    * &#39;station_id&#39;: Station Identifier (ex. KLOT)</span>
+<span class="sd">    * &#39;latitude&#39;: Latitude of the observation, measured in degrees</span>
+<span class="sd">    * &#39;longitude&#39;: Longitude of the observation, measured in degrees</span>
+<span class="sd">    * &#39;elevation&#39;: Elevation of the observation above sea level, measured in meters</span>
+<span class="sd">    * &#39;date_time&#39;: Date and time of the observation, datetime object</span>
+<span class="sd">    * &#39;wind_direction&#39;: Direction the wind is coming from, measured in degrees</span>
+<span class="sd">    * &#39;wind_speed&#39;: Wind speed, measured in knots</span>
+<span class="sd">    * &#39;current_wx1&#39;: Current weather (1 of 3)</span>
+<span class="sd">    * &#39;current_wx2&#39;: Current weather (2 of 3)</span>
+<span class="sd">    * &#39;current_wx3&#39;: Current weather (3 of 3)</span>
+<span class="sd">    * &#39;low_cloud_type&#39;: Low-level sky cover (ex. FEW)</span>
+<span class="sd">    * &#39;low_cloud_level&#39;: Height of low-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;medium_cloud_type&#39;: Medium-level sky cover (ex. OVC)</span>
+<span class="sd">    * &#39;medium_cloud_level&#39;: Height of medium-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;high_cloud_type&#39;: High-level sky cover (ex. FEW)</span>
+<span class="sd">    * &#39;high_cloud_level&#39;: Height of high-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;highest_cloud_type&#39;: Highest-level Sky cover (ex. CLR)</span>
+<span class="sd">    * &#39;highest_cloud_level:&#39;: Height of highest-level sky cover, measured in feet</span>
+<span class="sd">    * &#39;cloud_coverage&#39;: Cloud cover measured in oktas, taken from maximum of sky cover values</span>
+<span class="sd">    * &#39;air_temperature&#39;: Temperature, measured in degrees Celsius</span>
+<span class="sd">    * &#39;dew_point_temperature&#39;: Dew point, measured in degrees Celsius</span>
+<span class="sd">    * &#39;altimeter&#39;: Altimeter value, measured in inches of mercury</span>
+<span class="sd">    * &#39;current_wx1_symbol&#39;: Current weather symbol (1 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;current_wx2_symbol&#39;: Current weather symbol (2 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;current_wx3_symbol&#39;: Current weather symbol (3 of 3), WMO integer code from [WMO306]_</span>
+<span class="sd">      Attachment IV</span>
+<span class="sd">    * &#39;air_pressure_at_sea_level&#39;: Sea level pressure, derived from temperature, elevation</span>
+<span class="sd">      and altimeter value</span>
+<span class="sd">    * &#39;eastward_wind&#39;: Eastward component (u-compoment) of the wind vector, measured in knots</span>
+<span class="sd">    * &#39;northward_wind&#39;: Northward component (v-compoment) of the wind vector, measured in knots</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Defaults year and/or month to present reported date if not provided</span>
@@ -852,8 +866,8 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Level2File &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -27,8 +28,8 @@
 
     
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
@@ -38,7 +39,7 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -273,18 +274,18 @@
               
               <div>
                 
-  <div class="section" id="level2file">
+  <section id="level2file">
 <h1>Level2File<a class="headerlink" href="#level2file" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="metpy.io.Level2File">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metpy.io.</span></code><code class="sig-name descname"><span class="pre">Level2File</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_volume_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level2File" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">Level2File</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_volume_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level2File" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle reading the NEXRAD Level 2 data and its various messages.</p>
 <p>This class attempts to decode every byte that is in a given data file.
 It supports both external compression, as well as the internal BZ2
 compression that is used.</p>
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.stid">
-<code class="sig-name descname"><span class="pre">stid</span></code><a class="headerlink" href="#metpy.io.Level2File.stid" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.stid">
+<span class="sig-name descname"><span class="pre">stid</span></span><a class="headerlink" href="#metpy.io.Level2File.stid" title="Permalink to this definition">¶</a></dt>
 <dd><p>The ID of the radar station</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -294,8 +295,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.dt">
-<code class="sig-name descname"><span class="pre">dt</span></code><a class="headerlink" href="#metpy.io.Level2File.dt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#metpy.io.Level2File.dt" title="Permalink to this definition">¶</a></dt>
 <dd><p>The date and time of the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -305,8 +306,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.vol_hdr">
-<code class="sig-name descname"><span class="pre">vol_hdr</span></code><a class="headerlink" href="#metpy.io.Level2File.vol_hdr" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.vol_hdr">
+<span class="sig-name descname"><span class="pre">vol_hdr</span></span><a class="headerlink" href="#metpy.io.Level2File.vol_hdr" title="Permalink to this definition">¶</a></dt>
 <dd><p>The unpacked volume header</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -316,8 +317,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.sweeps">
-<code class="sig-name descname"><span class="pre">sweeps</span></code><a class="headerlink" href="#metpy.io.Level2File.sweeps" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.sweeps">
+<span class="sig-name descname"><span class="pre">sweeps</span></span><a class="headerlink" href="#metpy.io.Level2File.sweeps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data for each of the sweeps found in the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -327,8 +328,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.rda_status">
-<code class="sig-name descname"><span class="pre">rda_status</span></code><a class="headerlink" href="#metpy.io.Level2File.rda_status" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.rda_status">
+<span class="sig-name descname"><span class="pre">rda_status</span></span><a class="headerlink" href="#metpy.io.Level2File.rda_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpacked RDA status information, if found</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -338,8 +339,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.maintenance_data">
-<code class="sig-name descname"><span class="pre">maintenance_data</span></code><a class="headerlink" href="#metpy.io.Level2File.maintenance_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.maintenance_data">
+<span class="sig-name descname"><span class="pre">maintenance_data</span></span><a class="headerlink" href="#metpy.io.Level2File.maintenance_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpacked maintenance data information, if found</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -349,8 +350,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.maintenance_data_desc">
-<code class="sig-name descname"><span class="pre">maintenance_data_desc</span></code><a class="headerlink" href="#metpy.io.Level2File.maintenance_data_desc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.maintenance_data_desc">
+<span class="sig-name descname"><span class="pre">maintenance_data_desc</span></span><a class="headerlink" href="#metpy.io.Level2File.maintenance_data_desc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Descriptions of maintenance data fields, if maintenance data present</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -360,8 +361,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.vcp_info">
-<code class="sig-name descname"><span class="pre">vcp_info</span></code><a class="headerlink" href="#metpy.io.Level2File.vcp_info" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.vcp_info">
+<span class="sig-name descname"><span class="pre">vcp_info</span></span><a class="headerlink" href="#metpy.io.Level2File.vcp_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpacked VCP information, if found</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -371,8 +372,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.clutter_filter_bypass_map">
-<code class="sig-name descname"><span class="pre">clutter_filter_bypass_map</span></code><a class="headerlink" href="#metpy.io.Level2File.clutter_filter_bypass_map" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.clutter_filter_bypass_map">
+<span class="sig-name descname"><span class="pre">clutter_filter_bypass_map</span></span><a class="headerlink" href="#metpy.io.Level2File.clutter_filter_bypass_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpacked clutter filter bypass map, if present</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -382,8 +383,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.rda">
-<code class="sig-name descname"><span class="pre">rda</span></code><a class="headerlink" href="#metpy.io.Level2File.rda" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.rda">
+<span class="sig-name descname"><span class="pre">rda</span></span><a class="headerlink" href="#metpy.io.Level2File.rda" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unpacked RDA adaptation data, if present</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -393,8 +394,8 @@ compression that is used.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.rda_adaptation_desc">
-<code class="sig-name descname"><span class="pre">rda_adaptation_desc</span></code><a class="headerlink" href="#metpy.io.Level2File.rda_adaptation_desc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.rda_adaptation_desc">
+<span class="sig-name descname"><span class="pre">rda_adaptation_desc</span></span><a class="headerlink" href="#metpy.io.Level2File.rda_adaptation_desc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Descriptions of RDA adaptation data, if adaptation data present</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -492,99 +493,99 @@ this will be read from directly.</p>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.AR2_BLOCKSIZE">
-<code class="sig-name descname"><span class="pre">AR2_BLOCKSIZE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2432</span></em><a class="headerlink" href="#metpy.io.Level2File.AR2_BLOCKSIZE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.AR2_BLOCKSIZE">
+<span class="sig-name descname"><span class="pre">AR2_BLOCKSIZE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2432</span></em><a class="headerlink" href="#metpy.io.Level2File.AR2_BLOCKSIZE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.CTM_HEADER_SIZE">
-<code class="sig-name descname"><span class="pre">CTM_HEADER_SIZE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">12</span></em><a class="headerlink" href="#metpy.io.Level2File.CTM_HEADER_SIZE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.CTM_HEADER_SIZE">
+<span class="sig-name descname"><span class="pre">CTM_HEADER_SIZE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">12</span></em><a class="headerlink" href="#metpy.io.Level2File.CTM_HEADER_SIZE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.MISSING">
-<code class="sig-name descname"><span class="pre">MISSING</span></code><em class="property"> <span class="pre">=</span> <span class="pre">nan</span></em><a class="headerlink" href="#metpy.io.Level2File.MISSING" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.MISSING">
+<span class="sig-name descname"><span class="pre">MISSING</span></span><em class="property"> <span class="pre">=</span> <span class="pre">nan</span></em><a class="headerlink" href="#metpy.io.Level2File.MISSING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.RANGE_FOLD">
-<code class="sig-name descname"><span class="pre">RANGE_FOLD</span></code><em class="property"> <span class="pre">=</span> <span class="pre">nan</span></em><a class="headerlink" href="#metpy.io.Level2File.RANGE_FOLD" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.RANGE_FOLD">
+<span class="sig-name descname"><span class="pre">RANGE_FOLD</span></span><em class="property"> <span class="pre">=</span> <span class="pre">nan</span></em><a class="headerlink" href="#metpy.io.Level2File.RANGE_FOLD" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.data_block_fmt">
-<code class="sig-name descname"><span class="pre">data_block_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.data_block_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.data_block_fmt">
+<span class="sig-name descname"><span class="pre">data_block_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.data_block_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg15_code_map">
-<code class="sig-name descname"><span class="pre">msg15_code_map</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{0:</span> <span class="pre">'Bypass</span> <span class="pre">Filter',</span> <span class="pre">1:</span> <span class="pre">'Bypass</span> <span class="pre">map</span> <span class="pre">in</span> <span class="pre">Control',</span> <span class="pre">2:</span> <span class="pre">'Force</span> <span class="pre">Filter'}</span></em><a class="headerlink" href="#metpy.io.Level2File.msg15_code_map" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg15_code_map">
+<span class="sig-name descname"><span class="pre">msg15_code_map</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{0:</span> <span class="pre">'Bypass</span> <span class="pre">Filter',</span> <span class="pre">1:</span> <span class="pre">'Bypass</span> <span class="pre">map</span> <span class="pre">in</span> <span class="pre">Control',</span> <span class="pre">2:</span> <span class="pre">'Force</span> <span class="pre">Filter'}</span></em><a class="headerlink" href="#metpy.io.Level2File.msg15_code_map" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg1_fmt">
-<code class="sig-name descname"><span class="pre">msg1_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg1_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg1_fmt">
+<span class="sig-name descname"><span class="pre">msg1_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg1_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg2_additional_fmt">
-<code class="sig-name descname"><span class="pre">msg2_additional_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg2_additional_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg2_additional_fmt">
+<span class="sig-name descname"><span class="pre">msg2_additional_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg2_additional_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg2_fmt">
-<code class="sig-name descname"><span class="pre">msg2_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg2_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg2_fmt">
+<span class="sig-name descname"><span class="pre">msg2_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg2_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg31_data_hdr_fmt">
-<code class="sig-name descname"><span class="pre">msg31_data_hdr_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg31_data_hdr_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg31_data_hdr_fmt">
+<span class="sig-name descname"><span class="pre">msg31_data_hdr_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg31_data_hdr_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg31_el_const_fmt">
-<code class="sig-name descname"><span class="pre">msg31_el_const_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg31_el_const_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg31_el_const_fmt">
+<span class="sig-name descname"><span class="pre">msg31_el_const_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg31_el_const_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg31_vol_const_fmt">
-<code class="sig-name descname"><span class="pre">msg31_vol_const_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg31_vol_const_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg31_vol_const_fmt">
+<span class="sig-name descname"><span class="pre">msg31_vol_const_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg31_vol_const_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.msg_hdr_fmt">
-<code class="sig-name descname"><span class="pre">msg_hdr_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg_hdr_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.msg_hdr_fmt">
+<span class="sig-name descname"><span class="pre">msg_hdr_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.msg_hdr_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.rad_const_fmt_v1">
-<code class="sig-name descname"><span class="pre">rad_const_fmt_v1</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.rad_const_fmt_v1" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.rad_const_fmt_v1">
+<span class="sig-name descname"><span class="pre">rad_const_fmt_v1</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.rad_const_fmt_v1" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.rad_const_fmt_v2">
-<code class="sig-name descname"><span class="pre">rad_const_fmt_v2</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.rad_const_fmt_v2" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.rad_const_fmt_v2">
+<span class="sig-name descname"><span class="pre">rad_const_fmt_v2</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.rad_const_fmt_v2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.vcp_el_fmt">
-<code class="sig-name descname"><span class="pre">vcp_el_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.vcp_el_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.vcp_el_fmt">
+<span class="sig-name descname"><span class="pre">vcp_el_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.vcp_el_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.vcp_fmt">
-<code class="sig-name descname"><span class="pre">vcp_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.vcp_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.vcp_fmt">
+<span class="sig-name descname"><span class="pre">vcp_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.vcp_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="metpy.io.Level2File.vol_hdr_fmt">
-<code class="sig-name descname"><span class="pre">vol_hdr_fmt</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.vol_hdr_fmt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.vol_hdr_fmt">
+<span class="sig-name descname"><span class="pre">vol_hdr_fmt</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;metpy.io._tools.NamedStruct</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#metpy.io.Level2File.vol_hdr_fmt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
-<dt id="metpy.io.Level2File.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_volume_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level2File.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.Level2File.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_volume_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/nexrad.html#Level2File.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.Level2File.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create instance of <a class="reference internal" href="#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level2File</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -598,14 +599,16 @@ this will be read from directly.</p>
 
 </dd></dl>
 
-<div class="section" id="examples-using-metpy-io-level2file">
+<section id="examples-using-metpy-io-level2file">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.io.Level2File</span></code><a class="headerlink" href="#examples-using-metpy-io-level2file" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot"><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot"><figure class="align-default" id="id1">
 <img alt="NEXRAD Level 2 File" src="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
               </div>
@@ -642,8 +645,8 @@ this will be read from directly.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

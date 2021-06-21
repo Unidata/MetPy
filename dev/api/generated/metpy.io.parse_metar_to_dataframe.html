@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>parse_metar_to_dataframe &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -27,8 +28,8 @@
 
     
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
@@ -38,7 +39,7 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -258,11 +259,11 @@
               
               <div>
                 
-  <div class="section" id="parse-metar-to-dataframe">
+  <section id="parse-metar-to-dataframe">
 <h1>parse_metar_to_dataframe<a class="headerlink" href="#parse-metar-to-dataframe" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="metpy.io.parse_metar_to_dataframe">
-<code class="sig-prename descclassname"><span class="pre">metpy.io.</span></code><code class="sig-name descname"><span class="pre">parse_metar_to_dataframe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metar_text</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/metar.html#parse_metar_to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.parse_metar_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.io.parse_metar_to_dataframe">
+<span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">parse_metar_to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metar_text</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/metar.html#parse_metar_to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.io.parse_metar_to_dataframe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a single METAR report into a Pandas DataFrame.</p>
 <p>Takes a METAR string in a text form, and creates a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> including the
 essential information (not including the remarks)</p>
@@ -282,37 +283,44 @@ which can be utilized when plotting.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The output has the following columns:
-‘station_id’: Station Identifier (ex. KLOT)
-‘latitude’: Latitude of the observation, measured in degrees
-‘longitude’: Longitude of the observation, measured in degrees
-‘elevation’: Elevation of the observation above sea level, measured in meters
-‘date_time’: Date and time of the observation, datetime object
-‘wind_direction’: Direction the wind is coming from, measured in degrees
-‘wind_spd’: Wind speed, measured in knots
-‘current_wx1’: Current weather (1 of 3)
-‘current_wx2’: Current weather (2 of 3)
-‘current_wx3’: Current weather (3 of 3)
-‘skyc1’: Sky cover (ex. FEW)
-‘skylev1’: Height of sky cover 1, measured in feet
-‘skyc2’: Sky cover (ex. OVC)
-‘skylev2’: Height of sky cover 2, measured in feet
-‘skyc3’: Sky cover (ex. FEW)
-‘skylev3’: Height of sky cover 3, measured in feet
-‘skyc4’: Sky cover (ex. CLR)
-‘skylev4:’: Height of sky cover 4, measured in feet
-‘cloudcover’: Cloud coverage measured in oktas, taken from maximum of sky cover values
-‘temperature’: Temperature, measured in degrees Celsius
-‘dewpoint’: Dew point, measured in degrees Celsius
-‘altimeter’: Altimeter value, measured in inches of mercury, float
-‘current_wx1_symbol’: Current weather symbol (1 of 3), integer
-‘current_wx2_symbol’: Current weather symbol (2 of 3), integer
-‘current_wx3_symbol’: Current weather symbol (3 of 3), integer
-‘sea_level_pressure’: Sea level pressure, derived from temperature, elevation
-and altimeter value, float</p>
+<p>The output has the following columns:</p>
+<ul class="simple">
+<li><p>‘station_id’: Station Identifier (ex. KLOT)</p></li>
+<li><p>‘latitude’: Latitude of the observation, measured in degrees</p></li>
+<li><p>‘longitude’: Longitude of the observation, measured in degrees</p></li>
+<li><p>‘elevation’: Elevation of the observation above sea level, measured in meters</p></li>
+<li><p>‘date_time’: Date and time of the observation, datetime object</p></li>
+<li><p>‘wind_direction’: Direction the wind is coming from, measured in degrees</p></li>
+<li><p>‘wind_speed’: Wind speed, measured in knots</p></li>
+<li><p>‘current_wx1’: Current weather (1 of 3)</p></li>
+<li><p>‘current_wx2’: Current weather (2 of 3)</p></li>
+<li><p>‘current_wx3’: Current weather (3 of 3)</p></li>
+<li><p>‘low_cloud_type’: Low-level sky cover (ex. FEW)</p></li>
+<li><p>‘low_cloud_level’: Height of low-level sky cover, measured in feet</p></li>
+<li><p>‘medium_cloud_type’: Medium-level sky cover (ex. OVC)</p></li>
+<li><p>‘medium_cloud_level’: Height of medium-level sky cover, measured in feet</p></li>
+<li><p>‘high_cloud_type’: High-level sky cover (ex. FEW)</p></li>
+<li><p>‘high_cloud_level’: Height of high-level sky cover, measured in feet</p></li>
+<li><p>‘highest_cloud_type’: Highest-level Sky cover (ex. CLR)</p></li>
+<li><p>‘highest_cloud_level:’: Height of highest-level sky cover, measured in feet</p></li>
+<li><p>‘cloud_coverage’: Cloud cover measured in oktas, taken from maximum of sky cover values</p></li>
+<li><p>‘air_temperature’: Temperature, measured in degrees Celsius</p></li>
+<li><p>‘dew_point_temperature’: Dew point, measured in degrees Celsius</p></li>
+<li><p>‘altimeter’: Altimeter value, measured in inches of mercury</p></li>
+<li><p>‘current_wx1_symbol’: Current weather symbol (1 of 3), WMO integer code from <a class="reference internal" href="../references.html#wmo306" id="id1"><span>[WMO306]</span></a>
+Attachment IV</p></li>
+<li><p>‘current_wx2_symbol’: Current weather symbol (2 of 3), WMO integer code from <a class="reference internal" href="../references.html#wmo306" id="id2"><span>[WMO306]</span></a>
+Attachment IV</p></li>
+<li><p>‘current_wx3_symbol’: Current weather symbol (3 of 3), WMO integer code from <a class="reference internal" href="../references.html#wmo306" id="id3"><span>[WMO306]</span></a>
+Attachment IV</p></li>
+<li><p>‘air_pressure_at_sea_level’: Sea level pressure, derived from temperature, elevation
+and altimeter value</p></li>
+<li><p>‘eastward_wind’: Eastward component (u-compoment) of the wind vector, measured in knots</p></li>
+<li><p>‘northward_wind’: Northward component (v-compoment) of the wind vector, measured in knots</p></li>
+</ul>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div style='clear:both'></div></section>
 
 
               </div>
@@ -349,8 +357,8 @@ and altimeter value, float</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

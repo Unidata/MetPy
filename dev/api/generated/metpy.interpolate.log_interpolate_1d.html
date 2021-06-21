@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>log_interpolate_1d &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -27,8 +28,8 @@
 
     
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
@@ -38,7 +39,7 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -318,11 +319,11 @@
               
               <div>
                 
-  <div class="section" id="log-interpolate-1d">
+  <section id="log-interpolate-1d">
 <h1>log_interpolate_1d<a class="headerlink" href="#log-interpolate-1d" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="metpy.interpolate.log_interpolate_1d">
-<code class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></code><code class="sig-name descname"><span class="pre">log_interpolate_1d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/one_dimension.html#log_interpolate_1d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.interpolate.log_interpolate_1d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.interpolate.log_interpolate_1d">
+<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">log_interpolate_1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/one_dimension.html#log_interpolate_1d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.interpolate.log_interpolate_1d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolates data with logarithmic x-scale over a specified axis.</p>
 <p>Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.</p>
 <dl class="field-list simple">
@@ -353,14 +354,16 @@ ValueError if points are out of bounds. Defaults to nan.</p></li>
 <p>xp and args must be the same shape.</p>
 </dd></dl>
 
-<div class="section" id="examples-using-metpy-interpolate-log-interpolate-1d">
+<section id="examples-using-metpy-interpolate-log-interpolate-1d">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.interpolate.log_interpolate_1d</span></code><a class="headerlink" href="#examples-using-metpy-interpolate-log-interpolate-1d" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ..."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ..."><figure class="align-default" id="id1">
 <img alt="Sigma to Pressure Interpolation" src="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/sigma_to_pressure_interpolation.html#sphx-glr-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">Sigma to Pressure Interpolation</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/sigma_to_pressure_interpolation.html#sphx-glr-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">Sigma to Pressure Interpolation</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
               </div>
@@ -397,8 +400,8 @@ ValueError if points are out of bounds. Defaults to nan.</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

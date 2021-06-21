@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Station Plot &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -27,8 +28,8 @@
 
     
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
@@ -38,7 +39,7 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -351,7 +352,7 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-station-plot-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="station-plot">
+<section class="sphx-glr-example-title" id="station-plot">
 <span id="sphx-glr-examples-plots-station-plot-py"></span><h1>Station Plot<a class="headerlink" href="#station-plot" title="Permalink to this headline">¶</a></h1>
 <p>Make a station plot, complete with sky cover and weather symbols.</p>
 <p>The station plot itself is pretty straightforward, but there is a bit of code to perform the
@@ -367,7 +368,7 @@ existing point data in a format you can work with trivially, the station plot wi
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-function"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <span class="n">current_weather</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">,</span> <a href="../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">StationPlot</span></a>
 </pre></div>
 </div>
-<div class="section" id="the-setup">
+<section id="the-setup">
 <h2>The setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">¶</a></h2>
 <p>First read in the data. We use the metar reader because it simplifies a lot of tasks,
 like dealing with separating text and assembling a pandas dataframe
@@ -391,8 +392,8 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><a href="../../api/generated/metpy.calc.reduce_point_density.html#metpy.calc.reduce_point_density" title="metpy.calc.reduce_point_density" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">reduce_point_density</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">point_locs</span></a><span class="p">,</span> <span class="mf">300000.</span><span class="p">)]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="the-payoff">
+</section>
+<section id="the-payoff">
 <h2>The payoff<a class="headerlink" href="#the-payoff" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the DPI of the resulting figure. Higher DPI drastically improves the</span>
 <span class="c1"># look of the text rendering.</span>
@@ -455,7 +456,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 </pre></div>
 </div>
 <img alt="Station Plot" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.116 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  15.678 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f7fb7b4e11b9030fa7c1b08f65033c97/Station_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot.py</span></code></a></p>
@@ -465,8 +466,8 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
@@ -503,8 +504,8 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

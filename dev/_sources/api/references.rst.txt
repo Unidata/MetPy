@@ -193,5 +193,9 @@ References
 .. [WMO8] WMO, 2018: Guide to Meteorological Instruments and Methods of Observation.
            `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=10616>`_.
 
+.. [WMO306] WMO, 2011: Manual on Codes - International Codes, Volume I.1, Annex II to the WMO
+           Technical Regulations: Part A - Alphanumeric Codes. `WMO No.306
+           <https://library.wmo.int/index.php?lvl=notice_display&id=13617>`_.
+
 .. [WMO1966] WMO, 1966: International Meteorological Tables, `WMO-No. 188.TP.94
            <https://library.wmo.int/doc_num.php?explnum_id=7997>`_.

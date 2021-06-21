@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>isentropic_interpolation_as_dataset &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -27,8 +28,8 @@
 
     
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
@@ -38,7 +39,7 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -848,11 +849,11 @@
               
               <div>
                 
-  <div class="section" id="isentropic-interpolation-as-dataset">
+  <section id="isentropic-interpolation-as-dataset">
 <h1>isentropic_interpolation_as_dataset<a class="headerlink" href="#isentropic-interpolation-as-dataset" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="metpy.calc.isentropic_interpolation_as_dataset">
-<code class="sig-prename descclassname"><span class="pre">metpy.calc.</span></code><code class="sig-name descname"><span class="pre">isentropic_interpolation_as_dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_up_search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation_as_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation_as_dataset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="metpy.calc.isentropic_interpolation_as_dataset">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">isentropic_interpolation_as_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_up_search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation_as_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation_as_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate xarray data in isobaric coords to isentropic coords, returning a Dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -887,14 +888,16 @@ be linearly interpolated to the new isentropic levels.</p>
 </div>
 </dd></dl>
 
-<div class="section" id="examples-using-metpy-calc-isentropic-interpolation-as-dataset">
+<section id="examples-using-metpy-calc-isentropic-interpolation-as-dataset">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.isentropic_interpolation_as_dataset</span></code><a class="headerlink" href="#examples-using-metpy-calc-isentropic-interpolation-as-dataset" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model an..."><div class="figure align-default" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model an..."><figure class="align-default" id="id2">
 <img alt="Isentropic Analysis" src="../../_images/sphx_glr_isentropic_example_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
               </div>
@@ -931,8 +934,8 @@ be linearly interpolated to the new isentropic levels.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

@@ -27,8 +27,8 @@
 
     
 
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
@@ -38,7 +38,7 @@
     
   <link rel="preload" as="script" href="../../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -179,7 +179,7 @@
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Simplify using the weather symbol font.</span>
 
-<span class="sd">See WMO manual 485 Vol 1 for more info on the symbols.</span>
+<span class="sd">See WMO No.306 Attachment IV for more info on the symbols.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="k">try</span><span class="p">:</span>
@@ -361,9 +361,8 @@
     <span class="c1">#####################################################################</span>
     <span class="c1"># This dictionary is for mapping METAR present weather text codes</span>
     <span class="c1"># to WMO codes for plotting wx symbols along with the station plots.</span>
-    <span class="c1"># Pages II-4-3 and II-4-4 of this document describes the difference between</span>
-    <span class="c1"># manned and automated stations:</span>
-    <span class="c1"># https://github.com/Unidata/MetPy/files/1151142/485_Vol_I_en.pdf</span>
+    <span class="c1"># See Attachment IV of WMO No.306 for more information:</span>
+    <span class="c1"># https://library.wmo.int/index.php?lvl=notice_display&amp;id=13617</span>
     <span class="c1"># It may become necessary to add automated station wx_codes in the future,</span>
     <span class="c1"># but that will also require knowing the status of all stations.</span>
 
@@ -449,8 +448,8 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 19:51:40.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 21, 2021 at 20:37:09.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>
