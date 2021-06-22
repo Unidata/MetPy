@@ -14,6 +14,7 @@ from .declarative import *  # noqa: F403
 from .skewt import *  # noqa: F403
 from .station_plot import *  # noqa: F403
 from .wx_symbols import *  # noqa: F403
+from ..package_tools import set_module
 
 logger = logging.getLogger(__name__)
 
@@ -29,3 +30,5 @@ try:
     __all__.extend(['USCOUNTIES', 'USSTATES'])
 except ImportError:
     logger.warning('Cannot import USCOUNTIES and USSTATES without Cartopy installed.')
+
+set_module(globals())
