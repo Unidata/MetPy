@@ -6,6 +6,7 @@
 from datetime import datetime
 
 import numpy as np
+import pytest
 import xarray as xr
 
 from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
@@ -59,6 +60,27 @@ def test_precipitable_water_nans():
     pw = precipitable_water(pressure, dewpoint)
     truth = 4.003660322395436 * units.mm
     assert_almost_equal(pw, truth, 5)
+
+
+def test_precipitable_water_descriptive_bound_error():
+    """Test that error is raised when bound is outside profile after nan have been removed."""
+    pressure = np.array([1001, 1000, 997, 977.9, 977, 957, 937.8, 925, 906, 899.3, 887, 862.5,
+                         854, 850, 800, 793.9, 785, 777, 771, 762, 731.8, 726, 703, 700, 655,
+                         630, 621.2, 602, 570.7, 548, 546.8, 539, 513, 511, 485, 481, 468,
+                         448, 439, 424, 420, 412]) * units.hPa
+    dewpoint = np.array([np.nan, np.nan, -26.8, np.nan, -27.3, -28.2, np.nan, -27.2, -26.6,
+                        np.nan, -27.4, np.nan, -23.5, -23.5, -25.1, np.nan, -22.9, -17.8,
+                        -16.6, np.nan, np.nan, -16.4, np.nan, -18.5, -21., -23.7, np.nan,
+                        -28.3, np.nan, -32.6, np.nan, -33.8, -35., -35.1, -38.1, -40.,
+                        -43.3, -44.6, -46.4, np.nan, np.nan, np.nan]) * units.degC
+
+    # Top bound is above highest pressure in profile
+    with pytest.raises(ValueError, match='The pressure and dewpoint profile ranges from'):
+        precipitable_water(pressure, dewpoint, top=units.Quantity(415, 'hPa'))
+
+    # Bottom bound is below lowest pressure in profile
+    with pytest.raises(ValueError, match='The pressure and dewpoint profile ranges from'):
+        precipitable_water(pressure, dewpoint, bottom=units.Quantity(999, 'hPa'))
 
 
 def test_mean_pressure_weighted():
