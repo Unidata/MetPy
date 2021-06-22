@@ -18,6 +18,7 @@ plots
       add_unidata_logo
       convert_gempak_color
       read_colortable
+      set_module
       wx_code_to_numeric
    
    

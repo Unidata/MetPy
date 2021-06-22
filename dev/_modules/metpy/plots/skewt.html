@@ -423,7 +423,7 @@
 <span class="n">register_projection</span><span class="p">(</span><span class="n">SkewXAxes</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="SkewT"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">SkewT</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make Skew-T log-P plots of data.</span>
 
@@ -916,10 +916,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pressure</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">t_parcel</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;negative&#39;</span><span class="p">,</span>
-                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Hodograph"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Hodograph</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a hodograph of wind data.</span>
 
@@ -1146,7 +1146,7 @@
         <span class="c1"># Do the plotting</span>
         <span class="n">lc</span> <span class="o">=</span> <span class="n">colored_line</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">lc</span></div></div>
+        <span class="k">return</span> <span class="n">lc</span></div>
 </pre></div>
 
               </div>
@@ -1181,7 +1181,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 21:31:49.<br/>
+        Last updated on Jun 22, 2021 at 04:10:49.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>

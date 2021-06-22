@@ -288,7 +288,7 @@
 <span class="n">BAD_DATA</span> <span class="o">=</span> <span class="mh">0x20</span>
 
 
-<div class="viewcode-block" id="Level2File"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Level2File</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the NEXRAD Level 2 data and its various messages.</span>
 
@@ -859,7 +859,7 @@
         <span class="n">hdr_size</span> <span class="o">=</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg_hdr_fmt</span><span class="o">.</span><span class="n">size</span>
         <span class="k">if</span> <span class="n">size</span> <span class="o">!=</span> <span class="n">hdr_size</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message type </span><span class="si">%d</span><span class="s1"> should be </span><span class="si">%d</span><span class="s1"> bytes but got </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">hdr_size</span><span class="p">)</span></div>
+                        <span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">hdr_size</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">reduce_lists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -1192,7 +1192,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Level3File"><a class="viewcode-back" href="../../../api/generated/metpy.io.Level3File.html#metpy.io.Level3File">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Level3File</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</span>
 
@@ -2461,7 +2461,7 @@
                   <span class="mh">0x0802</span><span class="p">:</span> <span class="n">_unpack_packet_contour_color</span><span class="p">,</span>
                   <span class="mh">0x0E03</span><span class="p">:</span> <span class="n">_unpack_packet_linked_contour</span><span class="p">,</span>
                   <span class="mh">0xaf1f</span><span class="p">:</span> <span class="n">_unpack_packet_radial_data</span><span class="p">,</span>
-                  <span class="mh">0xba07</span><span class="p">:</span> <span class="n">_unpack_packet_raster_data</span><span class="p">}</span></div>
+                  <span class="mh">0xba07</span><span class="p">:</span> <span class="n">_unpack_packet_raster_data</span><span class="p">}</span>
 
 
 <span class="k">class</span> <span class="nc">Level3XDRParser</span><span class="p">(</span><span class="n">Unpacker</span><span class="p">):</span>
@@ -2590,7 +2590,7 @@
     <span class="n">_component_lookup</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">_unpack_radial</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">_unpack_text</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="is_precip_mode"><a class="viewcode-back" href="../../../api/generated/metpy.io.is_precip_mode.html#metpy.io.is_precip_mode">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">def</span> <span class="nf">is_precip_mode</span><span class="p">(</span><span class="n">vcp_num</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determine if the NEXRAD radar is operating in precipitation mode.</span>
 
@@ -2605,7 +2605,7 @@
 <span class="sd">        True if the VCP corresponds to precipitation mode, False otherwise</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">vcp_num</span> <span class="o">//</span> <span class="mi">10</span> <span class="o">!=</span> <span class="mi">3</span></div>
+    <span class="k">return</span> <span class="n">vcp_num</span> <span class="o">//</span> <span class="mi">10</span> <span class="o">!=</span> <span class="mi">3</span>
 </pre></div>
 
               </div>
@@ -2640,7 +2640,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 21:31:49.<br/>
+        Last updated on Jun 22, 2021 at 04:10:49.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>

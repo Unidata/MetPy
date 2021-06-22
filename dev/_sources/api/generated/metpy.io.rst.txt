@@ -17,6 +17,7 @@ metpy.io
       is_precip_mode
       parse_metar_file
       parse_metar_to_dataframe
+      set_module
    
    
 

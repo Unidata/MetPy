@@ -264,6 +264,11 @@
      remove_repeat_coordinates
     </a>
    </li>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.interpolate.set_module.html">
+     set_module
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l2">
@@ -308,7 +313,7 @@
 <h1>inverse_distance_to_points<a class="headerlink" href="#inverse-distance-to-points" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.interpolate.inverse_distance_to_points">
-<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">inverse_distance_to_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cressman'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/points.html#inverse_distance_to_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.interpolate.inverse_distance_to_points" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">inverse_distance_to_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cressman'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.interpolate.inverse_distance_to_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an inverse distance weighting interpolation to the given points.</p>
 <p>Values are assigned to the given interpolation points based on either <a class="reference internal" href="../references.html#cressman1959" id="id1"><span>[Cressman1959]</span></a> or
 <a class="reference internal" href="../references.html#barnes1964" id="id2"><span>[Barnes1964]</span></a>. The Barnes implementation used here based on <a class="reference internal" href="../references.html#koch1983" id="id3"><span>[Koch1983]</span></a>.</p>
@@ -375,7 +380,7 @@ Options: ‘cressman’ or ‘barnes’. Default ‘cressman’</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 21:31:49.<br/>
+        Last updated on Jun 22, 2021 at 04:10:49.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>

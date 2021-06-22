@@ -190,7 +190,7 @@
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
-<div class="viewcode-block" id="StationPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">StationPlot</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Make a standard meteorological station plot.</span>
 
@@ -560,10 +560,10 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_names</span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
         <span class="n">xoff</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">=</span> <span class="n">location</span>
-        <span class="k">return</span> <span class="n">xoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span></div>
+        <span class="k">return</span> <span class="n">xoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span>
 
 
-<div class="viewcode-block" id="StationPlotLayout"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">StationPlotLayout</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;make a layout to encapsulate plotting using :class:`StationPlot`.</span>
 
@@ -795,7 +795,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;{&#39;</span>
                 <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: (</span><span class="si">{1[0].name}</span><span class="s1">, </span><span class="si">{1[1]}</span><span class="s1">, ...)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">loc</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
-                <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span></div>
+                <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
 
 
 <span class="k">with</span> <span class="n">exporter</span><span class="p">:</span>
@@ -864,7 +864,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 21, 2021 at 21:31:49.<br/>
+        Last updated on Jun 22, 2021 at 04:10:49.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
