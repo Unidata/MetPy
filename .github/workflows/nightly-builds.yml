@@ -53,7 +53,7 @@ jobs:
       run: |
         cat ci/extra_requirements.txt >> ci/test_requirements.txt
         echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
-        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/test_requirements.txt
+        echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/test_requirements.txt
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     # Need to install numpy first to make CartoPy happy.
@@ -154,7 +154,7 @@ jobs:
       run: |
         cat ci/extra_requirements.txt >> ci/doc_requirements.txt
         echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
-        echo git+git://github.com/pydata/xarray@master#egg=xarray >> ci/doc_requirements.txt
+        echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/doc_requirements.txt
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     # Need to install numpy first to make CartoPy happy.
