@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>reduce_point_density &#8212; MetPy 1.0dev</title>
+    <title>showalter_index &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -47,12 +47,12 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html" />
-    <link rel="prev" title="parse_angle" href="metpy.calc.parse_angle.html" />
+    <link rel="next" title="significant_tornado" href="metpy.calc.significant_tornado.html" />
+    <link rel="prev" title="parcel_profile_with_lcl_as_dataset" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.reduce_point_density.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.showalter_index.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -449,8 +449,8 @@
      parcel_profile_with_lcl_as_dataset
     </a>
    </li>
-   <li class="toctree-l3">
-    <a class="reference internal" href="metpy.calc.showalter_index.html">
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
      showalter_index
     </a>
    </li>
@@ -774,8 +774,8 @@
      parse_angle
     </a>
    </li>
-   <li class="toctree-l3 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.calc.reduce_point_density.html">
      reduce_point_density
     </a>
    </li>
@@ -821,24 +821,9 @@
           
           <div class="d-none d-xl-block col-xl-2 bd-toc">
               
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples-using-metpy-calc-reduce-point-density">
-   Examples using
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     metpy.calc.reduce_point_density
-    </span>
-   </code>
-  </a>
- </li>
-</ul>
-
+    
 </nav>
 
 
@@ -854,61 +839,33 @@
               
               <div>
                 
-  <section id="reduce-point-density">
-<h1>reduce_point_density<a class="headerlink" href="#reduce-point-density" title="Permalink to this headline">¶</a></h1>
+  <section id="showalter-index">
+<h1>showalter_index<a class="headerlink" href="#showalter-index" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.calc.reduce_point_density">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">reduce_point_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a mask to reduce the density of points in irregularly-spaced data.</p>
-<p>This function is used to down-sample a collection of scattered points (e.g. surface
-data), returning a mask that can be used to select the points from one or more arrays
-(e.g. arrays of temperature and dew point). The points selected can be controlled by
-providing an array of <code class="docutils literal notranslate"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
-stations with higher precipitation remain in the mask). The points and radius can be
-specified with units. If none are provided, meters are assumed.</p>
+<dt class="sig sig-object py" id="metpy.calc.showalter_index">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">showalter_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.showalter_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate Showalter Index from pressure temperature and 850 hPa lcl.</p>
+<p>Showalter Index derived from <a class="reference internal" href="../references.html#galway1956" id="id1"><span>[Galway1956]</span></a>:
+SI = T500 - Tp500</p>
+<p>where:
+T500 is the measured temperature at 500 hPa
+Tp500 is the temperature of the lifted parcel at 500 hPa</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em>) – N locations of the points in K dimensional space</p></li>
-<li><p><strong>radius</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or float) – Minimum radius allowed between points. If units are not provided, meters is assumed.</p></li>
-<li><p><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
-be used to control selection priority for points.</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure level(s) of interest, in order from highest to
+lowest pressure</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Parcel temperature for corresponding pressure</p></li>
+<li><p><strong>dewpt</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Parcel dew point temperatures for corresponding pressure</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>(N,) array-like of boolean values indicating whether points should be kept. This</em></p></li>
-<li><p><em>can be used directly to index numpy arrays to return only the desired points.</em></p></li>
-</ul>
-</p>
+<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Showalter index</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">)</span>
-<span class="go">array([ True, False, True])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">,</span>
-<span class="gp">... </span><span class="n">priority</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]))</span>
-<span class="go">array([False, True, False])</span>
-</pre></div>
-</div>
 </dd></dl>
 
-<section id="examples-using-metpy-calc-reduce-point-density">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><figure class="align-default" id="id1">
-<img alt="Mesonet Station Plot" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><figure class="align-default" id="id2">
-<img alt="Station Plot" src="../../_images/sphx_glr_Station_Plot_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
               </div>
@@ -916,8 +873,8 @@ be used to control selection priority for points.</p></li>
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="metpy.calc.parse_angle.html" title="previous page">parse_angle</a>
-    <a class='right-next' id="next-link" href="metpy.calc.resample_nn_1d.html" title="next page">resample_nn_1d</a>
+    <a class='left-prev' id="prev-link" href="metpy.calc.parcel_profile_with_lcl_as_dataset.html" title="previous page">parcel_profile_with_lcl_as_dataset</a>
+    <a class='right-next' id="next-link" href="metpy.calc.significant_tornado.html" title="next page">significant_tornado</a>
 
               </div>
               
