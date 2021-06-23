@@ -3279,34 +3279,32 @@ def showalter_index(pressure, temperature, dewpt):
     T500 is the measured temperature at 500 hPa
     Tp500 is the temperature of the lifted parcel at 500 hPa
 
-   Parameters
-   ----------
-
+    Parameters
+    ----------
         pressure : `pint.Quantity`
             Atmospheric pressure level(s) of interest, in order from highest to
-        lowest pressure
+            lowest pressure
 
         temperature : `pint.Quantity`
             Parcel temperature for corresponding pressure
 
-        dewpt (:class: `pint.Quantity`):
+        dewpt : `pint.Quantity`
             Parcel dew point temperatures for corresponding pressure
-
 
     Returns
     -------
     `pint.Quantity`
-        Showalter index in delta degrees celsius
+        Showalter index
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
-    T850, Td850 = interpolate_1d(850 * units.hPa, pressure, temperature, dewpt)
+    t850, td850 = interpolate_1d(850 * units.hPa, pressure, temperature, dewpt)
 
     # find the parcel profile temperature at 500 hPa.
-    Tp500 = interpolate_1d(500 * units.hPa, pressure, temperature)
+    tp500 = interpolate_1d(500 * units.hPa, pressure, temperature)
 
     # Calculate lcl at the 850 hPa level
-    lcl_calc, _ = lcl(850 * units.hPa, T850[0], Td850[0])
+    lcl_calc, _ = lcl(850 * units.hPa, t850[0], td850[0])
 
     # Define end height for moist lapse rate calculation
     p_end = 500 * units.hPa
@@ -3318,5 +3316,4 @@ def showalter_index(pressure, temperature, dewpt):
     ml = moist_lapse(p_end, dl, lcl_calc)
 
     # Calculate the Showalter index
-    shox = Tp500 - ml
-    return shox
+    return tp500 - ml
