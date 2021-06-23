@@ -13,9 +13,7 @@ import pandas as pd
 from ._tools import open_as_needed
 from .metar_parser import parse, ParseError
 from .station_data import station_info
-from ..calc import altimeter_to_sea_level_pressure, wind_components
 from ..package_tools import Exporter
-from ..plots.wx_symbols import wx_code_map
 from ..units import units
 
 exporter = Exporter(globals())
@@ -122,6 +120,8 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
 
     """
+    from ..calc import altimeter_to_sea_level_pressure, wind_components
+
     # Defaults year and/or month to present reported date if not provided
     if year is None or month is None:
         now = datetime.now()
@@ -242,6 +242,8 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
       Attachment IV
 
     """
+    from ..plots.wx_symbols import wx_code_map
+
     # Decode the data using the parser (built using Canopy) the parser utilizes a grammar
     # file which follows the format structure dictated by the WMO Handbook, but has the
     # flexibility to decode the METAR text when there are missing or incorrectly
@@ -498,6 +500,8 @@ def parse_metar_file(filename, *, year=None, month=None):
     * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
 
     """
+    from ..calc import altimeter_to_sea_level_pressure, wind_components
+
     # Defaults year and/or month to present reported date if not provided
     if year is None or month is None:
         now = datetime.now()

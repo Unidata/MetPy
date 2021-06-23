@@ -2,15 +2,12 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the cartopy utilities."""
-import contextlib
-
 import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
-with contextlib.suppress(ImportError):
-    from metpy.plots import USCOUNTIES, USSTATES
-from metpy.plots.cartopy_utils import import_cartopy
+import metpy.plots as mpplots
+from metpy.plots import cartopy_utils
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
@@ -26,7 +23,7 @@ def test_us_county_defaults(ccrs):
     fig = plt.figure(figsize=(12, 9))
     ax = fig.add_subplot(1, 1, 1, projection=proj)
     ax.set_extent([270.25, 270.9, 38.15, 38.75], ccrs.Geodetic())
-    ax.add_feature(USCOUNTIES)
+    ax.add_feature(mpplots.USCOUNTIES)
     return fig
 
 
@@ -43,7 +40,7 @@ def test_us_county_scales(ccrs):
 
     for scale, axis in zip(['20m', '5m', '500k'], [ax1, ax2, ax3]):
         axis.set_extent([270.25, 270.9, 38.15, 38.75], ccrs.Geodetic())
-        axis.add_feature(USCOUNTIES.with_scale(scale))
+        axis.add_feature(mpplots.USCOUNTIES.with_scale(scale))
     return fig
 
 
@@ -55,7 +52,7 @@ def test_us_states_defaults(ccrs):
     fig = plt.figure(figsize=(12, 9))
     ax = fig.add_subplot(1, 1, 1, projection=proj)
     ax.set_extent([270, 280, 28, 39], ccrs.Geodetic())
-    ax.add_feature(USSTATES)
+    ax.add_feature(mpplots.USSTATES)
     return fig
 
 
@@ -72,7 +69,7 @@ def test_us_states_scales(ccrs):
 
     for scale, axis in zip(['20m', '5m', '500k'], [ax1, ax2, ax3]):
         axis.set_extent([270, 280, 28, 39], ccrs.Geodetic())
-        axis.add_feature(USSTATES.with_scale(scale))
+        axis.add_feature(mpplots.USSTATES.with_scale(scale))
     return fig
 
 
@@ -82,6 +79,19 @@ def test_cartopy_stub(monkeypatch):
     # This makes sure that cartopy is not found
     monkeypatch.setitem(sys.modules, 'cartopy.crs', None)
 
-    ccrs = import_cartopy()
+    ccrs = cartopy_utils.import_cartopy()
     with pytest.raises(RuntimeError, match='CartoPy is required'):
         ccrs.PlateCarree()
+
+
+def test_plots_getattr(monkeypatch):
+    """Ensure the module-level getattr works."""
+    # Make sure the feature is missing
+    monkeypatch.delattr(cartopy_utils, 'USSTATES', raising=False)
+    with pytest.raises(AttributeError, match='Cannot use USSTATES without Cartopy'):
+        assert not mpplots.USSTATES  # Should fail on attribute lookup before assert
+
+
+def test_plots_dir():
+    """Ensure dir() on metpy.plots works."""
+    assert 'USSTATES' in dir(mpplots)

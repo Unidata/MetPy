@@ -54,7 +54,10 @@ try:
 
     USSTATES = MetPyMapFeature('us_states', '20m', facecolor='None', edgecolor='black')
 except ImportError:
+    # If no Cartopy is present, we just don't have map features
     pass
+
+__all__ = ['USCOUNTIES', 'USSTATES']
 
 
 def import_cartopy():
