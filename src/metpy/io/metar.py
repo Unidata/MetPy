@@ -10,8 +10,8 @@ import warnings
 import numpy as np
 import pandas as pd
 
+from ._metar_parser.metar_parser import parse, ParseError
 from ._tools import open_as_needed
-from .metar_parser import parse, ParseError
 from .station_data import station_info
 from ..package_tools import Exporter
 from ..units import units

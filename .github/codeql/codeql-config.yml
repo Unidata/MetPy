@@ -4,6 +4,6 @@ queries:
   - uses: security-and-quality
 
 paths-ignore:
-  - src/metpy/io/metar_parser.py
+  - src/metpy/io/_metar_parser
   - tutorials
   - examples
