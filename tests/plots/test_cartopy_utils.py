@@ -80,7 +80,7 @@ def test_cartopy_stub(monkeypatch):
     monkeypatch.setitem(sys.modules, 'cartopy.crs', None)
 
     ccrs = cartopy_utils.import_cartopy()
-    with pytest.raises(RuntimeError, match='CartoPy is required'):
+    with pytest.raises(AttributeError, match='without Cartopy'):
         ccrs.PlateCarree()
 
 

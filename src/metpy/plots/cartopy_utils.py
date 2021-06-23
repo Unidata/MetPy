@@ -75,6 +75,6 @@ def import_cartopy():
 class CartopyStub:
     """Fail if a CartoPy attribute is accessed."""
 
-    def __getattr__(self, item):
+    def __getattr__(self, name):
         """Raise an error on any attribute access."""
-        raise RuntimeError(f'CartoPy is required to use this feature ({item}).')
+        raise AttributeError(f'Cannot use {name} without Cartopy installed.')
