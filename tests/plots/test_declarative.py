@@ -468,7 +468,7 @@ def test_declarative_barb_options():
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
-    import numpy as np
+    
     data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
 
     contour = ContourPlot()
