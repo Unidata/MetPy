@@ -82,6 +82,7 @@ Soundings
       parcel_profile
       parcel_profile_with_lcl
       parcel_profile_with_lcl_as_dataset
+      showalter_index
       significant_tornado
       storm_relative_helicity
       supercell_composite
