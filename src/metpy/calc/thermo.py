@@ -3298,16 +3298,16 @@ def showalter_index(pressure, temperature, dewpt):
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
-    t850, td850 = interpolate_1d(850 * units.hPa, pressure, temperature, dewpt)
+    t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpt)
 
     # find the parcel profile temperature at 500 hPa.
-    tp500 = interpolate_1d(500 * units.hPa, pressure, temperature)
+    tp500 = interpolate_1d(units.Quantity(500, 'hPa'), pressure, temperature)
 
     # Calculate lcl at the 850 hPa level
-    lcl_calc, _ = lcl(850 * units.hPa, t850[0], td850[0])
+    lcl_calc, _ = lcl(units.Quantity(850, 'hPa'), t850[0], td850[0])
 
     # Define end height for moist lapse rate calculation
-    p_end = 500 * units.hPa
+    p_end = units.Quantity(500, 'hPa')
 
     # Calculate parcel temp when raised dry adiabatically from surface to lcl
     dl = dry_lapse(lcl_calc, temperature[0], pressure[0])
