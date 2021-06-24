@@ -19,16 +19,22 @@ from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert
 from metpy.units import units
 
 
-def test_wind_comps_basic():
+def test_wind_comps_basic(array_type):
     """Test the basic wind component calculation."""
-    speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
-    dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
+    speed = units.Quantity(array_type([4, 4, 4, 4, 25, 25, 25, 25, 10.]), 'mph')
+    dirs = units.Quantity(array_type([0, 45, 90, 135, 180, 225, 270, 315, 360]), 'deg')
     s2 = np.sqrt(2.)
 
     u, v = wind_components(speed, dirs)
 
-    true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
-    true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
+    true_u = units.Quantity(
+        array_type([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]),
+        'mph'
+    )
+    true_v = units.Quantity(
+        array_type([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]),
+        'mph'
+    )
 
     assert_array_almost_equal(true_u, u, 4)
     assert_array_almost_equal(true_v, v, 4)

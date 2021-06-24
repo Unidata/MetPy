@@ -162,3 +162,15 @@ def set_agg_backend():
         yield
     finally:
         matplotlib.pyplot.switch_backend(prev_backend)
+
+
+@pytest.fixture(params=['dask', 'masked', 'numpy'])
+def array_type(request):
+    """Return an array type for testing calc functions."""
+    if request.param == 'dask':
+        dask_array = pytest.importorskip('dask.array', reason='dask.array is not available')
+        return dask_array.array
+    elif request.param == 'masked':
+        return numpy.ma.array
+    else:
+        return numpy.array
