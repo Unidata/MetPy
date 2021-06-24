@@ -1069,8 +1069,8 @@ def test_update_attribute_dictionary(test_ds_generic):
 def test_update_attribute_callable(test_ds_generic):
     """Test update_attribute using callable."""
     def even_ascii(varname, **kwargs):
-        if ord(varname[0]) % 2 == 0:
-            return 'yes'
+        return 'yes' if ord(varname[0]) % 2 == 0 else None
+
     result = test_ds_generic.metpy.update_attribute('even', even_ascii)
 
     # Test attribute updates

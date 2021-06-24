@@ -664,6 +664,8 @@ class Level2File:
         if msg_hdr.num_segments == len(bufs):
             self._msg_buf.pop(msg_hdr.msg_type)
             return b''.join(bytes(item[1]) for item in sorted(bufs.items()))
+        else:
+            return None
 
     def _add_sweep(self, hdr):
         if not self.sweeps and not hdr.rad_status & START_VOLUME:
@@ -1753,6 +1755,7 @@ class Level3File:
                 self._buffer.splice(comp_start, decomp_data)
                 assert self._buffer.check_remains(self.metadata['uncompressed_size'])
             except OSError:
+                # Compression didn't work, so we just assume it wasn't actually compressed.
                 pass
 
         # Unpack the various blocks, if present. The factor of 2 converts from

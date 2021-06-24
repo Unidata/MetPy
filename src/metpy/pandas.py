@@ -3,12 +3,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Provide accessors to enhance interoperability between Pandas and MetPy."""
 import functools
-import logging
 
 import pandas as pd
 
 __all__ = []
-log = logging.getLogger(__name__)
 
 
 def preprocess_pandas(func):

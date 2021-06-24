@@ -63,6 +63,7 @@ def wx_code_to_numeric(codes):
                     wx_sym_list.append(wx_code_map[wxcode[opt]])
                     break
                 except KeyError:
+                    # That option didn't work--move on.
                     pass
             else:
                 wx_sym_list.append(0)

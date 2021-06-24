@@ -317,41 +317,6 @@ def test_geopotential_to_height_32bit():
     assert_almost_equal(geopotential_to_height(geopot), truth, 2)
 
 
-# class TestIrrad(object):
-#    def test_basic(self):
-#        'Test the basic solar irradiance calculation.'
-#        from datetime import date
-
-#        d = date(2008, 9, 28)
-#        lat = 35.25
-#        hours = np.linspace(6,18,10)
-
-#        s = solar_irradiance(lat, d, hours)
-#        values = np.array([0., 344.1, 682.6, 933.9, 1067.6, 1067.6, 933.9,
-#            682.6, 344.1, 0.])
-#        assert_array_almost_equal(s, values, 1)
-
-#    def test_scalar(self):
-#        from datetime import date
-#        d = date(2008, 9, 28)
-#        lat = 35.25
-#        hour = 9.5
-#        s = solar_irradiance(lat, d, hour)
-#        assert_almost_equal(s, 852.1, 1)
-
-#    def test_invalid(self):
-#        'Test for values that should be masked.'
-#        from datetime import date
-#        d = date(2008, 9, 28)
-#        lat = 35.25
-#        hours = np.linspace(0,22,12)
-#        s = solar_irradiance(lat, d, hours)
-
-#        mask = np.array([ True,  True,  True,  True, False, False, False,
-#            False, False, True,  True,  True])
-#        assert_array_equal(s.mask, mask)
-
-
 def test_pressure_to_heights_basic():
     """Test basic pressure to height calculation for standard atmosphere."""
     pressures = np.array([975.2, 987.5, 956., 943.]) * units.mbar
