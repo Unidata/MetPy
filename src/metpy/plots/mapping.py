@@ -47,7 +47,8 @@ class CFProjection:
     def cartopy_globe(self):
         """Initialize a `cartopy.crs.Globe` from the metadata."""
         if 'earth_radius' in self._attrs:
-            kwargs = {'ellipse': 'sphere', 'semimajor_axis': self._attrs['earth_radius'], 'semiminor_axis': self._attrs['earth_radius']}
+            kwargs = {'ellipse': 'sphere', 'semimajor_axis': self._attrs['earth_radius'],
+                      'semiminor_axis': self._attrs['earth_radius']}
 
         else:
             attr_mapping = [('semimajor_axis', 'semi_major_axis'),
@@ -55,10 +56,12 @@ class CFProjection:
                             ('inverse_flattening', 'inverse_flattening')]
             kwargs = self._map_arg_names(self._attrs, attr_mapping)
 
-            # Override CartoPy's default ellipse setting depending on whether we have any metadata to map about the spheroid.
+            # Override CartoPy's default ellipse setting depending on whether
+            # we have any metadata to map about the spheroid.
             kwargs['ellipse'] = None if kwargs else 'sphere'
 
-        # interpret the 0 inverse_flattening as a spherical datum and don't pass the value on.
+        # interpret the 0 inverse_flattening as a spherical datum
+        # and don't pass the value on.
         if kwargs.get('inverse_flattening', None) == 0:
             kwargs['ellipse'] = 'sphere'
             kwargs.pop('inverse_flattening', None)
