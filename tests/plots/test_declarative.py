@@ -65,7 +65,7 @@ def test_declarative_contour():
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -94,7 +94,7 @@ def test_declarative_figsize():
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -167,7 +167,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -199,7 +199,7 @@ def test_declarative_contour_convert_units(fix_is_closed_polygon):
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -235,7 +235,7 @@ def test_declarative_events():
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'states']
     panel.plots = [contour, img]
 
@@ -1132,7 +1132,7 @@ def test_declarative_sfc_obs_change_units(ccrs):
     obs.time_window = timedelta(minutes=15)
     obs.level = None
     obs.fields = ['air_temperature']
-    obs.color = ['black']
+    obs.colors = ['black']
     obs.plot_units = ['degF']
 
     # Panel for plot with Map features
