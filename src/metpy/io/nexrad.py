@@ -11,7 +11,6 @@ import logging
 import pathlib
 import re
 import struct
-from struct import Struct
 from xdrlib import Unpacker
 
 import numpy as np
@@ -451,7 +450,7 @@ class Level2File:
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
         if data:
-            data = Struct(f'>{len(data) // 2:d}h').unpack(data)
+            data = struct.Struct(f'>{len(data) // 2:d}h').unpack(data)
             # Legacy format doesn't have date/time and has fewer azimuths
             if data[0] <= 5:
                 num_el = data[0]
@@ -494,7 +493,7 @@ class Level2File:
         # will be returned concatenated when this is the case
         data = self._buffer_segment(msg_hdr)
         if data:
-            date, time, num_el, *data = Struct(f'>{len(data) // 2:d}h').unpack(data)
+            date, time, num_el, *data = struct.Struct(f'>{len(data) // 2:d}h').unpack(data)
             if num_el == 0:
                 log.info('Message 15 num_el is 0--likely legacy clutter filter notch width. '
                          'Skipping...')
@@ -665,6 +664,8 @@ class Level2File:
         if msg_hdr.num_segments == len(bufs):
             self._msg_buf.pop(msg_hdr.msg_type)
             return b''.join(bytes(item[1]) for item in sorted(bufs.items()))
+        else:
+            return None
 
     def _add_sweep(self, hdr):
         if not self.sweeps and not hdr.rad_status & START_VOLUME:
@@ -1754,6 +1755,7 @@ class Level3File:
                 self._buffer.splice(comp_start, decomp_data)
                 assert self._buffer.check_remains(self.metadata['uncompressed_size'])
             except OSError:
+                # Compression didn't work, so we just assume it wasn't actually compressed.
                 pass
 
         # Unpack the various blocks, if present. The factor of 2 converts from
