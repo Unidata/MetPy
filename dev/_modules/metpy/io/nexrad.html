@@ -187,7 +187,6 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">Struct</span>
 <span class="kn">from</span> <span class="nn">xdrlib</span> <span class="kn">import</span> <span class="n">Unpacker</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -627,7 +626,7 @@
     <span class="k">def</span> <span class="nf">_decode_msg13</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="c1"># Legacy format doesn&#39;t have date/time and has fewer azimuths</span>
             <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
                 <span class="n">num_el</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -670,7 +669,7 @@
         <span class="c1"># will be returned concatenated when this is the case</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_segment</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">num_el</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&gt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">num_el</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Message 15 num_el is 0--likely legacy clutter filter notch width. &#39;</span>
                          <span class="s1">&#39;Skipping...&#39;</span><span class="p">)</span>
@@ -841,6 +840,8 @@
         <span class="k">if</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">num_segments</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">bufs</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span><span class="p">)</span>
             <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bufs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_add_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hdr</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sweeps</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">hdr</span><span class="o">.</span><span class="n">rad_status</span> <span class="o">&amp;</span> <span class="n">START_VOLUME</span><span class="p">:</span>
@@ -1930,6 +1931,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">splice</span><span class="p">(</span><span class="n">comp_start</span><span class="p">,</span> <span class="n">decomp_data</span><span class="p">)</span>
                 <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">check_remains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;uncompressed_size&#39;</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="c1"># Compression didn&#39;t work, so we just assume it wasn&#39;t actually compressed.</span>
                 <span class="k">pass</span>
 
         <span class="c1"># Unpack the various blocks, if present. The factor of 2 converts from</span>
@@ -2640,7 +2642,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 24, 2021 at 21:18:35.<br/>
+        Last updated on Jun 24, 2021 at 23:41:08.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
