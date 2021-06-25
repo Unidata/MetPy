@@ -4,6 +4,7 @@
 """Parse METAR-formatted data."""
 # Import the necessary libraries
 from collections import namedtuple
+import contextlib
 from datetime import datetime
 import warnings
 
@@ -521,11 +522,9 @@ def parse_metar_file(filename, *, year=None, month=None):
         if len(tmp):
             yield ' '.join(tmp)
 
-    # Open the file
-    myfile = open_as_needed(filename, 'rt')
-
-    # Clean up the file and take out the next line (\n)
-    value = myfile.read().rstrip()
+    # Open the file and clean up and take out the next line (\n)
+    with contextlib.closing(open_as_needed(filename, 'rt')) as myfile:
+        value = myfile.read().rstrip()
     list_values = value.split('\n')
     list_values = list(filter(None, list_values))
 

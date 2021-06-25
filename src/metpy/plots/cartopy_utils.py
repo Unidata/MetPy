@@ -27,7 +27,7 @@ try:
             # Ensure that the associated files are in the cache
             fname = f'{self.name}_{self.scaler.scale}'
             for extension in ['.dbf', '.shx']:
-                get_test_data(fname + extension)
+                get_test_data(fname + extension, as_file_obj=False)
             path = get_test_data(fname + '.shp', as_file_obj=False)
             return iter(tuple(shapereader.Reader(path).geometries()))
 

@@ -2,7 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `nexrad` module."""
-
+import contextlib
 from datetime import datetime
 from io import BytesIO
 import logging
@@ -76,7 +76,8 @@ def test_level2_fobj(filename, use_seek):
 
 def test_doubled_file():
     """Test for #489 where doubled-up files didn't parse at all."""
-    data = get_test_data('Level2_KFTG_20150430_1419.ar2v').read()
+    with contextlib.closing(get_test_data('Level2_KFTG_20150430_1419.ar2v')) as infile:
+        data = infile.read()
     fobj = BytesIO(data + data)
     f = Level2File(fobj)
     assert len(f.sweeps) == 12
