@@ -10,7 +10,6 @@
 # serve to show the default.
 
 from datetime import datetime
-import os
 from pathlib import Path
 import re
 import sys
