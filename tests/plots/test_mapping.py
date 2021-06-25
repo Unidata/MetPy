@@ -136,14 +136,13 @@ def test_mercator():
     assert crs.proj4_params['lon_0'] == -100
 
 
-# This won't work until at least CartoPy > 0.16.0
-# def test_mercator_scale_factor():
-#     """Test handling a mercator projection with a scale factor."""
-#     attrs = {'grid_mapping_name': 'mercator', 'scale_factor_at_projection_origin': 0.9}
-#     crs = CFProjection(attrs).to_cartopy()
-#
-#     assert isinstance(crs, ccrs.Mercator)
-#     assert crs.proj4_params['k_0'] == 0.9
+def test_mercator_scale_factor():
+    """Test handling a mercator projection with a scale factor."""
+    attrs = {'grid_mapping_name': 'mercator', 'scale_factor_at_projection_origin': 0.9}
+    crs = CFProjection(attrs).to_cartopy()
+
+    assert isinstance(crs, ccrs.Mercator)
+    assert crs.proj4_params['k_0'] == 0.9
 
 
 def test_geostationary():
