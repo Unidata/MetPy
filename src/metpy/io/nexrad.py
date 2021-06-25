@@ -964,7 +964,7 @@ class EDRMapper(DataMapper):
         offset = prod.thresholds[1] / 1000.
         leading_flags = prod.thresholds[3]
         for i in range(leading_flags, data_levels):
-            self.lut = scale * i + offset
+            self.lut[i] = scale * i + offset
 
 
 class LegacyMapper(DataMapper):
