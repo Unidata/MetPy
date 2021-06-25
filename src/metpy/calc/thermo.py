@@ -3325,42 +3325,6 @@ def scale_height(temp_bot, temp_top):
 
 
 @exporter.export
-@preprocess_and_wrap(
-    wrap_like='z_bot',
-    broadcast=('z_bot', 'pres_bot', 'pres_top', 'scale_height')
-)
-@check_units('[length]', '[pressure]', '[pressure]', '[length]')
-def hydrostatic_height(z_bot, pres_bot, pres_top, scale_height):
-    r"""Calculate the moist hydrostatic height.
-
-    .. math::   Z_2 = Z_1 + H \ln\left(\frac{p_1}{p_2}\right)
-
-    This function assumes dry air, but the moist hydrostatic height can
-    be obtained if the scale height is calculated with the virtual temperature.
-
-    Parameters
-    ----------
-    z_bot : `pint.Quantity`
-        Height at bottom of layer
-
-    pres_bot : `pint.Quantity`
-        Pressure at bottom of layer
-
-    pres_top : `pint.Quantity`
-        Pressure at top of layer
-
-    scale_height : `pint.Quantity`
-        Scale height of layer
-
-    Returns
-    -------
-    `pint.Quantity`
-        Hydrostatic height at top of layer
-    """
-    return z_bot + scale_height * np.log(pres_bot / pres_top)
-
-
-@exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def showalter_index(pressure, temperature, dewpt):

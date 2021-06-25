@@ -7,7 +7,6 @@ import bisect
 from collections import namedtuple
 from collections.abc import Iterable
 import contextlib
-import ctypes
 from datetime import datetime, timedelta
 from enum import Enum
 from itertools import product
@@ -20,19 +19,18 @@ import numpy as np
 import pyproj
 import xarray as xr
 
+from metpy import constants
 from ._tools import IOBuffer, NamedStruct, open_as_needed
-from ..calc import (hydrostatic_height, mixing_ratio_from_specific_humidity,
+from ..calc import (mixing_ratio_from_specific_humidity,
                     scale_height, specific_humidity_from_dewpoint,
-                    virtual_temperature)
+                    thickness_hydrostatic, virtual_temperature)
 from ..package_tools import Exporter
 from ..units import units
 
 exporter = Exporter(globals())
 log = logging.getLogger(__name__)
 
-ANLB_SIZE = 128
 BYTES_PER_WORD = 4
-NAVB_SIZE = 256
 PARAM_ATTR = [('name', (4, 's')), ('scale', (1, 'i')),
               ('offset', (1, 'i')), ('bits', (1, 'i'))]
 USED_FLAG = 9999
@@ -175,13 +173,11 @@ Surface = namedtuple('Surface', [
 def _data_source(source):
     """Get data source from stored integer."""
     try:
-        DataSource(source)
+        return DataSource(source)
     except ValueError:
         log.warning('Could not interpret data source `%s`. '
                     'Setting to `Unknown`.', source)
         return DataSource(99)
-    else:
-        return DataSource(source)
 
 
 def _word_to_position(word, bytes_per_word=BYTES_PER_WORD):
@@ -280,45 +276,34 @@ def _interp_logp_height(sounding, missing=-9999):
 
     if maxlev < size - 1:
         if maxlev > -1:
-            pb = sounding['PRES'][maxlev] * units.hPa
-            zb = sounding['HGHT'][maxlev] * units.m
-            tb = sounding['TEMP'][maxlev] * units.degC
-            tdb = sounding['DWPT'][maxlev] * units.degC
+            pb = units.Quantity(sounding['PRES'][maxlev], 'hPa')
+            zb = units.Quantity(sounding['HGHT'][maxlev], 'm')
+            tb = units.Quantity(sounding['TEMP'][maxlev], 'degC')
+            tdb = units.Quantity(sounding['DWPT'][maxlev], 'degC')
         else:
-            pb = missing * units.hPa
-            zb = missing * units.m
-            tb = missing * units.degC
-            tdb = missing * units.degC
+            pb = units.Quantity(missing, 'hPa')
+            zb = units.Quantity(missing, 'm')
+            tb = units.Quantity(missing, 'degC')
+            tdb = units.Quantity(missing, 'degC')
 
         for i in range(maxlev + 1, size):
             if sounding['HGHT'][i] == missing:
-                tt = sounding['TEMP'][i] * units.degC
-                tdt = sounding['DWPT'][i] * units.degC
-                pt = sounding['PRES'][i] * units.hPa
+                tt = units.Quantity(sounding['TEMP'][i], 'degC')
+                tdt = units.Quantity(sounding['DWPT'][i], 'degC')
+                pt = units.Quantity(sounding['PRES'][i], 'hPa')
 
-                if missing in [tb.magnitude, pb.magnitude]:
-                    tvb = missing * units.degC
+                pl = units.Quantity([pb.m, pt.m], 'hPa')
+                tl = units.Quantity([tb.m, tt.m], 'degC')
+                tdl = units.Quantity([tdb.m, tdt.m], 'degC')
+
+                if missing in tdl.m:
+                    rl = None
                 else:
-                    if tdb.magnitude == missing:
-                        tvb = tb
-                    else:
-                        qb = specific_humidity_from_dewpoint(pb, tdb)
-                        rb = mixing_ratio_from_specific_humidity(qb)
-                        tvb = virtual_temperature(tb, rb)
+                    ql = specific_humidity_from_dewpoint(pl, tdl)
+                    rl = mixing_ratio_from_specific_humidity(ql)
 
-                if missing in [tt.magnitude, pt.magnitude]:
-                    tvt = missing * units.degC
-                else:
-                    if tdt.magnitude == missing:
-                        tvt = tt
-                    else:
-                        qt = specific_humidity_from_dewpoint(pt, tdt)
-                        rt = mixing_ratio_from_specific_humidity(qt)
-                        tvt = virtual_temperature(tt, rt)
-
-                if missing not in [tvb.magnitude, tvt.magnitude, zb.magnitude]:
-                    H = scale_height(tvb, tvt)
-                    sounding['HGHT'][i] = hydrostatic_height(zb, pb, pt, H).magnitude
+                if missing not in [*tl.m, zb.m]:
+                    sounding['HGHT'][i] = (zb + thickness_hydrostatic(pl, tl, rl)).m
                 else:
                     sounding['HGHT'][i] = missing
 
@@ -349,7 +334,7 @@ def _interp_logp_pressure(sounding, missing=-9999):
         if ilev != -1 and klev != -1:
             for j in range(ilev + 1, klev):
                 z = sounding['HGHT'][j]
-                if z != missing and zb != missing and pb != missing:
+                if missing not in [z, zb, pb]:
                     sounding['PRES'][j] = (
                         pb * np.exp((z - zb) * np.log(pt / pb) / (zt - zb))
                     )
@@ -366,7 +351,7 @@ def _interp_moist_height(sounding, missing=-9999):
     subroutine in GEMPAK. This the default behavior when
     merging observed sounding data.
     """
-    hlist = (np.ones(len(sounding['PRES'])) * -9999) * units.m
+    hlist = units.Quantity(np.ones(len(sounding['PRES'])) * -9999, 'm')
 
     ilev = -1
     top = False
@@ -376,18 +361,20 @@ def _interp_moist_height(sounding, missing=-9999):
         ilev += 1
         if ilev >= len(sounding['PRES']):
             top = True
-        elif (sounding['PRES'][ilev] != missing
-              and sounding['TEMP'][ilev] != missing
-              and sounding['HGHT'][ilev] != missing):
+        elif missing not in [
+            sounding['PRES'][ilev],
+            sounding['TEMP'][ilev],
+            sounding['HGHT'][ilev]
+        ]:
             found = True
 
     while not top:
-        pb = sounding['PRES'][ilev] * units.hPa
-        plev = sounding['PRES'][ilev] * units.hPa
-        tb = sounding['TEMP'][ilev] * units.degC
-        tdb = sounding['DWPT'][ilev] * units.degC
-        zb = sounding['HGHT'][ilev] * units.m
-        zlev = sounding['HGHT'][ilev] * units.m
+        plev = units.Quantity(sounding['PRES'][ilev], 'hPa')
+        pb = units.Quantity(sounding['PRES'][ilev], 'hPa')
+        tb = units.Quantity(sounding['TEMP'][ilev], 'degC')
+        tdb = units.Quantity(sounding['DWPT'][ilev], 'degC')
+        zb = units.Quantity(sounding['HGHT'][ilev], 'm')
+        zlev = units.Quantity(sounding['HGHT'][ilev], 'm')
         jlev = ilev
         klev = 0
         mand = False
@@ -398,46 +385,38 @@ def _interp_moist_height(sounding, missing=-9999):
                 mand = True
                 top = True
             else:
-                pt = sounding['PRES'][jlev] * units.hPa
-                tt = sounding['TEMP'][jlev] * units.degC
-                tdt = sounding['DWPT'][jlev] * units.degC
-                zt = sounding['HGHT'][jlev] * units.m
-                if (zt.magnitude != missing
-                   and tt.magnitude != missing):
+                pt = units.Quantity(sounding['PRES'][jlev], 'hPa')
+                tt = units.Quantity(sounding['TEMP'][jlev], 'degC')
+                tdt = units.Quantity(sounding['DWPT'][jlev], 'degC')
+                zt = units.Quantity(sounding['HGHT'][jlev], 'm')
+                if (zt.m != missing
+                   and tt != missing):
                     mand = True
                     klev = jlev
 
-                if missing in [tb.magnitude, pb.magnitude]:
-                    tvb = missing * units.degC
-                else:
-                    if tdb.magnitude == missing:
-                        tvb = tb
-                    else:
-                        qb = specific_humidity_from_dewpoint(pb, tdb)
-                        rb = mixing_ratio_from_specific_humidity(qb)
-                        tvb = virtual_temperature(tb, rb)
+                pl = units.Quantity([pb.m, pt.m], 'hPa')
+                tl = units.Quantity([tb.m, tt.m], 'degC')
+                tdl = units.Quantity([tdb.m, tdt.m], 'degC')
 
-                if missing in [tt.magnitude, pt.magnitude]:
-                    tvt = missing * units.degC
+                if missing in tdl.m:
+                    rl = None
+                    tvl = tl
                 else:
-                    if tdt.magnitude == missing:
-                        tvt = tt
-                    else:
-                        qt = specific_humidity_from_dewpoint(pt, tdt)
-                        rt = mixing_ratio_from_specific_humidity(qt)
-                        tvt = virtual_temperature(tt, rt)
+                    ql = specific_humidity_from_dewpoint(pl, tdl)
+                    rl = mixing_ratio_from_specific_humidity(ql)
+                    tvl = virtual_temperature(tl, ql)
 
-                if missing not in [tvb.magnitude, tvt.magnitude, zb.magnitude]:
-                    H = scale_height(tvb, tvt)
-                    znew = hydrostatic_height(zb, pb, pt, H)
+                if missing not in [*tl.m, zb.m]:
+                    scale_z = scale_height(*tvl)
+                    znew = zb + thickness_hydrostatic(pl, tl, rl)
                     tb = tt
                     tdb = tdt
                     pb = pt
                     zb = znew
                 else:
-                    H = missing * units.m
-                    znew = missing * units.m
-                hlist[jlev] = H
+                    scale_z = units.Quantity(missing, 'm')
+                    znew = units.Quantity(missing, 'm')
+                hlist[jlev] = scale_z
 
         if klev != 0:
             s = (zt - zlev) / (znew - zlev)
@@ -447,14 +426,17 @@ def _interp_moist_height(sounding, missing=-9999):
         hbb = zlev
         pbb = plev
         for ii in range(ilev + 1, jlev):
-            p = sounding['PRES'][ii] * units.hPa
-            H = hlist[ii]
-            if missing not in [H.magnitude, hbb.magnitude,
-                               pbb.magnitude, p.magnitude]:
-                z = hydrostatic_height(hbb, pbb, p, H)
+            p = units.Quantity(sounding['PRES'][ii], 'hPa')
+            scale_z = hlist[ii]
+            if missing not in [scale_z.m, hbb.m,
+                               pbb.m, p.m]:
+                th = ((scale_z * constants.g) / constants.Rd).to('degC')
+                tbar = units.Quantity([th.m, th.m], 'degC')
+                pll = units.Quantity([pbb.m, p.m], 'hPa')
+                z = hbb + thickness_hydrostatic(pll, tbar)
             else:
-                z = missing * units.m
-            sounding['HGHT'][ii] = z.magnitude
+                z = units.Quantity(missing, 'm')
+            sounding['HGHT'][ii] = z.m
             hbb = z
             pbb = p
 
@@ -596,13 +578,16 @@ class GempakFile():
             # file_key_blocks = self._buffer.set_mark()
             # Navigation Block
             navb_size = self._buffer.read_int(4, self.endian, False)
-            if navb_size != NAVB_SIZE:
+
+            nav_stuct = NamedStruct(self.grid_nav_fmt,
+                                    self.prefmt,
+                                    'NavigationBlock')
+
+            if navb_size != nav_stuct.size // BYTES_PER_WORD:
                 raise ValueError('Navigation block size does not match GEMPAK specification')
             else:
                 self.navigation_block = (
-                    self._buffer.read_struct(NamedStruct(self.grid_nav_fmt,
-                                                         self.prefmt,
-                                                         'NavigationBlock'))
+                    self._buffer.read_struct(nav_stuct)
                 )
             self.kx = int(self.navigation_block.right_grid_number)
             self.ky = int(self.navigation_block.top_grid_number)
@@ -610,22 +595,26 @@ class GempakFile():
             # Analysis Block
             anlb_size = self._buffer.read_int(4, self.endian, False)
             anlb_start = self._buffer.set_mark()
-            if anlb_size != ANLB_SIZE:
+            anlb1_struct = NamedStruct(self.grid_anl_fmt1,
+                                       self.prefmt,
+                                       'AnalysisBlock')
+            anlb2_struct = NamedStruct(self.grid_anl_fmt2,
+                                       self.prefmt,
+                                       'AnalysisBlock')
+
+            if anlb_size not in [anlb1_struct.size // BYTES_PER_WORD,
+                                 anlb2_struct.size // BYTES_PER_WORD]:
                 raise ValueError('Analysis block size does not match GEMPAK specification')
             else:
                 anlb_type = self._buffer.read_struct(struct.Struct(self.prefmt + 'f'))[0]
                 self._buffer.jump_to(anlb_start)
                 if anlb_type == 1:
                     self.analysis_block = (
-                        self._buffer.read_struct(NamedStruct(self.grid_anl_fmt1,
-                                                             self.prefmt,
-                                                             'AnalysisBlock'))
+                        self._buffer.read_struct(anlb1_struct)
                     )
                 elif anlb_type == 2:
                     self.analysis_block = (
-                        self._buffer.read_struct(NamedStruct(self.grid_anl_fmt2,
-                                                             self.prefmt,
-                                                             'AnalysisBlock'))
+                        self._buffer.read_struct(anlb2_struct)
                     )
                 else:
                     self.analysis_block = None
@@ -684,7 +673,7 @@ class GempakFile():
                 for _ in range(part.parameter_count):
                     if 's' in fmt[1]:
                         self.parameters[n][attr] += [
-                            self._buffer.read_binary(*fmt)[0].decode().strip()
+                            self._decode_strip(self._buffer.read_binary(*fmt)[0])
                         ]
                     else:
                         self.parameters[n][attr] += self._buffer.read_binary(*fmt)
@@ -754,27 +743,19 @@ class GempakFile():
             return struct.pack('i', coord).decode()
 
     @staticmethod
-    def _convert_parms(parm):
-        """Convert parameter strings."""
-        dparm = parm.decode()
-        return dparm.strip() if dparm.strip() else ''
-
-    @staticmethod
     def _fortran_ishift(i, shift):
         """Python-friendly bit shifting."""
-        mask = 0xffffffff
-        if shift > 0:
-            shifted = ctypes.c_int32(i << shift).value
+        if shift >= 0:
+            # Shift left and only keep low 32 bits
+            ret = (i << shift) & 0xffffffff
+
+            # If high bit, convert back to negative of two's complement
+            if ret > 0x7fffffff:
+                ret = -(~ret & 0x7fffffff) - 1
+            return ret
         elif shift < 0:
-            if i < 0:
-                shifted = (i & mask) >> abs(shift)
-            else:
-                shifted = i >> abs(shift)
-        elif shift == 0:
-            shifted = i
-        else:
-            raise ValueError('Bad shift value {}.'.format(shift))
-        return shifted
+            # Shift right the low 32 bits
+            return (i & 0xffffffff) >> -shift
 
     @staticmethod
     def _decode_strip(b):
@@ -881,7 +862,7 @@ class GempakGrid(GempakFile):
                                else (key, 'i', self._convert_vertical_coord) if key == 'GVCD'
                                else (key, 'i', self._convert_dattim) if key in datetime_names
                                else (key, 'i', self._convert_ftime) if key in ftime_names
-                               else (key, '4s', self._convert_parms) if key in string_names
+                               else (key, '4s', self._decode_strip) if key in string_names
                                else (key, 'i')
                                for key in self.column_keys]
         column_headers_info.extend([(None, None)])
@@ -918,7 +899,7 @@ class GempakGrid(GempakFile):
         """Create CRS from GEMPAK navigation block."""
         gemproj = self.navigation_block.projection
         proj, ptype = GEMPROJ_TO_PROJ[gemproj]
-        R = 6371200.0
+        radius_sph = 6371200.0
 
         if ptype == 'azm':
             lat_0 = self.navigation_block.proj_angle1
@@ -930,7 +911,7 @@ class GempakGrid(GempakFile):
             self.crs = pyproj.CRS.from_dict({'proj': proj,
                                              'lat_0': lat_0,
                                              'lon_0': lon_0,
-                                             'R': R})
+                                             'R': radius_sph})
         elif ptype == 'cyl':
             if gemproj != 'mcd':
                 lat_0 = self.navigation_block.proj_angle1
@@ -942,7 +923,7 @@ class GempakGrid(GempakFile):
                 self.crs = pyproj.CRS.from_dict({'proj': proj,
                                                  'lat_0': lat_0,
                                                  'lon_0': lon_0,
-                                                 'R': R})
+                                                 'R': radius_sph})
             else:
                 avglat = (self.navigation_block.upper_right_lat
                           + self.navigation_block.lower_left_lat) * 0.5
@@ -955,7 +936,7 @@ class GempakGrid(GempakFile):
                                                  'lat_0': avglat,
                                                  'lon_0': lon_0,
                                                  'k_0': k_0,
-                                                 'R': R})
+                                                 'R': radius_sph})
         elif ptype == 'con':
             lat_1 = self.navigation_block.proj_angle1
             lon_0 = self.navigation_block.proj_angle2
@@ -964,7 +945,7 @@ class GempakGrid(GempakFile):
                                              'lon_0': lon_0,
                                              'lat_1': lat_1,
                                              'lat_2': lat_2,
-                                             'R': R})
+                                             'R': radius_sph})
 
     def _set_coordinates(self):
         """Use GEMPAK navigation block to define coordinates.
@@ -1407,19 +1388,20 @@ class GempakSounding(GempakFile):
                                          _word_to_position(part.header_length + 1))
                     lendat = self.data_header_length - part.header_length
 
-                    if part.data_type == DataTypes.real:
-                        packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.realpack:
-                        packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    else:
+                    fmt_code = {
+                        DataTypes.real: 'f',
+                        DataTypes.realpack: 'i',
+                        DataTypes.character: 's',
+                    }.get(part.data_type)
+
+                    if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+                    packed_buffer = (
+                        self._buffer.read_struct(
+                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
+                        )
+                    )
 
                     parameters = self.parameters[iprt]
                     nparms = len(parameters['name'])
@@ -1469,24 +1451,20 @@ class GempakSounding(GempakFile):
                                          _word_to_position(part.header_length + 1))
                     lendat = self.data_header_length - part.header_length
 
-                    if part.data_type == DataTypes.real:
-                        packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.realpack:
-                        packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.character:
-                        packed_buffer_fmt = '{}s'.format(lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    else:
+                    fmt_code = {
+                        DataTypes.real: 'f',
+                        DataTypes.realpack: 'i',
+                        DataTypes.character: 's',
+                    }.get(part.data_type)
+
+                    if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+                    packed_buffer = (
+                        self._buffer.read_struct(
+                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
+                        )
+                    )
 
                     parameters = self.parameters[iprt]
                     nparms = len(parameters['name'])
@@ -1499,7 +1477,7 @@ class GempakSounding(GempakFile):
                     elif part.data_type == DataTypes.character:
                         for iprm, param in enumerate(parameters['name']):
                             sounding[part.name][param] = (
-                                packed_buffer[iprm].decode().strip()
+                                self._decode_strip(packed_buffer[iprm])
                             )
                     else:
                         for iprm, param in enumerate(parameters['name']):
@@ -1509,6 +1487,253 @@ class GempakSounding(GempakFile):
 
                 soundings.append(self._merge_sounding(sounding))
         return soundings
+
+    def _merge_significant_temps(self, merged, parts, section, pbot):
+        """Process and merge a significant temperature sections."""
+        for isigt, pres in enumerate(parts[section]['PRES']):
+            pres = abs(pres)
+            if self.prod_desc.missing_float not in [
+                pres,
+                parts[section]['TEMP'][isigt]
+            ] and pres != 0:
+                if pres > pbot:
+                    continue
+                elif pres in merged['PRES']:
+                    ploc = merged['PRES'].index(pres)
+                    if merged['TEMP'][ploc] == self.prod_desc.missing_float:
+                        merged['TEMP'][ploc] = parts[section]['TEMP'][isigt]
+                        merged['DWPT'][ploc] = parts[section]['DWPT'][isigt]
+                else:
+                    size = len(merged['PRES'])
+                    loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
+                    merged['PRES'].insert(loc, pres)
+                    merged['TEMP'].insert(loc, parts[section]['TEMP'][isigt])
+                    merged['DWPT'].insert(loc, parts[section]['DWPT'][isigt])
+                    merged['DRCT'].insert(loc, self.prod_desc.missing_float)
+                    merged['SPED'].insert(loc, self.prod_desc.missing_float)
+                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
+            pbot = pres
+
+        return pbot
+
+    def _merge_tropopause_data(self, merged, parts, section, pbot):
+        """Process and merge tropopause sections."""
+        for itrp, pres in enumerate(parts[section]['PRES']):
+            pres = abs(pres)
+            if self.prod_desc.missing_float not in [
+                pres,
+                parts[section]['TEMP'][itrp]
+            ] and pres != 0:
+                if pres > pbot:
+                    continue
+                elif pres in merged['PRES']:
+                    ploc = merged['PRES'].index(pres)
+                    if merged['TEMP'][ploc] == self.prod_desc.missing_float:
+                        merged['TEMP'][ploc] = parts[section]['TEMP'][itrp]
+                        merged['DWPT'][ploc] = parts[section]['DWPT'][itrp]
+                    if merged['DRCT'][ploc] == self.prod_desc.missing_float:
+                        merged['DRCT'][ploc] = parts[section]['DRCT'][itrp]
+                        merged['SPED'][ploc] = parts[section]['SPED'][itrp]
+                    merged['HGHT'][ploc] = self.prod_desc.missing_float
+                else:
+                    size = len(merged['PRES'])
+                    loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
+                    merged['PRES'].insert(loc, pres)
+                    merged['TEMP'].insert(loc, parts[section]['TEMP'][itrp])
+                    merged['DWPT'].insert(loc, parts[section]['DWPT'][itrp])
+                    merged['DRCT'].insert(loc, parts[section]['DRCT'][itrp])
+                    merged['SPED'].insert(loc, parts[section]['SPED'][itrp])
+                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
+            pbot = pres
+
+        return pbot
+
+    def _merge_mandatory_temps(self, merged, parts, section, qcman, bgl, plast):
+        """Process and merge mandatory temperature sections."""
+        num_levels = len(parts[section]['PRES'])
+        start_level = {
+            'TTAA': 1,
+            'TTCC': 0,
+        }
+        for i in range(start_level[section], num_levels):
+            if (parts[section]['PRES'][i] < plast
+                and self.prod_desc.missing_float not in [
+                    parts[section]['PRES'][i],
+                    parts[section]['TEMP'][i],
+                    parts[section]['HGHT'][i]
+            ]):
+                for pname, pval in parts[section].items():
+                    merged[pname].append(pval[i])
+                plast = merged['PRES'][-1]
+            else:
+                if section == 'TTAA':
+                    if parts[section]['PRES'][i] > merged['PRES'][0]:
+                        bgl += 1
+                    else:
+                        # GEMPAK ignores MAN data with missing TEMP/HGHT and does not
+                        # interpolate for them.
+                        if parts[section]['PRES'][i] != self.prod_desc.missing_float:
+                            qcman.append(parts[section]['PRES'][i])
+
+        return bgl, plast
+
+    def _merge_mandatory_winds(self, merged, parts, section, qcman):
+        """Process and merge manadatory wind sections."""
+        for iwind, pres in enumerate(parts[section]['PRES']):
+            if pres in merged['PRES'][1:]:
+                loc = merged['PRES'].index(pres)
+                if merged['DRCT'][loc] == self.prod_desc.missing_float:
+                    merged['DRCT'][loc] = parts[section]['DRCT'][iwind]
+                    merged['SPED'][loc] = parts[section]['SPED'][iwind]
+            else:
+                if pres not in qcman:
+                    size = len(merged['PRES'])
+                    loc = size - bisect.bisect_left(merged['PRES'][1:][::-1], pres)
+                    if loc >= size + 1:
+                        loc = -1
+                    merged['PRES'].insert(loc, pres)
+                    merged['TEMP'].insert(loc, self.prod_desc.missing_float)
+                    merged['DWPT'].insert(loc, self.prod_desc.missing_float)
+                    merged['DRCT'].insert(loc, parts[section]['DRCT'][iwind])
+                    merged['SPED'].insert(loc, parts[section]['SPED'][iwind])
+                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
+
+    def _merge_winds_pressure(self, merged, parts, section, pbot):
+        """Process and merge wind sections on pressure surfaces."""
+        for ilevel, pres in enumerate(parts[section]['PRES']):
+            pres = abs(pres)
+            if self.prod_desc.missing_float not in [
+                pres,
+                parts[section]['DRCT'][ilevel],
+                parts[section]['SPED'][ilevel]
+            ] and pres != 0:
+                if pres > pbot:
+                    continue
+                elif pres in merged['PRES']:
+                    ploc = merged['PRES'].index(pres)
+                    if self.prod_desc.missing_float in [
+                        merged['DRCT'][ploc],
+                        merged['SPED'][ploc]
+                    ]:
+                        merged['DRCT'][ploc] = parts[section]['DRCT'][ilevel]
+                        merged['SPED'][ploc] = parts[section]['SPED'][ilevel]
+                else:
+                    size = len(merged['PRES'])
+                    loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
+                    merged['PRES'].insert(loc, pres)
+                    merged['DRCT'].insert(loc, parts[section]['DRCT'][ilevel])
+                    merged['SPED'].insert(loc, parts[section]['SPED'][ilevel])
+                    merged['TEMP'].insert(loc, self.prod_desc.missing_float)
+                    merged['DWPT'].insert(loc, self.prod_desc.missing_float)
+                    merged['HGHT'].insert(loc, self.prod_desc.missing_float)
+            pbot = pres
+
+        return pbot
+
+    def _merge_winds_height(self, merged, parts, nsgw, nasw, istart):
+        """Merge wind sections on height surfaces."""
+        size = len(merged['HGHT'])
+        psfc = merged['PRES'][0]
+        zsfc = merged['HGHT'][0]
+
+        if self.prod_desc.missing_float not in [
+            psfc,
+            zsfc
+        ] and size >= 2:
+            more = True
+            zold = merged['HGHT'][0]
+            znxt = merged['HGHT'][1]
+            ilev = 1
+        elif size >= 3:
+            more = True
+            zold = merged['HGHT'][1]
+            znxt = merged['HGHT'][2]
+            ilev = 2
+        else:
+            zold = self.prod_desc.missing_float
+            znxt = self.prod_desc.missing_float
+
+        if self.prod_desc.missing_float in [
+            zold,
+            znxt
+        ]:
+            more = False
+
+        if istart <= nsgw:
+            above = False
+            i = istart
+            iend = nsgw
+        else:
+            above = True
+            i = 0
+            iend = nasw
+
+        while more and i < iend:
+            if not above:
+                hght = parts['PPBB']['HGHT'][i]
+                drct = parts['PPBB']['DRCT'][i]
+                sped = parts['PPBB']['SPED'][i]
+            else:
+                hght = parts['PPDD']['HGHT'][i]
+                drct = parts['PPDD']['DRCT'][i]
+                sped = parts['PPDD']['SPED'][i]
+            skip = False
+
+            if self.prod_desc.missing_float in [
+                hght,
+                drct,
+                sped
+            ]:
+                skip = True
+            elif abs(zold - hght) < 1:
+                skip = True
+                if self.prod_desc.missing_float in [
+                    merged['DRCT'][ilev - 1],
+                    merged['SPED'][ilev - 1]
+                ]:
+                    merged['DRCT'][ilev - 1] = drct
+                    merged['SPED'][ilev - 1] = sped
+            elif hght <= zold:
+                skip = True
+            elif hght >= znxt:
+                while more and hght > znxt:
+                    zold = znxt
+                    ilev += 1
+                    if ilev >= size:
+                        more = False
+                    else:
+                        znxt = merged['HGHT'][ilev]
+                        if znxt == self.prod_desc.missing_float:
+                            more = False
+
+            if more and not skip:
+                if abs(znxt - hght) < 1:
+                    if self.prod_desc.missing_float in [
+                        merged['DRCT'][ilev - 1],
+                        merged['SPED'][ilev - 1]
+                    ]:
+                        merged['DRCT'][ilev] = drct
+                        merged['SPED'][ilev] = sped
+                else:
+                    loc = bisect.bisect_left(merged['HGHT'], hght)
+                    merged['HGHT'].insert(loc, hght)
+                    merged['DRCT'].insert(loc, drct)
+                    merged['SPED'].insert(loc, sped)
+                    merged['PRES'].insert(loc, self.prod_desc.missing_float)
+                    merged['TEMP'].insert(loc, self.prod_desc.missing_float)
+                    merged['DWPT'].insert(loc, self.prod_desc.missing_float)
+                    size += 1
+                    ilev += 1
+                    zold = hght
+
+            if not above and i == nsgw - 1:
+                above = True
+                i = 0
+                iend = nasw
+            else:
+                i += 1
+
+        return size
 
     def _merge_sounding(self, parts):
         """Merge unmerged sounding data."""
@@ -1611,9 +1836,11 @@ class GempakSounding(GempakFile):
             for mp, mt, mz in zip(parts['TTAA']['PRES'],
                                   parts['TTAA']['TEMP'],
                                   parts['TTAA']['HGHT']):
-                if (mp != self.prod_desc.missing_float
-                   and mt != self.prod_desc.missing_float
-                   and mz != self.prod_desc.missing_float):
+                if self.prod_desc.missing_float not in [
+                    mp,
+                    mt,
+                    mz
+                ]:
                     first_man_p = mp
                     break
 
@@ -1632,8 +1859,10 @@ class GempakSounding(GempakFile):
             merged['SPED'][0] = self.prod_desc.missing_float
 
         if (num_sigt_levels >= 1
-           and parts['TTBB']['PRES'][0] != self.prod_desc.missing_float
-           and parts['TTBB']['TEMP'][0] != self.prod_desc.missing_float):
+           and self.prod_desc.missing_float not in [
+               parts['TTBB']['PRES'][0],
+               parts['TTBB']['TEMP'][0]
+           ]):
             first_man_p = merged['PRES'][0]
             first_sig_p = parts['TTBB']['PRES'][0]
             if (first_man_p == self.prod_desc.missing_float
@@ -1649,13 +1878,15 @@ class GempakSounding(GempakFile):
                     merged['DRCT'][0] = parts['PPBB']['DRCT'][0]
                     merged['SPED'][0] = parts['PPBB']['SPED'][0]
             else:
-                if (parts['PPBB']['PRES'][0] != self.prod_desc.missing_float
-                   and parts['PPBB']['DRCT'][0] != self.prod_desc.missing_float):
+                if self.prod_desc.missing_float not in [
+                    parts['PPBB']['PRES'][0],
+                    parts['PPBB']['DRCT'][0]
+                ]:
                     first_man_p = merged['PRES'][0]
                     first_sig_p = abs(parts['PPBB']['PRES'][0])
                     if (first_man_p == self.prod_desc.missing_float
                        or np.isclose(first_man_p, first_sig_p)):
-                        merged['DRCT'][0] = abs(parts['PPBB']['PRES'][0])
+                        merged['PRES'][0] = abs(parts['PPBB']['PRES'][0])
                         merged['DRCT'][0] = parts['PPBB']['DRCT'][0]
                         merged['SPED'][0] = parts['PPBB']['SPED'][0]
 
@@ -1669,73 +1900,19 @@ class GempakSounding(GempakFile):
                 plast = merged['PRES'][0]
 
         if num_man_levels >= 2:
-            for i in range(1, num_man_levels):
-                if (parts['TTAA']['PRES'][i] < plast
-                   and parts['TTAA']['PRES'][i] != self.prod_desc.missing_float
-                   and parts['TTAA']['TEMP'][i] != self.prod_desc.missing_float
-                   and parts['TTAA']['HGHT'][i] != self.prod_desc.missing_float):
-                    for pname, pval in parts['TTAA'].items():
-                        merged[pname].append(pval[i])
-                    plast = merged['PRES'][-1]
-                else:
-                    if parts['TTAA']['PRES'][i] > merged['PRES'][0]:
-                        bgl += 1
-                    else:
-                        # GEMPAK ignores MAN data with missing TEMP/HGHT and does not
-                        # interpolate for them.
-                        if parts['TTAA']['PRES'][i] != self.prod_desc.missing_float:
-                            qcman.append(parts['TTAA']['PRES'][i])
+            bgl, plast = self._merge_mandatory_temps(merged, parts, 'TTAA',
+                                                     qcman, bgl, plast)
 
         if num_above_man_levels >= 1:
-            for i in range(num_above_man_levels):
-                if (parts['TTCC']['PRES'][i] < plast
-                   and parts['TTCC']['PRES'][i] != self.prod_desc.missing_float
-                   and parts['TTCC']['TEMP'][i] != self.prod_desc.missing_float
-                   and parts['TTCC']['HGHT'][i] != self.prod_desc.missing_float):
-                    for pname, pval in parts['TTCC'].items():
-                        merged[pname].append(pval[i])
-                    plast = merged['PRES'][-1]
+            bgl, plast = self._merge_mandatory_temps(merged, parts, 'TTCC',
+                                                     qcman, bgl, plast)
 
         # Merge MAN wind
         if num_man_wind_levels >= 1 and num_man_levels >= 1 and len(merged['PRES']) >= 2:
-            for iwind, pres in enumerate(parts['PPAA']['PRES']):
-                if pres in merged['PRES'][1:]:
-                    loc = merged['PRES'].index(pres)
-                    if merged['DRCT'][loc] == self.prod_desc.missing_float:
-                        merged['DRCT'][loc] = parts['PPAA']['DRCT'][iwind]
-                        merged['SPED'][loc] = parts['PPAA']['SPED'][iwind]
-                else:
-                    if pres not in qcman:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][1:][::-1], pres)
-                        if loc >= size + 1:
-                            loc = -1
-                        merged['PRES'].insert(loc, pres)
-                        merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                        merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                        merged['DRCT'].insert(loc, parts['PPAA']['DRCT'][iwind])
-                        merged['SPED'].insert(loc, parts['PPAA']['SPED'][iwind])
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
+            self._merge_mandatory_winds(merged, parts, 'PPAA', qcman)
 
         if num_above_man_wind_levels >= 1 and num_man_levels >= 1 and len(merged['PRES']) >= 2:
-            for iwind, pres in enumerate(parts['PPCC']['PRES']):
-                if pres in merged['PRES'][1:]:
-                    loc = merged['PRES'].index(pres)
-                    if merged['DRCT'][loc] == self.prod_desc.missing_float:
-                        merged['DRCT'][loc] = parts['PPCC']['DRCT'][iwind]
-                        merged['SPED'][loc] = parts['PPCC']['SPED'][iwind]
-                else:
-                    if pres not in qcman:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][1:][::-1], pres)
-                        if loc >= size + 1:
-                            loc = -1
-                        merged['PRES'].insert(loc, pres)
-                        merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                        merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                        merged['DRCT'].insert(loc, parts['PPCC']['DRCT'][iwind])
-                        merged['SPED'].insert(loc, parts['PPCC']['SPED'][iwind])
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
+            self._merge_mandatory_winds(merged, parts, 'PPCC', qcman)
 
         # Merge TROP
         if num_trop_levels >= 1 or num_above_trop_levels >= 1:
@@ -1749,60 +1926,10 @@ class GempakSounding(GempakFile):
                 pbot = 1050
 
         if num_trop_levels >= 1:
-            for itrp, pres in enumerate(parts['TRPA']['PRES']):
-                pres = abs(pres)
-                if (pres != self.prod_desc.missing_float
-                   and parts['TRPA']['TEMP'][itrp] != self.prod_desc.missing_float
-                   and pres != 0):
-                    if pres > pbot:
-                        continue
-                    elif pres in merged['PRES']:
-                        ploc = merged['PRES'].index(pres)
-                        if merged['TEMP'][ploc] == self.prod_desc.missing_float:
-                            merged['TEMP'][ploc] = parts['TRPA']['TEMP'][itrp]
-                            merged['DWPT'][ploc] = parts['TRPA']['DWPT'][itrp]
-                        if merged['DRCT'][ploc] == self.prod_desc.missing_float:
-                            merged['DRCT'][ploc] = parts['TRPA']['DRCT'][itrp]
-                            merged['SPED'][ploc] = parts['TRPA']['SPED'][itrp]
-                        merged['HGHT'][ploc] = self.prod_desc.missing_float
-                    else:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                        merged['PRES'].insert(loc, pres)
-                        merged['TEMP'].insert(loc, parts['TRPA']['TEMP'][itrp])
-                        merged['DWPT'].insert(loc, parts['TRPA']['DWPT'][itrp])
-                        merged['DRCT'].insert(loc, parts['TRPA']['DRCT'][itrp])
-                        merged['SPED'].insert(loc, parts['TRPA']['SPED'][itrp])
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                pbot = pres
+            pbot = self._merge_tropopause_data(merged, parts, 'TRPA', pbot)
 
         if num_above_trop_levels >= 1:
-            for itrp, pres in enumerate(parts['TRPC']['PRES']):
-                pres = abs(pres)
-                if (pres != self.prod_desc.missing_float
-                   and parts['TRPC']['TEMP'][itrp] != self.prod_desc.missing_float
-                   and pres != 0):
-                    if pres > pbot:
-                        continue
-                    elif pres in merged['PRES']:
-                        ploc = merged['PRES'].index(pres)
-                        if merged['TEMP'][ploc] == self.prod_desc.missing_float:
-                            merged['TEMP'][ploc] = parts['TRPC']['TEMP'][itrp]
-                            merged['DWPT'][ploc] = parts['TRPC']['DWPT'][itrp]
-                        if merged['DRCT'][ploc] == self.prod_desc.missing_float:
-                            merged['DRCT'][ploc] = parts['TRPC']['DRCT'][itrp]
-                            merged['SPED'][ploc] = parts['TRPC']['SPED'][itrp]
-                        merged['HGHT'][ploc] = self.prod_desc.missing_float
-                    else:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                        merged['PRES'].insert(loc, pres)
-                        merged['TEMP'].insert(loc, parts['TRPC']['TEMP'][itrp])
-                        merged['DWPT'].insert(loc, parts['TRPC']['DWPT'][itrp])
-                        merged['DRCT'].insert(loc, parts['TRPC']['DRCT'][itrp])
-                        merged['SPED'].insert(loc, parts['TRPC']['SPED'][itrp])
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                pbot = pres
+            pbot = self._merge_tropopause_data(merged, parts, 'TRPC', pbot)
 
         # Merge SIG temperature
         if num_sigt_levels >= 1 or num_above_sigt_levels >= 1:
@@ -1816,52 +1943,10 @@ class GempakSounding(GempakFile):
                 pbot = 1050
 
         if num_sigt_levels >= 1:
-            for isigt, pres in enumerate(parts['TTBB']['PRES']):
-                pres = abs(pres)
-                if (pres != self.prod_desc.missing_float
-                   and parts['TTBB']['TEMP'][isigt] != self.prod_desc.missing_float
-                   and pres != 0):
-                    if pres > pbot:
-                        continue
-                    elif pres in merged['PRES']:
-                        ploc = merged['PRES'].index(pres)
-                        if merged['TEMP'][ploc] == self.prod_desc.missing_float:
-                            merged['TEMP'][ploc] = parts['TTBB']['TEMP'][isigt]
-                            merged['DWPT'][ploc] = parts['TTBB']['DWPT'][isigt]
-                    else:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                        merged['PRES'].insert(loc, pres)
-                        merged['TEMP'].insert(loc, parts['TTBB']['TEMP'][isigt])
-                        merged['DWPT'].insert(loc, parts['TTBB']['DWPT'][isigt])
-                        merged['DRCT'].insert(loc, self.prod_desc.missing_float)
-                        merged['SPED'].insert(loc, self.prod_desc.missing_float)
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                pbot = pres
+            pbot = self._merge_significant_temps(merged, parts, 'TTBB', pbot)
 
         if num_above_sigt_levels >= 1:
-            for isigt, pres in enumerate(parts['TTDD']['PRES']):
-                pres = abs(pres)
-                if (pres != self.prod_desc.missing_float
-                   and parts['TTDD']['TEMP'][isigt] != self.prod_desc.missing_float
-                   and pres != 0):
-                    if pres > pbot:
-                        continue
-                    elif pres in merged['PRES']:
-                        ploc = merged['PRES'].index(pres)
-                        if merged['TEMP'][ploc] == self.prod_desc.missing_float:
-                            merged['TEMP'][ploc] = parts['TTDD']['TEMP'][isigt]
-                            merged['DWPT'][ploc] = parts['TTDD']['DWPT'][isigt]
-                    else:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                        merged['PRES'].insert(loc, pres)
-                        merged['TEMP'].insert(loc, parts['TTDD']['TEMP'][isigt])
-                        merged['DWPT'].insert(loc, parts['TTDD']['DWPT'][isigt])
-                        merged['DRCT'].insert(loc, self.prod_desc.missing_float)
-                        merged['SPED'].insert(loc, self.prod_desc.missing_float)
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                pbot = pres
+            pbot = self._merge_significant_temps(merged, parts, 'TTDD', pbot)
 
         # Interpolate heights
         _interp_moist_height(merged, self.prod_desc.missing_float)
@@ -1877,56 +1962,10 @@ class GempakSounding(GempakFile):
                     pbot = 0
 
             if num_sigw_levels >= 1 and not ppbb_is_z:
-                for isigw, pres in enumerate(parts['PPBB']['PRES']):
-                    pres = abs(pres)
-                    if (pres != self.prod_desc.missing_float
-                       and parts['PPBB']['DRCT'][isigw] != self.prod_desc.missing_float
-                       and parts['PPBB']['SPED'][isigw] != self.prod_desc.missing_float
-                       and pres != 0):
-                        if pres > pbot:
-                            continue
-                        elif pres in merged['PRES']:
-                            ploc = merged['PRES'].index(pres)
-                            if (merged['DRCT'][ploc] == self.prod_desc.missing_float
-                               or merged['SPED'][ploc] == self.prod_desc.missing_float):
-                                merged['DRCT'][ploc] = parts['PPBB']['DRCT'][isigw]
-                                merged['SPED'][ploc] = parts['PPBB']['SPED'][isigw]
-                        else:
-                            size = len(merged['PRES'])
-                            loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                            merged['PRES'].insert(loc, pres)
-                            merged['DRCT'].insert(loc, parts['PPBB']['DRCT'][isigw])
-                            merged['SPED'].insert(loc, parts['PPBB']['SPED'][isigw])
-                            merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                            merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                            merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                    pbot = pres
+                pbot = self._merge_winds_pressure(merged, parts, 'PPBB', pbot)
 
             if num_above_sigw_levels >= 1 and not ppdd_is_z:
-                for isigw, pres in enumerate(parts['PPDD']['PRES']):
-                    pres = abs(pres)
-                    if (pres != self.prod_desc.missing_float
-                       and parts['PPDD']['DRCT'][isigw] != self.prod_desc.missing_float
-                       and parts['PPDD']['SPED'][isigw] != self.prod_desc.missing_float
-                       and pres != 0):
-                        if pres > pbot:
-                            continue
-                        elif pres in merged['PRES']:
-                            ploc = merged['PRES'].index(pres)
-                            if (merged['DRCT'][ploc] == self.prod_desc.missing_float
-                               or merged['SPED'][ploc] == self.prod_desc.missing_float):
-                                merged['DRCT'][ploc] = parts['PPDD']['DRCT'][isigw]
-                                merged['SPED'][ploc] = parts['PPDD']['SPED'][isigw]
-                        else:
-                            size = len(merged['PRES'])
-                            loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                            merged['PRES'].insert(loc, pres)
-                            merged['DRCT'].insert(loc, parts['PPDD']['DRCT'][isigw])
-                            merged['SPED'].insert(loc, parts['PPDD']['SPED'][isigw])
-                            merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                            merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                            merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                    pbot = pres
+                pbot = self._merge_winds_pressure(merged, parts, 'PPDD', pbot)
 
         # Merge max winds on pressure surfaces
         if num_max_wind_levels >= 1 or num_above_max_wind_levels >= 1:
@@ -1938,56 +1977,10 @@ class GempakSounding(GempakFile):
                 pbot = 0
 
         if num_max_wind_levels >= 1:
-            for imxw, pres in enumerate(parts['MXWA']['PRES']):
-                pres = abs(pres)
-                if (pres != self.prod_desc.missing_float
-                   and parts['MXWA']['DRCT'][imxw] != self.prod_desc.missing_float
-                   and parts['MXWA']['SPED'][imxw] != self.prod_desc.missing_float
-                   and pres != 0):
-                    if pres > pbot:
-                        continue
-                    elif pres in merged['PRES']:
-                        ploc = merged['PRES'].index(pres)
-                        if (merged['DRCT'][ploc] == self.prod_desc.missing_float
-                           or merged['SPED'][ploc] == self.prod_desc.missing_float):
-                            merged['DRCT'][ploc] = parts['MXWA']['DRCT'][imxw]
-                            merged['SPED'][ploc] = parts['MXWA']['SPED'][imxw]
-                    else:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                        merged['PRES'].insert(loc, pres)
-                        merged['DRCT'].insert(loc, parts['MXWA']['DRCT'][imxw])
-                        merged['SPED'].insert(loc, parts['MXWA']['SPED'][imxw])
-                        merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                        merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                pbot = pres
+            pbot = self._merge_winds_pressure(merged, parts, 'MXWA', pbot)
 
         if num_above_max_wind_levels >= 1:
-            for imxw, pres in enumerate(parts['MXWC']['PRES']):
-                pres = abs(pres)
-                if (pres != self.prod_desc.missing_float
-                   and parts['MXWC']['DRCT'][imxw] != self.prod_desc.missing_float
-                   and parts['MXWC']['SPED'][imxw] != self.prod_desc.missing_float
-                   and pres != 0):
-                    if pres > pbot:
-                        continue
-                    elif pres in merged['PRES']:
-                        ploc = merged['PRES'].index(pres)
-                        if (merged['DRCT'][ploc] == self.prod_desc.missing_float
-                           or merged['SPED'][ploc] == self.prod_desc.missing_float):
-                            merged['DRCT'][ploc] = parts['MXWC']['DRCT'][imxw]
-                            merged['SPED'][ploc] = parts['MXWC']['SPED'][imxw]
-                    else:
-                        size = len(merged['PRES'])
-                        loc = size - bisect.bisect_left(merged['PRES'][::-1], pres)
-                        merged['PRES'].insert(loc, pres)
-                        merged['DRCT'].insert(loc, parts['MXWC']['DRCT'][imxw])
-                        merged['SPED'].insert(loc, parts['MXWC']['SPED'][imxw])
-                        merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                        merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                        merged['HGHT'].insert(loc, self.prod_desc.missing_float)
-                pbot = pres
+            pbot = self._merge_winds_pressure(merged, parts, 'MXWC', pbot)
 
         # Interpolate height for SIG/MAX winds
         _interp_logp_height(merged, self.prod_desc.missing_float)
@@ -2002,96 +1995,7 @@ class GempakSounding(GempakFile):
             else:
                 istart = 0
 
-            size = len(merged['HGHT'])
-            psfc = merged['PRES'][0]
-            zsfc = merged['HGHT'][0]
-
-            if (size >= 2 and psfc != self.prod_desc.missing_float
-               and zsfc != self.prod_desc.missing_float):
-                more = True
-                zold = merged['HGHT'][0]
-                znxt = merged['HGHT'][1]
-                ilev = 1
-            elif size >= 3:
-                more = True
-                zold = merged['HGHT'][1]
-                znxt = merged['HGHT'][2]
-                ilev = 2
-            else:
-                zold = self.prod_desc.missing_float
-                znxt = self.prod_desc.missing_float
-
-            if (zold == self.prod_desc.missing_float
-               or znxt == self.prod_desc.missing_float):
-                more = False
-
-            if istart <= nsgw:
-                above = False
-                i = istart
-                iend = nsgw
-            else:
-                above = True
-                i = 0
-                iend = nasw
-
-            while more and i < iend:
-                if not above:
-                    hght = parts['PPBB']['HGHT'][i]
-                    drct = parts['PPBB']['DRCT'][i]
-                    sped = parts['PPBB']['SPED'][i]
-                else:
-                    hght = parts['PPDD']['HGHT'][i]
-                    drct = parts['PPDD']['DRCT'][i]
-                    sped = parts['PPDD']['SPED'][i]
-                skip = False
-
-                if (hght == self.prod_desc.missing_float
-                   and drct == self.prod_desc.missing_float
-                   and sped == self.prod_desc.missing_float):
-                    skip = True
-                elif abs(zold - hght) < 1:
-                    skip = True
-                    if (merged['DRCT'][ilev - 1] == self.prod_desc.missing_float
-                       or merged['SPED'][ilev - 1] == self.prod_desc.missing_float):
-                        merged['DRCT'][ilev - 1] = drct
-                        merged['SPED'][ilev - 1] = sped
-                elif hght <= zold:
-                    skip = True
-                elif hght >= znxt:
-                    while more and hght > znxt:
-                        zold = znxt
-                        ilev += 1
-                        if ilev >= size:
-                            more = False
-                        else:
-                            znxt = merged['HGHT'][ilev]
-                            if znxt == self.prod_desc.missing_float:
-                                more = False
-
-                if more and not skip:
-                    if abs(znxt - hght) < 1:
-                        if (merged['DRCT'][ilev - 1] == self.prod_desc.missing_float
-                           or merged['SPED'][ilev - 1] == self.prod_desc.missing_float):
-                            merged['DRCT'][ilev] = drct
-                            merged['SPED'][ilev] = sped
-                    else:
-                        loc = bisect.bisect_left(merged['HGHT'], hght)
-                        merged['HGHT'].insert(loc, hght)
-                        merged['DRCT'].insert(loc, drct)
-                        merged['SPED'].insert(loc, sped)
-                        merged['PRES'].insert(loc, self.prod_desc.missing_float)
-                        merged['TEMP'].insert(loc, self.prod_desc.missing_float)
-                        merged['DWPT'].insert(loc, self.prod_desc.missing_float)
-                        size += 1
-                        ilev += 1
-                        zold = hght
-
-                if not above and i == nsgw - 1:
-                    above = True
-                    i = 0
-                    iend = nasw
-                else:
-                    i += 1
+            size = self._merge_winds_height(merged, parts, nsgw, nasw, istart)
 
             # Interpolate misssing pressure with height
             _interp_logp_pressure(merged, self.prod_desc.missing_float)
@@ -2454,24 +2358,20 @@ class GempakSurface(GempakFile):
                                          _word_to_position(part.header_length + 1))
                     lendat = self.data_header_length - part.header_length
 
-                    if part.data_type == DataTypes.real:
-                        packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.realpack:
-                        packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.character:
-                        packed_buffer_fmt = '{}s'.format(lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    else:
+                    fmt_code = {
+                        DataTypes.real: 'f',
+                        DataTypes.realpack: 'i',
+                        DataTypes.character: 's',
+                    }.get(part.data_type)
+
+                    if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+                    packed_buffer = (
+                        self._buffer.read_struct(
+                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
+                        )
+                    )
 
                     parameters = self.parameters[iprt]
 
@@ -2481,7 +2381,7 @@ class GempakSurface(GempakFile):
                             station[param] = unpacked[iprm]
                     elif part.data_type == DataTypes.character:
                         for iprm, param in enumerate(parameters['name']):
-                            station[param] = packed_buffer[iprm].decode().strip()
+                            station[param] = self._decode_strip(packed_buffer[iprm])
                     else:
                         for iprm, param in enumerate(parameters['name']):
                             station[param] = np.array(
@@ -2525,24 +2425,20 @@ class GempakSurface(GempakFile):
                                      _word_to_position(part.header_length + 1))
                 lendat = self.data_header_length - part.header_length
 
-                if part.data_type == DataTypes.real:
-                    packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
-                    packed_buffer = (
-                        self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                    )
-                elif part.data_type == DataTypes.realpack:
-                    packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
-                    packed_buffer = (
-                        self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                    )
-                elif part.data_type == DataTypes.character:
-                    packed_buffer_fmt = '{}s'.format(lendat)
-                    packed_buffer = (
-                        self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                    )
-                else:
+                fmt_code = {
+                    DataTypes.real: 'f',
+                    DataTypes.realpack: 'i',
+                    DataTypes.character: 's',
+                }.get(part.data_type)
+
+                if fmt_code is None:
                     raise NotImplementedError('No methods for data type {}'
                                               .format(part.data_type))
+                packed_buffer = (
+                    self._buffer.read_struct(
+                        struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
+                    )
+                )
 
                 parameters = self.parameters[iprt]
 
@@ -2552,7 +2448,7 @@ class GempakSurface(GempakFile):
                         station[param] = unpacked[iprm]
                 elif part.data_type == DataTypes.character:
                     for iprm, param in enumerate(parameters['name']):
-                        station[param] = packed_buffer[iprm].decode().strip()
+                        station[param] = self._decode_strip(packed_buffer[iprm])
                 else:
                     for iprm, param in enumerate(parameters['name']):
                         station[param] = np.array(
@@ -2596,24 +2492,20 @@ class GempakSurface(GempakFile):
                                          _word_to_position(part.header_length + 1))
                     lendat = self.data_header_length - part.header_length
 
-                    if part.data_type == DataTypes.real:
-                        packed_buffer_fmt = '{}{}f'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.realpack:
-                        packed_buffer_fmt = '{}{}i'.format(self.prefmt, lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    elif part.data_type == DataTypes.character:
-                        packed_buffer_fmt = '{}s'.format(lendat)
-                        packed_buffer = (
-                            self._buffer.read_struct(struct.Struct(packed_buffer_fmt))
-                        )
-                    else:
+                    fmt_code = {
+                        DataTypes.real: 'f',
+                        DataTypes.realpack: 'i',
+                        DataTypes.character: 's',
+                    }.get(part.data_type)
+
+                    if fmt_code is None:
                         raise NotImplementedError('No methods for data type {}'
                                                   .format(part.data_type))
+                    packed_buffer = (
+                        self._buffer.read_struct(
+                            struct.Struct(f'{self.prefmt}{lendat}{fmt_code}')
+                        )
+                    )
 
                     parameters = self.parameters[iprt]
 
@@ -2623,7 +2515,7 @@ class GempakSurface(GempakFile):
                             station[param] = unpacked[iprm]
                     elif part.data_type == DataTypes.character:
                         for iprm, param in enumerate(parameters['name']):
-                            station[param] = packed_buffer[iprm].decode().strip()
+                            station[param] = self._decode_strip(packed_buffer[iprm])
                     else:
                         for iprm, param in enumerate(parameters['name']):
                             station[param] = packed_buffer[iprm]
