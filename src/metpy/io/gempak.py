@@ -2692,31 +2692,34 @@ class GempakSurface(GempakFile):
 
         sfcno = [(s.ROW, s.COL) for s in matched]
 
-        if self.surface_type == 'standard':
-            data = self._unpack_standard(sfcno)
-        elif self.surface_type == 'ship':
-            data = self._unpack_ship(sfcno)
-        elif self.surface_type == 'climate':
-            data = self._unpack_climate(sfcno)
+        if self.surface_type not in ['standard', 'ship', 'climate']:
+            raise ValueError('Unknown surface data type.')
+        else:
+            if self.surface_type == 'standard':
+                data = self._unpack_standard(sfcno)
+            elif self.surface_type == 'ship':
+                data = self._unpack_ship(sfcno)
+            elif self.surface_type == 'climate':
+                data = self._unpack_climate(sfcno)
 
-        stnarr = []
-        for stn in data:
-            stnobj = {}
-            stnobj['properties'] = {}
-            stnobj['values'] = {}
-            stnobj['properties']['date_time'] = datetime.combine(stn.pop('DATE'),
-                                                                 stn.pop('TIME'))
-            stnobj['properties']['station_id'] = stn.pop('STID') + stn.pop('STD2')
-            stnobj['properties']['station_number'] = stn.pop('STNM')
-            stnobj['properties']['longitude'] = stn.pop('SLON')
-            stnobj['properties']['latitude'] = stn.pop('SLAT')
-            stnobj['properties']['elevation'] = stn.pop('SELV')
-            stnobj['properties']['state'] = stn.pop('STAT')
-            stnobj['properties']['country'] = stn.pop('COUN')
-            stnobj['properties']['priority'] = stn.pop('SPRI')
-            if stn:
-                for name, ob in stn.items():
-                    stnobj['values'][name.lower()] = ob
-                stnarr.append(stnobj)
+            stnarr = []
+            for stn in data:
+                stnobj = {}
+                stnobj['properties'] = {}
+                stnobj['values'] = {}
+                stnobj['properties']['date_time'] = datetime.combine(stn.pop('DATE'),
+                                                                     stn.pop('TIME'))
+                stnobj['properties']['station_id'] = stn.pop('STID') + stn.pop('STD2')
+                stnobj['properties']['station_number'] = stn.pop('STNM')
+                stnobj['properties']['longitude'] = stn.pop('SLON')
+                stnobj['properties']['latitude'] = stn.pop('SLAT')
+                stnobj['properties']['elevation'] = stn.pop('SELV')
+                stnobj['properties']['state'] = stn.pop('STAT')
+                stnobj['properties']['country'] = stn.pop('COUN')
+                stnobj['properties']['priority'] = stn.pop('SPRI')
+                if stn:
+                    for name, ob in stn.items():
+                        stnobj['values'][name.lower()] = ob
+                    stnarr.append(stnobj)
 
         return stnarr

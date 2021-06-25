@@ -20,13 +20,13 @@ logging.getLogger('metpy.io.gempak').setLevel(logging.ERROR)
 @pytest.mark.parametrize('grid_name', ['none', 'diff', 'dec', 'grib'])
 def test_grid_loading(grid_name):
     """Test reading grids with different packing."""
-    g = get_test_data(f'gem_packing_{grid_name}.grd')
-    d = get_test_data(f'gem_packing_{grid_name}.npz')
+    grid = GempakGrid(get_test_data(f'gem_packing_{grid_name}.grd')).gdxarray(
+        parameter='TMPK',
+        level=850
+    )
+    gio = grid[0].values.squeeze()
 
-    grid = GempakGrid(g).gdxarray(parameter='TMPK', level=850)[0]
-    gio = grid.values.squeeze()
-
-    gempak = np.load(d)['values']
+    gempak = np.load(get_test_data(f'gem_packing_{grid_name}.npz'))['values']
 
     assert_allclose(gio, gempak, rtol=1e-6, atol=0)
 
@@ -36,28 +36,27 @@ def test_merged_sounding():
 
     These are most often from models.
     """
-    g = get_test_data('gem_model_mrg.snd')
-    d = get_test_data('gem_model_mrg.csv')
+    gso = GempakSounding(get_test_data('gem_model_mrg.snd')).snxarray(
+        station_id='KMSN'
+    )
+    gpres = gso[0].pres.values
+    gtemp = gso[0].tmpc.values.squeeze()
+    gdwpt = gso[0].dwpc.values.squeeze()
+    gdrct = gso[0].drct.values.squeeze()
+    gsped = gso[0].sped.values.squeeze()
+    ghght = gso[0].hght.values.squeeze()
+    gomeg = gso[0].omeg.values.squeeze()
+    gcwtr = gso[0].cwtr.values.squeeze()
+    gdtcp = gso[0].dtcp.values.squeeze()
+    gdtgp = gso[0].dtgp.values.squeeze()
+    gdtsw = gso[0].dtsw.values.squeeze()
+    gdtlw = gso[0].dtlw.values.squeeze()
+    gcfrl = gso[0].cfrl.values.squeeze()
+    gtkel = gso[0].tkel.values.squeeze()
+    gimxr = gso[0].imxr.values.squeeze()
+    gdtar = gso[0].dtar.values.squeeze()
 
-    gso = GempakSounding(g).snxarray(station_id='KMSN')[0]
-    gpres = gso.pres.values
-    gtemp = gso.tmpc.values.squeeze()
-    gdwpt = gso.dwpc.values.squeeze()
-    gdrct = gso.drct.values.squeeze()
-    gsped = gso.sped.values.squeeze()
-    ghght = gso.hght.values.squeeze()
-    gomeg = gso.omeg.values.squeeze()
-    gcwtr = gso.cwtr.values.squeeze()
-    gdtcp = gso.dtcp.values.squeeze()
-    gdtgp = gso.dtgp.values.squeeze()
-    gdtsw = gso.dtsw.values.squeeze()
-    gdtlw = gso.dtlw.values.squeeze()
-    gcfrl = gso.cfrl.values.squeeze()
-    gtkel = gso.tkel.values.squeeze()
-    gimxr = gso.imxr.values.squeeze()
-    gdtar = gso.dtar.values.squeeze()
-
-    gempak = pd.read_csv(d, na_values=-9999)
+    gempak = pd.read_csv(get_test_data('gem_model_mrg.csv'), na_values=-9999)
     dpres = gempak.PRES.values
     dtemp = gempak.TMPC.values
     ddwpt = gempak.DWPC.values
@@ -102,18 +101,17 @@ def test_unmerged_sounding(gem, gio, station):
 
     PPBB and PPDD groups will be in height coordinates.
     """
-    g = get_test_data(f'{gio}')
-    d = get_test_data(f'{gem}')
+    gso = GempakSounding(get_test_data(f'{gio}')).snxarray(
+        station_id=f'{station}'
+    )
+    gpres = gso[0].pres.values
+    gtemp = gso[0].temp.values.squeeze()
+    gdwpt = gso[0].dwpt.values.squeeze()
+    gdrct = gso[0].drct.values.squeeze()
+    gsped = gso[0].sped.values.squeeze()
+    ghght = gso[0].hght.values.squeeze()
 
-    gso = GempakSounding(g).snxarray(station_id=f'{station}')[0]
-    gpres = gso.pres.values
-    gtemp = gso.temp.values.squeeze()
-    gdwpt = gso.dwpt.values.squeeze()
-    gdrct = gso.drct.values.squeeze()
-    gsped = gso.sped.values.squeeze()
-    ghght = gso.hght.values.squeeze()
-
-    gempak = pd.read_csv(d, na_values=-9999)
+    gempak = pd.read_csv(get_test_data(f'{gem}'), na_values=-9999)
     dpres = gempak.PRES.values
     dtemp = gempak.TEMP.values
     ddwpt = gempak.DWPT.values
@@ -136,13 +134,11 @@ def test_standard_surface():
 
     skip = ['text']
 
-    g = get_test_data('gem_std.sfc')
-    d = get_test_data('gem_std.csv')
-
-    gsf = GempakSurface(g)
+    gsf = GempakSurface(get_test_data('gem_std.sfc'))
     gstns = gsf.sfjson()
 
-    gempak = pd.read_csv(d, index_col=['STN', 'YYMMDD/HHMM'],
+    gempak = pd.read_csv(get_test_data('gem_std.csv'),
+                         index_col=['STN', 'YYMMDD/HHMM'],
                          parse_dates=['YYMMDD/HHMM'],
                          date_parser=dtparse)
     if not gempak.index.is_lexsorted():
@@ -165,12 +161,10 @@ def test_ship_surface():
 
     skip = ['text']
 
-    g = get_test_data('gem_ship.sfc')
-    d = get_test_data('gem_ship.csv')
+    gsf = GempakSurface(get_test_data('gem_ship.sfc'))
 
-    gsf = GempakSurface(g)
-
-    gempak = pd.read_csv(d, index_col=['STN', 'YYMMDD/HHMM'],
+    gempak = pd.read_csv(get_test_data('gem_ship.csv'),
+                         index_col=['STN', 'YYMMDD/HHMM'],
                          parse_dates=['YYMMDD/HHMM'],
                          date_parser=dtparse)
     if not gempak.index.is_lexsorted():
@@ -195,14 +189,11 @@ def test_ship_surface():
 @pytest.mark.parametrize('proj_type', ['conical', 'cylindrical', 'azimuthal'])
 def test_coordinates_creation(proj_type):
     """Test projections and coordinates."""
-    g = get_test_data(f'gem_{proj_type}.grd')
-    d = get_test_data(f'gem_{proj_type}.npz')
-
-    grid = GempakGrid(g)
+    grid = GempakGrid(get_test_data(f'gem_{proj_type}.grd'))
     decode_lat = grid.lat
     decode_lon = grid.lon
 
-    gempak = np.load(d)
+    gempak = np.load(get_test_data(f'gem_{proj_type}.npz'))
     true_lat = gempak['lat']
     true_lon = gempak['lon']
 

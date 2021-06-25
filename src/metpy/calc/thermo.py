@@ -3329,24 +3329,31 @@ def scale_height(temp_bot, temp_top):
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def showalter_index(pressure, temperature, dewpt):
     """Calculate Showalter Index from pressure temperature and 850 hPa lcl.
+
     Showalter Index derived from [Galway1956]_:
     SI = T500 - Tp500
+
     where:
     T500 is the measured temperature at 500 hPa
     Tp500 is the temperature of the lifted parcel at 500 hPa
+
     Parameters
     ----------
         pressure : `pint.Quantity`
             Atmospheric pressure level(s) of interest, in order from highest to
             lowest pressure
+
         temperature : `pint.Quantity`
             Parcel temperature for corresponding pressure
+
         dewpt : `pint.Quantity`
             Parcel dew point temperatures for corresponding pressure
+
     Returns
     -------
     `pint.Quantity`
         Showalter index
+
     """
     # find the measured temperature and dew point temperature at 850 hPa.
     t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpt)
