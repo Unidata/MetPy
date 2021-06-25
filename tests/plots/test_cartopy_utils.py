@@ -7,8 +7,6 @@ import matplotlib.pyplot as plt
 import pytest
 
 import metpy.plots as mpplots
-# Fixture to make sure we have the right backend
-from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 MPL_VERSION = matplotlib.__version__[:3]
 

@@ -19,8 +19,7 @@ from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
                          PanelContainer, PlotObs)
-# Fixtures to make sure we have the right backend
-from metpy.testing import needs_cartopy, set_agg_backend  # noqa: F401, I202
+from metpy.testing import needs_cartopy
 from metpy.units import units
 
 
@@ -1357,7 +1356,7 @@ def test_save():
     assert fobj.read()
 
 
-def test_show():
+def test_show(set_agg_backend):
     """Test that show works properly."""
     pc = PanelContainer()
 

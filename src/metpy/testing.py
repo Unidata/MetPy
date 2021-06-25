@@ -200,18 +200,6 @@ def assert_xarray_allclose(actual, desired):
     assert desired.attrs == actual.attrs
 
 
-@pytest.fixture(scope='module', autouse=True)
-def set_agg_backend():
-    """Fixture to ensure the Agg backend is active."""
-    import matplotlib.pyplot as plt
-    prev_backend = plt.get_backend()
-    try:
-        plt.switch_backend('agg')
-        yield
-    finally:
-        plt.switch_backend(prev_backend)
-
-
 def check_and_silence_warning(warn_type):
     """Decorate a function to swallow some warning type, making sure they are present.
 
