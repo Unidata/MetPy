@@ -2707,7 +2707,7 @@ class GempakSurface(GempakFile):
             stnobj['properties'] = {}
             stnobj['values'] = {}
             stnobj['properties']['date_time'] = datetime.combine(stn.pop('DATE'),
-                                                                    stn.pop('TIME'))
+                                                                 stn.pop('TIME'))
             stnobj['properties']['station_id'] = stn.pop('STID') + stn.pop('STD2')
             stnobj['properties']['station_number'] = stn.pop('STNM')
             stnobj['properties']['longitude'] = stn.pop('SLON')
