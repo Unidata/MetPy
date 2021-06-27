@@ -612,7 +612,7 @@ class MapPanel(Panel):
                  default_value=None)
     area.__doc__ = """A tuple or string value that indicates the graphical area of the plot.
 
-    The tuple value coresponds to longitude/latitude box based on the projection of the map
+    The tuple value corresponds to longitude/latitude box based on the projection of the map
     with the format (west-most longitude, east-most longitude, south-most latitude,
     north-most latitude). This tuple defines a box from the lower-left to the upper-right
     corner.
@@ -622,7 +622,7 @@ class MapPanel(Panel):
     For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
     For regional plots, US postal state abbreviations can be used, such as 'co', 'ny', 'ca',
     et cetera. Providing a '+' or '-' suffix to the string value will zoom in or out,
-    respectivley. Providing multiple '+' or '-' characters will zoom in or out further.
+    respectively. Providing multiple '+' or '-' characters will zoom in or out further.
 
     """
 
@@ -1277,7 +1277,7 @@ class PlotVector(Plots2D):
     earth-relative.
 
     Common gridded meteorological datasets including GFS and NARR output contain wind
-    components that are earth-relative. The primary expection is NAM output with wind
+    components that are earth-relative. The primary exception is NAM output with wind
     components that are grid-relative. For any grid-relative vectors set this trait to `False`.
     """
 

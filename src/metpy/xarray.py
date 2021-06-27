@@ -105,7 +105,7 @@ class MetPyDataArrayAccessor:
 
     This accessor provides several convenient attributes and methods through the `.metpy`
     attribute on a DataArray. For example, MetPy can identify the coordinate corresponding
-    to a particular axis (given sufficent metadata):
+    to a particular axis (given sufficient metadata):
 
         >>> import xarray as xr
         >>> from metpy.units import units
@@ -588,7 +588,7 @@ class MetPyDataArrayAccessor:
         Returns
         -------
         `xarray.DataArray`
-            New xarray DataArray with latitude and longtiude auxilary coordinates assigned.
+            New xarray DataArray with latitude and longtiude auxiliary coordinates assigned.
 
         Notes
         -----
@@ -679,7 +679,7 @@ class MetPyDatasetAccessor:
         mapping metadata with the ``.assign_crs`` method.
 
         This method operates on individual data variables within the dataset, so do not be
-        suprised if information not associated with individual data variables is not
+        surprised if information not associated with individual data variables is not
         preserved.
 
         Parameters
@@ -820,7 +820,7 @@ class MetPyDatasetAccessor:
         return self._dataset.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
     def assign_crs(self, cf_attributes=None, **kwargs):
-        """Assign a CRS to this Datatset based on CF projection attributes.
+        """Assign a CRS to this Dataset based on CF projection attributes.
 
         Specify a coordinate reference system/grid mapping following the Climate and
         Forecasting (CF) conventions (see `Appendix F: Grid Mappings

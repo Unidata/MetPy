@@ -794,9 +794,9 @@ def smooth_gaussian(scalar_grid, n):
     sgma = n / (2 * np.pi)
 
     # Construct sigma sequence so smoothing occurs only in horizontal direction
-    nax = len(scalar_grid.shape)
+    num_ax = len(scalar_grid.shape)
     # Assume the last two axes represent the horizontal directions
-    sgma_seq = [sgma if i > nax - 3 else 0 for i in range(nax)]
+    sgma_seq = [sgma if i > num_ax - 3 else 0 for i in range(num_ax)]
 
     # Compute smoothed field
     return gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
@@ -837,7 +837,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in the shape of
     `window` around the data). If a masked value or NaN values exists in the array, it will
     propagate to any point that uses that particular grid point in the smoothing calculation.
-    Applying the smoothing function multiple times will propogate NaNs further throughout the
+    Applying the smoothing function multiple times will propagate NaNs further throughout the
     domain.
 
     See Also
@@ -861,7 +861,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
         # Add ... to the front of an indexer, since we are working with trailing dimensions.
         return (Ellipsis,) + tuple(indexer)
 
-    # Verify that shape in all dimensions is odd (need to have a neighboorhood around a
+    # Verify that shape in all dimensions is odd (need to have a neighborhood around a
     # central point)
     if any((size % 2 == 0) for size in window.shape):
         raise ValueError('The shape of the smoothing window must be odd in all dimensions.')
@@ -921,7 +921,7 @@ def smooth_rectangular(scalar_grid, size, passes=1):
     function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in `size` around
     the data). If a masked value or NaN values exists in the array, it will propagate to any
     point that uses that particular grid point in the smoothing calculation. Applying the
-    smoothing function multiple times will propogate NaNs further throughout the domain.
+    smoothing function multiple times will propagate NaNs further throughout the domain.
 
     See Also
     --------
@@ -960,7 +960,7 @@ def smooth_circular(scalar_grid, radius, passes=1):
     function will leave an unsmoothed edge of size `radius` around the data). If a masked
     value or NaN values exists in the array, it will propagate to any point that uses that
     particular grid point in the smoothing calculation. Applying the smoothing function
-    multiple times will propogate NaNs further throughout the domain.
+    multiple times will propagate NaNs further throughout the domain.
 
     See Also
     --------
@@ -1007,7 +1007,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     the end points with their original values (this function will leave an unsmoothed edge of
     size 1 around the data). If a masked value or NaN values exists in the array, it will
     propagate to any point that uses that particular grid point in the smoothing calculation.
-    Applying the smoothing function multiple times will propogate NaNs further throughout the
+    Applying the smoothing function multiple times will propagate NaNs further throughout the
     domain.
 
     See Also

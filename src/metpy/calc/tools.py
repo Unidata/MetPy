@@ -121,7 +121,7 @@ def find_intersections(x, a, b, direction='all', log_x=False):
 
     Notes
     -----
-    This function implicity converts `xarray.DataArray` to `pint.Quantity`, with the results
+    This function implicitly converts `xarray.DataArray` to `pint.Quantity`, with the results
     given as `pint.Quantity`.
 
     """
@@ -1308,7 +1308,7 @@ def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
     Works for abbrieviations or whole words (E -> 90 | South -> 180)
-    and also is able to parse 22.5 degreee angles such as ESE/East South East.
+    and also is able to parse 22.5 degree angles such as ESE/East South East.
 
     Parameters
     ----------

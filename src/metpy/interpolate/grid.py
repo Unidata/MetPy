@@ -259,7 +259,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
     rbf_func: str
         Specifies which function to use for Rbf interpolation.
         Options include: 'multiquadric', 'inverse', 'gaussian', 'linear', 'cubic',
-        'quintic', and 'thin_plate'. Defualt 'linear'. See `scipy.interpolate.Rbf` for more
+        'quintic', and 'thin_plate'. Default 'linear'. See `scipy.interpolate.Rbf` for more
         information.
     rbf_smooth: float
         Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.
