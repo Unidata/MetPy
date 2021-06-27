@@ -14,8 +14,7 @@ import pandas as pd
 from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, TraitError,
                        Tuple, Unicode, Union, validate)
 
-from . import ctables
-from . import wx_symbols
+from . import ctables, wx_symbols
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density
@@ -483,6 +482,7 @@ def lookup_projection(projection_code):
 def lookup_map_feature(feature_name):
     """Get a Cartopy map feature based on a name."""
     import cartopy.feature as cfeature
+
     from . import cartopy_utils
 
     name = feature_name.upper()

@@ -73,6 +73,7 @@ def test_us_states_scales(ccrs):
 def test_cartopy_stub(monkeypatch):
     """Test that the CartoPy stub will issue an error if CartoPy is not present."""
     import sys
+
     # This makes sure that cartopy is not found
     monkeypatch.setitem(sys.modules, 'cartopy.crs', None)
 

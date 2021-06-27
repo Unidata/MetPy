@@ -14,14 +14,9 @@ from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import DimensionalityError, units
-from metpy.xarray import (
-    add_grid_arguments_from_xarray,
-    add_vertical_dim_from_xarray,
-    check_axis,
-    check_matching_coordinates,
-    grid_deltas_from_dataarray,
-    preprocess_and_wrap
-)
+from metpy.xarray import (add_grid_arguments_from_xarray, add_vertical_dim_from_xarray,
+                          check_axis, check_matching_coordinates, grid_deltas_from_dataarray,
+                          preprocess_and_wrap)
 
 
 @pytest.fixture
