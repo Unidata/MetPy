@@ -1339,8 +1339,8 @@ def test_total_deformation_4d(data_4d):
 
 def test_frontogenesis_4d(data_4d):
     """Test frontogenesis on a 4D (time, pressure, y, x) grid."""
-    thta = potential_temperature(data_4d.pressure, data_4d.temperature)
-    frnt = frontogenesis(thta, data_4d.u, data_4d.v).transpose(
+    theta = potential_temperature(data_4d.pressure, data_4d.temperature)
+    frnt = frontogenesis(theta, data_4d.u, data_4d.v).transpose(
         'time1',
         'pressure',
         'latitude',
