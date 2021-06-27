@@ -141,8 +141,6 @@ def test_standard_surface():
                          index_col=['STN', 'YYMMDD/HHMM'],
                          parse_dates=['YYMMDD/HHMM'],
                          date_parser=dtparse)
-    if not gempak.index.is_lexsorted():
-        gempak.sort_index(inplace=True)
 
     for stn in gstns:
         idx_key = (stn['properties']['station_id'],
@@ -167,8 +165,6 @@ def test_ship_surface():
                          index_col=['STN', 'YYMMDD/HHMM'],
                          parse_dates=['YYMMDD/HHMM'],
                          date_parser=dtparse)
-    if not gempak.index.is_lexsorted():
-        gempak.sort_index(inplace=True)
 
     uidx = gempak.index.unique()
 

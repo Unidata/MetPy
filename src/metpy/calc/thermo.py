@@ -3294,11 +3294,11 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 
 @exporter.export
 @preprocess_and_wrap(
-    wrap_like='temp_bot',
-    broadcast=('temp_bot', 'temp_top')
+    wrap_like='temperature_bottom',
+    broadcast=('temperature_bottom', 'temperature_top')
 )
 @check_units('[temperature]', '[temperature]')
-def scale_height(temp_bot, temp_top):
+def scale_height(temperature_bottom, temperature_top):
     r"""Calculate the scale height of a layer.
 
     .. math::   H = \frac{R_d \overline{T}}{g}
@@ -3308,10 +3308,10 @@ def scale_height(temp_bot, temp_top):
 
     Parameters
     ----------
-    temp_bot : `pint.Quantity`
+    temperature_bottom : `pint.Quantity`
         Temperature at bottom of layer
 
-    temp_top : `pint.Quantity`
+    temperature_top : `pint.Quantity`
         Temperature at top of layer
 
     Returns
@@ -3319,7 +3319,7 @@ def scale_height(temp_bot, temp_top):
     `pint.Quantity`
         Scale height of layer
     """
-    t_bar = 0.5 * (temp_bot.to('kelvin') + temp_top.to('kelvin'))
+    t_bar = 0.5 * (temperature_bottom.to('kelvin') + temperature_top.to('kelvin'))
 
     return (mpconsts.Rd * t_bar) / mpconsts.g
 

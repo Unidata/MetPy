@@ -46,10 +46,10 @@ Moist Thermodynamics
       relative_humidity_from_mixing_ratio
       relative_humidity_from_specific_humidity
       relative_humidity_wet_psychrometric
-      scale_height
       saturation_equivalent_potential_temperature
       saturation_mixing_ratio
       saturation_vapor_pressure
+      scale_height
       specific_humidity_from_dewpoint
       specific_humidity_from_mixing_ratio
       thickness_hydrostatic_from_relative_humidity
