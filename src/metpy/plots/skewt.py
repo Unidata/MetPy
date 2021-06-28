@@ -952,9 +952,6 @@ class Hodograph:
                 # to work properly.
                 c = c.to_base_units()  # TODO: This shouldn't be required!
                 intervals = intervals.to_base_units()
-            # If segmenting by anything else, do not interpolate, just use the data
-            else:
-                intervals = units.Quantity(np.asarray(intervals), intervals.units)
 
             norm = mcolors.BoundaryNorm(intervals.magnitude, cmap.N)
             cmap.set_over('none')
