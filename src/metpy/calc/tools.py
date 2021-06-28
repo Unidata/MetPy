@@ -230,7 +230,7 @@ def _delete_masked_points(*arrs):
     """
     if any(hasattr(a, 'mask') for a in arrs):
         keep = ~functools.reduce(np.logical_or, (np.ma.getmaskarray(a) for a in arrs))
-        return tuple(ma.asarray(a[keep]) for a in arrs)
+        return tuple(a[keep] for a in arrs)
     else:
         return arrs
 
