@@ -932,15 +932,17 @@ class Hodograph:
             if intervals.check('[length]'):
 
                 # Find any intervals not in the data and interpolate them
+                heights_min = np.nanmin(c)
+                heights_max = np.nanmax(c)
                 interpolation_heights = np.array([bound.m for bound in intervals
-                                                  if bound not in c])
+                                                  if bound not in c
+                                                  and heights_min <= bound <= heights_max])
                 interpolation_heights = units.Quantity(np.sort(interpolation_heights),
                                                        intervals.units)
-                (interpolated_heights, interpolated_u,
-                 interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)
+                interpolated_u, interpolated_v = interpolate_1d(interpolation_heights, c, u, v)
 
                 # Combine the interpolated data with the actual data
-                c = concatenate([c, interpolated_heights])
+                c = concatenate([c, interpolation_heights])
                 u = concatenate([u, interpolated_u])
                 v = concatenate([v, interpolated_v])
                 sort_inds = np.argsort(c)

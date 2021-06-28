@@ -328,7 +328,10 @@ def test_hodograph_masked_array():
     h = units.Quantity(np.array([0.1, 3.5, 5.5, 10.9]), 'km')
     intervals = units.Quantity(np.array([0.0, 3.0, 6.0, 9.0, 12.0, 15.0]), 'km')
     colors = ['red', 'green', 'yellow', 'blue', 'purple']
-    hodo.plot_colormapped(u, v, h, intervals=intervals, colors=colors)
+    # Check that we're not triggering interpolation warnings
+    with pytest.warns(None) as record:
+        hodo.plot_colormapped(u, v, h, intervals=intervals, colors=colors)
+        assert len(record) == 0
     return fig
 
 
