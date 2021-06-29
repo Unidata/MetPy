@@ -358,6 +358,20 @@ def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected)
     assert_array_almost_equal(y_layer, expected[1], 3)
 
 
+def test_get_layer_units():
+    """Test get_layer when height profile has different units from bottom and depth."""
+    pressure, temperature = layer_test_data()
+    height = units.Quantity(np.linspace(100, 50000, len(pressure)), 'm')
+    pres_subset, temp_subset = get_layer(pressure, temperature,
+                                         bottom=units.Quantity(1, 'km'),
+                                         depth=units.Quantity(5, 'km'),
+                                         height=height)
+    pres_expected = units.Quantity([983, 900, 893], 'hPa')
+    temp_expected = units.Quantity([23.64385006, 16.66666667, 16.11422559], 'degC')
+    assert_array_almost_equal(pres_subset, pres_expected, 2)
+    assert_array_almost_equal(temp_subset, temp_expected, 3)
+
+
 def test_get_layer_masked():
     """Test get_layer with masked arrays as input."""
     p = units.Quantity(np.ma.array([1000, 500, 400]), 'hPa')

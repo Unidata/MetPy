@@ -388,9 +388,8 @@ def _get_bound_pressure_height(pressure, bound, height=None, interpolate=True):
                     # Need to cast back to the input type since interp (up to at least numpy
                     # 1.13 always returns float64. This can cause upstream users problems,
                     # resulting in something like np.append() to upcast.
-                    bound_pressure = units.Quantity(np.interp(np.atleast_1d(bound.m), height.m,
-                                                    pressure.m).astype(np.result_type(bound)),
-                                                    pressure.units)
+                    bound_pressure = np.interp(np.atleast_1d(bound),
+                                               height, pressure).astype(np.result_type(bound))
                 else:
                     idx = (np.abs(height - bound)).argmin()
                     bound_pressure = pressure[idx]
