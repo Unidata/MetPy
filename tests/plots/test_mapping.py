@@ -9,6 +9,7 @@ ccrs = pytest.importorskip('cartopy.crs')
 
 from metpy.plots.mapping import CFProjection  # noqa: E402
 
+
 def test_inverse_flattening_0():
     """Test new code for dealing the case where inverse_flattening = 0."""
     attrs = {'grid_mapping_name': 'lambert_conformal_conic', 'earth_radius': 6367000,
