@@ -317,6 +317,24 @@ def test_hodograph_units():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_masked_array():
+    """Basic test of Hodograph API."""
+    fig = plt.figure(figsize=(9, 9))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=20)
+    u = np.ma.array([1, 3, 5, 10])
+    v = np.ma.array([2, 4, 6, 11])
+    h = units.Quantity(np.array([0.1, 3.5, 5.5, 10.9]), 'km')
+    intervals = units.Quantity(np.array([0.0, 3.0, 6.0, 9.0, 12.0, 15.0]), 'km')
+    colors = ['red', 'green', 'yellow', 'blue', 'purple']
+    # Check that we're not triggering interpolation warnings
+    with pytest.warns(None) as record:
+        hodo.plot_colormapped(u, v, h, intervals=intervals, colors=colors)
+        assert len(record) == 0
+    return fig
+
+
 def test_hodograph_alone():
     """Test to create Hodograph without specifying axes."""
     Hodograph()

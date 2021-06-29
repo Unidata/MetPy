@@ -197,12 +197,12 @@ def colored_line(x, y, c, **kwargs):
     num_pts = points.size // 2
     final_shape = (num_pts - 1, 2, 2)
     final_strides = (points.itemsize, points.itemsize, num_pts * points.itemsize)
-    segments = np.lib.stride_tricks.as_strided(points, shape=final_shape,
+    segments = np.lib.stride_tricks.as_strided(points.m, shape=final_shape,
                                                strides=final_strides)
 
     # Create a LineCollection from the segments and set it to colormap based on c
     lc = LineCollection(segments, **kwargs)
-    lc.set_array(c)
+    lc.set_array(getattr(c, 'magnitude', c))
     return lc
 
 
