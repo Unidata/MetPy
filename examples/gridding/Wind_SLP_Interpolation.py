@@ -39,13 +39,13 @@ xp, yp, _ = to_proj.transform_points(ccrs.Geodetic(), lon, lat).T
 
 ###########################################
 # Remove all missing data from pressure
-x_masked, y_masked, pres = remove_nan_observations(xp, yp, data['slp'].values)
+x_masked, y_masked, pressure = remove_nan_observations(xp, yp, data['slp'].values)
 
 ###########################################
 # Interpolate pressure using Cressman interpolation
-slpgridx, slpgridy, slp = interpolate_to_grid(x_masked, y_masked, pres, interp_type='cressman',
-                                              minimum_neighbors=1, search_radius=400000,
-                                              hres=100000)
+slpgridx, slpgridy, slp = interpolate_to_grid(x_masked, y_masked, pressure,
+                                              interp_type='cressman', minimum_neighbors=1,
+                                              search_radius=400000, hres=100000)
 
 ##########################################
 # Get wind information and mask where either speed or direction is unavailable

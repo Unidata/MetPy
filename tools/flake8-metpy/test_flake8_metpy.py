@@ -12,7 +12,7 @@ from flake8_metpy import MetPyChecker
 
 @pytest.mark.parametrize('source, errs', [
     ('5 * pressure.units', 1),
-    ('pw = -1. * (np.trapz(w.magnitude, pres.magnitude) * (w.units * pres.units))', 1),
+    ('pw = -1. * (np.trapz(w.magnitude, pressure.magnitude) * (w.units * pressure.units))', 1),
     ("""def foo():
     return ret * moist_adiabat_temperatures.units""", 1),
     ('p_interp = np.sort(np.append(p_interp.m, top_pressure.m)) * pressure.units', 1),

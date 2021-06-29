@@ -189,7 +189,7 @@ testdata = np.genfromtxt(get_test_data('timeseries.csv', False), names=True, dty
 
 # Temporary variables for ease
 temp = testdata['T']
-pres = testdata['P']
+pressure = testdata['P']
 rh = testdata['RH']
 ws = testdata['WS']
 wsmax = testdata['WSMAX']
@@ -205,7 +205,7 @@ data = {'wind_speed': (np.array(ws) * units('m/s')).to(units('knots')),
         'dewpoint': dewpoint_from_relative_humidity((np.array(temp) * units.degC).to(units.K),
                                                     np.array(rh) / 100.).to(units('degF')),
         'air_temperature': (np.array(temp) * units('degC')).to(units('degF')),
-        'mean_slp': calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa'),
+        'mean_slp': calc_mslp(np.array(temp), np.array(pressure), hgt_example) * units('hPa'),
         'relative_humidity': np.array(rh), 'times': np.array(date)}
 
 fig = plt.figure(figsize=(20, 16))

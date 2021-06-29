@@ -34,7 +34,7 @@ lon = data.variables['lon'][:]
 time = data.variables['time']
 vtimes = num2date(time[:], time.units)
 temperature = units.Quantity(data.variables['temperature'][:], 'degC')
-pres = units.Quantity(data.variables['pressure'][:], 'Pa')
+pressure = units.Quantity(data.variables['pressure'][:], 'Pa')
 hgt = units.Quantity(data.variables['height'][:], 'meter')
 
 ####################################
@@ -51,7 +51,7 @@ plevs = [700.] * units.hPa
 # vertical axis. The interpolated data is output in a list, so we will pull out each
 # variable for plotting.
 
-height, temp = log_interpolate_1d(plevs, pres, hgt, temperature, axis=1)
+height, temp = log_interpolate_1d(plevs, pressure, hgt, temperature, axis=1)
 
 ####################################
 # **Plotting the Data for 700 hPa.**
