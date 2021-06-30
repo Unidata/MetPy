@@ -17,6 +17,7 @@ from .gini import *  # noqa: F403
 from .metar import *  # noqa: F403
 from .nexrad import *  # noqa: F403
 from .station_data import *  # noqa: F403
+from .text import *  # noqa: F403
 from ..package_tools import set_module
 
 __all__ = gempak.__all__[:]  # pylint: disable=undefined-variable
