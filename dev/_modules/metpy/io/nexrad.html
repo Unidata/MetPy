@@ -1140,7 +1140,7 @@
         <span class="n">offset</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span>
         <span class="n">leading_flags</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">leading_flags</span><span class="p">,</span> <span class="n">data_levels</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lut</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">offset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lut</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">offset</span>
 
 
 <span class="k">class</span> <span class="nc">LegacyMapper</span><span class="p">(</span><span class="n">DataMapper</span><span class="p">):</span>
@@ -2642,7 +2642,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 29, 2021 at 23:33:33.<br/>
+        Last updated on Jun 30, 2021 at 16:12:16.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
