@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from metpy.testing import assert_array_almost_equal, assert_array_equal
-from metpy.testing import assert_nan, set_agg_backend  # noqa: F401
+from metpy.testing import assert_nan
 from metpy.units import check_units, concatenate, pandas_dataframe_to_unit_arrays, units
 
 

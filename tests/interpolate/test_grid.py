@@ -164,6 +164,7 @@ def test_inverse_distance_to_grid(method, test_data, test_grid):
     xg, yg = test_grid
 
     extra_kw = {}
+    test_file = ''
     if method == 'cressman':
         extra_kw['r'] = 20
         extra_kw['min_neighbors'] = 1

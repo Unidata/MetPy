@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt
 import pytest
 
 import metpy.plots as mpplots
-from metpy.plots import cartopy_utils
-# Fixture to make sure we have the right backend
-from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 MPL_VERSION = matplotlib.__version__[:3]
 
@@ -79,7 +76,7 @@ def test_cartopy_stub(monkeypatch):
     # This makes sure that cartopy is not found
     monkeypatch.setitem(sys.modules, 'cartopy.crs', None)
 
-    ccrs = cartopy_utils.import_cartopy()
+    ccrs = mpplots.cartopy_utils.import_cartopy()
     with pytest.raises(AttributeError, match='without Cartopy'):
         ccrs.PlateCarree()
 
@@ -87,7 +84,7 @@ def test_cartopy_stub(monkeypatch):
 def test_plots_getattr(monkeypatch):
     """Ensure the module-level getattr works."""
     # Make sure the feature is missing
-    monkeypatch.delattr(cartopy_utils, 'USSTATES', raising=False)
+    monkeypatch.delattr(mpplots.cartopy_utils, 'USSTATES', raising=False)
     with pytest.raises(AttributeError, match='Cannot use USSTATES without Cartopy'):
         assert not mpplots.USSTATES  # Should fail on attribute lookup before assert
 

@@ -7,6 +7,7 @@ This includes:
 * unit-aware test functions
 * code for testing matplotlib figures
 """
+import contextlib
 import functools
 
 import numpy as np
@@ -57,8 +58,8 @@ def get_upper_air_data(date, station):
                       '2002-11-11T00Z_BNA': 'nov11_sounding.txt',
                       '2010-12-09T12Z_BOI': 'dec9_sounding.txt'}
 
-    fname = sounding_files[sounding_key]
-    fobj = get_test_data(fname)
+    # Initiate lists for variables
+    arr_data = []
 
     def to_float(s):
         # Remove all whitespace and replace empty values with NaN
@@ -66,21 +67,19 @@ def get_upper_air_data(date, station):
             s = 'nan'
         return float(s)
 
-    # Skip dashes, column names, units, and more dashes
-    for _ in range(4):
-        fobj.readline()
+    with contextlib.closing(get_test_data(sounding_files[sounding_key])) as fobj:
+        # Skip dashes, column names, units, and more dashes
+        for _ in range(4):
+            fobj.readline()
 
-    # Initiate lists for variables
-    arr_data = []
+        # Read all lines of data and append to lists only if there is some data
+        for row in fobj:
+            level = to_float(row[0:7])
+            values = (to_float(row[7:14]), to_float(row[14:21]), to_float(row[21:28]),
+                      to_float(row[42:49]), to_float(row[49:56]))
 
-    # Read all lines of data and append to lists only if there is some data
-    for row in fobj:
-        level = to_float(row[0:7])
-        values = (to_float(row[7:14]), to_float(row[14:21]), to_float(row[21:28]),
-                  to_float(row[42:49]), to_float(row[49:56]))
-
-        if any(np.invert(np.isnan(values[1:]))):
-            arr_data.append((level,) + values)
+            if any(np.invert(np.isnan(values[1:]))):
+                arr_data.append((level,) + values)
 
     p, z, t, td, direc, spd = np.array(arr_data).T
 
@@ -198,18 +197,6 @@ def assert_xarray_allclose(actual, desired):
     xr.testing.assert_allclose(actual, desired)
     assert desired.metpy.coordinates_identical(actual)
     assert desired.attrs == actual.attrs
-
-
-@pytest.fixture(scope='module', autouse=True)
-def set_agg_backend():
-    """Fixture to ensure the Agg backend is active."""
-    import matplotlib.pyplot as plt
-    prev_backend = plt.get_backend()
-    try:
-        plt.switch_backend('agg')
-        yield
-    finally:
-        plt.switch_backend(prev_backend)
 
 
 def check_and_silence_warning(warn_type):

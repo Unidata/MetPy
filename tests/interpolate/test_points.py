@@ -119,27 +119,28 @@ def test_inverse_distance_to_points(method, test_data, test_points):
     obs_points = np.vstack([xp, yp]).transpose()
 
     extra_kw = {}
-    if method == 'cressman':
-        extra_kw['r'] = 20
-        extra_kw['min_neighbors'] = 1
-        test_file = 'cressman_r20_mn1.npz'
-    elif method == 'barnes':
-        extra_kw['r'] = 40
-        extra_kw['kappa'] = 100
-        test_file = 'barnes_r40_k100.npz'
-    elif method == 'shouldraise':
+    if method == 'shouldraise':
         extra_kw['r'] = 40
         with pytest.raises(ValueError):
             inverse_distance_to_points(
                 obs_points, z, test_points, kind=method, **extra_kw)
-        return
+    else:
+        test_file = ''
+        if method == 'cressman':
+            extra_kw['r'] = 20
+            extra_kw['min_neighbors'] = 1
+            test_file = 'cressman_r20_mn1.npz'
+        elif method == 'barnes':
+            extra_kw['r'] = 40
+            extra_kw['kappa'] = 100
+            test_file = 'barnes_r40_k100.npz'
 
-    img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
+        img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
 
-    with get_test_data(test_file) as fobj:
-        truth = np.load(fobj)['img'].reshape(-1)
+        with get_test_data(test_file) as fobj:
+            truth = np.load(fobj)['img'].reshape(-1)
 
-    assert_array_almost_equal(truth, img)
+        assert_array_almost_equal(truth, img)
 
 
 @pytest.mark.parametrize('method', ['natural_neighbor', 'cressman', 'barnes', 'linear',
