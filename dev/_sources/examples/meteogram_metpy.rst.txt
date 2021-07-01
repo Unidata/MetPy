@@ -219,7 +219,7 @@ Plots time series data as a meteogram.
 
     # Temporary variables for ease
     temp = testdata['T']
-    pres = testdata['P']
+    pressure = testdata['P']
     rh = testdata['RH']
     ws = testdata['WS']
     wsmax = testdata['WSMAX']
@@ -235,7 +235,7 @@ Plots time series data as a meteogram.
             'dewpoint': dewpoint_from_relative_humidity((np.array(temp) * units.degC).to(units.K),
                                                         np.array(rh) / 100.).to(units('degF')),
             'air_temperature': (np.array(temp) * units('degC')).to(units('degF')),
-            'mean_slp': calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa'),
+            'mean_slp': calc_mslp(np.array(temp), np.array(pressure), hgt_example) * units('hPa'),
             'relative_humidity': np.array(rh), 'times': np.array(date)}
 
     fig = plt.figure(figsize=(20, 16))
@@ -251,7 +251,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.957 seconds)
+   **Total running time of the script:** ( 0 minutes  0.910 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:

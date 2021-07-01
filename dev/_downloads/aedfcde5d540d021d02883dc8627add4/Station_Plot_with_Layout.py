@@ -154,7 +154,7 @@ plt.show()
 # or instead, a custom layout can be used:
 
 # Just winds, temps, and dewpoint, with colors. Dewpoint and temp will be plotted
-# out to Farenheit tenths. Extra data will be ignored
+# out to Fahrenheit tenths. Extra data will be ignored
 custom_layout = StationPlotLayout()
 custom_layout.add_barb('eastward_wind', 'northward_wind', units='knots')
 custom_layout.add_value('NW', 'air_temperature', fmt='.1f', units='degF', color='darkred')

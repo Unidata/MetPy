@@ -281,7 +281,7 @@
 
 <span class="sd">    This accessor provides several convenient attributes and methods through the `.metpy`</span>
 <span class="sd">    attribute on a DataArray. For example, MetPy can identify the coordinate corresponding</span>
-<span class="sd">    to a particular axis (given sufficent metadata):</span>
+<span class="sd">    to a particular axis (given sufficient metadata):</span>
 
 <span class="sd">        &gt;&gt;&gt; import xarray as xr</span>
 <span class="sd">        &gt;&gt;&gt; from metpy.units import units</span>
@@ -764,7 +764,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        `xarray.DataArray`</span>
-<span class="sd">            New xarray DataArray with latitude and longtiude auxilary coordinates assigned.</span>
+<span class="sd">            New xarray DataArray with latitude and longtiude auxiliary coordinates assigned.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -855,7 +855,7 @@
 <span class="sd">        mapping metadata with the ``.assign_crs`` method.</span>
 
 <span class="sd">        This method operates on individual data variables within the dataset, so do not be</span>
-<span class="sd">        suprised if information not associated with individual data variables is not</span>
+<span class="sd">        surprised if information not associated with individual data variables is not</span>
 <span class="sd">        preserved.</span>
 
 <span class="sd">        Parameters</span>
@@ -996,7 +996,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">indexers</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="n">drop</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetPyDatasetAccessor.assign_crs"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDatasetAccessor.assign_crs">[docs]</a>    <span class="k">def</span> <span class="nf">assign_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cf_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign a CRS to this Datatset based on CF projection attributes.</span>
+        <span class="sd">&quot;&quot;&quot;Assign a CRS to this Dataset based on CF projection attributes.</span>
 
 <span class="sd">        Specify a coordinate reference system/grid mapping following the Climate and</span>
 <span class="sd">        Forecasting (CF) conventions (see `Appendix F: Grid Mappings</span>
@@ -1754,7 +1754,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jun 30, 2021 at 16:12:16.<br/>
+        Last updated on Jul 01, 2021 at 18:48:30.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>

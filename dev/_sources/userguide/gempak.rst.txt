@@ -1502,7 +1502,7 @@ blue is uncertain of parity, and white is unevaluated.
       </tr>
       <tr>
         <td>ENS_SWSPRD(input_arg1 & input_arg2)</td>
-        <td>Compute the spred, similar to ENS_SSPRD, of a scalar diagnostic field over an ensemble. The spread is weighted and input_arg2 specifies the name of a weight grid to be used in the calculation.                 NOTE: For uniform weights ens_ssprd (input_arg1) might be expected to give the same result as ens_swsprd(input_arg1 &amp; w1) where  w1 is uniform field of 1.  This does not happen because of the division by (N-1) in ens_ssprd.  The same is also true in comparing ens_vsprd and ens_vwsprd results.</td>
+        <td>Compute the spread, similar to ENS_SSPRD, of a scalar diagnostic field over an ensemble. The spread is weighted and input_arg2 specifies the name of a weight grid to be used in the calculation.                 NOTE: For uniform weights ens_ssprd (input_arg1) might be expected to give the same result as ens_swsprd(input_arg1 &amp; w1) where  w1 is uniform field of 1.  This does not happen because of the division by (N-1) in ens_ssprd.  The same is also true in comparing ens_vsprd and ens_vwsprd results.</td>
         <td></td>
         <td></td>
         <td></td>
@@ -1526,7 +1526,7 @@ blue is uncertain of parity, and white is unevaluated.
       </tr>
       <tr>
         <td>ENS_VWSPRD(input_arg1 & input_arg2)</td>
-        <td>Compute the spred, similar to ENS_VSPRD, of a vector diagnostic field over an ensemble. The spread is weighted and input_arg2 specifies the name of a weight grid to be used in the calculation.  Also, see NOTE for function ENS_SWSPRD.</td>
+        <td>Compute the spread, similar to ENS_VSPRD, of a vector diagnostic field over an ensemble. The spread is weighted and input_arg2 specifies the name of a weight grid to be used in the calculation.  Also, see NOTE for function ENS_SWSPRD.</td>
         <td></td>
         <td></td>
         <td></td>
@@ -1955,7 +1955,7 @@ blue is uncertain of parity, and white is unevaluated.
       </tr>
       <tr>
         <td>dctrop</td>
-        <td>Hurricane/tropical storm reprots</td>
+        <td>Hurricane/tropical storm reports</td>
         <td></td>
         <td></td>
         <td></td>
@@ -4643,7 +4643,7 @@ blue is uncertain of parity, and white is unevaluated.
       </tr>
       <tr>
         <td>SK12</td>
-        <td>maximum sustain surface wind spped fcst for 12-hr period</td>
+        <td>maximum sustain surface wind speed fcst for 12-hr period</td>
         <td></td>
         <td></td>
         <td></td>
@@ -7419,7 +7419,7 @@ blue is uncertain of parity, and white is unevaluated.
       </tr>
       <tr>
         <td>RADFRQ</td>
-        <td>tThe update frequency for RADAR composites.</td>
+        <td>The update frequency for RADAR composites.</td>
         <td></td>
         <td></td>
         <td></td>

@@ -54,8 +54,8 @@ GitHub actions also builds the documentation and runs the examples across multip
 and Python versions, as well as checks for any broken web links. ``flake8`` (along with a
 variety of plugins found in ``ci/linting.txt``) is also run against the code to check
 formatting using another job on GitHub Actions. As part of this linting job, the docs are also
-checked using the ``doc8`` tool. Configurations for these are in a variety of files in
-``.github/workflows``.
+checked using the ``doc8`` tool, and spelling is checked using the ``codespell``.
+Configurations for these are in a variety of files in ``.github/workflows``.
 
 Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/MetPy>`_.
 

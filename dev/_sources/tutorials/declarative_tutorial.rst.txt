@@ -232,8 +232,8 @@ Valid Plotting Types for Gridded Data:
 
 - ``PlotBarbs()``
 
-More complete descrptions of these and other plotting types, as well as the map panel and
-panel containter classes are at the end of this tutorial.
+More complete descriptions of these and other plotting types, as well as the map panel and
+panel container classes are at the end of this tutorial.
 
 Let's plot a 300-hPa map with color-filled wind speed, which we calculated and added to
 our Dataset above, and geopotential heights over the CONUS.
@@ -396,7 +396,7 @@ set of attributes to control plotting a vector quantity.
 
 .. GENERATED FROM PYTHON SOURCE LINES 190-192
 
-We start with setting the attributes that we had before for our 300 hPa plot inlcuding,
+We start with setting the attributes that we had before for our 300 hPa plot including,
 Geopotential Height contours, and color-filled wind speed.
 
 .. GENERATED FROM PYTHON SOURCE LINES 192-215
@@ -927,7 +927,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.834 seconds)
+   **Total running time of the script:** ( 0 minutes  10.318 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
