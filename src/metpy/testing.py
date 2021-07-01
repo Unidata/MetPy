@@ -35,6 +35,19 @@ def needs_cartopy(test_func):
     return wrapped
 
 
+def needs_geopandas(test_func):
+    """Decorate a test function or fixture as requiring Geopandas.
+
+    Will skip the decorated test, or any test using the decorated fixture, if ``cartopy`` is
+    unable to be imported.
+    """
+    @functools.wraps(test_func)
+    def wrapped(*args, **kwargs):
+        pytest.importorskip('geopandas')
+        return test_func(*args, **kwargs)
+    return wrapped
+
+
 def get_upper_air_data(date, station):
     """Get upper air observations from the test data cache.
 

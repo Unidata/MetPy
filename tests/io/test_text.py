@@ -7,8 +7,10 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_wpc_sfc_bulletin
+from metpy.testing import needs_geopandas
 
 
+@needs_geopandas
 def test_parse_wpc_sfc_bulletin():
     """Test parser reading a WPC coded surface bulletin into a geodataframe."""
     # Get rows 17 and 47 from dataframe representing parsed text file
