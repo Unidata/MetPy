@@ -1153,9 +1153,9 @@ class ImagePlot(PlotScalar, ColorfillTraits):
         y = self.griddata.metpy.y
 
         # At least currently imshow with cartopy does not like this
-        if 'degree' in x.units:
-            x = x.data
-            x[x > 180] -= 360
+        # if 'degree' in x.units:
+        #     x = x.data
+        #     x[x > 180] -= 360
 
         return x, y, self.griddata
 
