@@ -10,6 +10,20 @@ ccrs = pytest.importorskip('cartopy.crs')
 from metpy.plots.mapping import CFProjection  # noqa: E402
 
 
+def test_inverse_flattening_0():
+    """Test new code for dealing the case where inverse_flattening = 0."""
+    attrs = {'grid_mapping_name': 'lambert_conformal_conic', 'semi_major_axis': 6367000,
+             'semi_minor_axis': 6367000, 'inverse_flattening': 0}
+    proj = CFProjection(attrs)
+
+    crs = proj.to_cartopy()
+    globe_params = crs.globe.to_proj4_params()
+
+    assert globe_params['ellps'] == 'sphere'
+    assert globe_params['a'] == 6367000
+    assert globe_params['b'] == 6367000
+
+
 def test_cfprojection_arg_mapping():
     """Test the projection mapping arguments."""
     source = {'source': 'a', 'longitude_of_projection_origin': -100}
