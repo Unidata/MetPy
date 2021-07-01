@@ -94,7 +94,7 @@ def latitude_from_cross_section(cross):
 
 @exporter.export
 def unit_vectors_from_cross_section(cross, index='index'):
-    r"""Calculate the unit tanget and unit normal vectors from a cross-section.
+    r"""Calculate the unit tangent and unit normal vectors from a cross-section.
 
     Given a path described parametrically by :math:`\vec{l}(i) = (x(i), y(i))`, we can find
     the unit tangent vector by the formula:

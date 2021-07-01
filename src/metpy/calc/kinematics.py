@@ -380,11 +380,11 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     """
     # Get gradients of potential temperature in both x and y
-    ddy_thta = first_derivative(potential_temperature, delta=dy, axis=y_dim)
-    ddx_thta = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+    ddy_theta = first_derivative(potential_temperature, delta=dy, axis=y_dim)
+    ddx_theta = first_derivative(potential_temperature, delta=dx, axis=x_dim)
 
     # Compute the magnitude of the potential temperature gradient
-    mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
+    mag_theta = np.sqrt(ddx_theta**2 + ddy_theta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
     shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
@@ -396,9 +396,9 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
-    beta = np.arcsin((-ddx_thta * np.cos(psi) - ddy_thta * np.sin(psi)) / mag_thta)
+    beta = np.arcsin((-ddx_theta * np.cos(psi) - ddy_theta * np.sin(psi)) / mag_theta)
 
-    return 0.5 * mag_thta * (tdef * np.cos(2 * beta) - div)
+    return 0.5 * mag_theta * (tdef * np.cos(2 * beta) - div)
 
 
 @exporter.export
@@ -789,22 +789,22 @@ def potential_vorticity_baroclinic(
                          '{} must be at least 3.'.format(vertical_dim))
 
     avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
-    dthtadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
+    dthetadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
 
     if (
         (np.shape(potential_temperature)[y_dim] == 1)
         and (np.shape(potential_temperature)[x_dim] == 1)
     ):
-        dthtady = units.Quantity(0, 'K/m')  # axis=y_dim only has one dimension
-        dthtadx = units.Quantity(0, 'K/m')  # axis=x_dim only has one dimension
+        dthetady = units.Quantity(0, 'K/m')  # axis=y_dim only has one dimension
+        dthetadx = units.Quantity(0, 'K/m')  # axis=x_dim only has one dimension
     else:
-        dthtady = first_derivative(potential_temperature, delta=dy, axis=y_dim)
-        dthtadx = first_derivative(potential_temperature, delta=dx, axis=x_dim)
+        dthetady = first_derivative(potential_temperature, delta=dy, axis=y_dim)
+        dthetadx = first_derivative(potential_temperature, delta=dx, axis=x_dim)
     dudp = first_derivative(u, x=pressure, axis=vertical_dim)
     dvdp = first_derivative(v, x=pressure, axis=vertical_dim)
 
-    return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx
-                           + avor * dthtadp)).to('K * m**2 / (s * kg)')
+    return (-mpconsts.g * (dudp * dthetady - dvdp * dthetadx
+                           + avor * dthetadp)).to('K * m**2 / (s * kg)')
 
 
 @exporter.export

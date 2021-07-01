@@ -14,7 +14,7 @@ def preprocess_pandas(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # not using hasattr(a, values) because it picks up dict.values()
-        # and this is more explictly handling pandas
+        # and this is more explicitly handling pandas
         args = tuple(a.values if isinstance(a, pd.Series) else a for a in args)
         kwargs = {name: (v.values if isinstance(v, pd.Series) else v)
                   for name, v in kwargs.items()}

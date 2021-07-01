@@ -104,8 +104,8 @@ ds['wind_speed'] = mpcalc.wind_speed(ds['u-component_of_wind_isobaric'],
 #
 # - ``PlotBarbs()``
 #
-# More complete descrptions of these and other plotting types, as well as the map panel and
-# panel containter classes are at the end of this tutorial.
+# More complete descriptions of these and other plotting types, as well as the map panel and
+# panel container classes are at the end of this tutorial.
 #
 # Let's plot a 300-hPa map with color-filled wind speed, which we calculated and added to
 # our Dataset above, and geopotential heights over the CONUS.
@@ -187,7 +187,7 @@ pc.show()
 # set of attributes to control plotting a vector quantity.
 
 #########################################################################
-# We start with setting the attributes that we had before for our 300 hPa plot inlcuding,
+# We start with setting the attributes that we had before for our 300 hPa plot including,
 # Geopotential Height contours, and color-filled wind speed.
 
 # Set attributes for contours of Geopotential Heights at 300 hPa

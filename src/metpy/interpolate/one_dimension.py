@@ -178,7 +178,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
 def log_interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan):
     r"""Interpolates data with logarithmic x-scale over a specified axis.
 
-    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
+    Interpolation on a logarithmic x-scale for interpolation values in pressure coordinates.
 
     Parameters
     ----------

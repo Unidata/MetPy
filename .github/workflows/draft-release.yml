@@ -33,13 +33,13 @@ jobs:
             const issues = items.data.filter(i => !i.pull_request);
             const issue_text = '### Issues Closed\n' +
                                issues.map(i => `* [Issue ${i.number}](${i.html_url}) - ${i.title}\n`)
-                               .join('') + `\nIn this release ${issues.length} issues were closed.`;
+                               .join('') + `\n${issues.length} issues were closed in this release.`;
 
             // Now do the same for the PRs
             const prs = items.data.filter(i => !!i.pull_request);
             const pr_text = '### Pull Requests Merged\n' +
                             prs.map(i => `* [PR ${i.number}](${i.html_url}) - ${i.title}, by @${i.user.login}\n`)
-                            .join('') + `\nIn this release ${prs.length} pull requests were closed.`;
+                            .join('') + `\n${prs.length} pull requests were closed in this release.`;
 
             // Add the list of people who contributed PRs
             const contrib_text = '### Contributors\n' +

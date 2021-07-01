@@ -724,7 +724,7 @@ def test_potential_vorticity_baroclinic_isentropic_real_data():
 
 def test_potential_vorticity_baroclinic_isobaric_real_data():
     """Test potential vorticity calculation with real isentropic data."""
-    pres = [20000., 25000., 30000.] * units.Pa
+    pressure = [20000., 25000., 30000.] * units.Pa
     theta = np.array([[[344.45776, 344.5063, 344.574, 344.6499, 344.735],
                        [343.98444, 344.02536, 344.08682, 344.16284, 344.2629],
                        [343.58792, 343.60876, 343.65628, 343.72818, 343.82834],
@@ -777,7 +777,7 @@ def test_potential_vorticity_baroclinic_isobaric_real_data():
 
     dx, dy = lat_lon_grid_deltas(lons, lats)
 
-    pvor = potential_vorticity_baroclinic(theta, pres[:, None, None],
+    pvor = potential_vorticity_baroclinic(theta, pressure[:, None, None],
                                           uwnd, vwnd, dx[None, :, :], dy[None, :, :],
                                           lats[None, :, None])
 
@@ -1339,8 +1339,8 @@ def test_total_deformation_4d(data_4d):
 
 def test_frontogenesis_4d(data_4d):
     """Test frontogenesis on a 4D (time, pressure, y, x) grid."""
-    thta = potential_temperature(data_4d.pressure, data_4d.temperature)
-    frnt = frontogenesis(thta, data_4d.u, data_4d.v).transpose(
+    theta = potential_temperature(data_4d.pressure, data_4d.temperature)
+    frnt = frontogenesis(theta, data_4d.u, data_4d.v).transpose(
         'time1',
         'pressure',
         'latitude',

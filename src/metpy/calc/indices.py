@@ -66,21 +66,21 @@ def precipitable_water(pressure, dewpoint, *, bottom=None, top=None):
 
     pressure, dewpoint = _remove_nans(pressure, dewpoint)
 
-    min_pres = np.nanmin(pressure)
-    max_pres = np.nanmax(pressure)
+    min_pressure = np.nanmin(pressure)
+    max_pressure = np.nanmax(pressure)
 
     if top is None:
-        top = min_pres
-    elif not min_pres <= top <= max_pres:
-        raise ValueError(f'The pressure and dewpoint profile ranges from {max_pres} to '
-                         f'{min_pres}, after removing missing values. {top} is outside this '
-                         'range.')
+        top = min_pressure
+    elif not min_pressure <= top <= max_pressure:
+        raise ValueError(f'The pressure and dewpoint profile ranges from {max_pressure} to '
+                         f'{min_pressure}, after removing missing values. {top} is outside '
+                         'this range.')
 
     if bottom is None:
-        bottom = max_pres
-    elif not min_pres <= bottom <= max_pres:
-        raise ValueError(f'The pressure and dewpoint profile ranges from {max_pres} to '
-                         f'{min_pres}, after removing missing values. {bottom} is outside '
+        bottom = max_pressure
+    elif not min_pressure <= bottom <= max_pressure:
+        raise ValueError(f'The pressure and dewpoint profile ranges from {max_pressure} to '
+                         f'{min_pressure}, after removing missing values. {bottom} is outside '
                          'this range.')
 
     pres_layer, dewpoint_layer = get_layer(pressure, dewpoint, bottom=bottom,

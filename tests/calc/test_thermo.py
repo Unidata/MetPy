@@ -61,25 +61,25 @@ def test_relative_humidity_from_dewpoint_xarray():
 
 def test_exner_function():
     """Test Exner function calculation."""
-    pres = np.array([900., 500., 300., 100.]) * units.mbar
+    pressure = np.array([900., 500., 300., 100.]) * units.mbar
     truth = np.array([0.97034558, 0.82033536, 0.70893444, 0.51794747]) * units.dimensionless
-    assert_array_almost_equal(exner_function(pres), truth, 5)
+    assert_array_almost_equal(exner_function(pressure), truth, 5)
 
 
 def test_potential_temperature():
     """Test potential_temperature calculation."""
     temp = np.array([278., 283., 291., 298.]) * units.kelvin
-    pres = np.array([900., 500., 300., 100.]) * units.mbar
+    pressure = np.array([900., 500., 300., 100.]) * units.mbar
     real_th = np.array([286.496, 344.981, 410.475, 575.348]) * units.kelvin
-    assert_array_almost_equal(potential_temperature(pres, temp), real_th, 3)
+    assert_array_almost_equal(potential_temperature(pressure, temp), real_th, 3)
 
 
 def test_temperature_from_potential_temperature():
     """Test temperature_from_potential_temperature calculation."""
     theta = np.array([286.12859679, 288.22362587, 290.31865495, 292.41368403]) * units.kelvin
-    pres = np.array([850] * 4) * units.mbar
+    pressure = np.array([850] * 4) * units.mbar
     real_t = np.array([273.15, 275.15, 277.15, 279.15]) * units.kelvin
-    assert_array_almost_equal(temperature_from_potential_temperature(pres, theta),
+    assert_array_almost_equal(temperature_from_potential_temperature(pressure, theta),
                               real_t, 2)
 
 
@@ -133,7 +133,7 @@ def test_moist_lapse_degc():
     assert_array_almost_equal(temp, true_temp, 2)
 
 
-def test_moist_lapse_ref_pres():
+def test_moist_lapse_ref_pressure():
     """Test moist_lapse with a reference pressure."""
     temp = moist_lapse(np.array([1050., 800., 600., 500., 400.]) * units.mbar,
                        19.85 * units.degC, 1000. * units.mbar)
@@ -1696,11 +1696,11 @@ def test_el_lfc_most_cape_bottom():
                              13.7, 11.4, 9.1, 6.8, 3.8, 1.5]) * units.degC
     dewpoints = np.array([16.9, 15.9, 14.2, 11, 9.5, 8.6, 0., -3.6, -4.4,
                           -6.9, -9.5, -12., -14.6, -15.8]) * units.degC
-    lfc_pres, lfc_temp = lfc(levels, temperatures, dewpoints, which='most_cape')
-    el_pres, el_temp = el(levels, temperatures, dewpoints, which='most_cape')
-    assert_almost_equal(lfc_pres, 900.73235 * units.hPa, 3)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, which='most_cape')
+    el_pressure, el_temp = el(levels, temperatures, dewpoints, which='most_cape')
+    assert_almost_equal(lfc_pressure, 900.73235 * units.hPa, 3)
     assert_almost_equal(lfc_temp, 14.672512 * units.degC, 3)
-    assert_almost_equal(el_pres, 849.7998947 * units.hPa, 3)
+    assert_almost_equal(el_pressure, 849.7998947 * units.hPa, 3)
     assert_almost_equal(el_temp, 12.4233265 * units.degC, 3)
 
 

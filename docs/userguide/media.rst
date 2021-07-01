@@ -3,7 +3,7 @@ Talks and Other Media
 ---------------------
 
 * `AMS 2020 talk`_ on MetPy being ready for a 1.0 release
-* `AMS 2019 talk`_ on bringing GEMPAK-like syntax to MetPy's declaritive plotting interface
+* `AMS 2019 talk`_ on bringing GEMPAK-like syntax to MetPy's declarative plotting interface
 * `AMS 2019 poster`_ on recent development and community building with MetPy
 * `SciPy 2018 poster`_ and `abstract <http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Abstract.pdf>`_ on building community by John Leeman
 * `SciPy 2018 talk`_ on prototyping MetPy's future declarative plotting interface

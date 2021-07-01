@@ -61,7 +61,7 @@ temperature
 #
 # If you are more interested in learning about xarray's terminology and data structures, see
 # the `terminology section <http://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
-# documenation.
+# documentation.
 #
 # Coordinates and Coordinate Reference Systems
 # --------------------------------------------
@@ -434,7 +434,7 @@ data
 # **Undefined Unit Error**
 #
 # If the units attribute on your xarray data is not recognizable by Pint, you will likely
-# recieve an ``UndefinedUnitError``. In this case, you will likely have to update the units
+# receive an ``UndefinedUnitError``. In this case, you will likely have to update the units
 # attribute to one that can be parsed properly by Pint. It is our aim to have all valid
 # CF/UDUNITS unit strings be parseable, but this work is ongoing. If many variables in your
 # dataset are not parseable, the ``.update_attribute`` method on the MetPy accessor may come

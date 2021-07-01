@@ -530,10 +530,10 @@ def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoi
         idx = x < this_lcl[0]
         # LFC height < LCL height, so set LFC = LCL
         if not any(idx):
-            el_pres, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                            temperature[1:], direction='decreasing',
-                                            log_x=True)
-            if np.min(el_pres) > this_lcl[0]:
+            el_pressure, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                                temperature[1:], direction='decreasing',
+                                                log_x=True)
+            if np.min(el_pressure) > this_lcl[0]:
                 x = units.Quantity(np.nan, pressure.units)
                 y = units.Quantity(np.nan, temperature.units)
             else:
@@ -2031,20 +2031,21 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     ndim = temperature.ndim
 
     # Convert units
-    pres = pressure.to('hPa')
+    pressure = pressure.to('hPa')
     temperature = temperature.to('kelvin')
 
     slices = [np.newaxis] * ndim
     slices[vertical_dim] = slice(None)
     slices = tuple(slices)
-    pres = units.Quantity(np.broadcast_to(pres[slices].magnitude, temperature.shape),
-                          pres.units)
+    pressure = units.Quantity(np.broadcast_to(pressure[slices].magnitude, temperature.shape),
+                              pressure.units)
 
     # Sort input data
-    sort_pres = np.argsort(pres.m, axis=vertical_dim)
-    sort_pres = np.swapaxes(np.swapaxes(sort_pres, 0, vertical_dim)[::-1], 0, vertical_dim)
-    sorter = broadcast_indices(pres, sort_pres, ndim, vertical_dim)
-    levs = pres[sorter]
+    sort_pressure = np.argsort(pressure.m, axis=vertical_dim)
+    sort_pressure = np.swapaxes(np.swapaxes(sort_pressure, 0, vertical_dim)[::-1], 0,
+                                vertical_dim)
+    sorter = broadcast_indices(pressure, sort_pressure, ndim, vertical_dim)
+    levs = pressure[sorter]
     tmpk = temperature[sorter]
 
     levels = np.asarray(levels.m_as('kelvin')).reshape(-1)
@@ -2096,7 +2097,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     isentprs[good] = np.exp(log_p_solved)
 
     # Mask out points we know are bad as well as points that are beyond the max pressure
-    isentprs[~(good & _less_or_close(isentprs, np.max(pres.m)))] = np.nan
+    isentprs[~(good & _less_or_close(isentprs, np.max(pressure.m)))] = np.nan
 
     # create list for storing output data
     ret = [units.Quantity(isentprs, 'hPa')]
