@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality that we have upstreamed or will upstream into matplotlib."""
 
-# See if we should monkey-patch Barbs for better pivot
 from matplotlib.axes import Axes  # noqa: E402, I100, I202
 import matplotlib.transforms as transforms
 import numpy as np
@@ -66,16 +65,6 @@ if not hasattr(Axes, 'scattertext'):
             'transform': self.transData,
             'clip_on': False}
         new_kw.update(kw)
-
-        # Default to centered on point--special case it to keep transform
-        # simpler.
-        # t = new_kw['transform']
-        # if loc == (0, 0):
-        #     trans = t
-        # else:
-        #     x0, y0 = loc
-        #     trans = t + mtransforms.Affine2D().translate(x0, y0)
-        # new_kw['transform'] = trans
 
         # Handle masked arrays
         x, y, texts = cbook.delete_masked_points(x, y, texts)
