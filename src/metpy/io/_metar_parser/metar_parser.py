@@ -140,19 +140,18 @@ class Grammar:
     REGEX_38 = re.compile('^[\\d]')
     REGEX_39 = re.compile('^[\\d]')
     REGEX_40 = re.compile('^[-+]')
-    REGEX_41 = re.compile('^[-+]')
-    REGEX_42 = re.compile('^[\\d]')
-    REGEX_43 = re.compile('^[M]')
+    REGEX_41 = re.compile('^[\\d]')
+    REGEX_42 = re.compile('^[M]')
+    REGEX_43 = re.compile('^[\\d]')
     REGEX_44 = re.compile('^[\\d]')
-    REGEX_45 = re.compile('^[\\d]')
-    REGEX_46 = re.compile('^[M]')
+    REGEX_45 = re.compile('^[M]')
+    REGEX_46 = re.compile('^[\\d]')
     REGEX_47 = re.compile('^[\\d]')
-    REGEX_48 = re.compile('^[\\d]')
-    REGEX_49 = re.compile('^["Q" / "A"]')
+    REGEX_48 = re.compile('^["Q" / "A"]')
+    REGEX_49 = re.compile('^[\\d]')
     REGEX_50 = re.compile('^[\\d]')
     REGEX_51 = re.compile('^[\\d]')
     REGEX_52 = re.compile('^[\\d]')
-    REGEX_53 = re.compile('^[\\d]')
 
     def _read_ob(self):
         address0, index0 = FAILURE, self._offset
@@ -1960,403 +1959,439 @@ class Grammar:
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
-            index4 = self._offset
-            chunk2, max2 = None, self._offset + 2
-            if max2 <= self._input_size:
-                chunk2 = self._input[self._offset:max2]
-            if chunk2 == 'MI':
-                address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                self._offset = self._offset + 2
-            else:
-                address2 = FAILURE
-                if self._offset > self._failure:
-                    self._failure = self._offset
-                    self._expected = []
-                if self._offset == self._failure:
-                    self._expected.append('"MI"')
-            if address2 is FAILURE:
-                self._offset = index4
-                chunk3, max3 = None, self._offset + 2
-                if max3 <= self._input_size:
-                    chunk3 = self._input[self._offset:max3]
-                if chunk3 == 'PR':
-                    address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                    self._offset = self._offset + 2
-                else:
-                    address2 = FAILURE
-                    if self._offset > self._failure:
-                        self._failure = self._offset
-                        self._expected = []
-                    if self._offset == self._failure:
-                        self._expected.append('"PR"')
-                if address2 is FAILURE:
-                    self._offset = index4
-                    chunk4, max4 = None, self._offset + 2
-                    if max4 <= self._input_size:
-                        chunk4 = self._input[self._offset:max4]
-                    if chunk4 == 'DR':
-                        address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                        self._offset = self._offset + 2
-                    else:
-                        address2 = FAILURE
-                        if self._offset > self._failure:
-                            self._failure = self._offset
-                            self._expected = []
-                        if self._offset == self._failure:
-                            self._expected.append('"DR"')
-                    if address2 is FAILURE:
-                        self._offset = index4
-                        chunk5, max5 = None, self._offset + 2
-                        if max5 <= self._input_size:
-                            chunk5 = self._input[self._offset:max5]
-                        if chunk5 == 'BL':
-                            address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                            self._offset = self._offset + 2
-                        else:
-                            address2 = FAILURE
-                            if self._offset > self._failure:
-                                self._failure = self._offset
-                                self._expected = []
-                            if self._offset == self._failure:
-                                self._expected.append('"BL"')
-                        if address2 is FAILURE:
-                            self._offset = index4
-                            chunk6, max6 = None, self._offset + 2
-                            if max6 <= self._input_size:
-                                chunk6 = self._input[self._offset:max6]
-                            if chunk6 == 'SH':
-                                address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                self._offset = self._offset + 2
-                            else:
-                                address2 = FAILURE
-                                if self._offset > self._failure:
-                                    self._failure = self._offset
-                                    self._expected = []
-                                if self._offset == self._failure:
-                                    self._expected.append('"SH"')
-                            if address2 is FAILURE:
-                                self._offset = index4
-                                chunk7, max7 = None, self._offset + 2
-                                if max7 <= self._input_size:
-                                    chunk7 = self._input[self._offset:max7]
-                                if chunk7 == 'TS':
-                                    address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                    self._offset = self._offset + 2
-                                else:
-                                    address2 = FAILURE
-                                    if self._offset > self._failure:
-                                        self._failure = self._offset
-                                        self._expected = []
-                                    if self._offset == self._failure:
-                                        self._expected.append('"TS"')
-                                if address2 is FAILURE:
-                                    self._offset = index4
-                                    chunk8, max8 = None, self._offset + 2
-                                    if max8 <= self._input_size:
-                                        chunk8 = self._input[self._offset:max8]
-                                    if chunk8 == 'FG':
-                                        address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                        self._offset = self._offset + 2
-                                    else:
-                                        address2 = FAILURE
-                                        if self._offset > self._failure:
-                                            self._failure = self._offset
-                                            self._expected = []
-                                        if self._offset == self._failure:
-                                            self._expected.append('"FG"')
-                                    if address2 is FAILURE:
-                                        self._offset = index4
-                                        chunk9, max9 = None, self._offset + 2
-                                        if max9 <= self._input_size:
-                                            chunk9 = self._input[self._offset:max9]
-                                        if chunk9 == 'TS':
-                                            address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                            self._offset = self._offset + 2
-                                        else:
-                                            address2 = FAILURE
-                                            if self._offset > self._failure:
-                                                self._failure = self._offset
-                                                self._expected = []
-                                            if self._offset == self._failure:
-                                                self._expected.append('"TS"')
-                                        if address2 is FAILURE:
-                                            self._offset = index4
-                                            chunk10, max10 = None, self._offset + 2
-                                            if max10 <= self._input_size:
-                                                chunk10 = self._input[self._offset:max10]
-                                            if chunk10 == 'FZ':
-                                                address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                                self._offset = self._offset + 2
-                                            else:
-                                                address2 = FAILURE
-                                                if self._offset > self._failure:
-                                                    self._failure = self._offset
-                                                    self._expected = []
-                                                if self._offset == self._failure:
-                                                    self._expected.append('"FZ"')
-                                            if address2 is FAILURE:
-                                                self._offset = index4
-                                                chunk11, max11 = None, self._offset + 2
-                                                if max11 <= self._input_size:
-                                                    chunk11 = self._input[self._offset:max11]
-                                                if chunk11 == 'RA':
-                                                    address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                                    self._offset = self._offset + 2
-                                                else:
-                                                    address2 = FAILURE
-                                                    if self._offset > self._failure:
-                                                        self._failure = self._offset
-                                                        self._expected = []
-                                                    if self._offset == self._failure:
-                                                        self._expected.append('"RA"')
-                                                if address2 is FAILURE:
-                                                    self._offset = index4
-                                                    chunk12, max12 = None, self._offset + 2
-                                                    if max12 <= self._input_size:
-                                                        chunk12 = self._input[self._offset:max12]
-                                                    if chunk12 == 'BR':
-                                                        address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                                        self._offset = self._offset + 2
-                                                    else:
-                                                        address2 = FAILURE
-                                                        if self._offset > self._failure:
-                                                            self._failure = self._offset
-                                                            self._expected = []
-                                                        if self._offset == self._failure:
-                                                            self._expected.append('"BR"')
-                                                    if address2 is FAILURE:
-                                                        self._offset = index4
-                                                        chunk13, max13 = None, self._offset + 2
-                                                        if max13 <= self._input_size:
-                                                            chunk13 = self._input[self._offset:max13]
-                                                        if chunk13 == 'HZ':
-                                                            address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                                            self._offset = self._offset + 2
-                                                        else:
-                                                            address2 = FAILURE
-                                                            if self._offset > self._failure:
-                                                                self._failure = self._offset
-                                                                self._expected = []
-                                                            if self._offset == self._failure:
-                                                                self._expected.append('"HZ"')
-                                                        if address2 is FAILURE:
-                                                            self._offset = index4
-                                                            chunk14, max14 = None, self._offset + 2
-                                                            if max14 <= self._input_size:
-                                                                chunk14 = self._input[self._offset:max14]
-                                                            if chunk14 == 'SN':
-                                                                address2 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
-                                                                self._offset = self._offset + 2
-                                                            else:
-                                                                address2 = FAILURE
-                                                                if self._offset > self._failure:
-                                                                    self._failure = self._offset
-                                                                    self._expected = []
-                                                                if self._offset == self._failure:
-                                                                    self._expected.append('"SN"')
-                                                            if address2 is FAILURE:
-                                                                self._offset = index4
-            if address2 is not FAILURE:
-                elements0.append(address2)
-                address3 = FAILURE
+            remaining0, index4, elements1, address3 = 1, self._offset, [], True
+            while address3 is not FAILURE:
                 index5 = self._offset
-                chunk15, max15 = None, self._offset + 1
-                if max15 <= self._input_size:
-                    chunk15 = self._input[self._offset:max15]
-                if chunk15 is not None and Grammar.REGEX_41.search(chunk15):
-                    address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
-                    self._offset = self._offset + 1
+                chunk2, max2 = None, self._offset + 2
+                if max2 <= self._input_size:
+                    chunk2 = self._input[self._offset:max2]
+                if chunk2 == 'MI':
+                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                    self._offset = self._offset + 2
                 else:
                     address3 = FAILURE
                     if self._offset > self._failure:
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[-+]')
+                        self._expected.append('"MI"')
                 if address3 is FAILURE:
-                    address3 = TreeNode(self._input[index5:index5], index5, [])
                     self._offset = index5
-                if address3 is not FAILURE:
-                    elements0.append(address3)
-                    address4 = FAILURE
-                    index6 = self._offset
-                    index7 = self._offset
-                    chunk16, max16 = None, self._offset + 2
-                    if max16 <= self._input_size:
-                        chunk16 = self._input[self._offset:max16]
-                    if chunk16 == 'RA':
-                        address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                    chunk3, max3 = None, self._offset + 2
+                    if max3 <= self._input_size:
+                        chunk3 = self._input[self._offset:max3]
+                    if chunk3 == 'BC':
+                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                         self._offset = self._offset + 2
                     else:
-                        address4 = FAILURE
+                        address3 = FAILURE
                         if self._offset > self._failure:
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"RA"')
-                    if address4 is FAILURE:
-                        self._offset = index7
-                        chunk17, max17 = None, self._offset + 2
-                        if max17 <= self._input_size:
-                            chunk17 = self._input[self._offset:max17]
-                        if chunk17 == 'BR':
-                            address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                            self._expected.append('"BC"')
+                    if address3 is FAILURE:
+                        self._offset = index5
+                        chunk4, max4 = None, self._offset + 2
+                        if max4 <= self._input_size:
+                            chunk4 = self._input[self._offset:max4]
+                        if chunk4 == 'PR':
+                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                             self._offset = self._offset + 2
                         else:
-                            address4 = FAILURE
+                            address3 = FAILURE
                             if self._offset > self._failure:
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"BR"')
-                        if address4 is FAILURE:
-                            self._offset = index7
-                            chunk18, max18 = None, self._offset + 2
-                            if max18 <= self._input_size:
-                                chunk18 = self._input[self._offset:max18]
-                            if chunk18 == 'DZ':
-                                address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                self._expected.append('"PR"')
+                        if address3 is FAILURE:
+                            self._offset = index5
+                            chunk5, max5 = None, self._offset + 2
+                            if max5 <= self._input_size:
+                                chunk5 = self._input[self._offset:max5]
+                            if chunk5 == 'DR':
+                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                 self._offset = self._offset + 2
                             else:
-                                address4 = FAILURE
+                                address3 = FAILURE
                                 if self._offset > self._failure:
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"DZ"')
-                            if address4 is FAILURE:
-                                self._offset = index7
-                                chunk19, max19 = None, self._offset + 2
-                                if max19 <= self._input_size:
-                                    chunk19 = self._input[self._offset:max19]
-                                if chunk19 == 'FG':
-                                    address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                    self._expected.append('"DR"')
+                            if address3 is FAILURE:
+                                self._offset = index5
+                                chunk6, max6 = None, self._offset + 2
+                                if max6 <= self._input_size:
+                                    chunk6 = self._input[self._offset:max6]
+                                if chunk6 == 'BL':
+                                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                     self._offset = self._offset + 2
                                 else:
-                                    address4 = FAILURE
+                                    address3 = FAILURE
                                     if self._offset > self._failure:
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('"FG"')
-                                if address4 is FAILURE:
-                                    self._offset = index7
-                                    chunk20, max20 = None, self._offset + 2
-                                    if max20 <= self._input_size:
-                                        chunk20 = self._input[self._offset:max20]
-                                    if chunk20 == 'FU':
-                                        address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                        self._expected.append('"BL"')
+                                if address3 is FAILURE:
+                                    self._offset = index5
+                                    chunk7, max7 = None, self._offset + 2
+                                    if max7 <= self._input_size:
+                                        chunk7 = self._input[self._offset:max7]
+                                    if chunk7 == 'SH':
+                                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                         self._offset = self._offset + 2
                                     else:
-                                        address4 = FAILURE
+                                        address3 = FAILURE
                                         if self._offset > self._failure:
                                             self._failure = self._offset
                                             self._expected = []
                                         if self._offset == self._failure:
-                                            self._expected.append('"FU"')
-                                    if address4 is FAILURE:
-                                        self._offset = index7
-                                        chunk21, max21 = None, self._offset + 2
-                                        if max21 <= self._input_size:
-                                            chunk21 = self._input[self._offset:max21]
-                                        if chunk21 == 'VA':
-                                            address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                            self._expected.append('"SH"')
+                                    if address3 is FAILURE:
+                                        self._offset = index5
+                                        chunk8, max8 = None, self._offset + 2
+                                        if max8 <= self._input_size:
+                                            chunk8 = self._input[self._offset:max8]
+                                        if chunk8 == 'TS':
+                                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                             self._offset = self._offset + 2
                                         else:
-                                            address4 = FAILURE
+                                            address3 = FAILURE
                                             if self._offset > self._failure:
                                                 self._failure = self._offset
                                                 self._expected = []
                                             if self._offset == self._failure:
-                                                self._expected.append('"VA"')
-                                        if address4 is FAILURE:
-                                            self._offset = index7
-                                            chunk22, max22 = None, self._offset + 2
-                                            if max22 <= self._input_size:
-                                                chunk22 = self._input[self._offset:max22]
-                                            if chunk22 == 'DU':
-                                                address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                self._expected.append('"TS"')
+                                        if address3 is FAILURE:
+                                            self._offset = index5
+                                            chunk9, max9 = None, self._offset + 2
+                                            if max9 <= self._input_size:
+                                                chunk9 = self._input[self._offset:max9]
+                                            if chunk9 == 'FZ':
+                                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                                 self._offset = self._offset + 2
                                             else:
-                                                address4 = FAILURE
+                                                address3 = FAILURE
                                                 if self._offset > self._failure:
                                                     self._failure = self._offset
                                                     self._expected = []
                                                 if self._offset == self._failure:
-                                                    self._expected.append('"DU"')
-                                            if address4 is FAILURE:
-                                                self._offset = index7
-                                                chunk23, max23 = None, self._offset + 2
-                                                if max23 <= self._input_size:
-                                                    chunk23 = self._input[self._offset:max23]
-                                                if chunk23 == 'SA':
-                                                    address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                    self._expected.append('"FZ"')
+                                            if address3 is FAILURE:
+                                                self._offset = index5
+                                                chunk10, max10 = None, self._offset + 2
+                                                if max10 <= self._input_size:
+                                                    chunk10 = self._input[self._offset:max10]
+                                                if chunk10 == 'DZ':
+                                                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                                     self._offset = self._offset + 2
                                                 else:
-                                                    address4 = FAILURE
+                                                    address3 = FAILURE
                                                     if self._offset > self._failure:
                                                         self._failure = self._offset
                                                         self._expected = []
                                                     if self._offset == self._failure:
-                                                        self._expected.append('"SA"')
-                                                if address4 is FAILURE:
-                                                    self._offset = index7
-                                                    chunk24, max24 = None, self._offset + 2
-                                                    if max24 <= self._input_size:
-                                                        chunk24 = self._input[self._offset:max24]
-                                                    if chunk24 == 'SA':
-                                                        address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                        self._expected.append('"DZ"')
+                                                if address3 is FAILURE:
+                                                    self._offset = index5
+                                                    chunk11, max11 = None, self._offset + 2
+                                                    if max11 <= self._input_size:
+                                                        chunk11 = self._input[self._offset:max11]
+                                                    if chunk11 == 'RA':
+                                                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                                         self._offset = self._offset + 2
                                                     else:
-                                                        address4 = FAILURE
+                                                        address3 = FAILURE
                                                         if self._offset > self._failure:
                                                             self._failure = self._offset
                                                             self._expected = []
                                                         if self._offset == self._failure:
-                                                            self._expected.append('"SA"')
-                                                    if address4 is FAILURE:
-                                                        self._offset = index7
-                                                        chunk25, max25 = None, self._offset + 2
-                                                        if max25 <= self._input_size:
-                                                            chunk25 = self._input[self._offset:max25]
-                                                        if chunk25 == 'HZ':
-                                                            address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                            self._expected.append('"RA"')
+                                                    if address3 is FAILURE:
+                                                        self._offset = index5
+                                                        chunk12, max12 = None, self._offset + 2
+                                                        if max12 <= self._input_size:
+                                                            chunk12 = self._input[self._offset:max12]
+                                                        if chunk12 == 'SN':
+                                                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                                             self._offset = self._offset + 2
                                                         else:
-                                                            address4 = FAILURE
+                                                            address3 = FAILURE
                                                             if self._offset > self._failure:
                                                                 self._failure = self._offset
                                                                 self._expected = []
                                                             if self._offset == self._failure:
-                                                                self._expected.append('"HZ"')
-                                                        if address4 is FAILURE:
-                                                            self._offset = index7
-                                                            chunk26, max26 = None, self._offset + 2
-                                                            if max26 <= self._input_size:
-                                                                chunk26 = self._input[self._offset:max26]
-                                                            if chunk26 == 'PY':
-                                                                address4 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                self._expected.append('"SN"')
+                                                        if address3 is FAILURE:
+                                                            self._offset = index5
+                                                            chunk13, max13 = None, self._offset + 2
+                                                            if max13 <= self._input_size:
+                                                                chunk13 = self._input[self._offset:max13]
+                                                            if chunk13 == 'SG':
+                                                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                                                                 self._offset = self._offset + 2
                                                             else:
-                                                                address4 = FAILURE
+                                                                address3 = FAILURE
                                                                 if self._offset > self._failure:
                                                                     self._failure = self._offset
                                                                     self._expected = []
                                                                 if self._offset == self._failure:
-                                                                    self._expected.append('"PY"')
-                                                            if address4 is FAILURE:
-                                                                self._offset = index7
-                    if address4 is FAILURE:
-                        address4 = TreeNode(self._input[index6:index6], index6, [])
-                        self._offset = index6
-                    if address4 is not FAILURE:
-                        elements0.append(address4)
-                    else:
-                        elements0 = None
-                        self._offset = index1
-                else:
-                    elements0 = None
-                    self._offset = index1
+                                                                    self._expected.append('"SG"')
+                                                            if address3 is FAILURE:
+                                                                self._offset = index5
+                                                                chunk14, max14 = None, self._offset + 2
+                                                                if max14 <= self._input_size:
+                                                                    chunk14 = self._input[self._offset:max14]
+                                                                if chunk14 == 'PL':
+                                                                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                    self._offset = self._offset + 2
+                                                                else:
+                                                                    address3 = FAILURE
+                                                                    if self._offset > self._failure:
+                                                                        self._failure = self._offset
+                                                                        self._expected = []
+                                                                    if self._offset == self._failure:
+                                                                        self._expected.append('"PL"')
+                                                                if address3 is FAILURE:
+                                                                    self._offset = index5
+                                                                    chunk15, max15 = None, self._offset + 2
+                                                                    if max15 <= self._input_size:
+                                                                        chunk15 = self._input[self._offset:max15]
+                                                                    if chunk15 == 'GR':
+                                                                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                        self._offset = self._offset + 2
+                                                                    else:
+                                                                        address3 = FAILURE
+                                                                        if self._offset > self._failure:
+                                                                            self._failure = self._offset
+                                                                            self._expected = []
+                                                                        if self._offset == self._failure:
+                                                                            self._expected.append('"GR"')
+                                                                    if address3 is FAILURE:
+                                                                        self._offset = index5
+                                                                        chunk16, max16 = None, self._offset + 2
+                                                                        if max16 <= self._input_size:
+                                                                            chunk16 = self._input[self._offset:max16]
+                                                                        if chunk16 == 'GS':
+                                                                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                            self._offset = self._offset + 2
+                                                                        else:
+                                                                            address3 = FAILURE
+                                                                            if self._offset > self._failure:
+                                                                                self._failure = self._offset
+                                                                                self._expected = []
+                                                                            if self._offset == self._failure:
+                                                                                self._expected.append('"GS"')
+                                                                        if address3 is FAILURE:
+                                                                            self._offset = index5
+                                                                            chunk17, max17 = None, self._offset + 2
+                                                                            if max17 <= self._input_size:
+                                                                                chunk17 = self._input[self._offset:max17]
+                                                                            if chunk17 == 'UP':
+                                                                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                self._offset = self._offset + 2
+                                                                            else:
+                                                                                address3 = FAILURE
+                                                                                if self._offset > self._failure:
+                                                                                    self._failure = self._offset
+                                                                                    self._expected = []
+                                                                                if self._offset == self._failure:
+                                                                                    self._expected.append('"UP"')
+                                                                            if address3 is FAILURE:
+                                                                                self._offset = index5
+                                                                                chunk18, max18 = None, self._offset + 2
+                                                                                if max18 <= self._input_size:
+                                                                                    chunk18 = self._input[self._offset:max18]
+                                                                                if chunk18 == 'BR':
+                                                                                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                    self._offset = self._offset + 2
+                                                                                else:
+                                                                                    address3 = FAILURE
+                                                                                    if self._offset > self._failure:
+                                                                                        self._failure = self._offset
+                                                                                        self._expected = []
+                                                                                    if self._offset == self._failure:
+                                                                                        self._expected.append('"BR"')
+                                                                                if address3 is FAILURE:
+                                                                                    self._offset = index5
+                                                                                    chunk19, max19 = None, self._offset + 2
+                                                                                    if max19 <= self._input_size:
+                                                                                        chunk19 = self._input[self._offset:max19]
+                                                                                    if chunk19 == 'FG':
+                                                                                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                        self._offset = self._offset + 2
+                                                                                    else:
+                                                                                        address3 = FAILURE
+                                                                                        if self._offset > self._failure:
+                                                                                            self._failure = self._offset
+                                                                                            self._expected = []
+                                                                                        if self._offset == self._failure:
+                                                                                            self._expected.append('"FG"')
+                                                                                    if address3 is FAILURE:
+                                                                                        self._offset = index5
+                                                                                        chunk20, max20 = None, self._offset + 2
+                                                                                        if max20 <= self._input_size:
+                                                                                            chunk20 = self._input[self._offset:max20]
+                                                                                        if chunk20 == 'FU':
+                                                                                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                            self._offset = self._offset + 2
+                                                                                        else:
+                                                                                            address3 = FAILURE
+                                                                                            if self._offset > self._failure:
+                                                                                                self._failure = self._offset
+                                                                                                self._expected = []
+                                                                                            if self._offset == self._failure:
+                                                                                                self._expected.append('"FU"')
+                                                                                        if address3 is FAILURE:
+                                                                                            self._offset = index5
+                                                                                            chunk21, max21 = None, self._offset + 2
+                                                                                            if max21 <= self._input_size:
+                                                                                                chunk21 = self._input[self._offset:max21]
+                                                                                            if chunk21 == 'VA':
+                                                                                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                self._offset = self._offset + 2
+                                                                                            else:
+                                                                                                address3 = FAILURE
+                                                                                                if self._offset > self._failure:
+                                                                                                    self._failure = self._offset
+                                                                                                    self._expected = []
+                                                                                                if self._offset == self._failure:
+                                                                                                    self._expected.append('"VA"')
+                                                                                            if address3 is FAILURE:
+                                                                                                self._offset = index5
+                                                                                                chunk22, max22 = None, self._offset + 2
+                                                                                                if max22 <= self._input_size:
+                                                                                                    chunk22 = self._input[self._offset:max22]
+                                                                                                if chunk22 == 'DU':
+                                                                                                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                    self._offset = self._offset + 2
+                                                                                                else:
+                                                                                                    address3 = FAILURE
+                                                                                                    if self._offset > self._failure:
+                                                                                                        self._failure = self._offset
+                                                                                                        self._expected = []
+                                                                                                    if self._offset == self._failure:
+                                                                                                        self._expected.append('"DU"')
+                                                                                                if address3 is FAILURE:
+                                                                                                    self._offset = index5
+                                                                                                    chunk23, max23 = None, self._offset + 2
+                                                                                                    if max23 <= self._input_size:
+                                                                                                        chunk23 = self._input[self._offset:max23]
+                                                                                                    if chunk23 == 'SA':
+                                                                                                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                        self._offset = self._offset + 2
+                                                                                                    else:
+                                                                                                        address3 = FAILURE
+                                                                                                        if self._offset > self._failure:
+                                                                                                            self._failure = self._offset
+                                                                                                            self._expected = []
+                                                                                                        if self._offset == self._failure:
+                                                                                                            self._expected.append('"SA"')
+                                                                                                    if address3 is FAILURE:
+                                                                                                        self._offset = index5
+                                                                                                        chunk24, max24 = None, self._offset + 2
+                                                                                                        if max24 <= self._input_size:
+                                                                                                            chunk24 = self._input[self._offset:max24]
+                                                                                                        if chunk24 == 'HZ':
+                                                                                                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                            self._offset = self._offset + 2
+                                                                                                        else:
+                                                                                                            address3 = FAILURE
+                                                                                                            if self._offset > self._failure:
+                                                                                                                self._failure = self._offset
+                                                                                                                self._expected = []
+                                                                                                            if self._offset == self._failure:
+                                                                                                                self._expected.append('"HZ"')
+                                                                                                        if address3 is FAILURE:
+                                                                                                            self._offset = index5
+                                                                                                            chunk25, max25 = None, self._offset + 2
+                                                                                                            if max25 <= self._input_size:
+                                                                                                                chunk25 = self._input[self._offset:max25]
+                                                                                                            if chunk25 == 'PO':
+                                                                                                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                                self._offset = self._offset + 2
+                                                                                                            else:
+                                                                                                                address3 = FAILURE
+                                                                                                                if self._offset > self._failure:
+                                                                                                                    self._failure = self._offset
+                                                                                                                    self._expected = []
+                                                                                                                if self._offset == self._failure:
+                                                                                                                    self._expected.append('"PO"')
+                                                                                                            if address3 is FAILURE:
+                                                                                                                self._offset = index5
+                                                                                                                chunk26, max26 = None, self._offset + 2
+                                                                                                                if max26 <= self._input_size:
+                                                                                                                    chunk26 = self._input[self._offset:max26]
+                                                                                                                if chunk26 == 'SQ':
+                                                                                                                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                                    self._offset = self._offset + 2
+                                                                                                                else:
+                                                                                                                    address3 = FAILURE
+                                                                                                                    if self._offset > self._failure:
+                                                                                                                        self._failure = self._offset
+                                                                                                                        self._expected = []
+                                                                                                                    if self._offset == self._failure:
+                                                                                                                        self._expected.append('"SQ"')
+                                                                                                                if address3 is FAILURE:
+                                                                                                                    self._offset = index5
+                                                                                                                    chunk27, max27 = None, self._offset + 2
+                                                                                                                    if max27 <= self._input_size:
+                                                                                                                        chunk27 = self._input[self._offset:max27]
+                                                                                                                    if chunk27 == 'FC':
+                                                                                                                        address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                                        self._offset = self._offset + 2
+                                                                                                                    else:
+                                                                                                                        address3 = FAILURE
+                                                                                                                        if self._offset > self._failure:
+                                                                                                                            self._failure = self._offset
+                                                                                                                            self._expected = []
+                                                                                                                        if self._offset == self._failure:
+                                                                                                                            self._expected.append('"FC"')
+                                                                                                                    if address3 is FAILURE:
+                                                                                                                        self._offset = index5
+                                                                                                                        chunk28, max28 = None, self._offset + 2
+                                                                                                                        if max28 <= self._input_size:
+                                                                                                                            chunk28 = self._input[self._offset:max28]
+                                                                                                                        if chunk28 == 'SS':
+                                                                                                                            address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                                            self._offset = self._offset + 2
+                                                                                                                        else:
+                                                                                                                            address3 = FAILURE
+                                                                                                                            if self._offset > self._failure:
+                                                                                                                                self._failure = self._offset
+                                                                                                                                self._expected = []
+                                                                                                                            if self._offset == self._failure:
+                                                                                                                                self._expected.append('"SS"')
+                                                                                                                        if address3 is FAILURE:
+                                                                                                                            self._offset = index5
+                                                                                                                            chunk29, max29 = None, self._offset + 2
+                                                                                                                            if max29 <= self._input_size:
+                                                                                                                                chunk29 = self._input[self._offset:max29]
+                                                                                                                            if chunk29 == 'DS':
+                                                                                                                                address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                                                                                                                                self._offset = self._offset + 2
+                                                                                                                            else:
+                                                                                                                                address3 = FAILURE
+                                                                                                                                if self._offset > self._failure:
+                                                                                                                                    self._failure = self._offset
+                                                                                                                                    self._expected = []
+                                                                                                                                if self._offset == self._failure:
+                                                                                                                                    self._expected.append('"DS"')
+                                                                                                                            if address3 is FAILURE:
+                                                                                                                                self._offset = index5
+                if address3 is not FAILURE:
+                    elements1.append(address3)
+                    remaining0 -= 1
+            if remaining0 <= 0:
+                address2 = TreeNode(self._input[index4:self._offset], index4, elements1)
+                self._offset = self._offset
+            else:
+                address2 = FAILURE
+            if address2 is not FAILURE:
+                elements0.append(address2)
             else:
                 elements0 = None
                 self._offset = index1
@@ -2523,7 +2558,7 @@ class Grammar:
                 chunk6, max6 = None, self._offset + 1
                 if max6 <= self._input_size:
                     chunk6 = self._input[self._offset:max6]
-                if chunk6 is not None and Grammar.REGEX_42.search(chunk6):
+                if chunk6 is not None and Grammar.REGEX_41.search(chunk6):
                     address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                     self._offset = self._offset + 1
                 else:
@@ -2816,7 +2851,7 @@ class Grammar:
         chunk0, max0 = None, self._offset + 1
         if max0 <= self._input_size:
             chunk0 = self._input[self._offset:max0]
-        if chunk0 is not None and Grammar.REGEX_43.search(chunk0):
+        if chunk0 is not None and Grammar.REGEX_42.search(chunk0):
             address1 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
             self._offset = self._offset + 1
         else:
@@ -2836,7 +2871,7 @@ class Grammar:
             chunk1, max1 = None, self._offset + 1
             if max1 <= self._input_size:
                 chunk1 = self._input[self._offset:max1]
-            if chunk1 is not None and Grammar.REGEX_44.search(chunk1):
+            if chunk1 is not None and Grammar.REGEX_43.search(chunk1):
                 address2 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                 self._offset = self._offset + 1
             else:
@@ -2856,7 +2891,7 @@ class Grammar:
                 chunk2, max2 = None, self._offset + 1
                 if max2 <= self._input_size:
                     chunk2 = self._input[self._offset:max2]
-                if chunk2 is not None and Grammar.REGEX_45.search(chunk2):
+                if chunk2 is not None and Grammar.REGEX_44.search(chunk2):
                     address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                     self._offset = self._offset + 1
                 else:
@@ -2900,7 +2935,7 @@ class Grammar:
         chunk0, max0 = None, self._offset + 1
         if max0 <= self._input_size:
             chunk0 = self._input[self._offset:max0]
-        if chunk0 is not None and Grammar.REGEX_46.search(chunk0):
+        if chunk0 is not None and Grammar.REGEX_45.search(chunk0):
             address1 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
             self._offset = self._offset + 1
         else:
@@ -2920,7 +2955,7 @@ class Grammar:
             chunk1, max1 = None, self._offset + 1
             if max1 <= self._input_size:
                 chunk1 = self._input[self._offset:max1]
-            if chunk1 is not None and Grammar.REGEX_47.search(chunk1):
+            if chunk1 is not None and Grammar.REGEX_46.search(chunk1):
                 address2 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                 self._offset = self._offset + 1
             else:
@@ -2940,7 +2975,7 @@ class Grammar:
                 chunk2, max2 = None, self._offset + 1
                 if max2 <= self._input_size:
                     chunk2 = self._input[self._offset:max2]
-                if chunk2 is not None and Grammar.REGEX_48.search(chunk2):
+                if chunk2 is not None and Grammar.REGEX_47.search(chunk2):
                     address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                     self._offset = self._offset + 1
                 else:
@@ -2992,7 +3027,7 @@ class Grammar:
             chunk0, max0 = None, self._offset + 1
             if max0 <= self._input_size:
                 chunk0 = self._input[self._offset:max0]
-            if chunk0 is not None and Grammar.REGEX_49.search(chunk0):
+            if chunk0 is not None and Grammar.REGEX_48.search(chunk0):
                 address2 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                 self._offset = self._offset + 1
             else:
@@ -3008,7 +3043,7 @@ class Grammar:
                 chunk1, max1 = None, self._offset + 1
                 if max1 <= self._input_size:
                     chunk1 = self._input[self._offset:max1]
-                if chunk1 is not None and Grammar.REGEX_50.search(chunk1):
+                if chunk1 is not None and Grammar.REGEX_49.search(chunk1):
                     address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                     self._offset = self._offset + 1
                 else:
@@ -3024,7 +3059,7 @@ class Grammar:
                     chunk2, max2 = None, self._offset + 1
                     if max2 <= self._input_size:
                         chunk2 = self._input[self._offset:max2]
-                    if chunk2 is not None and Grammar.REGEX_51.search(chunk2):
+                    if chunk2 is not None and Grammar.REGEX_50.search(chunk2):
                         address4 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                         self._offset = self._offset + 1
                     else:
@@ -3040,7 +3075,7 @@ class Grammar:
                         chunk3, max3 = None, self._offset + 1
                         if max3 <= self._input_size:
                             chunk3 = self._input[self._offset:max3]
-                        if chunk3 is not None and Grammar.REGEX_52.search(chunk3):
+                        if chunk3 is not None and Grammar.REGEX_51.search(chunk3):
                             address5 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                             self._offset = self._offset + 1
                         else:
@@ -3056,7 +3091,7 @@ class Grammar:
                             chunk4, max4 = None, self._offset + 1
                             if max4 <= self._input_size:
                                 chunk4 = self._input[self._offset:max4]
-                            if chunk4 is not None and Grammar.REGEX_53.search(chunk4):
+                            if chunk4 is not None and Grammar.REGEX_52.search(chunk4):
                                 address6 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                                 self._offset = self._offset + 1
                             else:

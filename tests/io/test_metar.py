@@ -61,6 +61,27 @@ def test_all_weather_given():
     assert df.high_cloud_level.values == 3000
 
 
+def test_metar_with_smoke():
+    """Test when smoke given as current weather."""
+    df = parse_metar_to_dataframe('KFLG 252353Z AUTO 27005KT 10SM FU BKN036 BKN085 22/03 '
+                                  'A3018 RMK AO2 SLP130 T02220033 10250 20217 55007=')
+    assert_equal(df.station_id.values, ['KFLG'])
+    assert_equal(df.latitude.values, [35.13])
+    assert_equal(df.longitude.values, [-111.67])
+    assert_equal(df.wind_direction.values, [270])
+    assert_equal(df.wind_speed.values, [5])
+    assert_equal(df.current_wx1.values, ['FU'])
+    assert_equal(df.low_cloud_type.values, ['BKN'])
+    assert_equal(df.low_cloud_level.values, [3600])
+    assert_equal(df.medium_cloud_type.values, ['BKN'])
+    assert_equal(df.medium_cloud_level.values, [8500])
+    assert_equal(df.air_temperature.values, [22])
+    assert_equal(df.dew_point_temperature.values, [3])
+    assert_almost_equal(df.altimeter.values, [30.18])
+    assert_equal(df.cloud_coverage.values, [6])
+    assert_equal(df.current_wx1_symbol.values, [4])
+
+
 def test_missing_temp_dewp():
     """Test when missing both temperature and dewpoint."""
     df = parse_metar_to_dataframe('KIOW 011152Z AUTO A3006 RMK AO2 SLPNO 70020 51013 PWINO=')
