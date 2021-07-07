@@ -83,114 +83,11 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     -------
     `pandas.DataFrame`
 
-    Notes
-    -----
-    The output has the following columns:
-
-    * 'station_id': Station Identifier (ex. KLOT)
-    * 'latitude': Latitude of the observation, measured in degrees
-    * 'longitude': Longitude of the observation, measured in degrees
-    * 'elevation': Elevation of the observation above sea level, measured in meters
-    * 'date_time': Date and time of the observation, datetime object
-    * 'wind_direction': Direction the wind is coming from, measured in degrees
-    * 'wind_speed': Wind speed, measured in knots
-    * 'current_wx1': Current weather (1 of 3)
-    * 'current_wx2': Current weather (2 of 3)
-    * 'current_wx3': Current weather (3 of 3)
-    * 'low_cloud_type': Low-level sky cover (ex. FEW)
-    * 'low_cloud_level': Height of low-level sky cover, measured in feet
-    * 'medium_cloud_type': Medium-level sky cover (ex. OVC)
-    * 'medium_cloud_level': Height of medium-level sky cover, measured in feet
-    * 'high_cloud_type': High-level sky cover (ex. FEW)
-    * 'high_cloud_level': Height of high-level sky cover, measured in feet
-    * 'highest_cloud_type': Highest-level Sky cover (ex. CLR)
-    * 'highest_cloud_level:': Height of highest-level sky cover, measured in feet
-    * 'cloud_coverage': Cloud cover measured in oktas, taken from maximum of sky cover values
-    * 'air_temperature': Temperature, measured in degrees Celsius
-    * 'dew_point_temperature': Dew point, measured in degrees Celsius
-    * 'altimeter': Altimeter value, measured in inches of mercury
-    * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
-      Attachment IV
-    * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
-      Attachment IV
-    * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
-      Attachment IV
-    * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
-      and altimeter value
-    * 'eastward_wind': Eastward component (u-component) of the wind vector, measured in knots
-    * 'northward_wind': Northward component (v-component) of the wind vector, measured in knots
-
     """
-    from ..calc import altimeter_to_sea_level_pressure, wind_components
-
-    # Defaults year and/or month to present reported date if not provided
-    if year is None or month is None:
-        now = datetime.now()
-        year = now.year if year is None else year
-        month = now.month if month is None else month
-
-    # Use the named tuple parsing function to separate metar
-    # Utilizes the station dictionary which contains elevation, latitude, and longitude
-    metar_vars = parse_metar_to_named_tuple(metar_text, station_info, year, month)
-
-    # Use a pandas dataframe to store the data
-    df = pd.DataFrame({'station_id': metar_vars.station_id,
-                       'latitude': metar_vars.latitude,
-                       'longitude': metar_vars.longitude,
-                       'elevation': metar_vars.elevation,
-                       'date_time': metar_vars.date_time,
-                       'wind_direction': metar_vars.wind_direction,
-                       'wind_speed': metar_vars.wind_speed,
-                       'current_wx1': metar_vars.current_wx1,
-                       'current_wx2': metar_vars.current_wx2,
-                       'current_wx3': metar_vars.current_wx3,
-                       'low_cloud_type': metar_vars.skyc1,
-                       'low_cloud_level': metar_vars.skylev1,
-                       'medium_cloud_type': metar_vars.skyc2,
-                       'medium_cloud_level': metar_vars.skylev2,
-                       'high_cloud_type': metar_vars.skyc3,
-                       'high_cloud_level': metar_vars.skylev3,
-                       'highest_cloud_type': metar_vars.skyc4,
-                       'highest_cloud_level': metar_vars.skylev4,
-                       'cloud_coverage': metar_vars.cloudcover,
-                       'air_temperature': metar_vars.temperature,
-                       'dew_point_temperature': metar_vars.dewpoint,
-                       'altimeter': metar_vars.altimeter,
-                       'current_wx1_symbol': metar_vars.current_wx1_symbol,
-                       'current_wx2_symbol': metar_vars.current_wx2_symbol,
-                       'current_wx3_symbol': metar_vars.current_wx3_symbol},
-                      index=[metar_vars.station_id])
-
-    # Convert to sea level pressure using calculation in metpy.calc
-    try:
-        # Create a field for sea-level pressure and make sure it is a float
-        df['air_pressure_at_sea_level'] = float(altimeter_to_sea_level_pressure(
-            units.Quantity(df.altimeter.values, 'inHg'),
-            units.Quantity(df.elevation.values, 'meters'),
-            units.Quantity(df.temperature.values, 'degC')).to('hPa').magnitude)
-    except AttributeError:
-        df['air_pressure_at_sea_level'] = [np.nan]
-
-    # Use get wind components and assign them to u and v variables
-    u, v = wind_components(
-        units.Quantity(df.wind_speed.values, 'kts'),
-        units.Quantity(df.wind_direction.values, 'degree'))
-    df['eastward_wind'] = u.m
-    df['northward_wind'] = v.m
-
-    # Round the altimeter and sea-level pressure values
-    df['altimeter'] = df.altimeter.round(2)
-    df['air_pressure_at_sea_level'] = df.air_pressure_at_sea_level.round(2)
-
-    # Set the units for the dataframe--filter out warning from pandas
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', UserWarning)
-        df.units = col_units
-
-    return df
+    return _metars_to_dataframe([metar_text], year=year, month=month)
 
 
-def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
+def parse_metar(metar_text, year, month, station_metadata=station_info):
     """Parse a METAR report in text form into a list of named tuples.
 
     Parameters
@@ -463,9 +360,38 @@ def parse_metar_file(filename, *, year=None, month=None):
     -------
     `pandas.DataFrame`
 
+    """
+    # Function to merge METARs
+    def full_metars(x, prefix='     '):
+        tmp = []
+        for i in x:
+            # Skip any blank lines
+            if not i.strip():
+                continue
+            # No prefix signals a new report, so yield
+            if not i.startswith(prefix) and tmp:
+                yield ' '.join(tmp)
+                tmp = []
+            tmp.append(i.strip())
+
+        # Handle any leftovers
+        if tmp:
+            yield ' '.join(tmp)
+
+    # Open the file
+    with contextlib.closing(open_as_needed(filename, 'rt')) as myfile:
+        # Merge multi-line METARs into a single report--drop reports that are too short to
+        # be a METAR with a robust amount of data.
+        return _metars_to_dataframe(filter(lambda m: len(m) > 25, full_metars(myfile)),
+                                    year=year, month=month)
+
+
+def _metars_to_dataframe(metar_iter, *, year=None, month=None):
+    """Turn an iterable of METAR reports into a DataFrame.
+
     Notes
     -----
-    The returned `pandas.DataFrame` has the following columns:
+    The output has the following columns:
 
     * 'station_id': Station Identifier (ex. KLOT)
     * 'latitude': Latitude of the observation, measured in degrees
@@ -509,37 +435,14 @@ def parse_metar_file(filename, *, year=None, month=None):
         year = now.year if year is None else year
         month = now.month if month is None else month
 
-    # Function to merge METARs
-    def full_metars(x, prefix='     '):
-        tmp = []
-        for i in x:
-            # Skip any blank lines
-            if not i:
-                continue
-            if i.startswith(prefix):
-                i = i[len(prefix):]
-            elif tmp:  # Otherwise no prefix signals a new report, so yield
-                yield ' '.join(tmp)
-                tmp = []
-            tmp.append(i)
+    # Try to parse each METAR that is given
+    metars = []
+    for metar in metar_iter:
+        with contextlib.suppress(ParseError):
+            # Parse the string of text and assign to values within the named tuple
+            metars.append(parse_metar(metar, year=year, month=month))
 
-        # Handle any leftovers
-        if tmp:
-            yield ' '.join(tmp)
-
-    # Open the file
-    with contextlib.closing(open_as_needed(filename, 'rt')) as myfile:
-        metars = []
-        # Merge multi-line METARs into a single report
-        for metar in full_metars(myfile):
-            # Remove the short lines that do not contain METAR observations or contain
-            # METAR observations that lack a robust amount of data
-            if len(metar) > 25:
-                with contextlib.suppress(ParseError):
-                    # Parse the string of text and assign to values within the named tuple
-                    metars.append(parse_metar_to_named_tuple(metar, station_info, year=year,
-                                                             month=month))
-
+    # Take the list of Metar objects and turn it into a DataFrame with appropriate columns
     df = pd.DataFrame(metars)
     df.set_index('station_id', inplace=True, drop=False)
     df.rename(columns={'skyc1': 'low_cloud_type', 'skylev1': 'low_cloud_level',
@@ -576,3 +479,11 @@ def parse_metar_file(filename, *, year=None, month=None):
         df.units = col_units
 
     return df
+
+
+# Patch in the notes section into the two main parse functions
+if _metars_to_dataframe.__doc__:
+    # Finds the Notes snippet in the docstring
+    snippet = _metars_to_dataframe.__doc__[_metars_to_dataframe.__doc__.find('Notes'):]
+    parse_metar_file.__doc__ = parse_metar_file.__doc__ + snippet
+    parse_metar_to_dataframe.__doc__ = parse_metar_to_dataframe.__doc__ + snippet
