@@ -9,8 +9,7 @@ import xarray as xr
 
 from metpy.calc import (absolute_momentum, cross_section_components, normal_component,
                         tangential_component, unit_vectors_from_cross_section)
-from metpy.calc.cross_sections import (distances_from_cross_section,
-                                       latitude_from_cross_section)
+from metpy.calc.cross_sections import distances_from_cross_section, latitude_from_cross_section
 from metpy.cbook import get_test_data
 from metpy.interpolate import cross_section
 from metpy.testing import assert_array_almost_equal, assert_xarray_allclose, needs_cartopy

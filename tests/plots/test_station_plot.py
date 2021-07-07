@@ -9,10 +9,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from metpy.plots import (current_weather, high_clouds, nws_layout, simple_layout,
-                         sky_cover, StationPlot, StationPlotLayout)
+from metpy.plots import (current_weather, high_clouds, nws_layout, simple_layout, sky_cover,
+                         StationPlot, StationPlotLayout)
 from metpy.units import units
-
 
 MPL_VERSION = matplotlib.__version__[:3]
 

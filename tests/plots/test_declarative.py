@@ -22,7 +22,6 @@ from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, Ma
 from metpy.testing import needs_cartopy
 from metpy.units import units
 
-
 MPL_VERSION = matplotlib.__version__[:3]
 
 

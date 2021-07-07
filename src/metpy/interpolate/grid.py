@@ -342,6 +342,7 @@ def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=Tru
 
     """
     from ..calc import find_bounding_indices
+
     # Find index values above and below desired interpolated surface value
     above, below, good = find_bounding_indices(level_var, [level], axis=0,
                                                from_below=bottom_up_search)

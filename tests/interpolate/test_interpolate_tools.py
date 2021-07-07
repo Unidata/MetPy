@@ -10,8 +10,7 @@ import pandas as pd
 import pytest
 
 from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
-                               remove_observations_below_value,
-                               remove_repeat_coordinates)
+                               remove_observations_below_value, remove_repeat_coordinates)
 from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
 
 

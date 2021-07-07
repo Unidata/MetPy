@@ -12,7 +12,6 @@ import pytest
 from metpy.plots import Hodograph, SkewT
 from metpy.units import units
 
-
 MPL_VERSION = matplotlib.__version__[:3]
 
 

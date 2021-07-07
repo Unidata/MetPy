@@ -19,7 +19,6 @@ from metpy.cbook import get_test_data
 import metpy.plots as mpplots
 from metpy.units import units
 
-
 ########################################
 # **Getting the data**
 #

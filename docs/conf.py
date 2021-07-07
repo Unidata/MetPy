@@ -16,7 +16,6 @@ import sys
 
 import metpy
 
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use resolve() to make it absolute, like shown here.
