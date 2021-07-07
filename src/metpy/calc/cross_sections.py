@@ -292,18 +292,14 @@ def absolute_momentum(u, v, index='index'):
 
     """
     # Get the normal component of the wind
-    u = u.metpy.convert_units('m/s')
-    v = v.metpy.convert_units('m/s')
-    norm_wind = normal_component(u, v, index=index)
+    norm_wind = normal_component(u.metpy.quantify(), v.metpy.quantify(), index=index)
 
     # Get other pieces of calculation (all as ndarrays matching shape of norm_wind)
     latitude = latitude_from_cross_section(norm_wind)
     _, latitude = xr.broadcast(norm_wind, latitude)
     f = coriolis_parameter(latitude)
     x, y = distances_from_cross_section(norm_wind)
-    x = x.metpy.convert_units('meters')
-    y = y.metpy.convert_units('meters')
     _, x, y = xr.broadcast(norm_wind, x, y)
     distance = np.hypot(x.metpy.quantify(), y.metpy.quantify())
 
-    return norm_wind + f * distance
+    return (norm_wind + f * distance).metpy.convert_units('m/s')
