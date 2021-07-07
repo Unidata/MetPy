@@ -11,6 +11,7 @@ from metpy.calc import (absolute_momentum, cross_section_components, normal_comp
                         tangential_component, unit_vectors_from_cross_section)
 from metpy.calc.cross_sections import (distances_from_cross_section,
                                        latitude_from_cross_section)
+from metpy.cbook import get_test_data
 from metpy.interpolate import cross_section
 from metpy.testing import assert_array_almost_equal, assert_xarray_allclose, needs_cartopy
 from metpy.units import units
@@ -320,4 +321,24 @@ def test_absolute_momentum_given_xy(test_cross_xy):
     true_momentum = xr.DataArray(true_momentum_values * units('m/s'),
                                  coords=test_cross_xy['u_wind'].coords,
                                  dims=test_cross_xy['u_wind'].dims)
+    assert_xarray_allclose(momentum, true_momentum)
+
+
+def test_absolute_momentum_xarray_units_attr():
+    """Test absolute momentum when `u` and `v` are DataArrays with a `units` attribute."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', False))
+    data = data.metpy.parse_cf().squeeze()
+
+    start = (37.0, -105.0)
+    end = (35.5, -65.0)
+    cross = cross_section(data, start, end)
+
+    u = cross['u_wind'][0].sel(index=slice(0, 2))
+    v = cross['v_wind'][0].sel(index=slice(0, 2))
+
+    momentum = absolute_momentum(u, v)
+    true_momentum_values = np.array([137.46164031, 134.11450232, 133.85196023])
+    true_momentum = xr.DataArray(units.Quantity(true_momentum_values, 'm/s'),
+                                 coords=u.coords)
+
     assert_xarray_allclose(momentum, true_momentum)
