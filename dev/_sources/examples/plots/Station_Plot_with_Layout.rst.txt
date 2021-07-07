@@ -44,8 +44,8 @@ of a station plot.
 
     from metpy.calc import wind_components
     from metpy.cbook import get_test_data
-    from metpy.plots import (add_metpy_logo, simple_layout, StationPlot,
-                             StationPlotLayout, wx_code_map)
+    from metpy.plots import (add_metpy_logo, simple_layout, StationPlot, StationPlotLayout,
+                             wx_code_map)
     from metpy.units import units
 
 
@@ -332,7 +332,7 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.409 seconds)
+   **Total running time of the script:** ( 0 minutes  3.624 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:

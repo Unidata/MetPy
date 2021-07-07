@@ -23,7 +23,7 @@ Simple Sounding
 
 Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-21
+.. GENERATED FROM PYTHON SOURCE LINES 10-20
 
 .. code-block:: default
 
@@ -44,8 +44,7 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 22-26
+.. GENERATED FROM PYTHON SOURCE LINES 21-25
 
 .. code-block:: default
 
@@ -60,7 +59,7 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-40
+.. GENERATED FROM PYTHON SOURCE LINES 26-39
 
 .. code-block:: default
 
@@ -84,12 +83,12 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-43
+.. GENERATED FROM PYTHON SOURCE LINES 40-42
 
 We will pull the data out of the example dataset into individual variables and
 assign units.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-51
+.. GENERATED FROM PYTHON SOURCE LINES 42-50
 
 .. code-block:: default
 
@@ -108,7 +107,7 @@ assign units.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-71
+.. GENERATED FROM PYTHON SOURCE LINES 51-70
 
 .. code-block:: default
 
@@ -146,11 +145,11 @@ assign units.
  .. code-block:: none
 
 
-    <matplotlib.image.FigureImage object at 0x7f475f6986d0>
+    <matplotlib.image.FigureImage object at 0x7fe3d45f9190>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-102
+.. GENERATED FROM PYTHON SOURCE LINES 71-101
 
 .. code-block:: default
 
@@ -198,7 +197,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.447 seconds)
+   **Total running time of the script:** ( 0 minutes  0.994 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:

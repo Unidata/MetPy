@@ -25,7 +25,7 @@ Upper Air Analysis using Declarative Syntax
 The MetPy declarative syntax allows for a simplified interface to creating common
 meteorological analyses including upper air observation plots.
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-23
+.. GENERATED FROM PYTHON SOURCE LINES 14-22
 
 .. code-block:: default
 
@@ -44,8 +44,7 @@ meteorological analyses including upper air observation plots.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 24-29
+.. GENERATED FROM PYTHON SOURCE LINES 23-28
 
 **Getting the data**
 
@@ -53,7 +52,7 @@ In this example, data is originally from the Iowa State Upper-air archive
 (https://mesonet.agron.iastate.edu/archive/raob/) available through a Siphon method.
 The data are pre-processed to attach latitude/longitude locations for each RAOB site.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-32
+.. GENERATED FROM PYTHON SOURCE LINES 28-31
 
 .. code-block:: default
 
@@ -67,13 +66,13 @@ The data are pre-processed to attach latitude/longitude locations for each RAOB 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-36
+.. GENERATED FROM PYTHON SOURCE LINES 32-35
 
 **Plotting the data**
 
 Use the declarative plotting interface to create a CONUS upper-air map for 500 hPa
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-63
+.. GENERATED FROM PYTHON SOURCE LINES 35-62
 
 .. code-block:: default
 
@@ -118,7 +117,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.914 seconds)
+   **Total running time of the script:** ( 0 minutes  3.616 seconds)
 
 
 .. _sphx_glr_download_examples_plots_upperair_declarative.py:

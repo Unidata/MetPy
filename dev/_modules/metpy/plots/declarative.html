@@ -190,8 +190,7 @@
 <span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span>
                        <span class="n">Tuple</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">validate</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ctables</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wx_symbols</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ctables</span><span class="p">,</span> <span class="n">wx_symbols</span>
 <span class="kn">from</span> <span class="nn">.cartopy_utils</span> <span class="kn">import</span> <span class="n">import_cartopy</span>
 <span class="kn">from</span> <span class="nn">.station_plot</span> <span class="kn">import</span> <span class="n">StationPlot</span>
 <span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">reduce_point_density</span>
@@ -659,6 +658,7 @@
 <span class="k">def</span> <span class="nf">lookup_map_feature</span><span class="p">(</span><span class="n">feature_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get a Cartopy map feature based on a name.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+
     <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">cartopy_utils</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="n">feature_name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
@@ -1938,7 +1938,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jul 07, 2021 at 17:32:12.<br/>
+        Last updated on Jul 07, 2021 at 18:25:05.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
