@@ -117,8 +117,8 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
       Attachment IV
     * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
       and altimeter value
-    * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
-    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
+    * 'eastward_wind': Eastward component (u-component) of the wind vector, measured in knots
+    * 'northward_wind': Northward component (v-component) of the wind vector, measured in knots
 
     """
     from ..calc import altimeter_to_sea_level_pressure, wind_components
@@ -497,8 +497,8 @@ def parse_metar_file(filename, *, year=None, month=None):
       Attachment IV
     * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
       and altimeter value
-    * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
-    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
+    * 'eastward_wind': Eastward component (u-component) of the wind vector, measured in knots
+    * 'northward_wind': Northward component (v-component) of the wind vector, measured in knots
 
     """
     from ..calc import altimeter_to_sea_level_pressure, wind_components
