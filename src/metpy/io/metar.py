@@ -20,13 +20,12 @@ from ..units import units
 exporter = Exporter(globals())
 
 # Configure the named tuple used for storing METAR data
-Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
-                             'date_time', 'wind_direction', 'wind_speed', 'current_wx1',
+Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation', 'date_time',
+                             'wind_direction', 'wind_speed', 'visibility', 'current_wx1',
                              'current_wx2', 'current_wx3', 'skyc1', 'skylev1', 'skyc2',
-                             'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4',
-                             'cloudcover', 'temperature', 'dewpoint', 'altimeter',
-                             'current_wx1_symbol', 'current_wx2_symbol',
-                             'current_wx3_symbol'])
+                             'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4', 'cloudcover',
+                             'temperature', 'dewpoint', 'altimeter', 'current_wx1_symbol',
+                             'current_wx2_symbol', 'current_wx3_symbol'])
 
 # Create a dictionary for attaching units to the different variables
 col_units = {'station_id': None,
@@ -36,6 +35,7 @@ col_units = {'station_id': None,
              'date_time': None,
              'wind_direction': 'degrees',
              'wind_speed': 'kts',
+             'visibility': 'meters',
              'eastward_wind': 'kts',
              'northward_wind': 'kts',
              'current_wx1': None,
@@ -138,6 +138,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
       Attachment IV
     * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
       Attachment IV
+    * 'visibility': Visibility distance, measured in meters
 
     """
     from ..plots.wx_symbols import wx_code_map
@@ -190,6 +191,33 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     except ValueError:
         wind_dir = np.nan
         wind_spd = np.nan
+
+    # Handle visibility
+    if tree.vis.text.endswith('SM'):
+        visibility = 0
+        # Strip off the SM and any whitespace around the value
+        vis_str = tree.vis.text[:-2].strip()
+
+        # Case of e.g. 1 1/4SM
+        if ' ' in vis_str:
+            whole, vis_str = vis_str.split(maxsplit=1)
+            visibility += int(whole)
+
+        # Handle fraction regardless
+        if '/' in vis_str:
+            num, denom = vis_str.split('/', maxsplit=1)
+            visibility += int(num) / int(denom)
+        else:  # Should be getting all cases of whole number without fraction
+            visibility += int(vis_str)
+        visibility = units.Quantity(visibility, 'miles').m_as('meter')
+    # CAVOK means vis is "at least 10km" and no significant clouds or weather
+    elif 'CAVOK' in tree.vis.text:
+        visibility = 10000
+    elif not tree.vis.text:
+        visibility = np.nan
+    else:
+        # Only worry about the first 4 characters (digits) and ignore possible 'NDV'
+        visibility = int(tree.vis.text.strip()[:4])
 
     # Set the weather symbols
     # If the weather symbol is missing, set values to nan
@@ -336,7 +364,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
             altim = units.Quantity(int(tree.altim.text.strip()[1:5]), 'hPa').to('inHg').m
 
     # Returns a named tuple with all the relevant variables
-    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd,
+    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, visibility,
                  current_wx1, current_wx2, current_wx3, skyc1, skylev1, skyc2,
                  skylev2, skyc3, skylev3, skyc4, skylev4, cloudcover, temp, dewp,
                  altim, current_wx1_symbol, current_wx2_symbol, current_wx3_symbol)
@@ -400,6 +428,7 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
     * 'date_time': Date and time of the observation, datetime object
     * 'wind_direction': Direction the wind is coming from, measured in degrees
     * 'wind_speed': Wind speed, measured in knots
+    * 'visibility': Visibility distance, measured in meters
     * 'current_wx1': Current weather (1 of 3)
     * 'current_wx2': Current weather (2 of 3)
     * 'current_wx3': Current weather (3 of 3)

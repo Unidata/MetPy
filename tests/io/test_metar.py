@@ -23,17 +23,19 @@ def test_station_id_not_in_dictionary():
     assert_almost_equal(df.elevation.values, np.nan)
     assert_almost_equal(df.wind_direction.values, 0)
     assert_almost_equal(df.wind_speed.values, 0)
+    assert_almost_equal(df.visibility.values, 16093.44)
 
 
 def test_broken_clouds():
     """Test for skycover when there are broken clouds."""
     df = parse_metar_to_dataframe('METAR KLOT 261155Z AUTO 00000KT 10SM BKN100 05/00 A3001 '
                                   'RMK AO2=')
+    assert_almost_equal(df.visibility.values, 16093.44)
     assert df.low_cloud_type.values == 'BKN'
     assert df.cloud_coverage.values == 6
 
 
-def test_few_clouds_():
+def test_few_clouds():
     """Test for skycover when there are few clouds."""
     df = parse_metar_to_dataframe('METAR KMKE 266155Z AUTO /////KT 10SM FEW100 05/00 A3001 '
                                   'RMK AO2=')
@@ -41,6 +43,7 @@ def test_few_clouds_():
     assert df.cloud_coverage.values == 2
     assert_almost_equal(df.wind_direction.values, np.nan)
     assert_almost_equal(df.wind_speed.values, np.nan)
+    assert_almost_equal(df.visibility.values, 16093.44)
     assert_almost_equal(df.date_time.values, np.nan)
 
 
@@ -52,6 +55,7 @@ def test_all_weather_given():
     assert df.station_id.values == 'RJOI'
     assert_almost_equal(df.latitude.values, 34.14, decimal=2)
     assert_almost_equal(df.longitude.values, 132.22, decimal=2)
+    assert_equal(df.visibility.values, 4000)
     assert df.current_wx1.values == '-SHRA'
     assert df.current_wx2.values == 'BR'
     assert df.current_wx3.values == 'VCSH'
@@ -70,6 +74,7 @@ def test_metar_with_smoke():
     assert_equal(df.longitude.values, [-111.67])
     assert_equal(df.wind_direction.values, [270])
     assert_equal(df.wind_speed.values, [5])
+    assert_almost_equal(df.visibility.values, 16093.44)
     assert_equal(df.current_wx1.values, ['FU'])
     assert_equal(df.low_cloud_type.values, ['BKN'])
     assert_equal(df.low_cloud_level.values, [3600])
@@ -80,6 +85,33 @@ def test_metar_with_smoke():
     assert_almost_equal(df.altimeter.values, [30.18])
     assert_equal(df.cloud_coverage.values, [6])
     assert_equal(df.current_wx1_symbol.values, [4])
+
+
+def test_vis_cavok():
+    """Test when CAVOK given as visibility group."""
+    df = parse_metar_to_dataframe('METAR OBBI 011200Z 33012KT CAVOK 40/18 Q0997 NOSIG=')
+    assert_equal(df.wind_direction.values, 330)
+    assert_equal(df.wind_speed.values, 12)
+    assert_equal(df.visibility.values, 10000)
+    assert_equal(df.air_temperature.values, 40)
+    assert_equal(df.dew_point_temperature.values, 18)
+    assert_almost_equal(df.altimeter.values, 29.44)
+
+
+def test_vis_mixed_fraction():
+    """Test when visibility given as a mixed number."""
+    df = parse_metar_to_dataframe('K2I0 011155Z AUTO 05004KT 1 3/4SM BR SCT001 22/22 A3009 '
+                                  'RMK AO2 70001 T02210221 10223 20208=')
+    assert_equal(df.wind_direction.values, 50)
+    assert_equal(df.wind_speed.values, 4)
+    assert_almost_equal(df.visibility.values, 2816.352)
+    assert_equal(df.current_wx1.values, 'BR')
+    assert_equal(df.low_cloud_type.values, 'SCT')
+    assert_equal(df.low_cloud_level.values, 100)
+    assert_equal(df.air_temperature.values, 22)
+    assert_equal(df.dew_point_temperature.values, 22)
+    assert_almost_equal(df.altimeter.values, 30.09)
+    assert_equal(df.current_wx1_symbol.values, 10)
 
 
 def test_missing_temp_dewp():
@@ -110,6 +142,7 @@ def test_vertical_vis():
     df = parse_metar_to_dataframe('KSLK 011151Z AUTO 21005KT 1/4SM FG VV002 14/13 A1013 RMK '
                                   'AO2 SLP151 70043 T01390133 10139 20094 53002=')
     assert df.low_cloud_type.values == 'VV'
+    assert_almost_equal(df.visibility.values, 402.336)
 
 
 def test_date_time_given():
@@ -119,6 +152,7 @@ def test_date_time_given():
     assert_equal(df['date_time'][0], datetime(2019, 6, 26, 12))
     assert df.eastward_wind.values == 0
     assert df.northward_wind.values == 0
+    assert_almost_equal(df.visibility.values, 16093.44)
 
 
 def test_parse_metar_df_positional_datetime_failure():
@@ -136,6 +170,7 @@ def test_named_tuple_test1():
                                   'DSNT SW CB DSNT SW MOV E T02670128')
     assert df.wind_direction.values == 90
     assert df.wind_speed.values == 10
+    assert_almost_equal(df.visibility.values, 16093.44)
     assert df.air_temperature.values == 27
     assert df.dew_point_temperature.values == 13
 
@@ -160,8 +195,10 @@ def test_parse_file_positional_datetime_failure():
 def test_parse_file_bad_encoding():
     """Test the parser on an entire file that has at least one bad utf-8 encoding."""
     input_file = get_test_data('2020010600_sao.wmo', as_file_obj=False)
+    # KDEN 052353Z 16014KT 10SM FEW120 FEW220 02/M07 A3008 RMK AO2 SLP190 T00171072...
     df = parse_metar_file(input_file)
     test = df[df.station_id == 'KDEN']
+    assert_almost_equal(test.visibility.values, 16093.44)
     assert test.air_temperature.values == 2
     assert test.air_pressure_at_sea_level.values == 1024.71
 
@@ -169,8 +206,10 @@ def test_parse_file_bad_encoding():
 def test_parse_file_object():
     """Test the parser reading from a file-like object."""
     input_file = get_test_data('metar_20190701_1200.txt', mode='rt')
+    # KOKC 011152Z 18006KT 7SM FEW080 FEW250 21/21 A3003 RMK AO2 SLP155 T02060206...
     df = parse_metar_file(input_file)
     test = df[df.station_id == 'KOKC']
+    assert_almost_equal(test.visibility.values, 11265.408)
     assert test.air_temperature.values == 21
     assert test.dew_point_temperature.values == 21
     assert test.altimeter.values == 30.03
