@@ -510,144 +510,61 @@ def parse_metar_file(filename, *, year=None, month=None):
         month = now.month if month is None else month
 
     # Function to merge METARs
-    def merge(x, key='     '):
+    def full_metars(x, prefix='     '):
         tmp = []
         for i in x:
-            if (i[0:len(key)] != key) and len(tmp):
+            # Skip any blank lines
+            if not i:
+                continue
+            if i.startswith(prefix):
+                i = i[len(prefix):]
+            elif tmp:  # Otherwise no prefix signals a new report, so yield
                 yield ' '.join(tmp)
                 tmp = []
-            if i.startswith(key):
-                i = i[5:]
             tmp.append(i)
-        if len(tmp):
+
+        # Handle any leftovers
+        if tmp:
             yield ' '.join(tmp)
 
-    # Open the file and clean up and take out the next line (\n)
+    # Open the file
     with contextlib.closing(open_as_needed(filename, 'rt')) as myfile:
-        value = myfile.read().rstrip()
-    list_values = value.split('\n')
-    list_values = list(filter(None, list_values))
+        metars = []
+        # Merge multi-line METARs into a single report
+        for metar in full_metars(myfile):
+            # Remove the short lines that do not contain METAR observations or contain
+            # METAR observations that lack a robust amount of data
+            if len(metar) > 25:
+                with contextlib.suppress(ParseError):
+                    # Parse the string of text and assign to values within the named tuple
+                    metars.append(parse_metar_to_named_tuple(metar, station_info, year=year,
+                                                             month=month))
 
-    # Call the merge function and assign the result to the list of metars
-    list_values = list(merge(list_values))
+    df = pd.DataFrame(metars)
+    df.set_index('station_id', inplace=True, drop=False)
+    df.rename(columns={'skyc1': 'low_cloud_type', 'skylev1': 'low_cloud_level',
+                       'skyc2': 'medium_cloud_type', 'skylev2': 'medium_cloud_level',
+                       'skyc3': 'high_cloud_type', 'skylev3': 'high_cloud_level',
+                       'skyc4': 'highest_cloud_type', 'skylev4': 'highest_cloud_level',
+                       'cloudcover': 'cloud_coverage', 'temperature': 'air_temperature',
+                       'dewpoint': 'dew_point_temperature'}, inplace=True)
 
-    # Remove the short lines that do not contain METAR observations or contain
-    # METAR observations that lack a robust amount of data
-    metars = []
-    for metar in list_values:
-        if len(metar) > 25:
-            metars.append(metar)
-        else:
-            continue
-
-    # Create a dictionary with all the station name, locations, and elevations
-    master = station_info
-
-    # Setup lists to append the data to
-    station_id = []
-    lat = []
-    lon = []
-    elev = []
-    date_time = []
-    wind_dir = []
-    wind_spd = []
-    current_wx1 = []
-    current_wx2 = []
-    current_wx3 = []
-    skyc1 = []
-    skylev1 = []
-    skyc2 = []
-    skylev2 = []
-    skyc3 = []
-    skylev3 = []
-    skyc4 = []
-    skylev4 = []
-    cloudcover = []
-    temp = []
-    dewp = []
-    altim = []
-    current_wx1_symbol = []
-    current_wx2_symbol = []
-    current_wx3_symbol = []
-
-    # Loop through the different metars within the text file
-    for metar in metars:
-        try:
-            # Parse the string of text and assign to values within the named tuple
-            metar = parse_metar_to_named_tuple(metar, master, year=year, month=month)
-
-            # Append the different variables to their respective lists
-            station_id.append(metar.station_id)
-            lat.append(metar.latitude)
-            lon.append(metar.longitude)
-            elev.append(metar.elevation)
-            date_time.append(metar.date_time)
-            wind_dir.append(metar.wind_direction)
-            wind_spd.append(metar.wind_speed)
-            current_wx1.append(metar.current_wx1)
-            current_wx2.append(metar.current_wx2)
-            current_wx3.append(metar.current_wx3)
-            skyc1.append(metar.skyc1)
-            skylev1.append(metar.skylev1)
-            skyc2.append(metar.skyc2)
-            skylev2.append(metar.skylev2)
-            skyc3.append(metar.skyc3)
-            skylev3.append(metar.skylev3)
-            skyc4.append(metar.skyc4)
-            skylev4.append(metar.skylev4)
-            cloudcover.append(metar.cloudcover)
-            temp.append(metar.temperature)
-            dewp.append(metar.dewpoint)
-            altim.append(metar.altimeter)
-            current_wx1_symbol.append(metar.current_wx1_symbol)
-            current_wx2_symbol.append(metar.current_wx2_symbol)
-            current_wx3_symbol.append(metar.current_wx3_symbol)
-
-        except ParseError:
-            continue
-
-    df = pd.DataFrame({'station_id': station_id,
-                       'latitude': lat,
-                       'longitude': lon,
-                       'elevation': elev,
-                       'date_time': date_time,
-                       'wind_direction': wind_dir,
-                       'wind_speed': wind_spd,
-                       'current_wx1': current_wx1,
-                       'current_wx2': current_wx2,
-                       'current_wx3': current_wx3,
-                       'low_cloud_type': skyc1,
-                       'low_cloud_level': skylev1,
-                       'medium_cloud_type': skyc2,
-                       'medium_cloud_level': skylev2,
-                       'high_cloud_type': skyc3,
-                       'high_cloud_level': skylev3,
-                       'highest_cloud_type': skyc4,
-                       'highest_cloud_level': skylev4,
-                       'cloud_coverage': cloudcover,
-                       'air_temperature': temp,
-                       'dew_point_temperature': dewp,
-                       'altimeter': altim,
-                       'current_wx1_symbol': current_wx1_symbol,
-                       'current_wx2_symbol': current_wx2_symbol,
-                       'current_wx3_symbol': current_wx3_symbol},
-                      index=station_id)
+    # Drop duplicate values
+    df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last',
+                       inplace=True)
 
     # Calculate sea-level pressure from function in metpy.calc
     df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(
-        units.Quantity(altim, 'inHg'),
-        units.Quantity(elev, 'meters'),
-        units.Quantity(temp, 'degC')).to('hPa').magnitude
+        units.Quantity(df.altimeter.values, col_units['altimeter']),
+        units.Quantity(df.elevation.values, col_units['elevation']),
+        units.Quantity(df.air_temperature.values, col_units['air_temperature'])).m_as('hPa')
 
     # Use get wind components and assign them to eastward and northward winds
     u, v = wind_components(
-        units.Quantity(df.wind_speed.values, 'kts'),
-        units.Quantity(df.wind_direction.values, 'degree'))
+        units.Quantity(df.wind_speed.values, col_units['wind_speed']),
+        units.Quantity(df.wind_direction.values, col_units['wind_direction']))
     df['eastward_wind'] = u.m
     df['northward_wind'] = v.m
-
-    # Drop duplicate values
-    df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')
 
     # Round altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
