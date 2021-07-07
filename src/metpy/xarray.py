@@ -30,7 +30,7 @@ import xarray as xr
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
 from .units import DimensionalityError, UndefinedUnitError, units
 
-__all__ = []
+__all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor', 'grid_deltas_from_dataarray')
 metpy_axes = ['time', 'vertical', 'y', 'latitude', 'x', 'longitude']
 
 # Define the criteria for coordinate matches
@@ -1541,6 +1541,3 @@ def add_vertical_dim_from_xarray(func):
 
         return func(*bound_args.args, **bound_args.kwargs)
     return wrapper
-
-
-__all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor', 'grid_deltas_from_dataarray')
