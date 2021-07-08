@@ -203,9 +203,10 @@ your feature is more complex, consider adding to the examples or tutorials for M
 
 You can build the documentation locally to see how your changes will look.
 After setting up your [development environment](#setting-up-your-development-environment) above,
-use ``conda install --file ci/doc_requirements.txt`` from within the ``metpy`` directory
+from within the ``metpy`` directory with your ``devel`` environment active,
+use ``conda install --file ci/doc_requirements.txt``
 to install required packages to build our documentation.
-Then, with your ``devel`` environment active:
+Then, still from within your ``devel`` environment,
 
 * Navigate to the docs folder ``cd docs``
 * Remove any old builds and build the current docs ``make clean html``
@@ -321,11 +322,12 @@ While the authors are no fans of blind adherence to style and so-called project 
 that go through and correct code style, MetPy has adopted this style from the outset.
 Therefore, it makes sense to enforce this style as code is added to keep everything clean and
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
-locally within the source directory you can use the ``flake8`` tool.
+locally within the source directory you can use the
+[flake8](https://flake8.pycqa.org/en/latest/) tool.
 After setting up your [development environment](#setting-up-your-development-environment) above,
-install the code style tools we use with ``conda install --file ci/linting_requirements.txt``
-from within the ``metpy`` directory.
-Checking your code style is then as easy as running ``pytest --flake8`` in the base of the repository.
+from within the ``metpy`` directory with your ``devel`` environment active,
+install the code style tools we use with ``conda install --file ci/linting_requirements.txt``.
+Checking your code style is then as easy as running ``flake8 .`` in the base of the repository.
 
 You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports
