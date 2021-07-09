@@ -95,8 +95,22 @@ ncei_storm_dtypes = {
 def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
     """Get URI for year for NOAA NCEI storms database.
 
-    Given a datetime object, return the FTP-URI for the file containing
+    Given a year, return the FTP-URI for the file containing
     detailed storm information in CSV format for that year.
+
+    Parameters
+    ----------
+    year (int): Year for which to obtain the URI
+    server (Optional[str]): FTP server where the storm database is located.
+        Defaults to the NCEI storm database server as of July 2021.
+    path (Optional[str]): Path on FTP server where the storm database is
+        located.  Defailts to the location on the NCEI storm database server as
+        of July 2021.
+
+    Returns
+    -------
+    String containing the FTP URI pointing to the compressed CSV file
+    containing the storm database for the year requested.
     """
     ftpfs = fsspec.implementations.ftp.FTPFileSystem(server)
     paths = ftpfs.glob(path + f"/*details*d{year:d}*.csv.gz")
@@ -135,7 +149,7 @@ _ncei_tz = {
     "CSC": "-06:00",
     "Est": "-05:00",
     "ESt": "-05:00",
-    "UNK": None,  # will become NaT
+    "UNK": None,  # will become NaT, found in very old entries
     "GMT": "+00:00"}
 
 
@@ -143,11 +157,13 @@ def _parse_ncei_storm_date(begin_yearmonth, begin_day, begin_time,
                            cz_timezone):
     """Parse combination of date-time str and timezone.
 
-    The NCEI storm events database presents dates in local time and timezone
-    information in two different fields.  This function takes two pandas
-    ``StringArray``s corresponding to the fields ``BEGIN_DATE_TIME`` and
-    ``CZ_TIMEZONE`` in the storm database.  It's not intended to be called
-    directly, but rather to be passed to :func:`pandas.read_csv`.
+    The NCEI storm events database presents dates in local time and
+    timezone information in two different fields.  This function
+    takes our pandas ``StringArray``s corresponding to the fields
+    ``BEGIN_YEARMONTH``, ``BEGIN_DAY``, ``BEGIN_TIME``, and
+    ``CZ_TIMEZONE`` in the storm database.  It's not intended to be
+    called directly, but rather to be passed to :func:`pandas.read_csv`
+    to the ``date_parser`` argument.
 
     The ``BEGIN_DATE_TIME`` field has a format such as "24-JUN-20 16:20:00".
     The ``CZ_TIMEZONE`` has a non-standard format such as "EST-5" for newer
