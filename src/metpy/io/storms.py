@@ -1,3 +1,6 @@
+# Copyright (c) 2021 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """Utilities for reading storms databases.
 
 This module contains functionality for reading storms databases.  Currently
@@ -24,72 +27,70 @@ Example use::
     1287 2019-12-25 15:00:00+00:00        201912  ...         nan       nan
 
     [5 rows x 50 columns]
-
-.. versionadded:: 1.1
 """
 
+import fsspec.implementations.ftp
 import numpy
 import pandas
-import fsspec.implementations.ftp
 import pint_pandas
 
-ncei_storm_server = "ftp.ncdc.noaa.gov"
-ncei_storm_path = "/pub/data/swdi/stormevents/csvfiles"
+ncei_storm_server = 'ftp.ncdc.noaa.gov'
+ncei_storm_path = '/pub/data/swdi/stormevents/csvfiles'
 
 # dtypes inferred manually from documentation at
 # ftp://ftp.ncdc.noaa.gov/pub/data/swdi/stormevents/csvfiles/Storm-Data-Bulk-csv-Format.pdf
 
 ncei_storm_dtypes = {
-    "BEGIN_YEARMONTH": pandas.StringDtype(),
-    "BEGIN_DAY": pandas.StringDtype(),
-    "BEGIN_TIME": pandas.StringDtype(),
-    "END_YEARMONTH": pandas.StringDtype(),
-    "END_DAY": numpy.uint8,
-    "END_TIME": pandas.StringDtype(),
-    "EPISODE_ID": numpy.float32,  # to allow for missing data
-    "EVENT_ID": numpy.uint32,
-    "STATE": pandas.StringDtype(),
-    "STATE_FIPS": numpy.uint8,
-    "YEAR": numpy.uint16,
-    "MONTH_NAME": pandas.StringDtype(),
-    "EVENT_TYPE": pandas.StringDtype(),
-    "CZ_TYPE": pandas.StringDtype(),
-    "CZ_FIPS": numpy.uint16,
-    "CZ_NAME": pandas.StringDtype(),
-    "WFO": pandas.StringDtype(),
-    "BEGIN_DATE_TIME": pandas.StringDtype(),
-    "CZ_TIMEZONE": pandas.StringDtype(),
-    "END_DATE_TIME": pandas.StringDtype(),
-    "INJURIES_DIRECT": numpy.uint16,
-    "INJURIES_INDIRECT": numpy.uint16,
-    "DEATHS_DIRECT": numpy.uint16,
-    "DEATHS_INDIRECT": numpy.uint16,
-    "DAMAGE_PROPERTY": pandas.StringDtype(),
-    "DAMAGE_CROPS": pandas.StringDtype(),
-    "SOURCE": pandas.StringDtype(),
-    "MAGNITUDE": numpy.float32,
-    "MAGNITUDE_TYPE": pandas.StringDtype(),
-    "FLOOD_CAUSE": pandas.StringDtype(),
-    "CATEGORY": pandas.StringDtype(),
-    "TOR_F_SCALE": pandas.StringDtype(),
-    "TOR_LENGTH": numpy.float32,
-    "TOR_WIDTH": numpy.float32,
-    "TOR_OTHER_WFO": pandas.StringDtype(),
-    "TOR_OTHER_CZ_STATE": pandas.StringDtype(),
-    "TOR_OTHER_CZ_FLIPS": pandas.StringDtype(),
-    "TOR_OTHER_CZ_NAME": pandas.StringDtype(),
-    "BEGIN_RANGE": numpy.float32,
-    "BEGIN_AZIMUTH": pandas.StringDtype(),
-    "BEGIN_LOCATION": pandas.StringDtype(),
-    "END_RANGE": numpy.float32,
-    "END_AZIMUTH": pandas.StringDtype(),
-    "END_LOCATION": pandas.StringDtype(),
-    "BEGIN_LAT": numpy.float32,
-    "BEGIN_LON": numpy.float32,
-    "END_LAT": numpy.float32,
-    "END_LON": numpy.float32,
-    "EPISODE_NARRATIVE": pandas.StringDtype(),
-    "EVENT_NARRATIVE": pandas.StringDtype()}
+    'BEGIN_YEARMONTH': pandas.StringDtype(),
+    'BEGIN_DAY': pandas.StringDtype(),
+    'BEGIN_TIME': pandas.StringDtype(),
+    'END_YEARMONTH': pandas.StringDtype(),
+    'END_DAY': numpy.uint8,
+    'END_TIME': pandas.StringDtype(),
+    'EPISODE_ID': numpy.float32,  # to allow for missing data
+    'EVENT_ID': numpy.uint32,
+    'STATE': pandas.StringDtype(),
+    'STATE_FIPS': numpy.uint8,
+    'YEAR': numpy.uint16,
+    'MONTH_NAME': pandas.StringDtype(),
+    'EVENT_TYPE': pandas.StringDtype(),
+    'CZ_TYPE': pandas.StringDtype(),
+    'CZ_FIPS': numpy.uint16,
+    'CZ_NAME': pandas.StringDtype(),
+    'WFO': pandas.StringDtype(),
+    'BEGIN_DATE_TIME': pandas.StringDtype(),
+    'CZ_TIMEZONE': pandas.StringDtype(),
+    'END_DATE_TIME': pandas.StringDtype(),
+    'INJURIES_DIRECT': numpy.uint16,
+    'INJURIES_INDIRECT': numpy.uint16,
+    'DEATHS_DIRECT': numpy.uint16,
+    'DEATHS_INDIRECT': numpy.uint16,
+    'DAMAGE_PROPERTY': pandas.StringDtype(),
+    'DAMAGE_CROPS': pandas.StringDtype(),
+    'SOURCE': pandas.StringDtype(),
+    'MAGNITUDE': numpy.float32,
+    'MAGNITUDE_TYPE': pandas.StringDtype(),
+    'FLOOD_CAUSE': pandas.StringDtype(),
+    'CATEGORY': pandas.StringDtype(),
+    'TOR_F_SCALE': pandas.StringDtype(),
+    'TOR_LENGTH': numpy.float32,
+    'TOR_WIDTH': numpy.float32,
+    'TOR_OTHER_WFO': pandas.StringDtype(),
+    'TOR_OTHER_CZ_STATE': pandas.StringDtype(),
+    'TOR_OTHER_CZ_FLIPS': pandas.StringDtype(),
+    'TOR_OTHER_CZ_NAME': pandas.StringDtype(),
+    'BEGIN_RANGE': numpy.float32,
+    'BEGIN_AZIMUTH': pandas.StringDtype(),
+    'BEGIN_LOCATION': pandas.StringDtype(),
+    'END_RANGE': numpy.float32,
+    'END_AZIMUTH': pandas.StringDtype(),
+    'END_LOCATION': pandas.StringDtype(),
+    'BEGIN_LAT': numpy.float32,
+    'BEGIN_LON': numpy.float32,
+    'END_LAT': numpy.float32,
+    'END_LON': numpy.float32,
+    'EPISODE_NARRATIVE': pandas.StringDtype(),
+    'EVENT_NARRATIVE': pandas.StringDtype()}
 
 
 def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
@@ -113,12 +114,12 @@ def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
     containing the storm database for the year requested.
     """
     ftpfs = fsspec.implementations.ftp.FTPFileSystem(server)
-    paths = ftpfs.glob(path + f"/*details*d{year:d}*.csv.gz")
+    paths = ftpfs.glob(path + f'/*details*d{year:d}*.csv.gz')
     if len(paths) > 1:
-        raise ValueError(f"Found {len(paths):d} matching files for {year:d}, expected 1")
+        raise ValueError(f'Found {len(paths):d} matching files for {year:d}, expected 1')
     elif len(paths) == 0:
-        raise FileNotFoundError(f"No storm database found for {year:d}")
-    return f"ftp://{server:s}/{paths[0]:s}"
+        raise FileNotFoundError(f'No storm database found for {year:d}')
+    return f'ftp://{server:s}/{paths[0]:s}'
 
 
 # Timezone abbreviations as found in NCEI storm database.
@@ -128,29 +129,29 @@ def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
 # Standardised libraries are tricky here because those timezone abbreviations
 # are unique in the USA but not globally.
 _ncei_tz = {
-    "SST": "-11:00",
-    "HST": "-10:00",
-    "AKST": "-09:00",
-    "PST": "-08:00",
-    "MST": "-07:00",
-    "CST": "-06:00",
-    "EST": "-05:00",
-    "AST": "-04:00",
-    "GST": "+10:00",  # never called ChST even in 2021
+    'SST': '-11:00',
+    'HST': '-10:00',
+    'AKST': '-09:00',
+    'PST': '-08:00',
+    'MST': '-07:00',
+    'CST': '-06:00',
+    'EST': '-05:00',
+    'AST': '-04:00',
+    'GST': '+10:00',  # never called ChST even in 2021
     # found in older entries
-    "PDT": "-07:00",
-    "MDT": "-06:00",
-    "CDT": "-05:00",
-    "EDT": "-04:00",
+    'PDT': '-07:00',
+    'MDT': '-06:00',
+    'CDT': '-05:00',
+    'EDT': '-04:00',
     # also found
-    "Cst": "-06:00",
-    "SCT": "-06:00",
-    "CSt": "-06:00",
-    "CSC": "-06:00",
-    "Est": "-05:00",
-    "ESt": "-05:00",
-    "UNK": None,  # will become NaT, found in very old entries
-    "GMT": "+00:00"}
+    'Cst': '-06:00',
+    'SCT': '-06:00',
+    'CSt': '-06:00',
+    'CSC': '-06:00',
+    'Est': '-05:00',
+    'ESt': '-05:00',
+    'UNK': None,  # will become NaT, found in very old entries
+    'GMT': '+00:00'}
 
 
 def _parse_ncei_storm_date(begin_yearmonth, begin_day, begin_time,
@@ -183,16 +184,16 @@ def _parse_ncei_storm_date(begin_yearmonth, begin_day, begin_time,
     -------
     pandas Series with dtype ``datetime64[ns, UTC]``
     """
-    tz_label = pandas.Series(cz_timezone).str.replace(r"-?\d*", "")
+    tz_label = pandas.Series(cz_timezone).str.replace(r'-?\d*', '')
     tz_offset = pandas.Series(
         [_ncei_tz[label] for label in tz_label],
         dtype=pandas.StringDtype())
 
     times = pandas.to_datetime(
-        pandas.Series(begin_yearmonth) + "-" + pandas.Series(begin_day)
-        + " " + pandas.Series(begin_time) + " " + tz_offset,
-        format="%Y%m-%d %H%M %z",
-        errors="coerce",
+        pandas.Series(begin_yearmonth) + '-' + pandas.Series(begin_day)
+        + ' ' + pandas.Series(begin_time) + ' ' + tz_offset,
+        format='%Y%m-%d %H%M %z',
+        errors='coerce',
         utc=True)
 
     return times
@@ -214,7 +215,7 @@ def _ncei_db_get_magnitude_with_unit(db, event_types, units):
     """
     quantity_with_unit = pint_pandas.PintArray(
         numpy.full(db.shape[0], numpy.nan),
-        dtype=f"pint[{units:s}]")
+        dtype=f'pint[{units:s}]')
     for event_type in event_types:
         idx = db.EVENT_TYPE == event_type
         # workaround for pint-pandas bug with empty slices, see
@@ -224,11 +225,11 @@ def _ncei_db_get_magnitude_with_unit(db, event_types, units):
         if idx.any():
             quantity_with_unit[idx] = pint_pandas.PintArray(
                 db.MAGNITUDE[idx],
-                dtype=f"pint[{units:s}]")
+                dtype=f'pint[{units:s}]')
     return quantity_with_unit
 
 
-def _ncei_db_add_windspeeds(db, name="wind_speed"):
+def _ncei_db_add_windspeeds(db, name='wind_speed'):
     """Add windspeeds to NCEI storm db.
 
     For any of the event types associated with wind, add the wind speed to the
@@ -246,12 +247,12 @@ def _ncei_db_add_windspeeds(db, name="wind_speed"):
         ['Thunderstorm Wind', 'Strong Wind', 'High Wind',
          'Marine Thunderstorm Wind', 'Marine High Wind',
          'Marine Strong Wind'],
-        "knot")
+        'knot')
     db[name] = wind_speed
     return db
 
 
-def _ncei_db_add_hailsize(db, name="hail_size"):
+def _ncei_db_add_hailsize(db, name='hail_size'):
     """Add hail sizes to NCEI storm db.
 
     For any of the event types associated with hail, add the hail size to the
@@ -268,7 +269,7 @@ def _ncei_db_add_hailsize(db, name="hail_size"):
     hail_size = _ncei_db_get_magnitude_with_unit(
         db,
         ['Hail', 'Marine Hail'],
-        "centiinch")
+        'centiinch')
     db[name] = hail_size
     return db
 
@@ -310,8 +311,8 @@ def get_noaa_storms_from_uri(
         uri,
         dtype=ncei_storm_dtypes,
         parse_dates=({
-            "start_datetime": [
-                "BEGIN_YEARMONTH", "BEGIN_DAY", "BEGIN_TIME", "CZ_TIMEZONE"]}
+            'start_datetime': [
+                'BEGIN_YEARMONTH', 'BEGIN_DAY', 'BEGIN_TIME', 'CZ_TIMEZONE']}
             if parse_dates else None),
         date_parser=_parse_ncei_storm_date)
     # Add units in a separate step.  The units of the magnitude field depend
@@ -396,6 +397,6 @@ def filter_noaa_storms(db, start_time, end_time):
     -------
     pandas.DataFrame selected based on criteria given.
     """
-    idx = ((db.start_datetime >= pandas.Timestamp(start_time, tz="UTC"))
-           & (db.start_datetime <= pandas.Timestamp(end_time, tz="UTC")))
+    idx = ((db.start_datetime >= pandas.Timestamp(start_time, tz='UTC'))
+           & (db.start_datetime <= pandas.Timestamp(end_time, tz='UTC')))
     return db[idx]

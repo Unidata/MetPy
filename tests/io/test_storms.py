@@ -1,3 +1,6 @@
+# Copyright (c) 2021 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """Test functionality to read storm events database."""
 
 import os
@@ -48,13 +51,13 @@ csv_fake_content = """BEGIN_YEARMONTH,BEGIN_DAY,BEGIN_TIME,END_YEARMONTH,END_DAY
 @pytest.fixture
 def fake_csv_files(tmp_path):
     """Create fake CSV files and return their paths."""
-    d = tmp_path / "csvfiles"
+    d = tmp_path / 'csvfiles'
     fns = []
     for year in (1980, 2000, 2020):
-        fn = d / f"StormEvents_details-ftp_v1.0_d{year:d}_c20210604.csv.gz"
+        fn = d / f'StormEvents_details-ftp_v1.0_d{year:d}_c20210604.csv.gz'
         fn.parent.mkdir(exist_ok=True, parents=True)
-        with gzip.GzipFile(fn, "w") as fp:
-            fp.write(csv_fake_content.replace("2020", f"{year:d}", 1).encode("ascii"))
+        with gzip.GzipFile(fn, 'w') as fp:
+            fp.write(csv_fake_content.replace('2020', f'{year:d}', 1).encode('ascii'))
         fns.append(fn)
     return fns
 
@@ -64,17 +67,17 @@ def test_infer_uri(fake_csv_files):
     from metpy.io.storms import get_noaa_storm_uri
     fakedir = os.fspath(fake_csv_files[0].parent)
     with unittest.mock.patch(
-            "fsspec.implementations.ftp.FTPFileSystem",
+            'fsspec.implementations.ftp.FTPFileSystem',
             new=fsspec.implementations.local.LocalFileSystem):
         for year in (1980, 2000, 2020):
             storm_uri = get_noaa_storm_uri(year, path=fakedir)
-            assert f"_d{year:>d}_" in storm_uri
-            assert "details" in storm_uri
-            assert storm_uri.startswith("ftp://")
+            assert f'_d{year:>d}_' in storm_uri
+            assert 'details' in storm_uri
+            assert storm_uri.startswith('ftp://')
         with pytest.raises(FileNotFoundError):
             get_noaa_storm_uri(1854, path=fakedir)
         fake_csv_files[-1].with_name(
-            "StormEvents_details-ftp_v1.0_d2020_c20210709.csv.gz").touch()
+            'StormEvents_details-ftp_v1.0_d2020_c20210709.csv.gz').touch()
         with pytest.raises(ValueError):
             get_noaa_storm_uri(2020, path=fakedir)
 
@@ -89,7 +92,7 @@ def test_get_noaa_storms_from_uri(fake_csv_files):
         parse_windspeed=True,
         parse_hailsize=True)
     assert db.shape == (28, 50)
-    assert db.dtypes.start_datetime == pandas.DatetimeTZDtype("ns", "UTC")
+    assert db.dtypes.start_datetime == pandas.DatetimeTZDtype('ns', 'UTC')
     numpy.testing.assert_array_equal(
         db.start_datetime.dt.year,
         [1950, 2021, 1997, 2021, 1975, 2021, 2006, 1954, 2021, 1951, 2021,
@@ -106,9 +109,9 @@ def test_get_noaa_storms_from_uri(fake_csv_files):
         parse_dates=False,
         parse_windspeed=False,
         parse_hailsize=False)
-    assert "start_datetime" not in db.columns
-    assert "wind_speed" not in db.columns
-    assert "hail_size" not in db.columns
+    assert 'start_datetime' not in db.columns
+    assert 'wind_speed' not in db.columns
+    assert 'hail_size' not in db.columns
 
 
 def test_noaa_get_storms_for_period(fake_csv_files):
@@ -123,8 +126,8 @@ def test_noaa_get_storms_for_period(fake_csv_files):
         elif year == 2021:
             return fake_csv_files[2]
         else:
-            raise FileNotFoundError(f"No storm database found for {year:d}")
-    with unittest.mock.patch("metpy.io.storms.get_noaa_storm_uri",
+            raise FileNotFoundError(f'No storm database found for {year:d}')
+    with unittest.mock.patch('metpy.io.storms.get_noaa_storm_uri',
                              new=fake_storm_uri):
         db = get_noaa_storms_for_period(
             datetime.datetime(2021, 3, 1),
