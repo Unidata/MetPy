@@ -3,9 +3,29 @@
 This module contains functionality for reading storms databases.  Currently
 implemented are routines to read the NOAA NCEI Storm Events Database
 located at https://www.ncdc.noaa.gov/stormevents/, which includes a database
-dump in CSV format.
+dump in CSV format.  The primary function to obtain data from this database is
+:func:`get_noaa_storms_for_period`.
 
 Functionality in this module is experimental and subject to change.
+
+Example use::
+
+    >>> import metpy.io.storms
+    >>> import datetime
+    >>> db = metpy.io.storms.get_noaa_storms_for_period(
+    ...         datetime.datetime(2019, 12, 1),
+    ...         datetime.datetime(2020, 2, 1))
+    >>> print(db.head())
+                    start_datetime END_YEARMONTH  ...  wind_speed hail_size
+    874  2019-12-01 15:00:00+00:00        201912  ...         nan       nan
+    1220 2019-12-22 19:10:00+00:00        201912  ...        70.0       nan
+    1221 2019-12-23 00:33:00+00:00        201912  ...         nan       nan
+    1286 2019-12-22 15:00:00+00:00        201912  ...         nan       nan
+    1287 2019-12-25 15:00:00+00:00        201912  ...         nan       nan
+
+    [5 rows x 50 columns]
+
+.. versionadded:: 1.1
 """
 
 import numpy
@@ -242,11 +262,21 @@ def get_noaa_storms_from_uri(
         parse_dates=True,
         parse_windspeed=True,
         parse_hailsize=True):
-    """Read NOAA storms db from URI.
+    """Read NCEI storms db from URI.
 
-    URI can be obtained from :func:`get_noaa_storm_uri`.
+    Read the NCEI storms database located at the indicated Uniform Resource
+    Identifier (URI).  Optionally parse dates, wind speeds, and hail size.
+    Date parsing will add a ``start_datetime`` column, which replaces the
+    columns ``BEGIN_YEARMONTH``, ``BEGIN_DAY``, ``BEGIN_TIME``, and
+    ``CZ_TIMEZONE``.  The ``start_datetime`` column will have the dtype
+    ``datetime64[ns, UTC]``.  Wind speeds and hail sizes are (optionally) added
+    as extra units-aware fields using pint-pandas, to extend the units-unaware
+    ``MAGNITUDE`` field, which mixes information for both and is therefore
+    harder to use.
 
-    For a higher level function, see :func:`get_noaa_storms_for_period`.
+    The URI containing data certain year can be obtained from
+    :func:`get_noaa_storm_uri`, or to read all storm entries in an indicated
+    period, use :func:`get_noaa_storms_for_period`.
 
     Parameters
     ----------
@@ -257,14 +287,16 @@ def get_noaa_storms_from_uri(
 
     Returns
     -------
-    Pandas DataFrame
+    Pandas DataFrame containing columns from the database plus those
+    interpreted by this function (see above).
     """
     db = pandas.read_csv(
         uri,
         dtype=ncei_storm_dtypes,
-        parse_dates={
+        parse_dates=({
             "start_datetime": [
-                "BEGIN_YEARMONTH", "BEGIN_DAY", "BEGIN_TIME", "CZ_TIMEZONE"]},
+                "BEGIN_YEARMONTH", "BEGIN_DAY", "BEGIN_TIME", "CZ_TIMEZONE"]}
+            if parse_dates else None),
         date_parser=_parse_ncei_storm_date)
     # Add units in a separate step.  The units of the magnitude field depend
     # on the quantity in the event_type field.
@@ -278,13 +310,15 @@ def get_noaa_storms_from_uri(
 def get_noaa_storms_for_period(
         start_time, end_time, server=ncei_storm_server, path=ncei_storm_path,
         parse_dates=True, parse_windspeed=True, parse_hailsize=True):
-    """Get storms from NOAA storms database.
+    """Get storms from NOAA NCEI storms database.
 
-    Read the NOAA NCEI storms database from its bulk download as documented at
-    https://www.ncdc.noaa.gov/stormevents/ftp.jsp.  The NOAA storms database
-    contains data from January 1950 until recently.
-
-    Raises ValueError if no storms can be found.
+    Obtain storms from the NOAA NCEI storms database between the indicated
+    times.  Underlying data reading and interpretation is performed using
+    :func:`get_noaa_storms_from_uri`, see documentation there on what fields
+    are added and how to control this using ``parse_dates``,
+    ``parse_windspeed``, and ``parse_hailsize``.  Data are obtained from the
+    bulk download at https://www.ncdc.noaa.gov/stormevents/ftp.jsp.  The NOAA
+    storms database contains data from January 1950 until recently.
 
     Parameters
     ----------
@@ -292,6 +326,25 @@ def get_noaa_storms_for_period(
         Interpreted as UTC.
     end_time (datetime.datetime): End time to which to report storms.
         Interpreted as UTC.
+    server (Optional[str]): Server to read from.  Defaults to NCEI server.
+    path (Optional[str]): Path (directory) to read from.  Defaults to NCEI
+        location as of July 2021.
+    parse_dates (Optional[bool]): Parse dates to datetime64 objects.  Defaults
+        to True.
+    parse_windspeed (Optional[bool]): Parse wind speeds to units-aware objects.
+        Defaults to true.
+    parse_hailsize (Optional[bool]): Parse hail sizes to units-aware objects.
+        Defaults to true.
+
+    Returns
+    -------
+    pandas.DataFrame containing the storms in the indicated period.  WIll
+    include fields from the NCEI database plus those interpreted by
+    :func:`get_noaa_storms_from_uri`.
+
+    Raises
+    ------
+    ValueError: no storms can be found
     """
     dbs = []
     for year in range(start_time.year, end_time.year + 1):
@@ -322,6 +375,10 @@ def filter_noaa_storms(db, start_time, end_time):
         default).
     start_time (datetime.datetime): Start time from which to report storms.
     end_time (datetime.datetime): End time to which to report storms.
+
+    Returns
+    -------
+    pandas.DataFrame selected based on criteria given.
     """
     idx = ((db.start_datetime >= pandas.Timestamp(start_time, tz="UTC"))
            & (db.start_datetime <= pandas.Timestamp(end_time, tz="UTC")))

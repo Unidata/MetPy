@@ -83,7 +83,11 @@ def test_get_noaa_storms_from_uri(fake_csv_files):
     """Test getting NOAA storms db from URI."""
     import pint_pandas
     from metpy.io.storms import get_noaa_storms_from_uri
-    db = get_noaa_storms_from_uri(fake_csv_files[-1])
+    db = get_noaa_storms_from_uri(
+        fake_csv_files[-1],
+        parse_dates=True,
+        parse_windspeed=True,
+        parse_hailsize=True)
     assert db.shape == (28, 50)
     assert db.dtypes.start_datetime == pandas.DatetimeTZDtype("ns", "UTC")
     numpy.testing.assert_array_equal(
@@ -97,6 +101,14 @@ def test_get_noaa_storms_from_uri(fake_csv_files):
             20, 3, 20, 1, 0, 19, numpy.nan, 19, 1, 0, 21, 0])
     assert db.dtypes.wind_speed.units == pint_pandas.PintType.ureg.knot
     assert db.dtypes.hail_size.units == pint_pandas.PintType.ureg.centiinch
+    db = get_noaa_storms_from_uri(
+        fake_csv_files[-1],
+        parse_dates=False,
+        parse_windspeed=False,
+        parse_hailsize=False)
+    assert "start_datetime" not in db.columns
+    assert "wind_speed" not in db.columns
+    assert "hail_size" not in db.columns
 
 
 def test_noaa_get_storms_for_period(fake_csv_files):
