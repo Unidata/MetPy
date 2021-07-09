@@ -1,5 +1,10 @@
 """Utilities for reading storms databases.
 
+This module contains functionality for reading storms databases.  Currently
+implemented are routines to read the NOAA NCEI Storm Events Database
+located at https://www.ncdc.noaa.gov/stormevents/, which includes a database
+dump in CSV format.
+
 Functionality in this module is experimental and subject to change.
 """
 
@@ -16,12 +21,12 @@ ncei_storm_path = "/pub/data/swdi/stormevents/csvfiles"
 
 ncei_storm_dtypes = {
     "BEGIN_YEARMONTH": pandas.StringDtype(),
-    "BEGIN_DAY": numpy.uint8,
+    "BEGIN_DAY": pandas.StringDtype(),
     "BEGIN_TIME": pandas.StringDtype(),
     "END_YEARMONTH": pandas.StringDtype(),
     "END_DAY": numpy.uint8,
     "END_TIME": pandas.StringDtype(),
-    "EPISODE_ID": numpy.uint32,
+    "EPISODE_ID": numpy.float32,  # to allow for missing data
     "EVENT_ID": numpy.uint32,
     "STATE": pandas.StringDtype(),
     "STATE_FIPS": numpy.uint8,
@@ -82,7 +87,40 @@ def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
     return f"ftp://{server:s}/{paths[0]:s}"
 
 
-def _parse_ncei_storm_date(begin_date_time, cz_timezone):
+# Timezone abbreviations as found in NCEI storm database.
+# Although newer entries contain the offset in a non-standard format (single
+# unpadded integer for hours compared to UTC), older entries contain only the
+# timezone code.
+# Standardised libraries are tricky here because those timezone abbreviations
+# are unique in the USA but not globally.
+_ncei_tz = {
+    "SST": "-11:00",
+    "HST": "-10:00",
+    "AKST": "-09:00",
+    "PST": "-08:00",
+    "MST": "-07:00",
+    "CST": "-06:00",
+    "EST": "-05:00",
+    "AST": "-04:00",
+    "GST": "+10:00",  # never called ChST even in 2021
+    # found in older entries
+    "PDT": "-07:00",
+    "MDT": "-06:00",
+    "CDT": "-05:00",
+    "EDT": "-04:00",
+    # also found
+    "Cst": "-06:00",
+    "SCT": "-06:00",
+    "CSt": "-06:00",
+    "CSC": "-06:00",
+    "Est": "-05:00",
+    "ESt": "-05:00",
+    "UNK": None,  # will become NaT
+    "GMT": "+00:00"}
+
+
+def _parse_ncei_storm_date(begin_yearmonth, begin_day, begin_time,
+                           cz_timezone):
     """Parse combination of date-time str and timezone.
 
     The NCEI storm events database presents dates in local time and timezone
@@ -92,23 +130,36 @@ def _parse_ncei_storm_date(begin_date_time, cz_timezone):
     directly, but rather to be passed to :func:`pandas.read_csv`.
 
     The ``BEGIN_DATE_TIME`` field has a format such as "24-JUN-20 16:20:00".
-    The ``CZ_TIMEZONE`` has a non-standard format such as "EST-5".  Note that
-    times appear to be recorded in standard time even when daylight savings
-    time is in effect.
+    The ``CZ_TIMEZONE`` has a non-standard format such as "EST-5" for newer
+    entries or just "EST" for older entries.  Note that times appear to be
+    recorded in standard time even when daylight savings time is in effect,
+    except for older entries where "EDT" etc. do occur.
 
     Parameters
     ----------
-    begin_date_time (StringArray): Array of strings representing date and time.
+    begin_yearmonth (StringArray): Array of strings representing year and
+        month.
+    begin_day (StringArray): Array of strings representing day of month.
+    begin_time (StringArray): Array of strings representing local time.
     cz_timezone (StringArray): Array of strings representing timezone.
 
     Returns
     -------
     pandas Series with dtype ``datetime64[ns, UTC]``
     """
-    return pandas.to_datetime(
-        begin_date_time + pandas.Series(cz_timezone).str.replace(
-            ".ST-", "-0") + ":00",
+    tz_label = pandas.Series(cz_timezone).str.replace(r"-?\d*", "")
+    tz_offset = pandas.Series(
+        [_ncei_tz[label] for label in tz_label],
+        dtype=pandas.StringDtype())
+
+    times = pandas.to_datetime(
+        pandas.Series(begin_yearmonth) + "-" + pandas.Series(begin_day)
+        + " " + pandas.Series(begin_time) + " " + tz_offset,
+        format="%Y%m-%d %H%M %z",
+        errors="coerce",
         utc=True)
+
+    return times
 
 
 def _ncei_db_get_magnitude_with_unit(db, event_types, units):
@@ -211,7 +262,9 @@ def get_noaa_storms_from_uri(
     db = pandas.read_csv(
         uri,
         dtype=ncei_storm_dtypes,
-        parse_dates={"start_datetime": ["BEGIN_DATE_TIME", "CZ_TIMEZONE"]},
+        parse_dates={
+            "start_datetime": [
+                "BEGIN_YEARMONTH", "BEGIN_DAY", "BEGIN_TIME", "CZ_TIMEZONE"]},
         date_parser=_parse_ncei_storm_date)
     # Add units in a separate step.  The units of the magnitude field depend
     # on the quantity in the event_type field.
@@ -230,6 +283,8 @@ def get_noaa_storms_for_period(
     Read the NOAA NCEI storms database from its bulk download as documented at
     https://www.ncdc.noaa.gov/stormevents/ftp.jsp.  The NOAA storms database
     contains data from January 1950 until recently.
+
+    Raises ValueError if no storms can be found.
 
     Parameters
     ----------
