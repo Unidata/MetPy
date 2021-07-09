@@ -53,39 +53,55 @@ def fake_csv_files(tmp_path):
 def test_infer_uri(fake_csv_files):
     """Test inferring the URI for a certain year/timestamp."""
     from metpy.io.storms import get_noaa_storm_uri
-    for year in (1980, 2000, 2020):
-        with unittest.mock.patch(
-                "fsspec.implementations.ftp.FTPFileSystem",
-                new=fsspec.implementations.local.LocalFileSystem):
-            storm_uri = get_noaa_storm_uri(
-                year,
-                path=os.fspath(fake_csv_files[0].parent))
-            assert f"_d{y:>d}_" in storm_uri
+    fakedir = os.fspath(fake_csv_files[0].parent)
+    with unittest.mock.patch(
+            "fsspec.implementations.ftp.FTPFileSystem",
+            new=fsspec.implementations.local.LocalFileSystem):
+        for year in (1980, 2000, 2020):
+            storm_uri = get_noaa_storm_uri(year, path=fakedir)
+            assert f"_d{year:>d}_" in storm_uri
             assert "details" in storm_uri
             assert storm_uri.startswith("ftp://")
+        with pytest.raises(FileNotFoundError):
+            get_noaa_storm_uri(1854, path=fakedir)
+        fake_csv_files[-1].with_name(
+            "StormEvents_details-ftp_v1.0_d2020_c20210709.csv.gz").touch()
+        with pytest.raises(ValueError):
+            get_noaa_storm_uri(2020, path=fakedir)
 
 
 def test_get_noaa_storms_from_uri(fake_csv_files):
+    """Test getting NOAA storms db from URI."""
+    import pint_pandas
     from metpy.io.storms import get_noaa_storms_from_uri
     db = get_noaa_storms_from_uri(fake_csv_files[-1])
-    assert db.shape == (19, 49)
-    assert db.dtypes.start_datetime == pandas.DatetimeTZDtype
+    assert db.shape == (19, 52)
+    assert db.dtypes.start_datetime == pandas.DatetimeTZDtype("ns", "UTC")
     assert all(db.start_datetime.dt.year == 2020)
     assert db.dtypes.wind_speed.units == pint_pandas.PintType.ureg.knot
-    assert db.dtypes.hail_size.units == pint_pandas.PintType.inches / 100
+    assert db.dtypes.hail_size.units == pint_pandas.PintType.ureg.centiinch
 
 
 def test_noaa_storms(fake_csv_files):
     """Test reading noaa storms."""
-    import pint_pandas
-    from metpy.io.storms import get_noaa_storms
-    with unittest.mock.patch("metpy.io.storms.get_noaa_storm_uri") as misg:
-        misg.return_value = fake_csv_files[-1]
-        db = get_noaa_storms(
+    from metpy.io.storms import get_noaa_storms_for_period
+
+    def fake_storm_uri(year, server=None, path=None):
+        if year == 1980:
+            return fake_csv_files[0]
+        elif year == 2000:
+            return fake_csv_files[1]
+        elif year == 2020:
+            return fake_csv_files[2]
+        else:
+            raise FileNotFoundError(f"No storm database found for {year:d}")
+    with unittest.mock.patch("metpy.io.storms.get_noaa_storm_uri",
+                             new=fake_storm_uri):
+        db = get_noaa_storms_for_period(
             datetime.datetime(2020, 6, 1),
             datetime.datetime(2020, 7, 1))
-        assert db.shape == (3, 51)
-        db = get_noaa_storms(
+        assert db.shape == (3, 52)
+        db = get_noaa_storms_for_period(
             datetime.datetime(1970, 1, 1),
-                datetime.datetime(2020, 12, 31))
-        assert db.shape == (57, 51)
+            datetime.datetime(2020, 12, 31))
+        assert db.shape == (57, 52)
