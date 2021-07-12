@@ -141,7 +141,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     * 'visibility': Visibility distance, measured in meters
 
     """
-    from ..plots.wx_symbols import wx_code_map
+    from ..plots.wx_symbols import wx_code_to_numeric
 
     # Decode the data using the parser (built using Canopy) the parser utilizes a grammar
     # file which follows the format structure dictated by the WMO Handbook, but has the
@@ -154,9 +154,10 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
 
     # Extract the latitude and longitude values from 'master' dictionary
     try:
-        lat = station_metadata[tree.siteid.text.strip()].latitude
-        lon = station_metadata[tree.siteid.text.strip()].longitude
-        elev = station_metadata[tree.siteid.text.strip()].altitude
+        info = station_metadata[station_id]
+        lat = info.latitude
+        lon = info.longitude
+        elev = info.altitude
     except KeyError:
         lat = np.nan
         lon = np.nan
@@ -164,12 +165,12 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
 
     # Set the datetime, day, and time_utc
     try:
-        day_time_utc = tree.datetime.text[:-1].strip()
+        day_time_utc = tree.datetime.text.strip()
         day = int(day_time_utc[0:2])
         hour = int(day_time_utc[2:4])
-        minute = int(day_time_utc[4:7])
+        minute = int(day_time_utc[4:6])
         date_time = datetime(year, month, day, hour, minute)
-    except (AttributeError, ValueError):
+    except ValueError:
         date_time = np.nan
 
     # Set the wind values
@@ -180,13 +181,11 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
             wind_spd = np.nan
         # If the wind direction is variable, set wind direction to nan but keep the wind speed
         else:
+            wind_spd = float(tree.wind.wind_spd.text)
             if (tree.wind.wind_dir.text == 'VRB') or (tree.wind.wind_dir.text == 'VAR'):
                 wind_dir = np.nan
-                wind_spd = float(tree.wind.wind_spd.text)
             else:
-                # If the wind speed and direction is given, keep the values
                 wind_dir = int(tree.wind.wind_dir.text)
-                wind_spd = int(tree.wind.wind_spd.text)
     # If there are any errors, return nan
     except ValueError:
         wind_dir = np.nan
@@ -221,32 +220,15 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
 
     # Set the weather symbols
     # If the weather symbol is missing, set values to nan
-    if tree.curwx.text == '' or tree.curwx.text.strip() == '//':
-        current_wx1 = np.nan
-        current_wx2 = np.nan
-        current_wx3 = np.nan
-        current_wx1_symbol = 0
-        current_wx2_symbol = 0
-        current_wx3_symbol = 0
-    else:
-        wx = [np.nan, np.nan, np.nan]
-        # Loop through symbols and assign according WMO codes
-        wx[0:len((tree.curwx.text.strip()).split())] = tree.curwx.text.strip().split()
-        current_wx1 = wx[0]
-        current_wx2 = wx[1]
-        current_wx3 = wx[2]
-        try:
-            current_wx1_symbol = int(wx_code_map[wx[0]])
-        except (IndexError, KeyError):
-            current_wx1_symbol = 0
-        try:
-            current_wx2_symbol = int(wx_code_map[wx[1]])
-        except (IndexError, KeyError):
-            current_wx2_symbol = 0
-        try:
-            current_wx3_symbol = int(wx_code_map[wx[2]])
-        except (IndexError, KeyError):
-            current_wx3_symbol = 0
+    current_wx = []
+    current_wx_symbol = []
+    if tree.curwx.text.strip() not in ('', '//'):
+        current_wx = tree.curwx.text.strip().split()
+        current_wx_symbol = wx_code_to_numeric(current_wx).tolist()
+    while len(current_wx) < 3:
+        current_wx.append(np.nan)
+    while len(current_wx_symbol) < 3:
+        current_wx_symbol.append(0)
 
     # Set the sky conditions
     if tree.skyc.text[1:3] == 'VV':
@@ -335,39 +317,31 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         cloudcover = 10
 
     # Set the temperature and dewpoint
-    if (tree.temp_dewp.text == '') or (tree.temp_dewp.text == ' MM/MM'):
-        temp = np.nan
-        dewp = np.nan
-    else:
-        try:
+    temp = np.nan
+    dewp = np.nan
+    if tree.temp_dewp.text and tree.temp_dewp.text != ' MM/MM':
+        with contextlib.suppress(ValueError):
+            temp = float(tree.temp_dewp.temp.text[-2:])
             if 'M' in tree.temp_dewp.temp.text:
-                temp = (-1 * float(tree.temp_dewp.temp.text[-2:]))
-            else:
-                temp = float(tree.temp_dewp.temp.text[-2:])
-        except ValueError:
-            temp = np.nan
-        try:
+                temp *= -1
+
+        with contextlib.suppress(ValueError):
+            dewp = float(tree.temp_dewp.dewp.text[-2:])
             if 'M' in tree.temp_dewp.dewp.text:
-                dewp = (-1 * float(tree.temp_dewp.dewp.text[-2:]))
-            else:
-                dewp = float(tree.temp_dewp.dewp.text[-2:])
-        except ValueError:
-            dewp = np.nan
+                dewp *= -1
 
     # Set the altimeter value and sea level pressure
-    if tree.altim.text == '':
-        altim = np.nan
+    if tree.altim.text:
+        val = float(tree.altim.text.strip()[1:5])
+        altim = val / 100 if val > 1100 else units.Quantity(val, 'hPa').m_as('inHg')
     else:
-        if (float(tree.altim.text.strip()[1:5])) > 1100:
-            altim = float(tree.altim.text.strip()[1:5]) / 100
-        else:
-            altim = units.Quantity(int(tree.altim.text.strip()[1:5]), 'hPa').to('inHg').m
+        altim = np.nan
 
     # Returns a named tuple with all the relevant variables
     return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, visibility,
-                 current_wx1, current_wx2, current_wx3, skyc1, skylev1, skyc2,
+                 current_wx[0], current_wx[1], current_wx[2], skyc1, skylev1, skyc2,
                  skylev2, skyc3, skylev3, skyc4, skylev4, cloudcover, temp, dewp,
-                 altim, current_wx1_symbol, current_wx2_symbol, current_wx3_symbol)
+                 altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2])
 
 
 @exporter.export
