@@ -3,15 +3,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test functionality to read storm events database."""
 
-import os
-import pytest
+import datetime
 import gzip
+import os
+import unittest.mock
 
+import fsspec.implementations.local
 import numpy.testing
 import pandas
-import datetime
-import unittest.mock
-import fsspec.implementations.local
+import pytest
 
 # selected and edited from files in <URL:https://www1.ncdc.noaa.gov/pub/data/swdi/
 # stormevents/csvfiles/> on 2021-07-09
@@ -85,6 +85,7 @@ def test_infer_uri(fake_csv_files):
 def test_get_noaa_storms_from_uri(fake_csv_files):
     """Test getting NOAA storms db from URI."""
     import pint_pandas
+
     from metpy.io.storms import get_noaa_storms_from_uri
     db = get_noaa_storms_from_uri(
         fake_csv_files[-1],

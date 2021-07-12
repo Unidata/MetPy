@@ -106,12 +106,14 @@ def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
 
     Parameters
     ----------
-    year (int): Year for which to obtain the URI
-    server (Optional[str]): FTP server where the storm database is located.
-        Defaults to the NCEI storm database server as of July 2021.
-    path (Optional[str]): Path on FTP server where the storm database is
-        located.  Defailts to the location on the NCEI storm database server as
-        of July 2021.
+    year : int
+        Year for which to obtain the URI
+    server : Optional[str]
+        FTP server where the storm database is located.  Defaults to the NCEI
+        storm database server as of July 2021.
+    path : Optional[str]
+        Path on FTP server where the storm database is located.  Defailts to
+        the location on the NCEI storm database server as of July 2021.
 
     Returns
     -------
@@ -179,11 +181,14 @@ def _parse_ncei_storm_date(begin_yearmonth, begin_day, begin_time,
 
     Parameters
     ----------
-    begin_yearmonth (StringArray): Array of strings representing year and
-        month.
-    begin_day (StringArray): Array of strings representing day of month.
-    begin_time (StringArray): Array of strings representing local time.
-    cz_timezone (StringArray): Array of strings representing timezone.
+    begin_yearmonth : StringArray
+        Array of strings representing year and month.
+    begin_day : StringArray
+        Array of strings representing day of month.
+    begin_time : StringArray
+        Array of strings representing local time.
+    cz_timezone : StringArray
+        Array of strings representing timezone.
 
     Returns
     -------
@@ -212,11 +217,14 @@ def _ncei_db_get_magnitude_with_unit(db, event_types, units):
 
     Parameters
     ----------
-    db (pandas.DataFrame): NCEI storm database
-    fields (List[str]): List of event types for which the MAGNITUDE field
-        should be interpreted as describing a quantity with associated unit.
-    units (str): Unit contained by MAGNITUDE field.  Should be interpretable
-        by the pint-pandas unit registry.
+    db : pandas.DataFrame
+        NCEI storm database
+    fields : List[str]
+        List of event types for which the MAGNITUDE field should be interpreted
+        as describing a quantity with associated unit.
+    units : str
+        Unit contained by MAGNITUDE field.  Should be interpretable by the
+        pint-pandas unit registry.
     """
     quantity_with_unit = pint_pandas.PintArray(
         numpy.full(db.shape[0], numpy.nan),
@@ -243,9 +251,10 @@ def _ncei_db_add_windspeeds(db, name='wind_speed'):
 
     Parameters
     ----------
-    db (pandas.DataFrame): NCEI storm database
-    name (Optional[str]): Field in which to add this.  Defaults to
-        "wind_speed".
+    db : pandas.DataFrame
+        NCEI storm database
+    name : Optional[str]
+        Field in which to add this.  Defaults to "wind_speed".
     """
     wind_speed = _ncei_db_get_magnitude_with_unit(
         db,
@@ -267,9 +276,10 @@ def _ncei_db_add_hailsize(db, name='hail_size'):
 
     Parameters
     ----------
-    db (pandas.DataFrame): NCEI storm database
-    name (Optional[str]): Field in which to add this.  Defaults to
-        "hail_size".
+    db : pandas.DataFrame
+        NCEI storm database
+    name : Optional[str]
+        Field in which to add this.  Defaults to "hail_size".
     """
     hail_size = _ncei_db_get_magnitude_with_unit(
         db,
@@ -303,10 +313,14 @@ def get_noaa_storms_from_uri(
 
     Parameters
     ----------
-    uri (str): Source to read from.
-    parse_dates (bool): Parse dates from source and add fields.
-    parse_windspeed (bool): Add windspeed as a unit-aware field.
-    parse_hailsize (bool): Add hailsize as a unit-aware field.
+    uri : str
+        Source to read from.
+    parse_dates : bool
+        Parse dates from source and add fields.
+    parse_windspeed : bool
+        Add windspeed as a unit-aware field.
+    parse_hailsize : bool
+        Add hailsize as a unit-aware field.
 
     Returns
     -------
@@ -346,19 +360,20 @@ def get_noaa_storms_for_period(
 
     Parameters
     ----------
-    start_time (datetime.datetime): Start time from which to report storms.
-        Interpreted as UTC.
-    end_time (datetime.datetime): End time to which to report storms.
-        Interpreted as UTC.
-    server (Optional[str]): Server to read from.  Defaults to NCEI server.
-    path (Optional[str]): Path (directory) to read from.  Defaults to NCEI
-        location as of July 2021.
-    parse_dates (Optional[bool]): Parse dates to datetime64 objects.  Defaults
-        to True.
-    parse_windspeed (Optional[bool]): Parse wind speeds to units-aware objects.
-        Defaults to true.
-    parse_hailsize (Optional[bool]): Parse hail sizes to units-aware objects.
-        Defaults to true.
+    start_time : datetime.datetime
+        Start time from which to report storms.  Interpreted as UTC.
+    end_time : datetime.datetime
+        End time to which to report storms.  Interpreted as UTC.
+    server : Optional[str]
+        Server to read from.  Defaults to NCEI server.
+    path : Optional[str]
+        Path (directory) to read from.  Defaults to NCEI location as of July 2021.
+    parse_dates : Optional[bool]
+        Parse dates to datetime64 objects.  Defaults to True.
+    parse_windspeed : Optional[bool]
+        Parse wind speeds to units-aware objects.  Defaults to true.
+    parse_hailsize : Optional[bool]
+        Parse hail sizes to units-aware objects.  Defaults to true.
 
     Returns
     -------
@@ -393,13 +408,16 @@ def filter_noaa_storms(db, start_time, end_time):
 
     Parameters
     ----------
-    db (pandas.DataFrame): DataFrame describing the NCEI storm database,
-        including a ``start_datetime`` field, which will be present if the
-        database was obtained with :func:`get_noaa_storms_from_uri` or
+    db : pandas.DataFrame
+        DataFrame describing the NCEI storm database, including a
+        ``start_datetime`` field, which will be present if the database was
+        obtained with :func:`get_noaa_storms_from_uri` or
         :func:`get_noaa_storms_for_period` and ``parse_dates=True`` (the
         default).
-    start_time (datetime.datetime): Start time from which to report storms.
-    end_time (datetime.datetime): End time to which to report storms.
+    start_time : datetime.datetime
+        Start time from which to report storms.
+    end_time : datetime.datetime
+        End time to which to report storms.
 
     Returns
     -------
