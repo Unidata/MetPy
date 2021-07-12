@@ -50,7 +50,7 @@ def test_zero_vorticity():
     """Test vorticity calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u.T, u, dx=1 * units.meter, dy=1 * units.meter)
+    v = vorticity(u.T, u, dx=1 * units.meter, dy=1 * units.meter, spherical_correction=False)
     true_v = np.zeros_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -59,7 +59,7 @@ def test_vorticity():
     """Test vorticity for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    v = vorticity(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
+    v = vorticity(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter, spherical_correction=False)
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(v, true_v)
 
@@ -68,7 +68,8 @@ def test_vorticity_asym():
     """Test vorticity calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    vort = vorticity(u, v, dx=1 * units.meters, dy=2 * units.meters)
+    vort = vorticity(u, v, dx=1 * units.meters, dy=2 * units.meters,
+                     spherical_correction=False)
     true_vort = np.array([[-2.5, 3.5, 13.], [8.5, -1.5, -11.], [-5.5, -1.5, 0.]]) / units.sec
     assert_array_equal(vort, true_vort)
 
@@ -96,7 +97,7 @@ def test_zero_divergence():
     """Test divergence calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = divergence(u.T, u, dx=1 * units.meter, dy=1 * units.meter)
+    c = divergence(u.T, u, dx=1 * units.meter, dy=1 * units.meter, spherical_correction=False)
     true_c = 2. * np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
@@ -105,7 +106,8 @@ def test_divergence():
     """Test divergence for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = divergence(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
+    c = divergence(u.T, u.T, dx=1 * units.meter, dy=1 * units.meter,
+                   spherical_correction=False)
     true_c = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
@@ -118,7 +120,7 @@ def test_horizontal_divergence():
                   [[0., 0., 0.],
                    [0., 1., 0.],
                    [0., 0., 0.]]]) * units('m/s')
-    c = divergence(u, u, dx=1 * units.meter, dy=1 * units.meter)
+    c = divergence(u, u, dx=1 * units.meter, dy=1 * units.meter, spherical_correction=False)
     true_c = np.array([[[0., -2., 0.],
                         [-2., 0., 2.],
                         [0., 2., 0.]],
@@ -132,7 +134,8 @@ def test_divergence_asym():
     """Test divergence calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    c = divergence(u, v, dx=1 * units.meters, dy=2 * units.meters)
+    c = divergence(u, v, dx=1 * units.meters, dy=2 * units.meters,
+                   spherical_correction=False)
     true_c = np.array([[-2, 5.5, -2.5], [2., 0.5, -1.5], [3., -1.5, 8.5]]) / units.sec
     assert_array_equal(c, true_c)
 
@@ -160,7 +163,8 @@ def test_shearing_deformation_asym():
     """Test shearing deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    sh = shearing_deformation(u, v, 1 * units.meters, 2 * units.meters)
+    sh = shearing_deformation(u, v, 1 * units.meters, 2 * units.meters,
+                              spherical_correction=False)
     true_sh = np.array([[-7.5, -1.5, 1.], [9.5, -0.5, -11.], [1.5, 5.5, 12.]]) / units.sec
     assert_array_equal(sh, true_sh)
 
@@ -169,7 +173,8 @@ def test_stretching_deformation_asym():
     """Test stretching deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    st = stretching_deformation(u, v, 1 * units.meters, 2 * units.meters)
+    st = stretching_deformation(u, v, 1 * units.meters, 2 * units.meters,
+                                spherical_correction=False)
     true_st = np.array([[4., 0.5, 12.5], [4., 1.5, -0.5], [1., 5.5, -4.5]]) / units.sec
     assert_array_equal(st, true_st)
 
@@ -178,7 +183,8 @@ def test_total_deformation_asym():
     """Test total deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    tdef = total_deformation(u, v, 1 * units.meters, 2 * units.meters)
+    tdef = total_deformation(u, v, 1 * units.meters, 2 * units.meters,
+                             spherical_correction=False)
     true_tdef = np.array([[8.5, 1.58113883, 12.5399362], [10.30776406, 1.58113883, 11.0113578],
                           [1.80277562, 7.7781746, 12.8160056]]) / units.sec
     assert_almost_equal(tdef, true_tdef)
@@ -189,7 +195,8 @@ def test_frontogenesis_asym():
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     theta = np.array([[303, 295, 305], [308, 310, 312], [299, 293, 289]]) * units('K')
-    fronto = frontogenesis(theta, u, v, 1 * units.meters, 2 * units.meters)
+    fronto = frontogenesis(theta, u, v, 1 * units.meters, 2 * units.meters,
+                           spherical_correction=False)
     true_fronto = np.array([[-52.4746386, -37.3658646, -50.3996939],
                             [3.5777088, -2.1221867, -16.9941166],
                             [-23.1417334, 26.0499143, -158.4839684]]
@@ -201,7 +208,7 @@ def test_advection_uniform():
     """Test advection calculation for a uniform 1D field."""
     u = np.ones((3,)) * units('m/s')
     s = np.ones_like(u) * units.kelvin
-    a = advection(s.T, u.T, dx=1 * units.meter)
+    a = advection(s.T, u.T, dx=1 * units.meter, spherical_correction=False)
     truth = np.zeros_like(u) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -210,7 +217,7 @@ def test_advection_1d_uniform_wind():
     """Test advection for simple 1D case with uniform wind."""
     u = np.ones((3,)) * units('m/s')
     s = np.array([1, 2, 3]) * units('kg')
-    a = advection(s.T, u.T, dx=1 * units.meter)
+    a = advection(s.T, u.T, dx=1 * units.meter, spherical_correction=False)
     truth = -np.ones_like(u) * units('kg/sec')
     assert_array_equal(a, truth)
 
@@ -219,7 +226,7 @@ def test_advection_1d():
     """Test advection calculation with varying wind and field."""
     u = np.array([1, 2, 3]) * units('m/s')
     s = np.array([1, 2, 3]) * units('Pa')
-    a = advection(s.T, u.T, dx=1 * units.meter)
+    a = advection(s.T, u.T, dx=1 * units.meter, spherical_correction=False)
     truth = np.array([-1, -2, -3]) * units('Pa/sec')
     assert_array_equal(a, truth)
 
@@ -228,7 +235,8 @@ def test_advection_2d_uniform():
     """Test advection for uniform 2D field."""
     u = np.ones((3, 3)) * units('m/s')
     s = np.ones_like(u) * units.kelvin
-    a = advection(s.T, u.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
+    a = advection(s.T, u.T, u.T, dx=1 * units.meter, dy=1 * units.meter,
+                  spherical_correction=False)
     truth = np.zeros_like(u) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -238,7 +246,8 @@ def test_advection_2d():
     u = np.ones((3, 3)) * units('m/s')
     v = 2 * np.ones((3, 3)) * units('m/s')
     s = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]]) * units.kelvin
-    a = advection(s.T, v.T, u.T, dx=1 * units.meter, dy=1 * units.meter)
+    a = advection(s.T, v.T, u.T, dx=1 * units.meter, dy=1 * units.meter,
+                  spherical_correction=False)
     truth = np.array([[-6, -4, 2], [-8, 0, 8], [-2, 4, 6]]) * units('K/sec')
     assert_array_equal(a, truth)
 
@@ -248,7 +257,8 @@ def test_advection_2d_asym():
     u = np.arange(9).reshape(3, 3) * units('m/s')
     v = 2 * u
     s = np.array([[1, 2, 4], [4, 8, 4], [8, 6, 4]]) * units.kelvin
-    a = advection(s, u, v, dx=2 * units.meter, dy=1 * units.meter)
+    a = advection(s, u, v, dx=2 * units.meter, dy=1 * units.meter,
+                  spherical_correction=False)
     truth = np.array([[0, -20.75, -2.5], [-33., -16., 20.], [-48, 91., 8]]) * units('K/sec')
     assert_array_equal(a, truth)
 

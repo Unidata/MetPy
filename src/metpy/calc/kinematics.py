@@ -16,9 +16,10 @@ exporter = Exporter(globals())
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
-def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@check_units('[speed]', '[speed]', dx='[length]', dy='[length]', latitude='[dimensionless]')
+def vorticity(u, v, *, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+              spherical_correction=True):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
@@ -35,6 +36,10 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input. Keyword-only argument.
+    latitude: `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`. Keyword-only argument.
@@ -58,14 +63,18 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     """
     dudy = first_derivative(u, delta=dy, axis=y_dim)
     dvdx = first_derivative(v, delta=dx, axis=x_dim)
-    return dvdx - dudy
+    if spherical_correction:
+        return dvdx - dudy + u / mpconsts.earth_avg_radius * np.tan(latitude)
+    else:
+        return dvdx - dudy
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units(dx='[length]', dy='[length]')
-def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@check_units(dx='[length]', dy='[length]', latitude='[dimensionless]')
+def divergence(u, v, *, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+               spherical_correction=True):
     r"""Calculate the horizontal divergence of a vector.
 
     Parameters
@@ -82,6 +91,10 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input. Keyword-only argument.
+    latitude: `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`. Keyword-only argument.
@@ -105,14 +118,18 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     """
     dudx = first_derivative(u, delta=dx, axis=x_dim)
     dvdy = first_derivative(v, delta=dy, axis=y_dim)
-    return dudx + dvdy
+    if spherical_correction:
+        return dudx + dvdy - v / mpconsts.earth_avg_radius * np.tan(latitude)
+    else:
+        return dudx + dvdy
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def shearing_deformation(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                         spherical_correction=True):
     r"""Calculate the shearing deformation of the horizontal wind.
 
     Parameters
@@ -129,6 +146,10 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input.
+    latitude: `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
@@ -152,14 +173,18 @@ def shearing_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     """
     dudy = first_derivative(u, delta=dy, axis=y_dim)
     dvdx = first_derivative(v, delta=dx, axis=x_dim)
-    return dvdx + dudy
+    if spherical_correction:
+        return dvdx + dudy + u / mpconsts.earth_avg_radius * np.tan(latitude)
+    else:
+        return dvdx + dudy
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def stretching_deformation(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                           spherical_correction=True):
     r"""Calculate the stretching deformation of the horizontal wind.
 
     Parameters
@@ -176,6 +201,10 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input.
+    latitude: `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
@@ -199,14 +228,18 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     """
     dudx = first_derivative(u, delta=dx, axis=x_dim)
     dvdy = first_derivative(v, delta=dy, axis=y_dim)
-    return dudx - dvdy
+    if spherical_correction:
+        return dudx - dvdy - v / mpconsts.earth_avg_radius * np.tan(latitude)
+    else:
+        return dudx - dvdy
 
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def total_deformation(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                      spherical_correction=True):
     r"""Calculate the horizontal total deformation of the horizontal wind.
 
     Parameters
@@ -223,6 +256,10 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input.
+    latitude: `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
@@ -250,7 +287,11 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     """
     dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
     dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
-    return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
+    if spherical_correction:
+        return np.sqrt((dvdx + dudy + u / mpconsts.earth_avg_radius * np.tan(latitude))**2
+                       + (dudx - dvdy - v / mpconsts.earth_avg_radius * np.tan(latitude))**2)
+    else:
+        return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
 @exporter.export
@@ -325,10 +366,11 @@ def advection(
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
     wrap_like='potential_temperature',
-    broadcast=('potential_temperature', 'u', 'v')
+    broadcast=('potential_temperature', 'u', 'v', 'latitude')
 )
-@check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
-def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
+@check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def frontogenesis(potential_temperature, u, v, dx=None, dy=None, latitude=None, x_dim=-1,
+                  y_dim=-2, spherical_correction=True):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
     The implementation is a form of the Petterssen Frontogenesis and uses the formula
@@ -358,6 +400,10 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
         latitude/longitude coordinates used as input.
+    latitude: `pint.Quantity`, optional
+        Latitude of the wind data. Optional if `xarray.DataArray` with latitude/longitude
+        coordinates used as input. Note that an argument without units is treated as
+        dimensionless, which translates to radians.
     x_dim : int, optional
         Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
         parsed from input if using `xarray.DataArray`.
@@ -387,12 +433,16 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     mag_theta = np.sqrt(ddx_theta**2 + ddy_theta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd = shearing_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
-    strd = stretching_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
-    tdef = total_deformation(u, v, dx, dy, x_dim=x_dim, y_dim=y_dim)
+    shrd = shearing_deformation(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                                spherical_correction=spherical_correction)
+    strd = stretching_deformation(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                                  spherical_correction=spherical_correction)
+    tdef = total_deformation(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                             spherical_correction=spherical_correction)
 
     # Get the divergence of the wind field
-    div = divergence(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
+    div = divergence(u, v, dx=dx, dy=dy, latitude=latitude, x_dim=x_dim, y_dim=y_dim,
+                     spherical_correction=spherical_correction)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -653,8 +703,9 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
 @exporter.export
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(wrap_like='u', broadcast=('u', 'v', 'latitude'))
-@check_units('[speed]', '[speed]', '[length]', '[length]')
-def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2):
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2,
+                       spherical_correction=True):
     """Calculate the absolute vorticity of the horizontal wind.
 
     Parameters
@@ -693,7 +744,8 @@ def absolute_vorticity(u, v, dx=None, dy=None, latitude=None, x_dim=-1, y_dim=-2
 
     """
     f = coriolis_parameter(latitude)
-    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim)
+    relative_vorticity = vorticity(u, v, dx=dx, dy=dy, latitude=latitude, x_dim=x_dim,
+                                   y_dim=y_dim, spherical_correction=spherical_correction)
     return relative_vorticity + f
 
 
@@ -715,7 +767,8 @@ def potential_vorticity_baroclinic(
     latitude=None,
     x_dim=-1,
     y_dim=-2,
-    vertical_dim=-3
+    vertical_dim=-3,
+    spherical_correction=True
 ):
     r"""Calculate the baroclinic potential vorticity.
 
@@ -788,7 +841,8 @@ def potential_vorticity_baroclinic(
         raise ValueError('Length of potential temperature along the vertical axis '
                          '{} must be at least 3.'.format(vertical_dim))
 
-    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim)
+    avor = absolute_vorticity(u, v, dx, dy, latitude, x_dim=x_dim, y_dim=y_dim,
+                              spherical_correction=spherical_correction)
     dthetadp = first_derivative(potential_temperature, x=pressure, axis=vertical_dim)
 
     if (
@@ -885,7 +939,8 @@ def inertial_advective_wind(
     dy=None,
     latitude=None,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    spherical_correction=True
 ):
     r"""Calculate the inertial advective wind.
 
@@ -953,8 +1008,14 @@ def inertial_advective_wind(
     dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
     dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(y_dim, x_dim))
 
-    u_component = -(u * dvgdx + v * dvgdy) / f
-    v_component = (u * dugdx + v * dugdy) / f
+    if spherical_correction:
+        u_component = -(u * (dvgdx + u / mpconsts.earth_avg_radius * np.tan(latitude))
+                        + v * dvgdy) / f
+        v_component = (u * (dugdx - v / mpconsts.earth_avg_radius * np.tan(latitude))
+                       + v * dugdy) / f
+    else:
+        u_component = -(u * dvgdx + v * dvgdy) / f
+        v_component = (u * dugdx + v * dugdy) / f
 
     return u_component, v_component
 
@@ -963,9 +1024,10 @@ def inertial_advective_wind(
 @add_grid_arguments_from_xarray
 @preprocess_and_wrap(
     wrap_like=('u', 'u'),
-    broadcast=('u', 'v', 'temperature', 'pressure', 'static_stability')
+    broadcast=('u', 'v', 'temperature', 'pressure', 'latitude', 'static_stability')
 )
-@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
+@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]',
+             '[dimensionless]')
 def q_vector(
     u,
     v,
@@ -973,9 +1035,11 @@ def q_vector(
     pressure,
     dx=None,
     dy=None,
+    latitude=None,
     static_stability=1,
     x_dim=-1,
-    y_dim=-2
+    y_dim=-2,
+    spherical_correction=True
 ):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
 
@@ -1040,7 +1104,12 @@ def q_vector(
     dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(y_dim, x_dim))
     dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(y_dim, x_dim))
 
-    q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
+    if spherical_correction:
+        q1 = (-mpconsts.Rd / (pressure * static_stability)
+              * ((dudx - v / mpconsts.earth_avg_radius * np.tan(latitude)) * dtempdx
+              + (dvdx + u / mpconsts.earth_avg_radius * np.tan(latitude)) * dtempdy))
+    else:
+        q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
 
     return q1.to_base_units(), q2.to_base_units()
