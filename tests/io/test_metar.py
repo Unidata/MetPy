@@ -97,9 +97,10 @@ def test_date_time_given():
     """Test for when date_time is given."""
     df = parse_metar_to_dataframe('K6B0 261200Z AUTO 00000KT 10SM CLR 20/M17 A3002 RMK AO2 '
                                   'T01990165=', year=2019, month=6)
-    assert_equal(df['date_time'][0], datetime(2019, 6, 26, 12))
-    assert df.eastward_wind.values == 0
-    assert df.northward_wind.values == 0
+    assert df.date_time[0] == datetime(2019, 6, 26, 12)
+    assert df.eastward_wind[0] == 0
+    assert df.northward_wind[0] == 0
+    assert_almost_equal(df.air_pressure_at_sea_level[0], 1016.56)
     assert_almost_equal(df.visibility.values, 16093.44)
 
 
@@ -111,13 +112,15 @@ def test_parse_metar_df_positional_datetime_failure():
                                  'A3002 RMK AO2 T01990165=', 2019, 6)
 
 
-def test_named_tuple_test1():
-    """Test the named tuple parsing function."""
+def test_parse_metar_to_dataframe():
+    """Test parsing a single METAR to a DataFrame."""
     df = parse_metar_to_dataframe('KDEN 012153Z 09010KT 10SM FEW060 BKN110 BKN220 27/13 '
                                   'A3010 RMK AO2 LTG DSNT SW AND W SLP114 OCNL LTGICCG '
                                   'DSNT SW CB DSNT SW MOV E T02670128')
     assert df.wind_direction.values == 90
     assert df.wind_speed.values == 10
+    assert_almost_equal(df.eastward_wind.values, -10)
+    assert_almost_equal(df.northward_wind.values, 0)
     assert_almost_equal(df.visibility.values, 16093.44)
     assert df.air_temperature.values == 27
     assert df.dew_point_temperature.values == 13
@@ -127,9 +130,53 @@ def test_parse_file():
     """Test the parser on an entire file."""
     input_file = get_test_data('metar_20190701_1200.txt', as_file_obj=False)
     df = parse_metar_file(input_file)
+
+    # Check counts (non-NaN) of various fields
+    counts = df.count()
+    assert counts.station_id == 8980
+    assert counts.latitude == 8968
+    assert counts.longitude == 8968
+    assert counts.elevation == 8968
+    assert counts.date_time == 8980
+    assert counts.wind_direction == 8577
+    assert counts.wind_speed == 8844
+    assert counts.visibility == 8458
+    assert counts.current_wx1 == 1046
+    assert counts.current_wx2 == 77
+    assert counts.current_wx3 == 1
+    assert counts.low_cloud_type == 7309
+    assert counts.low_cloud_level == 3507
+    assert counts.medium_cloud_type == 1629
+    assert counts.medium_cloud_level == 1504
+    assert counts.high_cloud_type == 626
+    assert counts.high_cloud_level == 593
+    assert counts.highest_cloud_type == 37
+    assert counts.highest_cloud_level == 35
+    assert counts.cloud_coverage == 8980
+    assert counts.air_temperature == 8727
+    assert counts.dew_point_temperature == 8707
+    assert counts.altimeter == 8400
+    assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
+    assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
+    assert (df.current_wx3_symbol != 0).sum() == counts.current_wx3
+    assert counts.air_pressure_at_sea_level == 8328
+    assert counts.eastward_wind == 8577
+    assert counts.northward_wind == 8577
+
+    # KVPZ 011156Z AUTO 27005KT 10SM CLR 23/19 A3004 RMK AO2 SLP166
     test = df[df.station_id == 'KVPZ']
     assert test.air_temperature.values == 23
+    assert test.dew_point_temperature.values == 19
+    assert test.altimeter.values == 30.04
+    assert_almost_equal(test.eastward_wind.values, 5)
+    assert_almost_equal(test.northward_wind.values, 0)
     assert test.air_pressure_at_sea_level.values == 1016.76
+
+    # Check that this ob properly gets all lines
+    paku = df[df.station_id == 'PAKU']
+    assert_almost_equal(paku.air_temperature.values, [9, 12])
+    assert_almost_equal(paku.dew_point_temperature.values, [9, 10])
+    assert_almost_equal(paku.altimeter.values, [30.02, 30.04])
 
 
 def test_parse_file_positional_datetime_failure():
@@ -145,6 +192,39 @@ def test_parse_file_bad_encoding():
     input_file = get_test_data('2020010600_sao.wmo', as_file_obj=False)
     # KDEN 052353Z 16014KT 10SM FEW120 FEW220 02/M07 A3008 RMK AO2 SLP190 T00171072...
     df = parse_metar_file(input_file)
+
+    # Check counts (non-NaN) of various fields
+    counts = df.count()
+    assert counts.station_id == 8802
+    assert counts.latitude == 8789
+    assert counts.longitude == 8789
+    assert counts.elevation == 8789
+    assert counts.date_time == 8802
+    assert counts.wind_direction == 8377
+    assert counts.wind_speed == 8673
+    assert counts.visibility == 8304
+    assert counts.current_wx1 == 1274
+    assert counts.current_wx2 == 201
+    assert counts.current_wx3 == 3
+    assert counts.low_cloud_type == 7516
+    assert counts.low_cloud_level == 3384
+    assert counts.medium_cloud_type == 1612
+    assert counts.medium_cloud_level == 1463
+    assert counts.high_cloud_type == 542
+    assert counts.high_cloud_level == 511
+    assert counts.highest_cloud_type == 40
+    assert counts.highest_cloud_level == 39
+    assert counts.cloud_coverage == 8802
+    assert counts.air_temperature == 8444
+    assert counts.dew_point_temperature == 8383
+    assert counts.altimeter == 8108
+    assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
+    assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
+    assert (df.current_wx3_symbol != 0).sum() == counts.current_wx3
+    assert counts.air_pressure_at_sea_level == 8069
+    assert counts.eastward_wind == 8377
+    assert counts.northward_wind == 8377
+
     test = df[df.station_id == 'KDEN']
     assert_almost_equal(test.visibility.values, 16093.44)
     assert test.air_temperature.values == 2
@@ -161,6 +241,8 @@ def test_parse_file_object():
     assert test.air_temperature.values == 21
     assert test.dew_point_temperature.values == 21
     assert test.altimeter.values == 30.03
+    assert_almost_equal(test.eastward_wind.values, 0)
+    assert_almost_equal(test.northward_wind.values, 6)
 
 
 def test_parse_no_pint_objects_in_df():
