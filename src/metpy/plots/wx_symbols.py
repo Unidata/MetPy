@@ -164,9 +164,10 @@ with exporter:
                                                      (97, 2)], [(0, 4)])
 
     #: Current weather from an automated station
-    current_weather_auto = CodePointMapping(100, 0xE94B, [(92, 2), (95, 2)],
-                                            [(6, 4), (13, 5), (19, 1), (36, 4), (49, 1),
-                                             (59, 1), (69, 1), (79, 1), (88, 1), (97, 2)])
+    current_weather_auto = CodePointMapping(100, 0xE94F, [(92, 2), (95, 2)],
+                                            [(0, 4), (6, 4), (13, 5), (19, 1), (36, 4),
+                                             (49, 1), (59, 1), (69, 1), (79, 1), (88, 1),
+                                             (97, 2)])
 
     #: Low clouds
     low_clouds = CodePointMapping(10, 0xE933, [(7, 1)], [(0, 1)])
@@ -181,7 +182,7 @@ with exporter:
     sky_cover = CodePointMapping(12, 0xE90A)
 
     #: Pressure tendency
-    pressure_tendency = CodePointMapping(10, 0xE900)
+    pressure_tendency = CodePointMapping(9, 0xE900)
 
     #####################################################################
     # This dictionary is for mapping METAR present weather text codes
