@@ -34,6 +34,10 @@ import numpy
 import pandas
 import pint_pandas
 
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
+
 ncei_storm_server = 'ftp.ncdc.noaa.gov'
 ncei_storm_path = '/pub/data/swdi/stormevents/csvfiles'
 
@@ -93,6 +97,7 @@ ncei_storm_dtypes = {
     'EVENT_NARRATIVE': pandas.StringDtype()}
 
 
+@exporter.export
 def get_noaa_storm_uri(year, server=ncei_storm_server, path=ncei_storm_path):
     """Get URI for year for NOAA NCEI storms database.
 
@@ -274,6 +279,7 @@ def _ncei_db_add_hailsize(db, name='hail_size'):
     return db
 
 
+@exporter.export
 def get_noaa_storms_from_uri(
         uri,
         parse_dates=True,
@@ -324,6 +330,7 @@ def get_noaa_storms_from_uri(
     return db
 
 
+@exporter.export
 def get_noaa_storms_for_period(
         start_time, end_time, server=ncei_storm_server, path=ncei_storm_path,
         parse_dates=True, parse_windspeed=True, parse_hailsize=True):
@@ -378,6 +385,7 @@ def get_noaa_storms_for_period(
     return db
 
 
+@exporter.export
 def filter_noaa_storms(db, start_time, end_time):
     """Filter NOAA storms db based on criteria.
 
