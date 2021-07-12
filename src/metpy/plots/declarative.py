@@ -1574,7 +1574,7 @@ class PlotObs(HasTraits):
     formats = List(default_value=[None])
     formats.__doc__ = """List of the scalar, symbol, and text field data formats. (optional)
 
-    List of scalar parameters formmaters or mapping values (if symbol) for plotting text and/or
+    List of scalar parameters formatters or mapping values (if symbol) for plotting text and/or
     symbols around the station plot (e.g., for pressure variable
     ```lambda v: format(10 * v, '.0f')[-3:]```).
 
