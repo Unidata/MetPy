@@ -1253,7 +1253,7 @@ def test_declarative_colorbar_fontsize():
 
 @pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'3.1': 2.12,
-                                          '3.0': 2.12}.get(MPL_VERSION, 0.607))
+                                          '3.0': 4.956}.get(MPL_VERSION, 0.607))
 @needs_cartopy
 def test_declarative_station_plot_fontsize():
     """Test adjusting the font size for station plots in PlotObs."""
