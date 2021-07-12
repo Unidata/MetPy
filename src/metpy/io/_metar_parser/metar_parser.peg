@@ -10,9 +10,9 @@ wind_dir <- (([\d] [\d] [\d]) / 'VAR' / 'VRB' / "///")?
 wind_spd <- (([\d] [\d] [\d]?) / "//")?
 gust     <- "G" [\d]+
 varwind  <- sep [\d] [\d] [\d] "V" [\d] [\d] [\d]
-vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d]))? "SM") / "CAVOK")))?
+vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d]))? "SM") / "CAVOK" / "////")))?
 run      <- ((sep "R" [LRC]? [\d] [\d] [LRC]? "/" ([\d] [\d] [\d] [\d] "V")? ["M" / "P"]? [\d] [\d] [\d] [\d] "FT"))?
-curwx    <- (((sep (wx))*))?
+curwx    <- (((sep "//") / (sep (wx))*))?
 wx       <- (([-+] / "VC")? ("MI" / "BC" / "PR" / "DR" / "BL" / "SH" / "TS" / "FZ" / "DZ" / "RA" / "SN" / "SG" / "PL" / "GR" / "GS" / "UP" / "BR" / "FG" / "FU" / "VA" / "DU" / "SA" / "HZ" / "PO" / "SQ" / "FC" / "SS" / "DS")+)
 skyc     <- ((sep (cover))*)?
 cover    <- (("FEW" / "SCT" / "BKN" / "OVC" / "VV" / "///") ([\d]*)? ("TCU" / "CB" / "///")?) / ("CLR" / "SKC" / "NSC" / "NCD") / wx / "//"

@@ -213,7 +213,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     # CAVOK means vis is "at least 10km" and no significant clouds or weather
     elif 'CAVOK' in tree.vis.text:
         visibility = 10000
-    elif not tree.vis.text:
+    elif not tree.vis.text or tree.vis.text.strip() == '////':
         visibility = np.nan
     else:
         # Only worry about the first 4 characters (digits) and ignore possible 'NDV'
@@ -221,7 +221,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
 
     # Set the weather symbols
     # If the weather symbol is missing, set values to nan
-    if tree.curwx.text == '':
+    if tree.curwx.text == '' or tree.curwx.text.strip() == '//':
         current_wx1 = np.nan
         current_wx2 = np.nan
         current_wx3 = np.nan
@@ -244,21 +244,21 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         except (IndexError, KeyError):
             current_wx2_symbol = 0
         try:
-            current_wx3_symbol = int(wx_code_map[wx[3]])
+            current_wx3_symbol = int(wx_code_map[wx[2]])
         except (IndexError, KeyError):
             current_wx3_symbol = 0
 
     # Set the sky conditions
     if tree.skyc.text[1:3] == 'VV':
         skyc1 = 'VV'
-        skylev1 = tree.skyc.text.strip()[2:]
+        level = tree.skyc.text.strip()[2:]
+        skylev1 = np.nan if level == '///' else 100 * int(level)
         skyc2 = np.nan
         skylev2 = np.nan
         skyc3 = np.nan
         skylev3 = np.nan
         skyc4 = np.nan
         skylev4 = np.nan
-
     else:
         skyc = []
         skyc[0:len((tree.skyc.text.strip()).split())] = tree.skyc.text.strip().split()
@@ -320,7 +320,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
             skylev4 = np.nan
 
     # Set the cloud cover variable (measured in oktas)
-    if ('OVC' or 'VV') in tree.skyc.text:
+    if 'OVC' in tree.skyc.text or 'VV' in tree.skyc.text:
         cloudcover = 8
     elif 'BKN' in tree.skyc.text:
         cloudcover = 6
@@ -329,7 +329,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     elif 'FEW' in tree.skyc.text:
         cloudcover = 2
     elif ('SKC' in tree.skyc.text or 'NCD' in tree.skyc.text or 'NSC' in tree.skyc.text
-          or 'CLR' in tree.skyc.text):
+          or 'CLR' in tree.skyc.text or 'CAVOK' in tree.vis.text):
         cloudcover = 0
     else:
         cloudcover = 10
