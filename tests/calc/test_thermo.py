@@ -31,6 +31,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vertical_velocity, vertical_velocity_pressure,
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
+from metpy.calc.exceptions import InvalidSoundingError
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import masked_array, units
@@ -188,6 +189,16 @@ def test_parcel_profile_lcl():
     assert_almost_equal(temp, true_t, 3)
     assert_almost_equal(dewp, true_td, 3)
     assert_array_almost_equal(prof, true_prof, 2)
+
+
+def test_parcel_profile_lcl_not_monotonic():
+    """Test parcel profile with lcl calculation."""
+    with pytest.raises(InvalidSoundingError):
+        p = np.array([1004., 1000., 943., 925., 928., 850., 839., 749., 700.]) * units.hPa
+        t = np.array([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2]) * units.degC
+        td = np.array([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8]) * units.degC
+
+        pressure, temp, dewp, prof = parcel_profile_with_lcl(p, t, td)
 
 
 def test_parcel_profile_with_lcl_as_dataset():

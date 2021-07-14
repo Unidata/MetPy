@@ -10,6 +10,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
+from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
@@ -873,6 +874,14 @@ def parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint):
     )
 
 
+def _check_pressure(pressure):
+    """Check that pressure decreases monotonically.
+
+    Returns True if the pressure decreases monotonically; otherwise, returns False.
+    """
+    return np.all(pressure[:-1] > pressure[1:])
+
+
 def _parcel_profile_helper(pressure, temperature, dewpoint):
     """Help calculate parcel profiles.
 
@@ -880,6 +889,13 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     other calculation functions decide what to do with the pieces.
 
     """
+    # Check that pressure is monotonic decreasing.
+    if not _check_pressure(pressure):
+        msg = """
+        Pressure does not decrease monotonically in your sounding.
+        Using scipy.signal.medfilt may fix this."""
+        raise InvalidSoundingError(msg)
+
     # Find the LCL
     press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpoint)
     press_lcl = press_lcl.to(pressure.units)
