@@ -498,6 +498,11 @@ def lookup_map_feature(feature_name):
 class Panel(HasTraits):
     """Draw one or more plots."""
 
+    @property
+    def plot_kwargs(self):
+        """Set the keyword arguments for MapPanel plotting."""
+        return {}
+
 
 @exporter.export
 class PanelContainer(HasTraits):
@@ -786,6 +791,15 @@ class MapPanel(Panel):
 
         return self._ax
 
+    @property
+    def plot_kwargs(self):
+        """Set the keyword arguments for MapPanel plotting."""
+        if isinstance(self.plots[0].griddata, tuple):
+            dataproj = self.plots[0].griddata[0].metpy.cartopy_crs
+        else:
+            dataproj = self.plots[0].griddata.metpy.cartopy_crs
+        return {'transform': dataproj}
+
     @ax.setter
     def ax(self, val):
         """Set the :class:`matplotlib.axes.Axes` to draw on.
@@ -848,22 +862,49 @@ class MapPanel(Panel):
         return copy.copy(self)
 
 
-@exporter.export
-class Plots2D(HasTraits):
-    """The highest level class related to plotting 2D data.
+class SubsetTraits(HasTraits):
+    """Represent common traits for subsetting data."""
 
-    This class collects all common methods no matter whether plotting a scalar variable or
-    vector. Primary settings common to all types of 2D plots are time and level.
+    x = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    x.__doc__ = """The x coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired x coordinate. For example, selecting a
+    point or transect through the projection origin, set this parameter to
+    ``0 * units.meter``. Note that this requires your data to have an x dimension coordinate.
     """
 
-    parent = Instance(Panel)
-    _need_redraw = Bool(default_value=True)
+    longitude = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    longitude.__doc__ = """The longitude coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired longitude coordinate. For example,
+    selecting a point or transect through 95 degrees west, set this parameter to
+    ``-95 * units.degrees_east``. Note that this requires your data to have a longitude
+    dimension coordinate.
+    """
+
+    y = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    y.__doc__ = """The y coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired x coordinate. For example, selecting a
+    point or transect through the projection origin, set this parameter to
+    ``0 * units.meter``. Note that this requires your data to have an y dimension coordinate.
+    """
+
+    latitude = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    latitude.__doc__ = """The latitude coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired latitude coordinate. For example,
+    selecting a point or transect through 40 degrees north, set this parameter to
+    ``40 * units.degrees_north``. Note that this requires your data to have a latitude
+    dimension coordinate.
+    """
 
     level = Union([Int(allow_none=True, default_value=None), Instance(units.Quantity)])
     level.__doc__ = """The level of the field to be plotted.
 
-    This is a value with units to choose the desired plot level. For example, selecting the
-    850-hPa level, set this parameter to ``850 * units.hPa``
+    This is a value with units to choose a desired plot level. For example, selecting the
+    850-hPa level, set this parameter to ``850 * units.hPa``. Note that this requires your
+    data to have a vertical dimension coordinate.
     """
 
     time = Instance(datetime, allow_none=True)
@@ -871,8 +912,21 @@ class Plots2D(HasTraits):
 
     If a forecast hour is to be plotted the time should be set to the valid future time, which
     can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
-    from the Python standard library.
+    from the Python standard library. Note that this requires your data to have a time
+    dimension coordinate.
     """
+
+
+@exporter.export
+class Plots2D(SubsetTraits):
+    """The highest level class related to plotting 2D data.
+
+    This class collects all common methods no matter whether plotting a scalar variable or
+    vector. Primary settings common to all types of 2D plots include those for data subsets.
+    """
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
 
     plot_units = Unicode(allow_none=True, default_value=None)
     plot_units.__doc__ = """The desired units to plot the field in.
@@ -939,7 +993,7 @@ class Plots2D(HasTraits):
         """Handle setting the parent object for the plot."""
         self.clear()
 
-    @observe('level', 'time')
+    @observe('x', 'longitude', 'y', 'latitude', 'level', 'time')
     def _update_data(self, _=None):
         """Handle updating the internal cache of data.
 
@@ -1013,23 +1067,29 @@ class PlotScalar(Plots2D):
         """Return the internal cached data."""
         if getattr(self, '_griddata', None) is None:
 
+            # Select our particular field of interest
             if self.field:
                 data = self.data.metpy.parse_cf(self.field)
-
-            elif not hasattr(self.data.metpy, 'x'):
+            elif hasattr(self.data.metpy, 'parse_cf'):
                 # Handles the case where we have a dataset but no specified field
                 raise ValueError('field attribute has not been set.')
             else:
                 data = self.data
 
+            # Subset to 2D using MetPy's fancy .sel
             subset = {'method': 'nearest'}
-            if self.level is not None:
-                subset[data.metpy.vertical.name] = self.level
-
-            if self.time is not None:
-                subset[data.metpy.time.name] = self.time
+            for dim_coord in ('x', 'longitude', 'y', 'latitude', 'vertical', 'time'):
+                selector = self.level if dim_coord == 'vertical' else getattr(self, dim_coord)
+                if selector is not None:
+                    subset[dim_coord] = selector
             data_subset = data.metpy.sel(**subset).squeeze()
+            if data_subset.ndim != 2:
+                raise ValueError(
+                    'Must provide a combination of subsetting values to give 2D data subset '
+                    'for plotting'
+                )
 
+            # Handle unit conversion (both direct unit specification and scaling)
             if self.plot_units is not None:
                 data_subset = data_subset.metpy.convert_units(self.plot_units)
             self._griddata = data_subset * self.scale
@@ -1040,13 +1100,21 @@ class PlotScalar(Plots2D):
     def plotdata(self):
         """Return the data for plotting.
 
-        The data array, x coordinates, and y coordinates.
+        The two dimension coordinates and the data array.
 
         """
-        x = self.griddata.metpy.x
-        y = self.griddata.metpy.y
+        try:
+            plot_x_dim = self.griddata.metpy.find_axis_number('x')
+            plot_y_dim = self.griddata.metpy.find_axis_number('y')
+        except ValueError:
+            plot_x_dim = 1
+            plot_y_dim = 0
 
-        return x, y, self.griddata
+        return (
+            self.griddata[self.griddata.dims[plot_x_dim]],
+            self.griddata[self.griddata.dims[plot_y_dim]],
+            self.griddata
+        )
 
     def draw(self):
         """Draw the plot."""
@@ -1146,30 +1214,36 @@ class ImagePlot(PlotScalar, ColorfillTraits):
     def plotdata(self):
         """Return the data for plotting.
 
-        The data array, x coordinates, and y coordinates.
+        The two dimension coordinates and the data array
 
         """
-        x = self.griddata.metpy.x
-        y = self.griddata.metpy.y
+        x_like = self.griddata[self.griddata.dims[1]]
 
         # At least currently imshow with cartopy does not like this
-        if 'degree' in x.units:
-            x = x.data
-            x[x > 180] -= 360
+        if 'degree' in x_like.units:
+            x_like = x_like.data
+            x_like[x_like > 180] -= 360
 
-        return x, y, self.griddata
+        return x_like, self.griddata[self.griddata.dims[0]], self.griddata
 
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
-        x, y, imdata = self.plotdata
+        x_like, y_like, imdata = self.plotdata
 
-        # We use min/max for y and manually figure out origin to try to avoid upside down
-        # images created by images where y[0] > y[-1]
-        extents = (x[0], x[-1], y.min(), y.max())
-        origin = 'upper' if y[0] > y[-1] else 'lower'
-        self.handle = self.parent.ax.imshow(imdata, extent=extents, origin=origin,
-                                            cmap=self._cmap_obj, norm=self._norm_obj,
-                                            transform=imdata.metpy.cartopy_crs)
+        kwargs = self.parent.plot_kwargs
+
+        # If we're on a map, we use min/max for y and manually figure out origin to try to
+        # avoid upside down images created by images where y[0] > y[-1], as well as
+        # specifying the transform
+        kwargs['extent'] = (x_like[0], x_like[-1], y_like.min(), y_like.max())
+        kwargs['origin'] = 'upper' if y_like[0] > y_like[-1] else 'lower'
+
+        self.handle = self.parent.ax.imshow(
+            imdata,
+            cmap=self._cmap_obj,
+            norm=self._norm_obj,
+            **kwargs
+        )
 
 
 @exporter.export
@@ -1209,11 +1283,13 @@ class ContourPlot(PlotScalar, ContourTraits):
 
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
-        x, y, imdata = self.plotdata
-        self.handle = self.parent.ax.contour(x, y, imdata, self.contours,
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = self.parent.plot_kwargs
+
+        self.handle = self.parent.ax.contour(x_like, y_like, imdata, self.contours,
                                              colors=self.linecolor, linewidths=self.linewidth,
-                                             linestyles=self.linestyle,
-                                             transform=imdata.metpy.cartopy_crs)
+                                             linestyles=self.linestyle, **kwargs)
         if self.clabels:
             self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True, fontsize=self.label_fontsize)
@@ -1232,10 +1308,13 @@ class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits):
 
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
-        x, y, imdata = self.plotdata
-        self.handle = self.parent.ax.contourf(x, y, imdata, self.contours,
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = self.parent.plot_kwargs
+
+        self.handle = self.parent.ax.contourf(x_like, y_like, imdata, self.contours,
                                               cmap=self._cmap_obj, norm=self._norm_obj,
-                                              transform=imdata.metpy.cartopy_crs)
+                                              **kwargs)
 
 
 @exporter.export
@@ -1278,7 +1357,9 @@ class PlotVector(Plots2D):
 
     Common gridded meteorological datasets including GFS and NARR output contain wind
     components that are earth-relative. The primary exception is NAM output with wind
-    components that are grid-relative. For any grid-relative vectors set this trait to `False`.
+    components that are grid-relative. For any grid-relative vectors set this trait to
+    `False`. This value is ignored for 2D vector fields not in the plane of the plot (e.g.,
+    cross sections).
     """
 
     color = Unicode(default_value='black')
@@ -1311,14 +1392,19 @@ class PlotVector(Plots2D):
             else:
                 raise ValueError('field attribute not set correctly')
 
+            # Subset to 2D using MetPy's fancy .sel
             subset = {'method': 'nearest'}
-            if self.level is not None:
-                subset[u.metpy.vertical.name] = self.level
-
-            if self.time is not None:
-                subset[u.metpy.time.name] = self.time
+            for dim_coord in ('x', 'longitude', 'y', 'latitude', 'vertical', 'time'):
+                selector = self.level if dim_coord == 'vertical' else getattr(self, dim_coord)
+                if selector is not None:
+                    subset[dim_coord] = selector
             data_subset_u = u.metpy.sel(**subset).squeeze()
             data_subset_v = v.metpy.sel(**subset).squeeze()
+            if data_subset_u.ndim != 2 or data_subset_v.ndim != 2:
+                raise ValueError(
+                    'Must provide a combination of subsetting values to give 2D data subsets '
+                    'for plotting'
+                )
 
             if self.plot_units is not None:
                 data_subset_u = data_subset_u.metpy.convert_units(self.plot_units)
@@ -1332,30 +1418,46 @@ class PlotVector(Plots2D):
     def plotdata(self):
         """Return the data for plotting.
 
-        The data array, x coordinates, and y coordinates.
+        The dimension coordinates and data arrays.
 
         """
-        x = self.griddata[0].metpy.x
-        y = self.griddata[0].metpy.y
+        check_earth_relative = False
+        try:
+            plot_x_dim = self.griddata[0].metpy.find_axis_number('x')
+            plot_y_dim = self.griddata[0].metpy.find_axis_number('y')
+            check_earth_relative = True
+        except ValueError:
+            plot_x_dim = 1
+            plot_y_dim = 0
 
-        if self.earth_relative:
-            x, y, _ = ccrs.PlateCarree().transform_points(self.griddata[0].metpy.cartopy_crs,
-                                                          *np.meshgrid(x, y)).T
-            x = x.T
-            y = y.T
-        else:
-            if 'degree' in x.units:
-                x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
-                    ccrs.PlateCarree(), *np.meshgrid(x, y)).T
-                x = x.T
-                y = y.T
+        x_like = self.griddata[0][self.griddata[0].dims[plot_x_dim]]
+        y_like = self.griddata[0][self.griddata[0].dims[plot_y_dim]]
 
-        if x.ndim == 1:
-            xx, yy = np.meshgrid(x, y)
-        else:
-            xx, yy = x, y
+        if check_earth_relative:
+            # Conditionally apply earth v. grid relative adjustments if we are in the plane of
+            # the plot
+            # TODO: this seems like it could use a refactor to be more explicit about what
+            # coords are grid x and y vs latitude and longitude (both for code readability and
+            # error-proneness).
+            x, y = x_like, y_like
+            if self.earth_relative:
+                x, y, _ = ccrs.PlateCarree().transform_points(
+                    self.griddata[0].metpy.cartopy_crs,
+                    *np.meshgrid(x, y)
+                ).T
+                x_like = x.T
+                y_like = y.T
+            else:
+                if 'degree' in x.units:
+                    x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
+                        ccrs.PlateCarree(), *np.meshgrid(x, y)).T
+                    x_like = x.T
+                    y_like = y.T
 
-        return xx, yy, self.griddata[0], self.griddata[1]
+        if x_like.ndim == 1:
+            x_like, y_like = np.meshgrid(x_like, y_like)
+
+        return x_like, y_like, self.griddata[0], self.griddata[1]
 
     def draw(self):
         """Draw the plot."""
@@ -1385,19 +1487,20 @@ class BarbPlot(PlotVector):
 
     def _build(self):
         """Build the plot by calling needed plotting methods as necessary."""
-        x, y, u, v = self.plotdata
-        if self.earth_relative:
-            transform = ccrs.PlateCarree()
-        else:
-            transform = u.metpy.cartopy_crs
+        x_like, y_like, u, v = self.plotdata
+
+        kwargs = self.parent.plot_kwargs
+
+        # Conditionally apply the proper transform
+        if 'transform' in kwargs and self.earth_relative:
+            kwargs['transform'] = ccrs.PlateCarree()
 
         wind_slice = (slice(None, None, self.skip[0]), slice(None, None, self.skip[1]))
 
         self.handle = self.parent.ax.barbs(
-            x[wind_slice], y[wind_slice],
+            x_like[wind_slice], y_like[wind_slice],
             u.values[wind_slice], v.values[wind_slice],
-            color=self.color, pivot=self.pivot, length=self.barblength,
-            transform=transform)
+            color=self.color, pivot=self.pivot, length=self.barblength, **kwargs)
 
 
 @exporter.export

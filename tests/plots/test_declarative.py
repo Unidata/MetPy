@@ -268,6 +268,49 @@ def test_no_field_error():
         contour.draw()
 
 
+def test_ndim_error_scalar(cfeature):
+    """Make sure we get a useful error when the field is not set."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = None
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.projection = 'lcc'
+    panel.layers = [cfeature.LAKES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+
+    with pytest.raises(ValueError):
+        pc.draw()
+
+
+def test_ndim_error_vector(cfeature):
+    """Make sure we get a useful error when the field is not set."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    barbs = BarbPlot()
+    barbs.data = data
+    barbs.field = ['u_wind', 'v_wind']
+    barbs.level = None
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.projection = 'lcc'
+    panel.plots = [barbs]
+
+    pc = PanelContainer()
+    pc.panel = panel
+
+    with pytest.raises(ValueError):
+        pc.draw()
+
+
 def test_no_field_error_barbs():
     """Make sure we get a useful error when the field is not set."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
