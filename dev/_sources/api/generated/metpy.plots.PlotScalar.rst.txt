@@ -16,13 +16,17 @@ PlotScalar
       ~PlotScalar.data
       ~PlotScalar.field
       ~PlotScalar.griddata
+      ~PlotScalar.latitude
       ~PlotScalar.level
+      ~PlotScalar.longitude
       ~PlotScalar.name
       ~PlotScalar.parent
       ~PlotScalar.plot_units
       ~PlotScalar.plotdata
       ~PlotScalar.scale
       ~PlotScalar.time
+      ~PlotScalar.x
+      ~PlotScalar.y
 
    
    
@@ -75,13 +79,17 @@ PlotScalar
    .. autoattribute:: data
    .. autoattribute:: field
    .. autoattribute:: griddata
+   .. autoattribute:: latitude
    .. autoattribute:: level
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

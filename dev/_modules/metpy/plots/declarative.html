@@ -674,6 +674,11 @@
 <span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw one or more plots.&quot;&quot;&quot;</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">plot_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the keyword arguments for MapPanel plotting.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PanelContainer</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
@@ -962,6 +967,15 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ax</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">plot_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the keyword arguments for MapPanel plotting.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">dataproj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataproj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;transform&#39;</span><span class="p">:</span> <span class="n">dataproj</span><span class="p">}</span>
+
     <span class="nd">@ax</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the :class:`matplotlib.axes.Axes` to draw on.</span>
@@ -1024,22 +1038,49 @@
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="k">class</span> <span class="nc">Plots2D</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The highest level class related to plotting 2D data.</span>
+<span class="k">class</span> <span class="nc">SubsetTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent common traits for subsetting data.&quot;&quot;&quot;</span>
 
-<span class="sd">    This class collects all common methods no matter whether plotting a scalar variable or</span>
-<span class="sd">    vector. Primary settings common to all types of 2D plots are time and level.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">x</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The x coordinate of the field to be plotted.</span>
 
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
-    <span class="n">_need_redraw</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="s2">    This is a value with units to choose a desired x coordinate. For example, selecting a</span>
+<span class="s2">    point or transect through the projection origin, set this parameter to</span>
+<span class="s2">    ``0 * units.meter``. Note that this requires your data to have an x dimension coordinate.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">longitude</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">longitude</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The longitude coordinate of the field to be plotted.</span>
+
+<span class="s2">    This is a value with units to choose a desired longitude coordinate. For example,</span>
+<span class="s2">    selecting a point or transect through 95 degrees west, set this parameter to</span>
+<span class="s2">    ``-95 * units.degrees_east``. Note that this requires your data to have a longitude</span>
+<span class="s2">    dimension coordinate.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">y</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The y coordinate of the field to be plotted.</span>
+
+<span class="s2">    This is a value with units to choose a desired x coordinate. For example, selecting a</span>
+<span class="s2">    point or transect through the projection origin, set this parameter to</span>
+<span class="s2">    ``0 * units.meter``. Note that this requires your data to have an y dimension coordinate.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">latitude</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">latitude</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The latitude coordinate of the field to be plotted.</span>
+
+<span class="s2">    This is a value with units to choose a desired latitude coordinate. For example,</span>
+<span class="s2">    selecting a point or transect through 40 degrees north, set this parameter to</span>
+<span class="s2">    ``40 * units.degrees_north``. Note that this requires your data to have a latitude</span>
+<span class="s2">    dimension coordinate.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">level</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
     <span class="n">level</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The level of the field to be plotted.</span>
 
-<span class="s2">    This is a value with units to choose the desired plot level. For example, selecting the</span>
-<span class="s2">    850-hPa level, set this parameter to ``850 * units.hPa``</span>
+<span class="s2">    This is a value with units to choose a desired plot level. For example, selecting the</span>
+<span class="s2">    850-hPa level, set this parameter to ``850 * units.hPa``. Note that this requires your</span>
+<span class="s2">    data to have a vertical dimension coordinate.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">time</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1047,8 +1088,21 @@
 
 <span class="s2">    If a forecast hour is to be plotted the time should be set to the valid future time, which</span>
 <span class="s2">    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects</span>
-<span class="s2">    from the Python standard library.</span>
+<span class="s2">    from the Python standard library. Note that this requires your data to have a time</span>
+<span class="s2">    dimension coordinate.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">class</span> <span class="nc">Plots2D</span><span class="p">(</span><span class="n">SubsetTraits</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The highest level class related to plotting 2D data.</span>
+
+<span class="sd">    This class collects all common methods no matter whether plotting a scalar variable or</span>
+<span class="sd">    vector. Primary settings common to all types of 2D plots include those for data subsets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
+    <span class="n">_need_redraw</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">plot_units</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">plot_units</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The desired units to plot the field in.</span>
@@ -1115,7 +1169,7 @@
         <span class="sd">&quot;&quot;&quot;Handle setting the parent object for the plot.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;level&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">)</span>
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;level&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_update_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle updating the internal cache of data.</span>
 
@@ -1189,23 +1243,29 @@
         <span class="sd">&quot;&quot;&quot;Return the internal cached data.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_griddata&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
+            <span class="c1"># Select our particular field of interest</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
-
-            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="p">,</span> <span class="s1">&#39;parse_cf&#39;</span><span class="p">):</span>
                 <span class="c1"># Handles the case where we have a dataset but no specified field</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;field attribute has not been set.&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
 
+            <span class="c1"># Subset to 2D using MetPy&#39;s fancy .sel</span>
             <span class="n">subset</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;nearest&#39;</span><span class="p">}</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">subset</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">subset</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span>
+            <span class="k">for</span> <span class="n">dim_coord</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">):</span>
+                <span class="n">selector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">dim_coord</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim_coord</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">selector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">subset</span><span class="p">[</span><span class="n">dim_coord</span><span class="p">]</span> <span class="o">=</span> <span class="n">selector</span>
             <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Must provide a combination of subsetting values to give 2D data subset &#39;</span>
+                    <span class="s1">&#39;for plotting&#39;</span>
+                <span class="p">)</span>
 
+            <span class="c1"># Handle unit conversion (both direct unit specification and scaling)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_griddata</span> <span class="o">=</span> <span class="n">data_subset</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
@@ -1216,13 +1276,21 @@
     <span class="k">def</span> <span class="nf">plotdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the data for plotting.</span>
 
-<span class="sd">        The data array, x coordinates, and y coordinates.</span>
+<span class="sd">        The two dimension coordinates and the data array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plot_x_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_number</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+            <span class="n">plot_y_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_number</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">plot_x_dim</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">plot_y_dim</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">plot_x_dim</span><span class="p">]],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">plot_y_dim</span><span class="p">]],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="PlotScalar.draw"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotScalar.html#metpy.plots.PlotScalar.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the plot.&quot;&quot;&quot;</span>
@@ -1322,30 +1390,36 @@
     <span class="k">def</span> <span class="nf">plotdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the data for plotting.</span>
 
-<span class="sd">        The data array, x coordinates, and y coordinates.</span>
+<span class="sd">        The two dimension coordinates and the data array</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">x_like</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
 
         <span class="c1"># At least currently imshow with cartopy does not like this</span>
-        <span class="k">if</span> <span class="s1">&#39;degree&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">data</span>
-            <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">360</span>
+        <span class="k">if</span> <span class="s1">&#39;degree&#39;</span> <span class="ow">in</span> <span class="n">x_like</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
+            <span class="n">x_like</span> <span class="o">=</span> <span class="n">x_like</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">x_like</span><span class="p">[</span><span class="n">x_like</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">360</span>
 
-        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span>
+        <span class="k">return</span> <span class="n">x_like</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span>
 
     <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+        <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
 
-        <span class="c1"># We use min/max for y and manually figure out origin to try to avoid upside down</span>
-        <span class="c1"># images created by images where y[0] &gt; y[-1]</span>
-        <span class="n">extents</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;upper&#39;</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;lower&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">imdata</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extents</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
-                                            <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
-                                            <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+
+        <span class="c1"># If we&#39;re on a map, we use min/max for y and manually figure out origin to try to</span>
+        <span class="c1"># avoid upside down images created by images where y[0] &gt; y[-1], as well as</span>
+        <span class="c1"># specifying the transform</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;extent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_like</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_like</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y_like</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y_like</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;upper&#39;</span> <span class="k">if</span> <span class="n">y_like</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y_like</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;lower&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="n">imdata</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span>
+            <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1385,11 +1459,13 @@
 
     <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
+        <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
                                              <span class="n">colors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linewidth</span><span class="p">,</span>
-                                             <span class="n">linestyles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linestyle</span><span class="p">,</span>
-                                             <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
+                                             <span class="n">linestyles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linestyle</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clabels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
                                <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label_fontsize</span><span class="p">)</span>
@@ -1408,10 +1484,13 @@
 
     <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
+        <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
                                               <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
-                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
+                                              <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1454,7 +1533,9 @@
 
 <span class="s2">    Common gridded meteorological datasets including GFS and NARR output contain wind</span>
 <span class="s2">    components that are earth-relative. The primary exception is NAM output with wind</span>
-<span class="s2">    components that are grid-relative. For any grid-relative vectors set this trait to `False`.</span>
+<span class="s2">    components that are grid-relative. For any grid-relative vectors set this trait to</span>
+<span class="s2">    `False`. This value is ignored for 2D vector fields not in the plane of the plot (e.g.,</span>
+<span class="s2">    cross sections).</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">color</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
@@ -1487,14 +1568,19 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;field attribute not set correctly&#39;</span><span class="p">)</span>
 
+            <span class="c1"># Subset to 2D using MetPy&#39;s fancy .sel</span>
             <span class="n">subset</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;nearest&#39;</span><span class="p">}</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">subset</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">subset</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span>
+            <span class="k">for</span> <span class="n">dim_coord</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">):</span>
+                <span class="n">selector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">dim_coord</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim_coord</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">selector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">subset</span><span class="p">[</span><span class="n">dim_coord</span><span class="p">]</span> <span class="o">=</span> <span class="n">selector</span>
             <span class="n">data_subset_u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
             <span class="n">data_subset_v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">data_subset_u</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">data_subset_v</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Must provide a combination of subsetting values to give 2D data subsets &#39;</span>
+                    <span class="s1">&#39;for plotting&#39;</span>
+                <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data_subset_u</span> <span class="o">=</span> <span class="n">data_subset_u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
@@ -1508,30 +1594,46 @@
     <span class="k">def</span> <span class="nf">plotdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the data for plotting.</span>
 
-<span class="sd">        The data array, x coordinates, and y coordinates.</span>
+<span class="sd">        The dimension coordinates and data arrays.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">check_earth_relative</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plot_x_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_number</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+            <span class="n">plot_y_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_number</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+            <span class="n">check_earth_relative</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">plot_x_dim</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">plot_y_dim</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earth_relative</span><span class="p">:</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">,</span>
-                                                          <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;degree&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
-                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span>
-                    <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">x_like</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">plot_x_dim</span><span class="p">]]</span>
+        <span class="n">y_like</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">plot_y_dim</span><span class="p">]]</span>
 
-        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+        <span class="k">if</span> <span class="n">check_earth_relative</span><span class="p">:</span>
+            <span class="c1"># Conditionally apply earth v. grid relative adjustments if we are in the plane of</span>
+            <span class="c1"># the plot</span>
+            <span class="c1"># TODO: this seems like it could use a refactor to be more explicit about what</span>
+            <span class="c1"># coords are grid x and y vs latitude and longitude (both for code readability and</span>
+            <span class="c1"># error-proneness).</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earth_relative</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">x_like</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">y_like</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;degree&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span>
+                        <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">x_like</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">y_like</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span>
 
-        <span class="k">return</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">x_like</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 <div class="viewcode-block" id="PlotVector.draw"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotVector.html#metpy.plots.PlotVector.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the plot.&quot;&quot;&quot;</span>
@@ -1561,19 +1663,20 @@
 
     <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build the plot by calling needed plotting methods as necessary.&quot;&quot;&quot;</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earth_relative</span><span class="p">:</span>
-            <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">transform</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+        <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+
+        <span class="c1"># Conditionally apply the proper transform</span>
+        <span class="k">if</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">earth_relative</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
 
         <span class="n">wind_slice</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
+            <span class="n">x_like</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">y_like</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
             <span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
-            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">barblength</span><span class="p">,</span>
-            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">barblength</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1938,7 +2041,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jul 15, 2021 at 19:46:36.<br/>
+        Last updated on Jul 16, 2021 at 19:47:55.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.1.<br/>
     </p>
   </div>

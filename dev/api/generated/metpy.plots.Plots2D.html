@@ -346,7 +346,7 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">Plots2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D" title="Permalink to this definition">¶</a></dt>
 <dd><p>The highest level class related to plotting 2D data.</p>
 <p>This class collects all common methods no matter whether plotting a scalar variable or
-vector. Primary settings common to all types of 2D plots are time and level.</p>
+vector. Primary settings common to all types of 2D plots include those for data subsets.</p>
 <p class="rubric">Attributes Summary</p>
 <table class="longtable table autosummary">
 <colgroup>
@@ -360,8 +360,14 @@ vector. Primary settings common to all types of 2D plots are time and level.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.data" title="metpy.plots.Plots2D.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
 <td><p>Xarray dataset that contains the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.level" title="metpy.plots.Plots2D.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.latitude" title="metpy.plots.Plots2D.latitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">latitude</span></code></a></p></td>
+<td><p>The latitude coordinate of the field to be plotted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.level" title="metpy.plots.Plots2D.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
 <td><p>The level of the field to be plotted.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.longitude" title="metpy.plots.Plots2D.longitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code></a></p></td>
+<td><p>The longitude coordinate of the field to be plotted.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.name" title="metpy.plots.Plots2D.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
@@ -377,6 +383,12 @@ vector. Primary settings common to all types of 2D plots are time and level.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.time" title="metpy.plots.Plots2D.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.x" title="metpy.plots.Plots2D.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<td><p>The x coordinate of the field to be plotted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.y" title="metpy.plots.Plots2D.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
 </table>
@@ -484,11 +496,32 @@ prior to entering the block.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.Plots2D.latitude">
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.latitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>The latitude coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired latitude coordinate. For example,
+selecting a point or transect through 40 degrees north, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">40</span> <span class="pre">*</span> <span class="pre">units.degrees_north</span></code>. Note that this requires your data to have a latitude
+dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.level">
 <span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.Plots2D.level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of the field to be plotted.</p>
-<p>This is a value with units to choose the desired plot level. For example, selecting the
-850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code></p>
+<p>This is a value with units to choose a desired plot level. For example, selecting the
+850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code>. Note that this requires your
+data to have a vertical dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.Plots2D.longitude">
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.longitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>The longitude coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired longitude coordinate. For example,
+selecting a point or transect through 95 degrees west, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">-95</span> <span class="pre">*</span> <span class="pre">units.degrees_east</span></code>. Note that this requires your data to have a longitude
+dimension coordinate.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -528,7 +561,26 @@ the data values will be scaled by 10^5.</p>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
 <p>If a forecast hour is to be plotted the time should be set to the valid future time, which
 can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
-from the Python standard library.</p>
+from the Python standard library. Note that this requires your data to have a time
+dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.Plots2D.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.Plots2D.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>The x coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired x coordinate. For example, selecting a
+point or transect through the projection origin, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">*</span> <span class="pre">units.meter</span></code>. Note that this requires your data to have an x dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.Plots2D.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.Plots2D.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>The y coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired x coordinate. For example, selecting a
+point or transect through the projection origin, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">*</span> <span class="pre">units.meter</span></code>. Note that this requires your data to have an y dimension coordinate.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -874,7 +926,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jul 15, 2021 at 19:46:36.<br/>
+        Last updated on Jul 16, 2021 at 19:47:55.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.1.<br/>
     </p>
   </div>

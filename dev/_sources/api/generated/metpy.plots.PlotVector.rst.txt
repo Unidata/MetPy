@@ -18,7 +18,9 @@ PlotVector
       ~PlotVector.earth_relative
       ~PlotVector.field
       ~PlotVector.griddata
+      ~PlotVector.latitude
       ~PlotVector.level
+      ~PlotVector.longitude
       ~PlotVector.name
       ~PlotVector.parent
       ~PlotVector.pivot
@@ -27,6 +29,8 @@ PlotVector
       ~PlotVector.scale
       ~PlotVector.skip
       ~PlotVector.time
+      ~PlotVector.x
+      ~PlotVector.y
 
    
    
@@ -81,7 +85,9 @@ PlotVector
    .. autoattribute:: earth_relative
    .. autoattribute:: field
    .. autoattribute:: griddata
+   .. autoattribute:: latitude
    .. autoattribute:: level
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot
@@ -90,6 +96,8 @@ PlotVector
    .. autoattribute:: scale
    .. autoattribute:: skip
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

@@ -14,12 +14,16 @@ Plots2D
    
       ~Plots2D.cross_validation_lock
       ~Plots2D.data
+      ~Plots2D.latitude
       ~Plots2D.level
+      ~Plots2D.longitude
       ~Plots2D.name
       ~Plots2D.parent
       ~Plots2D.plot_units
       ~Plots2D.scale
       ~Plots2D.time
+      ~Plots2D.x
+      ~Plots2D.y
 
    
    
@@ -69,12 +73,16 @@ Plots2D
    
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: data
+   .. autoattribute:: latitude
    .. autoattribute:: level
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units
    .. autoattribute:: scale
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

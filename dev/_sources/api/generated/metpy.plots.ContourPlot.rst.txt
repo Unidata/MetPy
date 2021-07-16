@@ -19,16 +19,20 @@ ContourPlot
       ~ContourPlot.field
       ~ContourPlot.griddata
       ~ContourPlot.label_fontsize
+      ~ContourPlot.latitude
       ~ContourPlot.level
       ~ContourPlot.linecolor
       ~ContourPlot.linestyle
       ~ContourPlot.linewidth
+      ~ContourPlot.longitude
       ~ContourPlot.name
       ~ContourPlot.parent
       ~ContourPlot.plot_units
       ~ContourPlot.plotdata
       ~ContourPlot.scale
       ~ContourPlot.time
+      ~ContourPlot.x
+      ~ContourPlot.y
 
    
    
@@ -84,16 +88,20 @@ ContourPlot
    .. autoattribute:: field
    .. autoattribute:: griddata
    .. autoattribute:: label_fontsize
+   .. autoattribute:: latitude
    .. autoattribute:: level
    .. autoattribute:: linecolor
    .. autoattribute:: linestyle
    .. autoattribute:: linewidth
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

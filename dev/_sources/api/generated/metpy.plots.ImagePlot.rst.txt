@@ -20,13 +20,17 @@ ImagePlot
       ~ImagePlot.field
       ~ImagePlot.griddata
       ~ImagePlot.image_range
+      ~ImagePlot.latitude
       ~ImagePlot.level
+      ~ImagePlot.longitude
       ~ImagePlot.name
       ~ImagePlot.parent
       ~ImagePlot.plot_units
       ~ImagePlot.plotdata
       ~ImagePlot.scale
       ~ImagePlot.time
+      ~ImagePlot.x
+      ~ImagePlot.y
 
    
    
@@ -83,13 +87,17 @@ ImagePlot
    .. autoattribute:: field
    .. autoattribute:: griddata
    .. autoattribute:: image_range
+   .. autoattribute:: latitude
    .. autoattribute:: level
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

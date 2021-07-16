@@ -19,7 +19,9 @@ BarbPlot
       ~BarbPlot.earth_relative
       ~BarbPlot.field
       ~BarbPlot.griddata
+      ~BarbPlot.latitude
       ~BarbPlot.level
+      ~BarbPlot.longitude
       ~BarbPlot.name
       ~BarbPlot.parent
       ~BarbPlot.pivot
@@ -28,6 +30,8 @@ BarbPlot
       ~BarbPlot.scale
       ~BarbPlot.skip
       ~BarbPlot.time
+      ~BarbPlot.x
+      ~BarbPlot.y
 
    
    
@@ -83,7 +87,9 @@ BarbPlot
    .. autoattribute:: earth_relative
    .. autoattribute:: field
    .. autoattribute:: griddata
+   .. autoattribute:: latitude
    .. autoattribute:: level
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: pivot
@@ -92,6 +98,8 @@ BarbPlot
    .. autoattribute:: scale
    .. autoattribute:: skip
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

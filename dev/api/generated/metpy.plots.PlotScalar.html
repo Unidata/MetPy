@@ -367,8 +367,14 @@ example. Similar issues for <a class="reference internal" href="metpy.plots.Imag
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.griddata" title="metpy.plots.PlotScalar.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></p></td>
 <td><p>Return the internal cached data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.level" title="metpy.plots.PlotScalar.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.latitude" title="metpy.plots.PlotScalar.latitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">latitude</span></code></a></p></td>
+<td><p>The latitude coordinate of the field to be plotted.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.level" title="metpy.plots.PlotScalar.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
 <td><p>The level of the field to be plotted.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.longitude" title="metpy.plots.PlotScalar.longitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code></a></p></td>
+<td><p>The longitude coordinate of the field to be plotted.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.name" title="metpy.plots.PlotScalar.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
@@ -387,6 +393,12 @@ example. Similar issues for <a class="reference internal" href="metpy.plots.Imag
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.time" title="metpy.plots.PlotScalar.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.x" title="metpy.plots.PlotScalar.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<td><p>The x coordinate of the field to be plotted.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PlotScalar.y" title="metpy.plots.PlotScalar.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
 </table>
@@ -515,11 +527,32 @@ variables with the following command assuming the dataset was read using xarray 
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotScalar.latitude">
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.PlotScalar.latitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>The latitude coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired latitude coordinate. For example,
+selecting a point or transect through 40 degrees north, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">40</span> <span class="pre">*</span> <span class="pre">units.degrees_north</span></code>. Note that this requires your data to have a latitude
+dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.level">
 <span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.PlotScalar.level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of the field to be plotted.</p>
-<p>This is a value with units to choose the desired plot level. For example, selecting the
-850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code></p>
+<p>This is a value with units to choose a desired plot level. For example, selecting the
+850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code>. Note that this requires your
+data to have a vertical dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotScalar.longitude">
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.PlotScalar.longitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>The longitude coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired longitude coordinate. For example,
+selecting a point or transect through 95 degrees west, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">-95</span> <span class="pre">*</span> <span class="pre">units.degrees_east</span></code>. Note that this requires your data to have a longitude
+dimension coordinate.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -548,7 +581,7 @@ plotting using the MetPy Units module.</p>
 <dt class="sig sig-object py" id="metpy.plots.PlotScalar.plotdata">
 <span class="sig-name descname"><span class="pre">plotdata</span></span><a class="headerlink" href="#metpy.plots.PlotScalar.plotdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data for plotting.</p>
-<p>The data array, x coordinates, and y coordinates.</p>
+<p>The two dimension coordinates and the data array.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -566,7 +599,26 @@ the data values will be scaled by 10^5.</p>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
 <p>If a forecast hour is to be plotted the time should be set to the valid future time, which
 can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
-from the Python standard library.</p>
+from the Python standard library. Note that this requires your data to have a time
+dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotScalar.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.PlotScalar.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>The x coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired x coordinate. For example, selecting a
+point or transect through the projection origin, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">*</span> <span class="pre">units.meter</span></code>. Note that this requires your data to have an x dimension coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.PlotScalar.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.PlotScalar.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>The y coordinate of the field to be plotted.</p>
+<p>This is a value with units to choose a desired x coordinate. For example, selecting a
+point or transect through the projection origin, set this parameter to
+<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">*</span> <span class="pre">units.meter</span></code>. Note that this requires your data to have an y dimension coordinate.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -918,7 +970,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jul 15, 2021 at 19:46:36.<br/>
+        Last updated on Jul 16, 2021 at 19:47:55.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.1.<br/>
     </p>
   </div>

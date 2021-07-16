@@ -23,13 +23,17 @@ FilledContourPlot
       ~FilledContourPlot.griddata
       ~FilledContourPlot.image_range
       ~FilledContourPlot.label_fontsize
+      ~FilledContourPlot.latitude
       ~FilledContourPlot.level
+      ~FilledContourPlot.longitude
       ~FilledContourPlot.name
       ~FilledContourPlot.parent
       ~FilledContourPlot.plot_units
       ~FilledContourPlot.plotdata
       ~FilledContourPlot.scale
       ~FilledContourPlot.time
+      ~FilledContourPlot.x
+      ~FilledContourPlot.y
 
    
    
@@ -89,13 +93,17 @@ FilledContourPlot
    .. autoattribute:: griddata
    .. autoattribute:: image_range
    .. autoattribute:: label_fontsize
+   .. autoattribute:: latitude
    .. autoattribute:: level
+   .. autoattribute:: longitude
    .. autoattribute:: name
    .. autoattribute:: parent
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
    .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
 
    
    

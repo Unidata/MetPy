@@ -18,6 +18,7 @@ MapPanel
       ~MapPanel.layers
       ~MapPanel.layout
       ~MapPanel.parent
+      ~MapPanel.plot_kwargs
       ~MapPanel.plots
       ~MapPanel.projection
       ~MapPanel.title
@@ -74,6 +75,7 @@ MapPanel
    .. autoattribute:: layers
    .. autoattribute:: layout
    .. autoattribute:: parent
+   .. autoattribute:: plot_kwargs
    .. autoattribute:: plots
    .. autoattribute:: projection
    .. autoattribute:: title
