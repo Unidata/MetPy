@@ -920,7 +920,8 @@ def test_azimuth_range_to_lat_lon():
     rng = [2125., 64625., 127125., 189625., 252125., 314625.]
     clon = -89.98416666666667
     clat = 32.27972222222222
-    output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat)
+    with pytest.warns(UserWarning, match='not a Pint-Quantity'):
+        output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat)
     true_lon = [[-89.9946968, -90.3061798, -90.6211612, -90.9397425, -91.2620282,
                 -91.5881257],
                 [-89.9938369, -90.2799198, -90.5692874, -90.8620385, -91.1582743,
@@ -947,8 +948,8 @@ def test_azimuth_range_to_lat_lon():
 
 def test_azimuth_range_to_lat_lon_diff_ellps():
     """Test conversion of azimuth and range to lat/lon grid."""
-    az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257]
-    rng = [2125., 64625., 127125., 189625., 252125., 314625.]
+    az = [332.2403, 334.6765, 337.2528, 339.73846, 342.26257] * units.degrees
+    rng = [2125., 64625., 127125., 189625., 252125., 314625.] * units.meters
     clon = -89.98416666666667
     clat = 32.27972222222222
     output_lon, output_lat = azimuth_range_to_lat_lon(az, rng, clon, clat, Geod(ellps='WGS84'))

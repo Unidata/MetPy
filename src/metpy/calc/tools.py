@@ -4,6 +4,7 @@
 """Contains a collection of generally useful calculation tools."""
 import functools
 from operator import itemgetter
+import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
@@ -887,6 +888,16 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, geod=None
     else:
         g = geod
 
+    try:  # convert range units to meters
+        ranges = ranges.m_as('meters')
+    except AttributeError:  # no units associated
+        warnings.warn('Range values are not a Pint-Quantity, assuming values are in meters.')
+    try:  # convert azimuth units to degrees
+        azimuths = azimuths.m_as('degrees')
+    except AttributeError:  # no units associated
+        warnings.warn(
+            'Azimuth values are not a Pint-Quantity, assuming values are in degrees.'
+        )
     rng2d, az2d = np.meshgrid(ranges, azimuths)
     lats = np.full(az2d.shape, center_lat)
     lons = np.full(az2d.shape, center_lon)
