@@ -25,11 +25,11 @@ exporter = Exporter(globals())
 sat_pressure_0c = units.Quantity(6.112, 'millibar')
 base_unit_sat_pressure_0c = sat_pressure_0c.to_base_units().m
 base_unit_epsilon = mpconsts.epsilon.to_base_units().m
-base_unit_Rd = mpconsts.Rd.to_base_units().m
-base_unit_Lv = mpconsts.Lv.to_base_units().m
-base_unit_Cp_d = mpconsts.Cp_d.to_base_units().m
+base_unit_rd = mpconsts.Rd.to_base_units().m
+base_unit_lv = mpconsts.Lv.to_base_units().m
+base_unit_cp_d = mpconsts.Cp_d.to_base_units().m
 base_unit_kappa = mpconsts.kappa.to_base_units().m
-base_unit_zero_degC = units.Quantity(0., 'degC').m_as('kelvin')
+base_unit_zero_degc = units.Quantity(0., 'degC').m_as('kelvin')
 
 
 @exporter.export
@@ -306,9 +306,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
         partial_press = base_unit_sat_pressure_0c * np.exp(17.67 * (t - 273.15) / (t - 29.65))
         rs = base_unit_epsilon * partial_press / (p - partial_press)
         frac = (
-            (base_unit_Rd * t + base_unit_Lv * rs)
-            / (base_unit_Cp_d + (
-                base_unit_Lv * base_unit_Lv * rs * base_unit_epsilon / (base_unit_Rd * t * t)
+            (base_unit_rd * t + base_unit_lv * rs)
+            / (base_unit_cp_d + (
+                base_unit_lv * base_unit_lv * rs * base_unit_epsilon / (base_unit_rd * t * t)
             ))
         )
         return frac / p
@@ -421,7 +421,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
         nonlocal nan_mask
         vapor_pressure = p * w / (base_unit_epsilon + w)
         val = np.log(vapor_pressure / base_unit_sat_pressure_0c)
-        td = base_unit_zero_degC + 243.5 * val / (17.67 - val)
+        td = base_unit_zero_degc + 243.5 * val / (17.67 - val)
         p_new = p0 * (td / t) ** (1. / base_unit_kappa)
         nan_mask = nan_mask | np.isnan(p_new)
         return np.where(np.isnan(p_new), p, p_new)

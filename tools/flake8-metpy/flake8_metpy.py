@@ -30,7 +30,8 @@ class MetPyVisitor(ast.NodeVisitor):
                        and isinstance(node.value, ast.Name) and node.value.id == 'units')
         is_reg_call = (isinstance(node, ast.Call)
                        and isinstance(node.func, ast.Name) and node.func.id == 'units')
-        is_unit_alias = isinstance(node, ast.Name) and 'unit' in node.id
+        is_unit_alias = (isinstance(node, ast.Name)
+                         and 'unit' in node.id and 'base_unit_' not in node.id)
 
         return is_units_attr or is_reg_attr or is_reg_call or is_unit_alias
 

@@ -20,7 +20,8 @@ from flake8_metpy import MetPyChecker
     ('np.nan * pressure.units', 1),
     ('np.array([1, 2, 3]) * units.m', 1),
     ('np.arange(4) * units.s', 1),
-    ('np.ma.array([1, 2, 3]) * units.hPa', 1)
+    ('np.ma.array([1, 2, 3]) * units.hPa', 1),
+    ('base_unit_rd * t', 0)
 ])
 def test_plugin(source, errs):
     """Test that the flake8 checker works correctly."""
