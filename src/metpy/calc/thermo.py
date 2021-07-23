@@ -23,6 +23,13 @@ from ..xarray import add_vertical_dim_from_xarray, preprocess_and_wrap
 exporter = Exporter(globals())
 
 sat_pressure_0c = units.Quantity(6.112, 'millibar')
+base_unit_sat_pressure_0c = sat_pressure_0c.to_base_units().m
+base_unit_epsilon = mpconsts.epsilon.to_base_units().m
+base_unit_Rd = mpconsts.Rd.to_base_units().m
+base_unit_Lv = mpconsts.Lv.to_base_units().m
+base_unit_Cp_d = mpconsts.Cp_d.to_base_units().m
+base_unit_kappa = mpconsts.kappa.to_base_units().m
+base_unit_zero_degC = units.Quantity(0., 'degC').m_as('kelvin')
 
 
 @exporter.export
@@ -296,13 +303,15 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     """
     def dt(t, p):
-        t = units.Quantity(t, temperature.units)
-        p = units.Quantity(p, pressure.units)
-        rs = saturation_mixing_ratio(p, t)
-        frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
-                / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
-                                    / (mpconsts.Rd * t * t)))).to('kelvin')
-        return (frac / p).magnitude
+        partial_press = base_unit_sat_pressure_0c * np.exp(17.67 * (t - 273.15) / (t - 29.65))
+        rs = base_unit_epsilon * partial_press / (p - partial_press)
+        frac = (
+            (base_unit_Rd * t + base_unit_Lv * rs)
+            / (base_unit_Cp_d + (
+                base_unit_Lv * base_unit_Lv * rs * base_unit_epsilon / (base_unit_Rd * t * t)
+            ))
+        )
+        return frac / p
 
     pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
@@ -311,10 +320,10 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     if np.isnan(reference_pressure):
         return units.Quantity(np.full(pressure.shape, np.nan), temperature.units)
 
-    pressure = pressure.to('mbar')
-    reference_pressure = reference_pressure.to('mbar')
+    pressure = pressure.m_as('Pa')
+    reference_pressure = reference_pressure.m_as('Pa')
     org_units = temperature.units
-    temperature = np.atleast_1d(temperature).to('kelvin')
+    temperature = np.atleast_1d(temperature.m_as('kelvin'))
 
     side = 'left'
 
@@ -324,20 +333,20 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
         pressure = pressure[::-1]
         side = 'right'
 
-    ref_pres_idx = np.searchsorted(pressure.m, reference_pressure.m, side=side)
+    ref_pres_idx = np.searchsorted(pressure, reference_pressure, side=side)
 
     ret_temperatures = np.empty((0, temperature.shape[0]))
 
     if _greater_or_close(reference_pressure, pressure.min()):
         # Integrate downward in pressure
-        pres_down = np.append(reference_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
-        trace_down = si.odeint(dt, temperature.m.squeeze(), pres_down.squeeze())
+        pres_down = np.append(reference_pressure, pressure[(ref_pres_idx - 1)::-1])
+        trace_down = si.odeint(dt, temperature.squeeze(), pres_down.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_down[:0:-1]))
 
     if reference_pressure < pressure.max():
         # Integrate upward in pressure
-        pres_up = np.append(reference_pressure.m, pressure[ref_pres_idx:].m)
-        trace_up = si.odeint(dt, temperature.m.squeeze(), pres_up.squeeze())
+        pres_up = np.append(reference_pressure, pressure[ref_pres_idx:])
+        trace_up = si.odeint(dt, temperature.squeeze(), pres_up.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_up[1:]))
 
     if pres_decreasing:
@@ -406,10 +415,14 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
+    pressure_in_base_units = pressure.m_as('Pa')
+
     def _lcl_iter(p, p0, w, t):
         nonlocal nan_mask
-        td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
-        p_new = (p0 * (td / t) ** (1. / mpconsts.kappa)).m
+        vapor_pressure = p * w / (base_unit_epsilon + w)
+        val = np.log(vapor_pressure / base_unit_sat_pressure_0c)
+        td = base_unit_zero_degC + 243.5 * val / (17.67 - val)
+        p_new = p0 * (td / t) ** (1. / base_unit_kappa)
         nan_mask = nan_mask | np.isnan(p_new)
         return np.where(np.isnan(p_new), p, p_new)
 
@@ -417,14 +430,21 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     # ever encounters a nan, at which point pressure is set to p, stopping iteration.
     nan_mask = False
     w = mixing_ratio(saturation_vapor_pressure(dewpoint), pressure)
-    lcl_p = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
-                           xtol=eps, maxiter=max_iters)
+    lcl_p = so.fixed_point(
+        _lcl_iter,
+        pressure_in_base_units,
+        args=(pressure_in_base_units, w.m_as(''), temperature.m_as('kelvin')),
+        xtol=eps,
+        maxiter=max_iters
+    )
     lcl_p = np.where(nan_mask, np.nan, lcl_p)
 
     # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = units.Quantity(np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p),
-                           pressure.units)
+    lcl_p = units.Quantity(
+        np.where(np.isclose(lcl_p, pressure_in_base_units), pressure_in_base_units, lcl_p),
+        'Pa'
+    ).to(pressure.units)
 
     return lcl_p, globals()['dewpoint'](vapor_pressure(lcl_p, w)).to(temperature.units)
 
