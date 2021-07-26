@@ -47,8 +47,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
         Relative humidity
 
     Notes
-    _____
-
+    -----
     .. math:: rh = \frac{e(T_d)}{e_s(T)}
 
     .. versionchanged:: 1.0
