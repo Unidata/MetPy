@@ -37,6 +37,7 @@ metpy.plots
       ImagePlot
       MapPanel
       PanelContainer
+      PlotGeometry
       PlotObs
       PlotScalar
       PlotVector
