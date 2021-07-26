@@ -2,12 +2,14 @@
 #  Distributed under the terms of the BSD 3-Clause License.
 #  SPDX-License-Identifier: BSD-3-Clause
 """Declarative plotting tools."""
-
+import collections
 import contextlib
 import copy
 from datetime import datetime, timedelta
+from itertools import cycle
 import re
 
+import matplotlib.patheffects as patheffects
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -15,6 +17,7 @@ from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe
                        Tuple, Unicode, Union, validate)
 
 from . import ctables, wx_symbols
+from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density
@@ -1831,3 +1834,271 @@ class PlotObs(HasTraits):
     def copy(self):
         """Return a copy of the plot."""
         return copy.copy(self)
+
+
+@exporter.export
+class PlotGeometry(HasTraits):
+    """Plot collections of Shapely objects and customize their appearance."""
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
+
+    geometry = Instance(collections.abc.Iterable, allow_none=False)
+    geometry.__doc__ = """A collection of Shapely objects to plot.
+
+    A collection of Shapely objects, such as the 'geometry' column from a
+    ``geopandas.GeoDataFrame``. Acceptable Shapely objects are ``shapely.MultiPolygon``,
+    ``shapely.Polygon``, ``shapely.MultiLineString``, ``shapely.LineString``,
+    ``shapely.MultiPoint``, and ``shapely.Point``.
+    """
+
+    fill = Union([Instance(collections.abc.Iterable), Unicode()], default_value=['lightgray'],
+                 allow_none=True)
+    fill.__doc__ = """Fill color(s) for polygons and points.
+
+    A single string (color name or hex code) or collection of strings with which to fill
+    polygons and points. If a collection, the first color corresponds to the first Shapely
+    object in `geometry`, the second color corresponds to the second Shapely object, and so on.
+    If `fill` is shorter than `geometry`, `fill` cycles back to the beginning, repeating the
+    sequence of colors as needed. Default value is lightgray.
+    """
+
+    stroke = Union([Instance(collections.abc.Iterable), Unicode()], default_value=['black'],
+                   allow_none=True)
+    stroke.__doc__ = """Stroke color(s) for polygons and line color(s) for lines.
+
+    A single string (color name or hex code) or collection of strings with which to outline
+    polygons and color lines. If a collection, the first color corresponds to the first Shapely
+    object in `geometry`, the second color corresponds to the second Shapely object, and so on.
+    If `stroke` is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
+    the sequence of colors as needed. Default value is black.
+    """
+
+    marker = Unicode(default_value='.', allow_none=False)
+    marker.__doc__ = """Symbol used to denote points.
+
+    Accepts any matplotlib marker. Default value is '.', which plots a dot at each point.
+    """
+
+    labels = Instance(collections.abc.Iterable, allow_none=True)
+    labels.__doc__ = """A collection of labels corresponding to plotted geometry.
+
+    A collection of strings to use as labels for geometry, such as a column from a
+    ``Geopandas.GeoDataFrame``. The first label corresponds to the first Shapely object in
+    `geometry`, the second label corresponds to the second Shapely object, and so on. The
+    length of `labels` must be equal to the length of `geometry`. Labels are positioned along
+    the edge of polygons, and below lines and points. No labels are plotted if this attribute
+    is left undefined, or set equal to `None`.
+    """
+
+    label_fontsize = Union([Int(), Float(), Unicode()], default_value=None, allow_none=True)
+    label_fontsize.__doc__ = """An integer or string value for the font size of labels.
+
+    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+    """
+
+    label_facecolor = Union([Instance(collections.abc.Iterable), Unicode()], allow_none=True)
+    label_facecolor.__doc__ = """Font color(s) for labels.
+
+    A single string (color name or hex code) or collection of strings for the font color of
+    labels. If a collection, the first color corresponds to the label of the first Shapely
+    object in `geometry`, the second color corresponds to the label of the second Shapely
+    object, and so on. Default value is `stroke`.
+    """
+
+    label_edgecolor = Union([Instance(collections.abc.Iterable), Unicode()], allow_none=True)
+    label_edgecolor.__doc__ = """Outline color(s) for labels.
+
+    A single string (color name or hex code) or collection of strings for the outline color of
+    labels. If a collection, the first color corresponds to the label of the first Shapely
+    object in `geometry`, the second color corresponds to the label of the second Shapely
+    object, and so on. Default value is `fill`.
+    """
+
+    @staticmethod
+    @validate('geometry')
+    def _valid_geometry(_, proposal):
+        """Cast `geometry` into a list once it is provided by user.
+
+        Users can provide any kind of collection, such as a ``GeoPandas.GeoSeries``, and this
+        turns them into a list.
+        """
+        geometry = proposal['value']
+        return list(geometry)
+
+    @staticmethod
+    @validate('fill', 'stroke', 'label_facecolor', 'label_edgecolor')
+    def _valid_color_list(_, proposal):
+        """Cast color-related attributes into a list once provided by user.
+
+        This is necessary because _build() expects to cycle through a list of colors when
+        assigning them to the geometry.
+        """
+        color = proposal['value']
+
+        if isinstance(color, str):
+            color = [color]
+        # `color` must be a collection if it is not a string
+        else:
+            color = list(color)
+
+        return color
+
+    @staticmethod
+    @validate('labels')
+    def _valid_labels(_, proposal):
+        """Cast `labels` into a list once provided by user."""
+        labels = proposal['value']
+        return list(labels)
+
+    @observe('fill', 'stroke')
+    def _update_label_colors(self, change):
+        """Set default text colors using `fill` and `stroke`.
+
+        If `label_facecolor` or `label_edgecolor` have not been specified, provide default
+        colors for those attributes using `fill` and `stroke`.
+        """
+        if change['name'] == 'fill' and self.label_edgecolor is None:
+            self.label_edgecolor = self.fill
+        elif change['name'] == 'stroke' and self.label_facecolor is None:
+            self.label_facecolor = self.stroke
+
+    @property
+    def name(self):
+        """Generate a name for the plot."""
+        # Unlike Plots2D and PlotObs, there are no other attributes (such as 'fields' or
+        # 'levels') from which to name the plot. A generic name is returned here in case the
+        # user does not provide their own title, in which case MapPanel.draw() looks here.
+        return 'Geometry Plot'
+
+    @staticmethod
+    def _position_label(geo_obj, label):
+        """Return a (lon, lat) where the label of a polygon/line/point can be placed."""
+        from shapely.geometry import MultiLineString, MultiPoint, MultiPolygon, Polygon
+
+        # A hash of the label is used in choosing a point along the polygon or line that
+        # will be returned. This "psuedo-randomizes" the position of a label, in hopes of
+        # spatially dispersing the labels and lessening the chance that labels overlap.
+        label_hash = sum(map(ord, str(label)))
+
+        # If object is a MultiPolygon or MultiLineString, associate the label with the single
+        # largest Polygon or LineString from the collection. If MultiPoint, associate the label
+        # with one of the Points in the MultiPoint, chosen based on the label hash.
+        if isinstance(geo_obj, (MultiPolygon, MultiLineString)):
+            geo_obj = max(geo_obj, key=lambda x: x.length)
+        elif isinstance(geo_obj, MultiPoint):
+            geo_obj = geo_obj[label_hash % len(geo_obj)]
+
+        # Get the list of coordinates of the polygon/line/point
+        if isinstance(geo_obj, Polygon):
+            coords = geo_obj.exterior.coords
+        else:
+            coords = geo_obj.coords
+
+        position = coords[label_hash % len(coords)]
+
+        return position
+
+    def _draw_label(self, text, lon, lat, color='black', outline='white', offset=(0, 0)):
+        """Draw a label to the plot.
+
+        Parameters
+        ----------
+        text : str
+            The label's text
+        lon : float
+            Longitude at which to position the label
+        lat : float
+            Latitude at which to position the label
+        color : str (default: 'black')
+            Name or hex code for the color of the text
+        outline : str (default: 'white')
+            Name or hex code of the color of the outline of the text
+        offset : tuple (default: (0, 0))
+            A tuple containing the x- and y-offset of the label, respectively
+        """
+        path_effects = [patheffects.withStroke(linewidth=4, foreground=outline)]
+        self.parent.ax.add_collection(TextCollection([lon], [lat], [str(text)],
+                                                     va='center',
+                                                     ha='center',
+                                                     offset=offset,
+                                                     weight='demi',
+                                                     size=self.label_fontsize,
+                                                     color=color,
+                                                     path_effects=path_effects,
+                                                     transform=ccrs.PlateCarree()))
+
+    def draw(self):
+        """Draw the plot."""
+        if self._need_redraw:
+            if getattr(self, 'handles', None) is None:
+                self._build()
+            self._need_redraw = False
+
+    def copy(self):
+        """Return a copy of the plot."""
+        return copy.copy(self)
+
+    def _build(self):
+        """Build the plot by calling needed plotting methods as necessary."""
+        from shapely.geometry import (LineString, MultiLineString, MultiPoint, MultiPolygon,
+                                      Point, Polygon)
+
+        # Cast attributes to a list if None, since traitlets doesn't call validators (like
+        # `_valid_color_list()` and `_valid_labels()`) when the proposed value is None.
+        self.fill = ['none'] if self.fill is None else self.fill
+        self.stroke = ['none'] if self.stroke is None else self.stroke
+        self.labels = [''] if self.labels is None else self.labels
+        self.label_edgecolor = (['none'] if self.label_edgecolor is None
+                                else self.label_edgecolor)
+        self.label_facecolor = (['none'] if self.label_facecolor is None
+                                else self.label_facecolor)
+
+        # Each Shapely object is plotted separately with its corresponding colors and label
+        for geo_obj, stroke, fill, label, fontcolor, fontoutline in zip(
+                self.geometry, cycle(self.stroke), cycle(self.fill), cycle(self.labels),
+                cycle(self.label_facecolor), cycle(self.label_edgecolor)):
+            # Plot the Shapely object with the appropriate method and colors
+            if isinstance(geo_obj, (MultiPolygon, Polygon)):
+                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
+                                              facecolor=fill, crs=ccrs.PlateCarree())
+            elif isinstance(geo_obj, (MultiLineString, LineString)):
+                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
+                                              facecolor='none', crs=ccrs.PlateCarree())
+            elif isinstance(geo_obj, MultiPoint):
+                for point in geo_obj:
+                    lon, lat = point.coords[0]
+                    self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
+                                        transform=ccrs.PlateCarree())
+            elif isinstance(geo_obj, Point):
+                lon, lat = geo_obj.coords[0]
+                self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
+                                    transform=ccrs.PlateCarree())
+
+            # Plot labels if provided
+            if label:
+                # If fontcolor is None/'none', choose a font color
+                if fontcolor in [None, 'none'] and stroke not in [None, 'none']:
+                    fontcolor = stroke
+                elif fontcolor in [None, 'none']:
+                    fontcolor = 'black'
+
+                # If fontoutline is None/'none', choose a font outline
+                if fontoutline in [None, 'none'] and fill not in [None, 'none']:
+                    fontoutline = fill
+                elif fontoutline in [None, 'none']:
+                    fontoutline = 'white'
+
+                # Choose a point along the polygon/line/point to place label
+                lon, lat = self._position_label(geo_obj, label)
+
+                # If polygon, put label directly on edge of polygon. If line or point, put
+                # label slightly below line/point.
+                if isinstance(geo_obj, (MultiPolygon, Polygon)):
+                    offset = (0, 0)
+                else:
+                    offset = (0, -12)
+
+                # Finally, draw the label
+                self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)
