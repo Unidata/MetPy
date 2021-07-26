@@ -45,7 +45,7 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     -------
     `pint.Quantity`
         Relative humidity
-        
+
     Notes
     _____
 
