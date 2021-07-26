@@ -11,8 +11,6 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import pytest
-from shapely.geometry import (LineString, MultiLineString, MultiPoint, MultiPolygon, Point,
-                              Polygon)
 from traitlets import TraitError
 import xarray as xr
 
@@ -1464,6 +1462,8 @@ def test_copy():
 @needs_cartopy
 def test_declarative_plot_geometry_polygons():
     """Test that `PlotGeometry` correctly plots MultiPolygon and Polygon objects."""
+    from shapely.geometry import MultiPolygon, Polygon
+
     # MultiPolygons and Polygons to plot
     slgt_risk_polygon = MultiPolygon([Polygon(
         [(-87.43, 41.86), (-91.13, 41.39), (-95.24, 40.99), (-97.47, 40.4), (-98.39, 41.38),
@@ -1503,9 +1503,10 @@ def test_declarative_plot_geometry_polygons():
 
 
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=2.985)
-@needs_cartopy
 def test_declarative_plot_geometry_lines(ccrs):
     """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
+    from shapely.geometry import LineString, MultiLineString
+
     # LineString and MultiLineString to plot
     irma_fcst = LineString(
         [(-52.3, 16.9), (-53.9, 16.7), (-56.2, 16.6), (-58.6, 17.0), (-61.2, 17.8),
@@ -1541,9 +1542,10 @@ def test_declarative_plot_geometry_lines(ccrs):
 
 
 @pytest.mark.mpl_image_compare(remove_text=False, tolerance=1.900)
-@needs_cartopy
 def test_declarative_plot_geometry_points(ccrs):
     """Test that `PlotGeometry` correctly plots Point and MultiPoint objects."""
+    from shapely.geometry import MultiPoint, Point
+
     # Points and MultiPoints to plot
     irma_track = [Point(-74.7, 21.8), Point(-76.0, 22.0), Point(-77.2, 22.1)]
     irma_track_shadow = MultiPoint([

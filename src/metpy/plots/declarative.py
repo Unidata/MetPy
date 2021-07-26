@@ -1840,8 +1840,6 @@ class PlotObs(HasTraits):
 class PlotGeometry(HasTraits):
     """Plot collections of Shapely objects and customize their appearance."""
 
-    import shapely.geometry as shp
-
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
 
@@ -1974,8 +1972,11 @@ class PlotGeometry(HasTraits):
         # user does not provide their own title, in which case MapPanel.draw() looks here.
         return 'Geometry Plot'
 
-    def _position_label(self, geo_obj, label):
+    @staticmethod
+    def _position_label(geo_obj, label):
         """Return a (lon, lat) where the label of a polygon/line/point can be placed."""
+        from shapely.geometry import MultiLineString, MultiPoint, MultiPolygon, Polygon
+
         # A hash of the label is used in choosing a point along the polygon or line that
         # will be returned. This "psuedo-randomizes" the position of a label, in hopes of
         # spatially dispersing the labels and lessening the chance that labels overlap.
@@ -1984,13 +1985,13 @@ class PlotGeometry(HasTraits):
         # If object is a MultiPolygon or MultiLineString, associate the label with the single
         # largest Polygon or LineString from the collection. If MultiPoint, associate the label
         # with one of the Points in the MultiPoint, chosen based on the label hash.
-        if isinstance(geo_obj, (self.shp.MultiPolygon, self.shp.MultiLineString)):
+        if isinstance(geo_obj, (MultiPolygon, MultiLineString)):
             geo_obj = max(geo_obj, key=lambda x: x.length)
-        elif isinstance(geo_obj, self.shp.MultiPoint):
+        elif isinstance(geo_obj, MultiPoint):
             geo_obj = geo_obj[label_hash % len(geo_obj)]
 
         # Get the list of coordinates of the polygon/line/point
-        if isinstance(geo_obj, self.shp.Polygon):
+        if isinstance(geo_obj, Polygon):
             coords = geo_obj.exterior.coords
         else:
             coords = geo_obj.coords
@@ -2041,6 +2042,9 @@ class PlotGeometry(HasTraits):
 
     def _build(self):
         """Build the plot by calling needed plotting methods as necessary."""
+        from shapely.geometry import (LineString, MultiLineString, MultiPoint, MultiPolygon,
+                                      Point, Polygon)
+
         # Cast attributes to a list if None, since traitlets doesn't call validators (like
         # `_valid_color_list()` and `_valid_labels()`) when the proposed value is None.
         self.fill = ['none'] if self.fill is None else self.fill
@@ -2056,18 +2060,18 @@ class PlotGeometry(HasTraits):
                 self.geometry, cycle(self.stroke), cycle(self.fill), cycle(self.labels),
                 cycle(self.label_facecolor), cycle(self.label_edgecolor)):
             # Plot the Shapely object with the appropriate method and colors
-            if isinstance(geo_obj, (self.shp.MultiPolygon, self.shp.Polygon)):
+            if isinstance(geo_obj, (MultiPolygon, Polygon)):
                 self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
                                               facecolor=fill, crs=ccrs.PlateCarree())
-            elif isinstance(geo_obj, (self.shp.MultiLineString, self.shp.LineString)):
+            elif isinstance(geo_obj, (MultiLineString, LineString)):
                 self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
                                               facecolor='none', crs=ccrs.PlateCarree())
-            elif isinstance(geo_obj, self.shp.MultiPoint):
+            elif isinstance(geo_obj, MultiPoint):
                 for point in geo_obj:
                     lon, lat = point.coords[0]
                     self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
                                         transform=ccrs.PlateCarree())
-            elif isinstance(geo_obj, self.shp.Point):
+            elif isinstance(geo_obj, Point):
                 lon, lat = geo_obj.coords[0]
                 self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
                                     transform=ccrs.PlateCarree())
@@ -2091,7 +2095,7 @@ class PlotGeometry(HasTraits):
 
                 # If polygon, put label directly on edge of polygon. If line or point, put
                 # label slightly below line/point.
-                if isinstance(geo_obj, (self.shp.MultiPolygon, self.shp.Polygon)):
+                if isinstance(geo_obj, (MultiPolygon, Polygon)):
                     offset = (0, 0)
                 else:
                     offset = (0, -12)
