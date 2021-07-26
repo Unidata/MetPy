@@ -45,8 +45,9 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     -------
     `pint.Quantity`
         Relative humidity
-        Notes
-        _____
+        
+    Notes
+    _____
 
     .. math:: rh = \frac{e(T_d)}{e_s(T)}
 
