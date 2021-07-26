@@ -1031,7 +1031,8 @@ def test_first_derivative_xarray_lonlat(test_da_lonlat):
     # Build the xarray of the desired values
     partial = xr.DataArray(
         np.array([-3.30782978e-06, -3.42816074e-06, -3.57012948e-06, -3.73759364e-06]),
-        coords=(('lat', test_da_lonlat['lat']),)
+        coords={'lat': test_da_lonlat['lat']},
+        dims=('lat',)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
@@ -1085,7 +1086,8 @@ def test_second_derivative_xarray_lonlat(test_da_lonlat):
     # Build the xarray of the desired values
     partial = xr.DataArray(
         np.array([1.67155420e-14, 1.67155420e-14, 1.74268211e-14, 1.74268211e-14]),
-        coords=(('lat', test_da_lonlat['lat']),)
+        coords={'lat': test_da_lonlat['lat']},
+        dims=('lat',)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
@@ -1113,7 +1115,8 @@ def test_gradient_xarray(test_da_xy):
 
     partial = xr.DataArray(
         np.array([0.04129204, 0.03330003, 0.02264402]),
-        coords=(('isobaric', test_da_xy['isobaric']),)
+        coords={'isobaric': test_da_xy['isobaric']},
+        dims=('isobaric',)
     )
     _, truth_p = xr.broadcast(test_da_xy, partial)
     truth_p.coords['metpy_crs'] = test_da_xy['metpy_crs']
@@ -1197,7 +1200,8 @@ def test_laplacian_xarray_lonlat(test_da_lonlat):
     # Build the xarray of the desired values
     partial = xr.DataArray(
         np.array([1.67155420e-14, 1.67155420e-14, 1.74268211e-14, 1.74268211e-14]),
-        coords=(('lat', test_da_lonlat['lat']),)
+        coords={'lat': test_da_lonlat['lat']},
+        dims=('lat',)
     )
     _, truth = xr.broadcast(test_da_lonlat, partial)
     truth.coords['metpy_crs'] = test_da_lonlat['metpy_crs']
