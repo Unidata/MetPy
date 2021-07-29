@@ -167,14 +167,15 @@ def set_agg_backend():
 @pytest.fixture(params=['dask', 'xarray', 'masked', 'numpy'])
 def array_type(request):
     """Return an array type for testing calc functions."""
+    quantity = metpy.units.units.Quantity
     if request.param == 'dask':
         dask_array = pytest.importorskip('dask.array', reason='dask.array is not available')
-        return lambda d, u: metpy.units.units.Quantity(dask_array.array(d), u)
+        return lambda d, u, *, mask=None: quantity(dask_array.array(d), u)
     elif request.param == 'xarray':
-        return lambda d, u: xarray.DataArray(d, attrs={'units': u})
+        return lambda d, u, *, mask=None: xarray.DataArray(d, attrs={'units': u})
     elif request.param == 'masked':
-        return lambda d, u: metpy.units.units.Quantity(numpy.ma.array(d), u)
+        return lambda d, u, *, mask=None: quantity(numpy.ma.array(d, mask=mask), u)
     elif request.param == 'numpy':
-        return lambda d, u: metpy.units.units.Quantity(numpy.array(d), u)
+        return lambda d, u, *, mask=None: quantity(numpy.array(d), u)
     else:
         raise ValueError(f'Unsupported array_type option {request.param}')
