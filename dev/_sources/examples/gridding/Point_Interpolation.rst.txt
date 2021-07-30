@@ -147,7 +147,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f782d6800d0>
+    <matplotlib.colorbar.Colorbar object at 0x7fdb39a98910>
 
 
 
@@ -182,7 +182,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f7819a69c40>
+    <matplotlib.colorbar.Colorbar object at 0x7fdb5a0e6f40>
 
 
 
@@ -222,7 +222,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f77fc0996a0>
+    <matplotlib.colorbar.Colorbar object at 0x7fdb398738e0>
 
 
 
@@ -260,7 +260,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f78197dcee0>
+    <matplotlib.colorbar.Colorbar object at 0x7fdb3bb94670>
 
 
 
@@ -296,7 +296,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.806 seconds)
+   **Total running time of the script:** ( 0 minutes  4.828 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
