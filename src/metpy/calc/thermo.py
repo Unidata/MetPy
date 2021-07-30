@@ -46,6 +46,9 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     `pint.Quantity`
         Relative humidity
 
+    Notes
+    -----
+    .. math:: rh = \frac{e(T_d)}{e_s(T)}
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
@@ -2548,13 +2551,6 @@ def dry_static_energy(height, temperature):
     This function will calculate the dry static energy following the first two terms of
     equation 3.72 in [Hobbs2006]_.
 
-    Notes
-    -----
-    .. math::\text{dry static energy} = c_{pd} * T + gz
-
-    * :math:`T` is temperature
-    * :math:`z` is height
-
     Parameters
     ----------
     height : `pint.Quantity`
@@ -2568,13 +2564,19 @@ def dry_static_energy(height, temperature):
     `pint.Quantity`
         Dry static energy
 
-
-    .. versionchanged:: 1.0
-       Renamed ``heights`` parameter to ``height``
-
     See Also
     --------
     montgomery_streamfunction
+
+    Notes
+    -----
+    .. math:: \text{dry static energy} = c_{pd} T + gz
+
+    * :math:`T` is temperature
+    * :math:`z` is height
+
+    .. versionchanged:: 1.0
+       Renamed ``heights`` parameter to ``height``
 
     """
     return (mpconsts.g * height + mpconsts.Cp_d * temperature).to('kJ/kg')
@@ -2610,7 +2612,7 @@ def moist_static_energy(height, temperature, specific_humidity):
 
     Notes
     -----
-    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q
+    .. math:: \text{moist static energy} = c_{pd} T + gz + L_v q
 
     * :math:`T` is temperature
     * :math:`z` is height
@@ -3257,8 +3259,8 @@ def lifted_index(pressure, temperature, parcel_profile):
 def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim=0):
     r"""Calculate the gradient (or flux) Richardson number.
 
-    .. math::   Ri = (g/\theta) * \frac{\left(\partial \theta/\partial z\)}
-             {[\left(\partial u / \partial z\right)^2 + \left(\partial v / \partial z\right)^2}
+    .. math:: Ri = \frac{g}{\theta} \frac{\left(\partial \theta/\partial z\right)}
+             {\left(\partial u / \partial z\right)^2 + \left(\partial v / \partial z\right)^2}
 
     See [Holton2004]_ pg. 121-122. As noted by [Holton2004]_, flux Richardson
     number values below 0.25 indicate turbulence.

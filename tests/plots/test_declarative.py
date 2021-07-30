@@ -18,7 +18,7 @@ from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
-                         PanelContainer, PlotObs)
+                         PanelContainer, PlotGeometry, PlotObs)
 from metpy.testing import needs_cartopy
 from metpy.units import units
 
@@ -266,6 +266,49 @@ def test_no_field_error():
 
     with pytest.raises(ValueError):
         contour.draw()
+
+
+def test_ndim_error_scalar(cfeature):
+    """Make sure we get a useful error when the field is not set."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = None
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.projection = 'lcc'
+    panel.layers = [cfeature.LAKES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+
+    with pytest.raises(ValueError):
+        pc.draw()
+
+
+def test_ndim_error_vector(cfeature):
+    """Make sure we get a useful error when the field is not set."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    barbs = BarbPlot()
+    barbs.data = data
+    barbs.field = ['u_wind', 'v_wind']
+    barbs.level = None
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.projection = 'lcc'
+    panel.plots = [barbs]
+
+    pc = PanelContainer()
+    pc.panel = panel
+
+    with pytest.raises(ValueError):
+        pc.draw()
 
 
 def test_no_field_error_barbs():
@@ -1383,7 +1426,8 @@ def test_panel():
 def test_copy():
     """Test that the copy method works for all classes in `declarative.py`."""
     # Copies of plot objects
-    objects = [ImagePlot(), ContourPlot(), FilledContourPlot(), BarbPlot(), PlotObs()]
+    objects = [ImagePlot(), ContourPlot(), FilledContourPlot(), BarbPlot(), PlotObs(),
+               PlotGeometry()]
 
     for obj in objects:
         obj.time = datetime.now()
@@ -1406,8 +1450,132 @@ def test_copy():
 
     # Copies of plots in MapPanels should not point to same location in memory
     obj = MapPanel()
-    obj.plots = [PlotObs(), BarbPlot(), FilledContourPlot(), ContourPlot(), ImagePlot()]
+    obj.plots = [PlotObs(), PlotGeometry(), BarbPlot(), FilledContourPlot(), ContourPlot(),
+                 ImagePlot()]
     copied_obj = obj.copy()
 
     for i in range(len(obj.plots)):
         assert obj.plots[i] is not copied_obj.plots[i]
+
+
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0.607)
+@needs_cartopy
+def test_declarative_plot_geometry_polygons():
+    """Test that `PlotGeometry` correctly plots MultiPolygon and Polygon objects."""
+    from shapely.geometry import MultiPolygon, Polygon
+
+    # MultiPolygons and Polygons to plot
+    slgt_risk_polygon = MultiPolygon([Polygon(
+        [(-87.43, 41.86), (-91.13, 41.39), (-95.24, 40.99), (-97.47, 40.4), (-98.39, 41.38),
+         (-96.54, 42.44), (-94.02, 44.48), (-92.62, 45.48), (-89.49, 45.91), (-86.38, 44.92),
+         (-86.26, 43.37), (-86.62, 42.45), (-87.43, 41.86), ]), Polygon(
+        [(-74.02, 42.8), (-72.01, 43.08), (-71.42, 42.77), (-71.76, 42.29), (-72.73, 41.89),
+         (-73.89, 41.93), (-74.4, 42.28), (-74.02, 42.8), ])])
+    enh_risk_polygon = Polygon(
+        [(-87.42, 43.67), (-88.44, 42.65), (-90.87, 41.92), (-94.63, 41.84), (-95.13, 42.22),
+         (-95.23, 42.54), (-94.79, 43.3), (-92.81, 43.99), (-90.62, 44.55), (-88.51, 44.61),
+         (-87.42, 43.67)])
+
+    # Plot geometry, set colors and labels
+    geo = PlotGeometry()
+    geo.geometry = [slgt_risk_polygon, enh_risk_polygon]
+    geo.stroke = ['#DDAA00', '#FF6600']
+    geo.fill = None
+    geo.labels = ['SLGT', 'ENH']
+    geo.label_facecolor = ['#FFE066', '#FFA366']
+    geo.label_edgecolor = ['#DDAA00', '#FF6600']
+    geo.label_fontsize = 'large'
+
+    # Place plot in a panel and container
+    panel = MapPanel()
+    panel.area = [-125, -70, 20, 55]
+    panel.projection = 'lcc'
+    panel.title = ' '
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [geo]
+
+    pc = PanelContainer()
+    pc.size = (12, 12)
+    pc.panels = [panel]
+    pc.show()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=2.985)
+def test_declarative_plot_geometry_lines(ccrs):
+    """Test that `PlotGeometry` correctly plots MultiLineString and LineString objects."""
+    from shapely.geometry import LineString, MultiLineString
+
+    # LineString and MultiLineString to plot
+    irma_fcst = LineString(
+        [(-52.3, 16.9), (-53.9, 16.7), (-56.2, 16.6), (-58.6, 17.0), (-61.2, 17.8),
+         (-63.9, 18.7), (-66.8, 19.6), (-72.0, 21.0), (-76.5, 22.0)])
+    irma_fcst_shadow = MultiLineString([LineString(
+        [(-52.3, 17.15), (-53.9, 16.95), (-56.2, 16.85), (-58.6, 17.25), (-61.2, 18.05),
+         (-63.9, 18.95), (-66.8, 19.85), (-72.0, 21.25), (-76.5, 22.25)]), LineString(
+        [(-52.3, 16.65), (-53.9, 16.45), (-56.2, 16.35), (-58.6, 16.75), (-61.2, 17.55),
+         (-63.9, 18.45), (-66.8, 19.35), (-72.0, 20.75), (-76.5, 21.75)])])
+
+    # Plot geometry, set colors and labels
+    geo = PlotGeometry()
+    geo.geometry = [irma_fcst, irma_fcst_shadow]
+    geo.fill = None
+    geo.stroke = 'green'
+    geo.labels = ['Irma', '+/- 0.25 deg latitude']
+    geo.label_facecolor = None
+
+    # Place plot in a panel and container
+    panel = MapPanel()
+    panel.area = [-85, -45, 12, 25]
+    panel.projection = ccrs.PlateCarree()
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.title = 'Hurricane Irma Forecast'
+    panel.plots = [geo]
+
+    pc = PanelContainer()
+    pc.size = (12, 12)
+    pc.panels = [panel]
+    pc.show()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=1.900)
+def test_declarative_plot_geometry_points(ccrs):
+    """Test that `PlotGeometry` correctly plots Point and MultiPoint objects."""
+    from shapely.geometry import MultiPoint, Point
+
+    # Points and MultiPoints to plot
+    irma_track = [Point(-74.7, 21.8), Point(-76.0, 22.0), Point(-77.2, 22.1)]
+    irma_track_shadow = MultiPoint([
+        Point(-64.7, 18.25), Point(-66.0, 18.85), Point(-67.7, 19.45), Point(-69.0, 19.85),
+        Point(-70.4, 20.45), Point(-71.8, 20.85), Point(-73.2, 21.25), Point(-74.7, 21.55),
+        Point(-76.0, 21.75), Point(-77.2, 21.85), Point(-78.3, 22.05), Point(-79.3, 22.45),
+        Point(-80.2, 22.85), Point(-80.9, 23.15), Point(-81.3, 23.45), Point(-81.5, 24.25),
+        Point(-81.7, 25.35), Point(-81.7, 26.55), Point(-82.2, 27.95), Point(-82.7, 29.35),
+        Point(-83.5, 30.65), Point(-84.4, 31.65)])
+
+    # Plot geometry, set colors and labels
+    geo = PlotGeometry()
+    geo.geometry = irma_track + [irma_track_shadow]
+    geo.fill = 'blue'
+    geo.stroke = None
+    geo.marker = '^'
+    geo.labels = ['Point', 'Point', 'Point', 'Irma Track']
+    geo.label_edgecolor = None
+    geo.label_facecolor = None
+
+    # Place plot in a panel and container
+    panel = MapPanel()
+    panel.area = [-85, -65, 17, 30]
+    panel.projection = ccrs.PlateCarree()
+    panel.layers = ['states', 'coastline', 'borders']
+    panel.plots = [geo]
+
+    pc = PanelContainer()
+    pc.size = (12, 12)
+    pc.panels = [panel]
+    pc.show()
+
+    return pc.figure

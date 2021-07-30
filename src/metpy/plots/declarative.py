@@ -2,12 +2,14 @@
 #  Distributed under the terms of the BSD 3-Clause License.
 #  SPDX-License-Identifier: BSD-3-Clause
 """Declarative plotting tools."""
-
+import collections
 import contextlib
 import copy
 from datetime import datetime, timedelta
+from itertools import cycle
 import re
 
+import matplotlib.patheffects as patheffects
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -15,6 +17,7 @@ from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe
                        Tuple, Unicode, Union, validate)
 
 from . import ctables, wx_symbols
+from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
 from ..calc import reduce_point_density
@@ -498,6 +501,11 @@ def lookup_map_feature(feature_name):
 class Panel(HasTraits):
     """Draw one or more plots."""
 
+    @property
+    def plot_kwargs(self):
+        """Set the keyword arguments for MapPanel plotting."""
+        return {}
+
 
 @exporter.export
 class PanelContainer(HasTraits):
@@ -786,6 +794,15 @@ class MapPanel(Panel):
 
         return self._ax
 
+    @property
+    def plot_kwargs(self):
+        """Set the keyword arguments for MapPanel plotting."""
+        if isinstance(self.plots[0].griddata, tuple):
+            dataproj = self.plots[0].griddata[0].metpy.cartopy_crs
+        else:
+            dataproj = self.plots[0].griddata.metpy.cartopy_crs
+        return {'transform': dataproj}
+
     @ax.setter
     def ax(self, val):
         """Set the :class:`matplotlib.axes.Axes` to draw on.
@@ -848,22 +865,49 @@ class MapPanel(Panel):
         return copy.copy(self)
 
 
-@exporter.export
-class Plots2D(HasTraits):
-    """The highest level class related to plotting 2D data.
+class SubsetTraits(HasTraits):
+    """Represent common traits for subsetting data."""
 
-    This class collects all common methods no matter whether plotting a scalar variable or
-    vector. Primary settings common to all types of 2D plots are time and level.
+    x = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    x.__doc__ = """The x coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired x coordinate. For example, selecting a
+    point or transect through the projection origin, set this parameter to
+    ``0 * units.meter``. Note that this requires your data to have an x dimension coordinate.
     """
 
-    parent = Instance(Panel)
-    _need_redraw = Bool(default_value=True)
+    longitude = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    longitude.__doc__ = """The longitude coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired longitude coordinate. For example,
+    selecting a point or transect through 95 degrees west, set this parameter to
+    ``-95 * units.degrees_east``. Note that this requires your data to have a longitude
+    dimension coordinate.
+    """
+
+    y = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    y.__doc__ = """The y coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired x coordinate. For example, selecting a
+    point or transect through the projection origin, set this parameter to
+    ``0 * units.meter``. Note that this requires your data to have an y dimension coordinate.
+    """
+
+    latitude = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
+    latitude.__doc__ = """The latitude coordinate of the field to be plotted.
+
+    This is a value with units to choose a desired latitude coordinate. For example,
+    selecting a point or transect through 40 degrees north, set this parameter to
+    ``40 * units.degrees_north``. Note that this requires your data to have a latitude
+    dimension coordinate.
+    """
 
     level = Union([Int(allow_none=True, default_value=None), Instance(units.Quantity)])
     level.__doc__ = """The level of the field to be plotted.
 
-    This is a value with units to choose the desired plot level. For example, selecting the
-    850-hPa level, set this parameter to ``850 * units.hPa``
+    This is a value with units to choose a desired plot level. For example, selecting the
+    850-hPa level, set this parameter to ``850 * units.hPa``. Note that this requires your
+    data to have a vertical dimension coordinate.
     """
 
     time = Instance(datetime, allow_none=True)
@@ -871,8 +915,21 @@ class Plots2D(HasTraits):
 
     If a forecast hour is to be plotted the time should be set to the valid future time, which
     can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
-    from the Python standard library.
+    from the Python standard library. Note that this requires your data to have a time
+    dimension coordinate.
     """
+
+
+@exporter.export
+class Plots2D(SubsetTraits):
+    """The highest level class related to plotting 2D data.
+
+    This class collects all common methods no matter whether plotting a scalar variable or
+    vector. Primary settings common to all types of 2D plots include those for data subsets.
+    """
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
 
     plot_units = Unicode(allow_none=True, default_value=None)
     plot_units.__doc__ = """The desired units to plot the field in.
@@ -939,7 +996,7 @@ class Plots2D(HasTraits):
         """Handle setting the parent object for the plot."""
         self.clear()
 
-    @observe('level', 'time')
+    @observe('x', 'longitude', 'y', 'latitude', 'level', 'time')
     def _update_data(self, _=None):
         """Handle updating the internal cache of data.
 
@@ -1013,23 +1070,29 @@ class PlotScalar(Plots2D):
         """Return the internal cached data."""
         if getattr(self, '_griddata', None) is None:
 
+            # Select our particular field of interest
             if self.field:
                 data = self.data.metpy.parse_cf(self.field)
-
-            elif not hasattr(self.data.metpy, 'x'):
+            elif hasattr(self.data.metpy, 'parse_cf'):
                 # Handles the case where we have a dataset but no specified field
                 raise ValueError('field attribute has not been set.')
             else:
                 data = self.data
 
+            # Subset to 2D using MetPy's fancy .sel
             subset = {'method': 'nearest'}
-            if self.level is not None:
-                subset[data.metpy.vertical.name] = self.level
-
-            if self.time is not None:
-                subset[data.metpy.time.name] = self.time
+            for dim_coord in ('x', 'longitude', 'y', 'latitude', 'vertical', 'time'):
+                selector = self.level if dim_coord == 'vertical' else getattr(self, dim_coord)
+                if selector is not None:
+                    subset[dim_coord] = selector
             data_subset = data.metpy.sel(**subset).squeeze()
+            if data_subset.ndim != 2:
+                raise ValueError(
+                    'Must provide a combination of subsetting values to give 2D data subset '
+                    'for plotting'
+                )
 
+            # Handle unit conversion (both direct unit specification and scaling)
             if self.plot_units is not None:
                 data_subset = data_subset.metpy.convert_units(self.plot_units)
             self._griddata = data_subset * self.scale
@@ -1040,13 +1103,21 @@ class PlotScalar(Plots2D):
     def plotdata(self):
         """Return the data for plotting.
 
-        The data array, x coordinates, and y coordinates.
+        The two dimension coordinates and the data array.
 
         """
-        x = self.griddata.metpy.x
-        y = self.griddata.metpy.y
+        try:
+            plot_x_dim = self.griddata.metpy.find_axis_number('x')
+            plot_y_dim = self.griddata.metpy.find_axis_number('y')
+        except ValueError:
+            plot_x_dim = 1
+            plot_y_dim = 0
 
-        return x, y, self.griddata
+        return (
+            self.griddata[self.griddata.dims[plot_x_dim]],
+            self.griddata[self.griddata.dims[plot_y_dim]],
+            self.griddata
+        )
 
     def draw(self):
         """Draw the plot."""
@@ -1146,30 +1217,36 @@ class ImagePlot(PlotScalar, ColorfillTraits):
     def plotdata(self):
         """Return the data for plotting.
 
-        The data array, x coordinates, and y coordinates.
+        The two dimension coordinates and the data array
 
         """
-        x = self.griddata.metpy.x
-        y = self.griddata.metpy.y
+        x_like = self.griddata[self.griddata.dims[1]]
 
         # At least currently imshow with cartopy does not like this
-        if 'degree' in x.units:
-            x = x.data
-            x[x > 180] -= 360
+        if 'degree' in x_like.units:
+            x_like = x_like.data
+            x_like[x_like > 180] -= 360
 
-        return x, y, self.griddata
+        return x_like, self.griddata[self.griddata.dims[0]], self.griddata
 
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
-        x, y, imdata = self.plotdata
+        x_like, y_like, imdata = self.plotdata
 
-        # We use min/max for y and manually figure out origin to try to avoid upside down
-        # images created by images where y[0] > y[-1]
-        extents = (x[0], x[-1], y.min(), y.max())
-        origin = 'upper' if y[0] > y[-1] else 'lower'
-        self.handle = self.parent.ax.imshow(imdata, extent=extents, origin=origin,
-                                            cmap=self._cmap_obj, norm=self._norm_obj,
-                                            transform=imdata.metpy.cartopy_crs)
+        kwargs = self.parent.plot_kwargs
+
+        # If we're on a map, we use min/max for y and manually figure out origin to try to
+        # avoid upside down images created by images where y[0] > y[-1], as well as
+        # specifying the transform
+        kwargs['extent'] = (x_like[0], x_like[-1], y_like.min(), y_like.max())
+        kwargs['origin'] = 'upper' if y_like[0] > y_like[-1] else 'lower'
+
+        self.handle = self.parent.ax.imshow(
+            imdata,
+            cmap=self._cmap_obj,
+            norm=self._norm_obj,
+            **kwargs
+        )
 
 
 @exporter.export
@@ -1209,11 +1286,13 @@ class ContourPlot(PlotScalar, ContourTraits):
 
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
-        x, y, imdata = self.plotdata
-        self.handle = self.parent.ax.contour(x, y, imdata, self.contours,
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = self.parent.plot_kwargs
+
+        self.handle = self.parent.ax.contour(x_like, y_like, imdata, self.contours,
                                              colors=self.linecolor, linewidths=self.linewidth,
-                                             linestyles=self.linestyle,
-                                             transform=imdata.metpy.cartopy_crs)
+                                             linestyles=self.linestyle, **kwargs)
         if self.clabels:
             self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=8,
                                use_clabeltext=True, fontsize=self.label_fontsize)
@@ -1232,10 +1311,13 @@ class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits):
 
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
-        x, y, imdata = self.plotdata
-        self.handle = self.parent.ax.contourf(x, y, imdata, self.contours,
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = self.parent.plot_kwargs
+
+        self.handle = self.parent.ax.contourf(x_like, y_like, imdata, self.contours,
                                               cmap=self._cmap_obj, norm=self._norm_obj,
-                                              transform=imdata.metpy.cartopy_crs)
+                                              **kwargs)
 
 
 @exporter.export
@@ -1278,7 +1360,9 @@ class PlotVector(Plots2D):
 
     Common gridded meteorological datasets including GFS and NARR output contain wind
     components that are earth-relative. The primary exception is NAM output with wind
-    components that are grid-relative. For any grid-relative vectors set this trait to `False`.
+    components that are grid-relative. For any grid-relative vectors set this trait to
+    `False`. This value is ignored for 2D vector fields not in the plane of the plot (e.g.,
+    cross sections).
     """
 
     color = Unicode(default_value='black')
@@ -1311,14 +1395,19 @@ class PlotVector(Plots2D):
             else:
                 raise ValueError('field attribute not set correctly')
 
+            # Subset to 2D using MetPy's fancy .sel
             subset = {'method': 'nearest'}
-            if self.level is not None:
-                subset[u.metpy.vertical.name] = self.level
-
-            if self.time is not None:
-                subset[u.metpy.time.name] = self.time
+            for dim_coord in ('x', 'longitude', 'y', 'latitude', 'vertical', 'time'):
+                selector = self.level if dim_coord == 'vertical' else getattr(self, dim_coord)
+                if selector is not None:
+                    subset[dim_coord] = selector
             data_subset_u = u.metpy.sel(**subset).squeeze()
             data_subset_v = v.metpy.sel(**subset).squeeze()
+            if data_subset_u.ndim != 2 or data_subset_v.ndim != 2:
+                raise ValueError(
+                    'Must provide a combination of subsetting values to give 2D data subsets '
+                    'for plotting'
+                )
 
             if self.plot_units is not None:
                 data_subset_u = data_subset_u.metpy.convert_units(self.plot_units)
@@ -1332,30 +1421,46 @@ class PlotVector(Plots2D):
     def plotdata(self):
         """Return the data for plotting.
 
-        The data array, x coordinates, and y coordinates.
+        The dimension coordinates and data arrays.
 
         """
-        x = self.griddata[0].metpy.x
-        y = self.griddata[0].metpy.y
+        check_earth_relative = False
+        try:
+            plot_x_dim = self.griddata[0].metpy.find_axis_number('x')
+            plot_y_dim = self.griddata[0].metpy.find_axis_number('y')
+            check_earth_relative = True
+        except ValueError:
+            plot_x_dim = 1
+            plot_y_dim = 0
 
-        if self.earth_relative:
-            x, y, _ = ccrs.PlateCarree().transform_points(self.griddata[0].metpy.cartopy_crs,
-                                                          *np.meshgrid(x, y)).T
-            x = x.T
-            y = y.T
-        else:
-            if 'degree' in x.units:
-                x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
-                    ccrs.PlateCarree(), *np.meshgrid(x, y)).T
-                x = x.T
-                y = y.T
+        x_like = self.griddata[0][self.griddata[0].dims[plot_x_dim]]
+        y_like = self.griddata[0][self.griddata[0].dims[plot_y_dim]]
 
-        if x.ndim == 1:
-            xx, yy = np.meshgrid(x, y)
-        else:
-            xx, yy = x, y
+        if check_earth_relative:
+            # Conditionally apply earth v. grid relative adjustments if we are in the plane of
+            # the plot
+            # TODO: this seems like it could use a refactor to be more explicit about what
+            # coords are grid x and y vs latitude and longitude (both for code readability and
+            # error-proneness).
+            x, y = x_like, y_like
+            if self.earth_relative:
+                x, y, _ = ccrs.PlateCarree().transform_points(
+                    self.griddata[0].metpy.cartopy_crs,
+                    *np.meshgrid(x, y)
+                ).T
+                x_like = x.T
+                y_like = y.T
+            else:
+                if 'degree' in x.units:
+                    x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
+                        ccrs.PlateCarree(), *np.meshgrid(x, y)).T
+                    x_like = x.T
+                    y_like = y.T
 
-        return xx, yy, self.griddata[0], self.griddata[1]
+        if x_like.ndim == 1:
+            x_like, y_like = np.meshgrid(x_like, y_like)
+
+        return x_like, y_like, self.griddata[0], self.griddata[1]
 
     def draw(self):
         """Draw the plot."""
@@ -1385,19 +1490,20 @@ class BarbPlot(PlotVector):
 
     def _build(self):
         """Build the plot by calling needed plotting methods as necessary."""
-        x, y, u, v = self.plotdata
-        if self.earth_relative:
-            transform = ccrs.PlateCarree()
-        else:
-            transform = u.metpy.cartopy_crs
+        x_like, y_like, u, v = self.plotdata
+
+        kwargs = self.parent.plot_kwargs
+
+        # Conditionally apply the proper transform
+        if 'transform' in kwargs and self.earth_relative:
+            kwargs['transform'] = ccrs.PlateCarree()
 
         wind_slice = (slice(None, None, self.skip[0]), slice(None, None, self.skip[1]))
 
         self.handle = self.parent.ax.barbs(
-            x[wind_slice], y[wind_slice],
+            x_like[wind_slice], y_like[wind_slice],
             u.values[wind_slice], v.values[wind_slice],
-            color=self.color, pivot=self.pivot, length=self.barblength,
-            transform=transform)
+            color=self.color, pivot=self.pivot, length=self.barblength, **kwargs)
 
 
 @exporter.export
@@ -1728,3 +1834,271 @@ class PlotObs(HasTraits):
     def copy(self):
         """Return a copy of the plot."""
         return copy.copy(self)
+
+
+@exporter.export
+class PlotGeometry(HasTraits):
+    """Plot collections of Shapely objects and customize their appearance."""
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
+
+    geometry = Instance(collections.abc.Iterable, allow_none=False)
+    geometry.__doc__ = """A collection of Shapely objects to plot.
+
+    A collection of Shapely objects, such as the 'geometry' column from a
+    ``geopandas.GeoDataFrame``. Acceptable Shapely objects are ``shapely.MultiPolygon``,
+    ``shapely.Polygon``, ``shapely.MultiLineString``, ``shapely.LineString``,
+    ``shapely.MultiPoint``, and ``shapely.Point``.
+    """
+
+    fill = Union([Instance(collections.abc.Iterable), Unicode()], default_value=['lightgray'],
+                 allow_none=True)
+    fill.__doc__ = """Fill color(s) for polygons and points.
+
+    A single string (color name or hex code) or collection of strings with which to fill
+    polygons and points. If a collection, the first color corresponds to the first Shapely
+    object in `geometry`, the second color corresponds to the second Shapely object, and so on.
+    If `fill` is shorter than `geometry`, `fill` cycles back to the beginning, repeating the
+    sequence of colors as needed. Default value is lightgray.
+    """
+
+    stroke = Union([Instance(collections.abc.Iterable), Unicode()], default_value=['black'],
+                   allow_none=True)
+    stroke.__doc__ = """Stroke color(s) for polygons and line color(s) for lines.
+
+    A single string (color name or hex code) or collection of strings with which to outline
+    polygons and color lines. If a collection, the first color corresponds to the first Shapely
+    object in `geometry`, the second color corresponds to the second Shapely object, and so on.
+    If `stroke` is shorter than `geometry`, `stroke` cycles back to the beginning, repeating
+    the sequence of colors as needed. Default value is black.
+    """
+
+    marker = Unicode(default_value='.', allow_none=False)
+    marker.__doc__ = """Symbol used to denote points.
+
+    Accepts any matplotlib marker. Default value is '.', which plots a dot at each point.
+    """
+
+    labels = Instance(collections.abc.Iterable, allow_none=True)
+    labels.__doc__ = """A collection of labels corresponding to plotted geometry.
+
+    A collection of strings to use as labels for geometry, such as a column from a
+    ``Geopandas.GeoDataFrame``. The first label corresponds to the first Shapely object in
+    `geometry`, the second label corresponds to the second Shapely object, and so on. The
+    length of `labels` must be equal to the length of `geometry`. Labels are positioned along
+    the edge of polygons, and below lines and points. No labels are plotted if this attribute
+    is left undefined, or set equal to `None`.
+    """
+
+    label_fontsize = Union([Int(), Float(), Unicode()], default_value=None, allow_none=True)
+    label_fontsize.__doc__ = """An integer or string value for the font size of labels.
+
+    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
+    'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
+    """
+
+    label_facecolor = Union([Instance(collections.abc.Iterable), Unicode()], allow_none=True)
+    label_facecolor.__doc__ = """Font color(s) for labels.
+
+    A single string (color name or hex code) or collection of strings for the font color of
+    labels. If a collection, the first color corresponds to the label of the first Shapely
+    object in `geometry`, the second color corresponds to the label of the second Shapely
+    object, and so on. Default value is `stroke`.
+    """
+
+    label_edgecolor = Union([Instance(collections.abc.Iterable), Unicode()], allow_none=True)
+    label_edgecolor.__doc__ = """Outline color(s) for labels.
+
+    A single string (color name or hex code) or collection of strings for the outline color of
+    labels. If a collection, the first color corresponds to the label of the first Shapely
+    object in `geometry`, the second color corresponds to the label of the second Shapely
+    object, and so on. Default value is `fill`.
+    """
+
+    @staticmethod
+    @validate('geometry')
+    def _valid_geometry(_, proposal):
+        """Cast `geometry` into a list once it is provided by user.
+
+        Users can provide any kind of collection, such as a ``GeoPandas.GeoSeries``, and this
+        turns them into a list.
+        """
+        geometry = proposal['value']
+        return list(geometry)
+
+    @staticmethod
+    @validate('fill', 'stroke', 'label_facecolor', 'label_edgecolor')
+    def _valid_color_list(_, proposal):
+        """Cast color-related attributes into a list once provided by user.
+
+        This is necessary because _build() expects to cycle through a list of colors when
+        assigning them to the geometry.
+        """
+        color = proposal['value']
+
+        if isinstance(color, str):
+            color = [color]
+        # `color` must be a collection if it is not a string
+        else:
+            color = list(color)
+
+        return color
+
+    @staticmethod
+    @validate('labels')
+    def _valid_labels(_, proposal):
+        """Cast `labels` into a list once provided by user."""
+        labels = proposal['value']
+        return list(labels)
+
+    @observe('fill', 'stroke')
+    def _update_label_colors(self, change):
+        """Set default text colors using `fill` and `stroke`.
+
+        If `label_facecolor` or `label_edgecolor` have not been specified, provide default
+        colors for those attributes using `fill` and `stroke`.
+        """
+        if change['name'] == 'fill' and self.label_edgecolor is None:
+            self.label_edgecolor = self.fill
+        elif change['name'] == 'stroke' and self.label_facecolor is None:
+            self.label_facecolor = self.stroke
+
+    @property
+    def name(self):
+        """Generate a name for the plot."""
+        # Unlike Plots2D and PlotObs, there are no other attributes (such as 'fields' or
+        # 'levels') from which to name the plot. A generic name is returned here in case the
+        # user does not provide their own title, in which case MapPanel.draw() looks here.
+        return 'Geometry Plot'
+
+    @staticmethod
+    def _position_label(geo_obj, label):
+        """Return a (lon, lat) where the label of a polygon/line/point can be placed."""
+        from shapely.geometry import MultiLineString, MultiPoint, MultiPolygon, Polygon
+
+        # A hash of the label is used in choosing a point along the polygon or line that
+        # will be returned. This "psuedo-randomizes" the position of a label, in hopes of
+        # spatially dispersing the labels and lessening the chance that labels overlap.
+        label_hash = sum(map(ord, str(label)))
+
+        # If object is a MultiPolygon or MultiLineString, associate the label with the single
+        # largest Polygon or LineString from the collection. If MultiPoint, associate the label
+        # with one of the Points in the MultiPoint, chosen based on the label hash.
+        if isinstance(geo_obj, (MultiPolygon, MultiLineString)):
+            geo_obj = max(geo_obj, key=lambda x: x.length)
+        elif isinstance(geo_obj, MultiPoint):
+            geo_obj = geo_obj[label_hash % len(geo_obj)]
+
+        # Get the list of coordinates of the polygon/line/point
+        if isinstance(geo_obj, Polygon):
+            coords = geo_obj.exterior.coords
+        else:
+            coords = geo_obj.coords
+
+        position = coords[label_hash % len(coords)]
+
+        return position
+
+    def _draw_label(self, text, lon, lat, color='black', outline='white', offset=(0, 0)):
+        """Draw a label to the plot.
+
+        Parameters
+        ----------
+        text : str
+            The label's text
+        lon : float
+            Longitude at which to position the label
+        lat : float
+            Latitude at which to position the label
+        color : str (default: 'black')
+            Name or hex code for the color of the text
+        outline : str (default: 'white')
+            Name or hex code of the color of the outline of the text
+        offset : tuple (default: (0, 0))
+            A tuple containing the x- and y-offset of the label, respectively
+        """
+        path_effects = [patheffects.withStroke(linewidth=4, foreground=outline)]
+        self.parent.ax.add_collection(TextCollection([lon], [lat], [str(text)],
+                                                     va='center',
+                                                     ha='center',
+                                                     offset=offset,
+                                                     weight='demi',
+                                                     size=self.label_fontsize,
+                                                     color=color,
+                                                     path_effects=path_effects,
+                                                     transform=ccrs.PlateCarree()))
+
+    def draw(self):
+        """Draw the plot."""
+        if self._need_redraw:
+            if getattr(self, 'handles', None) is None:
+                self._build()
+            self._need_redraw = False
+
+    def copy(self):
+        """Return a copy of the plot."""
+        return copy.copy(self)
+
+    def _build(self):
+        """Build the plot by calling needed plotting methods as necessary."""
+        from shapely.geometry import (LineString, MultiLineString, MultiPoint, MultiPolygon,
+                                      Point, Polygon)
+
+        # Cast attributes to a list if None, since traitlets doesn't call validators (like
+        # `_valid_color_list()` and `_valid_labels()`) when the proposed value is None.
+        self.fill = ['none'] if self.fill is None else self.fill
+        self.stroke = ['none'] if self.stroke is None else self.stroke
+        self.labels = [''] if self.labels is None else self.labels
+        self.label_edgecolor = (['none'] if self.label_edgecolor is None
+                                else self.label_edgecolor)
+        self.label_facecolor = (['none'] if self.label_facecolor is None
+                                else self.label_facecolor)
+
+        # Each Shapely object is plotted separately with its corresponding colors and label
+        for geo_obj, stroke, fill, label, fontcolor, fontoutline in zip(
+                self.geometry, cycle(self.stroke), cycle(self.fill), cycle(self.labels),
+                cycle(self.label_facecolor), cycle(self.label_edgecolor)):
+            # Plot the Shapely object with the appropriate method and colors
+            if isinstance(geo_obj, (MultiPolygon, Polygon)):
+                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
+                                              facecolor=fill, crs=ccrs.PlateCarree())
+            elif isinstance(geo_obj, (MultiLineString, LineString)):
+                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
+                                              facecolor='none', crs=ccrs.PlateCarree())
+            elif isinstance(geo_obj, MultiPoint):
+                for point in geo_obj:
+                    lon, lat = point.coords[0]
+                    self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
+                                        transform=ccrs.PlateCarree())
+            elif isinstance(geo_obj, Point):
+                lon, lat = geo_obj.coords[0]
+                self.parent.ax.plot(lon, lat, color=fill, marker=self.marker,
+                                    transform=ccrs.PlateCarree())
+
+            # Plot labels if provided
+            if label:
+                # If fontcolor is None/'none', choose a font color
+                if fontcolor in [None, 'none'] and stroke not in [None, 'none']:
+                    fontcolor = stroke
+                elif fontcolor in [None, 'none']:
+                    fontcolor = 'black'
+
+                # If fontoutline is None/'none', choose a font outline
+                if fontoutline in [None, 'none'] and fill not in [None, 'none']:
+                    fontoutline = fill
+                elif fontoutline in [None, 'none']:
+                    fontoutline = 'white'
+
+                # Choose a point along the polygon/line/point to place label
+                lon, lat = self._position_label(geo_obj, label)
+
+                # If polygon, put label directly on edge of polygon. If line or point, put
+                # label slightly below line/point.
+                if isinstance(geo_obj, (MultiPolygon, Polygon)):
+                    offset = (0, 0)
+                else:
+                    offset = (0, -12)
+
+                # Finally, draw the label
+                self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)

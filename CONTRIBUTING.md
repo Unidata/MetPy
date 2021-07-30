@@ -69,33 +69,84 @@ requesting something you think is missing.
 
 ## Setting up your development environment
 
-We recommend using the [conda](https://conda.io/docs/) package manager for your Python
-environments. Our recommended setup for contributing is:
+We recommend using the [conda](https://conda.io/docs/) package manager for your Python environments.
+This requires some comfort with the command line and a little ``git`` knowledge.
+Our recommended setup for contributing:
 
-* Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your system.
-* Install git on your system if it is not already there (install XCode command line tools on
-  a Mac or git bash on Windows)
-* Login to your GitHub account and make a fork of the
-  [MetPy repository](https://github.com/unidata/metpy/) by clicking the "Fork" button.
-* Clone your fork of the MetPy repository (in terminal on Mac/Linux or git shell/
-  GUI on Windows) in the location you'd like to keep it. We are partial to creating a
-  ``git_repos`` directory in our home folder.
-  ``git clone https://github.com/your-user-name/metpy.git``
-* Navigate to that folder in the terminal or in Anaconda Prompt if you're on Windows.
-  ``cd metpy``
-* Connect your repository to the upstream (main project).
-  ``git remote add unidata https://github.com/unidata/metpy.git``
-* Create the development environment by running
-  ``conda env create -n devel --file ci/requirements.txt --file ci/extra_requirements.txt
-  --file ci/test_requirements.txt``.
-  This will install all the necessary packages for development.
-* Activate our new development environment by running ``conda activate devel``
-* Make an editable install of MetPy by running ``pip install -e .``
+Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your system.
+You may have to restart your prompt for the remaining steps to work.
 
-Now you're all set! You have an environment called ``devel`` that you can work in. You'll need
-to make sure to activate that environment next time you want to use it after closing the
-terminal or your system. If you want to get back to the root environment, run
-``source deactivate`` (just ``deactivate`` on Windows).
+Install [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+(link with instructions) on your system if not already available
+(check with ``git --version`` at the command line.)
+This can also be installed from a variety of package managers, including ``conda`` if needed.
+
+Login to your [GitHub](https://github.com) account and make a fork of the
+[MetPy repository](https://github.com/unidata/metpy/) by clicking the "Fork" button.
+Clone your fork of the MetPy repository (in terminal on Mac/Linux or git shell/GUI on Windows)
+to the location you'd like to keep it.
+We are partial to creating a ``git_repos`` or ``projects`` directory in our home folder.
+
+```sh
+git clone https://github.com/<your-user-name>/metpy.git
+```
+
+Navigate to that folder in the terminal or in Anaconda Prompt if you're on Windows.
+The remainder of the instructions will take place within this directory.
+
+```sh
+cd metpy
+```
+
+Connect your repository to the upstream (main project).
+
+```sh
+git remote add unidata https://github.com/unidata/metpy.git
+```
+
+Create a new conda environment for us to configure, and give it a name.
+After ``-n`` you can specify any name you'd like; here we've chosen ``devel``.
+
+```sh
+conda create -n devel
+```
+
+**IMPORTANT**: Always activate this environment when developing and testing your changes!
+
+```sh
+conda activate devel
+```
+
+You will have to do this any time you re-open your prompt.
+Currently there are no packages in this environment, let's change that.
+Configure this environment so that we can reach
+[conda-forge](https://conda-forge.org/feedstock-outputs/) for the specific packages we depend on.
+
+```sh
+conda config --env --add channels conda-forge --add channels conda-forge/label/testing
+```
+
+Install the necessary dependency packages from conda-forge.
+Remember that these must be executed within the ``metpy`` directory.
+
+```sh
+conda install --file ci/requirements.txt --file ci/extra_requirements.txt --file ci/test_requirements.txt
+```
+
+Finally, create an editable install of MetPy that will update with your development!
+
+```sh
+pip install -e .
+```
+
+Note sections on [documentation](#documentation) and [code style](#code-style) below,
+where you may need to install a few more packages into your new environment.
+
+Now you're all set!
+You have an environment called ``devel`` that you can work in.
+Remember, you will need to activate this environment the
+next time you want to use it after closing the terminal.
+If you want to get back to the root environment, run ``conda deactivate``.
 
 ## Pull Requests
 
@@ -120,7 +171,7 @@ guide [“How to Contribute to Open Source"](https://opensource.guide/how-to-con
 Commit the changes you made. Chris Beams has written a [guide](https://chris.beams.io/posts/git-commit/)
 on how to write good commit messages.
 
-Push to your fork and [submit a pull request]( https://github.com/Unidata/metpy/compare/).
+Push to your fork and [submit a pull request](https://github.com/Unidata/metpy/compare/).
 For the Pull Request to be accepted, you need to agree to the
 MetPy Contributor License Agreement (CLA). This will be handled automatically
 upon submission of a Pull Request.
@@ -151,6 +202,11 @@ You can write examples in the documentation if they are simple concepts to demon
 your feature is more complex, consider adding to the examples or tutorials for MetPy.
 
 You can build the documentation locally to see how your changes will look.
+After setting up your [development environment](#setting-up-your-development-environment) above,
+from within the ``metpy`` directory with your ``devel`` environment active,
+use ``conda install --file ci/doc_requirements.txt``
+to install required packages to build our documentation.
+Then, still from within your ``devel`` environment,
 
 * Navigate to the docs folder ``cd docs``
 * Remove any old builds and build the current docs ``make clean html``
@@ -220,7 +276,11 @@ at the existing tests to get an idea of some of the common patterns.
 ### Image tests
 
 Some tests (for matplotlib plotting code) are done as an image comparison, using the
-pytest-mpl plugin. To run these tests, use:
+pytest-mpl plugin.
+By following the [guide](#setting-up-your-development-environment) above,
+you should have a ``testing`` install of matplotlib, which will guarantee that your image tests
+behave exactly the same as ours.
+To run these tests, use:
 
 ```sh
 pytest --mpl
@@ -242,11 +302,11 @@ For more information, see the [docs for pytest-mpl](https://github.com/astrofrog
 
 MetPy keeps some test data, as well as things like shape files for US counties in a data cache
 supported by the pooch library. To add files to this, please ensure they are as small as
-possible. Put the files in the `staticdata` directory. Then run this command in the metpy
-directory (that contains the `static-data-manifest.txt` file)to recreate the data registry:
+possible. Put the files in the `staticdata` directory. Then run this command in the root of
+the MetPy repository to recreate the data registry:
 
 ```sh
-python -c "import pooch; pooch.make_registry('staticdata', 'metpy/static-data-manifest.txt')"
+python -c "import pooch; pooch.make_registry('staticdata', 'src/metpy/static-data-manifest.txt')"
 ```
 
 Make sure that no system files (like `.DS_Store`) are in the manifest and add it to your
@@ -262,9 +322,12 @@ While the authors are no fans of blind adherence to style and so-called project 
 that go through and correct code style, MetPy has adopted this style from the outset.
 Therefore, it makes sense to enforce this style as code is added to keep everything clean and
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
-locally within the source directory you can use the ``flake8`` tool. Running it
-from the root of the source directory is as easy as running ``pytest --flake8`` in the base
-of the repository.
+locally within the source directory you can use the
+[flake8](https://flake8.pycqa.org/en/latest/) tool.
+After setting up your [development environment](#setting-up-your-development-environment) above,
+from within the ``metpy`` directory with your ``devel`` environment active,
+install the code style tools we use with ``conda install --file ci/linting_requirements.txt``.
+Checking your code style is then as easy as running ``flake8 .`` in the base of the repository.
 
 You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports
