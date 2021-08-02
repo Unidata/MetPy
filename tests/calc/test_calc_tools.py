@@ -150,6 +150,15 @@ def test_reduce_point_density(thin_point_data, radius, truth):
     assert_array_equal(reduce_point_density(thin_point_data, radius=radius), truth)
 
 
+def test_reduce_point_density_nonfinite():
+    """Test that non-finite point values are properly marked not to keep."""
+    points = np.array(
+        [(np.nan, np.nan), (np.nan, 5), (5, 5), (5, np.nan),
+         (10, 10), (np.inf, 10), (10, np.inf), (np.inf, np.inf)])
+    mask = reduce_point_density(points, 1)
+    assert_array_equal(mask, [False, False, True, False, True, False, False, False])
+
+
 @pytest.mark.parametrize('radius, truth',
                          [(2.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=bool)),
