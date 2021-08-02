@@ -5,6 +5,7 @@ r"""Provide tools for unit-aware, meteorological calculations."""
 
 from .basic import *  # noqa: F403
 from .cross_sections import *  # noqa: F403
+from .exceptions import *  # noqa: F403
 from .indices import *  # noqa: F403
 from .kinematics import *  # noqa: F403
 from .thermo import *  # noqa: F403

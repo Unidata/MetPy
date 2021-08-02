@@ -11,10 +11,10 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, gradient_richardson_number, isentropic_interpolation,
-                        isentropic_interpolation_as_dataset, lcl, lfc, lifted_index,
-                        mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
-                        mixing_ratio_from_relative_humidity,
+                        exner_function, gradient_richardson_number, InvalidSoundingError,
+                        isentropic_interpolation, isentropic_interpolation_as_dataset, lcl,
+                        lfc, lifted_index, mixed_layer, mixed_layer_cape_cin, mixed_parcel,
+                        mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse, moist_static_energy,
                         most_unstable_cape_cin, most_unstable_parcel, parcel_profile,
                         parcel_profile_with_lcl, parcel_profile_with_lcl_as_dataset,
@@ -188,6 +188,16 @@ def test_parcel_profile_lcl():
     assert_almost_equal(temp, true_t, 3)
     assert_almost_equal(dewp, true_td, 3)
     assert_array_almost_equal(prof, true_prof, 2)
+
+
+def test_parcel_profile_lcl_not_monotonic():
+    """Test parcel profile with lcl calculation."""
+    with pytest.raises(InvalidSoundingError):
+        p = np.array([1004., 1000., 943., 925., 928., 850., 839., 749., 700.]) * units.hPa
+        t = np.array([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2]) * units.degC
+        td = np.array([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8]) * units.degC
+
+        _ = parcel_profile_with_lcl(p, t, td)
 
 
 def test_parcel_profile_with_lcl_as_dataset():
