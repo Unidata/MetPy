@@ -197,7 +197,7 @@ def test_parcel_profile_lcl_not_monotonic():
         t = np.array([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2]) * units.degC
         td = np.array([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8]) * units.degC
 
-        pressure, temp, dewp, prof = parcel_profile_with_lcl(p, t, td)
+        _ = parcel_profile_with_lcl(p, t, td)
 
 
 def test_parcel_profile_with_lcl_as_dataset():
