@@ -3314,7 +3314,7 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def showalter_index(pressure, temperature, dewpt):
+def showalter_index(pressure, temperature, dewpoint):
     """Calculate Showalter Index from pressure temperature and 850 hPa lcl.
 
     Showalter Index derived from [Galway1956]_:
@@ -3333,7 +3333,7 @@ def showalter_index(pressure, temperature, dewpt):
         temperature : `pint.Quantity`
             Parcel temperature for corresponding pressure
 
-        dewpt : `pint.Quantity`
+        dewpoint : `pint.Quantity`
             Parcel dew point temperatures for corresponding pressure
 
     Returns
@@ -3343,7 +3343,7 @@ def showalter_index(pressure, temperature, dewpt):
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
-    t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpt)
+    t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpoint)
 
     # find the parcel profile temperature at 500 hPa.
     tp500 = interpolate_1d(units.Quantity(500, 'hPa'), pressure, temperature)
