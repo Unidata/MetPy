@@ -56,3 +56,83 @@ repository-code: "https://github.com/Unidata/MetPy"
 title: "MetPy: A Python Package for Meteorological Data"
 url: "https://www.unidata.ucar.edu/software/metpy/"
 version: "1.1"
+references:
+  - type: grant
+    authors:
+      - family-names: Ramamurthy
+        given-names: Mohan
+        email: "mohan@ucar.edu"
+    date-released: 2014-04-01
+    institution:
+      - name: "National Science Foundation"
+    identifiers:
+      - type: other
+        value: "AGS-1344155"
+    title: "Unidata 2018: Transforming Geoscience through Innovative Data Services"
+    url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1344155"
+  - type: grant
+    authors:
+      - family-names: May
+        given-names: Ryan
+        email: "rmay@ucar.edu"
+      - family-names: Goebbert
+        given-names: Kevin
+      - family-names: Leeman
+        given-names: John
+    date-released: 2017-09-01
+    institution:
+      - name: "National Science Foundation"
+    identifiers:
+      - type: other
+        value: "OAC-1740315"
+    title: "MetPy - A Python GEMPAK Replacement for Meteorological Data Analysis"
+    url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740315"
+  - type: grant
+    authors:
+      - family-names: Paul
+        given-names: Kevin
+        email: "kpaul@ucar.edu"
+      - family-names: May
+        given-names: Ryan
+      - family-names: Hamman
+        given-names: Joseph
+      - family-names: "Del Vento"
+        given-names: Davide
+    date-released: 2017-08-21
+    institution:
+      - name: "National Science Foundation"
+    identifiers:
+      - type: other
+        value: "OCE-1740633"
+    title: "Pangeo: An Open Source Big Data Climate Science Platform"
+    url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740633"
+  - type: grant
+    authors:
+      - family-names: Ramamurthy
+        given-names: Mohan
+        email: "mohan@ucar.edu"
+    date-released: 2019-05-01
+    institution:
+      - name: "National Science Foundation"
+    identifiers:
+      - type: other
+        value: "AGS-1901712"
+    title: "Unidata: Next-generation Data Services and Workflows to Advance Geoscience Research and Education"
+    url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1901712"
+  - type: grant
+    authors:
+      - family-names: May
+        given-names: Ryan
+        email: "rmay@ucar.edu"
+      - family-names: Goebbert
+        given-names: Kevin
+      - family-names: Camron
+        given-names: Michael
+    date-released: 2021-05-01
+    institution:
+      - name: "National Science Foundation"
+    identifiers:
+      - type: other
+        value: "OAC-2103682"
+    title: "Elements: Scaling MetPy to Big Data Workflows in Meteorology and Climate Science"
+    url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2103682"
