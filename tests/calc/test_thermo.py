@@ -11,10 +11,10 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, gradient_richardson_number, isentropic_interpolation,
-                        isentropic_interpolation_as_dataset, lcl, lfc, lifted_index,
-                        mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
-                        mixing_ratio_from_relative_humidity,
+                        exner_function, gradient_richardson_number, InvalidSoundingError,
+                        isentropic_interpolation, isentropic_interpolation_as_dataset, lcl,
+                        lfc, lifted_index, mixed_layer, mixed_layer_cape_cin, mixed_parcel,
+                        mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse, moist_static_energy,
                         most_unstable_cape_cin, most_unstable_parcel, parcel_profile,
                         parcel_profile_with_lcl, parcel_profile_with_lcl_as_dataset,
@@ -31,7 +31,6 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         vertical_velocity, vertical_velocity_pressure,
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
-from metpy.calc.exceptions import InvalidSoundingError
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import masked_array, units
