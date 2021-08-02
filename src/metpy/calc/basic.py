@@ -496,6 +496,7 @@ def height_to_geopotential(height):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='geopotential')
+@check_units('[length] ** 2 / [time] ** 2')
 def geopotential_to_height(geopotential):
     r"""Compute height above sea level from a given geopotential.
 
