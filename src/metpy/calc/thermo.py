@@ -3315,26 +3315,25 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def showalter_index(pressure, temperature, dewpoint):
-    """Calculate Showalter Index from pressure temperature and 850 hPa lcl.
+    """Calculate Showalter Index.
 
     Showalter Index derived from [Galway1956]_:
     SI = T500 - Tp500
 
     where:
     T500 is the measured temperature at 500 hPa
-    Tp500 is the temperature of the lifted parcel at 500 hPa
+    Tp500 is the temperature of the parcel at 500 hPa when lifted from 850 hPa
 
     Parameters
     ----------
         pressure : `pint.Quantity`
-            Atmospheric pressure level(s) of interest, in order from highest to
-            lowest pressure
+            Atmospheric pressure, in order from highest to lowest pressure
 
         temperature : `pint.Quantity`
-            Parcel temperature for corresponding pressure
+            Ambient temperature corresponding to ``pressure``
 
         dewpoint : `pint.Quantity`
-            Parcel dew point temperatures for corresponding pressure
+            Ambient dew point temperatures corresponding to ``pressure``
 
     Returns
     -------
@@ -3348,17 +3347,8 @@ def showalter_index(pressure, temperature, dewpoint):
     # find the parcel profile temperature at 500 hPa.
     tp500 = interpolate_1d(units.Quantity(500, 'hPa'), pressure, temperature)
 
-    # Calculate lcl at the 850 hPa level
-    lcl_calc, _ = lcl(units.Quantity(850, 'hPa'), t850[0], td850[0])
-
-    # Define end height for moist lapse rate calculation
-    p_end = units.Quantity(500, 'hPa')
-
-    # Calculate parcel temp when raised dry adiabatically from surface to lcl
-    dl = dry_lapse(lcl_calc, temperature[0], pressure[0])
-
-    # Calculate parcel temp when raised moist adiabatically from lcl to 500mb
-    ml = moist_lapse(p_end, dl, lcl_calc)
+    # Lift parcel from 850 to 500, handling any needed dry vs. saturated adiabatic processes
+    prof = parcel_profile(units.Quantity([850., 500.], 'hPa'), t850, td850)
 
     # Calculate the Showalter index
-    return tp500 - ml
+    return tp500 - prof[-1]

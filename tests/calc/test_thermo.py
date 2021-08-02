@@ -1912,12 +1912,19 @@ def test_gradient_richardson_number_with_xarray():
 
 def test_showalter_index():
     """Test the Showalter index calculation."""
-    p_upper = np.arange(1000, 200, -50) * units.hPa
-    p_lower = np.arange(175, 0, -25) * units.hPa
-    p = np.append(p_upper, p_lower,)
-    tc = np.linspace(30, -30, 25) * units.degC
-    tdc = np.linspace(10, -30, 25) * units.degC
+    pressure = units.Quantity(np.array([931.0, 925.0, 911.0, 891.0, 886.9, 855.0, 850.0, 825.6,
+                                        796.3, 783.0, 768.0, 759.0, 745.0, 740.4, 733.0, 715.0,
+                                        700.0, 695.0, 687.2, 684.0, 681.0, 677.0, 674.0, 661.9,
+                                        657.0, 639.0, 637.6, 614.0, 592.0, 568.9, 547.4, 526.8,
+                                        500.0, 487.5, 485.0]), 'hPa')
+    temps = units.Quantity(np.array([18.4, 19.8, 20.0, 19.6, 19.3, 16.8, 16.4, 15.1, 13.4,
+                                     12.6, 11.2, 10.4, 8.6, 8.3, 7.8, 5.8, 4.6, 4.2, 3.4, 3.0,
+                                     3.0, 4.4, 5.0, 5.1, 5.2, 3.4, 3.3, 2.4, 1.4, -0.4, -2.2,
+                                     -3.9, -6.3, -7.6, -7.9]), 'degC')
+    dewp = units.Quantity(np.array([9.4, 8.8, 6.0, 8.6, 8.4, 6.8, 6.4, 4.0, 1.0, -0.4, -1.1,
+                                    -1.6, 1.6, -0.2, -3.2, -3.2, -4.4, -2.8, -3.6, -4.0, -6.0,
+                                    -17.6, -25.0, -31.2, -33.8, -29.6, -30.1, -39.0, -47.6,
+                                    -48.9, -50.2, -51.5, -53.3, -55.5, -55.9]), 'degC')
 
-    result = showalter_index(p, tc, tdc)
-    expected = 23.73036498600014 * units.delta_degree_Celsius
-    assert_array_almost_equal(result, expected, 4)
+    result = showalter_index(pressure, temps, dewp)
+    assert_almost_equal(result, units.Quantity(7.6024, 'delta_degC'), 4)
