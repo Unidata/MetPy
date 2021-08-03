@@ -866,6 +866,8 @@ data), returning a mask that can be used to select the points from one or more a
 providing an array of <code class="docutils literal notranslate"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
 stations with higher precipitation remain in the mask). The points and radius can be
 specified with units. If none are provided, meters are assumed.</p>
+<p>Points with at least one non-finite (i.e. NaN or Inf) value are ignored and returned with
+a value of <code class="docutils literal notranslate"><span class="pre">False</span></code> (meaning don’t keep).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -945,7 +947,7 @@ be used to control selection priority for points.</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Aug 03, 2021 at 02:31:52.<br/>
+        Last updated on Aug 03, 2021 at 02:55:13.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
