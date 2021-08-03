@@ -248,6 +248,9 @@ def reduce_point_density(points, radius, priority=None):
     stations with higher precipitation remain in the mask). The points and radius can be
     specified with units. If none are provided, meters are assumed.
 
+    Points with at least one non-finite (i.e. NaN or Inf) value are ignored and returned with
+    a value of ``False`` (meaning don't keep).
+
     Parameters
     ----------
     points : (N, K) array-like
@@ -283,6 +286,11 @@ def reduce_point_density(points, radius, priority=None):
     if points.ndim < 2:
         points = points.reshape(-1, 1)
 
+    # Identify good points--finite values (e.g. not NaN or inf). Set bad 0, but we're going to
+    # ignore anyway. It's easier for managing indices to keep the original points in the group.
+    good_vals = np.isfinite(points)
+    points = np.where(good_vals, points, 0)
+
     # Make a kd-tree to speed searching of data.
     tree = cKDTree(points)
 
@@ -295,8 +303,8 @@ def reduce_point_density(points, radius, priority=None):
         # Take advantage of iterator nature of range here to avoid making big lists
         sorted_indices = range(len(points))
 
-    # Keep all points initially
-    keep = np.ones(len(points), dtype=bool)
+    # Keep all good points initially
+    keep = np.logical_and.reduce(good_vals, axis=-1)
 
     # Loop over all the potential points
     for ind in sorted_indices:
