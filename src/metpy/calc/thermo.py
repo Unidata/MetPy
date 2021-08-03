@@ -313,7 +313,8 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     pressure = pressure.to('mbar')
     reference_pressure = reference_pressure.to('mbar')
-    temperature = np.atleast_1d(temperature)
+    org_units = temperature.units
+    temperature = np.atleast_1d(temperature).to('kelvin')
 
     side = 'left'
 
@@ -342,7 +343,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     if pres_decreasing:
         ret_temperatures = ret_temperatures[::-1]
 
-    return units.Quantity(ret_temperatures.T.squeeze(), temperature.units)
+    return units.Quantity(ret_temperatures.T.squeeze(), 'kelvin').to(org_units)
 
 
 @exporter.export
@@ -2998,13 +2999,13 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         moist_adiabat_temperatures = moist_lapse(units.Quantity(press, pressure.units),
                                                  units.Quantity(ltemp, lcl_temp.units),
                                                  units.Quantity(lpress, lcl_press.units))
-        ret[...] = moist_adiabat_temperatures.magnitude
+        ret[...] = moist_adiabat_temperatures.m_as(temperature.units)
 
     # If we started with a scalar, return a scalar
     ret = it.operands[3]
     if ret.size == 1:
         ret = ret[0]
-    return units.Quantity(ret, moist_adiabat_temperatures.units)
+    return units.Quantity(ret, temperature.units)
 
 
 @exporter.export

@@ -113,18 +113,12 @@ def test_dry_lapse_2_levels():
     assert_array_almost_equal(temps, [293., 240.3583] * units.kelvin, 4)
 
 
-def test_moist_lapse():
-    """Test moist_lapse calculation."""
+@pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
+def test_moist_lapse(temp_units):
+    """Test moist_lapse with various temperature units."""
+    starting_temp = 19.85 * units.degC
     temp = moist_lapse(np.array([1000., 800., 600., 500., 400.]) * units.mbar,
-                       293. * units.kelvin)
-    true_temp = np.array([293, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
-    assert_array_almost_equal(temp, true_temp, 2)
-
-
-def test_moist_lapse_degc():
-    """Test moist_lapse with Celsius temperatures."""
-    temp = moist_lapse(np.array([1000., 800., 600., 500., 400.]) * units.mbar,
-                       19.85 * units.degC)
+                       starting_temp.to(temp_units))
     true_temp = np.array([293, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
     assert_array_almost_equal(temp, true_temp, 2)
 
@@ -1459,9 +1453,12 @@ def test_brunt_vaisala_period(bv_data):
     assert_almost_equal(bv_period, truth, 6)
 
 
-def test_wet_bulb_temperature():
+@pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
+def test_wet_bulb_temperature(temp_units):
     """Test wet bulb calculation with scalars."""
-    val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
+    temp = 25 * units.degC
+    dewp = 15 * units.degC
+    val = wet_bulb_temperature(1000 * units.hPa, temp.to(temp_units), dewp.to(temp_units))
     truth = 18.3432116 * units.degC  # 18.59 from NWS calculator
     assert_almost_equal(val, truth, 5)
 
@@ -1499,7 +1496,8 @@ def test_wet_bulb_temperature_2d():
     assert_array_almost_equal(val, truth, 5)
 
 
-def test_wet_bulb_nan():
+@pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
+def test_wet_bulb_nan(temp_units):
     """Test wet bulb calculation with nans."""
     pressure = [1000.0, 975.0, 950.0, 925.0, 900.0, 850.0, 800.0, 750.0, 700.0, 650.0, 600.0,
                 550.0, 500.0, 450.0, 400.0, 350.0, 300.0, 250.0, 200.0, 150.0, 100.0, 70.0,
@@ -1521,7 +1519,7 @@ def test_wet_bulb_nan():
                    -48.2122467, -39.66942444, -34.30999451, -33.35002747, -23.31001892,
                    -14.55002441, -11.74678955, -25.58999634] * units.degC
 
-    val = wet_bulb_temperature(pressure, temperature, dewpoint)
+    val = wet_bulb_temperature(pressure, temperature.to(temp_units), dewpoint.to(temp_units))
     truth = [19.238071735308814, 18.033294139060633, 16.65179610640866, 14.341431051131467,
              10.713278865013098, 7.2703265785039, 4.63234087372236, 1.8324379627895773,
              -1.0154897545814394, -4.337334561885717, -8.23596994210175, -11.902727397896111,
