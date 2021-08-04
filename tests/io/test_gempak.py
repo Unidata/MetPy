@@ -39,7 +39,7 @@ def test_merged_sounding():
     gso = GempakSounding(get_test_data('gem_model_mrg.snd')).snxarray(
         station_id='KMSN'
     )
-    gpres = gso[0].pres.values
+    gpres = gso[0].pressure.values
     gtemp = gso[0].tmpc.values.squeeze()
     gdwpt = gso[0].dwpc.values.squeeze()
     gdrct = gso[0].drct.values.squeeze()
@@ -104,7 +104,7 @@ def test_unmerged_sounding(gem, gio, station):
     gso = GempakSounding(get_test_data(f'{gio}')).snxarray(
         station_id=f'{station}'
     )
-    gpres = gso[0].pres.values
+    gpres = gso[0].pressure.values
     gtemp = gso[0].temp.values.squeeze()
     gdwpt = gso[0].dwpt.values.squeeze()
     gdrct = gso[0].drct.values.squeeze()
