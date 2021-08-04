@@ -29,6 +29,9 @@ metpy.io
       :toctree: ./
 
    
+      GempakGrid
+      GempakSounding
+      GempakSurface
       GiniFile
       Level2File
       Level3File
