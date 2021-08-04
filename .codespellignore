@@ -1,3 +1,14 @@
         'vertical': (r'(lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
   | ``(thta, u, v, dx, dy, dim_order='yx')``                                                                         |
        Changed signature from ``(thta, u, v, dx, dy, dim_order='yx')``
+    dpres = gempak.PRES.values
+    pres = 1
+    thta = 2
+                lambda grid: grid if grid.PARM in parameter else False,
+                            col_head.SELV,
+                            'SELV': col_head.SELV,
+                                col_head.SELV,
+                                row_head.SELV,
+                           'SELV': row_head.SELV,
+                       'SELV': col_head.SELV,
+                           'SELV': col_head.SELV,
