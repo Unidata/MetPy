@@ -3313,6 +3313,38 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 
 
 @exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature_bottom',
+    broadcast=('temperature_bottom', 'temperature_top')
+)
+@check_units('[temperature]', '[temperature]')
+def scale_height(temperature_bottom, temperature_top):
+    r"""Calculate the scale height of a layer.
+
+    .. math::   H = \frac{R_d \overline{T}}{g}
+
+    This function assumes dry air, but can be used with the virtual temperature
+    to account for moisture.
+
+    Parameters
+    ----------
+    temperature_bottom : `pint.Quantity`
+        Temperature at bottom of layer
+
+    temperature_top : `pint.Quantity`
+        Temperature at top of layer
+
+    Returns
+    -------
+    `pint.Quantity`
+        Scale height of layer
+    """
+    t_bar = 0.5 * (temperature_bottom.to('kelvin') + temperature_top.to('kelvin'))
+
+    return (mpconsts.Rd * t_bar) / mpconsts.g
+
+
+@exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def showalter_index(pressure, temperature, dewpoint):
