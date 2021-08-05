@@ -84,10 +84,21 @@ from metpy.units import units
     ('KULM 011215Z AUTO 22003KT 10SM -DZ CLR 19/19 A3000 RMK AO2=',
      Metar('KULM', 44.32, -94.5, 308, datetime(2017, 5, 1, 12, 15), 220, 3, 16093.44, '-DZ',
            np.nan, np.nan, 'CLR', np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 0,
-           19, 19, 30., 51, 0, 0))],
+           19, 19, 30., 51, 0, 0)),
+    # CB trailing on cloud group
+    ('METAR AGGH 011200Z 25003KT 9999 FEW015 FEW017CB BKN030 25/24 Q1011=',
+     Metar('AGGH', -9.42, 160.05, 9, datetime(2017, 5, 1, 12, 00), 250, 3., 9999, np.nan,
+           np.nan, np.nan, 'FEW', 1500, 'FEW', 1700, 'BKN', 3000, np.nan, np.nan, 6, 25,
+           24, units.Quantity(1011, 'hPa').m_as('inHg'), 0, 0, 0, '')),
+    # 5 levels of clouds
+    ('METAR KSEQ 011158Z AUTO 08003KT 9SM FEW009 BKN020 BKN120 BKN150 OVC180 22/22 A3007 RMK '
+     'AO2 RAB12E46RAB56E57 CIG 020V150 BKN020 V FEW SLP179 P0000 60000 70001 52008=',
+     Metar('KSEQ', 29.566666666666666, -97.91666666666667, 160, datetime(2017, 5, 1, 11, 58),
+           80, 3., units.Quantity(9, 'miles').m_as('m'), np.nan, np.nan, np.nan, 'FEW', 900.,
+           'BKN', 2000., 'BKN', 12000., 'BKN', 15000., 8, 22., 22., 30.07, 0, 0, 0))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
-         '-DZ'])
+         '-DZ', 'sky cover CB', '5 sky levels'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
@@ -145,13 +156,13 @@ def test_parse_file():
     assert counts.current_wx2 == 77
     assert counts.current_wx3 == 1
     assert counts.low_cloud_type == 7309
-    assert counts.low_cloud_level == 3507
+    assert counts.low_cloud_level == 3821
     assert counts.medium_cloud_type == 1629
-    assert counts.medium_cloud_level == 1504
+    assert counts.medium_cloud_level == 1624
     assert counts.high_cloud_type == 626
-    assert counts.high_cloud_level == 593
+    assert counts.high_cloud_level == 620
     assert counts.highest_cloud_type == 37
-    assert counts.highest_cloud_level == 35
+    assert counts.highest_cloud_level == 37
     assert counts.cloud_coverage == 8980
     assert counts.air_temperature == 8727
     assert counts.dew_point_temperature == 8707
@@ -207,13 +218,13 @@ def test_parse_file_bad_encoding():
     assert counts.current_wx2 == 201
     assert counts.current_wx3 == 3
     assert counts.low_cloud_type == 7516
-    assert counts.low_cloud_level == 3384
+    assert counts.low_cloud_level == 3715
     assert counts.medium_cloud_type == 1612
-    assert counts.medium_cloud_level == 1463
+    assert counts.medium_cloud_level == 1603
     assert counts.high_cloud_type == 542
-    assert counts.high_cloud_level == 511
+    assert counts.high_cloud_level == 541
     assert counts.highest_cloud_type == 40
-    assert counts.highest_cloud_level == 39
+    assert counts.highest_cloud_level == 40
     assert counts.cloud_coverage == 8802
     assert counts.air_temperature == 8444
     assert counts.dew_point_temperature == 8383

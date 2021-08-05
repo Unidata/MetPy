@@ -231,75 +231,21 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         current_wx_symbol.append(0)
 
     # Set the sky conditions
+    skyc = [np.nan] * 4
+    skylev = [np.nan] * 4
     if tree.skyc.text[1:3] == 'VV':
-        skyc1 = 'VV'
+        skyc[0] = 'VV'
         level = tree.skyc.text.strip()[2:]
-        skylev1 = np.nan if level == '///' else 100 * int(level)
-        skyc2 = np.nan
-        skylev2 = np.nan
-        skyc3 = np.nan
-        skylev3 = np.nan
-        skyc4 = np.nan
-        skylev4 = np.nan
+        skylev[0] = np.nan if '/' in level else 100 * int(level)
     else:
-        skyc = []
-        skyc[0:len((tree.skyc.text.strip()).split())] = tree.skyc.text.strip().split()
-        try:
-            skyc1 = skyc[0][0:3]
-            if '/' in skyc1:
-                skyc1 = np.nan
-        except (IndexError, ValueError, TypeError):
-            skyc1 = np.nan
-        try:
-            skylev1 = skyc[0][3:]
-            if '/' in skylev1:
-                skylev1 = np.nan
-            else:
-                skylev1 = float(skylev1) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev1 = np.nan
-        try:
-            skyc2 = skyc[1][0:3]
-            if '/' in skyc2:
-                skyc2 = np.nan
-        except (IndexError, ValueError, TypeError):
-            skyc2 = np.nan
-        try:
-            skylev2 = skyc[1][3:]
-            if '/' in skylev2:
-                skylev2 = np.nan
-            else:
-                skylev2 = float(skylev2) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev2 = np.nan
-        try:
-            skyc3 = skyc[2][0:3]
-            if '/' in skyc3:
-                skyc3 = np.nan
-        except (IndexError, ValueError):
-            skyc3 = np.nan
-        try:
-            skylev3 = skyc[2][3:]
-            if '/' in skylev3:
-                skylev3 = np.nan
-            else:
-                skylev3 = float(skylev3) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev3 = np.nan
-        try:
-            skyc4 = skyc[3][0:3]
-            if '/' in skyc4:
-                skyc4 = np.nan
-        except (IndexError, ValueError, TypeError):
-            skyc4 = np.nan
-        try:
-            skylev4 = skyc[3][3:]
-            if '/' in skylev4:
-                skylev4 = np.nan
-            else:
-                skylev4 = float(skylev4) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev4 = np.nan
+        for ind, part in enumerate(tree.skyc.text.strip().split(maxsplit=3)):
+            cover = part[:3]
+            level = part[3:6]  # Strips off any ending text like in FEW017CB
+            if '/' not in cover:
+                skyc[ind] = cover
+            if level and '/' not in level:
+                with contextlib.suppress(ValueError):
+                    skylev[ind] = float(level) * 100
 
     # Set the cloud cover variable (measured in oktas)
     if 'OVC' in tree.skyc.text or 'VV' in tree.skyc.text:
@@ -339,8 +285,8 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
 
     # Returns a named tuple with all the relevant variables
     return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, visibility,
-                 current_wx[0], current_wx[1], current_wx[2], skyc1, skylev1, skyc2,
-                 skylev2, skyc3, skylev3, skyc4, skylev4, cloudcover, temp, dewp,
+                 current_wx[0], current_wx[1], current_wx[2], skyc[0], skylev[0], skyc[1],
+                 skylev[1], skyc[2], skylev[2], skyc[3], skylev[3], cloudcover, temp, dewp,
                  altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2])
 
 
