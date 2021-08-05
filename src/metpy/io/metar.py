@@ -25,7 +25,7 @@ Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
                              'current_wx2', 'current_wx3', 'skyc1', 'skylev1', 'skyc2',
                              'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4', 'cloudcover',
                              'temperature', 'dewpoint', 'altimeter', 'current_wx1_symbol',
-                             'current_wx2_symbol', 'current_wx3_symbol'])
+                             'current_wx2_symbol', 'current_wx3_symbol', 'remarks'])
 
 # Create a dictionary for attaching units to the different variables
 col_units = {'station_id': None,
@@ -139,6 +139,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
       Attachment IV
     * 'visibility': Visibility distance, measured in meters
+    * 'remarks': Remarks (unparsed) in the report
 
     """
     from ..plots.wx_symbols import wx_code_to_numeric
@@ -283,11 +284,17 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     else:
         altim = np.nan
 
+    # Strip off extraneous stuff off the remarks section
+    remarks = tree.remarks.text.lstrip().rstrip('= ')
+    if remarks.startswith('RMK'):
+        remarks = remarks[3:].strip()
+
     # Returns a named tuple with all the relevant variables
     return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, visibility,
                  current_wx[0], current_wx[1], current_wx[2], skyc[0], skylev[0], skyc[1],
                  skylev[1], skyc[2], skylev[2], skyc[3], skylev[3], cloudcover, temp, dewp,
-                 altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2])
+                 altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2],
+                 remarks)
 
 
 @exporter.export
@@ -364,6 +371,7 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
     * 'air_temperature': Temperature, measured in degrees Celsius
     * 'dew_point_temperature': Dew point, measured in degrees Celsius
     * 'altimeter': Altimeter value, measured in inches of mercury
+    * 'remarks': Any remarks section in the report
     * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
       Attachment IV
     * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
