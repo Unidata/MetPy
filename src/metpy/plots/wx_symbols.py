@@ -250,7 +250,8 @@ with exporter:
                    '-TSRAGR': 96, 'TSRAGS': 96, 'TSRAGR': 96, 'TSGS': 96, 'TSGR': 96,
                    '+TSFZRAPL': 97, '+VCTSRA': 1097, '+TSRA': 1097, '+TSFZRA': 1097,
                    '+TSSN': 2097, '+TSPL': 2097, '+TSPLSN': 2097, '+VCTSSN': 2097,
-                   'TSSA': 98, 'TSDS': 98, 'TSDU': 98, '+TSGS': 99, '+TSGR': 99, '+TSRAGR': 99,
+                   'TSSA': 98, 'TSDS': 98, 'TSDU': 98,
+                   '+TSGS': 99, '+TSGR': 99, '+TSRAGS': 99, '+TSRAGR': 99,
                    'IN': 141, '-UP': 141, 'UP': 141, '+UP': 142,
                    '-FZUP': 147, 'FZUP': 147, '+FZUP': 148
                    }

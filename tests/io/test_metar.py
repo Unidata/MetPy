@@ -130,11 +130,19 @@ from metpy.units import units
     ('ENBS 121620Z 36008KT 9999 3000N VCFG -DZ SCT006 BKN009 12/11 Q1014',
      Metar('ENBS', 70.62, 29.72, 10, datetime(2017, 5, 12, 16, 20), 360, 8, 9999, 'VCFG',
            '-DZ', np.nan, 'SCT', 600, 'BKN', 900, np.nan, np.nan, np.nan, np.nan, 6, 12, 11,
-           units.Quantity(1014, 'hPa').m_as('inHg'), 40, 51, 0, ''))],
+           units.Quantity(1014, 'hPa').m_as('inHg'), 40, 51, 0, '')),
+    # More complicated runway visibility
+    ('CYYC 030047Z 26008G19KT 170V320 1SM R35L/5500VP6000FT/D R29/P6000FT/D R35R/P6000FT/D '
+     '+TSRAGS BR OVC009CB 18/16 A2993 RMK CB8 FRQ LTGIC OVRHD PRESRR SLP127 DENSITY ALT '
+     '4800FT',
+     Metar('CYYC', 51.12, -114.02, 1084, datetime(2017, 5, 3, 0, 47), 260, 8,
+           units.Quantity(1, 'mi').m_as('m'), '+TSRAGS', 'BR', np.nan, 'OVC', 900, np.nan,
+           np.nan, np.nan, np.nan, np.nan, np.nan, 8, 18, 16, 29.93, 99, 10, 0,
+           'CB8 FRQ LTGIC OVRHD PRESRR SLP127 DENSITY ALT 4800FT'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
-         'M1/4SM vis', 'variable visibility'])
+         'M1/4SM vis', 'variable vis', 'runway vis'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
