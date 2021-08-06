@@ -4,7 +4,7 @@ metar    <- "COR "? (("METAR" / "SPECI"))? auto?
 sep      <- " "+
 siteid   <- sep? [0-9A-Z] [0-9A-Z] [0-9A-Z] [0-9A-Z]
 datetime <- sep [\d]+ "Z"
-auto     <- sep ("AUTO" / "COR")?
+auto     <- ((sep ("AUTO" / "COR"))+)?
 wind     <- ((sep? wind_dir wind_spd (gust)? ("KT" / "MPS") varwind?))?
 wind_dir <- (([\d] [\d] [\d]) / 'VAR' / 'VRB' / "///")?
 wind_spd <- (([\d] [\d] [\d]?) / "//")?
@@ -13,8 +13,8 @@ varwind  <- sep [\d] [\d] [\d] "V" [\d] [\d] [\d]
 vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d]))? "SM") / ("M" [\d] "/" [\d] "SM") / "CAVOK" / "////") varvis?))?
 varvis   <- sep [\d] [\d] [\d] [\d] [NSEW] [NSEW]?
 run      <- ((sep "R" [LRC]? [\d] [\d] [LRC]? "/" ([\d] [\d] [\d] [\d] "V")? ["M" / "P"]? [\d] [\d] [\d] [\d] "FT"? ("/"? [UDN])?))*
-curwx    <- (((sep "//") / (sep (wx))*))?
-wx       <- ([-+]? "VC"? ("MI" / "BC" / "PR" / "DR" / "BL" / "SH" / "TS" / "FZ" / "DZ" / "RA" / "SN" / "SG" / "PL" / "GR" / "GS" / "UP" / "BR" / "FG" / "FU" / "VA" / "DU" / "SA" / "HZ" / "PO" / "SQ" / "FC" / "SS" / "DS")+)
+curwx    <- (((sep "//") / (sep "NSW") / (sep (wx))*))?
+wx       <- ([-+]? "VC"? ("MI" / "BC" / "PR" / "DR" / "BL" / "SH" / "TS" / "FZ" / "DZ" / "RA" / "SN" / "SG" / "PL" / "GR" / "GS" / "UP" / "BR" / "FG" / "FU" / "VA" / "DU" / "SA" / "HZ" / "PO" / "SQ" / "FC" / "SS" / "DS" / "IC" / "PY")+)
 skyc     <- ((sep (cover))*)?
 cover    <- (("FEW" / "SCT" / "BKN" / "OVC" / "VV" / "///") ([\d]*)? ("TCU" / "CB" / "///")?) / ("CLR" / "SKC" / "NSC" / "NCD") / wx / "//"
 temp_dewp <- ((sep "//"? temp "/" dewp "//"?))?

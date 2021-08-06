@@ -225,7 +225,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     # If the weather symbol is missing, set values to nan
     current_wx = []
     current_wx_symbol = []
-    if tree.curwx.text.strip() not in ('', '//'):
+    if tree.curwx.text.strip() not in ('', '//', 'NSW'):
         current_wx = tree.curwx.text.strip().split()
         current_wx_symbol = wx_code_to_numeric(current_wx).tolist()
     while len(current_wx) < 3:
