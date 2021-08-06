@@ -124,8 +124,17 @@ class CodePointMapping:
         return lst.pop(0) if lst else None
 
     def __call__(self, code):
-        """Return the Unicode code point corresponding to `code`."""
-        return self.chrs[code]
+        """Return the Unicode code point corresponding to `code`.
+
+        If code >= 1000, then an alternate code point is returned, with the thousands
+        digit indicating which alternate.
+        """
+        if code < 1000:
+            return self.chrs[code]
+        else:
+            alt = code // 1000
+            code %= 1000
+            return self.alt_char(code, alt)
 
     def __len__(self):
         """Return the number of codes supported by this mapping."""
@@ -159,14 +168,17 @@ class CodePointMapping:
 #
 
 with exporter:
-    #: Current weather
-    current_weather = CodePointMapping(100, 0xE9A2, [(7, 2), (93, 2), (94, 2), (95, 2),
-                                                     (97, 2)], [(0, 4)])
+    #: Current weather -- codes 1xx are mapped into the automated station symbols
+    current_weather = CodePointMapping(150, 0xE9A2, [(7, 2), (93, 2), (94, 2), (95, 2),
+                                                     (97, 2), (103, -190)],
+                                       [(0, 4), (100, 3), (106, 4), (113, 5), (119, 1),
+                                        (136, 4)])
 
     #: Current weather from an automated station
-    current_weather_auto = CodePointMapping(100, 0xE94B, [(92, 2), (95, 2)],
-                                            [(6, 4), (13, 5), (19, 1), (36, 4), (49, 1),
-                                             (59, 1), (69, 1), (79, 1), (88, 1), (97, 2)])
+    current_weather_auto = CodePointMapping(100, 0xE94F, [(92, 2), (95, 2)],
+                                            [(0, 4), (6, 4), (13, 5), (19, 1), (36, 4),
+                                             (49, 1), (59, 1), (69, 1), (79, 1), (88, 1),
+                                             (97, 2)])
 
     #: Low clouds
     low_clouds = CodePointMapping(10, 0xE933, [(7, 1)], [(0, 1)])
@@ -181,43 +193,41 @@ with exporter:
     sky_cover = CodePointMapping(12, 0xE90A)
 
     #: Pressure tendency
-    pressure_tendency = CodePointMapping(10, 0xE900)
+    pressure_tendency = CodePointMapping(9, 0xE900)
 
     #####################################################################
     # This dictionary is for mapping METAR present weather text codes
     # to WMO codes for plotting wx symbols along with the station plots.
     # See Attachment IV of WMO No.306 for more information:
     # https://library.wmo.int/index.php?lvl=notice_display&id=13617
-    # It may become necessary to add automated station wx_codes in the future,
-    # but that will also require knowing the status of all stations.
+    # For unknown precipitation (UP), with thunderstorm this is mapped to 17, otherwise
+    # it is mapped to 100 + automated station code
 
     wx_code_map = {'': 0, 'M': 0, 'TSNO': 0, 'VA': 4, 'FU': 4,
-                   'HZ': 5, 'DU': 6, 'BLDU': 7, 'SA': 7,
-                   'BLSA': 7, 'VCBLSA': 7, 'VCBLDU': 7, 'BLPY': 7,
+                   'HZ': 5, 'DU': 6, 'BLDU': 1007, 'SA': 1007,
+                   'BLSA': 1007, 'VCBLSA': 1007, 'VCBLDU': 1007, 'BLPY': 1007,
                    'PO': 8, 'VCPO': 8, 'VCDS': 9, 'VCSS': 9,
                    'BR': 10, 'BCBR': 10, 'BC': 11, 'MIFG': 12,
                    'VCTS': 13, 'VIRGA': 14, 'VCSH': 16, 'TS': 17,
                    'THDR': 17, 'VCTSHZ': 17, 'TSFZFG': 17, 'TSBR': 17,
-                   'TSDZ': 17, 'SQ': 18, 'FC': 19, '+FC': 19,
+                   'TSDZ': 17, 'VCTSUP': 17, '-TSUP': 17, 'TSUP': 17, '+TSUP': 17,
+                   'SQ': 18, 'FC': 19, '+FC': 19,
                    'DS': 31, 'SS': 31, 'DRSA': 31, 'DRDU': 31,
-                   'TSUP': 32, '+DS': 34, '+SS': 34, '-BLSN': 36,
-                   'BLSN': 36, '+BLSN': 36, 'VCBLSN': 36, 'DRSN': 38,
-                   '+DRSN': 38, 'VCFG': 40, 'BCFG': 41, 'PRFG': 44,
+                   '+DS': 34, '+SS': 34, 'DRSN': 36, '+DRSN': 37,
+                   '-BLSN': 38, 'BLSN': 38, '+BLSN': 39, 'VCBLSN': 38,
+                   'VCFG': 40, 'BCFG': 41, 'PRFG': 44,
                    'FG': 45, 'FZFG': 49, '-VCTSDZ': 51, '-DZ': 51,
                    '-DZBR': 51, 'VCTSDZ': 53, 'DZ': 53, '+VCTSDZ': 55,
                    '+DZ': 55, '-FZDZ': 56, '-FZDZSN': 56, 'FZDZ': 57,
                    '+FZDZ': 57, 'FZDZSN': 57, '-DZRA': 58, 'DZRA': 59,
-                   '+DZRA': 59, '-VCTSRA': 61, '-RA': 61, '-RABR': 61,
-                   'VCTSRA': 63, 'RA': 63, 'RABR': 63, 'RAFG': 63,
-                   '+VCTSRA': 65, '+RA': 65, '-FZRA': 66, '-FZRASN': 66,
+                   '+DZRA': 59, '-RA': 61, '-RABR': 61, 'RA': 63, 'RABR': 63, 'RAFG': 63,
+                   'VCRA': 63, '+RA': 65, '-FZRA': 66, '-FZRASN': 66,
                    '-FZRABR': 66, '-FZRAPL': 66, '-FZRASNPL': 66, 'TSFZRAPL': 67,
                    '-TSFZRA': 67, 'FZRA': 67, '+FZRA': 67, 'FZRASN': 67,
                    'TSFZRA': 67, '-DZSN': 68, '-RASN': 68, '-SNRA': 68,
                    '-SNDZ': 68, 'RASN': 69, '+RASN': 69, 'SNRA': 69,
                    'DZSN': 69, 'SNDZ': 69, '+DZSN': 69, '+SNDZ': 69,
-                   '-VCTSSN': 71, '-SN': 71, '-SNBR': 71, 'VCTSSN': 73,
-                   'SN': 73, '+VCTSSN': 75, '+SN': 75, 'VCTSUP': 76,
-                   'IN': 76, '-UP': 76, 'UP': 76, '+UP': 76,
+                   '-SN': 71, '-SNBR': 71, 'SN': 73, '+SN': 75,
                    '-SNSG': 77, 'SG': 77, '-SG': 77, 'IC': 78,
                    '-FZDZPL': 79, '-FZDZPLSN': 79, 'FZDZPL': 79, '-FZRAPLSN': 79,
                    'FZRAPL': 79, '+FZRAPL': 79, '-RAPL': 79, '-RASNPL': 79,
@@ -232,10 +242,16 @@ with exporter:
                    '-SHGS': 87, 'FZRAPLGS': 88, '-SNGS': 88, 'GSPLSN': 88,
                    'GSPL': 88, 'PLGSSN': 88, 'GS': 88, 'SHGS': 88,
                    '+GS': 88, '+SHGS': 88, '-GR': 89, '-SHGR': 89,
-                   '-SNGR': 90, 'GR': 90, 'SHGR': 90, '+GR': 90,
-                   '+SHGR': 90, '-TSRA': 95, 'TSRA': 95, 'TSSN': 95,
-                   'TSPL': 95, '-TSDZ': 95, '-TSSN': 95, '-TSPL': 95,
-                   'TSPLSN': 95, 'TSSNPL': 95, '-TSSNPL': 95, 'TSRAGS': 96,
-                   'TSGS': 96, 'TSGR': 96, '+TSRA': 97, '+TSSN': 97,
-                   '+TSPL': 97, '+TSPLSN': 97, 'TSSA': 98, 'TSDS': 98,
-                   'TSDU': 98, '+TSGS': 99, '+TSGR': 99}
+                   '-SNGR': 90, 'GR': 90, 'SHGR': 90, '+GR': 90, '+SHGR': 90,
+                   '-TSRASN': 95, 'TSRASN': 95, '-TSSNRA': 95, 'TSSNRA': 95, '-VCTSRA': 1095,
+                   '-TSRA': 1095, 'TSRA': 1095, '-TSDZ': 1095, 'VCTSRA': 1095,
+                   'TSPL': 2095, '-TSSN': 2095, '-TSPL': 2095, 'TSSN': 2095, '-VCTSSN': 2095,
+                   'VCTSSN': 2095, 'TSPLSN': 2095, 'TSSNPL': 2095, '-TSSNPL': 2095,
+                   '-TSRAGR': 96, 'TSRAGS': 96, 'TSRAGR': 96, 'TSGS': 96, 'TSGR': 96,
+                   '+TSFZRAPL': 97, '+VCTSRA': 1097, '+TSRA': 1097, '+TSFZRA': 1097,
+                   '+TSSN': 2097, '+TSPL': 2097, '+TSPLSN': 2097, '+VCTSSN': 2097,
+                   'TSSA': 98, 'TSDS': 98, 'TSDU': 98,
+                   '+TSGS': 99, '+TSGR': 99, '+TSRAGS': 99, '+TSRAGR': 99,
+                   'IN': 141, '-UP': 141, 'UP': 141, '+UP': 142,
+                   '-FZUP': 147, 'FZUP': 147, '+FZUP': 148
+                   }

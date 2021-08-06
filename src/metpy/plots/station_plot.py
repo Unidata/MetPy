@@ -108,7 +108,7 @@ class StationPlot:
            from metpy.plots.wx_symbols import sky_cover, pressure_tendency
 
 
-           def plot_symbols(mapper, name, nwrap=12, figsize=(10, 1.4)):
+           def plot_symbols(mapper, name, nwrap=10, figsize=(10, 1.4)):
 
                # Determine how many symbols there are and layout in rows of nwrap
                # if there are more than nwrap symbols
@@ -149,7 +149,7 @@ class StationPlot:
            plot_symbols(low_clouds, "Low Cloud Symbols")
            plot_symbols(mid_clouds, "Mid Cloud Symbols")
            plot_symbols(high_clouds, "High Cloud Symbols")
-           plot_symbols(sky_cover, "Sky Cover Symbols")
+           plot_symbols(sky_cover, "Sky Cover Symbols", nwrap=12)
            plot_symbols(pressure_tendency, "Pressure Tendency Symbols")
 
         See Also
