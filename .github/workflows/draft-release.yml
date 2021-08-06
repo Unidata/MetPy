@@ -31,20 +31,20 @@ jobs:
             const items = await github.paginate(opts);
 
             // Get just the issues and format into a section for the release notes
-            const issues = items.data.filter(i => !i.pull_request);
+            const issues = items.filter(i => !i.pull_request);
             const issue_text = '### Issues Closed\n' +
                                issues.map(i => `* [Issue ${i.number}](${i.html_url}) - ${i.title}\n`)
                                .join('') + `\n${issues.length} issues were closed in this release.`;
 
             // Now do the same for the PRs
-            const prs = items.data.filter(i => !!i.pull_request);
+            const prs = items.filter(i => !!i.pull_request);
             const pr_text = '### Pull Requests Merged\n' +
                             prs.map(i => `* [PR ${i.number}](${i.html_url}) - ${i.title}, by @${i.user.login}\n`)
                             .join('') + `\n${prs.length} pull requests were closed in this release.`;
 
             // Add the list of people who contributed PRs
             const contrib_text = '### Contributors\n' +
-                                 Array.from(new Set(items.data.map(i => '@' + i.user.login))).join(', ') +
+                                 Array.from(new Set(items.map(i => '@' + i.user.login))).join(', ') +
                                  ' contributed code to this release.';
 
             // Assemble into the body of the release
