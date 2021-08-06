@@ -284,7 +284,7 @@
 <span class="sd">           from metpy.plots.wx_symbols import sky_cover, pressure_tendency</span>
 
 
-<span class="sd">           def plot_symbols(mapper, name, nwrap=12, figsize=(10, 1.4)):</span>
+<span class="sd">           def plot_symbols(mapper, name, nwrap=10, figsize=(10, 1.4)):</span>
 
 <span class="sd">               # Determine how many symbols there are and layout in rows of nwrap</span>
 <span class="sd">               # if there are more than nwrap symbols</span>
@@ -325,7 +325,7 @@
 <span class="sd">           plot_symbols(low_clouds, &quot;Low Cloud Symbols&quot;)</span>
 <span class="sd">           plot_symbols(mid_clouds, &quot;Mid Cloud Symbols&quot;)</span>
 <span class="sd">           plot_symbols(high_clouds, &quot;High Cloud Symbols&quot;)</span>
-<span class="sd">           plot_symbols(sky_cover, &quot;Sky Cover Symbols&quot;)</span>
+<span class="sd">           plot_symbols(sky_cover, &quot;Sky Cover Symbols&quot;, nwrap=12)</span>
 <span class="sd">           plot_symbols(pressure_tendency, &quot;Pressure Tendency Symbols&quot;)</span>
 
 <span class="sd">        See Also</span>
@@ -864,7 +864,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 06, 2021 at 20:52:13.<br/>
+        Last updated on Aug 06, 2021 at 21:08:57.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
