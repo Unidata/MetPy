@@ -125,11 +125,16 @@ from metpy.units import units
      Metar('K4BM', 39.04, -105.52, 3438, datetime(2017, 5, 2, 1, 27), 40, 13,
            units.Quantity(0.25, 'mi').m_as('m'), '-VCTSSN', np.nan, np.nan, 'OVC', 200,
            np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 8, 7, 6, 30.60, 2095, 0, 0,
-           'AO2 LTG DSNT SE THRU SW'))],
+           'AO2 LTG DSNT SE THRU SW')),
+    # Variable visibility group
+    ('ENBS 121620Z 36008KT 9999 3000N VCFG -DZ SCT006 BKN009 12/11 Q1014',
+     Metar('ENBS', 70.62, 29.72, 10, datetime(2017, 5, 12, 16, 20), 360, 8, 9999, 'VCFG',
+           '-DZ', np.nan, 'SCT', 600, 'BKN', 900, np.nan, np.nan, np.nan, np.nan, 6, 12, 11,
+           units.Quantity(1014, 'hPa').m_as('inHg'), 40, 51, 0, ''))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
-         'M1/4SM vis'])
+         'M1/4SM vis', 'variable visibility'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
