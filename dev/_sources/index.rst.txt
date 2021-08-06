@@ -99,9 +99,14 @@ If you're new to MetPy, check out our :doc:`Getting Started <userguide/startingg
         </div>
     </div>
 
+Our up-to-date references for grants and funding can be found `here <https://github.com/Unidata/MetPy/blob/main/CITATION.cff>`_.
+
 .. image:: _static/NSF.jpg
    :width: 100 px
    :align: left
+   :alt: National Science Foundation logo
 
-Development is supported by the National Science Foundation through grants AGS-1344155,
-OAC-1740315, and AGS-1901712.
+.. image:: _static/unidata_150x150.png
+   :width: 100 px
+   :align: center
+   :alt: Unidata logo

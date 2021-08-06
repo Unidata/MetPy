@@ -5,6 +5,8 @@ Citing MetPy
 
 If MetPy played an important role in your research, then please add us to
 your reference list using one of the options below.
+MetPy also maintains a ``CITATION.cff`` [#]_ file with human- and machine-readable
+metadata for generating up-to-date citations.
 
 DOI: `10.5065/D6WW7G29 <https://doi.org/10.5065/D6WW7G29>`_
 
@@ -18,7 +20,7 @@ Example BibTeX entry:
 
   @software{metpy,
     author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman,
-              John R. and Goebbert, Kevin and Thielen, Jonathan E. and Bruick, Zachary S.},
+              John R. and Goebbert, Kevin and Thielen, Jonathan E. and Bruick, Zachary S and Camron, M. Drew.},
     organization = {Unidata},
     title = {MetPy: A {Python} Package for Meteorological Data},
     year = {|cite_year|},
@@ -38,7 +40,7 @@ AMS suggested BibTeX entry:
 
   @misc{metpy,
     author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman,
-              John R. and Goebbert, Kevin and Thielen, Jonathan E. and Bruick, Zachary S.},
+              John R. and Goebbert, Kevin and Thielen, Jonathan E. and Bruick, Zachary S. and Camron, M. Drew.},
     publisher = {Unidata},
     title = {MetPy: A {Python} Package for Meteorological Data},
     year = {|cite_year|},
@@ -52,5 +54,7 @@ Example Citation:
 .. parsed-literal::
 
   May, R. M., Arms, S. C., Marsh, P., Bruning, E., Leeman, J. R., Goebbert, K., Thielen, J. E.,
-      and Bruick, Z., |cite_year|: MetPy: A Python Package for Meteorological Data.
+      Bruick, Z., and Camron, M. D., |cite_year|: MetPy: A Python Package for Meteorological Data.
       Unidata, https://github.com/Unidata/MetPy, doi:10.5065/D6WW7G29.
+
+.. [#] https://citation-file-format.github.io
