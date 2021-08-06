@@ -22,12 +22,13 @@ jobs:
             const milestone = context.payload.milestone;
 
             // Find issues and PRs for this milestone
-            const items = await github.issues.listForRepo({
+            const opts = github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'all',
               milestone: milestone.number
             });
+            const items = await github.paginate(opts);
 
             // Get just the issues and format into a section for the release notes
             const issues = items.data.filter(i => !i.pull_request);
