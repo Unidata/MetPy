@@ -98,10 +98,17 @@ from metpy.units import units
      Metar('KSEQ', 29.566666666666666, -97.91666666666667, 160, datetime(2017, 5, 1, 11, 58),
            80, 3., units.Quantity(9, 'miles').m_as('m'), np.nan, np.nan, np.nan, 'FEW', 900.,
            'BKN', 2000., 'BKN', 12000., 'BKN', 15000., 8, 22., 22., 30.07, 0, 0, 0,
-           'AO2 RAB12E46RAB56E57 CIG 020V150 BKN020 V FEW SLP179 P0000 60000 70001 52008'))],
+           'AO2 RAB12E46RAB56E57 CIG 020V150 BKN020 V FEW SLP179 P0000 60000 70001 52008')),
+    # -FZUP
+    ('SPECI CBBC 060030Z AUTO 17009G15KT 9SM -FZUP FEW011 SCT019 BKN026 OVC042 02/01 A3004 '
+     'RMK ICG INTMT SLP177=',
+     Metar('CBBC', 52.18, -128.15, 43, datetime(2017, 5, 6, 0, 30), 170, 9.,
+           units.Quantity(9, 'miles').m_as('m'), '-FZUP', np.nan, np.nan, 'FEW', 1100.,
+           'SCT', 1900., 'BKN', 2600., 'OVC', 4200., 8, 2, 1, 30.04, 147, 0, 0,
+           'ICG INTMT SLP177'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
-         '-DZ', 'sky cover CB', '5 sky levels'])
+         '-DZ', 'sky cover CB', '5 sky levels', '-FZUP'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
