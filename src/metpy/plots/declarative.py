@@ -688,7 +688,7 @@ class MapPanel(Panel):
         if isinstance(area, str):
             match = re.match(r'(\w+)([-+]*)$', area)
             if match is None:
-                raise TraitError(f'"{area}" is not a valid string area.')
+                raise TraitError(f'"{area}" is not a valid area.')
             region, modifier = match.groups()
             region = region.lower()
 
