@@ -105,10 +105,23 @@ from metpy.units import units
      Metar('CBBC', 52.18, -128.15, 43, datetime(2017, 5, 6, 0, 30), 170, 9.,
            units.Quantity(9, 'miles').m_as('m'), '-FZUP', np.nan, np.nan, 'FEW', 1100.,
            'SCT', 1900., 'BKN', 2600., 'OVC', 4200., 8, 2, 1, 30.04, 147, 0, 0,
-           'ICG INTMT SLP177'))],
+           'ICG INTMT SLP177')),
+    # Weird VV group and +SG
+    ('BGGH 060750Z AUTO 36004KT 0100NDV +SG VV001/// 05/05 Q1000',
+     Metar('BGGH', 64.2, -51.68, 70, datetime(2017, 5, 6, 7, 50), 360, 4, 100, '+SG', np.nan,
+           np.nan, 'VV', 100, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 8, 5, 5,
+           units.Quantity(1000, 'hPa').m_as('inHg'), 77, 0, 0, '')),
+    # COR at beginning, also wind MPS (m/s)
+    ('COR ZLLL 101100Z 13010MPS 5000 -SHRA BLDU FEW033CB BKN046 21/11 Q1014 BECMG TL1240 '
+     '04004MPS NSW',
+     Metar('ZLLL', 36.52, 103.62, 1947, datetime(2017, 5, 10, 11, 0), 130,
+           units.Quantity(10, 'm/s').m_as('knots'), 5000, '-SHRA', 'BLDU', np.nan, 'FEW',
+           3300, 'BKN', 4600, np.nan, np.nan, np.nan, np.nan, 6, 21, 11,
+           units.Quantity(1014, 'hPa').m_as('inHg'), 80, 1007, 0,
+           'BECMG TL1240 04004MPS NSW'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
-         '-DZ', 'sky cover CB', '5 sky levels', '-FZUP'])
+         '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth

@@ -183,6 +183,8 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         # If the wind direction is variable, set wind direction to nan but keep the wind speed
         else:
             wind_spd = float(tree.wind.wind_spd.text)
+            if 'MPS' in tree.wind.text:
+                wind_spd = units.Quantity(wind_spd, 'm/s').m_as('knots')
             if (tree.wind.wind_dir.text == 'VRB') or (tree.wind.wind_dir.text == 'VAR'):
                 wind_dir = np.nan
             else:
@@ -236,7 +238,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     skylev = [np.nan] * 4
     if tree.skyc.text[1:3] == 'VV':
         skyc[0] = 'VV'
-        level = tree.skyc.text.strip()[2:]
+        level = tree.skyc.text.strip()[2:5]
         skylev[0] = np.nan if '/' in level else 100 * int(level)
     else:
         for ind, part in enumerate(tree.skyc.text.strip().split(maxsplit=3)):
