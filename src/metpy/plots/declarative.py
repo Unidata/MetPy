@@ -498,7 +498,18 @@ def lookup_map_feature(feature_name):
     return feat.with_scale(scaler)
 
 
-class Panel(HasTraits):
+class MetPyHasTraits(HasTraits):
+    """Provides modification layer on HasTraits for declarative classes."""
+
+    def __dir__(self):
+        """Filter dir to be more helpful for tab-completion in Jupyter."""
+        return filter(
+            lambda name: not (name in dir(HasTraits) or name.startswith('_')),
+            dir(type(self))
+        )
+
+
+class Panel(MetPyHasTraits):
     """Draw one or more plots."""
 
     @property
@@ -508,7 +519,7 @@ class Panel(HasTraits):
 
 
 @exporter.export
-class PanelContainer(HasTraits):
+class PanelContainer(MetPyHasTraits):
     """Collects panels and set complete figure related settings (e.g., size)."""
 
     size = Union([Tuple(Union([Int(), Float()]), Union([Int(), Float()])),
@@ -677,7 +688,7 @@ class MapPanel(Panel):
         if isinstance(area, str):
             match = re.match(r'(\w+)([-+]*)$', area)
             if match is None:
-                raise TraitError(f'"{area}" is not a valid string area.')
+                raise TraitError(f'"{area}" is not a valid area.')
             region, modifier = match.groups()
             region = region.lower()
 
@@ -865,7 +876,7 @@ class MapPanel(Panel):
         return copy.copy(self)
 
 
-class SubsetTraits(HasTraits):
+class SubsetTraits(MetPyHasTraits):
     """Represent common traits for subsetting data."""
 
     x = Union([Float(allow_none=True, default_value=None), Instance(units.Quantity)])
@@ -1131,7 +1142,7 @@ class PlotScalar(Plots2D):
             self._need_redraw = False
 
 
-class ContourTraits(HasTraits):
+class ContourTraits(MetPyHasTraits):
     """Represents common contour traits."""
 
     contours = Union([List(Float()), Int()], default_value=25)
@@ -1158,7 +1169,7 @@ class ContourTraits(HasTraits):
     """
 
 
-class ColorfillTraits(HasTraits):
+class ColorfillTraits(MetPyHasTraits):
     """Represent common colorfill traits."""
 
     colormap = Unicode(allow_none=True, default_value=None)
@@ -1507,7 +1518,7 @@ class BarbPlot(PlotVector):
 
 
 @exporter.export
-class PlotObs(HasTraits):
+class PlotObs(MetPyHasTraits):
     """The highest level class related to plotting observed surface and upperair data.
 
     This class collects all common methods no matter whether plotting a upper-level or
@@ -1837,7 +1848,7 @@ class PlotObs(HasTraits):
 
 
 @exporter.export
-class PlotGeometry(HasTraits):
+class PlotGeometry(MetPyHasTraits):
     """Plot collections of Shapely objects and customize their appearance."""
 
     parent = Instance(Panel)

@@ -65,7 +65,7 @@ def test_declarative_contour():
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -94,7 +94,7 @@ def test_declarative_figsize():
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -149,7 +149,7 @@ def fix_is_closed_polygon(monkeypatch):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 23.964}.get(MPL_VERSION, 0.0184))
+                               tolerance={'3.0': 25.026}.get(MPL_VERSION, 0.0276))
 @needs_cartopy
 def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -167,7 +167,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -180,7 +180,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0134))
+                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0157))
 @needs_cartopy
 def test_declarative_contour_convert_units(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -199,7 +199,7 @@ def test_declarative_contour_convert_units(fix_is_closed_polygon):
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
@@ -212,7 +212,7 @@ def test_declarative_contour_convert_units(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0))
+                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0.0022))
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -235,7 +235,7 @@ def test_declarative_events():
 
     panel = MapPanel()
     panel.area = 'us'
-    panel.proj = 'lcc'
+    panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'states']
     panel.plots = [contour, img]
 
@@ -1132,7 +1132,7 @@ def test_declarative_sfc_obs_change_units(ccrs):
     obs.time_window = timedelta(minutes=15)
     obs.level = None
     obs.fields = ['air_temperature']
-    obs.color = ['black']
+    obs.colors = ['black']
     obs.plot_units = ['degF']
 
     # Panel for plot with Map features
@@ -1497,7 +1497,7 @@ def test_declarative_plot_geometry_polygons():
     pc = PanelContainer()
     pc.size = (12, 12)
     pc.panels = [panel]
-    pc.show()
+    pc.draw()
 
     return pc.figure
 
@@ -1536,7 +1536,7 @@ def test_declarative_plot_geometry_lines(ccrs):
     pc = PanelContainer()
     pc.size = (12, 12)
     pc.panels = [panel]
-    pc.show()
+    pc.draw()
 
     return pc.figure
 
@@ -1576,6 +1576,25 @@ def test_declarative_plot_geometry_points(ccrs):
     pc = PanelContainer()
     pc.size = (12, 12)
     pc.panels = [panel]
-    pc.show()
+    pc.draw()
 
     return pc.figure
+
+
+@needs_cartopy
+def test_drop_traitlets_dir():
+    """Test successful drop of inherited members from HasTraits and any '_' or '__' members."""
+    for plot_obj in (
+            BarbPlot,
+            ContourPlot,
+            FilledContourPlot,
+            ImagePlot,
+            MapPanel,
+            PanelContainer,
+            PlotGeometry,
+            PlotObs
+    ):
+        assert dir(plot_obj)[0].startswith('_')
+        assert not dir(plot_obj())[0].startswith('_')
+        assert 'cross_validation_lock' in dir(plot_obj)
+        assert 'cross_validation_lock' not in dir(plot_obj())
