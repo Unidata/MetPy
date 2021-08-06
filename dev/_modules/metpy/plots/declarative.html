@@ -674,7 +674,18 @@
     <span class="k">return</span> <span class="n">feat</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="n">scaler</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MetPyHasTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Provides modification layer on HasTraits for declarative classes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter dir to be more helpful for tab-completion in Jupyter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="ow">not</span> <span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)),</span>
+            <span class="nb">dir</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw one or more plots.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -684,7 +695,7 @@
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="k">class</span> <span class="nc">PanelContainer</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PanelContainer</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Collects panels and set complete figure related settings (e.g., size).&quot;&quot;&quot;</span>
 
     <span class="n">size</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Tuple</span><span class="p">(</span><span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">()]),</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">()])),</span>
@@ -853,7 +864,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+)([-+]*)$&#39;</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid area.&#39;</span><span class="p">)</span>
             <span class="n">region</span><span class="p">,</span> <span class="n">modifier</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
             <span class="n">region</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
@@ -1041,7 +1052,7 @@
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<span class="k">class</span> <span class="nc">SubsetTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SubsetTraits</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represent common traits for subsetting data.&quot;&quot;&quot;</span>
 
     <span class="n">x</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
@@ -1307,7 +1318,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-<span class="k">class</span> <span class="nc">ContourTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ContourTraits</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents common contour traits.&quot;&quot;&quot;</span>
 
     <span class="n">contours</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">List</span><span class="p">(</span><span class="n">Float</span><span class="p">()),</span> <span class="n">Int</span><span class="p">()],</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
@@ -1334,7 +1345,7 @@
 <span class="s2">    &quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ColorfillTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ColorfillTraits</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represent common colorfill traits.&quot;&quot;&quot;</span>
 
     <span class="n">colormap</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -1683,7 +1694,7 @@
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="k">class</span> <span class="nc">PlotObs</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PlotObs</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The highest level class related to plotting observed surface and upperair data.</span>
 
 <span class="sd">    This class collects all common methods no matter whether plotting a upper-level or</span>
@@ -2013,7 +2024,7 @@
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="k">class</span> <span class="nc">PlotGeometry</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PlotGeometry</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Plot collections of Shapely objects and customize their appearance.&quot;&quot;&quot;</span>
 
     <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
@@ -2312,7 +2323,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 06, 2021 at 21:08:57.<br/>
+        Last updated on Aug 06, 2021 at 21:12:21.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
