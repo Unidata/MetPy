@@ -1497,7 +1497,7 @@ def test_declarative_plot_geometry_polygons():
     pc = PanelContainer()
     pc.size = (12, 12)
     pc.panels = [panel]
-    pc.show()
+    pc.draw()
 
     return pc.figure
 
@@ -1536,7 +1536,7 @@ def test_declarative_plot_geometry_lines(ccrs):
     pc = PanelContainer()
     pc.size = (12, 12)
     pc.panels = [panel]
-    pc.show()
+    pc.draw()
 
     return pc.figure
 
@@ -1576,7 +1576,7 @@ def test_declarative_plot_geometry_points(ccrs):
     pc = PanelContainer()
     pc.size = (12, 12)
     pc.panels = [panel]
-    pc.show()
+    pc.draw()
 
     return pc.figure
 
