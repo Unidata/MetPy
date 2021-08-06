@@ -227,6 +227,12 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     current_wx_symbol = []
     if tree.curwx.text.strip() not in ('', '//', 'NSW'):
         current_wx = tree.curwx.text.strip().split()
+
+        # Handle having e.g. '+' and 'TSRA' parsed into separate items
+        if current_wx[0] in ('-', '+') and current_wx[1]:
+            current_wx[0] += current_wx[1]
+            current_wx.pop(1)
+
         current_wx_symbol = wx_code_to_numeric(current_wx).tolist()
     while len(current_wx) < 3:
         current_wx.append(np.nan)

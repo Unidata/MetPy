@@ -162,12 +162,17 @@ from metpy.units import units
      '///CB 27/24 Q1015',
      Metar('TFFF', 14.6, -61.0, 5, datetime(2017, 5, 11, 18, 30), 110, 19, 1000, 'RA', 'BCFG',
            np.nan, 'FEW', 1400, 'BKN', 2100, 'BKN', 2700, np.nan, np.nan, 6, 27, 24,
-           units.Quantity(1015, 'hPa').m_as('inHg'), 63, 41, 0, ''))],
+           units.Quantity(1015, 'hPa').m_as('inHg'), 63, 41, 0, '')),
+    # Space between + and wx code
+    ('SKCG 031730Z 13004KT 0500 + TSRA BKN010 25/25 Q1012 RMK A2990',
+     Metar('SKCG', 10.43, -75.52, 1, datetime(2017, 5, 3, 17, 30), 130, 4, 500, '+TSRA',
+           np.nan, np.nan, 'BKN', 1000, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 6,
+           25, 25, units.Quantity(1012, 'hPa').m_as('inHg'), 1097, 0, 0, 'A2990'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
          'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
-         'variable vis no dir'])
+         'variable vis no dir', 'space in wx code'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
