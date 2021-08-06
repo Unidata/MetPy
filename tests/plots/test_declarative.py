@@ -149,7 +149,7 @@ def fix_is_closed_polygon(monkeypatch):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 23.964}.get(MPL_VERSION, 0.0184))
+                               tolerance={'3.0': 25.026}.get(MPL_VERSION, 0.0276))
 @needs_cartopy
 def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -180,7 +180,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0134))
+                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0157))
 @needs_cartopy
 def test_declarative_contour_convert_units(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -212,7 +212,7 @@ def test_declarative_contour_convert_units(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0))
+                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0.0022))
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -1581,6 +1581,7 @@ def test_declarative_plot_geometry_points(ccrs):
     return pc.figure
 
 
+@needs_cartopy
 def test_drop_traitlets_dir():
     """Test successful drop of inherited members from HasTraits and any '_' or '__' members."""
     for plot_obj in (
