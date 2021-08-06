@@ -118,10 +118,18 @@ from metpy.units import units
            units.Quantity(10, 'm/s').m_as('knots'), 5000, '-SHRA', 'BLDU', np.nan, 'FEW',
            3300, 'BKN', 4600, np.nan, np.nan, np.nan, np.nan, 6, 21, 11,
            units.Quantity(1014, 'hPa').m_as('inHg'), 80, 1007, 0,
-           'BECMG TL1240 04004MPS NSW'))],
+           'BECMG TL1240 04004MPS NSW')),
+    # M1/4SM vis, -VCTSSN weather
+    ('K4BM 020127Z AUTO 04013G24KT 010V080 M1/4SM -VCTSSN OVC002 07/06 A3060 '
+     'RMK AO2 LTG DSNT SE THRU SW',
+     Metar('K4BM', 39.04, -105.52, 3438, datetime(2017, 5, 2, 1, 27), 40, 13,
+           units.Quantity(0.25, 'mi').m_as('m'), '-VCTSSN', np.nan, np.nan, 'OVC', 200,
+           np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 8, 7, 6, 30.60, 2095, 0, 0,
+           'AO2 LTG DSNT SE THRU SW'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
-         '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement'])
+         '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
+         'M1/4SM vis'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth

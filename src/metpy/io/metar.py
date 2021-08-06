@@ -197,8 +197,8 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     # Handle visibility
     if tree.vis.text.endswith('SM'):
         visibility = 0
-        # Strip off the SM and any whitespace around the value
-        vis_str = tree.vis.text[:-2].strip()
+        # Strip off the SM and any whitespace around the value and any leading 'M'
+        vis_str = tree.vis.text[:-2].strip().lstrip('M')
 
         # Case of e.g. 1 1/4SM
         if ' ' in vis_str:
