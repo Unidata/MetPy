@@ -1729,6 +1729,7 @@ class Grammar(object):
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
+                            index2 = self._offset
                             chunk4, max4 = None, self._offset + 1
                             if max4 <= self._input_size:
                                 chunk4 = self._input[self._offset:max4]
@@ -1742,10 +1743,13 @@ class Grammar(object):
                                     self._expected = []
                                 if self._offset == self._failure:
                                     self._expected.append('[NSEW]')
+                            if address6 is FAILURE:
+                                address6 = TreeNode(self._input[index2:index2], index2, [])
+                                self._offset = index2
                             if address6 is not FAILURE:
                                 elements0.append(address6)
                                 address7 = FAILURE
-                                index2 = self._offset
+                                index3 = self._offset
                                 chunk5, max5 = None, self._offset + 1
                                 if max5 <= self._input_size:
                                     chunk5 = self._input[self._offset:max5]
@@ -1760,8 +1764,8 @@ class Grammar(object):
                                     if self._offset == self._failure:
                                         self._expected.append('[NSEW]')
                                 if address7 is FAILURE:
-                                    address7 = TreeNode(self._input[index2:index2], index2, [])
-                                    self._offset = index2
+                                    address7 = TreeNode(self._input[index3:index3], index3, [])
+                                    self._offset = index3
                                 if address7 is not FAILURE:
                                     elements0.append(address7)
                                 else:

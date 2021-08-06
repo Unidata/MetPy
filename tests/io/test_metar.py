@@ -156,11 +156,18 @@ from metpy.units import units
     ('VEIM 121200Z 09008KT 8000 NSW FEW018 SCT100 28/23 Q1008 BECMG 7000 NSW',
      Metar('VEIM', 24.77, 93.9, 781, datetime(2017, 5, 12, 12, 0), 90, 8, 8000, np.nan,
            np.nan, np.nan, 'FEW', 1800, 'SCT', 10000, np.nan, np.nan, np.nan, np.nan, 4,
-           28, 23, units.Quantity(1008, 'hPa').m_as('inHg'), 0, 0, 0, 'BECMG 7000 NSW'))],
+           28, 23, units.Quantity(1008, 'hPa').m_as('inHg'), 0, 0, 0, 'BECMG 7000 NSW')),
+    # Variable vis with no direction
+    ('TFFF 111830Z AUTO 11019G30KT 1000 0600 R10/1100D RA BCFG FEW014/// BKN021/// BKN027/// '
+     '///CB 27/24 Q1015',
+     Metar('TFFF', 14.6, -61.0, 5, datetime(2017, 5, 11, 18, 30), 110, 19, 1000, 'RA', 'BCFG',
+           np.nan, 'FEW', 1400, 'BKN', 2100, 'BKN', 2700, np.nan, np.nan, 6, 27, 24,
+           units.Quantity(1015, 'hPa').m_as('inHg'), 63, 41, 0, ''))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
-         'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW'])
+         'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
+         'variable vis no dir'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
@@ -217,7 +224,7 @@ def test_parse_file():
     assert counts.current_wx1 == 1090
     assert counts.current_wx2 == 82
     assert counts.current_wx3 == 1
-    assert counts.low_cloud_type == 7359
+    assert counts.low_cloud_type == 7361
     assert counts.low_cloud_level == 3867
     assert counts.medium_cloud_type == 1646
     assert counts.medium_cloud_level == 1641
@@ -226,14 +233,14 @@ def test_parse_file():
     assert counts.highest_cloud_type == 37
     assert counts.highest_cloud_level == 37
     assert counts.cloud_coverage == 8980
-    assert counts.air_temperature == 8777
-    assert counts.dew_point_temperature == 8738
-    assert counts.altimeter == 8449
+    assert counts.air_temperature == 8779
+    assert counts.dew_point_temperature == 8740
+    assert counts.altimeter == 8450
     assert counts.remarks == 8980
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
     assert (df.current_wx3_symbol != 0).sum() == counts.current_wx3
-    assert counts.air_pressure_at_sea_level == 8377
+    assert counts.air_pressure_at_sea_level == 8378
     assert counts.eastward_wind == 8577
     assert counts.northward_wind == 8577
 
@@ -276,11 +283,11 @@ def test_parse_file_bad_encoding():
     assert counts.wind_direction == 8377
     assert counts.wind_speed == 8673
     assert counts.visibility == 8312
-    assert counts.current_wx1 == 1394
+    assert counts.current_wx1 == 1412
     assert counts.current_wx2 == 213
     assert counts.current_wx3 == 3
-    assert counts.low_cloud_type == 7647
-    assert counts.low_cloud_level == 3813
+    assert counts.low_cloud_type == 7672
+    assert counts.low_cloud_level == 3816
     assert counts.medium_cloud_type == 1632
     assert counts.medium_cloud_level == 1623
     assert counts.high_cloud_type == 546
@@ -288,14 +295,14 @@ def test_parse_file_bad_encoding():
     assert counts.highest_cloud_type == 40
     assert counts.highest_cloud_level == 40
     assert counts.cloud_coverage == 8802
-    assert counts.air_temperature == 8572
-    assert counts.dew_point_temperature == 8511
-    assert counts.altimeter == 8222
+    assert counts.air_temperature == 8597
+    assert counts.dew_point_temperature == 8536
+    assert counts.altimeter == 8246
     assert counts.remarks == 8802
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
     assert (df.current_wx3_symbol != 0).sum() == counts.current_wx3
-    assert counts.air_pressure_at_sea_level == 8183
+    assert counts.air_pressure_at_sea_level == 8207
     assert counts.eastward_wind == 8377
     assert counts.northward_wind == 8377
 
