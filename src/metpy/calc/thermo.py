@@ -3254,56 +3254,47 @@ def lifted_index(pressure, temperature, parcel_profile):
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def k_index(pressure, temperature, dewpoint):
     """Calculate K Index from the pressure temperature and dewpoint.
-    
+
     K Index formula derived from [George1960]:
     K = (T850 - T500) + Td850 - (T700 - Td700)
-    
+
     where:
-    
+
     T850 is the temperature at 850 hPa
     T700 is the temperature at 700 hPa
     T500 is the temperature at 500 hPa
     Td850 is the dewpoint at 850 hPa
     Td700 is the dewpoint at 700 hPa
-    
+
     Calculation of the K Index is defined as the temperature difference between
     the static instability between 850 hPa and 500 hPa, add with the moisture
-    at 850hPa, then substract from the dryness of the airmass at 700 hPa.
-    
+    at 850hPa, then subtract from the dryness of the airmass at 700 hPa.
+
     Parameters
     ----------
     pressure : `pint.Quantity`
         Pressure level(s), in order from highest to lowest pressure
-        
+
     temperature : `pint.Quantity`
         Temperature corresponding to pressure
-        
+
     dewpoint : `pint.Quantity`
         Dewpoint temperature corresponding to pressure
-        
+
     Returns
     -------
     `pint.Quantity`
         K Index
-    """
-    
-    # Find index for 850, 700 and 500 hPa pressure level.
-    idx_850 = np.where(pressure == units.Quantity(850, 'hPa'))
-    idx_700 = np.where(pressure == units.Quantity(700, 'hPa'))
-    idx_500 = np.where(pressure == units.Quantity(500, 'hPa'))
 
-    # Find temperature at 850, 700 and 500 hPa
-    T850 = temperature[idx_850]
-    T700 = temperature[idx_700]
-    T500 = temperature[idx_500]
-    
-    # Find dewpoint temperature at 850 and 700 hPa
-    Td850 = dewpoint[idx_850]
-    Td700 = dewpoint[idx_700]
-    
+    """
+
+    # Find temperature and dewpoint at 850, 700 and 500 hPa
+    (T850, T700, T500), (Td850, Td700, _) = interpolate_1d(units.Quantity([850, 700, 500], 'hPa'),
+                                                            pressure, temperature, dewpoint)
+
     # Calculate k index.
     k_index = ((T850 - T500) + Td850 - (T700 - Td700)).to(units.degC)
-    
+
     return k_index
 
 @exporter.export

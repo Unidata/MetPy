@@ -12,7 +12,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
                         exner_function, gradient_richardson_number, isentropic_interpolation,
-                        isentropic_interpolation_as_dataset, lcl, lfc, lifted_index, k_index,
+                        isentropic_interpolation_as_dataset, k_index, lcl, lfc, lifted_index,
                         mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse, moist_static_energy,
