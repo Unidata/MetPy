@@ -3297,6 +3297,7 @@ def k_index(pressure, temperature, dewpoint):
 
     return k_index
 
+
 @exporter.export
 @add_vertical_dim_from_xarray
 @preprocess_and_wrap(
