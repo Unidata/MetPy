@@ -72,6 +72,7 @@ Soundings
       cape_cin
       critical_angle
       el
+      k_index
       lcl
       lfc
       lifted_index
