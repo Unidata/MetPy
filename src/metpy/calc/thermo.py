@@ -3267,6 +3267,55 @@ def lifted_index(pressure, temperature, parcel_profile):
 
 
 @exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def k_index(pressure, temperature, dewpoint):
+    """Calculate K Index from the pressure temperature and dewpoint.
+
+    K Index formula derived from [George1960]_:
+    K = (T850 - T500) + Td850 - (T700 - Td700)
+
+    where:
+
+    T850 is the temperature at 850 hPa
+    T700 is the temperature at 700 hPa
+    T500 is the temperature at 500 hPa
+    Td850 is the dewpoint at 850 hPa
+    Td700 is the dewpoint at 700 hPa
+
+    Calculation of the K Index is defined as the temperature difference between
+    the static instability between 850 hPa and 500 hPa, add with the moisture
+    at 850hPa, then subtract from the dryness of the airmass at 700 hPa.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature corresponding to pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        K Index
+
+    """
+    # Find temperature and dewpoint at 850, 700 and 500 hPa
+    (t850, t700, t500), (td850, td700, _) = interpolate_1d(units.Quantity([850, 700, 500],
+                                                           'hPa'), pressure, temperature,
+                                                           dewpoint)
+
+    # Calculate k index.
+    k_index = ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
+
+    return k_index
+
+
+@exporter.export
 @add_vertical_dim_from_xarray
 @preprocess_and_wrap(
     wrap_like='potential_temperature',

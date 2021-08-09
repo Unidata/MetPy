@@ -83,6 +83,9 @@ References
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
 
+.. [George1960] George, J.J., 1960: *Weather Forecasting for Aeronautics*. New York and
+           London Academic Press, 673 pp.
+
 .. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
            Introductory Survey*. Academic Press, 350 pp.
 
