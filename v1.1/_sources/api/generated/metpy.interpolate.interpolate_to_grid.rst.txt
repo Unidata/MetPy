@@ -1,0 +1,12 @@
+interpolate_to_grid
+=====================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: interpolate_to_grid
+
+.. include:: metpy.interpolate.interpolate_to_grid.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

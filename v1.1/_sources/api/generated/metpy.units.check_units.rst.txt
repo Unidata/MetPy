@@ -1,0 +1,12 @@
+check_units
+=======================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: check_units
+
+.. include:: metpy.units.check_units.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

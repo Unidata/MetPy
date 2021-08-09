@@ -1,0 +1,12 @@
+mixed_parcel
+=======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: mixed_parcel
+
+.. include:: metpy.calc.mixed_parcel.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

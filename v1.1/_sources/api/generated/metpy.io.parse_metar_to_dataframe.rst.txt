@@ -1,0 +1,12 @@
+parse_metar_to_dataframe
+=================================
+
+.. currentmodule:: metpy.io
+
+.. autofunction:: parse_metar_to_dataframe
+
+.. include:: metpy.io.parse_metar_to_dataframe.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

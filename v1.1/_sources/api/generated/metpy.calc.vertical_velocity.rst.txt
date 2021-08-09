@@ -1,0 +1,12 @@
+vertical_velocity
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: vertical_velocity
+
+.. include:: metpy.calc.vertical_velocity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

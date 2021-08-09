@@ -1,0 +1,76 @@
+Parameter
+=====================
+
+.. currentmodule:: metpy.units
+
+.. autoclass:: Parameter
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~Parameter.KEYWORD_ONLY
+      ~Parameter.POSITIONAL_ONLY
+      ~Parameter.POSITIONAL_OR_KEYWORD
+      ~Parameter.VAR_KEYWORD
+      ~Parameter.VAR_POSITIONAL
+      ~Parameter.annotation
+      ~Parameter.default
+      ~Parameter.kind
+      ~Parameter.name
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Parameter.__init__
+      ~Parameter.replace
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: KEYWORD_ONLY
+   .. autoattribute:: POSITIONAL_ONLY
+   .. autoattribute:: POSITIONAL_OR_KEYWORD
+   .. autoattribute:: VAR_KEYWORD
+   .. autoattribute:: VAR_POSITIONAL
+   .. autoattribute:: annotation
+   .. autoattribute:: default
+   .. autoattribute:: kind
+   .. autoattribute:: name
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: replace
+
+   
+   
+
+.. include:: metpy.units.Parameter.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

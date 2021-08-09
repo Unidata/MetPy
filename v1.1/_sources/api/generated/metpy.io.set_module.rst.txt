@@ -1,0 +1,12 @@
+set_module
+===================
+
+.. currentmodule:: metpy.io
+
+.. autofunction:: set_module
+
+.. include:: metpy.io.set_module.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

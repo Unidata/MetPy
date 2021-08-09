@@ -1,0 +1,55 @@
+﻿
+
+metpy.plots
+===========
+
+.. automodule:: metpy.plots
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      add_metpy_logo
+      add_timestamp
+      add_unidata_logo
+      convert_gempak_color
+      read_colortable
+      wx_code_to_numeric
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      BarbPlot
+      ContourPlot
+      FilledContourPlot
+      Hodograph
+      ImagePlot
+      MapPanel
+      PanelContainer
+      PlotGeometry
+      PlotObs
+      PlotScalar
+      PlotVector
+      Plots2D
+      SkewT
+      StationPlot
+      StationPlotLayout
+
+   
+   
+
+   
+   
+   
+

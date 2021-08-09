@@ -1,0 +1,12 @@
+cross_section_components
+===================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: cross_section_components
+
+.. include:: metpy.calc.cross_section_components.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

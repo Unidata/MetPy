@@ -1,0 +1,12 @@
+el
+=============
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: el
+
+.. include:: metpy.calc.el.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

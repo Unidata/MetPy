@@ -1,0 +1,12 @@
+signature
+=====================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: signature
+
+.. include:: metpy.units.signature.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

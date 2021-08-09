@@ -1,0 +1,126 @@
+MapPanel
+====================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: MapPanel
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~MapPanel.area
+      ~MapPanel.ax
+      ~MapPanel.cross_validation_lock
+      ~MapPanel.layers
+      ~MapPanel.layout
+      ~MapPanel.parent
+      ~MapPanel.plot_kwargs
+      ~MapPanel.plots
+      ~MapPanel.projection
+      ~MapPanel.title
+      ~MapPanel.title_fontsize
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~MapPanel.__init__
+      ~MapPanel.add_traits
+      ~MapPanel.class_own_trait_events
+      ~MapPanel.class_own_traits
+      ~MapPanel.class_trait_names
+      ~MapPanel.class_traits
+      ~MapPanel.copy
+      ~MapPanel.draw
+      ~MapPanel.has_trait
+      ~MapPanel.hold_trait_notifications
+      ~MapPanel.notify_change
+      ~MapPanel.observe
+      ~MapPanel.on_trait_change
+      ~MapPanel.refresh
+      ~MapPanel.set_trait
+      ~MapPanel.setup_instance
+      ~MapPanel.trait_defaults
+      ~MapPanel.trait_events
+      ~MapPanel.trait_has_value
+      ~MapPanel.trait_metadata
+      ~MapPanel.trait_names
+      ~MapPanel.trait_values
+      ~MapPanel.traits
+      ~MapPanel.unobserve
+      ~MapPanel.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: area
+   .. autoattribute:: ax
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: layers
+   .. autoattribute:: layout
+   .. autoattribute:: parent
+   .. autoattribute:: plot_kwargs
+   .. autoattribute:: plots
+   .. autoattribute:: projection
+   .. autoattribute:: title
+   .. autoattribute:: title_fontsize
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: refresh
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.MapPanel.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

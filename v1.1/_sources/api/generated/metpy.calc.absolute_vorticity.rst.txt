@@ -1,0 +1,12 @@
+absolute_vorticity
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: absolute_vorticity
+
+.. include:: metpy.calc.absolute_vorticity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

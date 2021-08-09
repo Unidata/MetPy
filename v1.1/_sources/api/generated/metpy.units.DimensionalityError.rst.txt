@@ -1,0 +1,12 @@
+DimensionalityError
+===============================
+
+.. currentmodule:: metpy.units
+
+.. autoexception:: DimensionalityError
+
+.. include:: metpy.units.DimensionalityError.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

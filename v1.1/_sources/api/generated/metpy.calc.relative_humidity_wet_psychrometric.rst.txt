@@ -1,0 +1,12 @@
+relative_humidity_wet_psychrometric
+==============================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: relative_humidity_wet_psychrometric
+
+.. include:: metpy.calc.relative_humidity_wet_psychrometric.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

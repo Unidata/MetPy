@@ -1,0 +1,765 @@
+:orphan:
+
+
+
+.. _sphx_glr_examples:
+
+.. _examples-index:
+
+Example Gallery
+===============
+
+For more MetPy examples, please visit the `Unidata Python Gallery
+<https://unidata.github.io/python-training/gallery/gallery-home/>`_.
+
+.. _general-examples:
+
+General Examples
+----------------
+
+Examples of using a variety of MetPy's functionality together.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s XArray accessors to simplify opening a data file and plotting data on a map using C...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_XArray_Projections_thumb.png
+     :alt: XArray Projection Handling
+
+     :ref:`sphx_glr_examples_XArray_Projections.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/XArray_Projections
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_sigma_to_pressure_interpolation_thumb.png
+     :alt: Sigma to Pressure Interpolation
+
+     :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/sigma_to_pressure_interpolation
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features.">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_Advanced_Sounding_thumb.png
+     :alt: Advanced Sounding
+
+     :ref:`sphx_glr_examples_Advanced_Sounding.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/Advanced_Sounding
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function metpy.interpolate.cross_section can obtain a cross-sectional slice through g...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_cross_section_thumb.png
+     :alt: Cross Section Analysis
+
+     :ref:`sphx_glr_examples_cross_section.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/cross_section
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="By reading model output data from a netCDF file, we can create a four panel plot showing:">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_Four_Panel_Map_thumb.png
+     :alt: Four Panel Map
+
+     :ref:`sphx_glr_examples_Four_Panel_Map.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/Four_Panel_Map
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model an...">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_isentropic_example_thumb.png
+     :alt: Isentropic Analysis
+
+     :ref:`sphx_glr_examples_isentropic_example.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/isentropic_example
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram.">
+
+.. only:: html
+
+ .. figure:: /examples/images/thumb/sphx_glr_meteogram_metpy_thumb.png
+     :alt: Meteogram
+
+     :ref:`sphx_glr_examples_meteogram_metpy.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/meteogram_metpy
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_examples_calculations:
+
+.. _calc_examples:
+
+Calculations
+------------
+
+Examples using various calculation functions from MetPy.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert direction strings to angles.">
+
+.. only:: html
+
+ .. figure:: /examples/calculations/images/thumb/sphx_glr_Parse_Angles_thumb.png
+     :alt: Parse angles
+
+     :ref:`sphx_glr_examples_calculations_Parse_Angles.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Parse_Angles
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+ .. figure:: /examples/calculations/images/thumb/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png
+     :alt: Dewpoint and Mixing Ratio
+
+     :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Dewpoint_and_Mixing_Ratio
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert angles to direction strings.">
+
+.. only:: html
+
+ .. figure:: /examples/calculations/images/thumb/sphx_glr_Angle_to_Direction_thumb.png
+     :alt: Angle to Direction
+
+     :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Angle_to_Direction
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.gradient.">
+
+.. only:: html
+
+ .. figure:: /examples/calculations/images/thumb/sphx_glr_Gradient_thumb.png
+     :alt: Gradient
+
+     :ref:`sphx_glr_examples_calculations_Gradient.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Gradient
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions.">
+
+.. only:: html
+
+ .. figure:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
+     :alt: Smoothing
+
+     :ref:`sphx_glr_examples_calculations_Smoothing.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Smoothing
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_examples_formats:
+
+.. _formats_examples:
+
+File Formats
+------------
+
+Examples using MetPy's support for reading various file formats.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data u...">
+
+.. only:: html
+
+ .. figure:: /examples/formats/images/thumb/sphx_glr_GINI_Water_Vapor_thumb.png
+     :alt: GINI Water Vapor Imagery
+
+     :ref:`sphx_glr_examples_formats_GINI_Water_Vapor.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/formats/GINI_Water_Vapor
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot">
+
+.. only:: html
+
+ .. figure:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_3_File_thumb.png
+     :alt: NEXRAD Level 3 File
+
+     :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/formats/NEXRAD_Level_3_File
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot">
+
+.. only:: html
+
+ .. figure:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_2_File_thumb.png
+     :alt: NEXRAD Level 2 File
+
+     :ref:`sphx_glr_examples_formats_NEXRAD_Level_2_File.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/formats/NEXRAD_Level_2_File
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_examples_gridding:
+
+.. _gridding_examples:
+
+Gridding
+--------
+
+Examples generating a grid of data from scattered point observations.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Finding natural neighbors in a triangulation">
+
+.. only:: html
+
+ .. figure:: /examples/gridding/images/thumb/sphx_glr_Find_Natural_Neighbors_Verification_thumb.png
+     :alt: Find Natural Neighbors Verification
+
+     :ref:`sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/gridding/Find_Natural_Neighbors_Verification
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an...">
+
+.. only:: html
+
+ .. figure:: /examples/gridding/images/thumb/sphx_glr_Wind_SLP_Interpolation_thumb.png
+     :alt: Wind and Sea Level Pressure Interpolation
+
+     :ref:`sphx_glr_examples_gridding_Wind_SLP_Interpolation.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/gridding/Wind_SLP_Interpolation
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches.">
+
+.. only:: html
+
+ .. figure:: /examples/gridding/images/thumb/sphx_glr_Point_Interpolation_thumb.png
+     :alt: Point Interpolation
+
+     :ref:`sphx_glr_examples_gridding_Point_Interpolation.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/gridding/Point_Interpolation
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare inverse distance interpolation methods">
+
+.. only:: html
+
+ .. figure:: /examples/gridding/images/thumb/sphx_glr_Inverse_Distance_Verification_thumb.png
+     :alt: Inverse Distance Verification: Cressman and Barnes
+
+     :ref:`sphx_glr_examples_gridding_Inverse_Distance_Verification.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/gridding/Inverse_Distance_Verification
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic appr...">
+
+.. only:: html
+
+ .. figure:: /examples/gridding/images/thumb/sphx_glr_Natural_Neighbor_Verification_thumb.png
+     :alt: Natural Neighbor Verification
+
+     :ref:`sphx_glr_examples_gridding_Natural_Neighbor_Verification.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/gridding/Natural_Neighbor_Verification
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_examples_plots:
+
+.. _plotting_examples:
+
+Plotting
+--------
+
+Examples using MetPy's various specialty plotting routines.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Simplified_Image_Plot_thumb.png
+     :alt: Simple Plotting
+
+     :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Simplified_Image_Plot
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
+     :alt: US Counties
+
+     :ref:`sphx_glr_examples_plots_US_Counties.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/US_Counties
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Combined_plotting_thumb.png
+     :alt: Combined Plotting
+
+     :ref:`sphx_glr_examples_plots_Combined_plotting.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Combined_plotting
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_upperair_declarative_thumb.png
+     :alt: Upper Air Analysis using Declarative Syntax
+
+     :ref:`sphx_glr_examples_plots_upperair_declarative.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/upperair_declarative
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_surface_declarative_thumb.png
+     :alt: Surface Analysis using Declarative Syntax
+
+     :ref:`sphx_glr_examples_plots_surface_declarative.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/surface_declarative
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Skew-T_Layout_thumb.png
+     :alt: Skew-T with Complex Layout
+
+     :ref:`sphx_glr_examples_plots_Skew-T_Layout.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Skew-T_Layout
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Hodograph_Inset_thumb.png
+     :alt: Hodograph Inset
+
+     :ref:`sphx_glr_examples_plots_Hodograph_Inset.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Hodograph_Inset
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Simple_Sounding_thumb.png
+     :alt: Simple Sounding
+
+     :ref:`sphx_glr_examples_plots_Simple_Sounding.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Simple_Sounding
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Mesonet_Stationplot_thumb.png
+     :alt: Mesonet Station Plot
+
+     :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Mesonet_Stationplot
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols.">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Station_Plot_thumb.png
+     :alt: Station Plot
+
+     :ref:`sphx_glr_examples_plots_Station_Plot.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Station_Plot
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b...">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_Station_Plot_with_Layout_thumb.png
+     :alt: Station Plot with Layout
+
+     :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Station_Plot_with_Layout
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-gallery
+
+
+  .. container:: sphx-glr-download sphx-glr-download-python
+
+    :download:`Download all examples in Python source code: examples_python.zip </examples/examples_python.zip>`
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+    :download:`Download all examples in Jupyter notebooks: examples_jupyter.zip </examples/examples_jupyter.zip>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
