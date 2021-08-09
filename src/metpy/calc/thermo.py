@@ -3305,8 +3305,9 @@ def k_index(pressure, temperature, dewpoint):
 
     """
     # Find temperature and dewpoint at 850, 700 and 500 hPa
-    (t850, t700, t500), (td850, td700, _) = interpolate_1d(units.Quantity([850, 700, 500], 'hPa'),
-                                                           pressure, temperature, dewpoint)
+    (t850, t700, t500), (td850, td700, _) = interpolate_1d(units.Quantity([850, 700, 500],
+                                                           'hPa'), pressure, temperature,
+                                                           dewpoint)
 
     # Calculate k index.
     k_index = ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
