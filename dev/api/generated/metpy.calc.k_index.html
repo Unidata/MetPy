@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>density &#8212; MetPy 1.1dev</title>
+    <title>k_index &#8212; MetPy 1.1dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -43,18 +43,16 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="dry_lapse" href="metpy.calc.dry_lapse.html" />
-    <link rel="prev" title="add_pressure_to_height" href="metpy.calc.add_pressure_to_height.html" />
+    <link rel="next" title="lcl" href="metpy.calc.lcl.html" />
+    <link rel="prev" title="el" href="metpy.calc.el.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.density.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.k_index.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -181,8 +179,8 @@
      add_pressure_to_height
     </a>
    </li>
-   <li class="toctree-l3 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.calc.density.html">
      density
     </a>
    </li>
@@ -401,8 +399,8 @@
      el
     </a>
    </li>
-   <li class="toctree-l3">
-    <a class="reference internal" href="metpy.calc.k_index.html">
+   <li class="toctree-l3 current active">
+    <a class="current reference internal" href="#">
      k_index
     </a>
    </li>
@@ -851,35 +849,35 @@
               
               <div>
                 
-  <section id="density">
-<h1>density<a class="headerlink" href="#density" title="Permalink to this headline">¶</a></h1>
+  <section id="k-index">
+<h1>k_index<a class="headerlink" href="#k-index" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.calc.density">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pressure</span></em>, <em class="sig-param"><span class="pre">temperature</span></em>, <em class="sig-param"><span class="pre">mixing_ratio</span></em>, <em class="sig-param"><span class="pre">molecular_weight_ratio=&lt;Quantity(0.62195691</span></em>, <em class="sig-param"><span class="pre">'dimensionless')&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.density" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate density.</p>
-<p>This calculation must be given an air parcel’s pressure, temperature, and mixing ratio.
-The implementation uses the formula outlined in <a class="reference internal" href="../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a> pg.67.</p>
+<dt class="sig sig-object py" id="metpy.calc.k_index">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">k_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.k_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate K Index from the pressure temperature and dewpoint.</p>
+<p>K Index formula derived from <a class="reference internal" href="../references.html#george1960" id="id1"><span>[George1960]</span></a>:
+K = (T850 - T500) + Td850 - (T700 - Td700)</p>
+<p>where:</p>
+<p>T850 is the temperature at 850 hPa
+T700 is the temperature at 700 hPa
+T500 is the temperature at 500 hPa
+Td850 is the dewpoint at 850 hPa
+Td700 is the dewpoint at 700 hPa</p>
+<p>Calculation of the K Index is defined as the temperature difference between
+the static instability between 850 hPa and 500 hPa, add with the moisture
+at 850hPa, then subtract from the dryness of the airmass at 700 hPa.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Total atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Air temperature</p></li>
-<li><p><strong>mixing_ratio</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Mass mixing ratio (dimensionless)</p></li>
-<li><p><strong>molecular_weight_ratio</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
-for air. Defaults to the ratio for water vapor to dry air.
-(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>)</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure level(s), in order from highest to lowest pressure</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature corresponding to pressure</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint temperature corresponding to pressure</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Corresponding density of the parcel</p>
+<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – K Index</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<div class="math notranslate nohighlight">
-\[\rho = \frac{p}{R_dT_v}\]</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">mixing</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">mixing_ratio</span></code></p>
-</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -890,8 +888,8 @@ for air. Defaults to the ratio for water vapor to dry air.
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="metpy.calc.add_pressure_to_height.html" title="previous page">add_pressure_to_height</a>
-    <a class='right-next' id="next-link" href="metpy.calc.dry_lapse.html" title="next page">dry_lapse</a>
+    <a class='left-prev' id="prev-link" href="metpy.calc.el.html" title="previous page">el</a>
+    <a class='right-next' id="next-link" href="metpy.calc.lcl.html" title="next page">lcl</a>
 
               </div>
               
