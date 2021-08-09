@@ -3255,7 +3255,7 @@ def lifted_index(pressure, temperature, parcel_profile):
 def k_index(pressure, temperature, dewpoint):
     """Calculate K Index from the pressure temperature and dewpoint.
 
-    K Index formula derived from [George1960]:
+    K Index formula derived from [George1960]_:
     K = (T850 - T500) + Td850 - (T700 - Td700)
 
     where:
@@ -3287,13 +3287,12 @@ def k_index(pressure, temperature, dewpoint):
         K Index
 
     """
-
     # Find temperature and dewpoint at 850, 700 and 500 hPa
-    (T850, T700, T500), (Td850, Td700, _) = interpolate_1d(units.Quantity([850, 700, 500], 'hPa'),
+    (t850, t700, t500), (td850, td700, _) = interpolate_1d(units.Quantity([850, 700, 500], 'hPa'),
                                                            pressure, temperature, dewpoint)
 
     # Calculate k index.
-    k_index = ((T850 - T500) + Td850 - (T700 - Td700)).to(units.degC)
+    k_index = ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
 
     return k_index
 
