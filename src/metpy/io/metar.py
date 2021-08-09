@@ -20,13 +20,12 @@ from ..units import units
 exporter = Exporter(globals())
 
 # Configure the named tuple used for storing METAR data
-Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
-                             'date_time', 'wind_direction', 'wind_speed', 'current_wx1',
+Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation', 'date_time',
+                             'wind_direction', 'wind_speed', 'visibility', 'current_wx1',
                              'current_wx2', 'current_wx3', 'skyc1', 'skylev1', 'skyc2',
-                             'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4',
-                             'cloudcover', 'temperature', 'dewpoint', 'altimeter',
-                             'current_wx1_symbol', 'current_wx2_symbol',
-                             'current_wx3_symbol'])
+                             'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4', 'cloudcover',
+                             'temperature', 'dewpoint', 'altimeter', 'current_wx1_symbol',
+                             'current_wx2_symbol', 'current_wx3_symbol', 'remarks'])
 
 # Create a dictionary for attaching units to the different variables
 col_units = {'station_id': None,
@@ -36,6 +35,7 @@ col_units = {'station_id': None,
              'date_time': None,
              'wind_direction': 'degrees',
              'wind_speed': 'kts',
+             'visibility': 'meters',
              'eastward_wind': 'kts',
              'northward_wind': 'kts',
              'current_wx1': None,
@@ -83,114 +83,11 @@ def parse_metar_to_dataframe(metar_text, *, year=None, month=None):
     -------
     `pandas.DataFrame`
 
-    Notes
-    -----
-    The output has the following columns:
-
-    * 'station_id': Station Identifier (ex. KLOT)
-    * 'latitude': Latitude of the observation, measured in degrees
-    * 'longitude': Longitude of the observation, measured in degrees
-    * 'elevation': Elevation of the observation above sea level, measured in meters
-    * 'date_time': Date and time of the observation, datetime object
-    * 'wind_direction': Direction the wind is coming from, measured in degrees
-    * 'wind_speed': Wind speed, measured in knots
-    * 'current_wx1': Current weather (1 of 3)
-    * 'current_wx2': Current weather (2 of 3)
-    * 'current_wx3': Current weather (3 of 3)
-    * 'low_cloud_type': Low-level sky cover (ex. FEW)
-    * 'low_cloud_level': Height of low-level sky cover, measured in feet
-    * 'medium_cloud_type': Medium-level sky cover (ex. OVC)
-    * 'medium_cloud_level': Height of medium-level sky cover, measured in feet
-    * 'high_cloud_type': High-level sky cover (ex. FEW)
-    * 'high_cloud_level': Height of high-level sky cover, measured in feet
-    * 'highest_cloud_type': Highest-level Sky cover (ex. CLR)
-    * 'highest_cloud_level:': Height of highest-level sky cover, measured in feet
-    * 'cloud_coverage': Cloud cover measured in oktas, taken from maximum of sky cover values
-    * 'air_temperature': Temperature, measured in degrees Celsius
-    * 'dew_point_temperature': Dew point, measured in degrees Celsius
-    * 'altimeter': Altimeter value, measured in inches of mercury
-    * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
-      Attachment IV
-    * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
-      Attachment IV
-    * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
-      Attachment IV
-    * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
-      and altimeter value
-    * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
-    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
-
     """
-    from ..calc import altimeter_to_sea_level_pressure, wind_components
-
-    # Defaults year and/or month to present reported date if not provided
-    if year is None or month is None:
-        now = datetime.now()
-        year = now.year if year is None else year
-        month = now.month if month is None else month
-
-    # Use the named tuple parsing function to separate metar
-    # Utilizes the station dictionary which contains elevation, latitude, and longitude
-    metar_vars = parse_metar_to_named_tuple(metar_text, station_info, year, month)
-
-    # Use a pandas dataframe to store the data
-    df = pd.DataFrame({'station_id': metar_vars.station_id,
-                       'latitude': metar_vars.latitude,
-                       'longitude': metar_vars.longitude,
-                       'elevation': metar_vars.elevation,
-                       'date_time': metar_vars.date_time,
-                       'wind_direction': metar_vars.wind_direction,
-                       'wind_speed': metar_vars.wind_speed,
-                       'current_wx1': metar_vars.current_wx1,
-                       'current_wx2': metar_vars.current_wx2,
-                       'current_wx3': metar_vars.current_wx3,
-                       'low_cloud_type': metar_vars.skyc1,
-                       'low_cloud_level': metar_vars.skylev1,
-                       'medium_cloud_type': metar_vars.skyc2,
-                       'medium_cloud_level': metar_vars.skylev2,
-                       'high_cloud_type': metar_vars.skyc3,
-                       'high_cloud_level': metar_vars.skylev3,
-                       'highest_cloud_type': metar_vars.skyc4,
-                       'highest_cloud_level': metar_vars.skylev4,
-                       'cloud_coverage': metar_vars.cloudcover,
-                       'air_temperature': metar_vars.temperature,
-                       'dew_point_temperature': metar_vars.dewpoint,
-                       'altimeter': metar_vars.altimeter,
-                       'current_wx1_symbol': metar_vars.current_wx1_symbol,
-                       'current_wx2_symbol': metar_vars.current_wx2_symbol,
-                       'current_wx3_symbol': metar_vars.current_wx3_symbol},
-                      index=[metar_vars.station_id])
-
-    # Convert to sea level pressure using calculation in metpy.calc
-    try:
-        # Create a field for sea-level pressure and make sure it is a float
-        df['air_pressure_at_sea_level'] = float(altimeter_to_sea_level_pressure(
-            units.Quantity(df.altimeter.values, 'inHg'),
-            units.Quantity(df.elevation.values, 'meters'),
-            units.Quantity(df.temperature.values, 'degC')).to('hPa').magnitude)
-    except AttributeError:
-        df['air_pressure_at_sea_level'] = [np.nan]
-
-    # Use get wind components and assign them to u and v variables
-    u, v = wind_components(
-        units.Quantity(df.wind_speed.values, 'kts'),
-        units.Quantity(df.wind_direction.values, 'degree'))
-    df['eastward_wind'] = u.m
-    df['northward_wind'] = v.m
-
-    # Round the altimeter and sea-level pressure values
-    df['altimeter'] = df.altimeter.round(2)
-    df['air_pressure_at_sea_level'] = df.air_pressure_at_sea_level.round(2)
-
-    # Set the units for the dataframe--filter out warning from pandas
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', UserWarning)
-        df.units = col_units
-
-    return df
+    return _metars_to_dataframe([metar_text], year=year, month=month)
 
 
-def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
+def parse_metar(metar_text, year, month, station_metadata=station_info):
     """Parse a METAR report in text form into a list of named tuples.
 
     Parameters
@@ -241,9 +138,11 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
       Attachment IV
     * 'current_wx3_symbol': Current weather symbol (3 of 3), WMO integer code from [WMO306]_
       Attachment IV
+    * 'visibility': Visibility distance, measured in meters
+    * 'remarks': Remarks (unparsed) in the report
 
     """
-    from ..plots.wx_symbols import wx_code_map
+    from ..plots.wx_symbols import wx_code_to_numeric
 
     # Decode the data using the parser (built using Canopy) the parser utilizes a grammar
     # file which follows the format structure dictated by the WMO Handbook, but has the
@@ -256,9 +155,10 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
 
     # Extract the latitude and longitude values from 'master' dictionary
     try:
-        lat = station_metadata[tree.siteid.text.strip()].latitude
-        lon = station_metadata[tree.siteid.text.strip()].longitude
-        elev = station_metadata[tree.siteid.text.strip()].altitude
+        info = station_metadata[station_id]
+        lat = info.latitude
+        lon = info.longitude
+        elev = info.altitude
     except KeyError:
         lat = np.nan
         lon = np.nan
@@ -266,12 +166,12 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
 
     # Set the datetime, day, and time_utc
     try:
-        day_time_utc = tree.datetime.text[:-1].strip()
+        day_time_utc = tree.datetime.text.strip()
         day = int(day_time_utc[0:2])
         hour = int(day_time_utc[2:4])
-        minute = int(day_time_utc[4:7])
+        minute = int(day_time_utc[4:6])
         date_time = datetime(year, month, day, hour, minute)
-    except (AttributeError, ValueError):
+    except ValueError:
         date_time = np.nan
 
     # Set the wind values
@@ -282,120 +182,82 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
             wind_spd = np.nan
         # If the wind direction is variable, set wind direction to nan but keep the wind speed
         else:
+            wind_spd = float(tree.wind.wind_spd.text)
+            if 'MPS' in tree.wind.text:
+                wind_spd = units.Quantity(wind_spd, 'm/s').m_as('knots')
             if (tree.wind.wind_dir.text == 'VRB') or (tree.wind.wind_dir.text == 'VAR'):
                 wind_dir = np.nan
-                wind_spd = float(tree.wind.wind_spd.text)
             else:
-                # If the wind speed and direction is given, keep the values
                 wind_dir = int(tree.wind.wind_dir.text)
-                wind_spd = int(tree.wind.wind_spd.text)
     # If there are any errors, return nan
     except ValueError:
         wind_dir = np.nan
         wind_spd = np.nan
 
+    # Handle visibility
+    if tree.vis.text.endswith('SM'):
+        visibility = 0
+        # Strip off the SM and any whitespace around the value and any leading 'M'
+        vis_str = tree.vis.text[:-2].strip().lstrip('M')
+
+        # Case of e.g. 1 1/4SM
+        if ' ' in vis_str:
+            whole, vis_str = vis_str.split(maxsplit=1)
+            visibility += int(whole)
+
+        # Handle fraction regardless
+        if '/' in vis_str:
+            num, denom = vis_str.split('/', maxsplit=1)
+            visibility += int(num) / int(denom)
+        else:  # Should be getting all cases of whole number without fraction
+            visibility += int(vis_str)
+        visibility = units.Quantity(visibility, 'miles').m_as('meter')
+    # CAVOK means vis is "at least 10km" and no significant clouds or weather
+    elif 'CAVOK' in tree.vis.text:
+        visibility = 10000
+    elif not tree.vis.text or tree.vis.text.strip() == '////':
+        visibility = np.nan
+    else:
+        # Only worry about the first 4 characters (digits) and ignore possible 'NDV'
+        visibility = int(tree.vis.text.strip()[:4])
+
     # Set the weather symbols
     # If the weather symbol is missing, set values to nan
-    if tree.curwx.text == '':
-        current_wx1 = np.nan
-        current_wx2 = np.nan
-        current_wx3 = np.nan
-        current_wx1_symbol = 0
-        current_wx2_symbol = 0
-        current_wx3_symbol = 0
-    else:
-        wx = [np.nan, np.nan, np.nan]
-        # Loop through symbols and assign according WMO codes
-        wx[0:len((tree.curwx.text.strip()).split())] = tree.curwx.text.strip().split()
-        current_wx1 = wx[0]
-        current_wx2 = wx[1]
-        current_wx3 = wx[2]
-        try:
-            current_wx1_symbol = int(wx_code_map[wx[0]])
-        except (IndexError, KeyError):
-            current_wx1_symbol = 0
-        try:
-            current_wx2_symbol = int(wx_code_map[wx[1]])
-        except (IndexError, KeyError):
-            current_wx2_symbol = 0
-        try:
-            current_wx3_symbol = int(wx_code_map[wx[3]])
-        except (IndexError, KeyError):
-            current_wx3_symbol = 0
+    current_wx = []
+    current_wx_symbol = []
+    if tree.curwx.text.strip() not in ('', '//', 'NSW'):
+        current_wx = tree.curwx.text.strip().split()
+
+        # Handle having e.g. '+' and 'TSRA' parsed into separate items
+        if current_wx[0] in ('-', '+') and current_wx[1]:
+            current_wx[0] += current_wx[1]
+            current_wx.pop(1)
+
+        current_wx_symbol = wx_code_to_numeric(current_wx).tolist()
+    while len(current_wx) < 3:
+        current_wx.append(np.nan)
+    while len(current_wx_symbol) < 3:
+        current_wx_symbol.append(0)
 
     # Set the sky conditions
+    skyc = [np.nan] * 4
+    skylev = [np.nan] * 4
     if tree.skyc.text[1:3] == 'VV':
-        skyc1 = 'VV'
-        skylev1 = tree.skyc.text.strip()[2:]
-        skyc2 = np.nan
-        skylev2 = np.nan
-        skyc3 = np.nan
-        skylev3 = np.nan
-        skyc4 = np.nan
-        skylev4 = np.nan
-
+        skyc[0] = 'VV'
+        level = tree.skyc.text.strip()[2:5]
+        skylev[0] = np.nan if '/' in level else 100 * int(level)
     else:
-        skyc = []
-        skyc[0:len((tree.skyc.text.strip()).split())] = tree.skyc.text.strip().split()
-        try:
-            skyc1 = skyc[0][0:3]
-            if '/' in skyc1:
-                skyc1 = np.nan
-        except (IndexError, ValueError, TypeError):
-            skyc1 = np.nan
-        try:
-            skylev1 = skyc[0][3:]
-            if '/' in skylev1:
-                skylev1 = np.nan
-            else:
-                skylev1 = float(skylev1) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev1 = np.nan
-        try:
-            skyc2 = skyc[1][0:3]
-            if '/' in skyc2:
-                skyc2 = np.nan
-        except (IndexError, ValueError, TypeError):
-            skyc2 = np.nan
-        try:
-            skylev2 = skyc[1][3:]
-            if '/' in skylev2:
-                skylev2 = np.nan
-            else:
-                skylev2 = float(skylev2) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev2 = np.nan
-        try:
-            skyc3 = skyc[2][0:3]
-            if '/' in skyc3:
-                skyc3 = np.nan
-        except (IndexError, ValueError):
-            skyc3 = np.nan
-        try:
-            skylev3 = skyc[2][3:]
-            if '/' in skylev3:
-                skylev3 = np.nan
-            else:
-                skylev3 = float(skylev3) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev3 = np.nan
-        try:
-            skyc4 = skyc[3][0:3]
-            if '/' in skyc4:
-                skyc4 = np.nan
-        except (IndexError, ValueError, TypeError):
-            skyc4 = np.nan
-        try:
-            skylev4 = skyc[3][3:]
-            if '/' in skylev4:
-                skylev4 = np.nan
-            else:
-                skylev4 = float(skylev4) * 100
-        except (IndexError, ValueError, TypeError):
-            skylev4 = np.nan
+        for ind, part in enumerate(tree.skyc.text.strip().split(maxsplit=3)):
+            cover = part[:3]
+            level = part[3:6]  # Strips off any ending text like in FEW017CB
+            if '/' not in cover:
+                skyc[ind] = cover
+            if level and '/' not in level:
+                with contextlib.suppress(ValueError):
+                    skylev[ind] = float(level) * 100
 
     # Set the cloud cover variable (measured in oktas)
-    if ('OVC' or 'VV') in tree.skyc.text:
+    if 'OVC' in tree.skyc.text or 'VV' in tree.skyc.text:
         cloudcover = 8
     elif 'BKN' in tree.skyc.text:
         cloudcover = 6
@@ -404,45 +266,43 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year, month):
     elif 'FEW' in tree.skyc.text:
         cloudcover = 2
     elif ('SKC' in tree.skyc.text or 'NCD' in tree.skyc.text or 'NSC' in tree.skyc.text
-          or 'CLR' in tree.skyc.text):
+          or 'CLR' in tree.skyc.text or 'CAVOK' in tree.vis.text):
         cloudcover = 0
     else:
         cloudcover = 10
 
     # Set the temperature and dewpoint
-    if (tree.temp_dewp.text == '') or (tree.temp_dewp.text == ' MM/MM'):
-        temp = np.nan
-        dewp = np.nan
-    else:
-        try:
+    temp = np.nan
+    dewp = np.nan
+    if tree.temp_dewp.text and tree.temp_dewp.text != ' MM/MM':
+        with contextlib.suppress(ValueError):
+            temp = float(tree.temp_dewp.temp.text[-2:])
             if 'M' in tree.temp_dewp.temp.text:
-                temp = (-1 * float(tree.temp_dewp.temp.text[-2:]))
-            else:
-                temp = float(tree.temp_dewp.temp.text[-2:])
-        except ValueError:
-            temp = np.nan
-        try:
+                temp *= -1
+
+        with contextlib.suppress(ValueError):
+            dewp = float(tree.temp_dewp.dewp.text[-2:])
             if 'M' in tree.temp_dewp.dewp.text:
-                dewp = (-1 * float(tree.temp_dewp.dewp.text[-2:]))
-            else:
-                dewp = float(tree.temp_dewp.dewp.text[-2:])
-        except ValueError:
-            dewp = np.nan
+                dewp *= -1
 
     # Set the altimeter value and sea level pressure
-    if tree.altim.text == '':
-        altim = np.nan
+    if tree.altim.text:
+        val = float(tree.altim.text.strip()[1:5])
+        altim = val / 100 if val > 1100 else units.Quantity(val, 'hPa').m_as('inHg')
     else:
-        if (float(tree.altim.text.strip()[1:5])) > 1100:
-            altim = float(tree.altim.text.strip()[1:5]) / 100
-        else:
-            altim = units.Quantity(int(tree.altim.text.strip()[1:5]), 'hPa').to('inHg').m
+        altim = np.nan
+
+    # Strip off extraneous stuff off the remarks section
+    remarks = tree.remarks.text.lstrip().rstrip('= ')
+    if remarks.startswith('RMK'):
+        remarks = remarks[3:].strip()
 
     # Returns a named tuple with all the relevant variables
-    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd,
-                 current_wx1, current_wx2, current_wx3, skyc1, skylev1, skyc2,
-                 skylev2, skyc3, skylev3, skyc4, skylev4, cloudcover, temp, dewp,
-                 altim, current_wx1_symbol, current_wx2_symbol, current_wx3_symbol)
+    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, visibility,
+                 current_wx[0], current_wx[1], current_wx[2], skyc[0], skylev[0], skyc[1],
+                 skylev[1], skyc[2], skylev[2], skyc[3], skylev[3], cloudcover, temp, dewp,
+                 altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2],
+                 remarks)
 
 
 @exporter.export
@@ -463,9 +323,38 @@ def parse_metar_file(filename, *, year=None, month=None):
     -------
     `pandas.DataFrame`
 
+    """
+    # Function to merge METARs
+    def full_metars(x, prefix='     '):
+        tmp = []
+        for i in x:
+            # Skip any blank lines
+            if not i.strip():
+                continue
+            # No prefix signals a new report, so yield
+            if not i.startswith(prefix) and tmp:
+                yield ' '.join(tmp)
+                tmp = []
+            tmp.append(i.strip())
+
+        # Handle any leftovers
+        if tmp:
+            yield ' '.join(tmp)
+
+    # Open the file
+    with contextlib.closing(open_as_needed(filename, 'rt')) as myfile:
+        # Merge multi-line METARs into a single report--drop reports that are too short to
+        # be a METAR with a robust amount of data.
+        return _metars_to_dataframe(filter(lambda m: len(m) > 25, full_metars(myfile)),
+                                    year=year, month=month)
+
+
+def _metars_to_dataframe(metar_iter, *, year=None, month=None):
+    """Turn an iterable of METAR reports into a DataFrame.
+
     Notes
     -----
-    The returned `pandas.DataFrame` has the following columns:
+    The output has the following columns:
 
     * 'station_id': Station Identifier (ex. KLOT)
     * 'latitude': Latitude of the observation, measured in degrees
@@ -474,6 +363,7 @@ def parse_metar_file(filename, *, year=None, month=None):
     * 'date_time': Date and time of the observation, datetime object
     * 'wind_direction': Direction the wind is coming from, measured in degrees
     * 'wind_speed': Wind speed, measured in knots
+    * 'visibility': Visibility distance, measured in meters
     * 'current_wx1': Current weather (1 of 3)
     * 'current_wx2': Current weather (2 of 3)
     * 'current_wx3': Current weather (3 of 3)
@@ -489,6 +379,7 @@ def parse_metar_file(filename, *, year=None, month=None):
     * 'air_temperature': Temperature, measured in degrees Celsius
     * 'dew_point_temperature': Dew point, measured in degrees Celsius
     * 'altimeter': Altimeter value, measured in inches of mercury
+    * 'remarks': Any remarks section in the report
     * 'current_wx1_symbol': Current weather symbol (1 of 3), WMO integer code from [WMO306]_
       Attachment IV
     * 'current_wx2_symbol': Current weather symbol (2 of 3), WMO integer code from [WMO306]_
@@ -497,8 +388,8 @@ def parse_metar_file(filename, *, year=None, month=None):
       Attachment IV
     * 'air_pressure_at_sea_level': Sea level pressure, derived from temperature, elevation
       and altimeter value
-    * 'eastward_wind': Eastward component (u-compoment) of the wind vector, measured in knots
-    * 'northward_wind': Northward component (v-compoment) of the wind vector, measured in knots
+    * 'eastward_wind': Eastward component (u-component) of the wind vector, measured in knots
+    * 'northward_wind': Northward component (v-component) of the wind vector, measured in knots
 
     """
     from ..calc import altimeter_to_sea_level_pressure, wind_components
@@ -509,145 +400,39 @@ def parse_metar_file(filename, *, year=None, month=None):
         year = now.year if year is None else year
         month = now.month if month is None else month
 
-    # Function to merge METARs
-    def merge(x, key='     '):
-        tmp = []
-        for i in x:
-            if (i[0:len(key)] != key) and len(tmp):
-                yield ' '.join(tmp)
-                tmp = []
-            if i.startswith(key):
-                i = i[5:]
-            tmp.append(i)
-        if len(tmp):
-            yield ' '.join(tmp)
-
-    # Open the file and clean up and take out the next line (\n)
-    with contextlib.closing(open_as_needed(filename, 'rt')) as myfile:
-        value = myfile.read().rstrip()
-    list_values = value.split('\n')
-    list_values = list(filter(None, list_values))
-
-    # Call the merge function and assign the result to the list of metars
-    list_values = list(merge(list_values))
-
-    # Remove the short lines that do not contain METAR observations or contain
-    # METAR observations that lack a robust amount of data
+    # Try to parse each METAR that is given
     metars = []
-    for metar in list_values:
-        if len(metar) > 25:
-            metars.append(metar)
-        else:
-            continue
-
-    # Create a dictionary with all the station name, locations, and elevations
-    master = station_info
-
-    # Setup lists to append the data to
-    station_id = []
-    lat = []
-    lon = []
-    elev = []
-    date_time = []
-    wind_dir = []
-    wind_spd = []
-    current_wx1 = []
-    current_wx2 = []
-    current_wx3 = []
-    skyc1 = []
-    skylev1 = []
-    skyc2 = []
-    skylev2 = []
-    skyc3 = []
-    skylev3 = []
-    skyc4 = []
-    skylev4 = []
-    cloudcover = []
-    temp = []
-    dewp = []
-    altim = []
-    current_wx1_symbol = []
-    current_wx2_symbol = []
-    current_wx3_symbol = []
-
-    # Loop through the different metars within the text file
-    for metar in metars:
-        try:
+    for metar in metar_iter:
+        with contextlib.suppress(ParseError):
             # Parse the string of text and assign to values within the named tuple
-            metar = parse_metar_to_named_tuple(metar, master, year=year, month=month)
+            metars.append(parse_metar(metar, year=year, month=month))
 
-            # Append the different variables to their respective lists
-            station_id.append(metar.station_id)
-            lat.append(metar.latitude)
-            lon.append(metar.longitude)
-            elev.append(metar.elevation)
-            date_time.append(metar.date_time)
-            wind_dir.append(metar.wind_direction)
-            wind_spd.append(metar.wind_speed)
-            current_wx1.append(metar.current_wx1)
-            current_wx2.append(metar.current_wx2)
-            current_wx3.append(metar.current_wx3)
-            skyc1.append(metar.skyc1)
-            skylev1.append(metar.skylev1)
-            skyc2.append(metar.skyc2)
-            skylev2.append(metar.skylev2)
-            skyc3.append(metar.skyc3)
-            skylev3.append(metar.skylev3)
-            skyc4.append(metar.skyc4)
-            skylev4.append(metar.skylev4)
-            cloudcover.append(metar.cloudcover)
-            temp.append(metar.temperature)
-            dewp.append(metar.dewpoint)
-            altim.append(metar.altimeter)
-            current_wx1_symbol.append(metar.current_wx1_symbol)
-            current_wx2_symbol.append(metar.current_wx2_symbol)
-            current_wx3_symbol.append(metar.current_wx3_symbol)
+    # Take the list of Metar objects and turn it into a DataFrame with appropriate columns
+    df = pd.DataFrame(metars)
+    df.set_index('station_id', inplace=True, drop=False)
+    df.rename(columns={'skyc1': 'low_cloud_type', 'skylev1': 'low_cloud_level',
+                       'skyc2': 'medium_cloud_type', 'skylev2': 'medium_cloud_level',
+                       'skyc3': 'high_cloud_type', 'skylev3': 'high_cloud_level',
+                       'skyc4': 'highest_cloud_type', 'skylev4': 'highest_cloud_level',
+                       'cloudcover': 'cloud_coverage', 'temperature': 'air_temperature',
+                       'dewpoint': 'dew_point_temperature'}, inplace=True)
 
-        except ParseError:
-            continue
-
-    df = pd.DataFrame({'station_id': station_id,
-                       'latitude': lat,
-                       'longitude': lon,
-                       'elevation': elev,
-                       'date_time': date_time,
-                       'wind_direction': wind_dir,
-                       'wind_speed': wind_spd,
-                       'current_wx1': current_wx1,
-                       'current_wx2': current_wx2,
-                       'current_wx3': current_wx3,
-                       'low_cloud_type': skyc1,
-                       'low_cloud_level': skylev1,
-                       'medium_cloud_type': skyc2,
-                       'medium_cloud_level': skylev2,
-                       'high_cloud_type': skyc3,
-                       'high_cloud_level': skylev3,
-                       'highest_cloud_type': skyc4,
-                       'highest_cloud_level': skylev4,
-                       'cloud_coverage': cloudcover,
-                       'air_temperature': temp,
-                       'dew_point_temperature': dewp,
-                       'altimeter': altim,
-                       'current_wx1_symbol': current_wx1_symbol,
-                       'current_wx2_symbol': current_wx2_symbol,
-                       'current_wx3_symbol': current_wx3_symbol},
-                      index=station_id)
+    # Drop duplicate values
+    df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last',
+                       inplace=True)
 
     # Calculate sea-level pressure from function in metpy.calc
     df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(
-        units.Quantity(altim, 'inHg'),
-        units.Quantity(elev, 'meters'),
-        units.Quantity(temp, 'degC')).to('hPa').magnitude
+        units.Quantity(df.altimeter.values, col_units['altimeter']),
+        units.Quantity(df.elevation.values, col_units['elevation']),
+        units.Quantity(df.air_temperature.values, col_units['air_temperature'])).m_as('hPa')
 
     # Use get wind components and assign them to eastward and northward winds
     u, v = wind_components(
-        units.Quantity(df.wind_speed.values, 'kts'),
-        units.Quantity(df.wind_direction.values, 'degree'))
+        units.Quantity(df.wind_speed.values, col_units['wind_speed']),
+        units.Quantity(df.wind_direction.values, col_units['wind_direction']))
     df['eastward_wind'] = u.m
     df['northward_wind'] = v.m
-
-    # Drop duplicate values
-    df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')
 
     # Round altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
@@ -659,3 +444,11 @@ def parse_metar_file(filename, *, year=None, month=None):
         df.units = col_units
 
     return df
+
+
+# Patch in the notes section into the two main parse functions
+if _metars_to_dataframe.__doc__:
+    # Finds the Notes snippet in the docstring
+    snippet = _metars_to_dataframe.__doc__[_metars_to_dataframe.__doc__.find('Notes'):]
+    parse_metar_file.__doc__ = parse_metar_file.__doc__ + snippet
+    parse_metar_to_dataframe.__doc__ = parse_metar_to_dataframe.__doc__ + snippet

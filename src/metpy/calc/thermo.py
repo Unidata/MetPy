@@ -10,6 +10,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
+from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
@@ -312,7 +313,8 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     pressure = pressure.to('mbar')
     reference_pressure = reference_pressure.to('mbar')
-    temperature = np.atleast_1d(temperature)
+    org_units = temperature.units
+    temperature = np.atleast_1d(temperature).to('kelvin')
 
     side = 'left'
 
@@ -341,7 +343,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     if pres_decreasing:
         ret_temperatures = ret_temperatures[::-1]
 
-    return units.Quantity(ret_temperatures.T.squeeze(), temperature.units)
+    return units.Quantity(ret_temperatures.T.squeeze(), 'kelvin').to(org_units)
 
 
 @exporter.export
@@ -876,6 +878,14 @@ def parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint):
     )
 
 
+def _check_pressure(pressure):
+    """Check that pressure decreases monotonically.
+
+    Returns True if the pressure decreases monotonically; otherwise, returns False.
+    """
+    return np.all(pressure[:-1] > pressure[1:])
+
+
 def _parcel_profile_helper(pressure, temperature, dewpoint):
     """Help calculate parcel profiles.
 
@@ -883,6 +893,13 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     other calculation functions decide what to do with the pieces.
 
     """
+    # Check that pressure is monotonic decreasing.
+    if not _check_pressure(pressure):
+        msg = """
+        Pressure does not decrease monotonically in your sounding.
+        Using scipy.signal.medfilt may fix this."""
+        raise InvalidSoundingError(msg)
+
     # Find the LCL
     press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpoint)
     press_lcl = press_lcl.to(pressure.units)
@@ -2982,13 +2999,13 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         moist_adiabat_temperatures = moist_lapse(units.Quantity(press, pressure.units),
                                                  units.Quantity(ltemp, lcl_temp.units),
                                                  units.Quantity(lpress, lcl_press.units))
-        ret[...] = moist_adiabat_temperatures.magnitude
+        ret[...] = moist_adiabat_temperatures.m_as(temperature.units)
 
     # If we started with a scalar, return a scalar
     ret = it.operands[3]
     if ret.size == 1:
         ret = ret[0]
-    return units.Quantity(ret, moist_adiabat_temperatures.units)
+    return units.Quantity(ret, temperature.units)
 
 
 @exporter.export
@@ -3344,29 +3361,60 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 
 
 @exporter.export
+@preprocess_and_wrap(
+    wrap_like='temperature_bottom',
+    broadcast=('temperature_bottom', 'temperature_top')
+)
+@check_units('[temperature]', '[temperature]')
+def scale_height(temperature_bottom, temperature_top):
+    r"""Calculate the scale height of a layer.
+
+    .. math::   H = \frac{R_d \overline{T}}{g}
+
+    This function assumes dry air, but can be used with the virtual temperature
+    to account for moisture.
+
+    Parameters
+    ----------
+    temperature_bottom : `pint.Quantity`
+        Temperature at bottom of layer
+
+    temperature_top : `pint.Quantity`
+        Temperature at top of layer
+
+    Returns
+    -------
+    `pint.Quantity`
+        Scale height of layer
+    """
+    t_bar = 0.5 * (temperature_bottom.to('kelvin') + temperature_top.to('kelvin'))
+
+    return (mpconsts.Rd * t_bar) / mpconsts.g
+
+
+@exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def showalter_index(pressure, temperature, dewpt):
-    """Calculate Showalter Index from pressure temperature and 850 hPa lcl.
+def showalter_index(pressure, temperature, dewpoint):
+    """Calculate Showalter Index.
 
     Showalter Index derived from [Galway1956]_:
     SI = T500 - Tp500
 
     where:
     T500 is the measured temperature at 500 hPa
-    Tp500 is the temperature of the lifted parcel at 500 hPa
+    Tp500 is the temperature of the parcel at 500 hPa when lifted from 850 hPa
 
     Parameters
     ----------
         pressure : `pint.Quantity`
-            Atmospheric pressure level(s) of interest, in order from highest to
-            lowest pressure
+            Atmospheric pressure, in order from highest to lowest pressure
 
         temperature : `pint.Quantity`
-            Parcel temperature for corresponding pressure
+            Ambient temperature corresponding to ``pressure``
 
-        dewpt : `pint.Quantity`
-            Parcel dew point temperatures for corresponding pressure
+        dewpoint : `pint.Quantity`
+            Ambient dew point temperatures corresponding to ``pressure``
 
     Returns
     -------
@@ -3375,22 +3423,13 @@ def showalter_index(pressure, temperature, dewpt):
 
     """
     # find the measured temperature and dew point temperature at 850 hPa.
-    t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpt)
+    t850, td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, temperature, dewpoint)
 
     # find the parcel profile temperature at 500 hPa.
     tp500 = interpolate_1d(units.Quantity(500, 'hPa'), pressure, temperature)
 
-    # Calculate lcl at the 850 hPa level
-    lcl_calc, _ = lcl(units.Quantity(850, 'hPa'), t850[0], td850[0])
-
-    # Define end height for moist lapse rate calculation
-    p_end = units.Quantity(500, 'hPa')
-
-    # Calculate parcel temp when raised dry adiabatically from surface to lcl
-    dl = dry_lapse(lcl_calc, temperature[0], pressure[0])
-
-    # Calculate parcel temp when raised moist adiabatically from lcl to 500mb
-    ml = moist_lapse(p_end, dl, lcl_calc)
+    # Lift parcel from 850 to 500, handling any needed dry vs. saturated adiabatic processes
+    prof = parcel_profile(units.Quantity([850., 500.], 'hPa'), t850, td850)
 
     # Calculate the Showalter index
-    return tp500 - ml
+    return tp500 - prof[-1]

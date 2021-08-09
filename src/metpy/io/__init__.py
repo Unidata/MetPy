@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016,2018 MetPy Developers.
+# Copyright (c) 2015,2016,2018,2021 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Classes for reading various file formats.
@@ -8,13 +8,15 @@ this allows reading files that are already in memory (using :class:`python:io.St
 or remote files (using :func:`~python:urllib.request.urlopen`).
 """
 
+from .gempak import *  # noqa: F403
 from .gini import *  # noqa: F403
 from .metar import *  # noqa: F403
 from .nexrad import *  # noqa: F403
 from .station_data import *  # noqa: F403
 from ..package_tools import set_module
 
-__all__ = gini.__all__[:]  # pylint: disable=undefined-variable
+__all__ = gempak.__all__[:]  # pylint: disable=undefined-variable
+__all__.extend(gini.__all__)  # pylint: disable=undefined-variable
 __all__.extend(metar.__all__)  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
 __all__.extend(station_data.__all__)  # pylint: disable=undefined-variable

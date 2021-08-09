@@ -11,10 +11,10 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        exner_function, gradient_richardson_number, isentropic_interpolation,
-                        isentropic_interpolation_as_dataset, k_index, lcl, lfc, lifted_index,
-                        mixed_layer, mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
-                        mixing_ratio_from_relative_humidity,
+                        exner_function, gradient_richardson_number, InvalidSoundingError,
+                        isentropic_interpolation, isentropic_interpolation_as_dataset, lcl,
+                        lfc, lifted_index, mixed_layer, mixed_layer_cape_cin, mixed_parcel,
+                        mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse, moist_static_energy,
                         most_unstable_cape_cin, most_unstable_parcel, parcel_profile,
                         parcel_profile_with_lcl, parcel_profile_with_lcl_as_dataset,
@@ -113,18 +113,12 @@ def test_dry_lapse_2_levels():
     assert_array_almost_equal(temps, [293., 240.3583] * units.kelvin, 4)
 
 
-def test_moist_lapse():
-    """Test moist_lapse calculation."""
+@pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
+def test_moist_lapse(temp_units):
+    """Test moist_lapse with various temperature units."""
+    starting_temp = 19.85 * units.degC
     temp = moist_lapse(np.array([1000., 800., 600., 500., 400.]) * units.mbar,
-                       293. * units.kelvin)
-    true_temp = np.array([293, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
-    assert_array_almost_equal(temp, true_temp, 2)
-
-
-def test_moist_lapse_degc():
-    """Test moist_lapse with Celsius temperatures."""
-    temp = moist_lapse(np.array([1000., 800., 600., 500., 400.]) * units.mbar,
-                       19.85 * units.degC)
+                       starting_temp.to(temp_units))
     true_temp = np.array([293, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
     assert_array_almost_equal(temp, true_temp, 2)
 
@@ -188,6 +182,16 @@ def test_parcel_profile_lcl():
     assert_almost_equal(temp, true_t, 3)
     assert_almost_equal(dewp, true_td, 3)
     assert_array_almost_equal(prof, true_prof, 2)
+
+
+def test_parcel_profile_lcl_not_monotonic():
+    """Test parcel profile with lcl calculation."""
+    with pytest.raises(InvalidSoundingError):
+        p = np.array([1004., 1000., 943., 925., 928., 850., 839., 749., 700.]) * units.hPa
+        t = np.array([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2]) * units.degC
+        td = np.array([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8]) * units.degC
+
+        _ = parcel_profile_with_lcl(p, t, td)
 
 
 def test_parcel_profile_with_lcl_as_dataset():
@@ -1449,9 +1453,12 @@ def test_brunt_vaisala_period(bv_data):
     assert_almost_equal(bv_period, truth, 6)
 
 
-def test_wet_bulb_temperature():
+@pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
+def test_wet_bulb_temperature(temp_units):
     """Test wet bulb calculation with scalars."""
-    val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
+    temp = 25 * units.degC
+    dewp = 15 * units.degC
+    val = wet_bulb_temperature(1000 * units.hPa, temp.to(temp_units), dewp.to(temp_units))
     truth = 18.3432116 * units.degC  # 18.59 from NWS calculator
     assert_almost_equal(val, truth, 5)
 
@@ -1489,7 +1496,8 @@ def test_wet_bulb_temperature_2d():
     assert_array_almost_equal(val, truth, 5)
 
 
-def test_wet_bulb_nan():
+@pytest.mark.parametrize('temp_units', ['degF', 'degC', 'K'])
+def test_wet_bulb_nan(temp_units):
     """Test wet bulb calculation with nans."""
     pressure = [1000.0, 975.0, 950.0, 925.0, 900.0, 850.0, 800.0, 750.0, 700.0, 650.0, 600.0,
                 550.0, 500.0, 450.0, 400.0, 350.0, 300.0, 250.0, 200.0, 150.0, 100.0, 70.0,
@@ -1511,7 +1519,7 @@ def test_wet_bulb_nan():
                    -48.2122467, -39.66942444, -34.30999451, -33.35002747, -23.31001892,
                    -14.55002441, -11.74678955, -25.58999634] * units.degC
 
-    val = wet_bulb_temperature(pressure, temperature, dewpoint)
+    val = wet_bulb_temperature(pressure, temperature.to(temp_units), dewpoint.to(temp_units))
     truth = [19.238071735308814, 18.033294139060633, 16.65179610640866, 14.341431051131467,
              10.713278865013098, 7.2703265785039, 4.63234087372236, 1.8324379627895773,
              -1.0154897545814394, -4.337334561885717, -8.23596994210175, -11.902727397896111,
@@ -1926,12 +1934,19 @@ def test_gradient_richardson_number_with_xarray():
 
 def test_showalter_index():
     """Test the Showalter index calculation."""
-    p_upper = np.arange(1000, 200, -50) * units.hPa
-    p_lower = np.arange(175, 0, -25) * units.hPa
-    p = np.append(p_upper, p_lower,)
-    tc = np.linspace(30, -30, 25) * units.degC
-    tdc = np.linspace(10, -30, 25) * units.degC
+    pressure = units.Quantity(np.array([931.0, 925.0, 911.0, 891.0, 886.9, 855.0, 850.0, 825.6,
+                                        796.3, 783.0, 768.0, 759.0, 745.0, 740.4, 733.0, 715.0,
+                                        700.0, 695.0, 687.2, 684.0, 681.0, 677.0, 674.0, 661.9,
+                                        657.0, 639.0, 637.6, 614.0, 592.0, 568.9, 547.4, 526.8,
+                                        500.0, 487.5, 485.0]), 'hPa')
+    temps = units.Quantity(np.array([18.4, 19.8, 20.0, 19.6, 19.3, 16.8, 16.4, 15.1, 13.4,
+                                     12.6, 11.2, 10.4, 8.6, 8.3, 7.8, 5.8, 4.6, 4.2, 3.4, 3.0,
+                                     3.0, 4.4, 5.0, 5.1, 5.2, 3.4, 3.3, 2.4, 1.4, -0.4, -2.2,
+                                     -3.9, -6.3, -7.6, -7.9]), 'degC')
+    dewp = units.Quantity(np.array([9.4, 8.8, 6.0, 8.6, 8.4, 6.8, 6.4, 4.0, 1.0, -0.4, -1.1,
+                                    -1.6, 1.6, -0.2, -3.2, -3.2, -4.4, -2.8, -3.6, -4.0, -6.0,
+                                    -17.6, -25.0, -31.2, -33.8, -29.6, -30.1, -39.0, -47.6,
+                                    -48.9, -50.2, -51.5, -53.3, -55.5, -55.9]), 'degC')
 
-    result = showalter_index(p, tc, tdc)
-    expected = 23.73036498600014 * units.delta_degree_Celsius
-    assert_array_almost_equal(result, expected, 4)
+    result = showalter_index(pressure, temps, dewp)
+    assert_almost_equal(result, units.Quantity(7.6024, 'delta_degC'), 4)

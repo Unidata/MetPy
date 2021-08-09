@@ -260,11 +260,14 @@ u_g
 #########################################################################
 # For profile-based calculations (and most remaining calculations in the ``metpy.calc``
 # module), xarray ``DataArray``\s are accepted as inputs, but the outputs remain Pint
-# Quantities (typically scalars)
+# Quantities (typically scalars). Note that MetPy's profile calculations (such as CAPE and
+# CIN) require the sounding to be ordered from highest to lowest pressure. As seen earlier
+# in this tutorial, this data is ordered the other way, so we need to reverse the inputs
+# to ``mpcalc.surface_based_cape_cin``.
 
 data_at_point = data.metpy.sel(
     time1='2017-09-05 12:00',
-    latitude=40 * units.degrees_north,
+    latitude=30 * units.degrees_north,
     longitude=260 * units.degrees_east
 )
 dewpoint = mpcalc.dewpoint_from_relative_humidity(
@@ -272,9 +275,9 @@ dewpoint = mpcalc.dewpoint_from_relative_humidity(
     data_at_point['Relative_humidity_isobaric']
 )
 cape, cin = mpcalc.surface_based_cape_cin(
-    data_at_point['isobaric3'],
-    data_at_point['Temperature_isobaric'],
-    dewpoint
+    data_at_point['isobaric3'][::-1],
+    data_at_point['Temperature_isobaric'][::-1],
+    dewpoint[::-1]
 )
 cape
 

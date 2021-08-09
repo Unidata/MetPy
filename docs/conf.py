@@ -98,10 +98,12 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'MetPy'
+
 # noinspection PyShadowingBuiltins
-copyright = (f'2008\u2013{cur_date:%Y}, MetPy Developers. '
-             'Development supported by National Science Foundation grants '
-             'AGS-1344155, OAC-1740315, and AGS-1901712')
+copyright = (
+    f'2008\u2013{cur_date:%Y}, MetPy Developers.'
+    'Development is supported by Unidata and the National Science Foundation.'
+)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
