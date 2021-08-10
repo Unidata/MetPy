@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       DOC_VERSION: dev
+    environment:
+      name: github-pages
     strategy:
       fail-fast: false
       matrix:
@@ -131,7 +133,7 @@ jobs:
       if: ${{ github.event_name != 'pull_request' && matrix.python-version == '3.9' }}
       uses: peaceiris/actions-gh-pages@v3.8.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        deploy_key: ${{ secrets.GHPAGES_DEPLOY_KEY }}
         publish_dir: ./docs/build/html
         exclude_assets: '.buildinfo,_static/jquery-*.js,_static/underscore-*.js'
         destination_dir: ./${{ env.DOC_VERSION }}
