@@ -195,31 +195,35 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         wind_spd = np.nan
 
     # Handle visibility
-    if tree.vis.text.endswith('SM'):
-        visibility = 0
-        # Strip off the SM and any whitespace around the value and any leading 'M'
-        vis_str = tree.vis.text[:-2].strip().lstrip('M')
+    try:
+        if tree.vis.text.endswith('SM'):
+            visibility = 0
+            # Strip off the SM and any whitespace around the value and any leading 'M'
+            vis_str = tree.vis.text[:-2].strip().lstrip('M')
 
-        # Case of e.g. 1 1/4SM
-        if ' ' in vis_str:
-            whole, vis_str = vis_str.split(maxsplit=1)
-            visibility += int(whole)
+            # Case of e.g. 1 1/4SM
+            if ' ' in vis_str:
+                whole, vis_str = vis_str.split(maxsplit=1)
+                visibility += int(whole)
 
-        # Handle fraction regardless
-        if '/' in vis_str:
-            num, denom = vis_str.split('/', maxsplit=1)
-            visibility += int(num) / int(denom)
-        else:  # Should be getting all cases of whole number without fraction
-            visibility += int(vis_str)
-        visibility = units.Quantity(visibility, 'miles').m_as('meter')
-    # CAVOK means vis is "at least 10km" and no significant clouds or weather
-    elif 'CAVOK' in tree.vis.text:
-        visibility = 10000
-    elif not tree.vis.text or tree.vis.text.strip() == '////':
+            # Handle fraction regardless
+            if '/' in vis_str:
+                num, denom = vis_str.split('/', maxsplit=1)
+                visibility += int(num) / int(denom)
+            else:  # Should be getting all cases of whole number without fraction
+                visibility += int(vis_str)
+            visibility = units.Quantity(visibility, 'miles').m_as('meter')
+        # CAVOK means vis is "at least 10km" and no significant clouds or weather
+        elif 'CAVOK' in tree.vis.text:
+            visibility = 10000
+        elif not tree.vis.text or tree.vis.text.strip() == '////':
+            visibility = np.nan
+        else:
+            # Only worry about the first 4 characters (digits) and ignore possible 'NDV'
+            visibility = int(tree.vis.text.strip()[:4])
+    # If there are any errors, return nan
+    except ValueError:
         visibility = np.nan
-    else:
-        # Only worry about the first 4 characters (digits) and ignore possible 'NDV'
-        visibility = int(tree.vis.text.strip()[:4])
 
     # Set the weather symbols
     # If the weather symbol is missing, set values to nan
