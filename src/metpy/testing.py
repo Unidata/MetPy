@@ -216,8 +216,8 @@ def check_and_silence_warning(warn_type):
 
 
 def xfail_dask(array, reason):
-    """XFail a test if `array` is a `dask.array.Array`."""
-    dask_array = pytest.importorskip('dask.array', reason="dask.array not available")
+    """Xfail a test if `array` is a `dask.array.Array`."""
+    dask_array = pytest.importorskip('dask.array', reason='dask.array not available')
 
     if not isinstance(array, xr.DataArray) and isinstance(array.m, dask_array.Array):
         pytest.xfail(reason=reason)
