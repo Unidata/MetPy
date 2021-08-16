@@ -1980,7 +1980,7 @@ class GempakSounding(GempakFile):
             pbot = self._merge_winds_pressure(merged, parts, 'MXWA', pbot)
 
         if num_above_max_wind_levels >= 1:
-            pbot = self._merge_winds_pressure(merged, parts, 'MXWC', pbot)
+            _ = self._merge_winds_pressure(merged, parts, 'MXWC', pbot)
 
         # Interpolate height for SIG/MAX winds
         _interp_logp_height(merged, self.prod_desc.missing_float)
