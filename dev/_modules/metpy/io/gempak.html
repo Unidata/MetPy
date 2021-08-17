@@ -2156,7 +2156,7 @@
             <span class="n">pbot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_winds_pressure</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="s1">&#39;MXWA&#39;</span><span class="p">,</span> <span class="n">pbot</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">num_above_max_wind_levels</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">pbot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_winds_pressure</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="s1">&#39;MXWC&#39;</span><span class="p">,</span> <span class="n">pbot</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_winds_pressure</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="s1">&#39;MXWC&#39;</span><span class="p">,</span> <span class="n">pbot</span><span class="p">)</span>
 
         <span class="c1"># Interpolate height for SIG/MAX winds</span>
         <span class="n">_interp_logp_height</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span><span class="p">)</span>
@@ -2932,7 +2932,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 17, 2021 at 03:58:53.<br/>
+        Last updated on Aug 17, 2021 at 18:34:01.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
