@@ -928,7 +928,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  19.795 seconds)
+   **Total running time of the script:** ( 0 minutes  13.607 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
