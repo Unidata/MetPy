@@ -170,6 +170,9 @@ def array_type(request):
     quantity = metpy.units.units.Quantity
     if request.param == 'dask':
         dask_array = pytest.importorskip('dask.array', reason='dask.array is not available')
+        marker = request.node.get_closest_marker('xfail_dask')
+        if marker is not None:
+            request.applymarker(pytest.mark.xfail(reason=marker.args[0]))
         return lambda d, u, *, mask=None: quantity(dask_array.array(d), u)
     elif request.param == 'xarray':
         return lambda d, u, *, mask=None: xarray.DataArray(d, attrs={'units': u})

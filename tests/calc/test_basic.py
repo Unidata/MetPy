@@ -15,8 +15,7 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         pressure_to_height_std, sigma_to_pressure, smooth_circular,
                         smooth_gaussian, smooth_n_point, smooth_rectangular, smooth_window,
                         wind_components, wind_direction, wind_speed, windchill)
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           xfail_dask)
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
 
@@ -74,14 +73,13 @@ def test_speed(array_type):
     assert_array_almost_equal(true_speed, speed, 4)
 
 
+@pytest.mark.xfail_dask('Item assignment with <class "numpy.ndarray"> not supported')
 def test_direction(array_type):
     """Test calculating wind direction."""
     # The last two (u, v) pairs and their masks test masking calm and negative directions
     mask = [False, True, False, True, True]
     u = array_type([4., 2., 0., 0., 1.], 'm/s', mask=mask)
     v = array_type([0., 2., 4., 0., -1], 'm/s', mask=mask)
-
-    xfail_dask(u, 'Item assignment with <class "numpy.ndarray"> not supported')
 
     direc = wind_direction(u, v)
 
@@ -90,17 +88,16 @@ def test_direction(array_type):
     assert_array_almost_equal(true_dir, direc, 4)
 
 
+@pytest.mark.xfail_dask('Boolean index assignment in Dask expects equally shaped arrays')
 def test_direction_with_north_and_calm(array_type):
     """Test how wind direction handles northerly and calm winds."""
-    mask = [False, False, False, True, True]
-    u = array_type([0., -0., 0., 1., 1.], 'm/s', mask=mask)
-    v = array_type([0., 0., -5., 1., 1.], 'm/s', mask=mask)
-
-    xfail_dask(u, 'Boolean index assignment in Dask expects equally shaped arrays')
+    mask = [False, False, False, True]
+    u = array_type([0., -0., 0., 1.], 'm/s', mask=mask)
+    v = array_type([0., 0., -5., 1.], 'm/s', mask=mask)
 
     direc = wind_direction(u, v)
 
-    true_dir = array_type([0., 0., 360., 225., 225.], 'deg', mask=mask)
+    true_dir = array_type([0., 0., 360., 225.], 'deg', mask=mask)
 
     assert_array_almost_equal(true_dir, direc, 4)
 
@@ -111,13 +108,12 @@ def test_direction_dimensions():
     assert str(d.units) == 'degree'
 
 
+@pytest.mark.xfail_dask('Boolean index assignment in Dask expects equally shaped arrays')
 def test_oceanographic_direction(array_type):
     """Test oceanographic direction (to) convention."""
     mask = [False, True, False]
     u = array_type([5., 5., 0.], 'm/s', mask=mask)
     v = array_type([-5., 0., 5.], 'm/s', mask=mask)
-
-    xfail_dask(u, 'Boolean index assignment in Dask expects equally shaped arrays')
 
     direc = wind_direction(u, v, convention='to')
     true_dir = array_type([135., 90., 360.], 'deg', mask=mask)
@@ -211,13 +207,12 @@ def test_windchill_face_level():
     assert_array_almost_equal(wc, values, 0)
 
 
+@pytest.mark.xfail_dask('operands could not be broadcast together with shapes (0, 5) (nan,)')
 def test_heat_index_basic(array_type):
     """Test the basic heat index calculation."""
     mask = [False, True, False, True, False]
     temp = array_type([80, 88, 92, 110, 86], 'degF', mask=mask)
     rh = array_type([40, 100, 70, 40, 88], 'percent', mask=mask)
-
-    xfail_dask(temp, 'operands could not be broadcast together with shapes (0, 5) (nan,)')
 
     hi = heat_index(temp, rh)
     values = array_type([80, 121, 112, 136, 104], 'degF', mask=mask)
@@ -413,6 +408,10 @@ def test_coriolis_units():
     assert f.units == units('1/second')
 
 
+@pytest.mark.xfail_dask(
+    'boolean index did not match indexed array along dimension 0; dimension is 2 but '
+    'corresponding boolean dimension is 3'
+)
 def test_apparent_temperature(array_type):
     """Test the apparent temperature calculation."""
     temperature = array_type([[90, 90, 70],
@@ -421,12 +420,6 @@ def test_apparent_temperature(array_type):
                                [10, 10, 10]], 'percent')
     wind = array_type([[5, 3, 3],
                        [10, 1, 10]], 'mph')
-
-    reason = (
-        'boolean index did not match indexed array along dimension 0; dimension is 2 but '
-        'corresponding boolean dimension is 3'
-    )
-    xfail_dask(temperature, reason)
 
     truth = units.Quantity(np.ma.array([[99.6777178, 86.3357671, 70], [8.8140662, 20, 60]],
                                        mask=[[False, False, True], [False, True, True]]),
@@ -557,11 +550,15 @@ def test_smooth_gaussian_3d_units():
 
 def test_smooth_n_pt_5(array_type):
     """Test the smooth_n_pt function using 5 points."""
-    hght = array_type([[5640., 5640., 5640., 5640., 5640.],
-                       [5684., 5676., 5666., 5659., 5651.],
-                       [5728., 5712., 5692., 5678., 5662.],
-                       [5772., 5748., 5718., 5697., 5673.],
-                       [5816., 5784., 5744., 5716., 5684.]], '')
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                     [5684., 5676., 5666., 5659., 5651.],
+                     [5728., 5712., 5692., 5678., 5662.],
+                     [5772., 5748., 5718., 5697., 5673.],
+                     [5816., 5784., 5744., 5716., 5684.]])
+    mask = np.zeros_like(hght)
+    mask[::2, ::2] = 1
+    hght = array_type(hght, '', mask=mask)
+
     shght = smooth_n_point(hght, 5, 1)
     s_true = array_type([[5640., 5640., 5640., 5640., 5640.],
                          [5684., 5675.75, 5666.375, 5658.875, 5651.],
@@ -692,11 +689,15 @@ def test_smooth_gaussian_temperature():
 
 def test_smooth_window(array_type):
     """Test smooth_window with default configuration."""
-    hght = array_type([[5640., 5640., 5640., 5640., 5640.],
-                       [5684., 5676., 5666., 5659., 5651.],
-                       [5728., 5712., 5692., 5678., 5662.],
-                       [5772., 5748., 5718., 5697., 5673.],
-                       [5816., 5784., 5744., 5716., 5684.]], 'meter')
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                     [5684., 5676., 5666., 5659., 5651.],
+                     [5728., 5712., 5692., 5678., 5662.],
+                     [5772., 5748., 5718., 5697., 5673.],
+                     [5816., 5784., 5744., 5716., 5684.]])
+    mask = np.zeros_like(hght)
+    mask[::2, ::2] = 1
+    hght = array_type(hght, 'meter', mask=mask)
+
     smoothed = smooth_window(hght, np.array([[1, 0, 1], [0, 0, 0], [1, 0, 1]]))
     truth = array_type([[5640., 5640., 5640., 5640., 5640.],
                         [5684., 5675., 5667.5, 5658.5, 5651.],
@@ -725,11 +726,15 @@ def test_smooth_window_1d_dataarray():
 
 def test_smooth_rectangular(array_type):
     """Test smooth_rectangular with default configuration."""
-    hght = array_type([[5640., 5640., 5640., 5640., 5640.],
-                       [5684., 5676., 5666., 5659., 5651.],
-                       [5728., 5712., 5692., 5678., 5662.],
-                       [5772., 5748., 5718., 5697., 5673.],
-                       [5816., 5784., 5744., 5716., 5684.]], 'meter')
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                     [5684., 5676., 5666., 5659., 5651.],
+                     [5728., 5712., 5692., 5678., 5662.],
+                     [5772., 5748., 5718., 5697., 5673.],
+                     [5816., 5784., 5744., 5716., 5684.]])
+    mask = np.zeros_like(hght)
+    mask[::2, ::2] = 1
+    hght = array_type(hght, 'meter', mask=mask)
+
     smoothed = smooth_rectangular(hght, (5, 3))
     truth = array_type([[5640., 5640., 5640., 5640., 5640.],
                         [5684., 5676., 5666., 5659., 5651.],
@@ -741,11 +746,15 @@ def test_smooth_rectangular(array_type):
 
 def test_smooth_circular(array_type):
     """Test smooth_circular with default configuration."""
-    hght = array_type([[5640., 5640., 5640., 5640., 5640.],
-                       [5684., 5676., 5666., 5659., 5651.],
-                       [5728., 5712., 5692., 5678., 5662.],
-                       [5772., 5748., 5718., 5697., 5673.],
-                       [5816., 5784., 5744., 5716., 5684.]], 'meter')
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                     [5684., 5676., 5666., 5659., 5651.],
+                     [5728., 5712., 5692., 5678., 5662.],
+                     [5772., 5748., 5718., 5697., 5673.],
+                     [5816., 5784., 5744., 5716., 5684.]])
+    mask = np.zeros_like(hght)
+    mask[::2, ::2] = 1
+    hght = array_type(hght, 'meter', mask=mask)
+
     smoothed = smooth_circular(hght, 2, 2)
     truth = array_type([[5640., 5640., 5640., 5640., 5640.],
                         [5684., 5676., 5666., 5659., 5651.],
