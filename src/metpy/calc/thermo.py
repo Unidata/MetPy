@@ -3323,7 +3323,7 @@ def k_index(pressure, temperature, dewpoint):
 )
 @check_units('[length]', '[temperature]', '[speed]', '[speed]')
 def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim=0):
-    r"""Calculate the gradient (or flux) Richardson number.
+    r"""Calculate the gradient Richardson number.
 
     .. math:: Ri = \frac{g}{\theta} \frac{\left(\partial \theta/\partial z\right)}
              {\left(\partial u / \partial z\right)^2 + \left(\partial v / \partial z\right)^2}

@@ -138,7 +138,7 @@ class Enum:
     def __init__(self, *args, **kwargs):
         """Initialize the mapping."""
         # Assign values for args in order starting at 0
-        self.val_map = {ind: a for ind, a in enumerate(args)}
+        self.val_map = dict(enumerate(args))
 
         # Invert the kwargs dict so that we can map from value to name
         self.val_map.update(zip(kwargs.values(), kwargs.keys()))
