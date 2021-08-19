@@ -162,3 +162,23 @@ def set_agg_backend():
         yield
     finally:
         matplotlib.pyplot.switch_backend(prev_backend)
+
+
+@pytest.fixture(params=['dask', 'xarray', 'masked', 'numpy'])
+def array_type(request):
+    """Return an array type for testing calc functions."""
+    quantity = metpy.units.units.Quantity
+    if request.param == 'dask':
+        dask_array = pytest.importorskip('dask.array', reason='dask.array is not available')
+        marker = request.node.get_closest_marker('xfail_dask')
+        if marker is not None:
+            request.applymarker(pytest.mark.xfail(reason=marker.args[0]))
+        return lambda d, u, *, mask=None: quantity(dask_array.array(d), u)
+    elif request.param == 'xarray':
+        return lambda d, u, *, mask=None: xarray.DataArray(d, attrs={'units': u})
+    elif request.param == 'masked':
+        return lambda d, u, *, mask=None: quantity(numpy.ma.array(d, mask=mask), u)
+    elif request.param == 'numpy':
+        return lambda d, u, *, mask=None: quantity(numpy.array(d), u)
+    else:
+        raise ValueError(f'Unsupported array_type option {request.param}')

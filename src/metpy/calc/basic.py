@@ -103,7 +103,8 @@ def wind_direction(u, v, convention='from'):
     if np.any(mask):
         wdir[mask] += units.Quantity(360., 'deg')
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude
-    calm_mask = (np.asarray(u.magnitude) == 0.) & (np.asarray(v.magnitude) == 0.)
+    calm_mask = (np.asanyarray(u.magnitude) == 0.) & (np.asanyarray(v.magnitude) == 0.)
+
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
     if np.any(calm_mask):
         wdir[calm_mask] = units.Quantity(0., 'deg')
@@ -799,8 +800,12 @@ def smooth_gaussian(scalar_grid, n):
     # Assume the last two axes represent the horizontal directions
     sgma_seq = [sgma if i > num_ax - 3 else 0 for i in range(num_ax)]
 
-    # Compute smoothed field
-    return gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
+    filter_args = {'sigma': sgma_seq, 'truncate': 2 * np.sqrt(2)}
+    if hasattr(scalar_grid, 'mask'):
+        smoothed = gaussian_filter(scalar_grid.data, **filter_args)
+        return np.ma.array(smoothed, mask=scalar_grid.mask)
+    else:
+        return gaussian_filter(scalar_grid, **filter_args)
 
 
 @exporter.export
