@@ -103,15 +103,10 @@ def wind_direction(u, v, convention='from'):
     if np.any(mask):
         wdir[mask] += units.Quantity(360., 'deg')
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude
-    calm_mask = (np.asarray(u.magnitude) == 0.) & (np.asarray(v.magnitude) == 0.)
-
-    if hasattr(wdir, 'mask'):
-        array_mask = wdir.mask
-    else:
-        array_mask = False
+    calm_mask = (np.asanyarray(u.magnitude) == 0.) & (np.asanyarray(v.magnitude) == 0.)
 
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
-    if np.any(calm_mask & np.logical_not(array_mask)):
+    if np.any(calm_mask):
         wdir[calm_mask] = units.Quantity(0., 'deg')
     return wdir.reshape(origshape).to('degrees')
 
