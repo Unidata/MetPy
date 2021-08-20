@@ -47,13 +47,19 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         vertical vorticity
 
-
-    .. versionchanged:: 1.0
-       Changed signature from ``(u, v, dx, dy)``
-
     See Also
     --------
     divergence
+
+    Notes
+    -----
+    This implements a numerical version of the typical vertical vorticity equation in
+    Cartesian coordinates:
+
+    .. math:: \zeta = \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y}
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
 
     """
     dudy = first_derivative(u, delta=dy, axis=y_dim)
@@ -94,13 +100,20 @@ def divergence(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The horizontal divergence
 
-
-    .. versionchanged:: 1.0
-       Changed signature from ``(u, v, dx, dy)``
-
     See Also
     --------
     vorticity
+
+    Notes
+    -----
+    This implements a numerical version of the typical equation of 2D divergence of a vector in
+    Cartesian coordinates:
+
+    .. math:: \nabla \cdot \vec{U} =
+        \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y}
+
+    .. versionchanged:: 1.0
+       Changed signature from ``(u, v, dx, dy)``
 
     """
     dudx = first_derivative(u, delta=dx, axis=x_dim)
