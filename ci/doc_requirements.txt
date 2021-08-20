@@ -6,3 +6,4 @@ sphinx-gallery==0.9.0
 myst-parser==0.15.1
 netCDF4==1.5.7
 geopandas==0.9
+rtree==0.9.7
