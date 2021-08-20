@@ -17,7 +17,6 @@ jobs:
       - uses: actions/github-script@v4.1
         name: Run script
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const milestone = context.payload.milestone;
 
