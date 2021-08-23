@@ -232,9 +232,8 @@ jobs:
         run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
 
       - name: Report failures
-        uses: actions/github-script@v4.0.2
+        uses: actions/github-script@v4.1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const logs = fs.readFileSync('logs.txt', 'utf8');
