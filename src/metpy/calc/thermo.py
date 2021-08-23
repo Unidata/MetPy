@@ -58,7 +58,6 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
-
     """
     e = saturation_vapor_pressure(dewpoint)
     e_s = saturation_vapor_pressure(temperature)
@@ -1464,7 +1463,6 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
     .. versionchanged:: 1.0
        Changed signature from
        ``(dry_bulb_temperature, web_bulb_temperature, pressure, **kwargs)``
-
 
     """
     return (psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature,
