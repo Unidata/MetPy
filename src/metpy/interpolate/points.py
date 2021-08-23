@@ -331,14 +331,14 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     values_interpolated: (M,) ndarray
         Array representing the interpolated values for each input point in `xi`.
 
+    See Also
+    --------
+    interpolate_to_grid
+
     Notes
     -----
     This function primarily acts as a wrapper for the individual interpolation routines. The
     individual functions are also available for direct use.
-
-    See Also
-    --------
-    interpolate_to_grid
 
     """
     # If this is a type that `griddata` handles, hand it along to `griddata`

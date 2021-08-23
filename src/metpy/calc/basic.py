@@ -474,6 +474,10 @@ def height_to_geopotential(height):
     39201.98726524 48994.79863351 58784.53871501 68571.20895435
     78354.81079527 88135.34568058 97912.81505219], 'meter ** 2 / second ** 2')>
 
+    See Also
+    --------
+    geopotential_to_height
+
     Notes
     -----
     This calculation approximates :math:`g(z)` as
@@ -486,10 +490,6 @@ def height_to_geopotential(height):
 
     (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton's Law of
     Gravitation assuming a spherical Earth and no centrifugal force effects).
-
-    See Also
-    --------
-    geopotential_to_height
 
     """
     return (mpconsts.g * mpconsts.Re * height) / (mpconsts.Re + height)
@@ -536,6 +536,10 @@ def geopotential_to_height(geopotential):
     <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.
     9000.  10000.], 'meter')>
 
+    See Also
+    --------
+    height_to_geopotential
+
     Notes
     -----
     This calculation approximates :math:`g(z)` as
@@ -551,10 +555,6 @@ def geopotential_to_height(geopotential):
 
     .. versionchanged:: 1.0
        Renamed ``geopot`` parameter to ``geopotential``
-
-    See Also
-    --------
-    height_to_geopotential
 
     """
     return (geopotential * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopotential)
@@ -836,6 +836,10 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     array-like
         The filtered scalar grid
 
+    See Also
+    --------
+    smooth_rectangular, smooth_circular, smooth_n_point, smooth_gaussian
+
     Notes
     -----
     This function can be applied multiple times to create a more smoothed field and will only
@@ -845,10 +849,6 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     propagate to any point that uses that particular grid point in the smoothing calculation.
     Applying the smoothing function multiple times will propagate NaNs further throughout the
     domain.
-
-    See Also
-    --------
-    smooth_rectangular, smooth_circular, smooth_n_point, smooth_gaussian
 
     """
     def _pad(n):
@@ -920,6 +920,10 @@ def smooth_rectangular(scalar_grid, size, passes=1):
     array-like
         The filtered scalar grid
 
+    See Also
+    --------
+    smooth_window, smooth_circular, smooth_n_point, smooth_gaussian
+
     Notes
     -----
     This function can be applied multiple times to create a more smoothed field and will only
@@ -928,10 +932,6 @@ def smooth_rectangular(scalar_grid, size, passes=1):
     the data). If a masked value or NaN values exists in the array, it will propagate to any
     point that uses that particular grid point in the smoothing calculation. Applying the
     smoothing function multiple times will propagate NaNs further throughout the domain.
-
-    See Also
-    --------
-    smooth_window, smooth_circular, smooth_n_point, smooth_gaussian
 
     """
     return smooth_window(scalar_grid, np.ones(size), passes=passes)
@@ -959,6 +959,10 @@ def smooth_circular(scalar_grid, radius, passes=1):
     array-like
         The filtered scalar grid
 
+    See Also
+    --------
+    smooth_window, smooth_rectangular, smooth_n_point, smooth_gaussian
+
     Notes
     -----
     This function can be applied multiple times to create a more smoothed field and will only
@@ -967,10 +971,6 @@ def smooth_circular(scalar_grid, radius, passes=1):
     value or NaN values exists in the array, it will propagate to any point that uses that
     particular grid point in the smoothing calculation. Applying the smoothing function
     multiple times will propagate NaNs further throughout the domain.
-
-    See Also
-    --------
-    smooth_window, smooth_rectangular, smooth_n_point, smooth_gaussian
 
     """
     # Generate the circle
@@ -1005,6 +1005,10 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     array-like or `pint.Quantity`
         The filtered scalar grid
 
+    See Also
+    --------
+    smooth_window, smooth_rectangular, smooth_circular, smooth_gaussian
+
     Notes
     -----
     This function is a close replication of the GEMPAK function SM5S and SM9S depending on the
@@ -1015,10 +1019,6 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     propagate to any point that uses that particular grid point in the smoothing calculation.
     Applying the smoothing function multiple times will propagate NaNs further throughout the
     domain.
-
-    See Also
-    --------
-    smooth_window, smooth_rectangular, smooth_circular, smooth_gaussian
 
     """
     if n == 9:

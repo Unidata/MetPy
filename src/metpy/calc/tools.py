@@ -1178,6 +1178,10 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
     tuple of array-like
         The first derivative calculated along each specified axis of the original array
 
+    See Also
+    --------
+    laplacian, first_derivative
+
     Notes
     -----
     If this function is used without the `axes` parameter, the length of `coordinates` or
@@ -1185,10 +1189,6 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
 
     .. versionchanged:: 1.0
        Changed signature from ``(f, **kwargs)``
-
-    See Also
-    --------
-    laplacian, first_derivative
 
     """
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)
@@ -1232,6 +1232,10 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
     array-like
         The laplacian
 
+    See Also
+    --------
+    gradient, second_derivative
+
     Notes
     -----
     If this function is used without the `axes` parameter, the length of `coordinates` or
@@ -1239,10 +1243,6 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
 
     .. versionchanged:: 1.0
        Changed signature from ``(f, **kwargs)``
-
-    See Also
-    --------
-    gradient, second_derivative
 
     """
     pos_kwarg, positions, axes = _process_gradient_args(f, axes, coordinates, deltas)

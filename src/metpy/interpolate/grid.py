@@ -276,6 +276,10 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
     img: (M, N) ndarray
         2-dimensional array representing the interpolated values for each grid.
 
+    See Also
+    --------
+    interpolate_to_points
+
     Notes
     -----
     This function acts as a wrapper for `interpolate_points` to allow it to generate a regular
@@ -283,10 +287,6 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
 
     This function interpolates points to a Cartesian plane, even if lat/lon coordinates
     are provided.
-
-    See Also
-    --------
-    interpolate_to_points
 
     """
     # Generate the grid

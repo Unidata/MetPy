@@ -47,6 +47,10 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     `pint.Quantity`
         Relative humidity
 
+    See Also
+    --------
+    saturation_vapor_pressure
+
     Notes
     -----
     .. math:: rh = \frac{e(T_d)}{e_s(T)}
@@ -54,9 +58,6 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
-    See Also
-    --------
-    saturation_vapor_pressure
 
     """
     e = saturation_vapor_pressure(dewpoint)
@@ -956,6 +957,10 @@ def vapor_pressure(pressure, mixing_ratio):
     `pint.Quantity`
         Ambient water vapor (partial) pressure in the same units as ``pressure``
 
+    See Also
+    --------
+    saturation_vapor_pressure, dewpoint
+
     Notes
     -----
     This function is a straightforward implementation of the equation given in many places,
@@ -965,10 +970,6 @@ def vapor_pressure(pressure, mixing_ratio):
 
     .. versionchanged:: 1.0
        Renamed ``mixing`` parameter to ``mixing_ratio``
-
-    See Also
-    --------
-    saturation_vapor_pressure, dewpoint
 
     """
     return pressure * mixing_ratio / (mpconsts.epsilon + mixing_ratio)
@@ -1108,6 +1109,10 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
     `pint.Quantity`
         The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)
 
+    See Also
+    --------
+    saturation_mixing_ratio, vapor_pressure
+
     Notes
     -----
     This function is a straightforward implementation of the equation given in many places,
@@ -1117,10 +1122,6 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
 
     .. versionchanged:: 1.0
        Renamed ``part_press``, ``tot_press`` parameters to ``partial_press``, ``total_press``
-
-    See Also
-    --------
-    saturation_mixing_ratio, vapor_pressure
 
     """
     return (molecular_weight_ratio * partial_press
@@ -1448,6 +1449,10 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
     `pint.Quantity`
         Relative humidity
 
+    See Also
+    --------
+    psychrometric_vapor_pressure_wet, saturation_vapor_pressure
+
     Notes
     -----
     .. math:: RH = \frac{e}{e_s}
@@ -1460,9 +1465,6 @@ def relative_humidity_wet_psychrometric(pressure, dry_bulb_temperature, wet_bulb
        Changed signature from
        ``(dry_bulb_temperature, web_bulb_temperature, pressure, **kwargs)``
 
-    See Also
-    --------
-    psychrometric_vapor_pressure_wet, saturation_vapor_pressure
 
     """
     return (psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature,
@@ -1502,6 +1504,10 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     `pint.Quantity`
         Vapor pressure
 
+    See Also
+    --------
+    saturation_vapor_pressure
+
     Notes
     -----
     .. math:: e' = e'_w(T_w) - A p (T - T_w)
@@ -1520,10 +1526,6 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     .. versionchanged:: 1.0
        Changed signature from
        ``(dry_bulb_temperature, wet_bulb_temperature, pressure, psychrometer_coefficient)``
-
-    See Also
-    --------
-    saturation_vapor_pressure
 
     """
     if psychrometer_coefficient is None:
@@ -1558,6 +1560,10 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     `pint.Quantity`
         Mixing ratio (dimensionless)
 
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio, saturation_mixing_ratio
+
     Notes
     -----
     Formula adapted from [Hobbs1977]_ pg. 74.
@@ -1570,10 +1576,6 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
 
     .. versionchanged:: 1.0
        Changed signature from ``(relative_humidity, temperature, pressure)``
-
-    See Also
-    --------
-    relative_humidity_from_mixing_ratio, saturation_mixing_ratio
 
     """
     return (relative_humidity
@@ -1605,6 +1607,10 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
     `pint.Quantity`
         Relative humidity
 
+    See Also
+    --------
+    mixing_ratio_from_relative_humidity, saturation_mixing_ratio
+
     Notes
     -----
     Formula based on that from [Hobbs1977]_ pg. 74.
@@ -1617,10 +1623,6 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
     .. versionchanged:: 1.0
        Changed signature from ``(mixing_ratio, temperature, pressure)``
-
-    See Also
-    --------
-    mixing_ratio_from_relative_humidity, saturation_mixing_ratio
 
     """
     return mixing_ratio / saturation_mixing_ratio(pressure, temperature)
@@ -1642,6 +1644,10 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     `pint.Quantity`
         Mixing ratio
 
+    See Also
+    --------
+    mixing_ratio, specific_humidity_from_mixing_ratio
+
     Notes
     -----
     Formula from [Salby1996]_ pg. 118.
@@ -1650,10 +1656,6 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     * :math:`w` is mixing ratio
     * :math:`q` is the specific humidity
-
-    See Also
-    --------
-    mixing_ratio, specific_humidity_from_mixing_ratio
 
     """
     with contextlib.suppress(AttributeError):
@@ -1677,6 +1679,10 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     `pint.Quantity`
         Specific humidity
 
+    See Also
+    --------
+    mixing_ratio, mixing_ratio_from_specific_humidity
+
     Notes
     -----
     Formula from [Salby1996]_ pg. 118.
@@ -1685,10 +1691,6 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
     * :math:`w` is mixing ratio
     * :math:`q` is the specific humidity
-
-    See Also
-    --------
-    mixing_ratio, mixing_ratio_from_specific_humidity
 
     """
     with contextlib.suppress(AttributeError):
@@ -1721,6 +1723,10 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
     `pint.Quantity`
         Relative humidity
 
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio
+
     Notes
     -----
     Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
@@ -1733,10 +1739,6 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
 
     .. versionchanged:: 1.0
        Changed signature from ``(specific_humidity, temperature, pressure)``
-
-    See Also
-    --------
-    relative_humidity_from_mixing_ratio
 
     """
     return (mixing_ratio_from_specific_humidity(specific_humidity)
@@ -1786,6 +1788,10 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
     `pint.Quantity`
         Convective Inhibition (CIN)
 
+    See Also
+    --------
+    lfc, el
+
     Notes
     -----
     Formula adopted from [Hobbs1977]_.
@@ -1812,10 +1818,6 @@ def cape_cin(pressure, temperature, dewpoint, parcel_profile, which_lfc='bottom'
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
-
-    See Also
-    --------
-    lfc, el
 
     """
     pressure, temperature, dewpoint, parcel_profile = _remove_nans(pressure, temperature,
@@ -2017,6 +2019,10 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
         List with pressure at each isentropic level, followed by each additional
         argument interpolated to isentropic coordinates.
 
+    See Also
+    --------
+    potential_temperature, isentropic_interpolation_as_dataset
+
     Notes
     -----
     Input variable arrays must have the same number of vertical levels as the pressure levels
@@ -2031,10 +2037,6 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
     .. versionchanged:: 1.0
        Renamed ``theta_levels``, ``axis`` parameters to ``levels``, ``vertical_dim``
-
-    See Also
-    --------
-    potential_temperature, isentropic_interpolation_as_dataset
 
     """
     # iteration function to be used later
@@ -2169,6 +2171,10 @@ def isentropic_interpolation_as_dataset(
         Dataset with pressure, temperature, and each additional argument, all on the specified
         isentropic coordinates.
 
+    See Also
+    --------
+    potential_temperature, isentropic_interpolation
+
     Notes
     -----
     Input variable arrays must have the same number of vertical levels as the pressure levels
@@ -2180,10 +2186,6 @@ def isentropic_interpolation_as_dataset(
 
     This formulation relies upon xarray functionality. If using Pint Quantities, use
     `isentropic_interpolation` instead.
-
-    See Also
-    --------
-    potential_temperature, isentropic_interpolation
 
     """
     # Ensure matching coordinates by broadcasting
