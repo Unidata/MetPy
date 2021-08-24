@@ -235,6 +235,10 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
     (..., M, N) `xarray.DataArray` or `pint.Quantity`
         Total Deformation
 
+    See Also
+    --------
+    shearing_deformation, stretching_deformation
+
     Notes
     -----
     If inputs have more than two dimensions, they are assumed to have either leading dimensions
@@ -242,10 +246,6 @@ def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy)``
-
-    See Also
-    --------
-    shearing_deformation, stretching_deformation
 
     """
     dudy, dudx = gradient(u, deltas=(dy, dx), axes=(y_dim, x_dim))
@@ -538,6 +538,10 @@ def montgomery_streamfunction(height, temperature):
     -------
     stream_func : `pint.Quantity` or `xarray.DataArray`
 
+    See Also
+    --------
+    get_isentropic_pressure, dry_static_energy
+
     Notes
     -----
     The formula used is that from [Lackmann2011]_ p. 69.
@@ -549,10 +553,6 @@ def montgomery_streamfunction(height, temperature):
     * :math:`Z` is geopotential height of the isentropic surface
     * :math:`C_p` is specific heat at constant pressure for dry air
     * :math:`T` is temperature of the isentropic surface
-
-    See Also
-    --------
-    get_isentropic_pressure, dry_static_energy
 
     """
     from . import dry_static_energy

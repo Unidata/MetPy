@@ -159,15 +159,16 @@ class MetPyDataArrayAccessor:
     def convert_units(self, units):
         """Return new DataArray with values converted to different units.
 
+        See Also
+        --------
+        convert_coordinate_units
+
         Notes
         -----
         Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
         by this operation. Do not utilize on moderate- to large-sized remote datasets before
         subsetting!
 
-        See Also
-        --------
-        convert_coordinate_units
         """
         return self.quantify().copy(data=self.unit_array.to(units))
 
@@ -177,14 +178,15 @@ class MetPyDataArrayAccessor:
         This operation differs from ``.convert_units`` since xarray coordinate indexes do not
         yet support unit-aware arrays (even though unit-aware *data* arrays are).
 
+        See Also
+        --------
+        convert_units
+
         Notes
         -----
         Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded
         into memory by this operation.
 
-        See Also
-        --------
-        convert_units
         """
         new_coord_var = self._data_array[coord].copy(
             data=self._data_array[coord].metpy.unit_array.m_as(units)
@@ -843,14 +845,14 @@ class MetPyDatasetAccessor:
         `xarray.Dataset`
             New xarray Dataset with CRS coordinate assigned
 
+        See Also
+        --------
+        parse_cf
+
         Notes
         -----
         CF projection arguments should be supplied as a dictionary or collection of kwargs,
         but not both.
-
-        See Also
-        --------
-        parse_cf
 
         """
         return _assign_crs(self._dataset, cf_attributes, kwargs)
