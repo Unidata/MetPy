@@ -882,6 +882,10 @@
 <dd class="field-even"><p><em>array-like</em> – The filtered scalar grid</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.smooth_window.html#metpy.calc.smooth_window" title="metpy.calc.smooth_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_window</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_circular.html#metpy.calc.smooth_circular" title="metpy.calc.smooth_circular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_circular</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_n_point</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_gaussian</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>This function can be applied multiple times to create a more smoothed field and will only
 smooth the interior points, leaving the end points with their original values (this
@@ -889,10 +893,6 @@ function will leave an unsmoothed edge of size <em class="xref py py-obj">(n - 1
 the data). If a masked value or NaN values exists in the array, it will propagate to any
 point that uses that particular grid point in the smoothing calculation. Applying the
 smoothing function multiple times will propagate NaNs further throughout the domain.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.smooth_window.html#metpy.calc.smooth_window" title="metpy.calc.smooth_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_window</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_circular.html#metpy.calc.smooth_circular" title="metpy.calc.smooth_circular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_circular</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_n_point</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_gaussian</span></code></a></p>
-</div>
 </dd></dl>
 
 <section id="examples-using-metpy-calc-smooth-rectangular">
@@ -941,7 +941,7 @@ smoothing function multiple times will propagate NaNs further throughout the dom
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 24, 2021 at 17:19:09.<br/>
+        Last updated on Aug 24, 2021 at 18:43:01.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>

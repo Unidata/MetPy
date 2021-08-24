@@ -383,27 +383,27 @@ transformations.</p>
 <dd><p>Return new DataArray with specified coordinate converted to different units.</p>
 <p>This operation differs from <code class="docutils literal notranslate"><span class="pre">.convert_units</span></code> since xarray coordinate indexes do not
 yet support unit-aware arrays (even though unit-aware <em>data</em> arrays are).</p>
-<p class="rubric">Notes</p>
-<p>Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded
-into memory by this operation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="metpy.xarray.MetPyDataArrayAccessor.convert_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_units</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>Any cached/lazy-loaded coordinate data (except that in a Dask array) will be loaded
+into memory by this operation.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.convert_units">
 <span class="sig-name descname"><span class="pre">convert_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return new DataArray with values converted to different units.</p>
-<p class="rubric">Notes</p>
-<p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
-by this operation. Do not utilize on moderate- to large-sized remote datasets before
-subsetting!</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units" title="metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_coordinate_units</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+by this operation. Do not utilize on moderate- to large-sized remote datasets before
+subsetting!</p>
 </dd></dl>
 
 <dl class="py method">
@@ -592,13 +592,13 @@ the CRS metadata automatically).</p>
 <dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – New xarray Dataset with CRS coordinate assigned</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>CF projection arguments should be supplied as a dictionary or collection of kwargs,
-but not both.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="#metpy.xarray.MetPyDatasetAccessor.parse_cf" title="metpy.xarray.MetPyDatasetAccessor.parse_cf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_cf</span></code></a></p>
 </div>
+<p class="rubric">Notes</p>
+<p>CF projection arguments should be supplied as a dictionary or collection of kwargs,
+but not both.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -779,7 +779,7 @@ is not present/the callable returns None, the attribute will not be updated.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 24, 2021 at 17:19:09.<br/>
+        Last updated on Aug 24, 2021 at 18:43:01.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>

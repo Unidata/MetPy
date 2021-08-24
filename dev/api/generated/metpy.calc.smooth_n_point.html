@@ -884,6 +884,10 @@ are 5 and 9. Defaults to 5.</p></li>
 <dd class="field-even"><p>array-like or <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – The filtered scalar grid</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.smooth_window.html#metpy.calc.smooth_window" title="metpy.calc.smooth_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_window</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_rectangular.html#metpy.calc.smooth_rectangular" title="metpy.calc.smooth_rectangular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_rectangular</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_circular.html#metpy.calc.smooth_circular" title="metpy.calc.smooth_circular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_circular</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_gaussian</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>This function is a close replication of the GEMPAK function SM5S and SM9S depending on the
 choice of the number of points to use for smoothing. This function can be applied multiple
@@ -893,10 +897,6 @@ size 1 around the data). If a masked value or NaN values exists in the array, it
 propagate to any point that uses that particular grid point in the smoothing calculation.
 Applying the smoothing function multiple times will propagate NaNs further throughout the
 domain.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.smooth_window.html#metpy.calc.smooth_window" title="metpy.calc.smooth_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_window</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_rectangular.html#metpy.calc.smooth_rectangular" title="metpy.calc.smooth_rectangular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_rectangular</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_circular.html#metpy.calc.smooth_circular" title="metpy.calc.smooth_circular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_circular</span></code></a>, <a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_gaussian</span></code></a></p>
-</div>
 </dd></dl>
 
 <section id="examples-using-metpy-calc-smooth-n-point">
@@ -945,7 +945,7 @@ domain.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 24, 2021 at 17:19:09.<br/>
+        Last updated on Aug 24, 2021 at 18:43:01.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
