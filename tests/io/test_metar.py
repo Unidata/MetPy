@@ -163,6 +163,14 @@ from metpy.units import units
      Metar('TFFF', 14.6, -61.0, 5, datetime(2017, 5, 11, 18, 30), 110, 19, 1000, 'RA', 'BCFG',
            np.nan, 'FEW', 1400, 'BKN', 2100, 'BKN', 2700, np.nan, np.nan, 6, 27, 24,
            units.Quantity(1015, 'hPa').m_as('inHg'), 63, 41, 0, '')),
+    # Interchanged wind and vis groups
+    ('KBMI 121456Z COR 10SM 10005KT SCT055 OVC065 23/22 A3000 RMK AO2 '
+     'LTG DSNT E AND SE TSB1358E13 SLP150 6//// T02280222 53011=',
+     Metar('KBMI', 40.47, -88.92, 267, datetime(2017, 5, 12, 14, 56), np.nan, np.nan,
+           np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan,
+           np.nan, np.nan, 10, np.nan, np.nan, np.nan, 0, 0, 0,
+           '5KT SCT055 OVC065 23/22 A3000 RMK AO2 LTG DSNT E AND SE TSB1358E13 SLP150 6//// '
+           'T02280222 53011')),
     # Space between + and wx code
     ('SKCG 031730Z 13004KT 0500 + TSRA BKN010 25/25 Q1012 RMK A2990',
      Metar('SKCG', 10.43, -75.52, 1, datetime(2017, 5, 3, 17, 30), 130, 4, 500, '+TSRA',
@@ -172,7 +180,7 @@ from metpy.units import units
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
          'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
-         'variable vis no dir', 'space in wx code'])
+         'variable vis no dir', 'swapped wind and vis', 'space in wx code'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
