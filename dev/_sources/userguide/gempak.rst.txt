@@ -367,10 +367,10 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDT(S)</td>
         <td class="tg-implemented">Time derivative</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
-        <td></td>
-        <td class="tg-no">No</td>
-        <td></td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a>, but requires three time points vs. GEMPAK's two</td>
+        <td class="tg-info">Almost</td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
       </tr>
       <tr>
         <td class="tg-implemented">DDX(S)</td>
