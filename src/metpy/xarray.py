@@ -232,7 +232,9 @@ class MetPyDataArrayAccessor:
         """Return the coordinate reference system (CRS) as a CFProjection object."""
         if 'metpy_crs' in self._data_array.coords:
             return self._data_array.coords['metpy_crs'].item()
-        raise AttributeError('crs attribute is not available.')
+        raise AttributeError('crs attribute is not available. You may need to use the'
+                             ' `parse_cf` or `assign_crs` methods. Consult the "xarray'
+                             ' with MetPy Tutorial" for more details.')
 
     @property
     def cartopy_crs(self):
