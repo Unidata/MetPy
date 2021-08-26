@@ -554,7 +554,7 @@ pc.show()
 # This attribute sets the location of the fields to be plotted around the surface station
 # model. The default location is center ``(‘C’)``
 #
-# ``time_range``
+# ``time_window``
 #
 # This attribute allows you to define a window for valid observations (e.g., 15 minutes on
 # either side of the datetime object setting. This is important for surface data since actual

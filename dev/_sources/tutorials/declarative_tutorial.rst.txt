@@ -886,7 +886,7 @@ to be plotted. This needs to be a datetime object.
 This attribute sets the location of the fields to be plotted around the surface station
 model. The default location is center ``(‘C’)``
 
-``time_range``
+``time_window``
 
 This attribute allows you to define a window for valid observations (e.g., 15 minutes on
 either side of the datetime object setting. This is important for surface data since actual
@@ -928,7 +928,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  18.797 seconds)
+   **Total running time of the script:** ( 0 minutes  16.707 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
