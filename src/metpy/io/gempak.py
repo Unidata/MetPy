@@ -1733,8 +1733,6 @@ class GempakSounding(GempakFile):
             else:
                 i += 1
 
-        return size
-
     def _merge_sounding(self, parts):
         """Merge unmerged sounding data."""
         merged = {'STID': parts['STID'],
@@ -1995,7 +1993,7 @@ class GempakSounding(GempakFile):
             else:
                 istart = 0
 
-            size = self._merge_winds_height(merged, parts, nsgw, nasw, istart)
+            self._merge_winds_height(merged, parts, nsgw, nasw, istart)
 
             # Interpolate missing pressure with height
             _interp_logp_pressure(merged, self.prod_desc.missing_float)
@@ -2005,6 +2003,7 @@ class GempakSounding(GempakFile):
 
         # Add below ground MAN data
         if merged['PRES'][0] != self.prod_desc.missing_float and bgl > 0:
+            size = len(merged['PRES'])
             for ibgl in range(1, num_man_levels):
                 press = parts['TTAA']['PRES'][ibgl]
                 if press > merged['PRES'][0]:

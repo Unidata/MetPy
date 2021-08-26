@@ -127,6 +127,36 @@ def test_unmerged_sounding(gem, gio, station):
     assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
 
 
+def test_unmerged_sigw_pressure_sounding():
+    """Test loading an unmerged sounding.
+
+    PPBB and PPDD groups will be in pressure coordinates and there will
+    be MAN level below the surface.
+    """
+    gso = GempakSounding(get_test_data('gem_sigw_pres_unmrg_man_bgl.snd')).snxarray()
+    gpres = gso[0].pressure.values
+    gtemp = gso[0].temp.values.squeeze()
+    gdwpt = gso[0].dwpt.values.squeeze()
+    gdrct = gso[0].drct.values.squeeze()
+    gsped = gso[0].sped.values.squeeze()
+    ghght = gso[0].hght.values.squeeze()
+
+    gempak = pd.read_csv(get_test_data('gem_sigw_pres_unmrg_man_bgl.csv'), na_values=-9999)
+    dpres = gempak.PRES.values
+    dtemp = gempak.TEMP.values
+    ddwpt = gempak.DWPT.values
+    ddrct = gempak.DRCT.values
+    dsped = gempak.SPED.values
+    dhght = gempak.HGHT.values
+
+    assert_allclose(gpres, dpres, rtol=1e-10, atol=1e-2)
+    assert_allclose(gtemp, dtemp, rtol=1e-10, atol=1e-2)
+    assert_allclose(gdwpt, ddwpt, rtol=1e-10, atol=1e-2)
+    assert_allclose(gdrct, ddrct, rtol=1e-10, atol=1e-2)
+    assert_allclose(gsped, dsped, rtol=1e-10, atol=1e-2)
+    assert_allclose(ghght, dhght, rtol=1e-10, atol=1e-1)
+
+
 def test_standard_surface():
     """Test to read a standard surface file."""
     def dtparse(string):
