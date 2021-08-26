@@ -408,7 +408,9 @@
         <span class="sd">&quot;&quot;&quot;Return the coordinate reference system (CRS) as a CFProjection object.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;metpy_crs&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;metpy_crs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;crs attribute is not available.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;crs attribute is not available. You may need to use the&#39;</span>
+                             <span class="s1">&#39; `parse_cf` or `assign_crs` methods. Consult the &quot;xarray&#39;</span>
+                             <span class="s1">&#39; with MetPy Tutorial&quot; for more details.&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cartopy_crs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1753,7 +1755,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 26, 2021 at 22:22:59.<br/>
+        Last updated on Aug 26, 2021 at 22:30:47.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
