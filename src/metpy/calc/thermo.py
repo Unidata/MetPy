@@ -1729,9 +1729,9 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
     -----
     Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
 
-    .. math:: relative_humidity = \frac{q}{(1-q)w_s}
+    .. math:: RH = \frac{q}{(1-q)w_s}
 
-    * :math:`relative_humidity` is relative humidity as a unitless ratio
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`q` is specific humidity
     * :math:`w_s` is the saturation mixing ratio
 
