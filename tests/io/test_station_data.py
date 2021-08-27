@@ -5,6 +5,7 @@
 import numpy as np
 from numpy.testing import assert_almost_equal
 import pandas as pd
+import pytest
 
 from metpy.io import add_station_lat_lon
 
@@ -22,3 +23,19 @@ def test_add_lat_lon_station_data():
     assert_almost_equal(df.loc[df.station == 'KDEN'].longitude.values[0], -104.65)
     assert_almost_equal(df.loc[df.station == 'PAAA'].latitude.values[0], np.nan)
     assert_almost_equal(df.loc[df.station == 'PAAA'].longitude.values[0], np.nan)
+
+
+def test_add_lat_lon_station_data_optional():
+    """Test for when only one argument is passed."""
+    df = pd.DataFrame({'station': ['KOUN', 'KVPZ', 'KDEN', 'PAAA']})
+
+    df = add_station_lat_lon(df)
+    assert_almost_equal(df.loc[df.station == 'KOUN'].latitude.values[0], 35.25)
+
+
+def test_add_lat_lon_station_data_not_found():
+    """Test case where key cannot be inferred."""
+    df = pd.DataFrame({'location': ['KOUN']})
+
+    with pytest.raises(KeyError):
+        add_station_lat_lon(df)

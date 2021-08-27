@@ -149,7 +149,7 @@ with exporter:
 
 
 @exporter.export
-def add_station_lat_lon(df, stn_var):
+def add_station_lat_lon(df, stn_var=None):
     """Lookup station information to add the station latitude and longitude to the DataFrame.
 
     This function will add two columns to the DataFrame ('latitude' and 'longitude') after
@@ -159,17 +159,28 @@ def add_station_lat_lon(df, stn_var):
     ----------
     df : `pandas.DataFrame`
         The DataFrame that contains the station observations
-    stn_var : str
-        The string of the variable name that represents the station in the DataFrame. Common
-        examples are 'station', 'stid', and 'station_id'
+    stn_var : str, optional
+        The string of the variable name that represents the station in the DataFrame. If not
+        provided, 'station', 'stid', and 'station_id' are tried in that order.
 
     Returns
     -------
     `pandas.DataFrame` that contains original Dataframe now with the latitude and longitude
     values for each location found in `station_info`.
     """
+
+    def key_finder(df):
+        names_to_try = ('station', 'stid', 'station_id')
+        for id_name in names_to_try:
+            if id_name in df:
+                return id_name
+        raise KeyError('Second argument not provided to add_station_lat_lon, but none of '
+                       f'{names_to_try} were found.')
+
     df['latitude'] = None
     df['longitude'] = None
+    if stn_var is None:
+        stn_var = key_finder(df)
     for stn in df[stn_var].unique():
         try:
             info = station_info[stn]
