@@ -52,13 +52,19 @@ In this example, data is originally from the Iowa State Upper-air archive
 (https://mesonet.agron.iastate.edu/archive/raob/) available through a Siphon method.
 The data are pre-processed to attach latitude/longitude locations for each RAOB site.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-31
+.. GENERATED FROM PYTHON SOURCE LINES 28-38
 
 .. code-block:: default
 
 
     data = pd.read_csv(get_test_data('UPA_obs.csv', as_file_obj=False))
 
+    # In a real-world case, you could obtain and preprocess the data with code such as
+    # from siphon.simplewebservice.iastate import IAStateUpperAir
+    # from metpy.io import add_station_lat_lon
+
+    # data = IAStateUpperAir().request_all_data(datetime(2021, 8, 25, 12))
+    # data = add_station_lat_lon(data)
 
 
 
@@ -66,13 +72,14 @@ The data are pre-processed to attach latitude/longitude locations for each RAOB 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-35
+
+.. GENERATED FROM PYTHON SOURCE LINES 39-42
 
 **Plotting the data**
 
 Use the declarative plotting interface to create a CONUS upper-air map for 500 hPa
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-62
+.. GENERATED FROM PYTHON SOURCE LINES 42-69
 
 .. code-block:: default
 
@@ -117,7 +124,7 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.782 seconds)
+   **Total running time of the script:** ( 0 minutes  0.791 seconds)
 
 
 .. _sphx_glr_download_examples_plots_upperair_declarative.py:

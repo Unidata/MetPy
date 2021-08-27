@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Surface Analysis using Declarative Syntax" href="surface_declarative.html" />
-    <link rel="prev" title="Combined Plotting" href="Combined_plotting.html" />
+    <link rel="next" title="Skew-T with Complex Layout" href="Skew-T_Layout.html" />
+    <link rel="prev" title="Surface Analysis using Declarative Syntax" href="surface_declarative.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -269,14 +269,14 @@
    Combined Plotting
   </a>
  </li>
- <li class="toctree-l2 current active">
-  <a class="current reference internal" href="#">
-   Upper Air Analysis using Declarative Syntax
-  </a>
- </li>
  <li class="toctree-l2">
   <a class="reference internal" href="surface_declarative.html">
    Surface Analysis using Declarative Syntax
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   Upper Air Analysis using Declarative Syntax
   </a>
  </li>
  <li class="toctree-l2">
@@ -360,6 +360,13 @@ meteorological analyses including upper air observation plots.</p>
 (<a class="reference external" href="https://mesonet.agron.iastate.edu/archive/raob/">https://mesonet.agron.iastate.edu/archive/raob/</a>) available through a Siphon method.
 The data are pre-processed to attach latitude/longitude locations for each RAOB site.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;UPA_obs.csv&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># In a real-world case, you could obtain and preprocess the data with code such as</span>
+<span class="c1"># from siphon.simplewebservice.iastate import IAStateUpperAir</span>
+<span class="c1"># from metpy.io import add_station_lat_lon</span>
+
+<span class="c1"># data = IAStateUpperAir().request_all_data(datetime(2021, 8, 25, 12))</span>
+<span class="c1"># data = add_station_lat_lon(data)</span>
 </pre></div>
 </div>
 <p><strong>Plotting the data</strong></p>
@@ -393,7 +400,7 @@ The data are pre-processed to attach latitude/longitude locations for each RAOB 
 </pre></div>
 </div>
 <img alt="temperature and dewpoint and height&#64;500 hectopascal" class="sphx-glr-single-img" src="../../_images/sphx_glr_upperair_declarative_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.782 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.791 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-upperair-declarative-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/a519b093777a2b63ced71d531cb53070/upperair_declarative.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_declarative.py</span></code></a></p>
@@ -411,8 +418,8 @@ The data are pre-processed to attach latitude/longitude locations for each RAOB 
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="Combined_plotting.html" title="previous page">Combined Plotting</a>
-    <a class='right-next' id="next-link" href="surface_declarative.html" title="next page">Surface Analysis using Declarative Syntax</a>
+    <a class='left-prev' id="prev-link" href="surface_declarative.html" title="previous page">Surface Analysis using Declarative Syntax</a>
+    <a class='right-next' id="next-link" href="Skew-T_Layout.html" title="next page">Skew-T with Complex Layout</a>
 
               </div>
               
@@ -440,7 +447,7 @@ The data are pre-processed to attach latitude/longitude locations for each RAOB 
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 27, 2021 at 19:43:13.<br/>
+        Last updated on Aug 27, 2021 at 19:45:41.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>

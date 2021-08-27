@@ -595,27 +595,6 @@ Examples using MetPy's various specialty plotting routines.
 
 .. only:: html
 
- .. figure:: /examples/plots/images/thumb/sphx_glr_upperair_declarative_thumb.png
-     :alt: Upper Air Analysis using Declarative Syntax
-
-     :ref:`sphx_glr_examples_plots_upperair_declarative.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/plots/upperair_declarative
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
-
-.. only:: html
-
  .. figure:: /examples/plots/images/thumb/sphx_glr_surface_declarative_thumb.png
      :alt: Surface Analysis using Declarative Syntax
 
@@ -630,6 +609,27 @@ Examples using MetPy's various specialty plotting routines.
    :hidden:
 
    /examples/plots/surface_declarative
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+
+.. only:: html
+
+ .. figure:: /examples/plots/images/thumb/sphx_glr_upperair_declarative_thumb.png
+     :alt: Upper Air Analysis using Declarative Syntax
+
+     :ref:`sphx_glr_examples_plots_upperair_declarative.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/upperair_declarative
 
 .. raw:: html
 
