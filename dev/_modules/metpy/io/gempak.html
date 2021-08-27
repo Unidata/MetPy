@@ -1909,8 +1909,6 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">size</span>
-
     <span class="k">def</span> <span class="nf">_merge_sounding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Merge unmerged sounding data.&quot;&quot;&quot;</span>
         <span class="n">merged</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;STID&#39;</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="s1">&#39;STID&#39;</span><span class="p">],</span>
@@ -2171,7 +2169,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">istart</span> <span class="o">=</span> <span class="mi">0</span>
 
-            <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_winds_height</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">nsgw</span><span class="p">,</span> <span class="n">nasw</span><span class="p">,</span> <span class="n">istart</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merge_winds_height</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">nsgw</span><span class="p">,</span> <span class="n">nasw</span><span class="p">,</span> <span class="n">istart</span><span class="p">)</span>
 
             <span class="c1"># Interpolate missing pressure with height</span>
             <span class="n">_interp_logp_pressure</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span><span class="p">)</span>
@@ -2181,6 +2179,7 @@
 
         <span class="c1"># Add below ground MAN data</span>
         <span class="k">if</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span> <span class="ow">and</span> <span class="n">bgl</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">ibgl</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_man_levels</span><span class="p">):</span>
                 <span class="n">press</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="s1">&#39;TTAA&#39;</span><span class="p">][</span><span class="s1">&#39;PRES&#39;</span><span class="p">][</span><span class="n">ibgl</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">press</span> <span class="o">&gt;</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
@@ -2932,7 +2931,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 27, 2021 at 16:41:14.<br/>
+        Last updated on Aug 27, 2021 at 19:43:13.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
