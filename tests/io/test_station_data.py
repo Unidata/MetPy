@@ -38,4 +38,4 @@ def test_add_lat_lon_station_data_not_found():
     df = pd.DataFrame({'location': ['KOUN']})
 
     with pytest.raises(KeyError):
-        df = add_station_lat_lon(df)
+        add_station_lat_lon(df)
