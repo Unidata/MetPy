@@ -283,7 +283,7 @@
 <h1>add_station_lat_lon<a class="headerlink" href="#add-station-lat-lon" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.io.add_station_lat_lon">
-<span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">add_station_lat_lon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stn_var</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.add_station_lat_lon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.io.</span></span><span class="sig-name descname"><span class="pre">add_station_lat_lon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stn_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.add_station_lat_lon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lookup station information to add the station latitude and longitude to the DataFrame.</p>
 <p>This function will add two columns to the DataFrame (‘latitude’ and ‘longitude’) after
 looking up all unique station identifiers available in the DataFrame.</p>
@@ -291,8 +291,8 @@ looking up all unique station identifiers available in the DataFrame.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – The DataFrame that contains the station observations</p></li>
-<li><p><strong>stn_var</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The string of the variable name that represents the station in the DataFrame. Common
-examples are ‘station’, ‘stid’, and ‘station_id’</p></li>
+<li><p><strong>stn_var</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – The string of the variable name that represents the station in the DataFrame. If not
+provided, ‘station’, ‘stid’, and ‘station_id’ are tried in that order.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -342,7 +342,7 @@ examples are ‘station’, ‘stid’, and ‘station_id’</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 27, 2021 at 19:55:51.<br/>
+        Last updated on Aug 27, 2021 at 20:44:23.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
