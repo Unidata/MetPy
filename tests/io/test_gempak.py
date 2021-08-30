@@ -225,3 +225,29 @@ def test_coordinates_creation(proj_type):
 
     assert_allclose(decode_lat, true_lat, rtol=1e-6, atol=1e-2)
     assert_allclose(decode_lon, true_lon, rtol=1e-6, atol=1e-2)
+
+
+@pytest.mark.parametrize('proj_type, proj_attrs', [
+    ('conical', {
+        'grid_mapping_name': 'lambert_conformal_conic',
+        'standard_parallel': (25.0, 25.0),
+        'latitude_of_projection_origin': 0.0,
+        'longitude_of_central_meridian': -95.0,
+        'semi_major_axis': 6371200.,
+        'semi_minor_axis': 6371200.,
+    }),
+    ('azimuthal', {
+        'grid_mapping_name': 'polar_stereographic',
+        'latitude_of_projection_origin': 90.0,
+        'straight_vertical_longitude_from_pole': -105.0,
+        'scale_factor_at_projection_origin': 1.0,
+        'semi_major_axis': 6371200.,
+        'semi_minor_axis': 6371200.,
+    })
+])
+def test_metpy_crs_creation(proj_type, proj_attrs):
+    """Test grid mapping metadata."""
+    grid = GempakGrid(get_test_data(f'gem_{proj_type}.grd'))
+    metpy_crs = grid.gdxarray()[0].metpy.crs
+    for k, v in proj_attrs.items():
+        assert metpy_crs[k] == v

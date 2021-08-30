@@ -25,6 +25,7 @@ from ..calc import (mixing_ratio_from_specific_humidity, scale_height,
                     specific_humidity_from_dewpoint, thickness_hydrostatic,
                     virtual_temperature)
 from ..package_tools import Exporter
+from ..plots.mapping import CFProjection
 from ..units import units
 
 exporter = Exporter(globals())
@@ -1270,12 +1271,12 @@ class GempakGrid(GempakFile):
                             gvcord: [col_head.GLV1],
                             'x': self.x,
                             'y': self.y,
+                            'metpy_crs': CFProjection(self.crs.to_cf())
                         },
                         dims=['time', gvcord, 'y', 'x'],
                         name=var,
                         attrs={
-                            **self.crs.to_cf(),
-                            'grid_type': ftype,
+                            'gempak_grid_type': ftype,
                         }
                     )
                     grids.append(xrda)
