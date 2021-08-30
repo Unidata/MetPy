@@ -1053,7 +1053,7 @@ def dewpoint(vapor_pressure):
 
     Parameters
     ----------
-    e : `pint.Quantity`
+    vapor_pressure : `pint.Quantity`
         Water vapor partial pressure
 
     Returns
@@ -1068,10 +1068,10 @@ def dewpoint(vapor_pressure):
     Notes
     -----
     This function inverts the [Bolton1980]_ formula for saturation vapor
-    pressure to instead calculate the temperature. This yield the following
-    formula for dewpoint in degrees Celsius:
+    pressure to instead calculate the temperature. This yields the following formula for
+    dewpoint in degrees Celsius, where :math:`e` is the ambient vapor pressure in millibars:
 
-    .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}
+    .. math:: T = \frac{243.5 \log(e / 6.112)}{17.67 - \log(e / 6.112)}
 
     .. versionchanged:: 1.0
        Renamed ``e`` parameter to ``vapor_pressure``
