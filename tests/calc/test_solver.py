@@ -18,6 +18,11 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 
 
 @test_solver.register('RH')
+def relative_humidity_from_dewpoint(temperature, dewpoint):
+    pass
+
+
+@test_solver.register('RH')
 def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity):
     pass
 
@@ -61,9 +66,16 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 def wind_components(wind_speed, wind_direction):
     pass
 
+
 @test_solver.register()
 def vorticity(u, v):
     pass
+
+
+@test_solver.register()
+def heat_index(temperature, relative_humidity):
+    pass
+
 
 @pytest.mark.parametrize(['inputs', 'want', 'truth'], [
     ({'T', 'RH'}, 'Td', [dewpoint_from_relative_humidity]),
@@ -72,7 +84,8 @@ def vorticity(u, v):
     ({'T', 'p', 'q'}, 'Tv', [mixing_ratio_from_specific_humidity, virtual_temperature]),
     ({'p', 'T', 'RH'}, 'rho', [mixing_ratio_from_relative_humidity, density]),
     ({'p', 'T', 'RH'}, 'Tw', [dewpoint_from_relative_humidity, wet_bulb_temperature]),
-    ({'wind_speed', 'wind_direction'}, 'vorticity', [wind_components, vorticity])
+    ({'wind_speed', 'wind_direction'}, 'vorticity', [wind_components, vorticity]),
+    ({'T', 'p', 'q'}, 'heat_index', [relative_humidity_from_specific_humidity, heat_index]),
 ])
 def test_solutions(inputs, want, truth):
     """Test that the proper sequence of calculations is found."""

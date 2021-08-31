@@ -30,7 +30,10 @@ class Path:
             raise ValueError(f'{other.steps} already in steps')
 
         # Prepend steps so that final path is in proper call order
-        return Path(other.steps + self.steps, self.have | other.have, self.need | other.need)
+        # Don't really "have" what's in the new function call, but instead it just needs
+        # to be removed from what's needed.
+        return Path(other.steps + self.steps, self.have,
+                    (self.need | other.need) - other.have)
 
     def __str__(self):
         return (f'Path<Steps: {[f.__name__ for f in self.steps]} Have: {self.have} '
@@ -121,8 +124,9 @@ class Solver:
                 # and make them options to consider
                 item = path.need.pop()
                 for trial_step in self._graph.get(item, ()):
-                    # with contextlib.suppress(ValueError):
-                    options.append(path + trial_step)
+                    # ValueError gets thrown if we try to repeat a function call
+                    with contextlib.suppress(ValueError):
+                        options.append(path + trial_step)
 
         raise ValueError(f'Unable to calculate {want} from {have}')
 
