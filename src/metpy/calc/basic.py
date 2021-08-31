@@ -16,7 +16,7 @@ import warnings
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
-from . import solver
+from .field_solver import solver
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, masked_array, units

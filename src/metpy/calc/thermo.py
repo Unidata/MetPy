@@ -10,7 +10,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
-from . import solver
+from .field_solver import solver
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
