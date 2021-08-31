@@ -20,7 +20,7 @@ from . import ctables, wx_symbols
 from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
-from ..calc import reduce_point_density
+from ..calc import reduce_point_density, solver
 from ..package_tools import Exporter
 from ..units import units
 
@@ -1083,7 +1083,10 @@ class PlotScalar(Plots2D):
 
             # Select our particular field of interest
             if self.field:
-                data = self.data.metpy.parse_cf(self.field)
+                if self.field in self.data:
+                    data = self.data.metpy.parse_cf(self.field)
+                else:
+                    data = solver.calculate(self.data, self.field)
             elif hasattr(self.data.metpy, 'parse_cf'):
                 # Handles the case where we have a dataset but no specified field
                 raise ValueError('field attribute has not been set.')
