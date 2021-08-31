@@ -1170,9 +1170,18 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
         xarray arguments to Quantity, and do not change other array-like arguments.
     """
     def decorator(func):
+        sig = signature(func)
+        if broadcast is not None:
+            for arg_name in broadcast:
+                if arg_name not in sig.parameters:
+                    raise ValueError(
+                        f'Cannot broadcast argument {arg_name} as it is not in function '
+                        'signature'
+                    )
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            bound_args = signature(func).bind(*args, **kwargs)
+            bound_args = sig.bind(*args, **kwargs)
 
             # Auto-broadcast select xarray arguments, and update bound_args
             if broadcast is not None:
