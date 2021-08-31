@@ -3,8 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the solver."""
 import pytest
+import xarray as xr
 
+from metpy.calc import solver
 from metpy.calc.field_solver import Solver
+from metpy.testing import assert_almost_equal
+from metpy.units import units
 
 test_solver = Solver()
 
@@ -79,3 +83,13 @@ def test_failure():
     """Test that the correct error results when a value cannot be solved."""
     with pytest.raises(ValueError):
         test_solver.solve({'RH'}, 'Td')
+
+def test_calculate():
+    """Test using the solver results to calculate."""
+    temp = xr.DataArray(25, attrs={'units': 'degC'})
+    rh = xr.DataArray(80, attrs={'units': 'percent'})
+    press = xr.DataArray(994, attrs={'units': 'hPa'})
+    data = xr.Dataset({'temperature': temp, 'relative_humidity': rh, 'pressure': press})
+
+    dewp = solver.calculate(data, 'dewpoint')
+    assert_almost_equal(dewp, units.Quantity(21.3125, 'degC'), 4)

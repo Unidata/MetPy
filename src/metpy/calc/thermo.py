@@ -10,6 +10,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
+from . import solver
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
@@ -26,6 +27,7 @@ sat_pressure_0c = units.Quantity(6.112, 'millibar')
 
 
 @exporter.export
+@solver.register('relative_humidity')
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
 @check_units('[temperature]', '[temperature]')
 def relative_humidity_from_dewpoint(temperature, dewpoint):
@@ -101,6 +103,7 @@ def exner_function(pressure, reference_pressure=mpconsts.P0):
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('pressure', 'temperature'))
 @check_units('[pressure]', '[temperature]')
 def potential_temperature(pressure, temperature):
@@ -148,6 +151,7 @@ def potential_temperature(pressure, temperature):
     broadcast=('pressure', 'potential_temperature')
 )
 @check_units('[pressure]', '[temperature]')
+@solver.register('temperature')
 def temperature_from_potential_temperature(pressure, potential_temperature):
     r"""Calculate the temperature from a given potential temperature.
 
@@ -1011,6 +1015,7 @@ def saturation_vapor_pressure(temperature):
 
 
 @exporter.export
+@solver.register('dewpoint')
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
 @check_units('[temperature]', '[dimensionless]')
 def dewpoint_from_relative_humidity(temperature, relative_humidity):
@@ -1163,6 +1168,7 @@ def saturation_mixing_ratio(total_press, temperature):
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'dewpoint')
@@ -1290,6 +1296,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
 def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
@@ -1329,6 +1336,7 @@ def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpcons
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'mixing_ratio')
@@ -1375,6 +1383,7 @@ def virtual_potential_temperature(pressure, temperature, mixing_ratio,
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'mixing_ratio')
@@ -1533,6 +1542,7 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
 
 
 @exporter.export
+@solver.register('mixing_ratio')
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'relative_humidity')
@@ -1581,6 +1591,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
 
 
 @exporter.export
+@solver.register('relative_humidity')
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'mixing_ratio')
@@ -1627,6 +1638,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
 
 @exporter.export
+@solver.register('mixing_ratio')
 @preprocess_and_wrap(wrap_like='specific_humidity')
 @check_units('[dimensionless]')
 def mixing_ratio_from_specific_humidity(specific_humidity):
@@ -1662,6 +1674,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
 
 @exporter.export
+@solver.register('specific_humidity')
 @preprocess_and_wrap(wrap_like='mixing_ratio')
 @check_units('[dimensionless]')
 def specific_humidity_from_mixing_ratio(mixing_ratio):
@@ -1697,6 +1710,7 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
 
 
 @exporter.export
+@solver.register('relative_humidity')
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'specific_humidity')
@@ -2946,6 +2960,7 @@ def brunt_vaisala_period(height, potential_temperature, vertical_dim=0):
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'dewpoint')
@@ -3051,6 +3066,7 @@ def static_stability(pressure, temperature, vertical_dim=0):
 
 
 @exporter.export
+@solver.register('dewpoint')
 @preprocess_and_wrap(
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'specific_humdiity')
@@ -3188,6 +3204,7 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 
 
 @exporter.export
+@solver.register('specific_humidity')
 @preprocess_and_wrap(wrap_like='dewpoint', broadcast=('dewpoint', 'pressure'))
 @check_units('[pressure]', '[temperature]')
 def specific_humidity_from_dewpoint(pressure, dewpoint):
