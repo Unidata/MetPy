@@ -281,6 +281,16 @@ def test_heat_index_kelvin():
     assert_almost_equal(hi.to('degC'), 50.3406 * units.degC, 4)
 
 
+def test_heat_index_xarray():
+    """Test heat_index when working with fields from xarray."""
+    temp = xr.DataArray(np.full((1, 4, 2, 3), 35.), attrs={'units': 'degC'},
+                        dims=('t', 'p', 'y', 'x'))
+    rh = xr.DataArray(np.full((4, 1, 2, 3), 0.7), dims = ('p', 't', 'y', 'x'))
+
+    hi = heat_index(temp, rh)
+    assert_almost_equal(hi, units.Quantity(50.3405, 'degC'), 4)
+
+
 def test_height_to_geopotential(array_type):
     """Test conversion from height to geopotential."""
     mask = [False, True, False, True]

@@ -221,7 +221,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 @exporter.export
 @solver.register()
-@preprocess_and_wrap(wrap_like='temperature')
+@preprocess_and_wrap(broadcast=('temperature', 'relative_humidity'), wrap_like='temperature')
 @check_units('[temperature]')
 def heat_index(temperature, relative_humidity, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
