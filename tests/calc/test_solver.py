@@ -106,3 +106,13 @@ def test_calculate():
 
     dewp = solver.calculate(data, 'dewpoint')
     assert_almost_equal(dewp, units.Quantity(21.3125, 'degC'), 4)
+
+
+def test_xarray_mapping():
+    temp = xr.DataArray([25], attrs={'units': 'degC'})
+    q = xr.DataArray([.019], attrs={'units': 'percent'})
+    press = xr.DataArray([994], attrs={'units': 'hPa'})
+    data = xr.Dataset({'Temperature': temp, 'Specific_humidity': q},
+                      coords={'isobaric': press})
+
+    solver.calculate(data, 'heat_index')

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Solver to automatically calculate derived parameters from a dataset."""
 
-from collections import deque
+from collections import ChainMap, deque
 import contextlib
 from inspect import signature, Parameter
 
@@ -43,14 +43,14 @@ class Path:
 
 
 class Solver:
-    names = {'Tw': 'wet_bulb_temperature', 'Td': 'dewpoint_temperature',
-             'dewpoint': 'dewpoint_temperature', 'Tv': 'virtual_temperature',
-             'q': 'specific_humidity', 'r': 'mixing_ratio', 'RH': 'relative_humidity',
-             'p': 'pressure', 'T': 'temperature'}
+    names = {'tw': 'wet_bulb_temperature', 'td': 'dewpoint_temperature',
+             'dewpoint': 'dewpoint_temperature', 'tv': 'virtual_temperature',
+             'q': 'specific_humidity', 'r': 'mixing_ratio', 'rh': 'relative_humidity',
+             'p': 'pressure', 't': 'temperature', 'isobaric': 'pressure'}
 
     standard_names = {'temperature': 'air_temperature'}
 
-    fallback_names = {'temperature': ['temp'], 'pressure': ['P']}
+    fallback_names = {'temperature': ['temp'], 'pressure': ['P', 'isobaric']}
 
     def __init__(self):
         self._graph = {}
@@ -82,23 +82,24 @@ class Solver:
         return [self.normalize(name) for name in names]
 
     def normalize(self, name):
-        return self.names.get(name, name)
+        return self.names.get(name.lower(), name.lower())
 
     def _map_func_args(self, func, data):
+        key_map = {self.normalize(key): key for key in ChainMap(data, data.coords)}
         for item in self._funcs[func][0]:
-            if item in data:
-                yield data[item]
+            if item in key_map:
+                yield data[key_map[item]]
             elif item in self.standard_names:
                 ds = data.filter_by_attrs(standard_name=self.standard_names[item])
                 yield next(iter(ds))
             else:
                 for name in self.fallback_names.get(item, []):
-                    if name in data:
-                        yield data[name]
+                    if name in key_map:
+                        yield data[key_map[name]]
 
     def calculate(self, data, name):
         data = data.copy()
-        for func in self.solve(set(data), name):
+        for func in self.solve(set(data) | set(data.coords), name):
             result = func(*self._map_func_args(func, data))
             retname = self._funcs[func][-1]
             if isinstance(result, tuple):
