@@ -14,14 +14,6 @@ class Path:
         self.have = have
         self.need = need
 
-    @property
-    def need(self):
-        return self._need
-
-    @need.setter
-    def need(self, val):
-        self._need = {i for i in val if i not in self.have}
-
     def is_complete(self):
         return not bool(self.need)
 
@@ -33,7 +25,7 @@ class Path:
         # Don't really "have" what's in the new function call, but instead it just needs
         # to be removed from what's needed.
         return Path(other.steps + self.steps, self.have,
-                    (self.need | other.need) - other.have)
+                    (self.need | other.need) - (self.have | other.have))
 
     def __str__(self):
         return (f'Path<Steps: {[f.__name__ for f in self.steps]} Have: {self.have} '
