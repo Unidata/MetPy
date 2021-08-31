@@ -1086,7 +1086,7 @@ class PlotScalar(Plots2D):
                 if self.field in self.data:
                     data = self.data.metpy.parse_cf(self.field)
                 else:
-                    data = solver.calculate(self.data, self.field)
+                    data = solver.calculate(self.data.metpy.parse_cf(), self.field)
             elif hasattr(self.data.metpy, 'parse_cf'):
                 # Handles the case where we have a dataset but no specified field
                 raise ValueError('field attribute has not been set.')
