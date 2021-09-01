@@ -1298,6 +1298,14 @@ def test_preprocess_and_wrap_with_broadcasting():
     assert_array_equal(func(data, data2), [[0, 1, 2], [0, 0, 0], [0, 0, 0]] * units('N m'))
 
 
+def test_preprocess_and_wrap_broadcasting_error():
+    """Test that decorator with bad arguments specified to broadcast errors out."""
+    with pytest.raises(ValueError):
+        @preprocess_and_wrap(broadcast=('a', 'c'))
+        def func(a, b):
+            """Test a mismatch between arguments in signature and decorator."""
+
+
 def test_preprocess_and_wrap_with_to_magnitude():
     """Test preprocessing and wrapping with casting to magnitude."""
     data = xr.DataArray([1, 0, 1] * units.m)
