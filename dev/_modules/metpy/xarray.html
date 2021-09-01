@@ -1346,9 +1346,18 @@
 <span class="sd">        xarray arguments to Quantity, and do not change other array-like arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">broadcast</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">arg_name</span> <span class="ow">in</span> <span class="n">broadcast</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arg_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Cannot broadcast argument </span><span class="si">{</span><span class="n">arg_name</span><span class="si">}</span><span class="s1"> as it is not in function &#39;</span>
+                        <span class="s1">&#39;signature&#39;</span>
+                    <span class="p">)</span>
+
         <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="n">bound_args</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">bound_args</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="c1"># Auto-broadcast select xarray arguments, and update bound_args</span>
             <span class="k">if</span> <span class="n">broadcast</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1755,7 +1764,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Aug 31, 2021 at 17:23:31.<br/>
+        Last updated on Sep 01, 2021 at 22:29:38.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
