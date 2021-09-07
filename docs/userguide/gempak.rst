@@ -311,7 +311,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">ADV(S, V)</td>
         <td class="tg-implemented">Advection</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.advection.html#metpy.calc.advection">metpy.calc.advection</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.advection.html#metpy.calc.advection">metpy.calc.advection</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -327,7 +327,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">AVOR(V)</td>
         <td class="tg-implemented">Absolute vorticity</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.absolute_vorticity.html">metpy.calc.absolute_vorticity</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.absolute_vorticity.html">metpy.calc.absolute_vorticity</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -335,7 +335,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">BVSQ(THTA)</td>
         <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (wrap with <a href="https://numpy.org/doc/1.18/reference/generated/numpy.average.html#numpy-average">np.average</a> to obtain layer average)</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (wrap with <a href="https://numpy.org/doc/1.18/reference/generated/numpy.average.html#numpy-average">np.average</a> to obtain layer average)</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -351,7 +351,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDEN(PRES, TMPC)</td>
         <td class="tg-implemented">Density of dry air</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.density.html#metpy.calc.density">metpy.calc.density(mixing=0)</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.density.html#metpy.calc.density">metpy.calc.density(mixing=0)</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -359,7 +359,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDR(S)</td>
         <td class="tg-implemented">Partial derivative with respect to R</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -367,7 +367,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDT(S)</td>
         <td class="tg-implemented">Time derivative</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a>, but requires three time points vs. GEMPAK's two</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a>, but requires three time points vs. GEMPAK's two</td>
         <td class="tg-info">Almost</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -375,7 +375,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDX(S)</td>
         <td class="tg-implemented">Partial derivative with respect to X</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -383,7 +383,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDY(S)</td>
         <td class="tg-implemented">Partial derivative with respect to Y</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -391,7 +391,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DEF(V)</td>
         <td class="tg-implemented">Total deformation</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation">metpy.calc.total_deformation</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation">metpy.calc.total_deformation</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -415,7 +415,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DIV(V)</td>
         <td class="tg-implemented">Divergence</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.h_divergence.html#metpy.calc.h_divergence">metpy.calc.h_divergence</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.h_divergence.html#metpy.calc.h_divergence">metpy.calc.h_divergence</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -439,7 +439,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DTH(S)</td>
         <td class="tg-implemented">Partial derivative with respect to theta</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -447,7 +447,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-info">FCNT(S)</td>
         <td class="tg-info">Coriolis force at grid center (polar)</td>
-        <td class="tg-info"><a href="api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter">metpy.calc.coriolis_parameter</a></td>
+        <td class="tg-info"><a href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter">metpy.calc.coriolis_parameter</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -463,7 +463,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">FRNT(THETA, V)</td>
         <td class="tg-implemented">Frontogenesis</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis">metpy.calc.frontogenesis</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis">metpy.calc.frontogenesis</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -471,7 +471,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">GWFS(S, N)</td>
         <td class="tg-implemented">Filter with normal distribution of weights</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian">metpy.calc.smooth_gaussian</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian">metpy.calc.smooth_gaussian</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -511,7 +511,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">LAP(S)</td>
         <td class="tg-implemented">Laplacian operator</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">metpy.calc.laplacian</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">metpy.calc.laplacian</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-no">Yes - Different Answer</td>
         <td class="tg-yes">Yes</td>
@@ -567,7 +567,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">MIXR(DWPC, PRES)</td>
         <td class="tg-implemented">Mixing ratio</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">metpy.calc.mixing_ratio</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">metpy.calc.mixing_ratio</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -591,7 +591,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">MSFC(V)</td>
         <td class="tg-implemented">Pseudo angular momentum (cross-sections)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum">metpy.calc.absolute_momentum</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum">metpy.calc.absolute_momentum</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -607,7 +607,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">NORM(V)</td>
         <td class="tg-implemented">Normal component (cross-sections)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -647,7 +647,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">PLCL(PRES, TMPC, DWPC)</td>
         <td class="tg-implemented">Pressure of the lifting condensation level</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -663,7 +663,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-info">POLF(S)</td>
         <td class="tg-info">Coriolis force at each point (polar)</td>
-        <td class="tg-info"><a href="api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter">metpy.calc.coriolis_parameter</a></td>
+        <td class="tg-info"><a href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter">metpy.calc.coriolis_parameter</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -671,8 +671,8 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">PVOR(S, V)</td>
         <td class="tg-implemented">Potential vorticity in a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic">metpy.calc.potential_vorticity_baroclinic</a>
-                                   <br><a href="api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_barotropic">metpy.calc.potential_vorticity_barotropic</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic">metpy.calc.potential_vorticity_baroclinic</a>
+                                   <br><a href="../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_barotropic">metpy.calc.potential_vorticity_barotropic</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -688,7 +688,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">RELH(TMPC, DWPT)</td>
         <td class="tg-implemented">Relative humidity</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -752,7 +752,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">SHR(V)</td>
         <td class="tg-implemented">Shearing deformation</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation">metpy.calc.shearing_deformation</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation">metpy.calc.shearing_deformation</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -760,7 +760,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">SM5S(S)</td>
         <td class="tg-implemented">5-point smoother</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -768,7 +768,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">SM9S(S)</td>
         <td class="tg-implemented">9-point smoother</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -784,7 +784,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">STR(V)</td>
         <td class="tg-implemented">Stretching deformation</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation">metpy.calc.stretching_deformation</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation">metpy.calc.stretching_deformation</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -792,7 +792,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TANG(V)</td>
         <td class="tg-implemented">Tangential component (cross-sections)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -816,7 +816,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">THES(PRES, TMPC)</td>
         <td class="tg-implemented">Saturated equivalent potential temperature</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature">metpy.calc.saturation_equivalent_potential_temperature</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature">metpy.calc.saturation_equivalent_potential_temperature</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -824,7 +824,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">THTA(TMPC, PRES)</td>
         <td class="tg-implemented">Potential temperature</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature">metpy.calc.potential_temperature</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature">metpy.calc.potential_temperature</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -832,7 +832,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">THTE(PRES, TMPC, DWPC)</td>
         <td class="tg-implemented">Equivalent potential temperature</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.equivalent_potential_temperature.html">metpy.calc.equivalent_potential_temperature</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.equivalent_potential_temperature.html">metpy.calc.equivalent_potential_temperature</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -840,7 +840,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">THWC(PRES, TMPC, DWPC)</td>
         <td class="tg-implemented">Wet bulb temperature</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
         <td class="tg-yes">Yes for individual grid points</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -848,7 +848,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TLCL(TMPC, DWPC)</td>
         <td class="tg-implemented">Temperature of the lifting condensation level</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html">metpy.calc.lcl</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lcl.html">metpy.calc.lcl</a></td>
         <td class="tg-yes">Yes for individual grid points</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -856,7 +856,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TMST(THTE, PRES)</td>
         <td class="tg-implemented">Parcel temperature along a moist adiabat</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.moist_lapse.html#metpy.calc.moist_lapse">metpy.calc.moist_lapse</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.moist_lapse.html#metpy.calc.moist_lapse">metpy.calc.moist_lapse</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -864,7 +864,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TMWK(PRES, TMPK, RMIX)</td>
         <td class="tg-implemented">Web bulb temperature in Kelvin</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
         <td class="tg-yes">Yes for individual grid points</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -904,7 +904,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">VOR(V)</td>
         <td class="tg-implemented">Vorticity</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.v_vorticity.html#metpy.calc.v_vorticity">metpy.calc.v_vorticity</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.v_vorticity.html#metpy.calc.v_vorticity">metpy.calc.v_vorticity</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes* Still needs spherical correction terms</td>
         <td class="tg-yes">Yes</td>
@@ -984,7 +984,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">AGE(S)</td>
         <td class="tg-implemented">Ageostrophic wind</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind">metpy.calc.ageostrophic_wind</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind">metpy.calc.ageostrophic_wind</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1000,7 +1000,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DVDX(V)</td>
         <td class="tg-implemented">Partial x derivative of V</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1008,7 +1008,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DVDY(V)</td>
         <td class="tg-implemented">Partial y derivative of V</td>
-        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1032,7 +1032,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">GEO(S)</td>
         <td class="tg-implemented">Geostrophic wind</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind">metpy.calc.geostrophic_wind</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind">metpy.calc.geostrophic_wind</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1040,7 +1040,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">GRAD(S)</td>
         <td class="tg-implemented">Gradient of a scalar</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.gradient.html#metpy.calc.gradient">metpy.calc.gradient</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.gradient.html#metpy.calc.gradient">metpy.calc.gradient</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1064,7 +1064,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">INAD(V1, V2)</td>
         <td class="tg-implemented">Inertial advective wind</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.inertial_advective_wind.html">metpy.calc.inertial_advective_wind</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.inertial_advective_wind.html">metpy.calc.inertial_advective_wind</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes, slightly different answer in some instances</td>
         <td class="tg-yes">Yes</td>
@@ -1104,7 +1104,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">NORMV(V)</td>
         <td class="tg-implemented">Vector normal wind (cross-section)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -1112,7 +1112,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">QVEC(S, V)</td>
         <td class="tg-implemented">Q-vector at a level</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html">metpy.calc.q_vector</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.q_vector.html">metpy.calc.q_vector</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1120,7 +1120,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">QVCL(THTA, V)</td>
         <td class="tg-implemented">Q-vector of a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector">metpy.calc.q_vector</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average of each component)</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector">metpy.calc.q_vector</a> (use with <a href="../api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average of each component)</td>
         <td></td>
         <td></td>
         <td></td>
@@ -1152,7 +1152,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">SM5V(V)</td>
         <td class="tg-implemented">5-point smoother</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point">metpy.calc.smooth_n_point</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -1168,7 +1168,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TANGV(V)</td>
         <td class="tg-implemented">Vector tangential wind (cross-section)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -3188,7 +3188,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">MIXR</td>
         <td class="tg-implemented">Mixing ratio</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">metpy.calc.mixing_ratio</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">metpy.calc.mixing_ratio</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3196,7 +3196,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">MIXS</td>
         <td class="tg-implemented">Saturated mixing ratio</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio">metpy.calc.saturation_mixing_ratio</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio">metpy.calc.saturation_mixing_ratio</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3220,7 +3220,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">RELH</td>
         <td class="tg-implemented">Relative humidity</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -3228,7 +3228,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TMWK</td>
         <td class="tg-implemented">Wet bulb temperature in Kelvin</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('K')</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('K')</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -3236,7 +3236,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TMWC</td>
         <td class="tg-implemented">Wet bulb temperature in Celsius</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('degC')</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('degC')</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -3244,7 +3244,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TMWF</td>
         <td class="tg-implemented">Wet bulb temperature in Fahrenheit</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('degF')</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('degF')</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -3252,7 +3252,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">VAPR</td>
         <td class="tg-implemented">Vapor pressure in millibars</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure">metpy.calc.vapor_pressure</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure">metpy.calc.vapor_pressure</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3260,7 +3260,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">VAPS</td>
         <td class="tg-implemented">Saturation vapor pressure in millibars</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure">metpy.calc.saturation_vapor_pressure</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure">metpy.calc.saturation_vapor_pressure</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3268,7 +3268,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">LHVP</td>
         <td class="tg-implemented">Latent heat of vaporization</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.constants.html">metpy.constants.water_heat_vaporization</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.constants.html">metpy.constants.water_heat_vaporization</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3276,7 +3276,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-info">PWTR</td>
         <td class="tg-info">Precipitable water at a given level</td>
-        <td class="tg-info"><a href="api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">metpy.calc.precipitable_water</a></td>
+        <td class="tg-info"><a href="../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">metpy.calc.precipitable_water</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3812,7 +3812,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">TLCL</td>
         <td class="tg-implemented">Temperature in Kelvin at the LCL from the given level</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3820,7 +3820,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">PLCL</td>
         <td class="tg-implemented">Pressure in millibar at the LCL from the given level</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3860,7 +3860,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">BVFQ</td>
         <td class="tg-implemented">Brunt-Vaisala frequency in a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency">metpy.calc.brunt_vaisala_frequency</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency">metpy.calc.brunt_vaisala_frequency</a> (use with <a href="../api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
@@ -3868,7 +3868,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">BVPD</td>
         <td class="tg-implemented">Brunt-Vaisala period in a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period">metpy.calc.brunt_vaisala_period</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period">metpy.calc.brunt_vaisala_period</a> (use with <a href="../api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
@@ -3876,7 +3876,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">BVSQ</td>
         <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="../api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
@@ -3884,7 +3884,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">CAPE</td>
         <td class="tg-implemented">Convective available potential energy</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.cape_cin.html#metpy.calc.cape_cin">metpy.calc.cape_cin</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.cape_cin.html#metpy.calc.cape_cin">metpy.calc.cape_cin</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3900,7 +3900,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">CINS</td>
         <td class="tg-implemented">Convective inhibition</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.cape_cin.html#metpy.calc.cape_cin">metpy.calc.cape_cin</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.cape_cin.html#metpy.calc.cape_cin">metpy.calc.cape_cin</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3924,7 +3924,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">EQLV</td>
         <td class="tg-implemented">equilibrium level</td>
-        <td class="tg-implemented"<a href="api/generated/metpy.calc.el.html#metpy.calc.el">metpy.calc.el</a></td>
+        <td class="tg-implemented"<a href="../api/generated/metpy.calc.el.html#metpy.calc.el">metpy.calc.el</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3956,7 +3956,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">LCLP</td>
         <td class="tg-implemented">pressure in millibars at the LCL from surface</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3964,7 +3964,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">LCLT</td>
         <td class="tg-implemented">temperature in Kelvin at the lcl from the surface</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">metpy.calc.lcl</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -3972,7 +3972,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">LFCT</td>
         <td class="tg-implemented">level of free convection by comparing temperature between a parcel and the environment</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.lfc.html#metpy.calc.lfc">metpy.calc.lfc</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.lfc.html#metpy.calc.lfc">metpy.calc.lfc</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -4044,7 +4044,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">PWAT</td>
         <td class="tg-implemented">Precipitable water for the entire sounding</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">metpy.calc.precipitable_water</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">metpy.calc.precipitable_water</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -5932,7 +5932,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DDEN</td>
         <td class="tg-implemented">Density of dry air in kg/(m**3)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.density.html#metpy.calc.density">metpy.calc.density(mixing=0)</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.density.html#metpy.calc.density">metpy.calc.density(mixing=0)</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -5940,7 +5940,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">PSYM</td>
         <td class="tg-implemented">Montgomery stream function in m**2/(100*s**2)</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction">metpy.calc.montgomery_streamfunction</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction">metpy.calc.montgomery_streamfunction</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -5948,7 +5948,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">HEAT</td>
         <td class="tg-implemented">Heat index in Fahrenheit</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.heat_index.html#metpy.calc.heat_index">metpy.calc.heat_index</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.heat_index.html#metpy.calc.heat_index">metpy.calc.heat_index</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -5964,7 +5964,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">WCEQ</td>
         <td class="tg-implemented">Wind chill equivalent temperature in Fahrenheit</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.windchill.html#metpy.calc.windchill">metpy.calc.windchill</a></td>
+        <td class="tg-implemented"><a href="../api/generated/metpy.calc.windchill.html#metpy.calc.windchill">metpy.calc.windchill</a></td>
         <td></td>
         <td></td>
         <td></td>
