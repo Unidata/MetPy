@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import warnings
 
-import geopandas
 import matplotlib
 import numpy as np
 import pandas as pd
@@ -1585,16 +1584,18 @@ def test_declarative_plot_geometry_points(ccrs):
 @pytest.mark.mpl_image_compare(remove_text=True)
 def test_declarative_spc_hatch():
     """Test SPC hatching effect."""
-    day1_outlook = geopandas.read_file(
-        get_test_data('spc_day1otlk_20210317_1200_torn.lyr.geojson')
-    )
+    from shapely.geometry import Polygon
 
-    sig_area = day1_outlook.loc[day1_outlook.LABEL == 'SIGN', :]
+    sig_area_polygon = Polygon([
+        (-93.04, 32.56), (-92.91, 34.11), (-93.14, 35.76), (-92.16, 36.64),
+        (-91.06, 36.76), (-89.0, 36.28), (-87.76, 35.78), (-85.79, 34.52),
+        (-85.4, 33.51), (-85.34, 32.95), (-85.92, 31.87), (-89.09, 30.42),
+        (-91.29, 30.22), (-92.93, 30.6), (-93.28, 31.54), (-93.04, 32.56)])
 
     geo = PlotGeometry()
-    geo.geometry = sig_area['geometry']
+    geo.geometry = [sig_area_polygon]
     geo.fill = 'none'
-    geo.stroke = sig_area['stroke']
+    geo.stroke = '#000000'
     geo.labels = None
     geo.hatch = 'SS'
 
