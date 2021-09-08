@@ -879,11 +879,13 @@ def parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint):
 
 
 def _check_pressure(pressure):
-    """Check that pressure decreases monotonically.
+    """Check that pressure does not increase.
 
-    Returns True if the pressure decreases monotonically; otherwise, returns False.
+    Returns True if the pressure does not increase from one level to the next;
+    otherwise, returns False.
+
     """
-    return np.all(pressure[:-1] > pressure[1:])
+    return np.all(pressure[:-1] >= pressure[1:])
 
 
 def _parcel_profile_helper(pressure, temperature, dewpoint):
@@ -893,10 +895,10 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     other calculation functions decide what to do with the pieces.
 
     """
-    # Check that pressure is monotonic decreasing.
+    # Check that pressure does not increase.
     if not _check_pressure(pressure):
         msg = """
-        Pressure does not decrease monotonically in your sounding.
+        Pressure increases between at least two points in your sounding.
         Using scipy.signal.medfilt may fix this."""
         raise InvalidSoundingError(msg)
 
