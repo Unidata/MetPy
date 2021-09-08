@@ -58,6 +58,7 @@ def lookup_map_feature(feature_name):
     return feat.with_scale(scaler)
 
 
+<<<<<<< HEAD
 def plot_kwargs(data, args):
     """Set the keyword arguments for MapPanel plotting."""
     if hasattr(data.metpy, 'cartopy_crs'):
@@ -100,6 +101,23 @@ class ValidationMixin:
             obj = self.__class__
             msg = f"'{name}' is not a valid attribute for {obj}." + suggest
             raise AttributeError(msg)
+=======
+@exporter.export
+class SPCHatch(matplotlib.hatch.Shapes):
+    """Class to create hatching for significant severe areas."""
+
+    filled = True
+    size = 1.0
+    path = mpatches.Polygon([[0, 0], [0.4, 0.4]],
+                            closed=True,
+                            fill=False).get_path()
+
+    def __init__(self: 'SPCHatch', hatch: str, density: float):
+        self.num_rows = (hatch.count('S')) * density
+        self.shape_vertices = self.path.vertices
+        self.shape_codes = self.path.codes
+        matplotlib.hatch.Shapes.__init__(self, hatch, density)
+>>>>>>> 847d2eb084 (Add SPC hatch effect for PlotGeometry)
 
 
 class MetPyHasTraits(HasTraits):
@@ -1805,6 +1823,16 @@ class PlotGeometry(MetPyHasTraits):
     object, and so on. Default value is `fill`.
     """
 
+    hatch = Union([Instance(collections.abc.Iterable), Unicode()], default_value=None,
+                  allow_none=True)
+    hatch.__doc__ = """Hatch style for plotted polygons.
+
+    A single string or collection of strings for the hatch style If a collection, the first
+    string corresponds to the hatching of the first Shapely polygon in `geometry`, the second
+    string corresponds to the label of the second Shapely polygon, and so on. Default value
+    is `None`.
+    """
+
     @staticmethod
     @validate('geometry')
     def _valid_geometry(_, proposal):
@@ -1847,6 +1875,17 @@ class PlotGeometry(MetPyHasTraits):
             self.label_edgecolor = self.fill
         elif change['name'] == 'stroke' and self.label_facecolor is None:
             self.label_facecolor = self.stroke
+
+    @staticmethod
+    @validate('hatch')
+    def _valid_hatch(_, proposal):
+        """Cast `hatch` into a list once it is provided by user.
+
+        This is necessary because _build() expects to cycle through a list of hatch styles
+        when assigning them to the geometry.
+        """
+        hatch = proposal['value']
+        return list(hatch) if not isinstance(hatch, str) else [hatch]
 
     @property
     def name(self):
@@ -1933,8 +1972,10 @@ class PlotGeometry(MetPyHasTraits):
                                 else self.label_edgecolor)
         self.label_facecolor = (['none'] if self.label_facecolor is None
                                 else self.label_facecolor)
+        self.hatch = [None] if self.hatch is None else self.hatch
 
         # Each Shapely object is plotted separately with its corresponding colors and label
+<<<<<<< HEAD
         for geo_obj, stroke, strokewidth, fill, label, fontcolor, fontoutline in zip(
                 self.geometry, cycle(self.stroke), cycle(self.stroke_width), cycle(self.fill),
                 cycle(self.labels), cycle(self.label_facecolor), cycle(self.label_edgecolor)):
@@ -1952,6 +1993,18 @@ class PlotGeometry(MetPyHasTraits):
                 kwargs.setdefault('facecolor', 'none')
                 kwargs.setdefault('crs', ccrs.PlateCarree())
                 self.parent.ax.add_geometries([geo_obj], **kwargs)
+=======
+        for geo_obj, stroke, fill, label, fontcolor, fontoutline, hatch in zip(
+                self.geometry, cycle(self.stroke), cycle(self.fill), cycle(self.labels),
+                cycle(self.label_facecolor), cycle(self.label_edgecolor), cycle(self.hatch)):
+            # Plot the Shapely object with the appropriate method and colors
+            if isinstance(geo_obj, (MultiPolygon, Polygon)):
+                self.parent.ax.add_geometries([geo_obj], hatch=hatch, edgecolor=stroke,
+                                              facecolor=fill, crs=ccrs.PlateCarree())
+            elif isinstance(geo_obj, (MultiLineString, LineString)):
+                self.parent.ax.add_geometries([geo_obj], edgecolor=stroke,
+                                              facecolor='none', crs=ccrs.PlateCarree())
+>>>>>>> 847d2eb084 (Add SPC hatch effect for PlotGeometry)
             elif isinstance(geo_obj, MultiPoint):
                 kwargs.setdefault('color', fill)
                 kwargs.setdefault('marker', self.marker)
