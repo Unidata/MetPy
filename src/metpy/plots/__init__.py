@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Contains functionality for making meteorological plots."""
 
+import matplotlib.hatch
+
 # Trigger matplotlib wrappers
 from . import _mpl  # noqa: F401
 from . import cartopy_utils
@@ -24,6 +26,8 @@ __all__.extend(['add_metpy_logo', 'add_timestamp', 'add_unidata_logo',
                 'convert_gempak_color'])
 
 set_module(globals())
+
+matplotlib.hatch._hatch_types.append(SPCHatch)
 
 
 def __getattr__(name):

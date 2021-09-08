@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 import warnings
 
+import geopandas
 import matplotlib
 import numpy as np
 import pandas as pd
@@ -1575,6 +1576,36 @@ def test_declarative_plot_geometry_points(ccrs):
 
     pc = PanelContainer()
     pc.size = (12, 12)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True)
+def test_declarative_spc_hatch():
+    """Test SPC hatching effect."""
+    day1_outlook = geopandas.read_file(
+        get_test_data('spc_day1otlk_20210317_1200_torn.lyr.geojson')
+    )
+
+    sig_area = day1_outlook.loc[day1_outlook.LABEL == 'SIGN', :]
+
+    geo = PlotGeometry()
+    geo.geometry = sig_area['geometry']
+    geo.fill = 'none'
+    geo.stroke = sig_area['stroke']
+    geo.labels = None
+    geo.hatch = 'SS'
+
+    panel = MapPanel()
+    panel.plots = [geo]
+    panel.area = [-120, -75, 25, 50]
+    panel.projection = 'lcc'
+    panel.layers = ['states', 'coastline', 'borders']
+
+    pc = PanelContainer()
+    pc.size = (12, 8)
     pc.panels = [panel]
     pc.draw()
 
