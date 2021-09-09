@@ -73,7 +73,6 @@ def test_speed(array_type):
     assert_array_almost_equal(true_speed, speed, 4)
 
 
-@pytest.mark.xfail_dask('Item assignment with <class "numpy.ndarray"> not supported')
 def test_direction(array_type):
     """Test calculating wind direction."""
     # The last two (u, v) pairs and their masks test masking calm and negative directions
@@ -88,7 +87,6 @@ def test_direction(array_type):
     assert_array_almost_equal(true_dir, direc, 4)
 
 
-@pytest.mark.xfail_dask('Boolean index assignment in Dask expects equally shaped arrays')
 def test_direction_with_north_and_calm(array_type):
     """Test how wind direction handles northerly and calm winds."""
     mask = [False, False, False, True]
@@ -108,7 +106,6 @@ def test_direction_dimensions():
     assert str(d.units) == 'degree'
 
 
-@pytest.mark.xfail_dask('Boolean index assignment in Dask expects equally shaped arrays')
 def test_oceanographic_direction(array_type):
     """Test oceanographic direction (to) convention."""
     mask = [False, True, False]
@@ -117,7 +114,7 @@ def test_oceanographic_direction(array_type):
 
     direc = wind_direction(u, v, convention='to')
     true_dir = array_type([135., 90., 360.], 'deg', mask=mask)
-    assert_almost_equal(direc, true_dir, 4)
+    assert_array_almost_equal(direc, true_dir, 4)
 
 
 def test_invalid_direction_convention():
@@ -207,7 +204,6 @@ def test_windchill_face_level():
     assert_array_almost_equal(wc, values, 0)
 
 
-@pytest.mark.xfail_dask('operands could not be broadcast together with shapes (0, 5) (nan,)')
 def test_heat_index_basic(array_type):
     """Test the basic heat index calculation."""
     mask = [False, True, False, True, False]
@@ -225,14 +221,17 @@ def test_heat_index_scalar():
     assert_almost_equal(hi, 121 * units.degF, 0)
 
 
-def test_heat_index_invalid():
+def test_heat_index_invalid(array_type):
     """Test heat index for values that should be masked."""
-    temp = np.array([80, 88, 92, 79, 30, 81]) * units.degF
-    rh = np.array([40, 39, 2, 70, 50, 39]) * units.percent
+    mask = [False, False, False, False, False, False]
+    temp = array_type([80, 88, 92, 79, 30, 81], 'degF', mask=mask)
+    rh = array_type([40, 39, 2, 70, 50, 39], 'percent', mask=mask)
 
     hi = heat_index(temp, rh)
-    mask = np.array([False, False, False, True, True, False])
-    assert_array_equal(hi.mask, mask)
+    if isinstance(hi, xr.DataArray):
+        hi = hi.data
+    true_mask = np.array([False, False, False, True, True, False])
+    assert_array_equal(hi.mask, true_mask)
 
 
 def test_heat_index_undefined_flag():
@@ -408,10 +407,6 @@ def test_coriolis_units():
     assert f.units == units('1/second')
 
 
-@pytest.mark.xfail_dask(
-    'boolean index did not match indexed array along dimension 0; dimension is 2 but '
-    'corresponding boolean dimension is 3'
-)
 def test_apparent_temperature(array_type):
     """Test the apparent temperature calculation."""
     temperature = array_type([[90, 90, 70],
