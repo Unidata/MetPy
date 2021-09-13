@@ -361,4 +361,7 @@ linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     r'https://twitter.com/MetPy',
     # EJSSM is undergoing extended maintenance, so ignore for now
     # TODO: Remove when they return
-    r'https://ejssm.org/.*']
+    r'https://ejssm.org/.*',
+    # This one appears to be blocking robots
+    r'https://doi.org/10.1088/0026-1394/45/2/004'
+    ]
