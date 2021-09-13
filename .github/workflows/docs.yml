@@ -79,6 +79,9 @@ jobs:
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }}
 
+    - name: Download Cartopy Maps
+      run: ci/download_cartopy_maps.py
+
     - name: Install self
       run: python -m pip install -c ci/${{ matrix.dep-versions }} .
 
