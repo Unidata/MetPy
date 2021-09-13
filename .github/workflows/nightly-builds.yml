@@ -65,22 +65,8 @@ jobs:
         python -m pip install -c ci/Prerelease numpy
         python -m pip install -r ci/test_requirements.txt -c ci/Prerelease
 
-    # This imports CartoPy to find its map data cache directory
-    - name: Get CartoPy maps dir
-      if: ${{ matrix.no-extras != 'No Extras' }}
-      id: cartopy-cache
-      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
-
-    - name: Setup mapdata caching
-      if: ${{ steps.cartopy-cache.outputs.dir != '' }}
-      uses: actions/cache@v2.1.6
-      env:
-        # Increase to reset cache of map data
-        CACHE_NUMBER: 0
-      with:
-        path: ${{ steps.cartopy-cache.outputs.dir }}
-        key: cartopy-${{ env.CACHE_NUMBER }}
-        restore-keys: cartopy-
+    - name: Download Cartopy Maps
+      run: ci/download_cartopy_maps.py
 
     - name: Install
       run: python -m pip install -c ci/Prerelease .
@@ -167,20 +153,8 @@ jobs:
         python -m pip install -c ci/Prerelease numpy
         python -m pip install -r ci/doc_requirements.txt -c ci/Prerelease
 
-    # This imports CartoPy to find its map data cache directory
-    - name: Get CartoPy maps dir
-      id: cartopy-cache
-      run: echo "::set-output name=dir::$(python -c 'import cartopy;print(cartopy.config["data_dir"])')"
-
-    - name: Setup mapdata caching
-      uses: actions/cache@v2.1.6
-      env:
-        # Increase to reset cache of map data
-        CACHE_NUMBER: 0
-      with:
-        path: ${{ steps.cartopy-cache.outputs.dir }}
-        key: docs-cartopy-${{ env.CACHE_NUMBER }}
-        restore-keys: docs-cartopy-
+    - name: Download Cartopy Maps
+      run: ci/download_cartopy_maps.py
 
     - name: Install self
       run: python -m pip install -c ci/Prerelease .
