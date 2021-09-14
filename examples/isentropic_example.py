@@ -26,7 +26,7 @@ from metpy.units import units
 # **Getting the data**
 #
 # In this example, [NARR reanalysis data](
-# https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr)
+# https://www.ncei.noaa.gov/products/weather-climate-models/north-american-regional)
 # for 18 UTC 04 April 1987 from the National Centers for Environmental Information will be
 # used.
 
