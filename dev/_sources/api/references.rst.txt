@@ -152,7 +152,7 @@ References
 
 .. [Picard2008] Picard, A., R. S. Davis, M. Gläser, and K. Fujii, 2008: Revised formula
            for the density of moist air (CIPM-2007), *Metrologia*, **45**, No. 2, `doi:
-           10.1088/0026-1394/45/2/004 <http://dx.doi.org/10.1088/0026-1394/45/2/004>`_.
+           10.1088/0026-1394/45/2/004 <https://doi.org/10.1088/0026-1394/45/2/004>`_.
 
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
