@@ -170,12 +170,27 @@ jobs:
         )
         popd
 
+    - name: Enable link checker
+      # Running linkchecker separately so that we avoid problems with vendored LICENSE
+      # files in the build directory
+      if: always()
+      run: |
+        pushd docs
+        find build/html/_static -name LICENSE.md -delete
+        make linkcheck
+        # Make the presence of the output file with content (which could have specific redirects)
+        # fail the build
+        [ ! -s build/linkchecker/output.txt ] || (echo '::set-output name=LOG_AVAILABLE::true' && false)
+        popd
+
     - name: Upload build log
       if: ${{ always() && steps.build.outputs.LOG_AVAILABLE  == 'true' }}
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-docs-${{ matrix.python-version }}
-        path: build-${{ matrix.python-version }}.log
+        path: |
+          docs/build-${{ matrix.python-version }}.log
+          docs/build/linkchecker/output.txt
         retention-days: 5
 
     - name: Upload docs as artifact
@@ -203,7 +218,7 @@ jobs:
           path: /tmp/workspace/logs
 
       - name: Group logs
-        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
+        run: cat /tmp/workspace/logs/log-*/*.log /tmp/workspace/logs/log-*/output.txt > logs.txt
 
       - name: Report failures
         uses: actions/github-script@v4.1
