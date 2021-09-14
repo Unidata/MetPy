@@ -55,10 +55,6 @@ jobs:
         # Needed for caching
         use-only-tar-bz2: true
 
-    # TODO: Remove this when CartoPy on conda-forge is built with PROJ>=8
-    - name: Adjust netCDF4 dependency for Conda
-      run: sed -e "s/netCDF4==.*/netCDF4==1.5.6/" -i.bak ci/doc_requirements.txt
-
     - name: Install dependencies
       run: mamba install --quiet --yes --file ci/doc_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
 
