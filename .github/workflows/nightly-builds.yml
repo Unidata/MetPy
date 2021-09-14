@@ -181,6 +181,7 @@ jobs:
         # Make the presence of the output file with content (which could have specific redirects)
         # fail the build
         [ ! -s build/linkchecker/output.txt ] || (echo '::set-output name=LOG_AVAILABLE::true' && false)
+        [ -s build/linkchecker/output.txt ] && cp build/linkchecker/output.txt linkchecker.log
         popd
 
     - name: Upload build log
@@ -190,7 +191,7 @@ jobs:
         name: log-nightly-docs-${{ matrix.python-version }}
         path: |
           docs/build-${{ matrix.python-version }}.log
-          docs/build/linkchecker/output.txt
+          docs/linkchecker.log
         retention-days: 5
 
     - name: Upload docs as artifact
@@ -218,7 +219,7 @@ jobs:
           path: /tmp/workspace/logs
 
       - name: Group logs
-        run: cat /tmp/workspace/logs/log-*/*.log /tmp/workspace/logs/log-*/output.txt > logs.txt
+        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
 
       - name: Report failures
         uses: actions/github-script@v4.1
