@@ -91,6 +91,6 @@ jobs:
 
     - name: Upload coverage
       if: ${{ always() }}
-      uses: codecov/codecov-action@v2.0.3
+      uses: codecov/codecov-action@v2.1.0
       with:
         name: conda-${{ matrix.python-version }}-${{ runner.os }}
