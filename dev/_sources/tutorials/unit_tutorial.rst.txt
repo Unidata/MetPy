@@ -528,7 +528,7 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 
  .. code-block:: none
 
-    15.726236381245267 degree_Celsius
+    15.726236381245268 degree_Celsius
 
 
 
