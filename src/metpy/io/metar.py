@@ -21,11 +21,12 @@ exporter = Exporter(globals())
 
 # Configure the named tuple used for storing METAR data
 Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation', 'date_time',
-                             'wind_direction', 'wind_speed', 'visibility', 'current_wx1',
-                             'current_wx2', 'current_wx3', 'skyc1', 'skylev1', 'skyc2',
-                             'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4', 'cloudcover',
-                             'temperature', 'dewpoint', 'altimeter', 'current_wx1_symbol',
-                             'current_wx2_symbol', 'current_wx3_symbol', 'remarks'])
+                             'wind_direction', 'wind_speed', 'wind_gust', 'visibility',
+                             'current_wx1', 'current_wx2', 'current_wx3', 'skyc1', 'skylev1',
+                             'skyc2', 'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4',
+                             'cloudcover', 'temperature', 'dewpoint', 'altimeter',
+                             'current_wx1_symbol', 'current_wx2_symbol', 'current_wx3_symbol',
+                             'remarks'])
 
 # Create a dictionary for attaching units to the different variables
 col_units = {'station_id': None,
@@ -35,6 +36,7 @@ col_units = {'station_id': None,
              'date_time': None,
              'wind_direction': 'degrees',
              'wind_speed': 'kts',
+             'wind_gust': 'kts',
              'visibility': 'meters',
              'eastward_wind': 'kts',
              'northward_wind': 'kts',
@@ -117,6 +119,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     * 'date_time': Date and time of the observation, datetime object
     * 'wind_direction': Direction the wind is coming from, measured in degrees
     * 'wind_speed': Wind speed, measured in knots
+    * 'wind_gust': Wind gust, measured in knots
     * 'current_wx1': Current weather (1 of 3)
     * 'current_wx2': Current weather (2 of 3)
     * 'current_wx3': Current weather (3 of 3)
@@ -175,6 +178,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         date_time = np.nan
 
     # Set the wind values
+    wind_units = 'kts'
     try:
         # If there are missing wind values, set wind speed and wind direction to nan
         if ('/' in tree.wind.text) or (tree.wind.text == 'KT') or (tree.wind.text == ''):
@@ -184,7 +188,8 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         else:
             wind_spd = float(tree.wind.wind_spd.text)
             if 'MPS' in tree.wind.text:
-                wind_spd = units.Quantity(wind_spd, 'm/s').m_as('knots')
+                wind_units = 'm/s'
+                wind_spd = units.Quantity(wind_spd, wind_units).m_as('knots')
             if (tree.wind.wind_dir.text == 'VRB') or (tree.wind.wind_dir.text == 'VAR'):
                 wind_dir = np.nan
             else:
@@ -193,6 +198,13 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     except ValueError:
         wind_dir = np.nan
         wind_spd = np.nan
+
+    # Parse out the wind gust field
+    if 'G' in tree.wind.text:
+        wind_gust = units.Quantity(float(tree.wind.gust.text.strip()[1:]),
+                                   wind_units).m_as('knots')
+    else:
+        wind_gust = np.nan
 
     # Handle visibility
     try:
@@ -302,10 +314,10 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
         remarks = remarks[3:].strip()
 
     # Returns a named tuple with all the relevant variables
-    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, visibility,
-                 current_wx[0], current_wx[1], current_wx[2], skyc[0], skylev[0], skyc[1],
-                 skylev[1], skyc[2], skylev[2], skyc[3], skylev[3], cloudcover, temp, dewp,
-                 altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2],
+    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd, wind_gust,
+                 visibility, current_wx[0], current_wx[1], current_wx[2], skyc[0], skylev[0],
+                 skyc[1], skylev[1], skyc[2], skylev[2], skyc[3], skylev[3], cloudcover, temp,
+                 dewp, altim, current_wx_symbol[0], current_wx_symbol[1], current_wx_symbol[2],
                  remarks)
 
 
@@ -367,6 +379,7 @@ def _metars_to_dataframe(metar_iter, *, year=None, month=None):
     * 'date_time': Date and time of the observation, datetime object
     * 'wind_direction': Direction the wind is coming from, measured in degrees
     * 'wind_speed': Wind speed, measured in knots
+    * 'wind_gust': Wind gust, measured in knots
     * 'visibility': Visibility distance, measured in meters
     * 'current_wx1': Current weather (1 of 3)
     * 'current_wx2': Current weather (2 of 3)

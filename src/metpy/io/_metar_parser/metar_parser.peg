@@ -5,10 +5,10 @@ sep      <- " "+
 siteid   <- sep? [0-9A-Z] [0-9A-Z] [0-9A-Z] [0-9A-Z]
 datetime <- sep [\d]+ "Z"
 auto     <- ((sep ("AUTO" / "COR"))+)?
-wind     <- ((sep? wind_dir wind_spd (gust)? ("KT" / "MPS") varwind?))?
+wind     <- ((sep? wind_dir wind_spd gust ("KT" / "MPS") varwind?))?
 wind_dir <- (([\d] [\d] [\d]) / 'VAR' / 'VRB' / "///")?
 wind_spd <- (([\d] [\d] [\d]?) / "//")?
-gust     <- "G" [\d]+
+gust     <- ("G" [\d]+)?
 varwind  <- sep [\d] [\d] [\d] "V" [\d] [\d] [\d]
 vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d]))? "SM") / ("M" [\d] "/" [\d] "SM") / "CAVOK" / "////") varvis?))?
 varvis   <- sep [\d] [\d] [\d] [\d] [NSEW]? [NSEW]?

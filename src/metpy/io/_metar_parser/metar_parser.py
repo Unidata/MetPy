@@ -51,6 +51,7 @@ class TreeNode4(TreeNode):
         super(TreeNode4, self).__init__(text, offset, elements)
         self.wind_dir = elements[1]
         self.wind_spd = elements[2]
+        self.gust = elements[3]
 
 
 class TreeNode5(TreeNode):
@@ -679,15 +680,11 @@ class Grammar(object):
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
-                    index4 = self._offset
                     address4 = self._read_gust()
-                    if address4 is FAILURE:
-                        address4 = TreeNode(self._input[index4:index4], index4, [])
-                        self._offset = index4
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
-                        index5 = self._offset
+                        index4 = self._offset
                         chunk0, max0 = None, self._offset + 2
                         if max0 <= self._input_size:
                             chunk0 = self._input[self._offset:max0]
@@ -702,7 +699,7 @@ class Grammar(object):
                             if self._offset == self._failure:
                                 self._expected.append('"KT"')
                         if address5 is FAILURE:
-                            self._offset = index5
+                            self._offset = index4
                             chunk1, max1 = None, self._offset + 3
                             if max1 <= self._input_size:
                                 chunk1 = self._input[self._offset:max1]
@@ -717,15 +714,15 @@ class Grammar(object):
                                 if self._offset == self._failure:
                                     self._expected.append('"MPS"')
                             if address5 is FAILURE:
-                                self._offset = index5
+                                self._offset = index4
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
-                            index6 = self._offset
+                            index5 = self._offset
                             address6 = self._read_varwind()
                             if address6 is FAILURE:
-                                address6 = TreeNode(self._input[index6:index6], index6, [])
-                                self._offset = index6
+                                address6 = TreeNode(self._input[index5:index5], index5, [])
+                                self._offset = index5
                             if address6 is not FAILURE:
                                 elements0.append(address6)
                             else:
@@ -985,7 +982,8 @@ class Grammar(object):
         if cached:
             self._offset = cached[1]
             return cached[0]
-        index1, elements0 = self._offset, []
+        index1 = self._offset
+        index2, elements0 = self._offset, []
         address1 = FAILURE
         chunk0, max0 = None, self._offset + 1
         if max0 <= self._input_size:
@@ -1003,7 +1001,7 @@ class Grammar(object):
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
-            remaining0, index2, elements1, address3 = 1, self._offset, [], True
+            remaining0, index3, elements1, address3 = 1, self._offset, [], True
             while address3 is not FAILURE:
                 chunk1, max1 = None, self._offset + 1
                 if max1 <= self._input_size:
@@ -1022,7 +1020,7 @@ class Grammar(object):
                     elements1.append(address3)
                     remaining0 -= 1
             if remaining0 <= 0:
-                address2 = TreeNode(self._input[index2:self._offset], index2, elements1)
+                address2 = TreeNode(self._input[index3:self._offset], index3, elements1)
                 self._offset = self._offset
             else:
                 address2 = FAILURE
@@ -1030,15 +1028,18 @@ class Grammar(object):
                 elements0.append(address2)
             else:
                 elements0 = None
-                self._offset = index1
+                self._offset = index2
         else:
             elements0 = None
-            self._offset = index1
+            self._offset = index2
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = TreeNode(self._input[index1:self._offset], index1, elements0)
+            address0 = TreeNode(self._input[index2:self._offset], index2, elements0)
             self._offset = self._offset
+        if address0 is FAILURE:
+            address0 = TreeNode(self._input[index1:index1], index1, [])
+            self._offset = index1
         self._cache['gust'][index0] = (address0, self._offset)
         return address0
 
