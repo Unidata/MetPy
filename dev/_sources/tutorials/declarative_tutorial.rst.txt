@@ -546,14 +546,14 @@ to plot the figure; similar to what you would do for a gridded plot.
  .. code-block:: none
 
     Index(['station_id', 'latitude', 'longitude', 'elevation', 'date_time',
-           'wind_direction', 'wind_speed', 'visibility', 'current_wx1',
-           'current_wx2', 'current_wx3', 'low_cloud_type', 'low_cloud_level',
-           'medium_cloud_type', 'medium_cloud_level', 'high_cloud_type',
-           'high_cloud_level', 'highest_cloud_type', 'highest_cloud_level',
-           'cloud_coverage', 'air_temperature', 'dew_point_temperature',
-           'altimeter', 'current_wx1_symbol', 'current_wx2_symbol',
-           'current_wx3_symbol', 'remarks', 'air_pressure_at_sea_level',
-           'eastward_wind', 'northward_wind'],
+           'wind_direction', 'wind_speed', 'wind_gust', 'visibility',
+           'current_wx1', 'current_wx2', 'current_wx3', 'low_cloud_type',
+           'low_cloud_level', 'medium_cloud_type', 'medium_cloud_level',
+           'high_cloud_type', 'high_cloud_level', 'highest_cloud_type',
+           'highest_cloud_level', 'cloud_coverage', 'air_temperature',
+           'dew_point_temperature', 'altimeter', 'current_wx1_symbol',
+           'current_wx2_symbol', 'current_wx3_symbol', 'remarks',
+           'air_pressure_at_sea_level', 'eastward_wind', 'northward_wind'],
           dtype='object')
 
 
@@ -928,7 +928,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  19.775 seconds)
+   **Total running time of the script:** ( 0 minutes  17.206 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
