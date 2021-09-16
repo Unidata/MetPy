@@ -21,12 +21,21 @@ import warnings
 
 import numpy as np
 import pint
+from pint import quantity
 import pint.unit
 
 log = logging.getLogger(__name__)
 
 UndefinedUnitError = pint.UndefinedUnitError
 DimensionalityError = pint.DimensionalityError
+
+_base_unit_of_dimensionality = {
+    '[pressure]': 'Pa',
+    '[temperature]': 'K',
+    '[dimensionless]': '',
+    '[length]': 'm',
+    '[speed]': 'm s**-1'
+}
 
 # Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs
 units = pint.UnitRegistry(
@@ -169,6 +178,22 @@ def masked_array(data, data_units=None, **kwargs):
     return units.Quantity(np.ma.masked_array(data, **kwargs), data_units)
 
 
+def _mutate_arguments(bound_args, check_type, mutate_arg):
+    """Handle adjusting bound arguments.
+
+    Calls ``mutate_arg`` on every argument, including those passed as ``*args``, if they are
+    of type ``check_type``.
+    """
+    for arg_name, arg_val in bound_args.arguments.items():
+        if isinstance(arg_val, check_type):
+            bound_args.arguments[arg_name] = mutate_arg(arg_val, arg_name)
+
+    if isinstance(bound_args.arguments.get('args'), tuple):
+        bound_args.arguments['args'] = tuple(
+            mutate_arg(arg_val, '(unnamed)') if isinstance(arg_val, check_type) else arg_val
+            for arg_val in bound_args.arguments['args'])
+
+
 def _check_argument_units(args, defaults, dimensionality):
     """Yield arguments with improper dimensionality."""
     for arg, val in args.items():
@@ -202,48 +227,120 @@ def _get_changed_version(docstring):
     return max(matches) if matches else None
 
 
+def _check_units_outer_helper(func, *args, **kwargs):
+    """Get dims and defaults from function signature and specified dimensionalities."""
+    # Match the signature of the function to the arguments given to the decorator
+    sig = signature(func)
+    bound_units = sig.bind_partial(*args, **kwargs)
+
+    # Convert our specified dimensionality (e.g. "[pressure]") to one used by
+    # pint directly (e.g. "[mass] / [length] / [time]**2). This is for both efficiency
+    # reasons and to ensure that problems with the decorator are caught at import,
+    # rather than runtime.
+    dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
+            for name, orig in bound_units.arguments.items()}
+
+    defaults = {name: sig.parameters[name].default for name in sig.parameters
+                if sig.parameters[name].default is not Parameter.empty}
+
+    return sig, dims, defaults
+
+
+def _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs):
+    """Check bound arguments for unit correctness"""
+    # Match all passed in value to their proper arguments so we can check units
+    bound_args = sig.bind(*args, **kwargs)
+    bad = list(_check_argument_units(bound_args.arguments, defaults, dims))
+
+    # If there are any bad units, emit a proper error message making it clear
+    # what went wrong.
+    if bad:
+        msg = f'`{func.__name__}` given arguments with incorrect units: '
+        msg += ', '.join(f'`{arg}` requires "{req}" but given "{given}"'
+                            for arg, given, req in bad)
+        if 'none' in msg:
+            msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
+                    '    from metpy.units import units\n'
+                    '    x = units.Quantity(x, "m/s")')
+
+        # If function has changed, mention that fact
+        if func.__doc__:
+            changed_version = _get_changed_version(func.__doc__)
+            if changed_version:
+                msg = (f'This function changed in {changed_version}--double check '
+                        'that the function is being called properly.\n') + msg
+        raise ValueError(msg)
+
+    # Return the bound arguments for reuse
+    return bound_args
+
+
 def check_units(*units_by_pos, **units_by_name):
     """Create a decorator to check units of function arguments."""
     def dec(func):
-        # Match the signature of the function to the arguments given to the decorator
-        sig = signature(func)
-        bound_units = sig.bind_partial(*units_by_pos, **units_by_name)
-
-        # Convert our specified dimensionality (e.g. "[pressure]") to one used by
-        # pint directly (e.g. "[mass] / [length] / [time]**2). This is for both efficiency
-        # reasons and to ensure that problems with the decorator are caught at import,
-        # rather than runtime.
-        dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
-                for name, orig in bound_units.arguments.items()}
-
-        defaults = {name: sig.parameters[name].default for name in sig.parameters
-                    if sig.parameters[name].default is not Parameter.empty}
+        sig, dims, defaults = _check_units_outer_helper(func, *units_by_pos, **units_by_name)
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Match all passed in value to their proper arguments so we can check units
-            bound_args = sig.bind(*args, **kwargs)
-            bad = list(_check_argument_units(bound_args.arguments, defaults, dims))
-
-            # If there are any bad units, emit a proper error message making it clear
-            # what went wrong.
-            if bad:
-                msg = f'`{func.__name__}` given arguments with incorrect units: '
-                msg += ', '.join(f'`{arg}` requires "{req}" but given "{given}"'
-                                 for arg, given, req in bad)
-                if 'none' in msg:
-                    msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
-                            '    from metpy.units import units\n'
-                            '    x = units.Quantity(x, "m/s")')
-
-                # If function has changed, mention that fact
-                if func.__doc__:
-                    changed_version = _get_changed_version(func.__doc__)
-                    if changed_version:
-                        msg = (f'This function changed in {changed_version}--double check '
-                               'that the function is being called properly.\n') + msg
-                raise ValueError(msg)
+            _check_units_inner_helper(sig, defaults, dims, *args, **kwargs)
             return func(*args, **kwargs)
+
+        return wrapper
+    return dec
+
+
+def process_units(input_dimensionalities, output_dimensionalities, output_to=None):
+    """Wrap a non-Quantity-using function in base units to fully handle units."""
+    def dec(func):
+        sig, dims, defaults = _check_units_outer_helper(func, **input_dimensionalities)
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            bound_args = _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs)
+
+            # Determine unit(s) with which to wrap output (first, since we mutate the bound
+            # args)
+            if isinstance(output_dimensionalities, tuple):
+                multiple_output = True
+                outputs = output_dimensionalities
+            else:
+                multiple_output = False
+                outputs = (output_dimensionalities,)
+            output_control = []
+            for i, output in enumerate(outputs):
+                convert_to = (
+                    output_to if not multiple_output or output_to is None else output_to[i]
+                )
+                # Find matching input, if it exists
+                if convert_to is None:
+                    for name, (this_dim, _) in dims.items():
+                        if this_dim == output:
+                            convert_to = bound_args.arguments[name].units
+                            break
+
+                output_control.append((_base_unit_of_dimensionality[output], convert_to))
+
+            # Convert all inputs as specified, assuming dimensionality is fine based on above
+            _mutate_arguments(bound_args, units.Quantity, lambda val, _: val.to_base_units().m)
+
+            # Evaluate inner calculation
+            result = func(*bound_args.args, **bound_args.kwargs)
+
+            # Wrap output
+            if multiple_output:
+                for this_result, this_output_control in zip(result, output_control):
+                    q = units.Quantity(this_result, this_output_control[0])
+                    if this_output_control[1] is not None:
+                        q = q.to(this_output_control[1])
+                    yield q
+            else:
+                q = units.Quantity(result, output_control[0][0])
+                if output_control[0][1] is not None:
+                    q = q.to(output_control[0][1])
+                return q
+            
+        # Attach the unwrapped func for internal use
+        wrapper._nounit = func
 
         return wrapper
     return dec

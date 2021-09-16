@@ -28,7 +28,7 @@ from pyproj import CRS, Proj
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
-from .units import DimensionalityError, UndefinedUnitError, units
+from .units import _mutate_arguments, DimensionalityError, UndefinedUnitError, units
 
 __all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor', 'grid_deltas_from_dataarray')
 metpy_axes = ['time', 'vertical', 'y', 'latitude', 'x', 'longitude']
@@ -1244,22 +1244,6 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
                     return wrapping(result, match)
         return wrapper
     return decorator
-
-
-def _mutate_arguments(bound_args, check_type, mutate_arg):
-    """Handle adjusting bound arguments.
-
-    Calls ``mutate_arg`` on every argument, including those passed as ``*args``, if they are
-    of type ``check_type``.
-    """
-    for arg_name, arg_val in bound_args.arguments.items():
-        if isinstance(arg_val, check_type):
-            bound_args.arguments[arg_name] = mutate_arg(arg_val, arg_name)
-
-    if isinstance(bound_args.arguments.get('args'), tuple):
-        bound_args.arguments['args'] = tuple(
-            mutate_arg(arg_val, '(unnamed)') if isinstance(arg_val, check_type) else arg_val
-            for arg_val in bound_args.arguments['args'])
 
 
 def _wrap_output_like_matching_units(result, match):
