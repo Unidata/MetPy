@@ -2426,17 +2426,18 @@
 <span class="sd">    callable objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_get_signature_of</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_signature_from_callable</span><span class="p">,</span>
+                                <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
+                                <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
+                                <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> is not a callable object&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">):</span>
         <span class="c1"># In this case we skip the first parameter of the underlying</span>
         <span class="c1"># function (usually `self` or `cls`).</span>
-        <span class="n">sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-            <span class="n">obj</span><span class="o">.</span><span class="vm">__func__</span><span class="p">,</span>
-            <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-            <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-            <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__func__</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">skip_bound_arg</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_signature_bound_method</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
@@ -2450,11 +2451,7 @@
             <span class="c1"># If the unwrapped object is a *method*, we might want to</span>
             <span class="c1"># skip its first parameter (self).</span>
             <span class="c1"># See test_signature_wrapped_bound_method for details.</span>
-            <span class="k">return</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-                <span class="n">obj</span><span class="p">,</span>
-                <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-                <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-                <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">sig</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">__signature__</span>
@@ -2481,11 +2478,7 @@
             <span class="c1"># (usually `self`, or `cls`) will not be passed</span>
             <span class="c1"># automatically (as for boundmethods)</span>
 
-            <span class="n">wrapped_sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-                <span class="n">partialmethod</span><span class="o">.</span><span class="n">func</span><span class="p">,</span>
-                <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-                <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-                <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+            <span class="n">wrapped_sig</span> <span class="o">=</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">partialmethod</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
 
             <span class="n">sig</span> <span class="o">=</span> <span class="n">_signature_get_partial</span><span class="p">(</span><span class="n">wrapped_sig</span><span class="p">,</span> <span class="n">partialmethod</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
             <span class="n">first_wrapped_param</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">wrapped_sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
@@ -2511,11 +2504,7 @@
                                        <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">):</span>
-        <span class="n">wrapped_sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">func</span><span class="p">,</span>
-            <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-            <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-            <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+        <span class="n">wrapped_sig</span> <span class="o">=</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_signature_get_partial</span><span class="p">(</span><span class="n">wrapped_sig</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
 
     <span class="n">sig</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2526,29 +2515,25 @@
         <span class="c1"># in its metaclass</span>
         <span class="n">call</span> <span class="o">=</span> <span class="n">_signature_get_user_defined_method</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="s1">&#39;__call__&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">call</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-                <span class="n">call</span><span class="p">,</span>
-                <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-                <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-                <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+            <span class="n">sig</span> <span class="o">=</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Now we check if the &#39;obj&#39; class has a &#39;__new__&#39; method</span>
+            <span class="n">factory_method</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">_signature_get_user_defined_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__new__&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">new</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-                    <span class="n">new</span><span class="p">,</span>
-                    <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-                    <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-                    <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Finally, we should have at least __init__ implemented</span>
-                <span class="n">init</span> <span class="o">=</span> <span class="n">_signature_get_user_defined_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-                        <span class="n">init</span><span class="p">,</span>
-                        <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-                        <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-                        <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+            <span class="n">init</span> <span class="o">=</span> <span class="n">_signature_get_user_defined_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">)</span>
+            <span class="c1"># Now we check if the &#39;obj&#39; class has an own &#39;__new__&#39; method</span>
+            <span class="k">if</span> <span class="s1">&#39;__new__&#39;</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                <span class="n">factory_method</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="c1"># or an own &#39;__init__&#39; method</span>
+            <span class="k">elif</span> <span class="s1">&#39;__init__&#39;</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                <span class="n">factory_method</span> <span class="o">=</span> <span class="n">init</span>
+            <span class="c1"># If not, we take inherited &#39;__new__&#39; or &#39;__init__&#39;, if present</span>
+            <span class="k">elif</span> <span class="n">new</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">factory_method</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="k">elif</span> <span class="n">init</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">factory_method</span> <span class="o">=</span> <span class="n">init</span>
+
+            <span class="k">if</span> <span class="n">factory_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">sig</span> <span class="o">=</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">factory_method</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># At this point we know, that `obj` is a class, with no user-</span>
@@ -2594,11 +2579,7 @@
         <span class="n">call</span> <span class="o">=</span> <span class="n">_signature_get_user_defined_method</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="s1">&#39;__call__&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">call</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">sig</span> <span class="o">=</span> <span class="n">_signature_from_callable</span><span class="p">(</span>
-                    <span class="n">call</span><span class="p">,</span>
-                    <span class="n">follow_wrapper_chains</span><span class="o">=</span><span class="n">follow_wrapper_chains</span><span class="p">,</span>
-                    <span class="n">skip_bound_arg</span><span class="o">=</span><span class="n">skip_bound_arg</span><span class="p">,</span>
-                    <span class="n">sigcls</span><span class="o">=</span><span class="n">sigcls</span><span class="p">)</span>
+                <span class="n">sig</span> <span class="o">=</span> <span class="n">_get_signature_of</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;no signature found for </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">ex</span>
@@ -3400,7 +3381,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Sep 15, 2021 at 01:20:08.<br/>
+        Last updated on Sep 16, 2021 at 23:54:40.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>

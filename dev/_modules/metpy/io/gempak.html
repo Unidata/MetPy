@@ -201,6 +201,7 @@
                     <span class="n">specific_humidity_from_dewpoint</span><span class="p">,</span> <span class="n">thickness_hydrostatic</span><span class="p">,</span>
                     <span class="n">virtual_temperature</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..plots.mapping</span> <span class="kn">import</span> <span class="n">CFProjection</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
@@ -1446,12 +1447,12 @@
                             <span class="n">gvcord</span><span class="p">:</span> <span class="p">[</span><span class="n">col_head</span><span class="o">.</span><span class="n">GLV1</span><span class="p">],</span>
                             <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
                             <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                            <span class="s1">&#39;metpy_crs&#39;</span><span class="p">:</span> <span class="n">CFProjection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_cf</span><span class="p">())</span>
                         <span class="p">},</span>
                         <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">gvcord</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">],</span>
                         <span class="n">name</span><span class="o">=</span><span class="n">var</span><span class="p">,</span>
                         <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
-                            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_cf</span><span class="p">(),</span>
-                            <span class="s1">&#39;grid_type&#39;</span><span class="p">:</span> <span class="n">ftype</span><span class="p">,</span>
+                            <span class="s1">&#39;gempak_grid_type&#39;</span><span class="p">:</span> <span class="n">ftype</span><span class="p">,</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
                     <span class="n">grids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xrda</span><span class="p">)</span>
@@ -2931,7 +2932,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Sep 15, 2021 at 01:20:08.<br/>
+        Last updated on Sep 16, 2021 at 23:54:40.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
