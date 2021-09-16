@@ -3258,7 +3258,7 @@ def lifted_index(pressure, temperature, parcel_profile):
 
     """
     # find the measured temperature and parcel profile temperature at 500 hPa.
-    t500, tp500 = interpolate_1d(units.Quantity(500,'hPa'),
+    t500, tp500 = interpolate_1d(units.Quantity(500, 'hPa'),
                                  pressure, temperature, parcel_profile)
 
     # calculate the lifted index.
