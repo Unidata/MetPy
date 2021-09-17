@@ -21,7 +21,6 @@ import warnings
 
 import numpy as np
 import pint
-from pint import quantity
 import pint.unit
 
 log = logging.getLogger(__name__)
@@ -256,8 +255,9 @@ def _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs):
     # what went wrong.
     if bad:
         msg = f'`{func.__name__}` given arguments with incorrect units: '
-        msg += ', '.join(f'`{arg}` requires "{req}" but given "{given}"'
-                            for arg, given, req in bad)
+        msg += ', '.join(
+            f'`{arg}` requires "{req}" but given "{given}"' for arg, given, req in bad
+        )
         if 'none' in msg:
             msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
                     '    from metpy.units import units\n'
@@ -267,8 +267,10 @@ def _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs):
         if func.__doc__:
             changed_version = _get_changed_version(func.__doc__)
             if changed_version:
-                msg = (f'This function changed in {changed_version}--double check '
-                        'that the function is being called properly.\n') + msg
+                msg = (
+                    f'This function changed in {changed_version}--double check '
+                    'that the function is being called properly.\n'
+                ) + msg
         raise ValueError(msg)
 
     # Return the bound arguments for reuse
@@ -282,14 +284,19 @@ def check_units(*units_by_pos, **units_by_name):
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            _check_units_inner_helper(sig, defaults, dims, *args, **kwargs)
+            _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs)
             return func(*args, **kwargs)
 
         return wrapper
     return dec
 
 
-def process_units(input_dimensionalities, output_dimensionalities, output_to=None):
+def process_units(
+    input_dimensionalities,
+    output_dimensionalities,
+    output_to=None,
+    ignore_inputs_for_output=None
+):
     """Wrap a non-Quantity-using function in base units to fully handle units."""
     def dec(func):
         sig, dims, defaults = _check_units_outer_helper(func, **input_dimensionalities)
@@ -314,7 +321,13 @@ def process_units(input_dimensionalities, output_dimensionalities, output_to=Non
                 # Find matching input, if it exists
                 if convert_to is None:
                     for name, (this_dim, _) in dims.items():
-                        if this_dim == output:
+                        if (
+                            this_dim == output
+                            and (
+                                ignore_inputs_for_output is None
+                                or name not in ignore_inputs_for_output
+                            )
+                        ):
                             convert_to = bound_args.arguments[name].units
                             break
 
@@ -328,17 +341,19 @@ def process_units(input_dimensionalities, output_dimensionalities, output_to=Non
 
             # Wrap output
             if multiple_output:
+                wrapped_result = []
                 for this_result, this_output_control in zip(result, output_control):
                     q = units.Quantity(this_result, this_output_control[0])
                     if this_output_control[1] is not None:
                         q = q.to(this_output_control[1])
-                    yield q
+                    wrapped_result.append(q)
+                return tuple(wrapped_result)
             else:
                 q = units.Quantity(result, output_control[0][0])
                 if output_control[0][1] is not None:
                     q = q.to(output_control[0][1])
                 return q
-            
+
         # Attach the unwrapped func for internal use
         wrapper._nounit = func
 

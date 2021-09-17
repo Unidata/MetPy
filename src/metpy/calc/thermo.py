@@ -17,12 +17,10 @@ from .. import constants as mpconsts
 from ..cbook import broadcast_indices
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
-from ..units import check_units, concatenate, units
+from ..units import check_units, concatenate, process_units, units
 from ..xarray import add_vertical_dim_from_xarray, preprocess_and_wrap
 
 exporter = Exporter(globals())
-
-sat_pressure_0c = units.Quantity(6.112, 'millibar')
 
 
 @exporter.export
@@ -248,7 +246,14 @@ def dry_lapse(pressure, temperature, reference_pressure=None, vertical_dim=0):
     wrap_like='temperature',
     broadcast=('pressure', 'temperature', 'reference_pressure')
 )
-@check_units('[pressure]', '[temperature]', '[pressure]')
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'reference_pressure': '[pressure]'
+    },
+    '[temperature]'
+)
 def moist_lapse(pressure, temperature, reference_pressure=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
@@ -296,24 +301,23 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
 
     """
     def dt(p, t):
-        t = units.Quantity(t, 'kelvin')
-        p = units.Quantity(p, 'mbar')
-        rs = saturation_mixing_ratio(p, t)
-        frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
-                / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
-                                    / (mpconsts.Rd * t**2)))).to('kelvin')
-        return (frac / p).magnitude
+        rs = saturation_mixing_ratio._nounit(p, t)
+        frac = (
+            (mpconsts.nounit.Rd * t + mpconsts.nounit.Lv * rs)
+            / (mpconsts.nounit.Cp_d + (
+                mpconsts.nounit.Lv * mpconsts.nounit.Lv * rs * mpconsts.nounit.epsilon
+                / (mpconsts.nounit.Rd * t * t)
+            ))
+        )
+        return frac / p
 
+    temperature = np.atleast_1d(temperature)
     pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
         reference_pressure = pressure[0]
-    pressure = pressure.to('mbar')
-    reference_pressure = reference_pressure.to('mbar')
-    org_units = temperature.units
-    temperature = np.atleast_1d(temperature).m_as('kelvin')
 
     if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
-        return units.Quantity(np.full((temperature.size, pressure.size), np.nan), org_units)
+        return np.full((temperature.size, pressure.size), np.nan)
 
     pres_decreasing = (pressure[0] > pressure[-1])
     if pres_decreasing:
@@ -336,10 +340,10 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     points_above = (pressure < reference_pressure) & ~close
     if np.any(points_above):
         # Integrate upward--need to flip so values are properly ordered from ref to min
-        press_side = pressure[points_above][::-1].m
+        press_side = pressure[points_above][::-1]
 
         # Flip on exit so t values correspond to increasing pressure
-        trace = si.solve_ivp(t_span=(reference_pressure.m, press_side[-1]),
+        trace = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
                              t_eval=press_side, **solver_args).y[..., ::-1]
         ret = np.concatenate((trace, ret), axis=-1)
 
@@ -347,20 +351,23 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     points_below = ~points_above & ~close
     if np.any(points_below):
         # Integrate downward
-        press_side = pressure[points_below].m
-        trace = si.solve_ivp(t_span=(reference_pressure.m, press_side[-1]),
+        press_side = pressure[points_below]
+        trace = si.solve_ivp(t_span=(reference_pressure, press_side[-1]),
                              t_eval=press_side, **solver_args).y
         ret = np.concatenate((ret, trace), axis=-1)
 
     if pres_decreasing:
         ret = ret[..., ::-1]
 
-    return units.Quantity(ret.squeeze(), 'kelvin').to(org_units)
+    return ret.squeeze()
 
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]')
+@process_units(
+    {'pressure': '[pressure]', 'temperature': '[temperature]', 'dewpoint': '[temperature]'},
+    ('[pressure]', '[temperature]')
+)
 def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) from the starting point.
 
@@ -420,25 +427,24 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     """
     def _lcl_iter(p, p0, w, t):
         nonlocal nan_mask
-        td = globals()['dewpoint'](vapor_pressure(units.Quantity(p, pressure.units), w))
-        p_new = (p0 * (td / t) ** (1. / mpconsts.kappa)).m
+        td = globals()['dewpoint']._nounit(vapor_pressure._nounit(p, w))
+        p_new = (p0 * (td / t) ** (1. / mpconsts.nounit.kappa))
         nan_mask = nan_mask | np.isnan(p_new)
         return np.where(np.isnan(p_new), p, p_new)
 
     # Handle nans by creating a mask that gets set by our _lcl_iter function if it
     # ever encounters a nan, at which point pressure is set to p, stopping iteration.
     nan_mask = False
-    w = mixing_ratio(saturation_vapor_pressure(dewpoint), pressure)
-    lcl_p = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
+    w = mixing_ratio._nounit(saturation_vapor_pressure._nounit(dewpoint), pressure)
+    lcl_p = so.fixed_point(_lcl_iter, pressure, args=(pressure, w, temperature),
                            xtol=eps, maxiter=max_iters)
     lcl_p = np.where(nan_mask, np.nan, lcl_p)
 
     # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = units.Quantity(np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p),
-                           pressure.units)
+    lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p)
 
-    return lcl_p, globals()['dewpoint'](vapor_pressure(lcl_p, w)).to(temperature.units)
+    return lcl_p, globals()['dewpoint']._nounit(vapor_pressure._nounit(lcl_p, w))
 
 
 @exporter.export
@@ -950,7 +956,7 @@ def _insert_lcl_level(pressure, temperature, lcl_pressure):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='mixing_ratio', broadcast=('pressure', 'mixing_ratio'))
-@check_units('[pressure]', '[dimensionless]')
+@process_units({'pressure': '[pressure]', 'mixing_ratio': '[dimensionless]'}, '[pressure]')
 def vapor_pressure(pressure, mixing_ratio):
     r"""Calculate water vapor (partial) pressure.
 
@@ -985,12 +991,12 @@ def vapor_pressure(pressure, mixing_ratio):
        Renamed ``mixing`` parameter to ``mixing_ratio``
 
     """
-    return pressure * mixing_ratio / (mpconsts.epsilon + mixing_ratio)
+    return pressure * mixing_ratio / (mpconsts.nounit.epsilon + mixing_ratio)
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
-@check_units('[temperature]')
+@process_units({'temperature': '[temperature]'}, '[pressure]')
 def saturation_vapor_pressure(temperature):
     r"""Calculate the saturation water vapor (partial) pressure.
 
@@ -1018,10 +1024,10 @@ def saturation_vapor_pressure(temperature):
     .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
 
     """
-    # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
-    # a formula plays havoc with units support.
-    return sat_pressure_0c * np.exp(17.67 * (temperature - units.Quantity(273.15, 'kelvin'))
-                                    / (temperature - units.Quantity(29.65, 'kelvin')))
+    # Converted from original in terms of C to use kelvin.
+    return mpconsts.nounit.sat_pressure_0c * np.exp(
+        17.67 * (temperature - 273.15) / (temperature - 29.65)
+    )
 
 
 @exporter.export
@@ -1059,7 +1065,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='vapor_pressure')
-@check_units('[pressure]')
+@process_units({'vapor_pressure': '[pressure]'}, '[temperature]', output_to=units.degC)
 def dewpoint(vapor_pressure):
     r"""Calculate the ambient dewpoint given the vapor pressure.
 
@@ -1089,15 +1095,22 @@ def dewpoint(vapor_pressure):
        Renamed ``e`` parameter to ``vapor_pressure``
 
     """
-    val = np.log(vapor_pressure / sat_pressure_0c)
-    return (units.Quantity(0., 'degC')
-            + units.Quantity(243.5, 'delta_degC') * val / (17.67 - val))
+    val = np.log(vapor_pressure / mpconsts.nounit.sat_pressure_0c)
+    return mpconsts.nounit.zero_degC + 243.5 * val / (17.67 - val)
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='partial_press', broadcast=('partial_press', 'total_press'))
-@check_units('[pressure]', '[pressure]', '[dimensionless]')
-def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.epsilon):
+@process_units(
+    {
+        'partial_press': '[pressure]',
+        'total_press': '[pressure]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[dimensionless]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
+def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nounit.epsilon):
     r"""Calculate the mixing ratio of a gas.
 
     This calculates mixing ratio given its partial pressure and the total pressure of
@@ -1137,13 +1150,15 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.eps
        Renamed ``part_press``, ``tot_press`` parameters to ``partial_press``, ``total_press``
 
     """
-    return (molecular_weight_ratio * partial_press
-            / (total_press - partial_press)).to('dimensionless')
+    return molecular_weight_ratio * partial_press / (total_press - partial_press)
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('total_press', 'temperature'))
-@check_units('[pressure]', '[temperature]')
+@process_units(
+    {'total_press': '[pressure]', 'temperature': '[temperature]'},
+    '[dimensionless]'
+)
 def saturation_mixing_ratio(total_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
 
@@ -1173,7 +1188,7 @@ def saturation_mixing_ratio(total_press, temperature):
        Renamed ``tot_press`` parameter to ``total_press``
 
     """
-    return mixing_ratio(saturation_vapor_pressure(temperature), total_press)
+    return mixing_ratio._nounit(saturation_vapor_pressure._nounit(temperature), total_press)
 
 
 @exporter.export

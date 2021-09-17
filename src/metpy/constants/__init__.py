@@ -70,7 +70,7 @@ molecular_weight_ratio   :math:`\epsilon`  epsilon     :math:`\text{None}`      
 .. [8] [Picard2008]_
 """  # noqa: E501
 
-from . import nounit
+from . import nounit  # noqa: F401
 from .default import *  # noqa: F403
 from ..package_tools import set_module
 
