@@ -1872,7 +1872,7 @@ def test_lifted_index():
 
 
 def test_lifted_index_500hpa_missing():
-    """Test the Lifted Index calculation when data at 500 hpa is missing"""
+    """Test the Lifted Index calculation when data at 500 hpa is missing."""
     pressure = np.array([1014., 1000., 997., 981.2, 947.4, 925., 914.9, 911.,
                          902., 883., 850., 822.3, 816., 807., 793.2, 770.,
                          765.1, 753., 737.5, 737., 713., 700., 688., 685.,
