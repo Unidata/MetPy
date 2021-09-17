@@ -1095,7 +1095,7 @@ def dewpoint(vapor_pressure):
 
     """
     val = np.log(vapor_pressure / mpconsts.nounit.sat_pressure_0c)
-    return mpconsts.nounit.zero_degC + 243.5 * val / (17.67 - val)
+    return mpconsts.nounit.zero_degc + 243.5 * val / (17.67 - val)
 
 
 @exporter.export
@@ -2762,7 +2762,7 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
             # Note: get_layer works on *args and has arguments that make the function behave
             # differently depending on units, making a unit-free version nontrivial. For now,
             # since optimized path doesn't use this conditional branch at all, we can safely
-            # sacrafice performance by reattaching and restripping units to use unit-aware
+            # sacrifice performance by reattaching and restripping units to use unit-aware
             # get_layer
             layer_p, layer_virttemp = get_layer(
                 units.Quantity(pressure, 'Pa'),

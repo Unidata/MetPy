@@ -246,7 +246,7 @@ def _check_units_outer_helper(func, *args, **kwargs):
 
 
 def _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs):
-    """Check bound arguments for unit correctness"""
+    """Check bound arguments for unit correctness."""
     # Match all passed in value to their proper arguments so we can check units
     bound_args = sig.bind(*args, **kwargs)
     bad = list(_check_argument_units(bound_args.arguments, defaults, dims))

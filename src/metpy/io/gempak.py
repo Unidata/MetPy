@@ -171,7 +171,7 @@ Surface = namedtuple('Surface', [
 
 def convert_degc_to_k(val, missing=-9999):
     """Convert scalar values from degC to K, handling missing values."""
-    return val + constants.nounit.zero_degC if val != missing else val
+    return val + constants.nounit.zero_degc if val != missing else val
 
 
 def _data_source(source):

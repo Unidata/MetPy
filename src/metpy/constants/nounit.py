@@ -9,7 +9,7 @@ from ..units import units
 Rd = default.Rd.m_as('m**2 / K / s**2')
 Lv = default.Lv.m_as('m**2 / s**2')
 Cp_d = default.Cp_d.m_as('m**2 / K / s**2')
-zero_degC = units.Quantity(0., 'degC').m_as('K')
+zero_degc = units.Quantity(0., 'degC').m_as('K')
 sat_pressure_0c = default.sat_pressure_0c.m_as('Pa')
 epsilon = default.epsilon.m_as('')
 kappa = default.kappa.m_as('')
