@@ -24,7 +24,7 @@ MetPy contributions. We're glad you're here!
 
 * Tackle any [issues](https://github.com/Unidata/MetPy/issues) you wish! We have a special
   label for issues that beginners might want to try. Have a look at our
-  [current beginner issues.](https://github.com/unidata/metpy/issues?q=is%3Aopen+is%3Aissue+label%3A%22Difficulty%3A+Beginner%22)
+  [current beginner issues.](https://github.com/Unidata/MetPy/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
   Also have a look at if the issue is already assigned to someone - this helps us make sure
   that work is not duplicated if the issue is already being worked on by Unidata Staff.
 * Contribute code you already have. It does not need to be perfect! We will help you clean
