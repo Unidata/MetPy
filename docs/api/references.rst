@@ -134,6 +134,10 @@ References
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.
 
+.. [Miller1972] Miller, R. C, 1972: *Notes on Analysis and Severe-Storm Forecasting Procedures
+           of the Air Force Global Weather Central*. `AD0744042
+           <https://apps.dtic.mil/sti/citations/AD0744042>`_.
+
 .. [Moritz2000] Moritz, H., 2000: Geodetic Reference System 1980.
            *Journal of Geodesy* **74**, 128-133, doi:`10.1007/s001900050278
            <https://doi.org/10.1007/s001900050278>`_.
