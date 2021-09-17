@@ -9,7 +9,7 @@ from collections.abc import Iterable
 import contextlib
 from datetime import datetime, timedelta
 from enum import Enum
-from itertools import product
+from itertools import product, repeat
 import logging
 import math
 import struct
@@ -21,12 +21,10 @@ import xarray as xr
 
 from ._tools import IOBuffer, NamedStruct, open_as_needed
 from .. import constants
-from ..calc import (mixing_ratio_from_specific_humidity, scale_height,
-                    specific_humidity_from_dewpoint, thickness_hydrostatic,
+from ..calc import (scale_height, specific_humidity_from_dewpoint, thickness_hydrostatic,
                     virtual_temperature)
 from ..package_tools import Exporter
 from ..plots.mapping import CFProjection
-from ..units import units
 
 exporter = Exporter(globals())
 log = logging.getLogger(__name__)
@@ -171,6 +169,11 @@ Surface = namedtuple('Surface', [
 ])
 
 
+def convert_degc_to_k(val, missing=-9999):
+    """Convert scalar values from degC to K, handling missing values."""
+    return val + constants.nounit.zero_degC if val != missing else val
+
+
 def _data_source(source):
     """Get data source from stored integer."""
     try:
@@ -277,34 +280,31 @@ def _interp_logp_height(sounding, missing=-9999):
 
     if maxlev < size - 1:
         if maxlev > -1:
-            pb = units.Quantity(sounding['PRES'][maxlev], 'hPa')
-            zb = units.Quantity(sounding['HGHT'][maxlev], 'm')
-            tb = units.Quantity(sounding['TEMP'][maxlev], 'degC')
-            tdb = units.Quantity(sounding['DWPT'][maxlev], 'degC')
+            pb = sounding['PRES'][maxlev] * 100  # hPa to Pa
+            zb = sounding['HGHT'][maxlev]  # m
+            tb = convert_degc_to_k(sounding['TEMP'][maxlev], missing)
+            tdb = convert_degc_to_k(sounding['DWPT'][maxlev], missing)
         else:
-            pb = units.Quantity(missing, 'hPa')
-            zb = units.Quantity(missing, 'm')
-            tb = units.Quantity(missing, 'degC')
-            tdb = units.Quantity(missing, 'degC')
+            pb, zb, tb, tdb = repeat(missing, 4)
 
         for i in range(maxlev + 1, size):
             if sounding['HGHT'][i] == missing:
-                tt = units.Quantity(sounding['TEMP'][i], 'degC')
-                tdt = units.Quantity(sounding['DWPT'][i], 'degC')
-                pt = units.Quantity(sounding['PRES'][i], 'hPa')
+                tt = convert_degc_to_k(sounding['TEMP'][i], missing)
+                tdt = convert_degc_to_k(sounding['DWPT'][i], missing)
+                pt = sounding['PRES'][i] * 100  # hPa to Pa
 
-                pl = units.Quantity([pb.m, pt.m], 'hPa')
-                tl = units.Quantity([tb.m, tt.m], 'degC')
-                tdl = units.Quantity([tdb.m, tdt.m], 'degC')
+                pl = np.array([pb, pt])
+                tl = np.array([tb, tt])
+                tdl = np.array([tdb, tdt])
 
-                if missing in tdl.m:
-                    rl = None
+                if missing in tdl:
+                    tvl = tl
                 else:
-                    ql = specific_humidity_from_dewpoint(pl, tdl)
-                    rl = mixing_ratio_from_specific_humidity(ql)
+                    ql = specific_humidity_from_dewpoint._nounit(pl, tdl)
+                    tvl = virtual_temperature._nounit(tl, ql)
 
-                if missing not in [*tl.m, zb.m]:
-                    sounding['HGHT'][i] = (zb + thickness_hydrostatic(pl, tl, rl)).m
+                if missing not in [*tvl, zb]:
+                    sounding['HGHT'][i] = (zb + thickness_hydrostatic._nounit(pl, tvl))
                 else:
                     sounding['HGHT'][i] = missing
 
@@ -352,7 +352,7 @@ def _interp_moist_height(sounding, missing=-9999):
     subroutine in GEMPAK. This the default behavior when
     merging observed sounding data.
     """
-    hlist = units.Quantity(np.ones(len(sounding['PRES'])) * -9999, 'm')
+    hlist = np.ones(len(sounding['PRES'])) * -9999
 
     ilev = -1
     top = False
@@ -370,12 +370,12 @@ def _interp_moist_height(sounding, missing=-9999):
             found = True
 
     while not top:
-        plev = units.Quantity(sounding['PRES'][ilev], 'hPa')
-        pb = units.Quantity(sounding['PRES'][ilev], 'hPa')
-        tb = units.Quantity(sounding['TEMP'][ilev], 'degC')
-        tdb = units.Quantity(sounding['DWPT'][ilev], 'degC')
-        zb = units.Quantity(sounding['HGHT'][ilev], 'm')
-        zlev = units.Quantity(sounding['HGHT'][ilev], 'm')
+        plev = sounding['PRES'][ilev] * 100  # hPa to Pa
+        pb = sounding['PRES'][ilev] * 100  # hPa to Pa
+        tb = convert_degc_to_k(sounding['TEMP'][ilev], missing)
+        tdb = convert_degc_to_k(sounding['DWPT'][ilev], missing)
+        zb = sounding['HGHT'][ilev]  # m
+        zlev = sounding['HGHT'][ilev]  # m
         jlev = ilev
         klev = 0
         mand = False
@@ -386,37 +386,33 @@ def _interp_moist_height(sounding, missing=-9999):
                 mand = True
                 top = True
             else:
-                pt = units.Quantity(sounding['PRES'][jlev], 'hPa')
-                tt = units.Quantity(sounding['TEMP'][jlev], 'degC')
-                tdt = units.Quantity(sounding['DWPT'][jlev], 'degC')
-                zt = units.Quantity(sounding['HGHT'][jlev], 'm')
-                if (zt.m != missing
-                   and tt != missing):
+                pt = sounding['PRES'][jlev] * 100  # hPa to Pa
+                tt = convert_degc_to_k(sounding['TEMP'][jlev], missing)
+                tdt = convert_degc_to_k(sounding['DWPT'][jlev], missing)
+                zt = sounding['HGHT'][jlev]  # m
+                if (zt != missing and tt != missing):
                     mand = True
                     klev = jlev
 
-                pl = units.Quantity([pb.m, pt.m], 'hPa')
-                tl = units.Quantity([tb.m, tt.m], 'degC')
-                tdl = units.Quantity([tdb.m, tdt.m], 'degC')
+                pl = np.array([pb, pt])
+                tl = np.array([tb, tt])
+                tdl = np.array([tdb, tdt])
 
-                if missing in tdl.m:
-                    rl = None
+                if missing in tdl:
                     tvl = tl
                 else:
-                    ql = specific_humidity_from_dewpoint(pl, tdl)
-                    rl = mixing_ratio_from_specific_humidity(ql)
-                    tvl = virtual_temperature(tl, ql)
+                    ql = specific_humidity_from_dewpoint._nounit(pl, tdl)
+                    tvl = virtual_temperature._nounit(tl, ql)
 
-                if missing not in [*tl.m, zb.m]:
-                    scale_z = scale_height(*tvl)
-                    znew = zb + thickness_hydrostatic(pl, tl, rl)
+                if missing not in [*tl, zb]:
+                    scale_z = scale_height._nounit(*tvl)
+                    znew = zb + thickness_hydrostatic._nounit(pl, tvl)
                     tb = tt
                     tdb = tdt
                     pb = pt
                     zb = znew
                 else:
-                    scale_z = units.Quantity(missing, 'm')
-                    znew = units.Quantity(missing, 'm')
+                    scale_z, znew = repeat(missing, 2)
                 hlist[jlev] = scale_z
 
         if klev != 0:
@@ -427,17 +423,16 @@ def _interp_moist_height(sounding, missing=-9999):
         hbb = zlev
         pbb = plev
         for ii in range(ilev + 1, jlev):
-            p = units.Quantity(sounding['PRES'][ii], 'hPa')
+            p = sounding['PRES'][ii] * 100  # hPa to Pa
             scale_z = hlist[ii]
-            if missing not in [scale_z.m, hbb.m,
-                               pbb.m, p.m]:
-                th = ((scale_z * constants.g) / constants.Rd).to('degC')
-                tbar = units.Quantity([th.m, th.m], 'degC')
-                pll = units.Quantity([pbb.m, p.m], 'hPa')
-                z = hbb + thickness_hydrostatic(pll, tbar)
+            if missing not in [scale_z, hbb, pbb, p]:
+                th = (scale_z * constants.nounit.g) / constants.nounit.Rd
+                tbar = np.array([th, th])
+                pll = np.array([pbb, p])
+                z = hbb + thickness_hydrostatic._nounit(pll, tbar)
             else:
-                z = units.Quantity(missing, 'm')
-            sounding['HGHT'][ii] = z.m
+                z = missing
+            sounding['HGHT'][ii] = z
             hbb = z
             pbb = p
 

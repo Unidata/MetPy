@@ -2,7 +2,6 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
-import contextlib
 import warnings
 
 import numpy as np
@@ -1320,8 +1319,18 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'mixing_ratio'))
-@check_units('[temperature]', '[dimensionless]', '[dimensionless]')
-def virtual_temperature(temperature, mixing_ratio, molecular_weight_ratio=mpconsts.epsilon):
+@process_units(
+    {
+        'temperature': '[temperature]',
+        'mixing_ratio': '[dimensionless]',
+        'molecular_weight_ratio': '[dimensionless]'
+    },
+    '[temperature]',
+    ignore_inputs_for_output=('molecular_weight_ratio',)
+)
+def virtual_temperature(
+    temperature, mixing_ratio, molecular_weight_ratio=mpconsts.nounit.epsilon
+):
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
@@ -1657,7 +1666,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='specific_humidity')
-@check_units('[dimensionless]')
+@process_units({'specific_humidity': '[dimensionless]'}, '[dimensionless]')
 def mixing_ratio_from_specific_humidity(specific_humidity):
     r"""Calculate the mixing ratio from specific humidity.
 
@@ -1685,14 +1694,12 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     * :math:`q` is the specific humidity
 
     """
-    with contextlib.suppress(AttributeError):
-        specific_humidity = specific_humidity.to('dimensionless')
     return specific_humidity / (1 - specific_humidity)
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='mixing_ratio')
-@check_units('[dimensionless]')
+@process_units({'mixing_ratio': '[dimensionless]'}, '[dimensionless]')
 def specific_humidity_from_mixing_ratio(mixing_ratio):
     r"""Calculate the specific humidity from the mixing ratio.
 
@@ -1720,8 +1727,6 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     * :math:`q` is the specific humidity
 
     """
-    with contextlib.suppress(AttributeError):
-        mixing_ratio = mixing_ratio.to('dimensionless')
     return mixing_ratio / (1 + mixing_ratio)
 
 
@@ -2674,9 +2679,20 @@ def moist_static_energy(height, temperature, specific_humidity):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]')
+@process_units(
+    {
+        'pressure': '[pressure]',
+        'temperature': '[temperature]',
+        'mixing_ratio': '[dimensionless]',
+        'molecular_weight_ratio': '[dimensionless]',
+        'bottom': '[pressure]',
+        'depth': '[pressure]'
+    },
+    '[length]'
+)
 def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
-                          molecular_weight_ratio=mpconsts.epsilon, bottom=None, depth=None):
+                          molecular_weight_ratio=mpconsts.nounit.epsilon, bottom=None,
+                          depth=None):
     r"""Calculate the thickness of a layer via the hypsometric equation.
 
     This thickness calculation uses the pressure and temperature profiles (and optionally
@@ -2738,21 +2754,42 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
             layer_p, layer_virttemp = pressure, temperature
         else:
             layer_p = pressure
-            layer_virttemp = virtual_temperature(temperature, mixing_ratio,
-                                                 molecular_weight_ratio)
+            layer_virttemp = virtual_temperature._nounit(
+                temperature, mixing_ratio, molecular_weight_ratio
+            )
     else:
         if mixing_ratio is None:
-            layer_p, layer_virttemp = get_layer(pressure, temperature, bottom=bottom,
-                                                depth=depth)
+            # Note: get_layer works on *args and has arguments that make the function behave
+            # differently depending on units, making a unit-free version nontrivial. For now,
+            # since optimized path doesn't use this conditional branch at all, we can safely
+            # sacrafice performance by reattaching and restripping units to use unit-aware
+            # get_layer
+            layer_p, layer_virttemp = get_layer(
+                units.Quantity(pressure, 'Pa'),
+                units.Quantity(temperature, 'K'),
+                bottom=units.Quantity(bottom, 'Pa') if bottom is not None else None,
+                depth=units.Quantity(depth, 'Pa') if depth is not None else None
+            )
+            layer_p = layer_p.m_as('Pa')
+            layer_virttemp = layer_virttemp.m_as('K')
         else:
-            layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing_ratio,
-                                                     bottom=bottom, depth=depth)
-            layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
+            layer_p, layer_temp, layer_w = get_layer(
+                units.Quantity(pressure, 'Pa'),
+                units.Quantity(temperature, 'K'),
+                units.Quantity(mixing_ratio, ''),
+                bottom=units.Quantity(bottom, 'Pa') if bottom is not None else None,
+                depth=units.Quantity(depth, 'Pa') if depth is not None else None
+            )
+            layer_p = layer_p.m_as('Pa')
+            layer_virttemp = virtual_temperature._nounit(
+                layer_temp.m_as('K'), layer_w.m_as(''), molecular_weight_ratio
+            )
 
-    # Take the integral (with unit handling) and return the result in meters
-    integral = units.Quantity(np.trapz(layer_virttemp.m_as('K'), np.log(layer_p.m_as('hPa'))),
-                              units.K)
-    return (-mpconsts.Rd / mpconsts.g * integral).to('m')
+    # Take the integral
+    return (
+        -mpconsts.nounit.Rd / mpconsts.nounit.g
+        * np.trapz(layer_virttemp, np.log(layer_p))
+    )
 
 
 @exporter.export
@@ -3218,7 +3255,7 @@ def vertical_velocity(omega, pressure, temperature, mixing_ratio=0):
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='dewpoint', broadcast=('dewpoint', 'pressure'))
-@check_units('[pressure]', '[temperature]')
+@process_units({'pressure': '[pressure]', 'dewpoint': '[temperature]'}, '[dimensionless]')
 def specific_humidity_from_dewpoint(pressure, dewpoint):
     r"""Calculate the specific humidity from the dewpoint temperature and pressure.
 
@@ -3244,8 +3281,8 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
     mixing_ratio, saturation_mixing_ratio
 
     """
-    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
-    return specific_humidity_from_mixing_ratio(mixing_ratio)
+    mixing_ratio = saturation_mixing_ratio._nounit(pressure, dewpoint)
+    return specific_humidity_from_mixing_ratio._nounit(mixing_ratio)
 
 
 @exporter.export
@@ -3390,7 +3427,10 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
     wrap_like='temperature_bottom',
     broadcast=('temperature_bottom', 'temperature_top')
 )
-@check_units('[temperature]', '[temperature]')
+@process_units(
+    {'temperature_bottom': '[temperature]', 'temperature_top': '[temperature]'},
+    '[length]'
+)
 def scale_height(temperature_bottom, temperature_top):
     r"""Calculate the scale height of a layer.
 
@@ -3412,9 +3452,8 @@ def scale_height(temperature_bottom, temperature_top):
     `pint.Quantity`
         Scale height of layer
     """
-    t_bar = 0.5 * (temperature_bottom.to('kelvin') + temperature_top.to('kelvin'))
-
-    return (mpconsts.Rd * t_bar) / mpconsts.g
+    t_bar = 0.5 * (temperature_bottom + temperature_top)
+    return (mpconsts.nounit.Rd * t_bar) / mpconsts.nounit.g
 
 
 @exporter.export

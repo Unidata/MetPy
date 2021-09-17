@@ -328,7 +328,11 @@ def process_units(
                                 or name not in ignore_inputs_for_output
                             )
                         ):
-                            convert_to = bound_args.arguments[name].units
+                            try:
+                                convert_to = bound_args.arguments[name].units
+                            except AttributeError:
+                                # We don't have units, so given prior check, is dimensionless
+                                convert_to = ''
                             break
 
                 output_control.append((_base_unit_of_dimensionality[output], convert_to))
