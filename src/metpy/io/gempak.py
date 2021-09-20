@@ -256,14 +256,12 @@ def _interp_logp_height(sounding, missing=-9999):
         press = sounding['PRES'][i]
         hght = sounding['HGHT'][i]
 
-        if press == missing:
+        if press == missing or pbot == missing:
             continue
         elif hght != missing:
             pbot = press
             zbot = hght
             ptop = 2000
-        elif pbot == missing:
-            continue
         else:
             ilev = i + 1
             while press <= ptop:
@@ -1680,11 +1678,7 @@ class GempakSounding(GempakFile):
                 sped = parts['PPDD']['SPED'][i]
             skip = False
 
-            if self.prod_desc.missing_float in [
-                hght,
-                drct,
-                sped
-            ]:
+            if self.prod_desc.missing_float in (hght, drct, sped) or hght <= zold:
                 skip = True
             elif abs(zold - hght) < 1:
                 skip = True
@@ -1694,8 +1688,6 @@ class GempakSounding(GempakFile):
                 ]:
                     merged['DRCT'][ilev - 1] = drct
                     merged['SPED'][ilev - 1] = sped
-            elif hght <= zold:
-                skip = True
             elif hght >= znxt:
                 while more and hght > znxt:
                     zold = znxt
