@@ -3479,7 +3479,7 @@ def total_totals_index(pressure, temperature, dewpoint):
                                               pressure, temperature, dewpoint)
 
     # Calculate total totals index.
-    tt_index = ((t850.m + td850.m) * units.degC) - (2 * t500)
+    tt_index = (t850 - t500) + (td850 - t500)
 
     return tt_index
 
