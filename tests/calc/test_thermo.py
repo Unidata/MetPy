@@ -8,7 +8,7 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
-                        brunt_vaisala_period, cape_cin, density, dewpoint,
+                        brunt_vaisala_period, cape_cin, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
                         exner_function, gradient_richardson_number, InvalidSoundingError,
@@ -27,10 +27,10 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         specific_humidity_from_dewpoint, specific_humidity_from_mixing_ratio,
                         static_stability, surface_based_cape_cin,
                         temperature_from_potential_temperature, thickness_hydrostatic,
-                        thickness_hydrostatic_from_relative_humidity, vapor_pressure,
-                        vertical_velocity, vertical_velocity_pressure,
-                        virtual_potential_temperature, virtual_temperature,
-                        wet_bulb_temperature)
+                        thickness_hydrostatic_from_relative_humidity, total_totals_index,
+                        vapor_pressure, vertical_totals, vertical_velocity,
+                        vertical_velocity_pressure, virtual_potential_temperature,
+                        virtual_temperature, wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import masked_array, units
@@ -1975,3 +1975,72 @@ def test_showalter_index():
 
     result = showalter_index(pressure, temps, dewp)
     assert_almost_equal(result, units.Quantity(7.6024, 'delta_degC'), 4)
+
+
+def test_total_totals_index():
+    """Test the Total Totals Index calculation."""
+    pressure = np.array([1008., 1000., 947., 925., 921., 896., 891., 889., 866.,
+                         858., 850., 835., 820., 803., 733., 730., 700., 645.,
+                         579., 500., 494., 466., 455., 441., 433., 410., 409.,
+                         402., 400., 390., 388., 384., 381., 349., 330., 320.,
+                         306., 300., 278., 273., 250., 243., 208., 200., 196.,
+                         190., 179., 159., 151., 150., 139.]) * units.hPa
+    temperature = np.array([27.4, 26.4, 22.9, 21.4, 21.2, 20.7, 20.6, 21.2, 19.4,
+                            19.1, 18.8, 17.8, 17.4, 16.3, 11.4, 11.2, 10.2, 6.1,
+                            0.6, -4.9, -5.5, -8.5, -9.9, -11.7, -12.3, -13.7, -13.8,
+                            -14.9, -14.9, -16.1, -16.1, -16.9, -17.3, -21.7, -24.5, -26.1,
+                            -28.3, -29.5, -33.1, -34.2, -39.3, -41., -50.2, -52.5, -53.5,
+                            -55.2, -58.6, -65.2, -68.1, -68.5, -72.5]) * units.degC
+    dewpoint = np.array([24.9, 24.6, 22., 20.9, 20.7, 14.8, 13.6, 12.2, 16.8,
+                         16.6, 16.5, 15.9, 13.6, 13.2, 11.3, 11.2, 8.6, 4.5,
+                         -0.8, -8.1, -9.5, -12.7, -12.7, -12.8, -13.1, -24.7, -24.4,
+                         -21.9, -24.9, -36.1, -31.1, -26.9, -27.4, -33., -36.5, -47.1,
+                         -31.4, -33.5, -40.1, -40.8, -44.1, -45.6, -54., -56.1, -56.9,
+                         -58.6, -61.9, -68.4, -71.2, -71.6, -77.2]) * units.degC
+
+    tt = total_totals_index(pressure, temperature, dewpoint)
+    assert_almost_equal(tt, 45.10 * units.delta_degC, 2)
+
+
+def test_vertical_totals():
+    """Test the Vertical Totals calculation."""
+    pressure = np.array([1008., 1000., 947., 925., 921., 896., 891., 889., 866.,
+                         858., 850., 835., 820., 803., 733., 730., 700., 645.,
+                         579., 500., 494., 466., 455., 441., 433., 410., 409.,
+                         402., 400., 390., 388., 384., 381., 349., 330., 320.,
+                         306., 300., 278., 273., 250., 243., 208., 200., 196.,
+                         190., 179., 159., 151., 150., 139.]) * units.hPa
+    temperature = np.array([27.4, 26.4, 22.9, 21.4, 21.2, 20.7, 20.6, 21.2, 19.4,
+                            19.1, 18.8, 17.8, 17.4, 16.3, 11.4, 11.2, 10.2, 6.1,
+                            0.6, -4.9, -5.5, -8.5, -9.9, -11.7, -12.3, -13.7, -13.8,
+                            -14.9, -14.9, -16.1, -16.1, -16.9, -17.3, -21.7, -24.5, -26.1,
+                            -28.3, -29.5, -33.1, -34.2, -39.3, -41., -50.2, -52.5, -53.5,
+                            -55.2, -58.6, -65.2, -68.1, -68.5, -72.5]) * units.degC
+
+    vt = vertical_totals(pressure, temperature)
+    assert_almost_equal(vt, 23.70 * units.delta_degC, 2)
+
+
+def test_cross_totals():
+    """Test the Cross Totals calculation."""
+    pressure = np.array([1008., 1000., 947., 925., 921., 896., 891., 889., 866.,
+                         858., 850., 835., 820., 803., 733., 730., 700., 645.,
+                         579., 500., 494., 466., 455., 441., 433., 410., 409.,
+                         402., 400., 390., 388., 384., 381., 349., 330., 320.,
+                         306., 300., 278., 273., 250., 243., 208., 200., 196.,
+                         190., 179., 159., 151., 150., 139.]) * units.hPa
+    temperature = np.array([27.4, 26.4, 22.9, 21.4, 21.2, 20.7, 20.6, 21.2, 19.4,
+                            19.1, 18.8, 17.8, 17.4, 16.3, 11.4, 11.2, 10.2, 6.1,
+                            0.6, -4.9, -5.5, -8.5, -9.9, -11.7, -12.3, -13.7, -13.8,
+                            -14.9, -14.9, -16.1, -16.1, -16.9, -17.3, -21.7, -24.5, -26.1,
+                            -28.3, -29.5, -33.1, -34.2, -39.3, -41., -50.2, -52.5, -53.5,
+                            -55.2, -58.6, -65.2, -68.1, -68.5, -72.5]) * units.degC
+    dewpoint = np.array([24.9, 24.6, 22., 20.9, 20.7, 14.8, 13.6, 12.2, 16.8,
+                         16.6, 16.5, 15.9, 13.6, 13.2, 11.3, 11.2, 8.6, 4.5,
+                         -0.8, -8.1, -9.5, -12.7, -12.7, -12.8, -13.1, -24.7, -24.4,
+                         -21.9, -24.9, -36.1, -31.1, -26.9, -27.4, -33., -36.5, -47.1,
+                         -31.4, -33.5, -40.1, -40.8, -44.1, -45.6, -54., -56.1, -56.9,
+                         -58.6, -61.9, -68.4, -71.2, -71.6, -77.2]) * units.degC
+
+    ct = cross_totals(pressure, temperature, dewpoint)
+    assert_almost_equal(ct, 21.40 * units.delta_degC, 2)

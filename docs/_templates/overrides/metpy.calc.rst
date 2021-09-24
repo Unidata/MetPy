@@ -71,6 +71,7 @@ Soundings
       bunkers_storm_motion
       cape_cin
       critical_angle
+      cross_totals
       el
       k_index
       lcl
@@ -89,6 +90,8 @@ Soundings
       storm_relative_helicity
       supercell_composite
       surface_based_cape_cin
+      total_totals_index
+      vertical_totals
 
 
 Dynamic/Kinematic

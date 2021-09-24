@@ -3434,3 +3434,134 @@ def showalter_index(pressure, temperature, dewpoint):
 
     # Calculate the Showalter index
     return tp500 - prof[-1]
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def total_totals_index(pressure, temperature, dewpoint):
+    """Calculate Total Totals Index from the pressure temperature and dewpoint.
+
+    Total Totals Index formula derived from [Miller1972]_:
+    TT = (T850 + Td850) - (2 * T500)
+
+    where:
+
+    T850 is the temperature at 850 hPa
+    T500 is the temperature at 500 hPa
+    Td850 is the dewpoint at 850 hPa
+
+    Calculation of the Total Totals Index is defined as the temperature at 850 hPa plus
+    the dewpoint at 850 hPa, minus twice the temperature at 500 hPa. This index consists of
+    two components, the Vertical Totals (VT) and the Cross Totals (CT).
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature corresponding to pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Total Totals Index
+
+    """
+    # Find temperature and dewpoint at 850 and 500 hPa.
+    (t850, t500), (td850, _) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
+                                              pressure, temperature, dewpoint)
+
+    # Calculate total totals index.
+    tt_index = (t850 - t500) + (td850 - t500)
+
+    return tt_index
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]')
+def vertical_totals(pressure, temperature):
+    """Calculate Vertical Totals from the pressure and temperature.
+
+    Vertical Totals formula derived from [Miller1972]_:
+    VT = T850 - T500
+
+    where:
+
+    T850 is the temperature at 850 hPa
+    T500 is the temperature at 500 hPa
+
+    Calculation of the Vertical Totals is defined as the temperature difference between
+    850 hPa and 500 hPa. This is a part of the Total Totals Index.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Vertical Totals
+
+    """
+    # Find temperature at 850 and 500 hPa.
+    (t850, t500) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
+                                  pressure, temperature)
+
+    # Calculate vertical totals.
+    vt = t850 - t500
+
+    return vt
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def cross_totals(pressure, temperature, dewpoint):
+    """Calculate Cross Totals from the pressure temperature and dewpoint.
+
+    Cross Totals formula derived from [Miller1972]_:
+    CT = Td850 - T500
+
+    where:
+
+    Td850 is the dewpoint at 850 hPa
+    T500 is the temperature at 500 hPa
+
+    Calculation of the Cross Totals is defined as the difference between dewpoint
+    at 850 hPa and temperature at 500 hPa. This is a part of the Total Totals Index.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature corresponding to pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Cross Totals
+
+    """
+    # Find temperature and dewpoint at 850 and 500 hPa
+    (_, t500), (td850, _) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
+                                           pressure, temperature, dewpoint)
+
+    # Calculate vertical totals.
+    ct = td850 - t500
+
+    return ct
