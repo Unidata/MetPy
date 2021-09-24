@@ -99,7 +99,7 @@ def wind_direction(u, v, convention='from'):
     elif convention not in ('to', 'from'):
         raise ValueError('Invalid kwarg for "convention". Valid options are "from" or "to".')
 
-    mask = wdir <= 0
+    mask = np.array(wdir <= 0)
     if np.any(mask):
         wdir[mask] += units.Quantity(360., 'deg')
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude
@@ -285,12 +285,12 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         hi = masked_array(hi)
 
     # If T <= 40F, Heat Index is T
-    sel = (temperature <= units.Quantity(40., 'degF'))
+    sel = np.array(temperature <= units.Quantity(40., 'degF'))
     if np.any(sel):
         hi[sel] = temperature[sel].to(units.degF)
 
     # If a < 79F and hi is unset, Heat Index is a
-    sel = (a < units.Quantity(79., 'degF')) & np.isnan(hi)
+    sel = np.array(a < units.Quantity(79., 'degF')) & np.isnan(hi)
     if np.any(sel):
         hi[sel] = a[sel]
 
@@ -300,9 +300,9 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         hi[sel] = b[sel]
 
     # Adjustment for RH <= 13% and 80F <= T <= 112F
-    sel = ((relative_humidity <= units.Quantity(13., 'percent'))
-           & (temperature >= units.Quantity(80., 'degF'))
-           & (temperature <= units.Quantity(112., 'degF')))
+    sel = np.array((relative_humidity <= units.Quantity(13., 'percent'))
+                   & (temperature >= units.Quantity(80., 'degF'))
+                   & (temperature <= units.Quantity(112., 'degF')))
     if np.any(sel):
         rh15adj = ((13. - relative_humidity[sel] * 100.) / 4.
                    * np.sqrt((units.Quantity(17., 'delta_degF')
@@ -311,9 +311,9 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         hi[sel] = hi[sel] - rh15adj
 
     # Adjustment for RH > 85% and 80F <= T <= 87F
-    sel = ((relative_humidity > units.Quantity(85., 'percent'))
-           & (temperature >= units.Quantity(80., 'degF'))
-           & (temperature <= units.Quantity(87., 'degF')))
+    sel = np.array((relative_humidity > units.Quantity(85., 'percent'))
+                   & (temperature >= units.Quantity(80., 'degF'))
+                   & (temperature <= units.Quantity(87., 'degF')))
     if np.any(sel):
         rh85adj = (0.02 * (relative_humidity[sel] * 100. - 85.)
                    * (units.Quantity(87., 'delta_degF') - delta[sel]))
@@ -324,6 +324,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
         mask = np.array(temperature < units.Quantity(80., 'degF'))
         if mask.any():
             hi = masked_array(hi, mask=mask)
+
     return hi
 
 
@@ -374,7 +375,7 @@ def apparent_temperature(temperature, relative_humidity, speed, face_level_winds
     heat_index, windchill
 
     """
-    is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
+    is_not_scalar = hasattr(temperature, '__len__')
 
     temperature = np.atleast_1d(temperature)
     relative_humidity = np.atleast_1d(relative_humidity)
