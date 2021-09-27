@@ -222,7 +222,7 @@ jobs:
         run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
 
       - name: Report failures
-        uses: actions/github-script@v4.1
+        uses: actions/github-script@v5
         with:
           script: |
             const fs = require('fs');
