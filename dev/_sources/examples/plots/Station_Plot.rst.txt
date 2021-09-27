@@ -171,9 +171,10 @@ The payoff
 
 
 
-.. image:: /examples/plots/images/sphx_glr_Station_Plot_001.png
-    :alt: Station Plot
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/plots/images/sphx_glr_Station_Plot_001.png
+   :alt: Station Plot
+   :srcset: /examples/plots/images/sphx_glr_Station_Plot_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -182,7 +183,7 @@ The payoff
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  13.848 seconds)
+   **Total running time of the script:** ( 0 minutes  15.791 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot.py:

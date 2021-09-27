@@ -31,10 +31,10 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
@@ -446,9 +446,8 @@ cKDTree’s <code class="docutils literal notranslate"><span class="pre">data</s
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html#matplotlib.axes.Axes.legend" title="matplotlib.axes.Axes.legend" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="Inverse Distance Verification" class="sphx-glr-single-img" src="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f0526b40a60&gt;
+<img src="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" srcset="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" alt="Inverse Distance Verification" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f545f0b8d60&gt;
 </pre></div>
 </div>
 <p>For each point, we will do a manual check of the interpolation values by doing a step by
@@ -477,8 +476,7 @@ their distances from the grid point.</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_aspect.html#matplotlib.axes.Axes.set_aspect" title="matplotlib.axes.Axes.set_aspect" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span></a><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Inverse Distance Verification" class="sphx-glr-single-img" src="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" />
-<p>Step through the cressman calculations.</p>
+<img src="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" srcset="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" alt="Inverse Distance Verification" class = "sphx-glr-single-img"/><p>Step through the cressman calculations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dists</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">22.803508502</span><span class="p">,</span> <span class="mf">7.21110255093</span><span class="p">,</span> <span class="mf">31.304951685</span><span class="p">,</span> <span class="mf">33.5410196625</span><span class="p">])</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">0.064</span><span class="p">,</span> <span class="mf">1.156</span><span class="p">,</span> <span class="mf">3.364</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
 
@@ -521,8 +519,7 @@ Metpy cressman value for grid 1:         1.0549944440416752
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_aspect.html#matplotlib.axes.Axes.set_aspect" title="matplotlib.axes.Axes.set_aspect" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span></a><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Inverse Distance Verification" class="sphx-glr-single-img" src="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" />
-<p>Step through barnes calculations.</p>
+<img src="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" srcset="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" alt="Inverse Distance Verification" class = "sphx-glr-single-img"/><p>Step through barnes calculations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dists</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">9.21954445729</span><span class="p">,</span> <span class="mf">22.4722050542</span><span class="p">,</span> <span class="mf">27.892651362</span><span class="p">,</span> <span class="mf">38.8329756779</span><span class="p">])</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">2.809</span><span class="p">,</span> <span class="mf">6.241</span><span class="p">,</span> <span class="mf">4.489</span><span class="p">,</span> <span class="mf">2.704</span><span class="p">])</span>
 
@@ -541,7 +538,7 @@ Metpy cressman value for grid 1:         1.0549944440416752
 Metpy barnes value:      4.112066483188547
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.721 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.785 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-inverse-distance-verification-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/579b4b69b0858bf8ead929de64ab8135/Inverse_Distance_Verification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Inverse_Distance_Verification.py</span></code></a></p>
@@ -588,7 +585,7 @@ Metpy barnes value:      4.112066483188547
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Sep 24, 2021 at 22:10:53.<br/>
+        Last updated on Sep 27, 2021 at 17:06:54.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>

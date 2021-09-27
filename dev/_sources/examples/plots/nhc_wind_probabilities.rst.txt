@@ -684,9 +684,10 @@ wind speed probabilities, along with some select cities and their specific proba
 
 
 
-.. image:: /examples/plots/images/sphx_glr_nhc_wind_probabilities_001.png
-    :alt: NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/plots/images/sphx_glr_nhc_wind_probabilities_001.png
+   :alt: NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)
+   :srcset: /examples/plots/images/sphx_glr_nhc_wind_probabilities_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -695,7 +696,7 @@ wind speed probabilities, along with some select cities and their specific proba
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.812 seconds)
+   **Total running time of the script:** ( 0 minutes  6.712 seconds)
 
 
 .. _sphx_glr_download_examples_plots_nhc_wind_probabilities.py:

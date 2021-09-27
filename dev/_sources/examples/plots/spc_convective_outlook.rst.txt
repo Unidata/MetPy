@@ -233,9 +233,10 @@ Add the geometry plot to a panel and container.
 
 
 
-.. image:: /examples/plots/images/sphx_glr_spc_convective_outlook_001.png
-    :alt: SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/plots/images/sphx_glr_spc_convective_outlook_001.png
+   :alt: SPC Day 1 Convective Outlook (Valid 12z Mar 17 2021)
+   :srcset: /examples/plots/images/sphx_glr_spc_convective_outlook_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -244,7 +245,7 @@ Add the geometry plot to a panel and container.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.462 seconds)
+   **Total running time of the script:** ( 0 minutes  3.967 seconds)
 
 
 .. _sphx_glr_download_examples_plots_spc_convective_outlook.py:

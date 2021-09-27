@@ -363,9 +363,10 @@ All of our setting now produce the following map!
 
 
 
-.. image:: /tutorials/images/sphx_glr_declarative_tutorial_001.png
-    :alt: 300-hPa Heights and Wind Speed at 2010-10-26 12:00:00
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_declarative_tutorial_001.png
+   :alt: 300-hPa Heights and Wind Speed at 2010-10-26 12:00:00
+   :srcset: /tutorials/images/sphx_glr_declarative_tutorial_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -490,9 +491,10 @@ list!
 
 
 
-.. image:: /tutorials/images/sphx_glr_declarative_tutorial_002.png
-    :alt: 300-hPa Heights and Wind Speed at 2010-10-26 12:00:00
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_declarative_tutorial_002.png
+   :alt: 300-hPa Heights and Wind Speed at 2010-10-26 12:00:00
+   :srcset: /tutorials/images/sphx_glr_declarative_tutorial_002.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -630,9 +632,10 @@ panels on the figure. In this case we'll focus in on the state of Indiana for pl
 
 
 
-.. image:: /tutorials/images/sphx_glr_declarative_tutorial_003.png
-    :alt: Surface plot for 2019-07-01 12:00:00
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_declarative_tutorial_003.png
+   :alt: Surface plot for 2019-07-01 12:00:00
+   :srcset: /tutorials/images/sphx_glr_declarative_tutorial_003.png
+   :class: sphx-glr-single-img
 
 
 
@@ -928,7 +931,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.479 seconds)
+   **Total running time of the script:** ( 0 minutes  17.903 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:

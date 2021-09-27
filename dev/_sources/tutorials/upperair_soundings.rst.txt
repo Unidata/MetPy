@@ -192,9 +192,10 @@ These lines perform the following tasks:
 
 
 
-.. image:: /tutorials/images/sphx_glr_upperair_soundings_001.png
-    :alt: upperair soundings
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_upperair_soundings_001.png
+   :alt: upperair soundings
+   :srcset: /tutorials/images/sphx_glr_upperair_soundings_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -250,9 +251,10 @@ useful when performing further analysis on the Skew-T diagram. Often the
 
 
 
-.. image:: /tutorials/images/sphx_glr_upperair_soundings_002.png
-    :alt: upperair soundings
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_upperair_soundings_002.png
+   :alt: upperair soundings
+   :srcset: /tutorials/images/sphx_glr_upperair_soundings_002.png
+   :class: sphx-glr-single-img
 
 
 
@@ -317,9 +319,10 @@ which are not drawn.
 
 
 
-.. image:: /tutorials/images/sphx_glr_upperair_soundings_003.png
-    :alt: upperair soundings
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_upperair_soundings_003.png
+   :alt: upperair soundings
+   :srcset: /tutorials/images/sphx_glr_upperair_soundings_003.png
+   :class: sphx-glr-single-img
 
 
 
@@ -328,7 +331,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.143 seconds)
+   **Total running time of the script:** ( 0 minutes  1.409 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:

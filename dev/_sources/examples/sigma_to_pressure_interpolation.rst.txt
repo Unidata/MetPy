@@ -178,9 +178,10 @@ variable for plotting.
 
 
 
-.. image:: /examples/images/sphx_glr_sigma_to_pressure_interpolation_001.png
-    :alt: WRF-ARW Forecast VALID: 1980-06-03 13:00:00 UTC, 700 hPa Heights (m) and Temperature (C)
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/images/sphx_glr_sigma_to_pressure_interpolation_001.png
+   :alt: WRF-ARW Forecast VALID: 1980-06-03 13:00:00 UTC, 700 hPa Heights (m) and Temperature (C)
+   :srcset: /examples/images/sphx_glr_sigma_to_pressure_interpolation_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -189,7 +190,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.977 seconds)
+   **Total running time of the script:** ( 0 minutes  4.553 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:

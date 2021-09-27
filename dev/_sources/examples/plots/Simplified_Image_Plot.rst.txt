@@ -29,9 +29,10 @@ Plots a sample satellite image file.
 
 
 
-.. image:: /examples/plots/images/sphx_glr_Simplified_Image_Plot_001.png
-    :alt: IR
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/plots/images/sphx_glr_Simplified_Image_Plot_001.png
+   :alt: IR
+   :srcset: /examples/plots/images/sphx_glr_Simplified_Image_Plot_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -75,7 +76,7 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.650 seconds)
+   **Total running time of the script:** ( 0 minutes  0.618 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simplified_Image_Plot.py:
