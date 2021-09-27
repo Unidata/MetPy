@@ -14,7 +14,7 @@ jobs:
     name: Assign Latest Milestone
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v4.1
+      - uses: actions/github-script@v5
         name: Run script
         with:
           script: |
@@ -30,7 +30,7 @@ jobs:
               console.log('Ignoring Bot PR');
               return;
             }
-            milestones = await github.issues.listMilestones({
+            milestones = await github.rest.issues.listMilestones({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
@@ -44,7 +44,7 @@ jobs:
             }
 
             console.log(`Adding to milestone: ${milestones.data[0].number}`);
-            result = await github.issues.update({
+            result = await github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.number,

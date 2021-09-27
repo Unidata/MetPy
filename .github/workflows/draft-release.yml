@@ -14,14 +14,14 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v4.1
+      - uses: actions/github-script@v5
         name: Run script
         with:
           script: |
             const milestone = context.payload.milestone;
 
             // Find issues and PRs for this milestone
-            github.paginate(github.issues.listForRepo, {
+            github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'all',
@@ -64,5 +64,5 @@ jobs:
                 params.target_commitish = match[1];
                 console.log('Found target branch:', params.target_commitish);
               }
-              github.repos.createRelease(params);
+              github.rest.repos.createRelease(params);
             });
