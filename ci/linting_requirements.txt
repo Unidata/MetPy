@@ -19,7 +19,7 @@ flake8-rst-docstrings==0.2.3
 flake8-docstrings==1.6.0
 pydocstyle==6.1.1
 
-doc8==0.9.0
+doc8==0.9.1
 restructuredtext_lint==1.3.2
 
 codespell==2.1.0
