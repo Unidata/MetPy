@@ -83,13 +83,11 @@ jobs:
         EOF
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
-    # Need to install numpy first to make CartoPy happy.
     - name: Install CartoPy build dependencies
       if: ${{ matrix.no-extras != 'No Extras' }}
       run: |
         sudo apt-get install libgeos-dev libproj-dev proj-bin
         python -m pip install --no-binary :all: shapely
-        python -m pip install -c ci/${{ matrix.dep-versions }} numpy
 
     - name: Install test dependencies
       run: python -m pip install -r ci/test_requirements.txt -c ci/${{ matrix.dep-versions }}
