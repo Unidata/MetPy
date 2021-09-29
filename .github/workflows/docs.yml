@@ -81,7 +81,7 @@ jobs:
         mkdir proj-build
         curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
         pushd proj-build
-        ./configure --prefix=~/local --without-curl
+        ./configure --prefix=$HOME/local --without-curl
         make -j4
         sudo make install
         popd
