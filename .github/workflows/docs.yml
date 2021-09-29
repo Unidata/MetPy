@@ -79,14 +79,11 @@ jobs:
         popd
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
-    # Need to install numpy first to make CartoPy happy.
     - name: Install dependencies (PyPI)
-      if: ${{ runner.os == 'Linux' }}
       run: |
         sudo apt-get install libgeos-dev
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
-        python -m pip install -c ci/${{ matrix.dep-versions }} numpy
         python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }}
 
     - name: Download Cartopy Maps
