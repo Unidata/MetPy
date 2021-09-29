@@ -68,7 +68,15 @@ jobs:
           pip-docs-${{ runner.os }}-
           pip-docs-
 
+    - name: Get cached compiled libraries
+      id: cache-libraries
+      uses: actions/cache@v2.1.6
+      with:
+        path: ~/local
+        key: build-${{ runner.os }}-0
+
     - name: Build PROJ
+      if: steps.cache-libraries.outputs.cache-hit != 'true'
       run: |
         mkdir proj-build
         curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
