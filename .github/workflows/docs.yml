@@ -74,8 +74,8 @@ jobs:
         curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
         pushd proj-build
         ./configure --prefix=/usr/local --without-curl
-        make
-        make install
+        make -j4
+        sudo make install
         popd
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
