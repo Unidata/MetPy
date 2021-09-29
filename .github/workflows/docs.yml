@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       DOC_VERSION: dev
+      LD_LIBRARY_PATH: ~/local/lib
     environment:
       name: github-pages
     strategy:
@@ -82,7 +83,7 @@ jobs:
         curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
         pushd proj-build
         ./configure --prefix=$HOME/local --without-curl
-        make -j4
+        make -j6
         sudo make install
         popd
 
@@ -95,7 +96,6 @@ jobs:
         python -m pip install -r ci/doc_requirements.txt -r ci/extra_requirements.txt -c ci/${{ matrix.dep-versions }}
       env:
         PKG_CONFIG_PATH: ~/local/lib/pkgconfig
-#        LD_LIBRARY_PATH: ~/local/lib
 
     - name: Download Cartopy Maps
       run: ci/download_cartopy_maps.py
