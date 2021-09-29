@@ -68,12 +68,22 @@ jobs:
           pip-docs-${{ runner.os }}-
           pip-docs-
 
+    - name: Build PROJ
+      run: |
+        mkdir proj-build
+        curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xf - --strip-components=1 -C proj-build
+        pushd proj-build
+        ./configure --prefix=/usr/local
+        make
+        make install
+        popd
+
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     # Need to install numpy first to make CartoPy happy.
     - name: Install dependencies (PyPI)
       if: ${{ runner.os == 'Linux' }}
       run: |
-        sudo apt-get install libgeos-dev libproj-dev proj-bin
+        sudo apt-get install libgeos-dev
         python -m pip install --upgrade pip setuptools
         python -m pip install --no-binary :all: shapely
         python -m pip install -c ci/${{ matrix.dep-versions }} numpy
