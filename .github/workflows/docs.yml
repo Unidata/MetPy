@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       DOC_VERSION: dev
-      LD_LIBRARY_PATH: ${{ env.HOME }}/local/lib
+      LD_LIBRARY_PATH: $HOME/local/lib
     environment:
       name: github-pages
     strategy:
