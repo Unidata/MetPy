@@ -14,7 +14,7 @@ jobs:
   PyPITests:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }} ${{ matrix.no-extras }}
     env:
-      LD_LIBRARY_PATH: ~/local/lib
+      LD_LIBRARY_PATH: ${{ env.HOME }}/local/lib
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
