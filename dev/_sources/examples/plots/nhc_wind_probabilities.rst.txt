@@ -111,67 +111,67 @@ Hurricane Center for their wind speed probability plots.
         <tr>
           <th>0</th>
           <td>&lt;5%</td>
-          <td>MULTIPOLYGON (((-148.824 16.555, -148.824 16.6...</td>
+          <td>MULTIPOLYGON (((-148.82395 16.55476, -148.8239...</td>
           <td>none</td>
         </tr>
         <tr>
           <th>1</th>
           <td>5-10%</td>
-          <td>MULTIPOLYGON (((-150.352 19.027, -150.352 19.0...</td>
+          <td>MULTIPOLYGON (((-150.35245 19.02733, -150.3524...</td>
           <td>#008B00</td>
         </tr>
         <tr>
           <th>2</th>
           <td>10-20%</td>
-          <td>MULTIPOLYGON (((-150.532 19.612, -150.532 19.6...</td>
+          <td>MULTIPOLYGON (((-150.53228 19.61176, -150.5322...</td>
           <td>#00CD00</td>
         </tr>
         <tr>
           <th>3</th>
           <td>20-30%</td>
-          <td>MULTIPOLYGON (((-144.553 19.881, -144.553 19.9...</td>
+          <td>MULTIPOLYGON (((-144.55314 19.88150, -144.5531...</td>
           <td>#7FFF00</td>
         </tr>
         <tr>
           <th>4</th>
           <td>30-40%</td>
-          <td>MULTIPOLYGON (((-144.193 19.971, -144.193 20.0...</td>
+          <td>MULTIPOLYGON (((-144.19349 19.97141, -144.1934...</td>
           <td>#FFFF00</td>
         </tr>
         <tr>
           <th>5</th>
           <td>40-50%</td>
-          <td>MULTIPOLYGON (((-144.373 20.106, -144.373 20.1...</td>
+          <td>MULTIPOLYGON (((-144.37331 20.10628, -144.3733...</td>
           <td>#FFD700</td>
         </tr>
         <tr>
           <th>6</th>
           <td>50-60%</td>
-          <td>MULTIPOLYGON (((-144.238 20.196, -144.238 20.2...</td>
+          <td>MULTIPOLYGON (((-144.23845 20.19619, -144.2384...</td>
           <td>#CD8500</td>
         </tr>
         <tr>
           <th>7</th>
           <td>60-70%</td>
-          <td>MULTIPOLYGON (((-142.890 20.421, -142.890 20.4...</td>
+          <td>MULTIPOLYGON (((-142.88977 20.42097, -142.8897...</td>
           <td>#FF7F00</td>
         </tr>
         <tr>
           <th>8</th>
           <td>70-80%</td>
-          <td>MULTIPOLYGON (((-144.014 20.331, -144.014 20.3...</td>
+          <td>MULTIPOLYGON (((-144.01367 20.33106, -144.0136...</td>
           <td>#CD0000</td>
         </tr>
         <tr>
           <th>9</th>
           <td>80-90%</td>
-          <td>MULTIPOLYGON (((-93.438 19.477, -93.438 19.567...</td>
+          <td>MULTIPOLYGON (((-93.43823 19.47689, -93.43823 ...</td>
           <td>#8B0000</td>
         </tr>
         <tr>
           <th>10</th>
           <td>&gt;90%</td>
-          <td>MULTIPOLYGON (((-144.059 20.466, -144.059 20.5...</td>
+          <td>MULTIPOLYGON (((-144.05862 20.46592, -144.0586...</td>
           <td>#8B008B</td>
         </tr>
       </tbody>
@@ -424,6 +424,15 @@ lies within. That information is stored in the 'PERCENTAGE' column below.
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.9.7/x64/lib/python3.9/site-packages/sphinx_gallery/gen_gallery.py:206: FutureWarning: The `op` parameter is deprecated and will be removed in a future release. Please use the `predicate` parameter instead.
+      return 0., func()
 
 
 .. raw:: html
@@ -696,7 +705,7 @@ wind speed probabilities, along with some select cities and their specific proba
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  7.558 seconds)
+   **Total running time of the script:** ( 0 minutes  8.235 seconds)
 
 
 .. _sphx_glr_download_examples_plots_nhc_wind_probabilities.py:
