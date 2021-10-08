@@ -632,6 +632,36 @@ def test_declarative_barb_gfs():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
+@needs_cartopy
+def test_declarative_barb_scale():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    barb = BarbPlot()
+    barb.data = data
+    barb.level = 300 * units.hPa
+    barb.field = ['u-component_of_wind_isobaric', 'v-component_of_wind_isobaric']
+    barb.skip = (3, 3)
+    barb.earth_relative = False
+    barb.scale = 2
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [barb]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    barb.level = 700 * units.hPa
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.466)
 @needs_cartopy
 def test_declarative_barb_gfs_knots():
