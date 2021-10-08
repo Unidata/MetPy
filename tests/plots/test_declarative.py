@@ -1611,6 +1611,38 @@ def test_declarative_plot_geometry_points(ccrs):
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True)
+def test_declarative_spc_hatch():
+    """Test SPC hatching effect."""
+    from shapely.geometry import Polygon
+
+    sig_area_polygon = Polygon([
+        (-93.04, 32.56), (-92.91, 34.11), (-93.14, 35.76), (-92.16, 36.64),
+        (-91.06, 36.76), (-89.0, 36.28), (-87.76, 35.78), (-85.79, 34.52),
+        (-85.4, 33.51), (-85.34, 32.95), (-85.92, 31.87), (-89.09, 30.42),
+        (-91.29, 30.22), (-92.93, 30.6), (-93.28, 31.54), (-93.04, 32.56)])
+
+    geo = PlotGeometry()
+    geo.geometry = [sig_area_polygon]
+    geo.fill = 'none'
+    geo.stroke = '#000000'
+    geo.labels = None
+    geo.hatch = 'SS'
+
+    panel = MapPanel()
+    panel.plots = [geo]
+    panel.area = [-120, -75, 25, 50]
+    panel.projection = 'lcc'
+    panel.layers = ['states', 'coastline', 'borders']
+
+    pc = PanelContainer()
+    pc.size = (12, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @needs_cartopy
 def test_drop_traitlets_dir():
     """Test successful drop of inherited members from HasTraits and any '_' or '__' members."""
