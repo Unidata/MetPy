@@ -1423,8 +1423,8 @@ class PlotVector(Plots2D):
             if self.plot_units is not None:
                 data_subset_u = data_subset_u.metpy.convert_units(self.plot_units)
                 data_subset_v = data_subset_v.metpy.convert_units(self.plot_units)
-            self._griddata_u = data_subset_u
-            self._griddata_v = data_subset_v
+            self._griddata_u = data_subset_u * self.scale
+            self._griddata_v = data_subset_v * self.scale
 
         return (self._griddata_u, self._griddata_v)
 
