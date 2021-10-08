@@ -1599,8 +1599,8 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data_subset_u</span> <span class="o">=</span> <span class="n">data_subset_u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
                 <span class="n">data_subset_v</span> <span class="o">=</span> <span class="n">data_subset_v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span> <span class="o">=</span> <span class="n">data_subset_u</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span> <span class="o">=</span> <span class="n">data_subset_v</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span> <span class="o">=</span> <span class="n">data_subset_u</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span> <span class="o">=</span> <span class="n">data_subset_v</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_griddata_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_griddata_v</span><span class="p">)</span>
 
@@ -2323,7 +2323,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Oct 08, 2021 at 19:22:12.<br/>
+        Last updated on Oct 08, 2021 at 21:16:40.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
