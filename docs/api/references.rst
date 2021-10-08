@@ -54,14 +54,13 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
-.. [DoswellSchultz2006] Doswell, C. A., and Schultz, D. M., 2006: On the Use of Indices and
-           Parameters in Forecasting Severe Storms. *Electronic Journal of Severe Storms
-           Meteorology*,
-           `EJSSM <https://ejssm.org/ojs/index.php/ejssm/issue/view/3>`_.
+.. [DoswellSchultz2006] Doswell, C. A. III, and D. M. Schultz, 2006: `On the Use of Indices and
+           Parameters in Forecasting Severe Storms <https://ejssm.org/archives/2006/vol-1-3-2006/>`_.
+           *Electronic J. Severe Storms Meteor.*, **1** (3), 1-22.
 
-.. [Esterheld2008] Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
-           Non-Tornadic Supercells: A New Hodograph Technique. *E-Journal Of Severe Storms
-           Meteorology*, **3(2)**, Retrieved May 10, 2018.
+.. [Esterheld2008] Esterheld, J. M. and D. J. Giuliano, 2008: `Discriminating between Tornadic and
+           Non-Tornadic Supercells: A New Hodograph Technique <https://ejssm.org/archives/2008/vol-3-2-2008/>`_.
+           *Electronic J. Severe Storms Meteor.*, **3** (2), 1-50. Retrieved May 10, 2018.
 
 .. [Fan1987] Fan, J., 1987: Determination of the psychrometer coefficient A of the WMO
            reference psychrometer by comparison with a standard gravimetric hygrometer.
