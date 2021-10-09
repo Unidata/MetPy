@@ -45,7 +45,6 @@ contact:
     tel: "303-497-8643"
     fax: "303-497-8690"
     website: "https://www.unidata.ucar.edu"
-date-released: 2021-08-06
 doi: "10.5065/D6WW7G29"
 keywords:
   - meteorology
@@ -55,7 +54,6 @@ message: "If you use or contribute to MetPy, please use this information to refe
 repository-code: "https://github.com/Unidata/MetPy"
 title: "MetPy: A Python Package for Meteorological Data"
 url: "https://www.unidata.ucar.edu/software/metpy/"
-version: "1.1"
 references:
   - type: grant
     authors:
