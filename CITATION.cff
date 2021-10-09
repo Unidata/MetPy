@@ -53,6 +53,7 @@ license: "BSD-3-Clause"
 message: "If you use or contribute to MetPy, please use this information to reference it."
 repository-code: "https://github.com/Unidata/MetPy"
 title: "MetPy: A Python Package for Meteorological Data"
+type: software
 url: "https://www.unidata.ucar.edu/software/metpy/"
 references:
   - type: grant
