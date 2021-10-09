@@ -64,7 +64,8 @@ references:
     institution:
       - name: "National Science Foundation"
     identifiers:
-      - type: other
+      - description: "NSF award number."
+        type: other
         value: "AGS-1344155"
     title: "Unidata 2018: Transforming Geoscience through Innovative Data Services"
     url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1344155"
@@ -81,7 +82,8 @@ references:
     institution:
       - name: "National Science Foundation"
     identifiers:
-      - type: other
+      - description: "NSF award number."
+        type: other
         value: "OAC-1740315"
     title: "MetPy - A Python GEMPAK Replacement for Meteorological Data Analysis"
     url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740315"
@@ -100,7 +102,8 @@ references:
     institution:
       - name: "National Science Foundation"
     identifiers:
-      - type: other
+      - description: "NSF award number."
+        type: other
         value: "OCE-1740633"
     title: "Pangeo: An Open Source Big Data Climate Science Platform"
     url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740633"
@@ -113,7 +116,8 @@ references:
     institution:
       - name: "National Science Foundation"
     identifiers:
-      - type: other
+      - description: "NSF award number."
+        type: other
         value: "AGS-1901712"
     title: "Unidata: Next-generation Data Services and Workflows to Advance Geoscience Research and Education"
     url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1901712"
@@ -130,7 +134,8 @@ references:
     institution:
       - name: "National Science Foundation"
     identifiers:
-      - type: other
+      - description: "NSF award number."
+        type: other
         value: "OAC-2103682"
     title: "Elements: Scaling MetPy to Big Data Workflows in Meteorology and Climate Science"
     url: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=2103682"
