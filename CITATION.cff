@@ -63,7 +63,7 @@ references:
         email: "mohan@ucar.edu"
     date-released: 2014-04-01
     institution:
-      - name: "National Science Foundation"
+      name: "National Science Foundation"
     identifiers:
       - description: "NSF award number."
         type: other
@@ -81,7 +81,7 @@ references:
         given-names: John
     date-released: 2017-09-01
     institution:
-      - name: "National Science Foundation"
+      name: "National Science Foundation"
     identifiers:
       - description: "NSF award number."
         type: other
@@ -101,7 +101,7 @@ references:
         given-names: Davide
     date-released: 2017-08-21
     institution:
-      - name: "National Science Foundation"
+      name: "National Science Foundation"
     identifiers:
       - description: "NSF award number."
         type: other
@@ -115,7 +115,7 @@ references:
         email: "mohan@ucar.edu"
     date-released: 2019-05-01
     institution:
-      - name: "National Science Foundation"
+      name: "National Science Foundation"
     identifiers:
       - description: "NSF award number."
         type: other
@@ -133,7 +133,7 @@ references:
         given-names: Michael
     date-released: 2021-05-01
     institution:
-      - name: "National Science Foundation"
+      name: "National Science Foundation"
     identifiers:
       - description: "NSF award number."
         type: other
