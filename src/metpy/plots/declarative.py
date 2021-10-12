@@ -498,6 +498,16 @@ def lookup_map_feature(feature_name):
     return feat.with_scale(scaler)
 
 
+def plot_kwargs(data):
+    """Set the keyword arguments for MapPanel plotting."""
+    if hasattr(data.metpy, 'cartopy_crs'):
+        # Conditionally add cartopy transform if we are on a map.
+        kwargs = {'transform': data.metpy.cartopy_crs}
+    else:
+        kwargs = {}
+    return kwargs
+
+
 class MetPyHasTraits(HasTraits):
     """Provides modification layer on HasTraits for declarative classes."""
 
@@ -511,11 +521,6 @@ class MetPyHasTraits(HasTraits):
 
 class Panel(MetPyHasTraits):
     """Draw one or more plots."""
-
-    @property
-    def plot_kwargs(self):
-        """Set the keyword arguments for MapPanel plotting."""
-        return {}
 
 
 @exporter.export
@@ -804,15 +809,6 @@ class MapPanel(Panel):
             self._ax = self.parent.figure.add_subplot(*self.layout, projection=self._proj_obj)
 
         return self._ax
-
-    @property
-    def plot_kwargs(self):
-        """Set the keyword arguments for MapPanel plotting."""
-        if isinstance(self.plots[0].griddata, tuple):
-            dataproj = self.plots[0].griddata[0].metpy.cartopy_crs
-        else:
-            dataproj = self.plots[0].griddata.metpy.cartopy_crs
-        return {'transform': dataproj}
 
     @ax.setter
     def ax(self, val):
@@ -1244,7 +1240,7 @@ class ImagePlot(PlotScalar, ColorfillTraits):
         """Build the plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = self.parent.plot_kwargs
+        kwargs = plot_kwargs(imdata)
 
         # If we're on a map, we use min/max for y and manually figure out origin to try to
         # avoid upside down images created by images where y[0] > y[-1], as well as
@@ -1299,7 +1295,7 @@ class ContourPlot(PlotScalar, ContourTraits):
         """Build the plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = self.parent.plot_kwargs
+        kwargs = plot_kwargs(imdata)
 
         self.handle = self.parent.ax.contour(x_like, y_like, imdata, self.contours,
                                              colors=self.linecolor, linewidths=self.linewidth,
@@ -1324,7 +1320,7 @@ class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits):
         """Build the plot by calling any plotting methods as necessary."""
         x_like, y_like, imdata = self.plotdata
 
-        kwargs = self.parent.plot_kwargs
+        kwargs = plot_kwargs(imdata)
 
         self.handle = self.parent.ax.contourf(x_like, y_like, imdata, self.contours,
                                               cmap=self._cmap_obj, norm=self._norm_obj,
@@ -1503,7 +1499,7 @@ class BarbPlot(PlotVector):
         """Build the plot by calling needed plotting methods as necessary."""
         x_like, y_like, u, v = self.plotdata
 
-        kwargs = self.parent.plot_kwargs
+        kwargs = plot_kwargs(u)
 
         # Conditionally apply the proper transform
         if 'transform' in kwargs and self.earth_relative:

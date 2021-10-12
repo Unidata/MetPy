@@ -545,6 +545,46 @@ def test_declarative_barb_earth_relative():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.0': 0.819}.get(MPL_VERSION, 0.612))
+@needs_cartopy
+def test_declarative_overlay_projections():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
+    data2 = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height_isobaric'
+    contour.level = 300 * units.hPa
+    contour.linecolor = 'red'
+    contour.linestyle = '-'
+    contour.linewidth = 2
+    contour.contours = np.arange(0, 20000, 120).tolist()
+
+    contour2 = ContourPlot()
+    contour2.data = data2
+    contour2.field = 'Geopotential_height_isobaric'
+    contour2.level = 300 * units.hPa
+    contour2.linecolor = 'blue'
+    contour2.linestyle = '-'
+    contour2.linewidth = 2
+    contour2.contours = np.arange(0, 20000, 120).tolist()
+
+    panel = MapPanel()
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour, contour2]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'3.0': 11.481}.get(MPL_VERSION, 0.00936))
 @needs_cartopy
 def test_declarative_gridded_scale():
