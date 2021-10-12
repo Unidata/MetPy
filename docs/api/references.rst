@@ -60,7 +60,7 @@ References
 
 .. [Esterheld2008] Esterheld, J. M. and D. J. Giuliano, 2008: `Discriminating between Tornadic and
            Non-Tornadic Supercells: A New Hodograph Technique <https://ejssm.org/archives/2008/vol-3-2-2008/>`_.
-           *Electronic J. Severe Storms Meteor.*, **3** (2), 1-50. Retrieved May 10, 2018.
+           *Electronic J. Severe Storms Meteor.*, **3** (2), 1-50.
 
 .. [Fan1987] Fan, J., 1987: Determination of the psychrometer coefficient A of the WMO
            reference psychrometer by comparison with a standard gravimetric hygrometer.
