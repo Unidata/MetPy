@@ -674,6 +674,16 @@
     <span class="k">return</span> <span class="n">feat</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="n">scaler</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">plot_kwargs</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set the keyword arguments for MapPanel plotting.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="p">,</span> <span class="s1">&#39;cartopy_crs&#39;</span><span class="p">):</span>
+        <span class="c1"># Conditionally add cartopy transform if we are on a map.</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;transform&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">kwargs</span>
+
+
 <span class="k">class</span> <span class="nc">MetPyHasTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Provides modification layer on HasTraits for declarative classes.&quot;&quot;&quot;</span>
 
@@ -687,11 +697,6 @@
 
 <span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw one or more plots.&quot;&quot;&quot;</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">plot_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the keyword arguments for MapPanel plotting.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{}</span>
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -980,15 +985,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_proj_obj</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ax</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">plot_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the keyword arguments for MapPanel plotting.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="n">dataproj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dataproj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">griddata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;transform&#39;</span><span class="p">:</span> <span class="n">dataproj</span><span class="p">}</span>
 
     <span class="nd">@ax</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
@@ -1420,7 +1416,7 @@
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
         <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
 
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
 
         <span class="c1"># If we&#39;re on a map, we use min/max for y and manually figure out origin to try to</span>
         <span class="c1"># avoid upside down images created by images where y[0] &gt; y[-1], as well as</span>
@@ -1475,7 +1471,7 @@
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
         <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
 
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
                                              <span class="n">colors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linewidth</span><span class="p">,</span>
@@ -1500,7 +1496,7 @@
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
         <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
 
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
                                               <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
@@ -1679,7 +1675,7 @@
         <span class="sd">&quot;&quot;&quot;Build the plot by calling needed plotting methods as necessary.&quot;&quot;&quot;</span>
         <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
 
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">plot_kwargs</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
 
         <span class="c1"># Conditionally apply the proper transform</span>
         <span class="k">if</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">earth_relative</span><span class="p">:</span>
@@ -2323,7 +2319,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Oct 12, 2021 at 21:14:48.<br/>
+        Last updated on Oct 12, 2021 at 21:24:07.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
