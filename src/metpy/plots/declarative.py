@@ -20,7 +20,7 @@ from . import ctables, wx_symbols
 from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
-from ..calc import reduce_point_density, smooth_n_point
+from ..calc import reduce_point_density, smooth_n_point, zoom_xarray
 from ..package_tools import Exporter
 from ..units import units
 
@@ -1071,8 +1071,26 @@ class PlotScalar(Plots2D):
 
     See Also
     --------
-    metpy.calc.smooth_n_point
+    metpy.calc.smooth_n_point, smooth_contour
+    """
 
+    smooth_contour = Union([Int(allow_none=True, default_value=None),
+                            Tuple(Int(allow_none=True, default_value=None),
+                                  Int(allow_none=True, default_value=None))])
+    smooth_contour.__doc__ = """Spline interpolation to smooth contours.
+
+    This attribute requires settings for the `metpy.calc.zoom_xarray` function, which will
+    produce a spline interpolation given an integer zoom factor. Either a single integer
+    specifying the zoom factor (e.g., 4) or a tuple containing two integers for the zoom factor
+    and the spline interpolation order can be used. The default spline interpolation order is
+    3.
+
+    This is best used to smooth contours when contouring a sparse grid (e.g., when your data
+    has a large grid spacing).
+
+    See Also
+    --------
+    metpy.calc.zoom_xarray, smooth_field
     """
 
     @observe('field')
@@ -1115,6 +1133,15 @@ class PlotScalar(Plots2D):
             # Handle smoothing of data
             if self.smooth_field is not None:
                 data_subset = smooth_n_point(data_subset, 9, self.smooth_field)
+            # Handle zoom interpolation
+            if self.smooth_contour is not None:
+                if isinstance(self.smooth_contour, tuple):
+                    zoom = self.smooth_contour[0]
+                    order = self.smooth_contour[1]
+                else:
+                    zoom = self.smooth_contour
+                    order = 3
+                data_subset = zoom_xarray(data_subset, zoom, order=order)
 
             # Handle unit conversion (both direct unit specification and scaling)
             if self.plot_units is not None:

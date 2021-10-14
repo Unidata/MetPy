@@ -78,6 +78,66 @@ def test_declarative_contour():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.022))
+@needs_cartopy
+def test_declarative_smooth_contour():
+    """Test making a contour plot using smooth_contour."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 30
+    contour.linewidth = 1
+    contour.linecolor = 'red'
+    contour.smooth_contour = 5
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.022))
+@needs_cartopy
+def test_declarative_smooth_contour_order():
+    """Test making a contour plot using smooth_contour with tuple."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height'
+    contour.level = 700 * units.hPa
+    contour.contours = list(range(0, 4000, 30))
+    contour.linewidth = 1
+    contour.linecolor = 'black'
+    contour.smooth_contour = (10, 4)
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'3.0': 0.216}.get(MPL_VERSION, 0.022))
 @needs_cartopy
 def test_declarative_figsize():
