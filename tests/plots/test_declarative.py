@@ -518,7 +518,7 @@ def test_declarative_barb_earth_relative():
     contour.linecolor = 'red'
     contour.linestyle = '-'
     contour.linewidth = 2
-    contour.contours = np.arange(0, 20000, 120).tolist()
+    contour.contours = range(0, 20000, 120)
 
     barb = BarbPlot()
     barb.data = data
