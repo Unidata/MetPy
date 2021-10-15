@@ -10,3 +10,4 @@ scipy==1.7.0
 traitlets==5.0.5
 xarray==0.19.0
 fsspec
+pint_pandas
