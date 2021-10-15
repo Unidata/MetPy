@@ -20,7 +20,7 @@ from . import ctables, wx_symbols
 from ._mpl import TextCollection
 from .cartopy_utils import import_cartopy
 from .station_plot import StationPlot
-from ..calc import reduce_point_density
+from ..calc import reduce_point_density, smooth_n_point
 from ..package_tools import Exporter
 from ..units import units
 
@@ -1062,6 +1062,19 @@ class PlotScalar(Plots2D):
     `list(ds)`
     """
 
+    smooth_field = Int(allow_none=True, default_value=None)
+    smooth_field.__doc__ = """Number of smoothing passes using 9-pt smoother.
+
+    By setting this parameter with an integer value it will call the MetPy 9-pt smoother and
+    provide a smoothed field for plotting. It is best to use this smoothing for data with
+    finer resolutions (e.g., smaller grid spacings with a lot of grid points).
+
+    See Also
+    --------
+    metpy.calc.smooth_n_point
+
+    """
+
     @observe('field')
     def _update_data(self, _=None):
         """Handle updating the internal cache of data.
@@ -1098,6 +1111,10 @@ class PlotScalar(Plots2D):
                     'Must provide a combination of subsetting values to give 2D data subset '
                     'for plotting'
                 )
+
+            # Handle smoothing of data
+            if self.smooth_field is not None:
+                data_subset = smooth_n_point(data_subset, 9, self.smooth_field)
 
             # Handle unit conversion (both direct unit specification and scaling)
             if self.plot_units is not None:

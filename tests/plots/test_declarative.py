@@ -107,6 +107,36 @@ def test_declarative_figsize():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
+                               tolerance={'3.0': 0.216}.get(MPL_VERSION, 0.022))
+@needs_cartopy
+def test_declarative_smooth_field():
+    """Test the smoothing of the field with smooth_field trait."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height'
+    contour.level = 700 * units.hPa
+    contour.contours = list(range(0, 4000, 30))
+    contour.linewidth = 1
+    contour.linecolor = 'black'
+    contour.smooth_field = 3
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (10.5, 10.5)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True,
                                tolerance={'3.0': 0.328}.get(MPL_VERSION, 0.022))
 @needs_cartopy
 def test_declarative_contour_cam():
