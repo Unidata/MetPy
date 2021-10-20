@@ -23,7 +23,7 @@ jobs:
         include:
           - python-version: 3.7
             dep-versions: Minimum
-            no-extras: ''
+            no-extras: 'No Extras'
           - python-version: 3.9
             dep-versions: requirements.txt
             no-extras: 'No Extras'
