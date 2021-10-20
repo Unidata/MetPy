@@ -149,7 +149,7 @@ def fix_is_closed_polygon(monkeypatch):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 25.026}.get(MPL_VERSION, 0.0276))
+                               tolerance={'3.0': 25.026}.get(MPL_VERSION, 0.03))
 @needs_cartopy
 def test_declarative_contour_options(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -180,7 +180,7 @@ def test_declarative_contour_options(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0157))
+                               tolerance={'3.0': 19.795}.get(MPL_VERSION, 0.0188))
 @needs_cartopy
 def test_declarative_contour_convert_units(fix_is_closed_polygon):
     """Test making a contour plot."""
@@ -212,7 +212,7 @@ def test_declarative_contour_convert_units(fix_is_closed_polygon):
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0.0022))
+                               tolerance={'3.0': 0.051}.get(MPL_VERSION, 0.0033))
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -585,7 +585,7 @@ def test_declarative_overlay_projections():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 11.481}.get(MPL_VERSION, 0.00936))
+                               tolerance={'3.0': 11.481}.get(MPL_VERSION, 0.021))
 @needs_cartopy
 def test_declarative_gridded_scale():
     """Test making a contour plot."""
@@ -1047,7 +1047,7 @@ def test_declarative_sfc_obs_full(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.16)
 @needs_cartopy
 def test_declarative_upa_obs():
     """Test making a full upperair observation plot."""
@@ -1084,7 +1084,7 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.11)
 @needs_cartopy
 def test_declarative_upa_obs_convert_barb_units():
     """Test making a full upperair observation plot."""
