@@ -85,18 +85,18 @@ Releasing
 MetPy releases are managed using
 `milestones on GitHub <https://github.com/Unidata/MetPy/milestones>`_. Each release should have
 a milestone named with the appropriate version. All issues and Pull Requests that are included,
-or intended to be included, should be tagged with this milestone. While this helps with
-planning, and making sure things are not overlooked, it's also a significant part of the
-release. Once all items are done, the release process is started by closing the corresponding
-milestone. This triggers a GitHub Action (``draft-release.yml``) that creates a new *draft*
-release, titled based on the name of the milestone and pointing to a corresponding tag. The
-body of the release is pre-populated with some release notes based on the milestone's issues,
-Pull Requests, and code contributors. These should be supplemented at the top with bullets
-summarizing the highlights of the release that are of interest to our users.
+or intended to be included, should be tagged with this milestone. This helps with
+planning and making sure things are not overlooked.
 
-If for some reason this needs to be done manually, go to the GitHub page and create a new
-release. The tag should be a adhere to our versioning, like v1.0.0. Add a name for the release
-(can just be the version) and add some release notes on what the big changes are.
+The release is created from the
+`GitHub Releases pages <https://github.com/Unidata/MetPy/releases>`_, by clicking "Draft a
+new release". The release should use a tag that adheres to our versioning, like v1.0.0. Add
+a name for the release (can just be the version), and click the "Auto-generate release notes"
+button. This uses the ``release.yml`` template to populate the release notes using PRs that
+were merged on the branch since the last release. This also calls out PRs made by new
+contributors. Overall contributors are now listed on the GitHub page for a release.
+The draft notes should be supplemented at the top with bullets summarizing the highlights of
+the release that are of interest to our users.
 
 Once the release notes are completed, click the "Publish release" button. This will actually
 create the tag on GitHub, triggering the package builds described below as well as new
