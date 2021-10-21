@@ -909,9 +909,9 @@ Automatically parsed from input if using <a class="reference external" href="htt
 <p>The same function can be used for isobaric and isentropic PV analysis. Provide winds
 for vorticity calculations on the desired isobaric or isentropic surface. At least three
 layers of pressure/potential temperature are required in order to calculate the vertical
-derivative (one above and below the desired surface). The first two terms will be zero if
-isentropic level data is used due to the gradient of theta in both the x and y-directions
-will be zero since you are on an isentropic surface.</p>
+derivative (one above and below the desired surface). The first two terms will be zero
+if isentropic level data is used. This is because the gradient of theta in both the x
+and y-directions is zero when you are on an isentropic surface.</p>
 <p>This function expects pressure/isentropic level to increase with increasing array element
 (e.g., from higher in the atmosphere to closer to the surface. If the pressure array is
 one-dimensional, and not given as <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, p[:, None, None] can be used to make
@@ -958,7 +958,7 @@ it appear multi-dimensional.)</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Oct 21, 2021 at 16:20:55.<br/>
+        Last updated on Oct 21, 2021 at 20:55:30.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
