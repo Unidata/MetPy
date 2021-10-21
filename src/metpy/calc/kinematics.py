@@ -385,8 +385,8 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     Notes
     -----
-    Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
-    :math:`1.08e4*1.e5`
+    To convert from [temperature units]/m/s to [temperature units]/100km/3h, multiply by
+    :math:`1.08e9`
 
     .. versionchanged:: 1.0
        Changed signature from ``(thta, u, v, dx, dy, dim_order='yx')``
