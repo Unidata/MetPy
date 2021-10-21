@@ -1,5 +1,7 @@
 changelog:
   exclude:
+    labels:
+      - "Area: Infrastructure"
     authors:
       - dependabot
   categories:
