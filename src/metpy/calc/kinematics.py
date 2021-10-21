@@ -220,7 +220,7 @@ def stretching_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def total_deformation(u, v, dx=None, dy=None, x_dim=-1, y_dim=-2):
-    r"""Calculate the horizontal total deformation of the horizontal wind.
+    r"""Calculate the total deformation of the horizontal wind.
 
     Parameters
     ----------
@@ -352,7 +352,7 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
     * :math:`F` is 2D kinematic frontogenesis
     * :math:`\theta` is potential temperature
     * :math:`D` is the total deformation
-    * :math:`\beta` is the angle between the axis of dilitation and the isentropes
+    * :math:`\beta` is the angle between the axis of dilatation and the isentropes
     * :math:`\delta` is the divergence
 
     Parameters
@@ -385,8 +385,8 @@ def frontogenesis(potential_temperature, u, v, dx=None, dy=None, x_dim=-1, y_dim
 
     Notes
     -----
-    Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
-    :math:`1.08e4*1.e5`
+    To convert from [temperature units]/m/s to [temperature units]/100km/3h, multiply by
+    :math:`1.08e9`
 
     .. versionchanged:: 1.0
        Changed signature from ``(thta, u, v, dx, dy, dim_order='yx')``
@@ -536,8 +536,7 @@ def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
 
     The Montgomery Streamfunction is the streamfunction of the geostrophic wind on an
-    isentropic surface. This quantity is proportional to the geostrophic wind in isentropic
-    coordinates, and its gradient can be interpreted similarly to the pressure gradient in
+    isentropic surface. Its gradient can be interpreted similarly to the pressure gradient in
     isobaric coordinates.
 
     Parameters
@@ -580,7 +579,7 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
-    Calculates storm relatively helicity following [Markowski2010]_ pg.230-231
+    Calculates storm relative helicity following [Markowski2010]_ pg.230-231
 
     .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
 
@@ -780,9 +779,9 @@ def potential_vorticity_baroclinic(
     The same function can be used for isobaric and isentropic PV analysis. Provide winds
     for vorticity calculations on the desired isobaric or isentropic surface. At least three
     layers of pressure/potential temperature are required in order to calculate the vertical
-    derivative (one above and below the desired surface). The first two terms will be zero if
-    isentropic level data is used due to the gradient of theta in both the x and y-directions
-    will be zero since you are on an isentropic surface.
+    derivative (one above and below the desired surface). The first two terms will be zero
+    if isentropic level data is used. This is because the gradient of theta in both the x
+    and y-directions is zero when you are on an isentropic surface.
 
     This function expects pressure/isentropic level to increase with increasing array element
     (e.g., from higher in the atmosphere to closer to the surface. If the pressure array is
