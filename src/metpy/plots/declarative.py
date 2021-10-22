@@ -508,6 +508,56 @@ def plot_kwargs(data):
     return kwargs
 
 
+class ValidationMixin(object):
+    """Provides validation of attribute names when set by user."""
+
+    def __setattr__(self, name, value):
+        """Set only permitted attributes."""
+        def _levenshtein(s1, s2):
+            """Stolen from rosettacode.org."""
+            if len(s1) > len(s2):
+                s1, s2 = s2, s1
+            distances = range(len(s1) + 1)
+            for index2, char2 in enumerate(s2):
+                new_distances = [index2 + 1]
+                for index1, char1 in enumerate(s1):
+                    if char1 == char2:
+                        new_distances.append(distances[index1])
+                    else:
+                        new_distances.append(1 + min((distances[index1],
+                                                      distances[index1 + 1],
+                                                      new_distances[-1])))
+                distances = new_distances
+            return distances[-1]
+
+        whitelist = ('area',
+                     'ax',
+                     'clabels',
+                     'contours',
+                     'data',
+                     'layers',
+                     'layout',
+                     'linecolor',
+                     'notify_change',
+                     'panels',
+                     'parent',
+                     'plot_units',
+                     'plots',
+                     'projection',
+                     'size',
+                     'title',
+                     'title_fontsize',
+                     )
+
+        if name in whitelist or name.startswith('_'):
+            super().__setattr__(name, value)
+        else:
+            alt = sorted(whitelist, key=lambda x: _levenshtein(name, x))[0]
+            obj = self.__class__
+            msg = f"'{name}' is not a valid attribute for {obj}. Perhaps you meant '{alt}'?"
+            raise AttributeError(msg)
+
+
 class MetPyHasTraits(HasTraits):
     """Provides modification layer on HasTraits for declarative classes."""
 
@@ -600,7 +650,7 @@ class PanelContainer(MetPyHasTraits):
 
 
 @exporter.export
-class MapPanel(Panel):
+class MapPanel(Panel, ValidationMixin):
     """Set figure related elements for an individual panel.
 
     Parameters that need to be set include collecting all plotting types
