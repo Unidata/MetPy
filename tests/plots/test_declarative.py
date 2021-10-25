@@ -1668,3 +1668,21 @@ def test_drop_traitlets_dir():
         assert not dir(plot_obj())[0].startswith('_')
         assert 'cross_validation_lock' in dir(plot_obj)
         assert 'cross_validation_lock' not in dir(plot_obj())
+
+
+@needs_cartopy
+def test_attribute_error_suggest():
+    """Test that a mistyped attribute name raises an exception with fix."""
+    with pytest.raises(AttributeError) as excinfo:
+        panel = MapPanel()
+        panel.pots = []
+    assert "Perhaps you meant 'plots'?" in str(excinfo.value)
+
+
+@needs_cartopy
+def test_attribute_error_no_suggest():
+    """Test that a mistyped attribute name raises an exception w/o a fix."""
+    with pytest.raises(AttributeError) as excinfo:
+        panel = MapPanel()
+        panel.galaxy = 'Andromeda'
+    assert 'Perhaps you meant' not in str(excinfo.value)
