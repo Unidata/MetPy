@@ -102,7 +102,7 @@ ds['wind_speed'] = mpcalc.wind_speed(ds['u-component_of_wind_isobaric'],
 #
 # - ``ImagePlot()``
 #
-# - ``PlotBarbs()``
+# - ``BarbPlot()``
 #
 # More complete descriptions of these and other plotting types, as well as the map panel and
 # panel container classes are at the end of this tutorial.
@@ -183,7 +183,7 @@ pc.show()
 # -----------------
 #
 # We can easily add wind barbs to the plot we generated above by adding another plot type
-# and adding it to the panel. The plot type for wind barbs is ``PlotBarbs()`` and has its own
+# and adding it to the panel. The plot type for wind barbs is ``BarbPlot()`` and has its own
 # set of attributes to control plotting a vector quantity.
 
 #########################################################################
