@@ -508,7 +508,7 @@ def plot_kwargs(data):
     return kwargs
 
 
-class ValidationMixin(object):
+class ValidationMixin:
     """Provides validation of attribute names when set by user."""
 
     def __setattr__(self, name, value):
@@ -530,29 +530,17 @@ class ValidationMixin(object):
                 distances = new_distances
             return distances[-1]
 
-        whitelist = ('area',
-                     'ax',
-                     'clabels',
-                     'contours',
+        allowlist = ['ax',
                      'data',
-                     'layers',
-                     'layout',
-                     'linecolor',
+                     'handle',
                      'notify_change',
-                     'panels',
-                     'parent',
-                     'plot_units',
-                     'plots',
-                     'projection',
-                     'size',
-                     'title',
-                     'title_fontsize',
-                     )
+                     ]
 
-        if name in whitelist or name.startswith('_'):
+        allowlist.extend(self.trait_names())
+        if name in allowlist or name.startswith('_'):
             super().__setattr__(name, value)
         else:
-            alt = sorted(whitelist, key=lambda x: _levenshtein(name, x))[0]
+            alt = sorted(allowlist, key=lambda x: _levenshtein(name, x))[0]
             obj = self.__class__
             msg = f"'{name}' is not a valid attribute for {obj}. Perhaps you meant '{alt}'?"
             raise AttributeError(msg)
