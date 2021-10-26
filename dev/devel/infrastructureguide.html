@@ -302,17 +302,17 @@ other things relating to GitHub Actions, like available events and workflow synt
 <p>MetPy releases are managed using
 <a class="reference external" href="https://github.com/Unidata/MetPy/milestones">milestones on GitHub</a>. Each release should have
 a milestone named with the appropriate version. All issues and Pull Requests that are included,
-or intended to be included, should be tagged with this milestone. While this helps with
-planning, and making sure things are not overlooked, it’s also a significant part of the
-release. Once all items are done, the release process is started by closing the corresponding
-milestone. This triggers a GitHub Action (<code class="docutils literal notranslate"><span class="pre">draft-release.yml</span></code>) that creates a new <em>draft</em>
-release, titled based on the name of the milestone and pointing to a corresponding tag. The
-body of the release is pre-populated with some release notes based on the milestone’s issues,
-Pull Requests, and code contributors. These should be supplemented at the top with bullets
-summarizing the highlights of the release that are of interest to our users.</p>
-<p>If for some reason this needs to be done manually, go to the GitHub page and create a new
-release. The tag should be a adhere to our versioning, like v1.0.0. Add a name for the release
-(can just be the version) and add some release notes on what the big changes are.</p>
+or intended to be included, should be tagged with this milestone. This helps with
+planning and making sure things are not overlooked.</p>
+<p>The release is created from the
+<a class="reference external" href="https://github.com/Unidata/MetPy/releases">GitHub Releases pages</a>, by clicking “Draft a
+new release”. The release should use a tag that adheres to our versioning, like v1.0.0. Add
+a name for the release (can just be the version), and click the “Auto-generate release notes”
+button. This uses the <code class="docutils literal notranslate"><span class="pre">release.yml</span></code> template to populate the release notes using PRs that
+were merged on the branch since the last release. This also calls out PRs made by new
+contributors. Overall contributors are now listed on the GitHub page for a release.
+The draft notes should be supplemented at the top with bullets summarizing the highlights of
+the release that are of interest to our users.</p>
 <p>Once the release notes are completed, click the “Publish release” button. This will actually
 create the tag on GitHub, triggering the package builds described below as well as new
 documentation builds.</p>
@@ -393,7 +393,7 @@ packages to anaconda.org.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Oct 26, 2021 at 21:44:57.<br/>
+        Last updated on Oct 26, 2021 at 22:59:42.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
