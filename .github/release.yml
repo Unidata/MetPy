@@ -1,0 +1,22 @@
+changelog:
+  exclude:
+    labels:
+      - "Area: Infrastructure"
+    authors:
+      - dependabot
+  categories:
+    - title: Breaking Changes 🛠
+      labels:
+        - "Type: API Change"
+    - title: New Features 🎉
+      labels:
+        - "Type: Feature"
+    - title: Enhancements 😄
+      labels:
+        - "Type: Enhancement"
+    - title: Bugs Fixed 🐛
+      labels:
+        - "Type: Bug"
+    - title: Other Changes
+      labels:
+        - "*"
