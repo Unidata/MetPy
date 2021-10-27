@@ -199,7 +199,11 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">DefinitionSyntaxError</span><span class="p">(</span><span class="ne">SyntaxError</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PintError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base exception for all Pint errors.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">DefinitionSyntaxError</span><span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="n">PintError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when a textual definition has a syntax error.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -221,7 +225,7 @@
         <span class="k">return</span> <span class="n">DefinitionSyntaxError</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
 
 
-<span class="k">class</span> <span class="nc">RedefinitionError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">RedefinitionError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">PintError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when a unit or prefix is redefined.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition_type</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -237,7 +241,7 @@
         <span class="k">return</span> <span class="n">RedefinitionError</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
 
 
-<div class="viewcode-block" id="UndefinedUnitError"><a class="viewcode-back" href="../../api/generated/metpy.units.UndefinedUnitError.html#metpy.units.UndefinedUnitError">[docs]</a><span class="k">class</span> <span class="nc">UndefinedUnitError</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
+<div class="viewcode-block" id="UndefinedUnitError"><a class="viewcode-back" href="../../api/generated/metpy.units.UndefinedUnitError.html#metpy.units.UndefinedUnitError">[docs]</a><span class="k">class</span> <span class="nc">UndefinedUnitError</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">PintError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when the units are not defined in the unit registry.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">unit_names</span><span class="p">):</span>
@@ -251,7 +255,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s2"> are not defined in the unit registry&quot;</span></div>
 
 
-<span class="k">class</span> <span class="nc">PintTypeError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PintTypeError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">PintError</span><span class="p">):</span>
     <span class="k">pass</span>
 
 
@@ -309,7 +313,7 @@
         <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">UnitStrippedWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UnitStrippedWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">,</span> <span class="n">PintError</span><span class="p">):</span>
     <span class="k">pass</span>
 </pre></div>
 
@@ -345,7 +349,7 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br/>
-        Last updated on Oct 26, 2021 at 22:59:42.<br/>
+        Last updated on Oct 27, 2021 at 00:01:45.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
     </p>
   </div>
