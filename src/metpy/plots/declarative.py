@@ -534,6 +534,7 @@ class ValidationMixin:
                      'data',
                      'handle',
                      'notify_change',
+                     'panel'
                      ]
 
         allowlist.extend(self.trait_names())
@@ -562,7 +563,7 @@ class Panel(MetPyHasTraits):
 
 
 @exporter.export
-class PanelContainer(MetPyHasTraits):
+class PanelContainer(MetPyHasTraits, ValidationMixin):
     """Collects panels and set complete figure related settings (e.g., size)."""
 
     size = Union([Tuple(Union([Int(), Float()]), Union([Int(), Float()])),
@@ -1240,7 +1241,7 @@ class ColorfillTraits(MetPyHasTraits):
 
 
 @exporter.export
-class ImagePlot(PlotScalar, ColorfillTraits):
+class ImagePlot(PlotScalar, ColorfillTraits, ValidationMixin):
     """Make raster image using `~matplotlib.pyplot.imshow` for satellite or colored image."""
 
     @observe('colormap', 'image_range')
@@ -1295,7 +1296,7 @@ class ImagePlot(PlotScalar, ColorfillTraits):
 
 
 @exporter.export
-class ContourPlot(PlotScalar, ContourTraits):
+class ContourPlot(PlotScalar, ContourTraits, ValidationMixin):
     """Make contour plots by defining specific traits."""
 
     linecolor = Unicode('black')
@@ -1344,7 +1345,7 @@ class ContourPlot(PlotScalar, ContourTraits):
 
 
 @exporter.export
-class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits):
+class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits, ValidationMixin):
     """Make color-filled contours plots by defining appropriate traits."""
 
     @observe('contours', 'colorbar', 'colormap')
@@ -1516,7 +1517,7 @@ class PlotVector(Plots2D):
 
 
 @exporter.export
-class BarbPlot(PlotVector):
+class BarbPlot(PlotVector, ValidationMixin):
     """Make plots of wind barbs on a map with traits to refine the look of plotted elements."""
 
     barblength = Float(default_value=7)
@@ -1552,7 +1553,7 @@ class BarbPlot(PlotVector):
 
 
 @exporter.export
-class PlotObs(MetPyHasTraits):
+class PlotObs(MetPyHasTraits, ValidationMixin):
     """The highest level class related to plotting observed surface and upperair data.
 
     This class collects all common methods no matter whether plotting a upper-level or
