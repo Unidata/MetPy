@@ -6,6 +6,7 @@ import collections
 import contextlib
 import copy
 from datetime import datetime, timedelta
+from difflib import get_close_matches
 from itertools import cycle
 import re
 
@@ -513,23 +514,6 @@ class ValidationMixin:
 
     def __setattr__(self, name, value):
         """Set only permitted attributes."""
-        def _levenshtein(s1, s2):
-            """Stolen from rosettacode.org."""
-            if len(s1) > len(s2):
-                s1, s2 = s2, s1
-            distances = range(len(s1) + 1)
-            for index2, char2 in enumerate(s2):
-                new_distances = [index2 + 1]
-                for index1, char1 in enumerate(s1):
-                    if char1 == char2:
-                        new_distances.append(distances[index1])
-                    else:
-                        new_distances.append(1 + min((distances[index1],
-                                                      distances[index1 + 1],
-                                                      new_distances[-1])))
-                distances = new_distances
-            return distances[-1]
-
         allowlist = ['ax',
                      'data',
                      'handle',
@@ -541,9 +525,14 @@ class ValidationMixin:
         if name in allowlist or name.startswith('_'):
             super().__setattr__(name, value)
         else:
-            alt = sorted(allowlist, key=lambda x: _levenshtein(name, x))[0]
+            closest = get_close_matches(name, allowlist, n=1)
+            if closest:
+                alt = closest[0]
+                suggest = f" Perhaps you meant '{alt}'?"
+            else:
+                suggest = ''
             obj = self.__class__
-            msg = f"'{name}' is not a valid attribute for {obj}. Perhaps you meant '{alt}'?"
+            msg = f"'{name}' is not a valid attribute for {obj}." + suggest
             raise AttributeError(msg)
 
 
