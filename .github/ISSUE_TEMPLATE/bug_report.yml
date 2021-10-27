@@ -1,0 +1,52 @@
+name: Bug Report
+description: Let us know that something isn't working properly
+labels: ["Type: Bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+  - type: textarea
+    id: description
+    attributes:
+      label: What went wrong?
+      description: This should explain what went wrong and what you expected to happen.
+      placeholder: Please describe the bug!
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What platform are you running on?
+      options:
+        - Windows
+        - MacOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of MetPy are you using?
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python Version
+      description: What version of Python are you using?
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Code to Reproduce
+      description: |
+        Please include sample code to reproduce the problem. A ["Minimal, Complete and Verifiable Example"](http://matthewrocklin.com/blog/work/2018/02/28/minimal-bug-reports) will make it much easier for maintainers to help you.
+      render: python
+      placeholder: "# Your code here"
+    validations:
+      required: true
