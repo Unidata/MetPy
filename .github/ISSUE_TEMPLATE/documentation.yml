@@ -1,0 +1,12 @@
+name: Documentation
+description: Suggest improvements to the documentation
+labels: ["Area: Docs"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What can be better?
+      description: Be clear and specific on how the documentation is incorrect or could be improved.
+      placeholder: Please describe how to improve!
+    validations:
+      required: true

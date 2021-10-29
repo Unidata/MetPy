@@ -1,0 +1,17 @@
+name: Feature Request
+description: Suggest an idea for something new to add
+labels: ["Type: Feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What should we add?
+      description: Include a clear description and maybe an example on what to add.
+      placeholder: Please describe how to improve!
+    validations:
+      required: true
+  - type: textarea
+    id: reference
+    attributes:
+      label: Reference
+      description: Do you have a reference (preferably scholarly one) on how to implement this?
