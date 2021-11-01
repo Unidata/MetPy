@@ -8,9 +8,7 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 """
 
 from contextlib import ExitStack
-import warnings
 
-import matplotlib
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
@@ -333,9 +331,8 @@ class SkewT:
         self.dry_adiabats = None
         self.moist_adiabats = None
 
-        # Maintain a reasonable ratio of data limits. Only works on Matplotlib >= 3.2
-        if matplotlib.__version__[:3] > '3.1':
-            self.ax.set_aspect(aspect, adjustable='box')
+        # Maintain a reasonable ratio of data limits.
+        self.ax.set_aspect(aspect, adjustable='box')
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.

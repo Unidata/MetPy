@@ -77,8 +77,7 @@ def test_declarative_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.022))
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
 @needs_cartopy
 def test_declarative_smooth_contour():
     """Test making a contour plot using smooth_contour."""
@@ -107,8 +106,7 @@ def test_declarative_smooth_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance={'3.0': 0.256}.get(MPL_VERSION, 0.022))
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
 @needs_cartopy
 def test_declarative_smooth_contour_order():
     """Test making a contour plot using smooth_contour with tuple."""
