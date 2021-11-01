@@ -46,8 +46,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default',
-                               tolerance={'3.0': 34.37}.get(MPL_VERSION, 0.02))
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.02)
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -71,8 +70,7 @@ def test_skewt_api_units():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0. if matplotlib.__version__ >= '3.2' else 30.,
-                               remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_default_aspect_empty():
     """Test SkewT with default aspect and no plots, only special lines."""
     # With this rotation and the default aspect, this matches exactly the NWS SkewT PDF
@@ -84,8 +82,6 @@ def test_skewt_default_aspect_empty():
     return fig
 
 
-@pytest.mark.skipif(matplotlib.__version__ < '3.2',
-                    reason='Matplotlib versions generate different image sizes.')
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
                                savefig_kwargs={'bbox_inches': 'tight'})
 def test_skewt_tight_bbox():
