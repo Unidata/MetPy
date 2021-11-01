@@ -1288,7 +1288,11 @@ def test_plotobs_units_with_formatter(ccrs):
     """Test using PlotObs with a field that both has units and a custom formatter."""
     df = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
                      infer_datetime_format=True, parse_dates=['valid'])
-    df.units = {'alti': 'inHg'}
+
+    # Catch warning from Pandas due to setting units
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        df.units = {'alti': 'inHg'}
 
     # Plot desired data
     obs = PlotObs()
