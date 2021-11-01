@@ -697,15 +697,15 @@ def test_laplacian_2d(deriv_2d_data):
     assert_array_almost_equal(laplac, laplac_true, 5)
 
 
-def test_parse_angle_abbrieviated():
-    """Test abbrieviated directional text in degrees."""
+def test_parse_angle_abbreviated():
+    """Test abbreviated directional text in degrees."""
     expected_angles_degrees = FULL_CIRCLE_DEGREES
     output_angles_degrees = parse_angle(DIR_STRS[:-1])
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
 def test_parse_angle_ext():
-    """Test extended (unabbrieviated) directional text in degrees."""
+    """Test extended (unabbreviated) directional text in degrees."""
     test_dir_strs = ['NORTH', 'NORTHnorthEast', 'North_East', 'East__North_East',
                      'easT', 'east  south east', 'south east', ' south southeast',
                      'SOUTH', 'SOUTH SOUTH WEST', 'southWEST', 'WEST south_WEST',
@@ -716,7 +716,7 @@ def test_parse_angle_ext():
 
 
 def test_parse_angle_mix_multiple():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = ['NORTH', 'nne', 'ne', 'east north east',
                      'easT', 'east  se', 'south east', ' south southeast',
                      'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
@@ -727,7 +727,7 @@ def test_parse_angle_mix_multiple():
 
 
 def test_parse_angle_none():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = None
     expected_angles_degrees = np.nan
     output_angles_degrees = parse_angle(test_dir_strs)
@@ -735,7 +735,7 @@ def test_parse_angle_none():
 
 
 def test_parse_angle_invalid_number():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = 365.
     expected_angles_degrees = np.nan
     output_angles_degrees = parse_angle(test_dir_strs)
@@ -743,7 +743,7 @@ def test_parse_angle_invalid_number():
 
 
 def test_parse_angle_invalid_arr():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = ['nan', None, np.nan, 35, 35.5, 'north', 'andrewiscool']
     expected_angles_degrees = [np.nan, np.nan, np.nan, np.nan, np.nan, 0, np.nan]
     output_angles_degrees = parse_angle(test_dir_strs)
@@ -751,7 +751,7 @@ def test_parse_angle_invalid_arr():
 
 
 def test_parse_angle_mix_multiple_arr():
-    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    """Test list of extended (unabbreviated) directional text in degrees in one go."""
     test_dir_strs = np.array(['NORTH', 'nne', 'ne', 'east north east',
                               'easT', 'east  se', 'south east', ' south southeast',
                               'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
