@@ -104,10 +104,10 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Atmospheric pressure profile
+        Atmospheric pressure profile.
 
     args : `pint.Quantity`
-        Parameters for which the pressure-weighted mean is to be calculated
+        Parameters for which the weighted-continuous mean is to be calculated.
 
     height : `pint.Quantity`, optional
         Heights from sounding. Standard atmosphere heights assumed (if needed)
@@ -120,12 +120,16 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
         assumed to be the surface.
 
     depth: `pint.Quantity`, optional
-        Depth of the layer in meters or hPa
+        Depth of the layer in meters or hPa.
 
     Returns
     -------
     list of `pint.Quantity`
-        list of layer mean value for each profile in args
+        list of layer mean value for each profile in args.
+
+    See Also
+    --------
+    weighted_continuous_average
 
     Examples
     --------
@@ -138,16 +142,6 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
     Notes
     -----
-
-    Formula based on that from [Holton2012]_ pg. 86
-
-    .. math:: MPW = (p-p_s)^{-1} \int_{p_s}^{p} A dp,
-
-    * :math:`MPW` is the weighted pressure mean of a variable
-    * :math:`p` is the bottom pressure level
-    * :math:`p_s` is the top pressure level
-    * :math:`A` is the variable whose weighted pressure mean is being calculated.
-
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
@@ -165,6 +159,69 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
     # Perform integration on the profile for each variable
     return [np.trapz(var_prof * pres_prof, x=pres_prof) / pres_int for var_prof in others]
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]')
+def weighted_continuous_average(pressure, *args, height=None, bottom=None, depth=None):
+    r"""Calculate weighted-continuous mean of an arbitrary variable through a layer.
+
+    Layer top and bottom specified in height or pressure.
+
+    Formula based on that from [Holton2004]_ pg. 76 and the NCL function _wgt_vertical_n_
+
+    .. math::  WCA = \frac{\int_{p_s}^{p} A dp}{\int_{p_s}^{p} dp},
+
+    * :math:`WCA` is the weighted continuous average of a variable.
+    * :math:`p` is the bottom pressure level.
+    * :math:`p_s` is the top pressure level.
+    * :math:`A` is the variable whose weighted continuous average is being calculated.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile.
+
+    args : `pint.Quantity`
+        Parameters for which the weighted-continuous mean is to be calculated.
+
+    height : `pint.Quantity`, optional
+        Heights from sounding. Standard atmosphere heights assumed (if needed)
+        if no heights are given.
+
+    bottom: `pint.Quantity`, optional
+        The bottom of the layer in either the provided height coordinate
+        or in pressure. Don't provide in meters AGL unless the provided
+        height coordinate is meters AGL. Default is the first observation,
+        assumed to be the surface.
+
+    depth: `pint.Quantity`, optional
+        Depth of the layer in meters or hPa.
+
+    Returns
+    -------
+    list of `pint.Quantity`
+        list of layer mean value for each profile in args.
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    """
+    # Split pressure profile from other variables to average
+    pres_prof, *others = get_layer(
+        pressure, *args, height=height, bottom=bottom, depth=depth
+    )
+
+    # Taking the integral of the weights (pressure) to feed into the weighting
+    # function. Said integral works out to this function:
+    dp = np.gradient(pres_prof)
+
+    # Perform integration on the profile for each variable
+    return [np.sum(dp * var_prof) / np.sum(dp) for var_prof in others]
 
 
 @exporter.export
