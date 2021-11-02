@@ -25,19 +25,19 @@ exporter = Exporter(globals())
 
 UND = 'UND'
 UND_ANGLE = -999.
-DIR_STRS = (
+DIR_STRS = [
     'N', 'NNE', 'NE', 'ENE',
     'E', 'ESE', 'SE', 'SSE',
     'S', 'SSW', 'SW', 'WSW',
     'W', 'WNW', 'NW', 'NNW',
     UND
-)  # note the order matters!
+]  # note the order matters!
 
 MAX_DEGREE_ANGLE = units.Quantity(360, 'degree')
 BASE_DEGREE_MULTIPLIER = units.Quantity(22.5, 'degree')
 
 DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
-DIR_DICT[UND] = np.nan
+DIR_DICT[UND] = units.Quantity(np.nan, 'degree')
 
 
 @exporter.export
@@ -1773,16 +1773,15 @@ def parse_angle(input_dir):
 
     """
     if isinstance(input_dir, str):
-        # abb_dirs = abbreviated directions
-        abb_dirs = _clean_direction([_abbreviate_direction(input_dir)])
+        abb_dir = _clean_direction([_abbreviate_direction(input_dir)])[0]
+        return DIR_DICT[abb_dir]
     elif hasattr(input_dir, '__len__'):  # handle np.array, pd.Series, list, and array-like
         input_dir_str = ','.join(_clean_direction(input_dir, preprocess=True))
         abb_dir_str = _abbreviate_direction(input_dir_str)
         abb_dirs = _clean_direction(abb_dir_str.split(','))
+        return units.Quantity.from_list(itemgetter(*abb_dirs)(DIR_DICT))
     else:  # handle unrecognizable scalar
-        return np.nan
-
-    return itemgetter(*abb_dirs)(DIR_DICT)
+        return units.Quantity(np.nan, 'degree')
 
 
 def _clean_direction(dir_list, preprocess=False):
@@ -1846,11 +1845,10 @@ def angle_to_direction(input_angle, full=False, level=3):
 
     # clean any numeric strings, negatives, and None does not handle strings with alphabet
     input_angle = units.Quantity(np.array(input_angle).astype(float), origin_units)
-    input_angle[input_angle < 0] = units.Quantity(np.nan, origin_units)
+    input_angle[input_angle < 0] = np.nan
 
-    # normalizer used for angles > 360 degree to normalize between 0 - 360
-    normalizer = np.array(input_angle.m / MAX_DEGREE_ANGLE.m, dtype=int)
-    norm_angles = abs(input_angle - MAX_DEGREE_ANGLE * normalizer)
+    # Normalize between 0 - 360
+    norm_angles = input_angle % MAX_DEGREE_ANGLE
 
     if level == 3:
         nskip = 1
