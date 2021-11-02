@@ -55,34 +55,8 @@ jobs:
         echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
         echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/test_requirements.txt
 
-    - name: Get cached compiled libraries
-      id: cache-libraries
-      uses: actions/cache@v2.1.6
-      with:
-        path: ~/local
-        key: build-${{ runner.os }}-0
-
-    - name: Build compiled libraries
-      if: steps.cache-libraries.outputs.cache-hit != 'true'
-      run: |
-        mkdir proj-build
-        curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
-        pushd proj-build
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/local -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
-          -DENABLE_IPO=ON -DENABLE_CURL=OFF -DBUILD_CCT:BOOL=OFF -DBUILD_CS2CS:BOOL=OFF -DBUILD_GEOD:BOOL=OFF \
-          -DBUILD_GIE:BOOL=OFF -DBUILD_GMOCK:BOOL=OFF -DBUILD_PROJINFO:BOOL=OFF -DBUILD_PROJSYNC:BOOL=OFF -DBUILD_TESTING:BOOL=OFF
-        cmake --build . -j6
-        cmake --install .
-        popd
-
-    - name: Set up paths to libraries
-      run: |
-        echo "CPATH=$CPATH:$HOME/local/include" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$LIBRARY_PATH:$HOME/local/lib" >> $GITHUB_ENV
-        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib" >> $GITHUB_ENV
-        echo "$HOME/local/bin" >> $GITHUB_PATH
+    - name: Setup PROJ
+      uses: ./.github/actions/setup-proj
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     - name: Install dependencies
@@ -169,34 +143,8 @@ jobs:
         echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
         echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/doc_requirements.txt
 
-    - name: Get cached compiled libraries
-      id: cache-libraries
-      uses: actions/cache@v2.1.6
-      with:
-        path: ~/local
-        key: build-${{ runner.os }}-0
-
-    - name: Build compiled libraries
-      if: steps.cache-libraries.outputs.cache-hit != 'true'
-      run: |
-        mkdir proj-build
-        curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
-        pushd proj-build
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/local -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
-          -DENABLE_IPO=ON -DENABLE_CURL=OFF -DBUILD_CCT:BOOL=OFF -DBUILD_CS2CS:BOOL=OFF -DBUILD_GEOD:BOOL=OFF \
-          -DBUILD_GIE:BOOL=OFF -DBUILD_GMOCK:BOOL=OFF -DBUILD_PROJINFO:BOOL=OFF -DBUILD_PROJSYNC:BOOL=OFF -DBUILD_TESTING:BOOL=OFF
-        cmake --build . -j6
-        cmake --install .
-        popd
-
-    - name: Set up paths to libraries
-      run: |
-        echo "CPATH=$CPATH:$HOME/local/include" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$LIBRARY_PATH:$HOME/local/lib" >> $GITHUB_ENV
-        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib" >> $GITHUB_ENV
-        echo "$HOME/local/bin" >> $GITHUB_PATH
+    - name: Setup PROJ
+      uses: ./.github/actions/setup-proj
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     - name: Install dependencies (PyPI)
