@@ -1,0 +1,55 @@
+name: 'Run Tests'
+description: 'Run tests, and optionally doctests, uploading coverage and artifacts as necessary.'
+inputs:
+  run-doctests:
+    description: 'Whether doctests should be run'
+    required: true
+    default: 'true'
+  key:
+    description: 'Key to use for coverage and artifacts'
+    required: true
+  upload-coverage:
+    description: 'Whether to upload coverage report'
+    required: false
+    default: 'true'
+outputs:
+  log_available:
+    description: 'Whether a log for running the tests is available'
+    value: ${{ steps.run-tests.outputs.log_available }}
+runs:
+  using: composite
+  steps:
+    - name: Run tests
+      id: run-tests
+      # Need to use a login bash shell to get the conda env
+      shell: bash -l {0}
+      # By running coverage in "parallel" mode and "combining", we can clean up the path names
+      run: |
+        set -o pipefail
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ 2>&1 | tee tests-${{ inputs.key }}.log || (
+            echo '::set-output name=log_available::true' && false
+        )
+        python -m coverage combine
+        python -m coverage report
+        python -m coverage xml
+
+    - name: Run doctests
+      if: ${{ inputs.run-doctests == 'true' }}
+      shell: bash -l {0}
+      env:
+        PY_IGNORE_IMPORTMISMATCH: 1
+      run: python -m pytest --doctest-modules -k "not test" src;
+
+    - name: Upload test images
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.key }}-images
+        path: test_output/
+
+    - name: Upload coverage
+      if: ${{ always() && inputs.upload-coverage == 'true' }}
+      uses: codecov/codecov-action@v2.1.0
+      with:
+        name: ${{ inputs.key }}

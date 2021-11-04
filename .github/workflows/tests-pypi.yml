@@ -103,28 +103,7 @@ jobs:
       run: python -m pip install -c ci/${{ matrix.dep-versions }} .
 
     - name: Run tests
-      run: |
-        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
-        python -m coverage combine
-        python -m coverage report
-        python -m coverage xml
-
-    - name: Run doctests
-      if: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
-      env:
-        PY_IGNORE_IMPORTMISMATCH: 1
-      run: python -m pytest --doctest-modules -k "not test" src;
-
-    - name: Upload test images
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/run-tests
       with:
-        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-images
-        path: test_output/
-
-    - name: Upload coverage
-      if: ${{ always() }}
-      uses: codecov/codecov-action@v2.1.0
-      with:
-        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
+        run-doctests: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
+        key: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
