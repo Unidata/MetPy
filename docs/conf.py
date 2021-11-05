@@ -362,3 +362,7 @@ linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     # This one appears to be blocking robots
     r'https://doi.org/10.1088/0026-1394/45/2/004'
     ]
+
+linkcheck_allowed_redirects = {
+    r'http://xarray\.pydata\.org/': r'http://xarray\.pydata\.org/en/stable/'
+}
