@@ -10,8 +10,7 @@ Talks and Other Media
 * Presentation on MetPy and Community Development at the `2018 AMS Annual Meeting`_ by Ryan May
 * `SciPy 2017 poster`_ and `repository <https://github.com/jrleeman/CAPE-SciPy-2017>`_
   about reproducing a classic CAPE paper with MetPy.
-* `SciPy 2017 talk`_ and `slides
-  <https://nbviewer.jupyter.org/format/slides/github/dopplershift/
+* `SciPy 2017 talk`_ and `slides <https://nbviewer.org/format/slides/github/dopplershift/
   Talks/blob/master/SciPy2017/MetPy%20Units.ipynb>`_
   about challenges developing MetPy with units
 * MetPy was featured on `Episode 100 of Podcast.__init__`_
