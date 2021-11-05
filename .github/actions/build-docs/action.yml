@@ -5,10 +5,6 @@ inputs:
     description: 'Whether the linkchecker should be run'
     required: false
     default: 'false'
-  upload-build:
-    description: 'Whether the build of the docs should be uploaded as an artifact.'
-    required: false
-    default: 'true'
   key:
     description: 'Key to use for artifacts'
     required: false
@@ -17,6 +13,9 @@ outputs:
   log_available:
     description: 'Whether a log from the doc build is available'
     value: ${{ steps.builddocs.outputs.log_available == 'true' || steps.linkchecker.outputs.log_available == 'true'}}
+  doc_version:
+    description: 'What version the docs correspond to'
+    value: ${{ steps.docversion.outputs.doc_version }}
 runs:
   using: composite
   steps:
@@ -50,8 +49,13 @@ runs:
         [ ! -s build/linkcheck/output.txt ] || (cp build/linkcheck/output.txt linkchecker.log && echo '::set-output name=log_available::true' && false)
         popd
 
+    - name: Set doc version
+      id: docversion
+      shell: bash -l {0}
+      run: echo "::set-output name=doc_version::v$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')"
+
     - name: Upload docs as artifact
-      if: ${{ inputs.upload-build == 'true' }}
+      if: ${{ always() && inputs.key != '' }}
       uses: actions/upload-artifact@v2
       with:
         name: ${{ inputs.key }}-docs
