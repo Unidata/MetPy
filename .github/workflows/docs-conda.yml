@@ -34,37 +34,11 @@ jobs:
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-    - name: Setup conda caching
-      uses: actions/cache@v2.1.6
+    - name: Install from Conda
+      uses: ./.github/actions/install-conda
       with:
-        path: ~/conda_pkgs_dir
-        key: conda-docs-${{ runner.os }}-${{ matrix.python-version}}-${{ hashFiles('ci/*') }}
-        restore-keys: |
-          conda-docs-${{ runner.os }}-${{ matrix.python-version}}
-          conda-docs-${{ runner.os }}
-          conda-docs-
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: conda-incubator/setup-miniconda@v2.1.1
-      with:
-        miniforge-version: latest
-        miniforge-variant: mambaforge
+        type: 'doc'
         python-version: ${{ matrix.python-version }}
-        channel-priority: strict
-        show-channel-urls: true
-        # Needed for caching
-        use-only-tar-bz2: true
-
-    - name: Install dependencies
-      run: mamba install --quiet --yes --file ci/doc_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
-
-    - name: Install
-      # For some reason on Windows 3.7 building the wheel fails to properly include our extra
-      # stuff. Executing the egg_info beforehand for some reason fixes it. No idea why. We're
-      # deep in territory where googling for answers helps not at all.
-      run: |
-        python setup.py egg_info
-        python -m pip install --no-deps .
 
     - name: Build docs
       run: |

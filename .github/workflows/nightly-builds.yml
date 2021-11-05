@@ -34,9 +34,6 @@ jobs:
         echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
         echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/test_requirements.txt
 
-    - name: Setup PROJ
-      uses: ./.github/actions/setup-proj
-
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
       with:
@@ -85,9 +82,6 @@ jobs:
         cat ci/extra_requirements.txt >> ci/doc_requirements.txt
         echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
         echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/doc_requirements.txt
-
-    - name: Setup PROJ
-      uses: ./.github/actions/setup-proj
 
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi

@@ -41,6 +41,10 @@ runs:
           pip-${{ inputs.type }}-${{ runner.os }}-
           pip-${{ inputs.type }}-
 
+    - name: Setup PROJ
+      if: ${{ inputs.need-cartopy == 'true' }}
+      uses: ./.github/actions/setup-proj
+
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
     - name: Install CartoPy build dependencies
       if: ${{ inputs.need-cartopy == 'true' }}

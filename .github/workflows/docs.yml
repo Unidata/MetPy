@@ -50,9 +50,6 @@ jobs:
     - name: Add extras to requirements
       run: cat ci/extra_requirements.txt >> ci/doc_requirements.txt
 
-    - name: Setup PROJ
-      uses: ./.github/actions/setup-proj
-
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
       with:

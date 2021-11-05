@@ -61,9 +61,6 @@ jobs:
               out.write(dep.replace('>=', '==') + '\n')
         EOF
 
-    - name: Setup PROJ
-      uses: ./.github/actions/setup-proj
-
     - name: Install from PyPI
       uses: ./.github/actions/install-pypi
       with:
