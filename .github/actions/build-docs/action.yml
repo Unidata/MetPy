@@ -1,0 +1,61 @@
+name: 'Build Docs'
+description: 'Build docs, optionally running linkchecker, and upload builds as artifacts.'
+inputs:
+  run-linkchecker:
+    description: 'Whether the linkchecker should be run'
+    required: false
+    default: 'false'
+  upload-build:
+    description: 'Whether the build of the docs should be uploaded as an artifact.'
+    required: false
+    default: 'true'
+  key:
+    description: 'Key to use for artifacts'
+    required: false
+    default: ''
+outputs:
+  log_available:
+    description: 'Whether a log from the doc build is available'
+    value: ${{ steps.builddocs.outputs.log_available == 'true' || steps.linkchecker.outputs.log_available == 'true'}}
+runs:
+  using: composite
+  steps:
+    - name: Build docs
+      shell: bash -l {0}
+      id: builddocs
+      # set -e makes sure bash fails on the first failing command, which isn't the case due to
+      # starting with -l
+      run: |
+        set -e -o pipefail
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        pushd docs
+        make overridecheck html O=-W 2>&1 | tee build-${{ matrix.python-version }}.log || (
+            echo '::set-output name=log_available::true' && false
+        )
+        popd
+
+    - name: Run link checker
+      id: linkchecker
+      # Running linkchecker separately so that we avoid problems with vendored LICENSE
+      # files in the build directory
+      if: ${{ inputs.run-linkchecker == 'true'}}
+      shell: bash -l {0}
+      run: |
+        set -e
+        pushd docs
+        find build/html/_static -name LICENSE.md -delete
+        make linkcheck || true
+        # Make the presence of the output file with content (which could have specific redirects)
+        # fail the build
+        [ ! -s build/linkcheck/output.txt ] || (cp build/linkcheck/output.txt linkchecker.log && echo '::set-output name=log_available::true' && false)
+        popd
+
+    - name: Upload docs as artifact
+      if: ${{ inputs.upload-build == 'true' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.key }}-docs
+        path: |
+          docs/build/html
+          !docs/_static/*.pdf
+        retention-days: 5

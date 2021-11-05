@@ -58,30 +58,11 @@ jobs:
         python-version: ${{ matrix.dep-versions }}
 
     - name: Build docs
-      run: |
-        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        pushd docs
-        make overridecheck html O=-W
-        popd
-
-    - name: Enable linkchecker for PRs
-      # Doing the linkchecker separately so that we avoid problems with vendored LICENSE
-      # files in the build directory
-      if: ${{ github.event_name == 'pull_request' && matrix.check-links == true }}
-      run: |
-        pushd docs
-        find build/html/_static -name LICENSE.md -delete
-        make linkcheck
-        popd
-
-    - name: Upload docs as artifact
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/build-docs
       with:
-        name: ${{ matrix.python-version }}-${{ matrix.dep-versions }}-docs
-        path: |
-          docs/build/html
-          !docs/_static/*.pdf
+        run-linkchecker: ${{ github.event_name == 'pull_request' && matrix.check-links == true }}
+        upload-build: ${{ github.event_name == 'pull_request' }}
+        key: ${{ runner.os }}-${{ matrix.python-version }}
 
     # This overrides the version "dev" with the proper version if we're building off a
     # branch that's not main (which is confined to n.nn.x above) or on a tag.

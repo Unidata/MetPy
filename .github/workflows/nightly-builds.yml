@@ -93,47 +93,19 @@ jobs:
 
     - name: Build docs
       id: build
-      run: |
-        set -o pipefail
-        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        pushd docs
-        make overridecheck html O=-W |& tee build-${{ matrix.python-version }}.log || (
-            echo '::set-output name=LOG_AVAILABLE::true' && false
-        )
-        popd
-
-    - name: Enable link checker
-      # Running linkchecker separately so that we avoid problems with vendored LICENSE
-      # files in the build directory
-      if: always()
-      run: |
-        pushd docs
-        find build/html/_static -name LICENSE.md -delete
-        make linkcheck
-        # Make the presence of the output file with content (which could have specific redirects)
-        # fail the build
-        [ ! -s build/linkchecker/output.txt ] || (echo '::set-output name=LOG_AVAILABLE::true' && false)
-        [ -s build/linkchecker/output.txt ] && cp build/linkchecker/output.txt linkchecker.log
-        popd
+      uses: ./.github/actions/build-docs
+      with:
+        run-linkchecker: true
+        key: ${{ matrix.python-version }}-nightly
 
     - name: Upload build log
-      if: ${{ always() && steps.build.outputs.LOG_AVAILABLE  == 'true' }}
+      if: ${{ always() && steps.build.outputs.log_available  == 'true' }}
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-docs-${{ matrix.python-version }}
         path: |
           docs/build-${{ matrix.python-version }}.log
           docs/linkchecker.log
-        retention-days: 5
-
-    - name: Upload docs as artifact
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.python-version }}-nightly-docs
-        path: |
-          docs/build/html
-          !docs/_static/*.pdf
         retention-days: 5
 
   Report:

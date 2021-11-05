@@ -41,16 +41,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Build docs
-      run: |
-        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        pushd docs
-        make overridecheck html O=-W
-        popd
-
-    - name: Upload docs as artifact
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/build-docs
       with:
-        name: ${{ matrix.os }}-${{ matrix.python-version }}-docs
-        path: |
-          docs/build/html
-          !docs/_static/*.pdf
+        key: ${{ matrix.os }}-${{ matrix.python-version }}
