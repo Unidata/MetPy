@@ -34,20 +34,25 @@ runs:
         popd
 
     - name: Run link checker
-      id: linkchecker
       # Running linkchecker separately so that we avoid problems with vendored LICENSE
       # files in the build directory
       if: ${{ inputs.run-linkchecker == 'true'}}
       shell: bash -l {0}
       run: |
-        set -e
         pushd docs
         find build/html/_static -name LICENSE.md -delete
         make linkcheck || true
-        # Make the presence of the output file with content (which could have specific redirects)
-        # fail the build
-        [ ! -s build/linkcheck/output.txt ] || (cp build/linkcheck/output.txt linkchecker.log && echo '::set-output name=log_available::true' && false)
         popd
+
+    - name: Check linkchecker output
+      id: linkchecker
+      if: ${{ inputs.run-linkchecker == 'true'}}
+      shell: bash -l {0}
+      run: |
+        set -e -o pipefail
+        ci/filter_links.py docs/build/linkcheck/output.json $(git rev-list --parents -n 1 HEAD) 2>&1 | tee linkchecker.log || (
+            echo '::set-output name=log_available::true' && false
+        )
 
     - name: Set doc version
       id: docversion
