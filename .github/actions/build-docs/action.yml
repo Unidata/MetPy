@@ -1,0 +1,70 @@
+name: 'Build Docs'
+description: 'Build docs, optionally running linkchecker, and upload builds as artifacts.'
+inputs:
+  run-linkchecker:
+    description: 'Whether the linkchecker should be run'
+    required: false
+    default: 'false'
+  key:
+    description: 'Key to use for artifacts'
+    required: false
+    default: ''
+outputs:
+  log_available:
+    description: 'Whether a log from the doc build is available'
+    value: ${{ steps.builddocs.outputs.log_available == 'true' || steps.linkchecker.outputs.log_available == 'true'}}
+  doc_version:
+    description: 'What version the docs correspond to'
+    value: ${{ steps.docversion.outputs.doc_version }}
+runs:
+  using: composite
+  steps:
+    - name: Build docs
+      shell: bash -l {0}
+      id: builddocs
+      # set -e makes sure bash fails on the first failing command, which isn't the case due to
+      # starting with -l
+      run: |
+        set -e -o pipefail
+        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
+        pushd docs
+        make overridecheck html O=-W 2>&1 | tee build-${{ matrix.python-version }}.log || (
+            echo '::set-output name=log_available::true' && false
+        )
+        popd
+
+    - name: Run link checker
+      # Running linkchecker separately so that we avoid problems with vendored LICENSE
+      # files in the build directory
+      if: ${{ inputs.run-linkchecker == 'true'}}
+      shell: bash -l {0}
+      run: |
+        pushd docs
+        find build/html/_static -name LICENSE.md -delete
+        make linkcheck || true
+        popd
+
+    - name: Check linkchecker output
+      id: linkchecker
+      if: ${{ inputs.run-linkchecker == 'true'}}
+      shell: bash -l {0}
+      run: |
+        set -e -o pipefail
+        ci/filter_links.py docs/build/linkcheck/output.json $(git rev-list --parents -n 1 HEAD) 2>&1 | tee linkchecker.log || (
+            echo '::set-output name=log_available::true' && false
+        )
+
+    - name: Set doc version
+      id: docversion
+      shell: bash -l {0}
+      run: echo "::set-output name=doc_version::v$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')"
+
+    - name: Upload docs as artifact
+      if: ${{ always() && inputs.key != '' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.key }}-docs
+        path: |
+          docs/build/html
+          !docs/_static/*.pdf
+        retention-days: 5

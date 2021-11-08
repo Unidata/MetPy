@@ -38,27 +38,6 @@ jobs:
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2.2.2
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    # This uses pip to find the right cache dir and then sets up caching for it
-    - name: Get pip cache dir
-      id: pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-
-    - name: Setup caching
-      uses: actions/cache@v2.1.6
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
-        restore-keys: |
-          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('ci/*') }}
-          pip-tests-${{ runner.os }}-${{ matrix.python-version }}-
-          pip-tests-${{ runner.os }}-
-          pip-tests-
-
     - name: Add extras to requirements
       if: ${{ matrix.no-extras != 'No Extras' }}
       run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
@@ -82,75 +61,16 @@ jobs:
               out.write(dep.replace('>=', '==') + '\n')
         EOF
 
-    - name: Get cached compiled libraries
-      id: cache-libraries
-      uses: actions/cache@v2.1.6
+    - name: Install from PyPI
+      uses: ./.github/actions/install-pypi
       with:
-        path: ~/local
-        key: build-${{ runner.os }}-0
-
-    - name: Build compiled libraries
-      if: steps.cache-libraries.outputs.cache-hit != 'true'
-      run: |
-        mkdir proj-build
-        curl https://download.osgeo.org/proj/proj-8.1.1.tar.gz | tar xzf - --strip-components=1 -C proj-build
-        pushd proj-build
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/local -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
-          -DENABLE_IPO=ON -DENABLE_CURL=OFF -DBUILD_CCT:BOOL=OFF -DBUILD_CS2CS:BOOL=OFF -DBUILD_GEOD:BOOL=OFF \
-          -DBUILD_GIE:BOOL=OFF -DBUILD_GMOCK:BOOL=OFF -DBUILD_PROJINFO:BOOL=OFF -DBUILD_PROJSYNC:BOOL=OFF -DBUILD_TESTING:BOOL=OFF
-        cmake --build . -j6
-        cmake --install .
-        popd
-
-    - name: Set up paths to libraries
-      run: |
-        echo "CPATH=$CPATH:$HOME/local/include" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$LIBRARY_PATH:$HOME/local/lib" >> $GITHUB_ENV
-        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib" >> $GITHUB_ENV
-        echo "$HOME/local/bin" >> $GITHUB_PATH
-
-    # This installs the stuff needed to build and install Shapely and CartoPy from source.
-    - name: Install CartoPy build dependencies
-      if: ${{ matrix.no-extras != 'No Extras' }}
-      run: |
-        sudo apt-get install libgeos-dev
-        python -m pip install --no-binary :all: shapely
-
-    - name: Install test dependencies
-      run: python -m pip install -r ci/test_requirements.txt -c ci/${{ matrix.dep-versions }}
-
-    - name: Download Cartopy Maps
-      if: ${{ matrix.no-extras != 'No Extras' }}
-      run: ci/download_cartopy_maps.py
-
-    - name: Install
-      run: python -m pip install -c ci/${{ matrix.dep-versions }} .
+        need-cartopy: ${{ matrix.no-extras != 'No Extras' }}
+        type: 'test'
+        version-file: ${{ matrix.dep-versions }}
+        python-version: ${{ matrix.python-version }}
 
     - name: Run tests
-      run: |
-        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/
-        python -m coverage combine
-        python -m coverage report
-        python -m coverage xml
-
-    - name: Run doctests
-      if: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
-      env:
-        PY_IGNORE_IMPORTMISMATCH: 1
-      run: python -m pytest --doctest-modules -k "not test" src;
-
-    - name: Upload test images
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/run-tests
       with:
-        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-images
-        path: test_output/
-
-    - name: Upload coverage
-      if: ${{ always() }}
-      uses: codecov/codecov-action@v2.1.0
-      with:
-        name: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
+        run-doctests: ${{ matrix.dep-versions == 'requirements.txt' && matrix.no-extras != 'No Extras' }}
+        key: pypi-${{ matrix.python-version }}-${{ matrix.dep-versions }}-${{ matrix.no-extras }}-${{ runner.os }}
