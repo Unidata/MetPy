@@ -11,7 +11,7 @@ body:
     attributes:
       label: What went wrong?
       description: This should explain what went wrong and what you expected to happen.
-      placeholder: Please describe the bug!
+      placeholder: Please describe the bug! You can attach example code and error messages in separate fields below.
     validations:
       required: true
   - type: dropdown
@@ -50,3 +50,19 @@ body:
       placeholder: "# Your code here"
     validations:
       required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Errors, Traceback, and Logs
+      description: |
+        If applicable, share with us the Error and full Traceback provided by your interpreter.
+      render: python
+      placeholder: |
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+          File "/metpy/xarray.py", line 1229, in wrapper
+            result = func(*bound_args.args, **bound_args.kwargs)
+          File "/metpy/units.py", line 245, in wrapper
+            raise ValueError(msg)
+        ValueError: This function changed in 1.0--double check that the function is being called properly.
+        `dewpoint` given arguments with incorrect units: `vapor_pressure` requires "[pressure]" but given "gram / kilogram"
