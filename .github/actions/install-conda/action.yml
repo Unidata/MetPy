@@ -20,7 +20,7 @@ runs:
           conda-${{ inputs.type }}-${{ runner.os }}
           conda-${{ inputs.type }}-
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python ${{ inputs.python-version }}
       uses: conda-incubator/setup-miniconda@v2.1.1
       with:
         miniforge-version: latest

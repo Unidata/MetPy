@@ -55,7 +55,7 @@ jobs:
       with:
         need-cartopy: true
         type: 'doc'
-        python-version: ${{ matrix.dep-versions }}
+        python-version: ${{ matrix.python-version }}
 
     - name: Build docs
       id: build-docs
