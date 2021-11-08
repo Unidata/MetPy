@@ -245,7 +245,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
         The horizontal resolution of the generated grid, given in the same units as the
         x and y parameters. Default 50000.
     minimum_neighbors: int
-        Minimum number of neighbors needed to perform barnes or cressman interpolation for a
+        Minimum number of neighbors needed to perform Barnes or Cressman interpolation for a
         point. Default is 3.
     gamma: float
         Adjustable smoothing parameter for the barnes interpolation. Default 0.25.
@@ -253,8 +253,8 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
         Response parameter for barnes interpolation, specified nondimensionally
         in terms of the Nyquist. Default 5.052
     search_radius: float
-        A search radius to use for the barnes and cressman interpolation schemes.
-        If search_radius is not specified, it will default to the average spacing of
+        A search radius to use for the Barnes and Cressman interpolation schemes.
+        If search_radius is not specified, it will default to 5 times the average spacing of
         observations.
     rbf_func: str
         Specifies which function to use for Rbf interpolation.
