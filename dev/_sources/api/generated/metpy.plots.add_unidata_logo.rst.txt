@@ -1,0 +1,12 @@
+add_unidata_logo
+============================
+
+.. currentmodule:: metpy.plots
+
+.. autofunction:: add_unidata_logo
+
+.. include:: metpy.plots.add_unidata_logo.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

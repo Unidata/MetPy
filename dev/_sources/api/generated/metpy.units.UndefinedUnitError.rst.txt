@@ -1,0 +1,12 @@
+UndefinedUnitError
+==============================
+
+.. currentmodule:: metpy.units
+
+.. autoexception:: UndefinedUnitError
+
+.. include:: metpy.units.UndefinedUnitError.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

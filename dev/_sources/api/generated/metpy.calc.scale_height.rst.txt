@@ -1,0 +1,12 @@
+scale_height
+=======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: scale_height
+
+.. include:: metpy.calc.scale_height.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

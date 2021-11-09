@@ -1,0 +1,70 @@
+GempakSounding
+=======================
+
+.. currentmodule:: metpy.io
+
+.. autoclass:: GempakSounding
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~GempakSounding.data_management_fmt
+      ~GempakSounding.grid_anl_fmt1
+      ~GempakSounding.grid_anl_fmt2
+      ~GempakSounding.grid_nav_fmt
+      ~GempakSounding.prod_desc_fmt
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~GempakSounding.__init__
+      ~GempakSounding.sninfo
+      ~GempakSounding.snxarray
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: data_management_fmt
+   .. autoattribute:: grid_anl_fmt1
+   .. autoattribute:: grid_anl_fmt2
+   .. autoattribute:: grid_nav_fmt
+   .. autoattribute:: prod_desc_fmt
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: sninfo
+   .. automethod:: snxarray
+
+   
+   
+
+.. include:: metpy.io.GempakSounding.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

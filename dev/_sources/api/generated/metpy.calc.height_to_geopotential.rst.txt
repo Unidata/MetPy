@@ -1,0 +1,12 @@
+height_to_geopotential
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: height_to_geopotential
+
+.. include:: metpy.calc.height_to_geopotential.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

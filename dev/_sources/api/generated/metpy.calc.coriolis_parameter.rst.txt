@@ -1,0 +1,12 @@
+coriolis_parameter
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: coriolis_parameter
+
+.. include:: metpy.calc.coriolis_parameter.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+frontogenesis
+========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: frontogenesis
+
+.. include:: metpy.calc.frontogenesis.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

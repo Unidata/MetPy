@@ -1,0 +1,150 @@
+ContourPlot
+=======================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: ContourPlot
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~ContourPlot.clabels
+      ~ContourPlot.contours
+      ~ContourPlot.cross_validation_lock
+      ~ContourPlot.data
+      ~ContourPlot.field
+      ~ContourPlot.griddata
+      ~ContourPlot.label_fontsize
+      ~ContourPlot.latitude
+      ~ContourPlot.level
+      ~ContourPlot.linecolor
+      ~ContourPlot.linestyle
+      ~ContourPlot.linewidth
+      ~ContourPlot.longitude
+      ~ContourPlot.name
+      ~ContourPlot.parent
+      ~ContourPlot.plot_units
+      ~ContourPlot.plotdata
+      ~ContourPlot.scale
+      ~ContourPlot.time
+      ~ContourPlot.x
+      ~ContourPlot.y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~ContourPlot.__init__
+      ~ContourPlot.add_traits
+      ~ContourPlot.class_own_trait_events
+      ~ContourPlot.class_own_traits
+      ~ContourPlot.class_trait_names
+      ~ContourPlot.class_traits
+      ~ContourPlot.clear
+      ~ContourPlot.clear_collections
+      ~ContourPlot.clear_handle
+      ~ContourPlot.copy
+      ~ContourPlot.draw
+      ~ContourPlot.has_trait
+      ~ContourPlot.hold_trait_notifications
+      ~ContourPlot.notify_change
+      ~ContourPlot.observe
+      ~ContourPlot.on_trait_change
+      ~ContourPlot.set_trait
+      ~ContourPlot.setup_instance
+      ~ContourPlot.trait_defaults
+      ~ContourPlot.trait_events
+      ~ContourPlot.trait_has_value
+      ~ContourPlot.trait_metadata
+      ~ContourPlot.trait_names
+      ~ContourPlot.trait_values
+      ~ContourPlot.traits
+      ~ContourPlot.unobserve
+      ~ContourPlot.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: clabels
+   .. autoattribute:: contours
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: label_fontsize
+   .. autoattribute:: latitude
+   .. autoattribute:: level
+   .. autoattribute:: linecolor
+   .. autoattribute:: linestyle
+   .. autoattribute:: linewidth
+   .. autoattribute:: longitude
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: scale
+   .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.ContourPlot.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

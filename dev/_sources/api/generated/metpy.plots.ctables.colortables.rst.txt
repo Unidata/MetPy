@@ -1,0 +1,12 @@
+colortables
+===============================
+
+.. currentmodule:: metpy.plots.ctables
+
+.. autodata:: colortables
+
+.. include:: metpy.plots.ctables.colortables.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
