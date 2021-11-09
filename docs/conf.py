@@ -169,15 +169,27 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 html_theme = 'pydata_sphinx_theme'
 html_theme_options = {
-    'github_url': 'https://github.com/Unidata/MetPy',
-    'twitter_url': 'https://twitter.com/MetPy',
     'external_links': [
         {'name': 'Release Notes', 'url': 'https://github.com/Unidata/MetPy/releases'},
     ],
+    'icon_links': [
+        {
+            'name': 'GitHub',
+            'url': 'https://github.com/Unidata/MetPy',
+            'icon': 'fab fa-github-square',
+        },
+        {
+            'name': 'Twitter',
+            'url': 'https://twitter.com/MetPy',
+            'icon': 'fab fa-twitter-square',
+        }
+    ],
     'use_edit_page_button': False,
     'google_analytics_id': 'UA-92978945-1',
-    'search_bar_position': 'navbar',
-#    'navbar_align': 'left'  # Coming in next release of theme
+    'navbar_align': 'left',
+    'navbar_start': ['navbar-logo'],
+    'navbar_center': ['navbar-nav'],
+    'navbar_end': ['search-field', 'navbar-icon-links'],
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -239,7 +251,9 @@ html_last_updated_fmt = '%b %d, %Y at %H:%M:%S'
 # html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-# html_sidebars = {}
+html_sidebars = {
+    '**': ['versions', 'sidebar-nav-bs']
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.

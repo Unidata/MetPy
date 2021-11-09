@@ -12,6 +12,17 @@
 .navbar-nav>.active>.nav-link {
     color: #fff !important;
     font-weight: 400 !important;
+    font-style: italic;
+}
+
+.fa-github-square:before {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-weight: 400 !important;
+}
+
+.fa-twitter-square:before {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-weight: 400 !important;
 }
 
 /* Override the default logo height */
