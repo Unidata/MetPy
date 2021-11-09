@@ -16,6 +16,7 @@ import warnings
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
+from .field_solver import solver
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, masked_array, units
@@ -30,6 +31,7 @@ gamma = units.Quantity(6.5, 'K/km')
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]')
 def wind_speed(u, v):
@@ -57,6 +59,7 @@ def wind_speed(u, v):
 
 
 @exporter.export
+@solver.register()
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]')
 def wind_direction(u, v, convention='from'):
@@ -112,6 +115,7 @@ def wind_direction(u, v, convention='from'):
 
 
 @exporter.export
+@solver.register('u', 'v')
 @preprocess_and_wrap(wrap_like=('speed', 'speed'))
 @check_units('[speed]')
 def wind_components(speed, wind_direction):
@@ -153,6 +157,7 @@ def wind_components(speed, wind_direction):
 
 
 @exporter.export
+@solver.register('temperature', 'wind_speed')
 @preprocess_and_wrap(wrap_like='temperature')
 @check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
@@ -215,7 +220,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
-@preprocess_and_wrap(wrap_like='temperature')
+@solver.register()
+@preprocess_and_wrap(broadcast=('temperature', 'relative_humidity'), wrap_like='temperature')
 @check_units('[temperature]')
 def heat_index(temperature, relative_humidity, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.

@@ -6,6 +6,7 @@ r"""Provide tools for unit-aware, meteorological calculations."""
 from .basic import *  # noqa: F403
 from .cross_sections import *  # noqa: F403
 from .exceptions import *  # noqa: F403
+from .field_solver import solver
 from .indices import *  # noqa: F403
 from .kinematics import *  # noqa: F403
 from .thermo import *  # noqa: F403
@@ -13,7 +14,8 @@ from .tools import *  # noqa: F403
 from .turbulence import *  # noqa: F403
 from ..package_tools import set_module
 
-__all__ = basic.__all__[:]  # pylint: disable=undefined-variable
+__all__ = ['solver']
+__all__.extend(basic.__all__)  # pylint: disable=undefined-variable
 __all__.extend(cross_sections.__all__)  # pylint: disable=undefined-variable
 __all__.extend(indices.__all__)  # pylint: disable=undefined-variable
 __all__.extend(kinematics.__all__)  # pylint: disable=undefined-variable
