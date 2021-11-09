@@ -78,6 +78,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: Linux-3.9-docs
+        path: ./docs/build/html
 
     # This overrides the version "dev" with the proper version if we're building off a
     # branch that's not main (which is confined to n.nn.x above) or on a tag.
