@@ -348,9 +348,8 @@ class GiniFile(AbstractDataStore):
         This is used by `xarray.open_dataset`.
 
         """
-        variables = [self._make_time_var()]
         proj_var_name, proj_var = self._make_proj_var()
-        variables.append((proj_var_name, proj_var))
+        variables = [self._make_time_var(), (proj_var_name, proj_var)]
         variables.extend(self._make_coord_vars())
 
         # Now the data

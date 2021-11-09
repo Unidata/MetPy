@@ -108,9 +108,7 @@ def geodesic(crs, start, end, steps):
         np.array(g.npts(start[1], start[0], end[1], end[0], steps - 2)),
         np.array(end[::-1])[None]
     ]).transpose()
-    points = np.stack(p(geodesic[0], geodesic[1], inverse=False, radians=False), axis=-1)
-
-    return points
+    return np.stack(p(geodesic[0], geodesic[1], inverse=False, radians=False), axis=-1)
 
 
 @exporter.export

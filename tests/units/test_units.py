@@ -58,7 +58,6 @@ def test_axvline():
 
 def unit_calc(temp, press, dens, mixing, unitless_const):
     r"""Stub calculation for testing unit checking."""
-    pass
 
 
 test_funcs = [

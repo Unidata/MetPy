@@ -116,8 +116,6 @@ class MetpyDeprecationWarning(UserWarning):
     https://docs.python.org/dev/whatsnew/2.7.html#the-future-for-python-2-x
     """
 
-    pass
-
 
 metpyDeprecation = MetpyDeprecationWarning  # noqa: N816
 
@@ -271,9 +269,7 @@ def deprecated(since, message='', name='', alternative='', pending=False,
             old_doc = func.__doc__
 
             def finalize(wrapper, new_doc):
-                wrapper = functools.wraps(func)(wrapper)
-                # wrapper.__doc__ = new_doc
-                return wrapper
+                return functools.wraps(func)(wrapper)
 
         message = _generate_deprecation_message(since, message, name,
                                                 alternative, pending,

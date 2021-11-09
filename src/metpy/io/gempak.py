@@ -2309,20 +2309,18 @@ class GempakSurface(GempakFile):
 
     def _key_types(self, keys):
         """Determine header information from a set of keys."""
-        header_info = [(key, '4s', self._decode_strip) if key == 'STID'
-                       else (key, 'i') if key == 'STNM'
-                       else (key, 'i', lambda x: x / 100) if key == 'SLAT'
-                       else (key, 'i', lambda x: x / 100) if key == 'SLON'
-                       else (key, 'i') if key == 'SELV'
-                       else (key, '4s', self._decode_strip) if key == 'STAT'
-                       else (key, '4s', self._decode_strip) if key == 'COUN'
-                       else (key, '4s', self._decode_strip) if key == 'STD2'
-                       else (key, 'i', self._make_date) if key == 'DATE'
-                       else (key, 'i', self._make_time) if key == 'TIME'
-                       else (key, 'i')
-                       for key in keys]
-
-        return header_info
+        return [(key, '4s', self._decode_strip) if key == 'STID'
+                else (key, 'i') if key == 'STNM'
+                else (key, 'i', lambda x: x / 100) if key == 'SLAT'
+                else (key, 'i', lambda x: x / 100) if key == 'SLON'
+                else (key, 'i') if key == 'SELV'
+                else (key, '4s', self._decode_strip) if key == 'STAT'
+                else (key, '4s', self._decode_strip) if key == 'COUN'
+                else (key, '4s', self._decode_strip) if key == 'STD2'
+                else (key, 'i', self._make_date) if key == 'DATE'
+                else (key, 'i', self._make_time) if key == 'TIME'
+                else (key, 'i')
+                for key in keys]
 
     def _unpack_climate(self, sfcno):
         """Unpack a climate surface data file."""

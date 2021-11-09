@@ -470,8 +470,8 @@ class Level2File:
             for e in range(num_el):
                 seg_num = data[offset]
                 if seg_num != (e + 1):
-                    log.warning('Message 13 segments out of sync -- read {} but on {}'.format(
-                        seg_num, e + 1))
+                    log.warning('Message 13 segments out of sync -- read %d but on %d',
+                                seg_num, e + 1)
 
                 az_data = []
                 for _ in range(num_az):
@@ -2255,8 +2255,7 @@ class Level3File:
         vals = [self._buffer.read_int(2, 'big', signed=True) for _ in range(num_vols)]
 
         # Wrap the circular buffer so that latest is last
-        vals = vals[latest:] + vals[:latest]
-        return vals
+        return vals[latest:] + vals[:latest]
 
     packet_map = {1: _unpack_packet_uniform_text,
                   2: _unpack_packet_special_text_symbol,

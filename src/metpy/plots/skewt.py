@@ -205,11 +205,10 @@ class SkewXAxes(Axes):
 
     def _gen_axes_spines(self, locations=None, offset=0.0, units='inches'):
         # pylint: disable=unused-argument
-        spines = {'top': SkewSpine.linear_spine(self, 'top'),
-                  'bottom': mspines.Spine.linear_spine(self, 'bottom'),
-                  'left': mspines.Spine.linear_spine(self, 'left'),
-                  'right': mspines.Spine.linear_spine(self, 'right')}
-        return spines
+        return {'top': SkewSpine.linear_spine(self, 'top'),
+                'bottom': mspines.Spine.linear_spine(self, 'bottom'),
+                'left': mspines.Spine.linear_spine(self, 'left'),
+                'right': mspines.Spine.linear_spine(self, 'right')}
 
     def _set_lim_and_transforms(self):
         """Set limits and transforms.

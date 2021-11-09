@@ -2004,9 +2004,7 @@ class PlotGeometry(MetPyHasTraits):
         else:
             coords = geo_obj.coords
 
-        position = coords[label_hash % len(coords)]
-
-        return position
+        return coords[label_hash % len(coords)]
 
     def _draw_label(self, text, lon, lat, color='black', outline='white', offset=(0, 0)):
         """Draw a label to the plot.
