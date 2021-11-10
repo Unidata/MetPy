@@ -1342,13 +1342,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.scale" title="metpy.plots.ImagePlot.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the field to be plotted by the value given.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.time" title="metpy.plots.ImagePlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.smooth_field" title="metpy.plots.ImagePlot.smooth_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_field</span></code></a></p></td>
+<td><p>Number of smoothing passes using 9-pt smoother.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.time" title="metpy.plots.ImagePlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.x" title="metpy.plots.ImagePlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.x" title="metpy.plots.ImagePlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
 <td><p>The x coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.y" title="metpy.plots.ImagePlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.y" title="metpy.plots.ImagePlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
 <td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
@@ -1577,6 +1580,19 @@ plotting using the MetPy Units module.</p>
 <p>This attribute will scale the field by multiplying by the scale. For example, to
 scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
 the data values will be scaled by 10^5.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ImagePlot.smooth_field">
+<span class="sig-name descname"><span class="pre">smooth_field</span></span><a class="headerlink" href="#metpy.plots.ImagePlot.smooth_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of smoothing passes using 9-pt smoother.</p>
+<p>By setting this parameter with an integer value it will call the MetPy 9-pt smoother and
+provide a smoothed field for plotting. It is best to use this smoothing for data with
+finer resolutions (e.g., smaller grid spacings with a lot of grid points).</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.smooth_n_point</span></code></a></p>
+</div>
 </dd></dl>
 
 <dl class="py attribute">

@@ -30,6 +30,7 @@ ContourPlot
       ~ContourPlot.plot_units
       ~ContourPlot.plotdata
       ~ContourPlot.scale
+      ~ContourPlot.smooth_field
       ~ContourPlot.time
       ~ContourPlot.x
       ~ContourPlot.y
@@ -99,6 +100,7 @@ ContourPlot
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
+   .. autoattribute:: smooth_field
    .. autoattribute:: time
    .. autoattribute:: x
    .. autoattribute:: y

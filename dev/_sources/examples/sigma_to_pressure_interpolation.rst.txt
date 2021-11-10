@@ -122,7 +122,7 @@ variable for plotting.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.9.7/x64/lib/python3.9/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
+    /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/metpy/interpolate/one_dimension.py:137: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -190,11 +190,11 @@ variable for plotting.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.9.7/x64/lib/python3.9/site-packages/cartopy/crs.py:825: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+    /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/crs.py:825: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
       if len(multi_line_string) > 1:
-    /opt/hostedtoolcache/Python/3.9.7/x64/lib/python3.9/site-packages/cartopy/crs.py:877: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
+    /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/crs.py:877: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
       for line in multi_line_string:
-    /opt/hostedtoolcache/Python/3.9.7/x64/lib/python3.9/site-packages/cartopy/crs.py:944: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+    /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/crs.py:944: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
       if len(p_mline) > 0:
 
 
@@ -203,7 +203,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.603 seconds)
+   **Total running time of the script:** ( 0 minutes  10.621 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:

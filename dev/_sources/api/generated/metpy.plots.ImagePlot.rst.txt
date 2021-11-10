@@ -28,6 +28,7 @@ ImagePlot
       ~ImagePlot.plot_units
       ~ImagePlot.plotdata
       ~ImagePlot.scale
+      ~ImagePlot.smooth_field
       ~ImagePlot.time
       ~ImagePlot.x
       ~ImagePlot.y
@@ -95,6 +96,7 @@ ImagePlot
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
+   .. autoattribute:: smooth_field
    .. autoattribute:: time
    .. autoattribute:: x
    .. autoattribute:: y
