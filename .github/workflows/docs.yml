@@ -22,8 +22,6 @@ jobs:
   Docs:
     name: ${{ matrix.python-version }} ${{ matrix.dep-versions }}
     runs-on: ubuntu-latest
-    env:
-      DOC_VERSION: dev
     strategy:
       fail-fast: false
       matrix:
