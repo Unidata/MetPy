@@ -532,16 +532,8 @@ to download the full example code</p>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">proj_from</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">proj_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-        <span class="k">try</span><span class="p">:</span>
-
-            <span class="n">proj_points</span> <span class="o">=</span> <span class="n">proj_to</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">proj_from</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">value</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">proj_points</span> <span class="o">=</span> <span class="n">proj_to</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">proj_from</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">value</span>
 
     <span class="k">return</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">value</span>
 
@@ -572,7 +564,7 @@ to download the full example code</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-&lt;matplotlib.colorbar.Colorbar object at 0x7ff27b9fba90&gt;
+&lt;matplotlib.colorbar.Colorbar object at 0x7fea6eb9e880&gt;
 </pre></div>
 </div>
 </section>
@@ -590,7 +582,7 @@ to download the full example code</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-&lt;matplotlib.colorbar.Colorbar object at 0x7ff27b9e6460&gt;
+&lt;matplotlib.colorbar.Colorbar object at 0x7fea59f19a30&gt;
 </pre></div>
 </div>
 </section>
@@ -611,7 +603,7 @@ to download the full example code</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-&lt;matplotlib.colorbar.Colorbar object at 0x7ff27bf3b8b0&gt;
+&lt;matplotlib.colorbar.Colorbar object at 0x7fea59877fd0&gt;
 </pre></div>
 </div>
 </section>
@@ -631,7 +623,7 @@ to download the full example code</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-&lt;matplotlib.colorbar.Colorbar object at 0x7ff2939b0970&gt;
+&lt;matplotlib.colorbar.Colorbar object at 0x7fea5b97b040&gt;
 </pre></div>
 </div>
 </section>
@@ -653,7 +645,7 @@ to download the full example code</p>
   result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.806 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  7.362 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-point-interpolation-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/fa4ffdc62b92ef4744fde2f3640e4f6a/Point_Interpolation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Point_Interpolation.py</span></code></a></p>

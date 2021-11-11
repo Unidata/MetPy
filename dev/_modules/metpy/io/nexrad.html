@@ -674,8 +674,8 @@
             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_el</span><span class="p">):</span>
                 <span class="n">seg_num</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">seg_num</span> <span class="o">!=</span> <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message 13 segments out of sync -- read </span><span class="si">{}</span><span class="s1"> but on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">seg_num</span><span class="p">,</span> <span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message 13 segments out of sync -- read </span><span class="si">%d</span><span class="s1"> but on </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
+                                <span class="n">seg_num</span><span class="p">,</span> <span class="n">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
                 <span class="n">az_data</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_az</span><span class="p">):</span>
@@ -2459,8 +2459,7 @@
         <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_vols</span><span class="p">)]</span>
 
         <span class="c1"># Wrap the circular buffer so that latest is last</span>
-        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">latest</span><span class="p">:]</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[:</span><span class="n">latest</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">vals</span>
+        <span class="k">return</span> <span class="n">vals</span><span class="p">[</span><span class="n">latest</span><span class="p">:]</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[:</span><span class="n">latest</span><span class="p">]</span>
 
     <span class="n">packet_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">_unpack_packet_uniform_text</span><span class="p">,</span>
                   <span class="mi">2</span><span class="p">:</span> <span class="n">_unpack_packet_special_text_symbol</span><span class="p">,</span>

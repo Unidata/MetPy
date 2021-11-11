@@ -552,9 +552,8 @@
 <span class="sd">        This is used by `xarray.open_dataset`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_time_var</span><span class="p">()]</span>
         <span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_proj_var</span><span class="p">()</span>
-        <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">))</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_time_var</span><span class="p">(),</span> <span class="p">(</span><span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">)]</span>
         <span class="n">variables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_coord_vars</span><span class="p">())</span>
 
         <span class="c1"># Now the data</span>

@@ -950,8 +950,8 @@
                 <span class="n">proj_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">proj_name</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s1">&#39;Could not find variable corresponding to the value of &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;grid_mapping: </span><span class="si">{</span><span class="n">proj_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="s1">&#39;Could not find variable corresponding to the value of grid_mapping: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="n">proj_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">crs</span> <span class="o">=</span> <span class="n">CFProjection</span><span class="p">(</span><span class="n">proj_var</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
 

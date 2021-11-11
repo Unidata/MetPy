@@ -2225,9 +2225,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">coords</span> <span class="o">=</span> <span class="n">geo_obj</span><span class="o">.</span><span class="n">coords</span>
 
-        <span class="n">position</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">label_hash</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)]</span>
-
-        <span class="k">return</span> <span class="n">position</span>
+        <span class="k">return</span> <span class="n">coords</span><span class="p">[</span><span class="n">label_hash</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">_draw_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;Draw a label to the plot.</span>
