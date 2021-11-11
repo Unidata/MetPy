@@ -11,14 +11,12 @@ MetPy
 [![Latest Docs](https://github.com/Unidata/MetPy/workflows/Build%20Docs/badge.svg)](http://unidata.github.io/MetPy)
 [![PyPI Package](https://img.shields.io/pypi/v/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Package](https://anaconda.org/conda-forge/metpy/badges/version.svg)](https://anaconda.org/conda-forge/metpy)
-
 [![PyPI Downloads](https://img.shields.io/pypi/dm/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Downloads](https://anaconda.org/conda-forge/metpy/badges/downloads.svg)](https://anaconda.org/conda-forge/metpy)
 
 [![PyPI Tests](https://github.com/Unidata/MetPy/workflows/PyPI%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22PyPI+Tests%22)
 [![Conda Tests](https://github.com/Unidata/MetPy/workflows/Conda%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22Conda+Tests%22)
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=main)](https://codecov.io/github/Unidata/MetPy?branch=main)
-
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2e64843f595c42e991457cb76fcfa769)](https://www.codacy.com/gh/Unidata/MetPy/dashboard)
 [![Code Climate](https://codeclimate.com/github/Unidata/MetPy/badges/gpa.svg)](https://codeclimate.com/github/Unidata/MetPy)
 
