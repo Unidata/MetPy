@@ -1,6 +1,9 @@
 MetPy
 =====
 
+[![MetPy Logo](https://github.com/Unidata/MetPy/raw/main/docs/_static/metpy_150x150.png)](https://unidata.github.io/MetPy/)
+[![Unidata Logo](https://github.com/Unidata/MetPy/raw/main/docs/_static/unidata_150x150.png)](https://www.unidata.ucar.edu)
+
 [![License](https://img.shields.io/pypi/l/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Gitter](https://badges.gitter.im/Unidata/MetPy.svg)](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square)](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
@@ -8,15 +11,13 @@ MetPy
 [![Latest Docs](https://github.com/Unidata/MetPy/workflows/Build%20Docs/badge.svg)](http://unidata.github.io/MetPy)
 [![PyPI Package](https://img.shields.io/pypi/v/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Package](https://anaconda.org/conda-forge/metpy/badges/version.svg)](https://anaconda.org/conda-forge/metpy)
-
 [![PyPI Downloads](https://img.shields.io/pypi/dm/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Downloads](https://anaconda.org/conda-forge/metpy/badges/downloads.svg)](https://anaconda.org/conda-forge/metpy)
 
 [![PyPI Tests](https://github.com/Unidata/MetPy/workflows/PyPI%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22PyPI+Tests%22)
 [![Conda Tests](https://github.com/Unidata/MetPy/workflows/Conda%20Tests/badge.svg)](https://github.com/Unidata/MetPy/actions?query=workflow%3A%22Conda+Tests%22)
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=main)](https://codecov.io/github/Unidata/MetPy?branch=main)
-
-[![Codacy issues](https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d)](https://www.codacy.com/app/dopplershift/MetPy)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2e64843f595c42e991457cb76fcfa769)](https://www.codacy.com/gh/Unidata/MetPy/dashboard)
 [![Code Climate](https://codeclimate.com/github/Unidata/MetPy/badges/gpa.svg)](https://codeclimate.com/github/Unidata/MetPy)
 
 MetPy is a collection of tools in Python for reading, visualizing and
