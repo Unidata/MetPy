@@ -746,8 +746,8 @@ class MetPyDatasetAccessor:
                 proj_var = self._dataset.variables[proj_name]
             except KeyError:
                 log.warning(
-                    'Could not find variable corresponding to the value of '
-                    f'grid_mapping: {proj_name}')
+                    'Could not find variable corresponding to the value of grid_mapping: %s',
+                    proj_name)
             else:
                 crs = CFProjection(proj_var.attrs)
 

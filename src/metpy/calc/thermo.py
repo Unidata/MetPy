@@ -3262,8 +3262,7 @@ def lifted_index(pressure, temperature, parcel_profile):
                                  pressure, temperature, parcel_profile)
 
     # calculate the lifted index.
-    lifted_index = t500 - tp500.to(units.degC)
-    return lifted_index
+    return t500 - tp500.to(units.degC)
 
 
 @exporter.export
@@ -3310,9 +3309,7 @@ def k_index(pressure, temperature, dewpoint):
                                                            dewpoint)
 
     # Calculate k index.
-    k_index = ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
-
-    return k_index
+    return ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
 
 
 @exporter.export
@@ -3477,9 +3474,7 @@ def total_totals_index(pressure, temperature, dewpoint):
                                               pressure, temperature, dewpoint)
 
     # Calculate total totals index.
-    tt_index = (t850 - t500) + (td850 - t500)
-
-    return tt_index
+    return (t850 - t500) + (td850 - t500)
 
 
 @exporter.export
@@ -3518,9 +3513,7 @@ def vertical_totals(pressure, temperature):
                                   pressure, temperature)
 
     # Calculate vertical totals.
-    vt = t850 - t500
-
-    return vt
+    return t850 - t500
 
 
 @exporter.export
@@ -3562,6 +3555,4 @@ def cross_totals(pressure, temperature, dewpoint):
                                            pressure, temperature, dewpoint)
 
     # Calculate vertical totals.
-    ct = td850 - t500
-
-    return ct
+    return td850 - t500
