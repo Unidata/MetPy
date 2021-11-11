@@ -138,6 +138,16 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 
     Notes
     -----
+
+    Formula based on that from [Holton2012]_ pg. 86
+
+    .. math:: MPW = (p-p_s)^{-1} \int_{p_s}^{p} A dp,
+
+    * :math:`MPW` is the weighted pressure mean of a variable
+    * :math:`p` is the bottom pressure level
+    * :math:`p_s` is the top pressure level
+    * :math:`A` is the variable whose weighted pressure mean is being calculated.
+
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
