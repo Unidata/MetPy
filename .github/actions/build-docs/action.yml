@@ -28,7 +28,7 @@ runs:
         set -e -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         pushd docs
-        make overridecheck html O=-W 2>&1 | tee build-${{ matrix.python-version }}.log || (
+        make overridecheck html O=-W 2>&1 | tee build-${{ inputs.key }}.log || (
             echo '::set-output name=log_available::true' && false
         )
         popd

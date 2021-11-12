@@ -19,10 +19,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python ${{ inputs.python-version }}
       uses: actions/setup-python@v2.2.2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{ inputs.python-version }}
 
     # Use pip to find the right cache dir and then sets up caching for it
     - name: Get pip cache dir
