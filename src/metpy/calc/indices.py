@@ -216,12 +216,8 @@ def weighted_continuous_average(pressure, *args, height=None, bottom=None, depth
         pressure, *args, height=height, bottom=bottom, depth=depth
     )
 
-    # Taking the integral of the weights (pressure) to feed into the weighting
-    # function. Said integral works out to this function:
-    dp = np.gradient(pres_prof)
-
-    # Perform integration on the profile for each variable
-    return [np.sum(dp * var_prof) / np.sum(dp) for var_prof in others]
+    return [np.trapz(var_prof, x=pres_prof) / (pres_prof[-1] - pres_prof[0])
+            for var_prof in others]
 
 
 @exporter.export
