@@ -43,7 +43,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
@@ -1272,7 +1272,7 @@
 <h1>thickness_hydrostatic<a class="headerlink" href="#thickness-hydrostatic" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.thickness_hydrostatic">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">thickness_hydrostatic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pressure</span></em>, <em class="sig-param"><span class="pre">temperature</span></em>, <em class="sig-param"><span class="pre">mixing_ratio=None</span></em>, <em class="sig-param"><span class="pre">molecular_weight_ratio=&lt;Quantity(0.62195691</span></em>, <em class="sig-param"><span class="pre">'dimensionless')&gt;</span></em>, <em class="sig-param"><span class="pre">bottom=None</span></em>, <em class="sig-param"><span class="pre">depth=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thickness_hydrostatic" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">thickness_hydrostatic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixing_ratio=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_weight_ratio=&lt;Quantity(0.62195691</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thickness_hydrostatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the thickness of a layer via the hypsometric equation.</p>
 <p>This thickness calculation uses the pressure and temperature profiles (and optionally
 mixing ratio) via the hypsometric equation with virtual temperature adjustment.</p>
@@ -1354,7 +1354,7 @@ Quantities even when given xarray DataArray profiles.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.0.<br>
 </p>
     </div>
     
