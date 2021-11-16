@@ -290,12 +290,12 @@ def test_hodograph_api():
     hodo = Hodograph(ax, component_range=60)
     hodo.add_grid(increment=5, color='k')
     hodo.plot([1, 10], [1, 10], color='red')
-    hodo.plot_colormapped(np.array([1, 3, 5, 10]), np.array([2, 4, 6, 11]),
+    hodo.plot_colormapped(np.array([1, 3, 5, 10]), -np.array([2, 4, 6, 11]),
                           np.array([0.1, 0.3, 0.5, 0.9]), cmap='Greys')
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.6 if MPL_VERSION == '3.3' else 0.)
 def test_hodograph_units():
     """Test passing unit-ed quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))
@@ -304,7 +304,7 @@ def test_hodograph_units():
     u = np.arange(10) * units.kt
     v = np.arange(10) * units.kt
     hodo.plot(u, v)
-    hodo.plot_colormapped(u, v, np.sqrt(u * u + v * v), cmap='Greys')
+    hodo.plot_colormapped(u, -v, np.sqrt(u * u + v * v), cmap='Greys')
     ax.set_xlabel('')
     ax.set_ylabel('')
     return fig
