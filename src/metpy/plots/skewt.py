@@ -13,6 +13,7 @@ from matplotlib.axes import Axes
 import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
 import matplotlib.colors as mcolors
+from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
@@ -492,6 +493,7 @@ class SkewT:
         kwargs.setdefault('colors', 'r')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
+        kwargs.setdefault('zorder', Line2D.zorder - 0.001)
         self.dry_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.dry_adiabats
 
@@ -551,6 +553,7 @@ class SkewT:
         kwargs.setdefault('colors', 'b')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
+        kwargs.setdefault('zorder', Line2D.zorder - 0.001)
         self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.moist_adiabats
 
@@ -604,6 +607,7 @@ class SkewT:
         kwargs.setdefault('colors', 'g')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
+        kwargs.setdefault('zorder', Line2D.zorder - 0.001)
         self.mixing_lines = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.mixing_lines
 
@@ -797,7 +801,7 @@ class Hodograph:
         """
         # Some default arguments. Take those, and update with any
         # arguments passed in
-        grid_args = {'color': 'grey', 'linestyle': 'dashed'}
+        grid_args = {'color': 'grey', 'linestyle': 'dashed', 'zorder': Line2D.zorder - 0.001}
         if kwargs:
             grid_args.update(kwargs)
 
