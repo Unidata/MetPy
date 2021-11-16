@@ -276,7 +276,7 @@ def wind_plot():
     return u, v, x, y
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0076, remove_text=True)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
 def test_barb_projection(wind_plot, ccrs):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
@@ -291,7 +291,7 @@ def test_barb_projection(wind_plot, ccrs):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0076, remove_text=True)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
 def test_arrow_projection(wind_plot, ccrs):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot

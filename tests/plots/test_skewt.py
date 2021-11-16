@@ -15,7 +15,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.023)
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -46,7 +46,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.02)
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.)
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
