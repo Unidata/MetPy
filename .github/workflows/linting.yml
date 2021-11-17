@@ -12,9 +12,11 @@ jobs:
       - uses: actions/checkout@v2.4.0
 
       - name: Set up Python 3
-        uses: actions/setup-python@v2.2.2
+        uses: actions/setup-python@v2.3.0
         with:
           python-version: 3.x
+          cache: 'pip'
+          cache-dependency-path: 'ci/linting_requirements.txt'
 
       - name: Install linting tools
         run: python -m pip install -r ci/linting_requirements.txt

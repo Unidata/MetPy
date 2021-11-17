@@ -23,23 +23,10 @@ runs:
       uses: actions/setup-python@v2.2.2
       with:
         python-version: ${{ inputs.python-version }}
-
-    # Use pip to find the right cache dir and then sets up caching for it
-    - name: Get pip cache dir
-      shell: bash
-      id: pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-
-    - name: Setup pip caching
-      uses: actions/cache@v2.1.6
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: pip-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version }}-${{ hashFiles('ci/*') }}
-        restore-keys: |
-          pip-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version }}-${{ hashFiles('ci/*') }}
-          pip-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version }}-
-          pip-${{ inputs.type }}-${{ runner.os }}-
-          pip-${{ inputs.type }}-
+        cache: 'pip'
+        cache-dependency-path: |
+          - ci/${{ inputs.type }}_requirements.txt
+          - ci/${{ inputs.version-file }}
 
     - name: Setup PROJ
       if: ${{ inputs.need-cartopy == 'true' }}
