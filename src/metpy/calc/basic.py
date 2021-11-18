@@ -14,7 +14,8 @@ from itertools import product
 import warnings
 
 import numpy as np
-from scipy.ndimage import gaussian_filter
+from scipy.ndimage import gaussian_filter, zoom as scipy_zoom
+import xarray as xr
 
 from .. import constants as mpconsts
 from ..package_tools import Exporter
@@ -1034,6 +1035,68 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
                          'calculation must be either 5 or 9.')
 
     return smooth_window(scalar_grid, window=weights, passes=passes, normalize_weights=False)
+
+
+@exporter.export
+def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0.0,
+                prefilter=True):
+    """Apply a spline interpolation to the data to effectively reduce the grid spacing.
+
+    This function applies `scipy.ndimage.zoom` to increase the number of grid points and
+    effectively reduce the grid spacing over the data provided.
+
+    Parameters
+    ----------
+    input_field  : `xarray.DataArray`
+        The 2D data array to be interpolated.
+
+    zoom : float or sequence
+        The zoom factor along the axes. If a float, zoom is the same for each axis. If a
+        sequence, zoom should contain one value for each axis.
+
+    order : int, optional
+        The order of the spline interpolation, default is 3. The order has to be in the
+        range 0-5.
+
+    mode : {‘reflect’, ‘grid-mirror’, ‘constant’, ‘grid-constant’, ‘nearest’, ‘mirror’,
+        ‘grid-wrap’, ‘wrap’}, optional
+        See `scipy.ndimage.zoom` documentation for details.
+
+    cval : scalar, optional
+        See `scipy.ndimage.zoom` documentation for details.
+
+    prefilter : bool (default = True)
+        See `scipy.ndimage.zoom` documentation for details.
+
+    Returns
+    -------
+    zoomed_data: `xarray.DataArray`
+        The zoomed input with its associated coordinates and coordinate reference system, if
+        available.
+
+    """
+    # Zoom data
+    zoomed_data = scipy_zoom(
+        input_field.data, zoom, output=output, order=order, mode=mode, cval=cval,
+        prefilter=prefilter
+    )
+
+    # Zoom dimension coordinates
+    if not np.iterable(zoom):
+        zoom = tuple(zoom for _ in input_field.dims)
+    zoomed_dim_coords = {}
+    for dim_name, dim_zoom in zip(input_field.dims, zoom):
+        if dim_name in input_field.coords:
+            zoomed_dim_coords[dim_name] = scipy_zoom(
+                input_field[dim_name].data, dim_zoom, order=order, mode=mode, cval=cval,
+                prefilter=prefilter
+            )
+    if hasattr(input_field, 'metpy_crs'):
+        zoomed_dim_coords['metpy_crs'] = input_field.metpy_crs
+    # Reconstruct (ignoring non-dimension coordinates)
+    return xr.DataArray(
+        zoomed_data, dims=input_field.dims, coords=zoomed_dim_coords, attrs=input_field.attrs
+    )
 
 
 @exporter.export

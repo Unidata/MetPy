@@ -186,6 +186,7 @@ Smoothing
       smooth_rectangular
       smooth_circular
       smooth_n_point
+      zoom_xarray
 
 Other
 -----
