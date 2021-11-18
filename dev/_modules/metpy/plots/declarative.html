@@ -224,7 +224,7 @@
 <span class="kn">from</span> <span class="nn">._mpl</span> <span class="kn">import</span> <span class="n">TextCollection</span>
 <span class="kn">from</span> <span class="nn">.cartopy_utils</span> <span class="kn">import</span> <span class="n">import_cartopy</span>
 <span class="kn">from</span> <span class="nn">.station_plot</span> <span class="kn">import</span> <span class="n">StationPlot</span>
-<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">reduce_point_density</span><span class="p">,</span> <span class="n">smooth_n_point</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="n">reduce_point_density</span><span class="p">,</span> <span class="n">smooth_n_point</span><span class="p">,</span> <span class="n">zoom_xarray</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">units</span>
 
@@ -1275,8 +1275,26 @@
 
 <span class="s2">    See Also</span>
 <span class="s2">    --------</span>
-<span class="s2">    metpy.calc.smooth_n_point</span>
+<span class="s2">    metpy.calc.smooth_n_point, smooth_contour</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
+    <span class="n">smooth_contour</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                            <span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                                  <span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">))])</span>
+    <span class="n">smooth_contour</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Spline interpolation to smooth contours.</span>
+
+<span class="s2">    This attribute requires settings for the `metpy.calc.zoom_xarray` function, which will</span>
+<span class="s2">    produce a spline interpolation given an integer zoom factor. Either a single integer</span>
+<span class="s2">    specifying the zoom factor (e.g., 4) or a tuple containing two integers for the zoom factor</span>
+<span class="s2">    and the spline interpolation order can be used. The default spline interpolation order is</span>
+<span class="s2">    3.</span>
+
+<span class="s2">    This is best used to smooth contours when contouring a sparse grid (e.g., when your data</span>
+<span class="s2">    has a large grid spacing).</span>
+
+<span class="s2">    See Also</span>
+<span class="s2">    --------</span>
+<span class="s2">    metpy.calc.zoom_xarray, smooth_field</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">)</span>
@@ -1319,6 +1337,15 @@
             <span class="c1"># Handle smoothing of data</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data_subset</span> <span class="o">=</span> <span class="n">smooth_n_point</span><span class="p">(</span><span class="n">data_subset</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_field</span><span class="p">)</span>
+            <span class="c1"># Handle zoom interpolation</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_contour</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smooth_contour</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">zoom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_contour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_contour</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">zoom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_contour</span>
+                    <span class="n">order</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="n">data_subset</span> <span class="o">=</span> <span class="n">zoom_xarray</span><span class="p">(</span><span class="n">data_subset</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
 
             <span class="c1"># Handle unit conversion (both direct unit specification and scaling)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

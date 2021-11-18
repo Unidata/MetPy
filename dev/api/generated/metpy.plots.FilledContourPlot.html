@@ -894,6 +894,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.zoom_xarray.html">
+     zoom_xarray
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.angle_to_direction.html">
      angle_to_direction
     </a>
@@ -1351,16 +1356,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.scale" title="metpy.plots.FilledContourPlot.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the field to be plotted by the value given.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.smooth_field" title="metpy.plots.FilledContourPlot.smooth_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_field</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.smooth_contour" title="metpy.plots.FilledContourPlot.smooth_contour"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_contour</span></code></a></p></td>
+<td><p>Spline interpolation to smooth contours.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.smooth_field" title="metpy.plots.FilledContourPlot.smooth_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_field</span></code></a></p></td>
 <td><p>Number of smoothing passes using 9-pt smoother.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.time" title="metpy.plots.FilledContourPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.time" title="metpy.plots.FilledContourPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.x" title="metpy.plots.FilledContourPlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.x" title="metpy.plots.FilledContourPlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
 <td><p>The x coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.y" title="metpy.plots.FilledContourPlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.FilledContourPlot.y" title="metpy.plots.FilledContourPlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
 <td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
@@ -1619,6 +1627,23 @@ the data values will be scaled by 10^5.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.FilledContourPlot.smooth_contour">
+<span class="sig-name descname"><span class="pre">smooth_contour</span></span><a class="headerlink" href="#metpy.plots.FilledContourPlot.smooth_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spline interpolation to smooth contours.</p>
+<p>This attribute requires settings for the <a class="reference internal" href="metpy.calc.zoom_xarray.html#metpy.calc.zoom_xarray" title="metpy.calc.zoom_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.zoom_xarray</span></code></a> function, which will
+produce a spline interpolation given an integer zoom factor. Either a single integer
+specifying the zoom factor (e.g., 4) or a tuple containing two integers for the zoom factor
+and the spline interpolation order can be used. The default spline interpolation order is
+3.</p>
+<p>This is best used to smooth contours when contouring a sparse grid (e.g., when your data
+has a large grid spacing).</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.zoom_xarray.html#metpy.calc.zoom_xarray" title="metpy.calc.zoom_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.zoom_xarray</span></code></a>, <a class="reference internal" href="#metpy.plots.FilledContourPlot.smooth_field" title="metpy.plots.FilledContourPlot.smooth_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_field</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.FilledContourPlot.smooth_field">
 <span class="sig-name descname"><span class="pre">smooth_field</span></span><a class="headerlink" href="#metpy.plots.FilledContourPlot.smooth_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of smoothing passes using 9-pt smoother.</p>
@@ -1627,7 +1652,7 @@ provide a smoothed field for plotting. It is best to use this smoothing for data
 finer resolutions (e.g., smaller grid spacings with a lot of grid points).</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.smooth_n_point</span></code></a></p>
+<p><a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.smooth_n_point</span></code></a>, <a class="reference internal" href="#metpy.plots.FilledContourPlot.smooth_contour" title="metpy.plots.FilledContourPlot.smooth_contour"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_contour</span></code></a></p>
 </div>
 </dd></dl>
 

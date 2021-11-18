@@ -24,6 +24,7 @@ PlotScalar
       ~PlotScalar.plot_units
       ~PlotScalar.plotdata
       ~PlotScalar.scale
+      ~PlotScalar.smooth_contour
       ~PlotScalar.smooth_field
       ~PlotScalar.time
       ~PlotScalar.x
@@ -88,6 +89,7 @@ PlotScalar
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
+   .. autoattribute:: smooth_contour
    .. autoattribute:: smooth_field
    .. autoattribute:: time
    .. autoattribute:: x

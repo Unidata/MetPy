@@ -31,6 +31,7 @@ FilledContourPlot
       ~FilledContourPlot.plot_units
       ~FilledContourPlot.plotdata
       ~FilledContourPlot.scale
+      ~FilledContourPlot.smooth_contour
       ~FilledContourPlot.smooth_field
       ~FilledContourPlot.time
       ~FilledContourPlot.x
@@ -102,6 +103,7 @@ FilledContourPlot
    .. autoattribute:: plot_units
    .. autoattribute:: plotdata
    .. autoattribute:: scale
+   .. autoattribute:: smooth_contour
    .. autoattribute:: smooth_field
    .. autoattribute:: time
    .. autoattribute:: x

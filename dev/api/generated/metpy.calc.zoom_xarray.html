@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>ageostrophic_wind &#8212; MetPy 1.1dev</title>
+    <title>zoom_xarray &#8212; MetPy 1.1dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="coriolis_parameter" href="metpy.calc.coriolis_parameter.html" />
-    <link rel="prev" title="advection" href="metpy.calc.advection.html" />
+    <link rel="next" title="angle_to_direction" href="metpy.calc.angle_to_direction.html" />
+    <link rel="prev" title="smooth_n_point" href="metpy.calc.smooth_n_point.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -66,7 +66,7 @@
                         ga('send', 'pageview');
                     </script>
 
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.ageostrophic_wind.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.zoom_xarray.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -663,8 +663,8 @@
      advection
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.calc.ageostrophic_wind.html">
      ageostrophic_wind
     </a>
    </li>
@@ -893,8 +893,8 @@
      smooth_n_point
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.zoom_xarray.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      zoom_xarray
     </a>
    </li>
@@ -1271,41 +1271,33 @@
               
               <div>
                 
-  <section id="ageostrophic-wind">
-<h1>ageostrophic_wind<a class="headerlink" href="#ageostrophic-wind" title="Permalink to this headline">¶</a></h1>
+  <section id="zoom-xarray">
+<h1>zoom_xarray<a class="headerlink" href="#zoom-xarray" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.calc.ageostrophic_wind">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">ageostrophic_wind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.ageostrophic_wind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the ageostrophic wind given from the height or geopotential.</p>
+<dt class="sig sig-object py" id="metpy.calc.zoom_xarray">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">zoom_xarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.zoom_xarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a spline interpolation to the data to effectively reduce the grid spacing.</p>
+<p>This function applies <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom" title="(in SciPy v1.7.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.ndimage.zoom</span></code></a> to increase the number of grid points and
+effectively reduce the grid spacing over the data provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>height</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – The height or geopotential field.</p></li>
-<li><p><strong>u</strong> ((…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.18)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The u wind field.</p></li>
-<li><p><strong>v</strong> ((…, M, N) <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.18)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The u wind field.</p></li>
-<li><p><strong>dx</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.18)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
-latitude/longitude coordinates used as input.</p></li>
-<li><p><strong>dy</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.18)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
-latitude/longitude coordinates used as input.</p></li>
-<li><p><strong>latitude</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.18)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – The latitude, which is used to calculate the Coriolis parameter. Its dimensions must
-be broadcastable with those of height. Optional if <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with latitude
-coordinate used as input. Note that an argument without units is treated as
-dimensionless, which is equivalent to radians.</p></li>
-<li><p><strong>x_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – Axis number of x dimension. Defaults to -1 (implying […, Y, X] order). Automatically
-parsed from input if using <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p></li>
-<li><p><strong>y_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – Axis number of y dimension. Defaults to -2 (implying […, Y, X] order). Automatically
-parsed from input if using <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p></li>
+<li><p><strong>input_field</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The 2D data array to be interpolated.</p></li>
+<li><p><strong>zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> or </em><em>sequence</em>) – The zoom factor along the axes. If a float, zoom is the same for each axis. If a
+sequence, zoom should contain one value for each axis.</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – The order of the spline interpolation, default is 3. The order has to be in the
+range 0-5.</p></li>
+<li><p><strong>mode</strong> (<em>{‘reflect’</em><em>, </em><em>‘grid-mirror’</em><em>, </em><em>‘constant’</em><em>, </em><em>‘grid-constant’</em><em>, </em><em>‘nearest’</em><em>, </em><em>‘mirror’</em><em>,</em>) – ‘grid-wrap’, ‘wrap’}, optional
+See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom" title="(in SciPy v1.7.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.ndimage.zoom</span></code></a> documentation for details.</p></li>
+<li><p><strong>cval</strong> (<em>scalar</em><em>, </em><em>optional</em>) – See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom" title="(in SciPy v1.7.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.ndimage.zoom</span></code></a> documentation for details.</p></li>
+<li><p><strong>prefilter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em> (</em><em>default = True</em><em>)</em>) – See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom" title="(in SciPy v1.7.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.ndimage.zoom</span></code></a> documentation for details.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>A 2-item tuple of arrays</em> – A tuple of the u-component and v-component of the ageostrophic wind</p>
+<dd class="field-even"><p><strong>zoomed_data</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The zoomed input with its associated coordinates and coordinate reference system, if
+available.</p>
 </dd>
 </dl>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.0: </span>Changed signature from <code class="docutils literal notranslate"><span class="pre">(heights,</span> <span class="pre">f,</span> <span class="pre">dx,</span> <span class="pre">dy,</span> <span class="pre">u,</span> <span class="pre">v,</span> <span class="pre">dim_order='yx')</span></code></p>
-</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -1316,17 +1308,17 @@ parsed from input if using <a class="reference external" href="https://xarray.py
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="metpy.calc.advection.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.calc.smooth_n_point.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">advection</p>
+            <p class="prev-next-title">smooth_n_point</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.calc.coriolis_parameter.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.calc.angle_to_direction.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">coriolis_parameter</p>
+        <p class="prev-next-title">angle_to_direction</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
