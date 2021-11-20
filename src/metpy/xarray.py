@@ -20,7 +20,9 @@ import functools
 from inspect import signature
 from itertools import chain
 import logging
+from math import radians
 import re
+from typing import final
 import warnings
 
 import numpy as np
@@ -280,6 +282,11 @@ class MetPyDataArrayAccessor:
         """Return the coordinate reference system (CRS) as a pyproj object."""
         return self.crs.to_pyproj()
 
+    @property
+    def pyproj_proj(self):
+        """Return the Proj object cooresponding to the coordinate reference system (CRS)."""
+        return Proj(self.metpy.pyproj_crs)
+
     def _fixup_coordinate_map(self, coord_map):
         """Ensure sure we have coordinate variables in map, not coordinate names."""
         new_coord_map = {}
@@ -430,9 +437,46 @@ class MetPyDataArrayAccessor:
         access a single coordinate, use the appropriate attribute on the accessor, or use tuple
         unpacking.
 
+        If latitude and/or longitude are requested here, and yet are not present on the
+        DataArray, an on-the-fly computation from the CRS and y/x dimension coordinates is
+        attempted.
+
         """
+        latitude = None
+        longitude = None
         for arg in args:
-            yield self._axis(arg)
+            try:
+                yield self._axis(arg)
+            except AttributeError as exc:
+                if (
+                    (arg == 'latitude' and latitude is None)
+                    or (arg == 'longitude' and longitude is None)
+                ):
+                    # Try to compute on the fly
+                    try:
+                        latitude, longitude = _build_latitude_longitude(self._data_array)
+                    except:
+                        # Attempt failed, re-raise original error
+                        raise exc
+                    # Otherwise, warn and yield result
+                    warnings.warn(
+                        'Latitude and longitude computed on-demand, which may be an '
+                        'expensive operation. To avoid repeating this computation, assign '
+                        'these coordinates ahead of time with '
+                        '.metpy.assign_latitude_longitude().'
+                    )
+                    if arg == 'latitude':
+                        yield latitude
+                    else:
+                        yield longitude
+                elif arg == 'latitude' and latitude is not None:
+                    # We have this from previous computation
+                    yield latitude
+                elif arg == 'longitude' and longitude is not None:
+                    # We have this from previous computation
+                    yield longitude   
+                else:
+                    raise exc
 
     @property
     def time(self):
@@ -475,6 +519,34 @@ class MetPyDataArrayAccessor:
         """Return the time difference of the data in seconds (to microsecond precision)."""
         us_diffs = np.diff(self._data_array.values).astype('timedelta64[us]').astype('int64')
         return units.Quantity(us_diffs / 1e6, 's')
+
+    @property
+    def grid_deltas(self):
+        """Return the horizontal dimensional grid deltas suitable for vector derivatives."""
+        if (
+            hasattr(self.metpy, 'crs')
+            and self.metpy.crs['grid_mapping_name'] == 'latitude_longitude'
+        ):
+            # Calculate dx and dy on ellipsoid (on equator and 0 deg meridian, respectively)
+            from .calc.tools import nominal_lat_lon_grid_deltas
+            dx, dy = nominal_lat_lon_grid_deltas(
+                self.metpy.longitude.metpy.unit_array,
+                self.metpy.latitude.metpy.unit_array,
+                self.metpy.pyproj_crs.get_geod()
+            )
+        else:
+            # Calculate dx and dy in projection space
+            try:
+                dx = np.diff(self.metpy.x.metpy.unit_array)
+                dy = np.diff(self.metpy.y.metpy.unit_array)
+            except AttributeError:
+                raise AttributeError(
+                    'Grid deltas cannot be calculated since horizontal dimension coordinates '
+                    'cannot be found.'
+                )
+
+        return {'dx': dx, 'dy': dy}
+
 
     def find_axis_name(self, axis):
         """Return the name of the axis corresponding to the given identifier.
@@ -1115,7 +1187,7 @@ def _build_latitude_longitude(da):
     """Build latitude/longitude coordinates from DataArray's y/x coordinates."""
     y, x = da.metpy.coordinates('y', 'x')
     xx, yy = np.meshgrid(x.values, y.values)
-    lonlats = np.stack(Proj(da.metpy.pyproj_crs)(xx, yy, inverse=True, radians=False), axis=-1)
+    lonlats = np.stack(da.metpy.pyproj_proj(xx, yy, inverse=True, radians=False), axis=-1)
     longitude = xr.DataArray(lonlats[..., 0], dims=(y.name, x.name),
                              coords={y.name: y, x.name: x},
                              attrs={'units': 'degrees_east', 'standard_name': 'longitude'})
@@ -1136,7 +1208,7 @@ def _build_y_x(da, tolerance):
                          'must be 2D')
 
     # Convert to projected y/x
-    xxyy = np.stack(Proj(da.metpy.pyproj_crs)(
+    xxyy = np.stack(da.metpy.pyproj_proj(
         longitude.values,
         latitude.values,
         inverse=False,

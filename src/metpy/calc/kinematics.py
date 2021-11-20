@@ -5,7 +5,10 @@
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import first_derivative, get_layer_heights, gradient
+from .tools import (
+    first_derivative, get_layer_heights, gradient,
+    horizontal_grid_parameter_description, parse_grid_arguments, vector_derivative
+)
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
@@ -15,10 +18,13 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-@add_grid_arguments_from_xarray
+@parse_grid_arguments
 @preprocess_and_wrap(wrap_like='u')
 @check_units('[speed]', '[speed]', dx='[length]', dy='[length]')
-def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
+def vorticity(
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
+    parallel_scale=None, meridional_scale=None
+):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
@@ -27,20 +33,7 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
         x component of the wind
     v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         y component of the wind
-    dx : `pint.Quantity`, optional
-        The grid spacing(s) in the x-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input. Keyword-only argument.
-    dy : `pint.Quantity`, optional
-        The grid spacing(s) in the y-direction. If an array, there should be one item less than
-        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
-        latitude/longitude coordinates used as input. Keyword-only argument.
-    x_dim : int, optional
-        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument.
-    y_dim : int, optional
-        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
-        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    """ + horizontal_grid_parameter_description + """
 
     Returns
     -------
@@ -53,17 +46,22 @@ def vorticity(u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2):
 
     Notes
     -----
-    This implements a numerical version of the typical vertical vorticity equation in
-    Cartesian coordinates:
+    This implements a numerical version of the typical vertical vorticity equation:
 
     .. math:: \zeta = \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y}
+
+    If sufficient grid projection information is provided, these partial deriviatives are
+    taken from the projection-correct derivative matrix of the vector wind. Otherwise, they
+    are evaluated as scalar derivatives on a Cartesian grid.
 
     .. versionchanged:: 1.0
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudy = first_derivative(u, delta=dy, axis=y_dim)
-    dvdx = first_derivative(v, delta=dx, axis=x_dim)
+    dudy, dvdx = vector_derivative(
+        u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
+        meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
+    )
     return dvdx - dudy
 
 

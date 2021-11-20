@@ -3,13 +3,14 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 import functools
+from inspect import signature
 from operator import itemgetter
 import warnings
 
 import numpy as np
 from numpy.core.numeric import normalize_axis_index
 import numpy.ma as ma
-from pyproj import Geod
+from pyproj import Geod, Proj
 from scipy.spatial import cKDTree
 import xarray as xr
 
@@ -859,6 +860,35 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     return units.Quantity(dx, 'meter'), units.Quantity(dy, 'meter')
 
 
+@preprocess_and_wrap()
+def nominal_lat_lon_grid_deltas(longitude, latitude, geod=None):
+    """Calculate the nominal deltas along axes of a latitude/longitude grid."""
+    if geod is None:
+        g = Geod(ellps='sphere')
+    else:
+        g = geod
+
+    if longitude.ndim != 1 or latitude.ndim != 1:
+        raise ValueError(
+            'Cannot calculate nominal grid spacing from longitude and latitude arguments '
+            'that are not one dimensional.'
+        )
+
+    dx = units.Quantity(
+        geod.a * np.diff(longitude.m_as('radian')),
+        'meter'
+    )
+    lat = latitude.m_as('radian')
+    lon_meridian_diff = np.zeros(len(lat) - 1)
+    forward_az, _, dy = geod.inv(
+        lon_meridian_diff, lat[:-1], lon_meridian_diff, lat[1:], radians=True
+    )
+    dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
+    dy = units.Quantity(dy, 'meter')
+
+    return dx, dy
+
+
 @exporter.export
 @preprocess_and_wrap()
 def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, geod=None):
@@ -947,6 +977,210 @@ def xarray_derivative_wrap(func):
             # Error
             raise ValueError('Must specify either "x" or "delta" for value positions when "f" '
                              'is not a DataArray.')
+    return wrapper
+
+
+horizontal_grid_parameter_description = """dx : `pint.Quantity`, optional
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.      
+        Keyword-only argument.
+    dy : `pint.Quantity`, optional
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis. Optional if `xarray.DataArray` with
+        latitude/longitude coordinates used as input. Also optional if one-dimensional
+        longitude and latitude arguments are given for your data on a non-projected grid.      
+        Keyword-only argument.
+    x_dim : int, optional
+        Axis number of x dimension. Defaults to -1 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    y_dim : int, optional
+        Axis number of y dimension. Defaults to -2 (implying [..., Y, X] order). Automatically
+        parsed from input if using `xarray.DataArray`. Keyword-only argument.
+    longitude : `pint.Quantity`, optional
+        Longitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
+        used as input. Also optional if parallel_scale and meridional_scale are given. If
+        otherwise omitted, calculation will be carried out on a Cartesian, rather than
+        geospatial, grid. Keyword-only argument.
+    latitude : `pint.Quantity`, optional
+        Latitude of data. Optional if `xarray.DataArray` with latitude/longitude coordinates
+        used as input. Also optional if parallel_scale and meridional_scale are given. If
+        otherwise omitted, calculation will be carried out on a Cartesian, rather than
+        geospatial, grid. Keyword-only argument.
+    crs : `pyproj.CRS`, optional
+        Coordinate Reference System of data. Optional if `xarray.DataArray` with MetPy CRS
+        used as input. Also optional if parallel_scale and meridional_scale are given. If
+        otherwise omitted, calculation will be carried out on a Cartesian, rather than
+        geospatial, grid. Keyword-only argument.
+    parallel_scale : `pint.Quantity`, optional
+        Parallel scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+    meridional_scale : `pint.Quantity`, optional
+        Meridional scale of map projection at data coordinate. Optional if `xarray.DataArray`
+        with latitude/longitude coordinates and MetPy CRS used as input. Also optional if
+        longitude, latitude, and crs are given. If otherwise omitted, calculation will be
+        carried out on a Cartesian, rather than geospatial, grid. Keyword-only argument.
+"""
+
+
+def parse_grid_arguments(func):
+    """Parse arguments to functions involving derivatives on a grid.
+    
+    TODO: use this to completely replace add_grid_arguments_from_xarray
+    """
+    # u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
+    # parallel_scale=None, meridional_scale=None, return_only=None
+    from ..xarray import dataarray_arguments
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        bound_args = signature(func).bind(*args, **kwargs)
+        bound_args.apply_defaults()
+
+        # Choose the first DataArray argument to act as grid prototype
+        try:
+            grid_prototype = dataarray_arguments(bound_args)[0]
+        except IndexError:
+            grid_prototype = None
+
+        # Fill in x_dim/y_dim
+        if (
+            grid_prototype is not None
+            and 'x_dim' in bound_args.arguments
+            and 'y_dim' in bound_args.arguments
+        ):
+            try:
+                bound_args.arguments['x_dim'] = grid_prototype.metpy.find_axis_number('x')
+                bound_args.arguments['y_dim'] = grid_prototype.metpy.find_axis_number('y')
+            except AttributeError:
+                # If axis number not found, fall back to default but warn.
+                warnings.warn('Horizontal dimension numbers not found. Defaulting to '
+                              '(..., Y, X) order.')
+
+        # Fill in vertical_dim
+        if (
+            grid_prototype is not None
+            and 'vertical_dim' in bound_args.arguments
+        ):
+            try:
+                bound_args.arguments['vertical_dim'] = (
+                    grid_prototype.metpy.find_axis_number('vertical')
+                )
+            except AttributeError:
+                # If axis number not found, fall back to default but warn.
+                warnings.warn(
+                    'Vertical dimension number not found. Defaulting to (..., Z, Y, X) order.'
+                )
+
+        # Fill in dz
+        if (
+            grid_prototype is not None
+            and 'dz' in bound_args.arguments
+            and bound_args.arguments['dz'] is None
+        ):
+            try:
+                vertical_coord = grid_prototype.metpy.vertical
+                bound_args.arguments['dz'] = np.diff(vertical_coord.metpy.unit_array)
+            except (AttributeError, ValueError):
+                # Skip, since this only comes up in advection, where dz is optional (may not
+                # need vertical at all)
+                pass
+
+        # Fill in dx and dy
+        if (
+            'dx' in bound_args.arguments and bound_args.arguments['dx'] is None
+            and 'dy' in bound_args.arguments and bound_args.arguments['dy'] is None
+        ):
+            if grid_prototype is not None:
+                grid_deltas = grid_prototype.metpy.grid_deltas
+                bound_args.arguments['dx'] = grid_deltas['dx']
+                bound_args.arguments['dy'] = grid_deltas['dy']
+            elif (
+                bound_args.arguments.get('longitude', None) is not None
+                and bound_args.arguments.get('latitude', None) is not None
+                and bound_args.arguments.get('crs', None) is not None
+            ):
+                bound_args.arguments['dx'], bound_args.arguments['dy'] = (
+                    nominal_lat_lon_grid_deltas(
+                        bound_args.arguments['longitude'],
+                        bound_args.arguments['latitude'],
+                        bound_args.arguments['crs'].get_geod()
+                    )
+                )
+            elif 'dz' in bound_args.arguments:
+                # Handle advection case, allowing dx/dy to be None but dz to not be None
+                if bound_args.arguments['dz'] is None:
+                    raise ValueError(
+                        'Must provide dx, dy, and/or dz arguments or input DataArray with '
+                        'interpretable dimension coordinates.'
+                    )
+            else:
+                raise ValueError(
+                    'Must provide dx/dy arguments, input DataArray with interpretable '
+                    'dimension coordinates, or 1D longitude/latitude arguments with a PyProj '
+                    'CRS.'
+                )
+
+        # Fill in parallel_scale and meridional_scale (possibly saving latitude for later)
+        latitude_from_xarray = None
+        if (
+            'parallel_scale' in bound_args.arguments
+            and bound_args.arguments['parallel_scale'] is None
+            and 'meridional_scale' in bound_args.arguments
+            and bound_args.arguments['meridional_scale'] is None
+        ):
+            cartesian = False
+            if grid_prototype is not None:
+                try:
+                    proj = grid_prototype.metpy.pyproj_proj
+                    lat, lon = grid_prototype.metpy.coordinates('latitude', 'longitude')
+                    latitude_from_xarray = lat
+                    lat = lat.metpy.unit_array
+                    lon = lon.metpy.unit_array
+                except AttributeError:
+                    # Fall back to cartesian calculation if we don't have a CRS or we are
+                    # unable to get the coordinates needed for map factor calculation (either
+                    # exiting lat/lon or lat/lon computed from y/x)
+                    cartesian = True
+            else:
+                try:
+                    proj = Proj(bound_args.arguments['crs'])
+                except:
+                    # Fall back to cartesian calculation if CRS is not provided or invalid
+                    cartesian = True
+                
+                lat = bound_args.arguments['latitude']
+                lon = bound_args.arguments['longitude']
+
+                if lat is not None and lon is not None:
+                    # Whoops, cartesian intended to be False, but lack valid CRS to do so.
+                    raise ValueError(
+                        'Latitude and longitude arguments provided so as to make calculation '
+                        'projection-correct, however, projection CRS is missing or invalid.'
+                    )
+
+            if not cartesian:
+                if lat.ndim == 1 and lon.dim == 1:
+                    xx, yy = np.meshgrid(lon.m_as('degrees'), lat.m_as('degrees'))
+                elif lat.ndim == 2 and lon.ndim == 2:
+                    xx, yy = lon.m_as('degrees'), lat.m_as('degrees')
+                else:
+                    raise ValueError('Latitude and longitude must be either 1D or 2D.')
+                factors = proj.get_factors(xx, yy)
+                bound_args.arguments['parallel_scale'] = factors.parallel_scale
+                bound_args.arguments['meridional_scale'] = factors.meridional_scale
+
+
+        # Fill in latitude
+        if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
+            if latitude_from_xarray is not None:
+                bound_args.arguments['latitude'] = latitude_from_xarray
+            else:
+                raise ValueError('Must provide latitude argument or input DataArray with '
+                                 'latitude/longitude coordinates.')
+        
     return wrapper
 
 
@@ -1137,7 +1371,7 @@ def second_derivative(f, axis=None, x=None, delta=None):
 
 @exporter.export
 def gradient(f, axes=None, coordinates=None, deltas=None):
-    """Calculate the gradient of a grid of values.
+    """Calculate the gradient of a scalar quantity.
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
@@ -1175,12 +1409,15 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
 
     See Also
     --------
-    laplacian, first_derivative
+    laplacian, first_derivative, vector_derivative
 
     Notes
     -----
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
+
+    This will not give projection-correct results when applied to the components of a vector
+    quantity. Instead, for vector quantities, use `vector_derivative`.
 
     .. versionchanged:: 1.0
        Changed signature from ``(f, **kwargs)``
@@ -1244,6 +1481,90 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
     derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
               for ind, axis in enumerate(axes)]
     return sum(derivs)
+
+
+@exporter.export
+@parse_grid_arguments
+def vector_derivative(
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
+    parallel_scale=None, meridional_scale=None, return_only=None
+):
+    r"""Calculate the projection-correct derivative matrix of a 2D vector.
+
+    Parameters
+    ----------
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        x component of the vector
+    v : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        y component of the vector
+    """ + horizontal_grid_parameter_description + """
+    return_only : str or sequence of str, optional
+        Sequence of which components of the derivative matrix to compute and return. If none,
+        returns the full matrix as a tuple of tuples (('du/dx', 'du/dy'), ('dv/dx', 'dv/dy')).
+        Otherwise, matches the return pattern of the given strings. Only valid strings are
+        'du/dx', 'du/dy', 'dv/dx', and 'dv/dy'.
+
+    Returns
+    -------
+    `pint.Quantity`, tuple of `pint.Quantity`, or tuple of tuple of `pint.Quantity`
+        Component(s) of vector derivative
+
+    See Also
+    --------
+    gradient
+
+    """
+    # Determine which derivatives to calculate
+    derivatives = {
+        component: None 
+        for component in ('du/dx', 'du/dy', 'dv/dx', 'dv/dy')
+        if (return_only is None or component in return_only)
+    }
+    map_factor_correction = parallel_scale is not None and meridional_scale is not None
+
+    # Add in the map factor derivatives if needed
+    if map_factor_correction and 'du/dx' in derivatives or 'dv/dx' in derivatives:
+        derivatives['dp/dy'] = None
+    if map_factor_correction and 'du/dy' in derivatives or 'dv/dy' in derivatives:
+        derivatives['dm/dx'] = None
+
+    # Compute the Cartesian derivatives
+    for component in derivatives:
+        scalar = {
+            'du': u, 'dv': v, 'dp': parallel_scale, 'dm': meridional_scale
+        }[component[:2]]
+        delta = dx if component[-2:] == 'dx' else dy
+        dim = x_dim if component[-2:] == 'dx' else y_dim
+        derivatives[component] = first_derivative(scalar, delta=delta, axis=dim)
+
+    # Apply map factor corrections
+    if map_factor_correction:
+        # Factor against opposite component
+        if 'dp/dy' in derivatives:
+            dx_correction = meridional_scale / parallel_scale * derivatives['dp/dy']
+        if 'dm/dx' in derivatives:
+            dy_correction = - parallel_scale / meridional_scale * derivatives['dm/dx']
+
+        # Corrected terms
+        if 'du/dx' in derivatives:
+            derivatives['du/dx'] = parallel_scale * derivatives['du/dx'] - v * dx_correction
+        if 'du/dy' in derivatives:
+            derivatives['du/dy'] = meridional_scale * derivatives['du/dy'] - v * dy_correction
+        if 'dv/dx' in derivatives:
+            derivatives['dv/dx'] = parallel_scale * derivatives['dv/dx'] + u * dx_correction
+        if 'dv/dy' in derivatives:
+            derivatives['dv/dy'] = meridional_scale * derivatives['dv/dy'] + u * dy_correction
+
+    # Build return collection
+    if return_only is None:
+        return (
+            (derivatives['du/dx'], derivatives['du/dy']),
+            (derivatives['dv/dx'], derivatives['dv/dy'])
+        )
+    elif isinstance(return_only, str):
+        return derivatives[return_only]
+    else:
+        return tuple(derivatives[component] for component in return_only)
 
 
 def _broadcast_to_axis(arr, axis, ndim):
