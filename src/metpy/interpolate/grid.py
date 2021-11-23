@@ -138,16 +138,16 @@ def natural_neighbor_to_grid(xp, yp, variable, grid_x, grid_y):
 
     Parameters
     ----------
-    xp: (N, ) ndarray
+    xp: (P, ) ndarray
         x-coordinates of observations
-    yp: (N, ) ndarray
+    yp: (P, ) ndarray
         y-coordinates of observations
-    variable: (N, ) ndarray
+    variable: (P, ) ndarray
         observation values associated with (xp, yp) pairs.
         IE, variable[i] is a unique observation at (xp[i], yp[i])
-    grid_x: (M, 2) ndarray
+    grid_x: (M, N) ndarray
         Meshgrid associated with x dimension
-    grid_y: (M, 2) ndarray
+    grid_y: (M, N) ndarray
         Meshgrid associated with y dimension
 
     Returns
