@@ -142,7 +142,7 @@ Scipy.interpolate linear
     /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
       result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-    <matplotlib.colorbar.Colorbar object at 0x7fd5169b6b80>
+    <matplotlib.colorbar.Colorbar object at 0x7f9d6527d2e0>
 
 
 
@@ -180,7 +180,7 @@ Natural neighbor interpolation (MetPy implementation)
     /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
       result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-    <matplotlib.colorbar.Colorbar object at 0x7fd53d5e10a0>
+    <matplotlib.colorbar.Colorbar object at 0x7f9d654d7e20>
 
 
 
@@ -223,7 +223,7 @@ min_neighbors = 1
     /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
       result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-    <matplotlib.colorbar.Colorbar object at 0x7fd51692a9a0>
+    <matplotlib.colorbar.Colorbar object at 0x7f9d662f4580>
 
 
 
@@ -264,7 +264,7 @@ min_neighbors = 3
     /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/cartopy/mpl/geoaxes.py:1797: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
       result = matplotlib.axes.Axes.pcolormesh(self, *args, **kwargs)
 
-    <matplotlib.colorbar.Colorbar object at 0x7fd540a68c40>
+    <matplotlib.colorbar.Colorbar object at 0x7f9d6550f6d0>
 
 
 
@@ -310,7 +310,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.888 seconds)
+   **Total running time of the script:** ( 0 minutes  5.885 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
