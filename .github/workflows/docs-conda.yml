@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ${{ github.workflow}}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   #
   # Build our docs on macOS and Windows on Python 3.8 and 3.7, respectively.
