@@ -38,7 +38,7 @@ jobs:
     steps:
     # We check out only a limited depth and then pull tags to save time
     - name: Checkout source
-      uses: actions/checkout@v2.4.0
+      uses: actions/checkout@v2
       with:
         fetch-depth: 100
 
@@ -85,7 +85,7 @@ jobs:
       run: echo "DOC_VERSION=v${{ needs.Docs.outputs.doc-version }}" >> $GITHUB_ENV
 
     - name: Upload to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3.8.0
+      uses: peaceiris/actions-gh-pages@v3
       with:
         deploy_key: ${{ secrets.GHPAGES_DEPLOY_KEY }}
         publish_dir: ./docs/build/html

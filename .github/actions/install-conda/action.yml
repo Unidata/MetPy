@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - name: Setup conda caching
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v2
       with:
         path: ~/conda_pkgs_dir
         key: conda-${{ inputs.type }}-${{ runner.os }}-${{ inputs.python-version}}-${{ hashFiles('ci/*') }}
@@ -21,7 +21,7 @@ runs:
           conda-${{ inputs.type }}-
 
     - name: Set up Python ${{ inputs.python-version }}
-      uses: conda-incubator/setup-miniconda@v2.1.1
+      uses: conda-incubator/setup-miniconda@v2
       with:
         miniforge-version: latest
         miniforge-variant: mambaforge
