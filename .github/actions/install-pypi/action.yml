@@ -25,8 +25,8 @@ runs:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
         cache-dependency-path: |
-          - ci/${{ inputs.type }}_requirements.txt
-          - ci/${{ inputs.version-file }}
+          ci/${{ inputs.type }}_requirements.txt
+          ci/${{ inputs.version-file }}
 
     - name: Setup PROJ
       if: ${{ inputs.need-cartopy == 'true' }}
