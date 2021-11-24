@@ -2273,15 +2273,15 @@
 <span class="sd">            A tuple containing the x- and y-offset of the label, respectively</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path_effects</span> <span class="o">=</span> <span class="p">[</span><span class="n">patheffects</span><span class="o">.</span><span class="n">withStroke</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">outline</span><span class="p">)]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">TextCollection</span><span class="p">([</span><span class="n">lon</span><span class="p">],</span> <span class="p">[</span><span class="n">lat</span><span class="p">],</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)],</span>
-                                                     <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                                                     <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                                                     <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
-                                                     <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;demi&#39;</span><span class="p">,</span>
-                                                     <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label_fontsize</span><span class="p">,</span>
-                                                     <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                                                     <span class="n">path_effects</span><span class="o">=</span><span class="n">path_effects</span><span class="p">,</span>
-                                                     <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">TextCollection</span><span class="p">([</span><span class="n">lon</span><span class="p">],</span> <span class="p">[</span><span class="n">lat</span><span class="p">],</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)],</span>
+                                                 <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                                                 <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                                                 <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                                                 <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;demi&#39;</span><span class="p">,</span>
+                                                 <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label_fontsize</span><span class="p">,</span>
+                                                 <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                                                 <span class="n">path_effects</span><span class="o">=</span><span class="n">path_effects</span><span class="p">,</span>
+                                                 <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()))</span>
 
 <div class="viewcode-block" id="PlotGeometry.draw"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the plot.&quot;&quot;&quot;</span>

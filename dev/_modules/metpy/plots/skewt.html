@@ -212,13 +212,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">ExitStack</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">from</span> <span class="nn">matplotlib.axes</span> <span class="kn">import</span> <span class="n">Axes</span>
 <span class="kn">import</span> <span class="nn">matplotlib.axis</span> <span class="k">as</span> <span class="nn">maxis</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Circle</span>
 <span class="kn">from</span> <span class="nn">matplotlib.projections</span> <span class="kn">import</span> <span class="n">register_projection</span>
 <span class="kn">import</span> <span class="nn">matplotlib.spines</span> <span class="k">as</span> <span class="nn">mspines</span>
@@ -331,11 +330,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_get_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">major</span><span class="p">):</span>
-        <span class="c1"># Warning stuff can go away when we only support Matplotlib &gt;=3.3</span>
-        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span>
-                <span class="n">matplotlib</span><span class="p">,</span> <span class="s1">&#39;MatplotlibDeprecationWarning&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">SkewXTick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="n">major</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SkewXTick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="n">major</span><span class="p">)</span>
 
     <span class="c1"># Needed to properly handle tight bbox</span>
     <span class="k">def</span> <span class="nf">_get_tick_bboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
@@ -541,9 +536,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Maintain a reasonable ratio of data limits. Only works on Matplotlib &gt;= 3.2</span>
-        <span class="k">if</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span> <span class="s1">&#39;3.1&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span></div>
+        <span class="c1"># Maintain a reasonable ratio of data limits.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
@@ -703,6 +697,7 @@
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;zorder&#39;</span><span class="p">,</span> <span class="n">Line2D</span><span class="o">.</span><span class="n">zorder</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span></div>
 
@@ -762,6 +757,7 @@
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;zorder&#39;</span><span class="p">,</span> <span class="n">Line2D</span><span class="o">.</span><span class="n">zorder</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span></div>
 
@@ -815,6 +811,7 @@
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;zorder&#39;</span><span class="p">,</span> <span class="n">Line2D</span><span class="o">.</span><span class="n">zorder</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span></div>
 
@@ -1008,7 +1005,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Some default arguments. Take those, and update with any</span>
         <span class="c1"># arguments passed in</span>
-        <span class="n">grid_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">:</span> <span class="s1">&#39;dashed&#39;</span><span class="p">}</span>
+        <span class="n">grid_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">:</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="s1">&#39;zorder&#39;</span><span class="p">:</span> <span class="n">Line2D</span><span class="o">.</span><span class="n">zorder</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">grid_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
