@@ -15,20 +15,24 @@ def get_failing_links(fname):
                 yield link
 
 
-def get_added(merge_commit, target):
-    """Get all lines added between start and end git ids."""
+def get_added():
+    """Get all lines added in the most recent merge."""
+    revs = subprocess.check_output(['git', 'rev-list', '--parents', '-n', '1', 'HEAD'])
+    merge_commit, target, _ = revs.decode('utf-8').split()
     diff = subprocess.check_output(['git', 'diff', '{}...{}'.format(target, merge_commit)])
     return '\n'.join(line for line in diff.decode('utf-8').split('\n')
                      if line.startswith('+') and not line.startswith('+++'))
 
 
 if __name__ == '__main__':
-    # If we have the args to get a diff, then we only want links from that diff, otherwise
-    # we print all failing links.
-    if len(sys.argv) >= 4:
-        added = get_added(sys.argv[2], sys.argv[3])
+    # If the second argument is true, then we only want links in the most recent merge,
+    # otherwise we print all failing links.
+    if sys.argv[2] in ('true', 'True'):
+        print('Checking only links in the diff')
+        added = get_added()
         check_link = lambda l: l['uri'] in added
     else:
+        print('Checking all links')
         check_link = lambda l: True
 
     ret = 0
