@@ -15,7 +15,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.023)
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -46,8 +46,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default',
-                               tolerance={'3.0': 34.37}.get(MPL_VERSION, 0.02))
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.)
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -71,8 +70,7 @@ def test_skewt_api_units():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0. if matplotlib.__version__ >= '3.2' else 30.,
-                               remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_default_aspect_empty():
     """Test SkewT with default aspect and no plots, only special lines."""
     # With this rotation and the default aspect, this matches exactly the NWS SkewT PDF
@@ -84,8 +82,6 @@ def test_skewt_default_aspect_empty():
     return fig
 
 
-@pytest.mark.skipif(matplotlib.__version__ < '3.2',
-                    reason='Matplotlib versions generate different image sizes.')
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
                                savefig_kwargs={'bbox_inches': 'tight'})
 def test_skewt_tight_bbox():
@@ -294,12 +290,12 @@ def test_hodograph_api():
     hodo = Hodograph(ax, component_range=60)
     hodo.add_grid(increment=5, color='k')
     hodo.plot([1, 10], [1, 10], color='red')
-    hodo.plot_colormapped(np.array([1, 3, 5, 10]), np.array([2, 4, 6, 11]),
+    hodo.plot_colormapped(np.array([1, 3, 5, 10]), -np.array([2, 4, 6, 11]),
                           np.array([0.1, 0.3, 0.5, 0.9]), cmap='Greys')
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.6 if MPL_VERSION == '3.3' else 0.)
 def test_hodograph_units():
     """Test passing unit-ed quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))
@@ -308,7 +304,7 @@ def test_hodograph_units():
     u = np.arange(10) * units.kt
     v = np.arange(10) * units.kt
     hodo.plot(u, v)
-    hodo.plot_colormapped(u, v, np.sqrt(u * u + v * v), cmap='Greys')
+    hodo.plot_colormapped(u, -v, np.sqrt(u * u + v * v), cmap='Greys')
     ax.set_xlabel('')
     ax.set_ylabel('')
     return fig

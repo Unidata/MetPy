@@ -2069,15 +2069,15 @@ class PlotGeometry(MetPyHasTraits):
             A tuple containing the x- and y-offset of the label, respectively
         """
         path_effects = [patheffects.withStroke(linewidth=4, foreground=outline)]
-        self.parent.ax.add_collection(TextCollection([lon], [lat], [str(text)],
-                                                     va='center',
-                                                     ha='center',
-                                                     offset=offset,
-                                                     weight='demi',
-                                                     size=self.label_fontsize,
-                                                     color=color,
-                                                     path_effects=path_effects,
-                                                     transform=ccrs.PlateCarree()))
+        self.parent.ax.add_artist(TextCollection([lon], [lat], [str(text)],
+                                                 va='center',
+                                                 ha='center',
+                                                 offset=offset,
+                                                 weight='demi',
+                                                 size=self.label_fontsize,
+                                                 color=color,
+                                                 path_effects=path_effects,
+                                                 transform=ccrs.PlateCarree()))
 
     def draw(self):
         """Draw the plot."""

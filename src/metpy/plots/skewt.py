@@ -8,13 +8,12 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 """
 
 from contextlib import ExitStack
-import warnings
 
-import matplotlib
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
 import matplotlib.colors as mcolors
+from matplotlib.lines import Line2D
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
@@ -127,11 +126,7 @@ class SkewXAxis(maxis.XAxis):
     """
 
     def _get_tick(self, major):
-        # Warning stuff can go away when we only support Matplotlib >=3.3
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore', getattr(
-                matplotlib, 'MatplotlibDeprecationWarning', DeprecationWarning))
-            return SkewXTick(self.axes, None, label=None, major=major)
+        return SkewXTick(self.axes, None, major=major)
 
     # Needed to properly handle tight bbox
     def _get_tick_bboxes(self, ticks, renderer):
@@ -337,9 +332,8 @@ class SkewT:
         self.dry_adiabats = None
         self.moist_adiabats = None
 
-        # Maintain a reasonable ratio of data limits. Only works on Matplotlib >= 3.2
-        if matplotlib.__version__[:3] > '3.1':
-            self.ax.set_aspect(aspect, adjustable='box')
+        # Maintain a reasonable ratio of data limits.
+        self.ax.set_aspect(aspect, adjustable='box')
 
     def plot(self, pressure, t, *args, **kwargs):
         r"""Plot data.
@@ -499,6 +493,7 @@ class SkewT:
         kwargs.setdefault('colors', 'r')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
+        kwargs.setdefault('zorder', Line2D.zorder - 0.001)
         self.dry_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.dry_adiabats
 
@@ -558,6 +553,7 @@ class SkewT:
         kwargs.setdefault('colors', 'b')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
+        kwargs.setdefault('zorder', Line2D.zorder - 0.001)
         self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.moist_adiabats
 
@@ -611,6 +607,7 @@ class SkewT:
         kwargs.setdefault('colors', 'g')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
+        kwargs.setdefault('zorder', Line2D.zorder - 0.001)
         self.mixing_lines = self.ax.add_collection(LineCollection(linedata, **kwargs))
         return self.mixing_lines
 
@@ -804,7 +801,7 @@ class Hodograph:
         """
         # Some default arguments. Take those, and update with any
         # arguments passed in
-        grid_args = {'color': 'grey', 'linestyle': 'dashed'}
+        grid_args = {'color': 'grey', 'linestyle': 'dashed', 'zorder': Line2D.zorder - 0.001}
         if kwargs:
             grid_args.update(kwargs)
 
