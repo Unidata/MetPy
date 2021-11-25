@@ -11,10 +11,6 @@ on:
 jobs:
   Tests:
     runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.9]
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -38,30 +34,26 @@ jobs:
         need-cartopy: true
         type: test
         version-file: Prerelease
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.10
 
     - name: Run tests
       id: tests
       uses: ./.github/actions/run-tests
       with:
         run-doctests: false
-        key: nightly-${{ matrix.python-version }}
+        key: nightly
         upload-coverage: false
 
     - name: Upload test log
       if: failure()
       uses: actions/upload-artifact@v2
       with:
-        name: log-nightly-tests-${{ matrix.python-version }}
-        path: tests-nightly-${{ matrix.python-version }}.log
+        name: log-nightly-tests
+        path: tests-nightly.log
         retention-days: 5
 
   Docs:
     runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.9]
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -85,20 +77,20 @@ jobs:
         need-cartopy: true
         type: doc
         version-file: Prerelease
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.9
 
     - name: Build docs
       id: build
       uses: ./.github/actions/build-docs
       with:
         run-linkchecker: true
-        key: ${{ matrix.python-version }}-nightly
+        key: nightly
 
     - name: Upload build log
       if: failure()
       uses: actions/upload-artifact@v2
       with:
-        name: log-nightly-docs-${{ matrix.python-version }}
+        name: log-nightly-docs
         path: |
           build.log
           linkchecker.log
