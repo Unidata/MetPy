@@ -119,7 +119,7 @@ jobs:
           path: /tmp/workspace/logs
 
       - name: Group logs
-        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
+        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt || touch logs.txt
 
       - name: Report failures
         uses: actions/github-script@v5
