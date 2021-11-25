@@ -110,18 +110,30 @@ jobs:
         with:
           path: /tmp/workspace/logs
 
-      - name: Group logs
-        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt || touch logs.txt
+      - name: Grab log files
+        run: |
+          cp /tmp/workspace/logs/log-*/*.log . || true
+          touch tests-nightly.log build.log linkchecker.log
 
       - name: Report failures
         uses: actions/github-script@v5
         with:
           script: |
             const fs = require('fs');
-            const logs = fs.readFileSync('logs.txt', 'utf8');
             const title = "Nightly build is failing";
             const workflow_url = `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
-            const body = `The [Nightly workflow](${workflow_url}) is failing.\n\`\`\`${logs}\`\`\``;
+            body = `The [Nightly workflow](${workflow_url}) is failing.\n`;
+
+            if (${{ needs.Tests.result }} === 'failure') {
+              const test_log = fs.readFileSync('tests-nightly.log', 'utf8');
+              body += `The tests failed.\nLog:\n<details><pre>${test_log}</pre></details>`;
+            }
+            if (${{ needs.Docs.result }} === 'failure') {
+              const build_logs = fs.readFileSync('build.log', 'utf8');
+              const linkchecker = fs.readFileSync('linkchecker.log', 'utf8');
+              body += `The documentation build failed.\nLog:\n<details><pre>${build_log}</pre></details>`;
+              body += `\nLinkchecker output:\n<details><pre>${linkchecker}</pre></details>`;
+            }
 
             // See if we have an existing issue
             const items = await github.rest.issues.listForRepo({
