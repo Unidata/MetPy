@@ -124,11 +124,11 @@ jobs:
             const workflow_url = `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
             body = `The [Nightly workflow](${workflow_url}) is failing.\n`;
 
-            if (${{ needs.Tests.result }} === 'failure') {
+            if ('${{ needs.Tests.result }}' === 'failure') {
               const test_log = fs.readFileSync('tests-nightly.log', 'utf8');
               body += `The tests failed.\nLog:\n<details><pre>${test_log}</pre></details>`;
             }
-            if (${{ needs.Docs.result }} === 'failure') {
+            if ('${{ needs.Docs.result }}' === 'failure') {
               const build_logs = fs.readFileSync('build.log', 'utf8');
               const linkchecker = fs.readFileSync('linkchecker.log', 'utf8');
               body += `The documentation build failed.\nLog:\n<details><pre>${build_log}</pre></details>`;
