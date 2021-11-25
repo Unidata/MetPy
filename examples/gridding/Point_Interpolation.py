@@ -84,7 +84,7 @@ fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 ###########################################
 # Natural neighbor interpolation (MetPy implementation)
 # -----------------------------------------------------
-# `Reference <https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf>`_
+# `Reference <https://cwp.mines.edu/wp-content/uploads/sites/112/2018/09/cwp-657.pdf>`_
 gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='natural_neighbor', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
 fig, view = basic_map(to_proj, 'Natural Neighbor')

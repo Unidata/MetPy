@@ -366,17 +366,22 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
-linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
+linkcheck_ignore = [
     r'https://codecov.io/github/Unidata/MetPy',
+    r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     r'https://youtu\.be/[\d\w\-_]+',
-    # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
-    r'https://doi.org/10.1175/.*',
     # Giving 404s right now and is not going to change
     r'https://twitter.com/MetPy',
+    # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
+    r'https://doi.org/10.1175/.*',
     # This one appears to be blocking robots
     r'https://doi.org/10.1088/0026-1394/45/2/004'
     ]
 
 linkcheck_allowed_redirects = {
-    r'http://xarray\.pydata\.org/': r'http://xarray\.pydata\.org/en/stable/'
+    r'http://xarray\.pydata\.org/': r'http://xarray\.pydata\.org/en/stable/',
+    r'http://pint\.readthedocs\.io': r'https://pint\.readthedocs\.io/en/stable/',
+    r'https://conda.io/docs/': r'https://conda.io/en/latest/',
+    r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
+    r'https://doi.org/.*': r'https://.*'
 }
