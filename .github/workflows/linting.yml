@@ -42,7 +42,7 @@ jobs:
 
       - name: Run doc8
         # Don't skip doc8 if flake8 fails
-        if: ${{ always() }}
+        if: always()
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -51,7 +51,7 @@ jobs:
 
       - name: Run codespell
         # Don't skip codespell if any other steps fail
-        if: ${{ always() }}
+        if: always()
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
