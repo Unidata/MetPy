@@ -378,5 +378,9 @@ linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     ]
 
 linkcheck_allowed_redirects = {
-    r'http://xarray\.pydata\.org/': r'http://xarray\.pydata\.org/en/stable/'
+    r'http://xarray\.pydata\.org/': r'http://xarray\.pydata\.org/en/stable/',
+    r'http://pint\.readthedocs\.io': r'https://pint\.readthedocs\.io/en/stable/',
+    r'https://conda.io/docs/': r'https://conda.io/en/latest/',
+    r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
+    r'https://doi.org/.*': r'https://.*'
 }
