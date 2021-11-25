@@ -1,3 +1,7 @@
+codecov:
+  notify:
+    after_n_builds: 9
+
 coverage:
   status:
     patch:
