@@ -390,5 +390,5 @@ other ways, feel free to contact us:
 There are a ton of great resources out there on contributing to open source and on the
 importance of writing tested and maintainable software.
 
-* [GitHub's Contributing to Open Source Guide](https://guides.github.com/activities/contributing-to-open-source/)
+* [How to Contribute to Open Source Guide](https://opensource.guide/how-to-contribute/)
 * [Zen of Scientific Software Maintenance](https://jrleeman.github.io/ScientificSoftwareMaintenance/)
