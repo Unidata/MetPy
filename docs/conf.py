@@ -375,7 +375,9 @@ linkcheck_ignore = [
     # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
     r'https://doi\.org/10\.1175/.*',
     # This one appears to be blocking robots
-    r'https://doi\.org/10\.1088/0026-1394/45/2/004'
+    r'https://doi\.org/10\.1088/0026-1394/45/2/004',
+    # Frequently fails the linkchecker
+    r'https://ams\.confex\.com/ams/[\d\w]+/meetingapp\.cgi/.*'
     ]
 
 linkcheck_allowed_redirects = {
