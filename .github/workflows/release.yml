@@ -6,11 +6,8 @@ on:
       - published
 
 jobs:
-  packages:
-    name: Release Packages
-    environment:
-      name: PyPI
-      url: https://pypi.org/project/MetPy/
+  build:
+    name: Build Release Packages
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,6 +18,7 @@ jobs:
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
     - name: Set up Python
+      id: setup
       uses: actions/setup-python@v2
       with:
         python-version: 3.x
@@ -32,6 +30,25 @@ jobs:
 
     - name: Build packages
       run: python setup.py sdist bdist_wheel
+
+    - name: Save built packages as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ runner.os }}-${{ steps.setup.outputs.python-version }}
+        path: dist/
+        retention-days: 5
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    environment:
+      name: PyPI
+      url: https://pypi.org/project/MetPy/
+
+    - name: Download packages
+      uses: actions/download-artifact@v2
+      with:
+        path: ./dist
 
     - name: Publish Package
       uses: pypa/gh-action-pypi-publish@v1.4.2
