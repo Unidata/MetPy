@@ -15,8 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.9]
-    outputs:
-      log_available: ${{ steps.tests.outputs.log_available }}
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -51,7 +49,7 @@ jobs:
         upload-coverage: false
 
     - name: Upload test log
-      if: ${{ always() && steps.tests.outputs.log_available  == 'true' }}
+      if: failure()
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-tests-${{ matrix.python-version }}
@@ -64,8 +62,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.9]
-    outputs:
-      log_available: ${{ steps.build.outputs.LOG_AVAILABLE }}
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -99,19 +95,19 @@ jobs:
         key: ${{ matrix.python-version }}-nightly
 
     - name: Upload build log
-      if: ${{ always() && steps.build.outputs.log_available  == 'true' }}
+      if: failure()
       uses: actions/upload-artifact@v2
       with:
         name: log-nightly-docs-${{ matrix.python-version }}
         path: |
-          docs/build-${{ matrix.python-version }}.log
-          docs/linkchecker.log
+          build.log
+          linkchecker.log
         retention-days: 5
 
   Report:
     name: Report
     needs: [Tests, Docs]
-    if: always() && (needs.Tests.outputs.log_available == 'true' || needs.Docs.outputs.log_available == 'true')
+    if: failure()
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -123,7 +119,7 @@ jobs:
           path: /tmp/workspace/logs
 
       - name: Group logs
-        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt
+        run: cat /tmp/workspace/logs/log-*/*.log > logs.txt || touch logs.txt
 
       - name: Report failures
         uses: actions/github-script@v5

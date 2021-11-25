@@ -12,10 +12,6 @@ inputs:
     description: 'Whether to upload coverage report'
     required: false
     default: 'true'
-outputs:
-  log_available:
-    description: 'Whether a log for running the tests is available'
-    value: ${{ steps.run-tests.outputs.log_available }}
 runs:
   using: composite
   steps:
@@ -27,9 +23,7 @@ runs:
       run: |
         set -e -o pipefail
         export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
-        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ 2>&1 | tee tests-${{ inputs.key }}.log || (
-            echo '::set-output name=log_available::true' && false
-        )
+        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ 2>&1 | tee tests-${{ inputs.key }}.log
         python -m coverage combine
         python -m coverage report
         python -m coverage xml
@@ -42,7 +36,7 @@ runs:
       run: python -m pytest --doctest-modules -k "not test" src;
 
     - name: Upload test images
-      if: ${{ failure() }}
+      if: failure()
       uses: actions/upload-artifact@v2
       with:
         name: ${{ inputs.key }}-images
