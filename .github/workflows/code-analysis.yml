@@ -1,5 +1,9 @@
 name: "Code Analysis"
 
+concurrency:
+  group: ${{ github.workflow}}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
@@ -24,7 +28,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.4.0
+      uses: actions/checkout@v2
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1

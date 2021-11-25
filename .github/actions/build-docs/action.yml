@@ -50,7 +50,7 @@ runs:
       shell: bash -l {0}
       run: |
         set -e -o pipefail
-        ci/filter_links.py docs/build/linkcheck/output.json $(git rev-list --parents -n 1 HEAD) 2>&1 | tee linkchecker.log || (
+        ci/filter_links.py docs/build/linkcheck/output.json ${{ github.event_name == 'pull_request' }} 2>&1 | tee linkchecker.log || (
             echo '::set-output name=log_available::true' && false
         )
 

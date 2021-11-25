@@ -13,7 +13,7 @@ jobs:
       url: https://pypi.org/project/MetPy/
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.4.0
+    - uses: actions/checkout@v2
       with:
         fetch-depth: 10
 
@@ -21,7 +21,7 @@ jobs:
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
     - name: Set up Python
-      uses: actions/setup-python@v2.3.0
+      uses: actions/setup-python@v2
       with:
         python-version: 3.x
 

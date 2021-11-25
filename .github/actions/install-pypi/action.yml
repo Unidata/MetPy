@@ -20,13 +20,13 @@ runs:
   using: composite
   steps:
     - name: Set up Python ${{ inputs.python-version }}
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
         cache-dependency-path: |
-          - ci/${{ inputs.type }}_requirements.txt
-          - ci/${{ inputs.version-file }}
+          ci/${{ inputs.type }}_requirements.txt
+          ci/${{ inputs.version-file }}
 
     - name: Setup PROJ
       if: ${{ inputs.need-cartopy == 'true' }}
