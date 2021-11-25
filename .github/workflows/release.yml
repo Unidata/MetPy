@@ -44,7 +44,8 @@ jobs:
     environment:
       name: PyPI
       url: https://pypi.org/project/MetPy/
-
+    runs-on: ubuntu-latest
+    steps:
     - name: Download packages
       uses: actions/download-artifact@v2
       with:
