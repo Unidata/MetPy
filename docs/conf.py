@@ -371,11 +371,11 @@ linkcheck_ignore = [
     r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
     r'https://youtu\.be/[\d\w\-_]+',
     # Giving 404s right now and is not going to change
-    r'https://twitter.com/MetPy',
+    r'https://twitter\.com/MetPy',
     # AMS DOIs should be stable, but resolved link consistently 403's with linkcheck
-    r'https://doi.org/10.1175/.*',
+    r'https://doi\.org/10\.1175/.*',
     # This one appears to be blocking robots
-    r'https://doi.org/10.1088/0026-1394/45/2/004'
+    r'https://doi\.org/10\.1088/0026-1394/45/2/004'
     ]
 
 linkcheck_allowed_redirects = {
