@@ -129,7 +129,7 @@ jobs:
               body += `The tests failed.\nLog:\n<details><pre>${test_log}</pre></details>`;
             }
             if ('${{ needs.Docs.result }}' === 'failure') {
-              const build_logs = fs.readFileSync('build.log', 'utf8');
+              const build_log = fs.readFileSync('build.log', 'utf8');
               const linkchecker = fs.readFileSync('linkchecker.log', 'utf8');
               body += `The documentation build failed.\nLog:\n<details><pre>${build_log}</pre></details>`;
               body += `\nLinkchecker output:\n<details><pre>${linkchecker}</pre></details>`;
