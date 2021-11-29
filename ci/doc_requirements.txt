@@ -1,4 +1,4 @@
-sphinx==4.3.0
+sphinx==4.3.1
 pydata-sphinx-theme==0.7.2
 sphinx-gallery==0.10.1
 myst-parser==0.15.2
