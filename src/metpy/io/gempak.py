@@ -707,7 +707,7 @@ class GempakFile():
         """Convert GEMPAK DATTIM integer to datetime object."""
         if dattim:
             if dattim < 100000000:
-                dt = datetime.strptime(str(dattim), '%y%m%d')
+                dt = datetime.strptime(f'{dattim:06d}', '%y%m%d')
             else:
                 dt = datetime.strptime('{:010d}'.format(dattim), '%m%d%y%H%M')
         else:

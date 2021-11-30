@@ -251,3 +251,10 @@ def test_metpy_crs_creation(proj_type, proj_attrs):
     metpy_crs = grid.gdxarray()[0].metpy.crs
     for k, v in proj_attrs.items():
         assert metpy_crs[k] == v
+
+
+def test_date_parsing():
+    """Test parsing of dates with leading zeroes."""
+    sfc_data = GempakSurface(get_test_data('sfc_obs.gem'))
+    dat = sfc_data.sfinfo()[0].DATTIM
+    assert dat == datetime(2000, 1, 2)
