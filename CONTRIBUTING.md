@@ -168,7 +168,7 @@ can also be used to hide sins from history--this is the only chance, since once 
 Aaron Meurer's [tutorial on the git workflow](https://www.asmeurer.com/git-workflow/), or the
 guide [“How to Contribute to Open Source"](https://opensource.guide/how-to-contribute/).
 
-Commit the changes you made. Chris Beams has written a [guide](https://chris.beams.io/posts/git-commit/)
+Commit the changes you made. Chris Beams has written a [guide](https://cbea.ms/git-commit/)
 on how to write good commit messages.
 
 Push to your fork and [submit a pull request](https://github.com/Unidata/metpy/compare/).
