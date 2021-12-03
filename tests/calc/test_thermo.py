@@ -155,6 +155,23 @@ def test_moist_lapse_nan_ref_press():
     assert_nan(temp, units.degC)
 
 
+def test_moist_lapse_downwards():
+    """Test moist_lapse when integrating downwards (#2128)."""
+    temp = moist_lapse(units.Quantity([600, 700], 'mbar'), units.Quantity(0, 'degC'))
+    assert_almost_equal(temp, units.Quantity([0, 6.47748353], units.degC))
+
+
+@pytest.mark.parametrize('direction', (1, -1))
+@pytest.mark.parametrize('start', list(range(5)))
+def test_moist_lapse_starting_points(start, direction):
+    """Test moist_lapse with a variety of reference points."""
+    truth = units.Quantity([20.0804315, 17.2333509, 14.0752659, 6.4774835, 0.0],
+                           'degC')[::direction]
+    pressure = units.Quantity([1000, 925, 850, 700, 600], 'hPa')[::direction]
+    temp = moist_lapse(pressure, truth[start], pressure[start])
+    assert_almost_equal(temp, truth, 4)
+
+
 def test_parcel_profile():
     """Test parcel profile calculation."""
     levels = np.array([1000., 900., 800., 700., 600., 500., 400.]) * units.mbar

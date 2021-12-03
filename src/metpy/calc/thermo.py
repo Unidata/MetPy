@@ -316,16 +316,12 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     org_units = temperature.units
     temperature = np.atleast_1d(temperature).to('kelvin')
 
-    side = 'left'
-
     pres_decreasing = (pressure[0] > pressure[-1])
     if pres_decreasing:
         # Everything is easier if pressures are in increasing order
         pressure = pressure[::-1]
-        side = 'right'
 
-    ref_pres_idx = np.searchsorted(pressure.m, reference_pressure.m, side=side)
-
+    ref_pres_idx = np.searchsorted(pressure.m, reference_pressure.m, side='right')
     ret_temperatures = np.empty((0, temperature.shape[0]))
 
     if _greater_or_close(reference_pressure, pressure.min()):
