@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `thermo` module."""
 
+import warnings
+
 import numpy as np
 import pytest
 import xarray as xr
@@ -131,10 +133,29 @@ def test_moist_lapse_ref_pressure():
     assert_array_almost_equal(temp, true_temp, 2)
 
 
+def test_moist_lapse_multiple_temps():
+    """Test moist_lapse with multiple starting temperatures."""
+    temp = moist_lapse(np.array([1050., 800., 600., 500., 400.]) * units.mbar,
+                       np.array([19.85, np.nan, 19.85]) * units.degC, 1000. * units.mbar)
+    true_temp = np.array([[294.76, 284.64, 272.81, 264.42, 252.91],
+                          [np.nan, np.nan, np.nan, np.nan, np.nan],
+                          [294.76, 284.64, 272.81, 264.42, 252.91]]) * units.kelvin
+    assert_array_almost_equal(temp, true_temp, 2)
+
+
 def test_moist_lapse_scalar():
     """Test moist_lapse when given a scalar desired pressure and a reference pressure."""
     temp = moist_lapse(np.array([800.]) * units.mbar, 19.85 * units.degC, 1000. * units.mbar)
     assert_almost_equal(temp, 284.64 * units.kelvin, 2)
+
+
+def test_moist_lapse_close_start():
+    """Test that we behave correctly with a reference pressure close to an actual pressure."""
+    with warnings.catch_warnings(record=True) as record:
+        temp = moist_lapse(units.Quantity(1000, 'hPa'), 0 * units.degC,
+                           units.Quantity(1000., 'mbar'))
+        assert len(record) == 0
+    assert_almost_equal(temp, units.Quantity(0., 'degC'))
 
 
 def test_moist_lapse_uniform():
@@ -158,7 +179,7 @@ def test_moist_lapse_nan_ref_press():
 def test_moist_lapse_downwards():
     """Test moist_lapse when integrating downwards (#2128)."""
     temp = moist_lapse(units.Quantity([600, 700], 'mbar'), units.Quantity(0, 'degC'))
-    assert_almost_equal(temp, units.Quantity([0, 6.47748353], units.degC))
+    assert_almost_equal(temp, units.Quantity([0, 6.47748353], units.degC), 4)
 
 
 @pytest.mark.parametrize('direction', (1, -1))
