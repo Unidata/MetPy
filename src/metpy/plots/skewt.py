@@ -386,14 +386,14 @@ class SkewT:
         if t0 is None:
             # minimum and maximum temperature
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.arange(xmin, xmax + 1, spacing) * self.ax.xaxis.units
+            t0 = units.Quantity(np.arange(xmin, xmax + 1, spacing), self.ax.xaxis.units)
 
         # if temperature has no units, guess from the lower bound
         if not hasattr(t0, 'units'):
             if np.nanmin(t0) > 150:
-                t0 = t0 * units.degK
+                t0 = units.Quantity(t0, 'K')
             else:
-                t0 = t0 * units.degC
+                t0 = units.Quantity(t0, 'degC')
 
         # return temperature in units matching axes
         return t0.to(self.ax.xaxis.units)
