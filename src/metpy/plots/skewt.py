@@ -565,6 +565,10 @@ class SkewT:
             self.moist_adiabats.remove()
 
         # Determine set of starting temps if necessary
+        if t0 is None:
+            xmin, xmax = self.ax.get_xlim()
+            t0 = units.Quantity(
+                np.concatenate((np.arange(xmin, 0, 10), np.arange(0, xmax + 1, 5))), 'degC')
         t0 = self._get_line_starting_temps(t0)
 
         # Get pressure levels based on ylims if necessary
@@ -626,7 +630,7 @@ class SkewT:
         if pressure is None:
             # from the highest pressure to 600 hPa
             pmax = max(self.ax.get_ylim())
-            pmin = units.Quantity(600, 'hPa').to(self.ax.yaxis.units)
+            pmin = units.Quantity(600, 'hPa').m_as(self.ax.yaxis.units)
             pressure = units.Quantity(np.linspace(pmin, pmax), self.ax.yaxis.units)
 
         # Dewpoint temperature profiles
