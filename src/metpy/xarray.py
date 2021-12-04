@@ -771,8 +771,8 @@ class MetPyDatasetAccessor:
             else:
                 if latitude.identical(y) and longitude.identical(x):
                     crs = CFProjection({'grid_mapping_name': 'latitude_longitude'})
-                    log.warning('Found valid latitude/longitude coordinates, assuming '
-                                'latitude_longitude for projection grid_mapping variable')
+                    log.debug('Found valid latitude/longitude coordinates, assuming '
+                              'latitude_longitude for projection grid_mapping variable')
 
         # Rebuild the coordinates of the dataarray, and return quantified DataArray
         var = self._rebuild_coords(var, crs)
