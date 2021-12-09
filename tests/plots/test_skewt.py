@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `skewt` module."""
+import warnings
 
 import matplotlib
 from matplotlib.gridspec import GridSpec
@@ -322,7 +323,7 @@ def test_hodograph_masked_array():
     intervals = units.Quantity(np.array([0.0, 3.0, 6.0, 9.0, 12.0, 15.0]), 'km')
     colors = ['red', 'green', 'yellow', 'blue', 'purple']
     # Check that we're not triggering interpolation warnings
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as record:
         hodo.plot_colormapped(u, v, h, intervals=intervals, colors=colors)
         assert len(record) == 0
     return fig
