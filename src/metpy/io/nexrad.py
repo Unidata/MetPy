@@ -27,10 +27,7 @@ log = logging.getLogger(__name__)
 
 def version(val):
     """Calculate a string version from an integer value."""
-    if val / 100. > 2.:
-        ver = val / 100.
-    else:
-        ver = val / 10.
+    ver = val / 100. if val > 2. * 100. else val / 10.
     return f'{ver:.1f}'
 
 

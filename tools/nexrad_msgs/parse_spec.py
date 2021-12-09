@@ -98,22 +98,11 @@ types = [('Real*4', ('f', 4)), ('Integer*4', ('L', 4)), ('SInteger*4', ('l', 4))
 
 def fix_type(typ, size, additional=None):
     """Fix up creating the appropriate struct type based on the information in the column."""
-    if additional is not None:
-        my_types = types + additional
-    else:
-        my_types = types
-
+    my_types = types + additional if additional is not None else types
     for t, info in my_types:
-        if callable(t):
-            matches = t(typ)
-        else:
-            matches = t == typ
-
+        matches = t(typ) if callable(t) else t == typ
         if matches:
-            if callable(info):
-                fmt_str, true_size = info(size)
-            else:
-                fmt_str, true_size = info
+            fmt_str, true_size = info(size) if callable(info) else info
             assert size == true_size, ('{}: Got size {} instead of {}'.format(typ, size,
                                                                               true_size))
             return fmt_str.format(size=size)

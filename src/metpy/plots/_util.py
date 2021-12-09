@@ -232,7 +232,7 @@ def convert_gempak_color(c, style='psc'):
         if x < 0 or x == 101:
             x = 0
         else:
-            x = x % 32
+            x %= 32
         return x
 
     # Define GEMPAK colors (Matplotlib doesn't appear to like numbered variants)

@@ -370,9 +370,10 @@ class MetPyDataArrayAccessor:
         # coordinates, and nothing else.
         coord_map = self._generate_coordinate_map()
         for axis, coord_var in coord_map.items():
-            if (coord_var is not None
-                and not any(axis in coord.attrs.get('_metpy_axis', '').split(',')
-                            for coord in coords)):
+            if coord_var is not None and all(
+                axis not in coord.attrs.get('_metpy_axis', '').split(',')
+                for coord in coords
+            ):
 
                 _assign_axis(coord_var.attrs, axis)
 
@@ -381,14 +382,14 @@ class MetPyDataArrayAccessor:
 
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis type."""
-        if axis in metpy_axes:
-            coord_var = self._metpy_axis_search(axis)
-            if coord_var is not None:
-                return coord_var
-            else:
-                raise AttributeError(axis + ' attribute is not available.')
-        else:
+        if axis not in metpy_axes:
             raise AttributeError("'" + axis + "' is not an interpretable axis.")
+
+        coord_var = self._metpy_axis_search(axis)
+        if coord_var is None:
+            raise AttributeError(axis + ' attribute is not available.')
+        else:
+            return coord_var
 
     def coordinates(self, *args):
         """Return the coordinate variables corresponding to the given axes types.
@@ -1285,20 +1286,19 @@ def _wrap_output_like_not_matching_units(result, match):
     output_xarray = isinstance(match, xr.DataArray)
     if isinstance(result, xr.DataArray):
         return result if output_xarray else result.metpy.unit_array
-    else:
-        # Determine if need to upcast to Quantity
-        if (
-            not isinstance(result, units.Quantity)
-            and (
-                isinstance(match, units.Quantity)
-                or (output_xarray and isinstance(match.data, units.Quantity))
-            )
-        ):
-            result = units.Quantity(result)
-        return (
-            xr.DataArray(result, coords=match.coords, dims=match.dims) if output_xarray
-            else result
+    # Determine if need to upcast to Quantity
+    if (
+        not isinstance(result, units.Quantity)
+        and (
+            isinstance(match, units.Quantity)
+            or (output_xarray and isinstance(match.data, units.Quantity))
         )
+    ):
+        result = units.Quantity(result)
+    return (
+        xr.DataArray(result, coords=match.coords, dims=match.dims) if output_xarray
+        else result
+    )
 
 
 def check_matching_coordinates(func):
