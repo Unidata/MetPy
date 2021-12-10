@@ -18,13 +18,14 @@
 .. _sphx_glr_examples_gridding_Wind_SLP_Interpolation.py:
 
 
+=========================================
 Wind and Sea Level Pressure Interpolation
 =========================================
 
 Interpolate sea level pressure, as well as wind component data,
 to make a consistent looking analysis, featuring contours of pressure and wind barbs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-26
+.. GENERATED FROM PYTHON SOURCE LINES 12-27
 
 .. code-block:: default
 
@@ -50,11 +51,11 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
+.. GENERATED FROM PYTHON SOURCE LINES 28-29
 
 Read in data
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-34
+.. GENERATED FROM PYTHON SOURCE LINES 29-35
 
 .. code-block:: default
 
@@ -71,11 +72,11 @@ Read in data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 36-37
 
 Project the lon/lat locations to our final projection
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-40
+.. GENERATED FROM PYTHON SOURCE LINES 37-41
 
 .. code-block:: default
 
@@ -90,11 +91,11 @@ Project the lon/lat locations to our final projection
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
 Remove all missing data from pressure
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 .. code-block:: default
 
@@ -107,11 +108,11 @@ Remove all missing data from pressure
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-46
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 Interpolate pressure using Cressman interpolation
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-50
+.. GENERATED FROM PYTHON SOURCE LINES 47-51
 
 .. code-block:: default
 
@@ -126,11 +127,11 @@ Interpolate pressure using Cressman interpolation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 Get wind information and mask where either speed or direction is unavailable
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-62
+.. GENERATED FROM PYTHON SOURCE LINES 53-63
 
 .. code-block:: default
 
@@ -151,13 +152,13 @@ Get wind information and mask where either speed or direction is unavailable
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
+.. GENERATED FROM PYTHON SOURCE LINES 64-67
 
 Calculate u and v components of wind and then interpolate both.
 
 Both will have the same underlying grid so throw away grid returned from v interpolation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-75
+.. GENERATED FROM PYTHON SOURCE LINES 67-76
 
 .. code-block:: default
 
@@ -177,11 +178,11 @@ Both will have the same underlying grid so throw away grid returned from v inter
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-77
+.. GENERATED FROM PYTHON SOURCE LINES 77-78
 
 Get temperature information
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-83
+.. GENERATED FROM PYTHON SOURCE LINES 78-84
 
 .. code-block:: default
 
@@ -198,11 +199,11 @@ Get temperature information
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-85
+.. GENERATED FROM PYTHON SOURCE LINES 85-86
 
 Set up the map and plot the interpolated grids appropriately.
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-110
+.. GENERATED FROM PYTHON SOURCE LINES 86-111
 
 .. code-block:: default
 
@@ -246,7 +247,7 @@ Set up the map and plot the interpolated grids appropriately.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  45.864 seconds)
+   **Total running time of the script:** ( 0 minutes  46.626 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py:

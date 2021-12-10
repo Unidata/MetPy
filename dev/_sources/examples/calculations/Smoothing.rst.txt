@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_calculations_Smoothing.py:
 
 
+=========
 Smoothing
 =========
 
@@ -27,7 +28,7 @@ This example demonstrates the various ways that MetPy's smoothing function
 can be utilized. While this example utilizes basic NumPy arrays, these
 functions all work equally well with Pint Quantities or xarray DataArrays.
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-22
+.. GENERATED FROM PYTHON SOURCE LINES 15-23
 
 .. code-block:: default
 
@@ -46,11 +47,11 @@ functions all work equally well with Pint Quantities or xarray DataArrays.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-24
+.. GENERATED FROM PYTHON SOURCE LINES 24-25
 
 Start with a base pattern with random noise
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-36
+.. GENERATED FROM PYTHON SOURCE LINES 25-37
 
 .. code-block:: default
 
@@ -78,11 +79,11 @@ Start with a base pattern with random noise
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Now, create a grid showing different smoothing options
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-76
+.. GENERATED FROM PYTHON SOURCE LINES 39-77
 
 .. code-block:: default
 
@@ -139,7 +140,7 @@ Now, create a grid showing different smoothing options
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.944 seconds)
+   **Total running time of the script:** ( 0 minutes  0.955 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Smoothing.py:

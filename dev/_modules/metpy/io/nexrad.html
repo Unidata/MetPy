@@ -231,10 +231,7 @@
 
 <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate a string version from an integer value.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">100.</span> <span class="o">&gt;</span> <span class="mf">2.</span><span class="p">:</span>
-        <span class="n">ver</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">100.</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ver</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">10.</span>
+    <span class="n">ver</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">100.</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mf">2.</span> <span class="o">*</span> <span class="mf">100.</span> <span class="k">else</span> <span class="n">val</span> <span class="o">/</span> <span class="mf">10.</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ver</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span>
 
 

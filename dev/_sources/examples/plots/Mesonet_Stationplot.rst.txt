@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_plots_Mesonet_Stationplot.py:
 
 
+====================
 Mesonet Station Plot
 ====================
 
@@ -26,7 +27,7 @@ Make a surface station plot with Oklahoma Mesonet data.
 The station plot itself is pretty straightforward, but there is a bit of code to perform the
 data-wrangling.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-23
+.. GENERATED FROM PYTHON SOURCE LINES 14-24
 
 .. code-block:: default
 
@@ -47,7 +48,7 @@ data-wrangling.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-30
+.. GENERATED FROM PYTHON SOURCE LINES 25-31
 
 Read in the data and wrangle it
 -------------------------------
@@ -56,7 +57,7 @@ First read in the data. We use pandas because it simplifies a lot of tasks, like
 with strings. We'll also convert any blank cells to NaNs, and then drop rows with NaNs
 in variables that we want to plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-38
+.. GENERATED FROM PYTHON SOURCE LINES 31-39
 
 .. code-block:: default
 
@@ -75,12 +76,12 @@ in variables that we want to plot
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
+.. GENERATED FROM PYTHON SOURCE LINES 40-42
 
 The mesonet has so many stations that it would clutter the plot if we used them all.
 The number of stations plotted will be reduced using `reduce_point_density`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-47
+.. GENERATED FROM PYTHON SOURCE LINES 42-48
 
 .. code-block:: default
 
@@ -97,7 +98,7 @@ The number of stations plotted will be reduced using `reduce_point_density`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-53
+.. GENERATED FROM PYTHON SOURCE LINES 49-54
 
 Now that we have the data we want, we need to perform some conversions:
 
@@ -105,7 +106,7 @@ Now that we have the data we want, we need to perform some conversions:
 - Convert cardinal wind direction to degrees
 - Get wind components from speed and direction
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-68
+.. GENERATED FROM PYTHON SOURCE LINES 54-69
 
 .. code-block:: default
 
@@ -131,12 +132,12 @@ Now that we have the data we want, we need to perform some conversions:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-71
+.. GENERATED FROM PYTHON SOURCE LINES 70-72
 
 Create the figure
 -----------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-108
+.. GENERATED FROM PYTHON SOURCE LINES 72-109
 
 .. code-block:: default
 
@@ -192,7 +193,7 @@ Create the figure
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  19.859 seconds)
+   **Total running time of the script:** ( 0 minutes  20.182 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Mesonet_Stationplot.py:

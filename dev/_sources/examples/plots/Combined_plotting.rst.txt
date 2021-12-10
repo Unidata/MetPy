@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_plots_Combined_plotting.py:
 
 
+=================
 Combined Plotting
 =================
 
@@ -25,7 +26,7 @@ Demonstrate the use of MetPy's simplified plotting interface combining multiple 
 
 Also shows how to control the maps that are plotted. Plots sample NARR data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-22
+.. GENERATED FROM PYTHON SOURCE LINES 13-23
 
 .. code-block:: default
 
@@ -46,11 +47,11 @@ Also shows how to control the maps that are plotted. Plots sample NARR data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-24
+.. GENERATED FROM PYTHON SOURCE LINES 24-25
 
 Create a contour plot of temperature
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-31
+.. GENERATED FROM PYTHON SOURCE LINES 25-32
 
 .. code-block:: default
 
@@ -68,11 +69,11 @@ Create a contour plot of temperature
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-33
+.. GENERATED FROM PYTHON SOURCE LINES 33-34
 
 Create an image plot of Geopotential height
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-39
+.. GENERATED FROM PYTHON SOURCE LINES 34-40
 
 .. code-block:: default
 
@@ -89,11 +90,11 @@ Create an image plot of Geopotential height
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
+.. GENERATED FROM PYTHON SOURCE LINES 41-42
 
 Plot the data on a map
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-51
+.. GENERATED FROM PYTHON SOURCE LINES 42-52
 
 .. code-block:: default
 
@@ -143,7 +144,7 @@ Plot the data on a map
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.474 seconds)
+   **Total running time of the script:** ( 0 minutes  5.556 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:

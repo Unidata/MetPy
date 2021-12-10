@@ -18,12 +18,13 @@
 .. _sphx_glr_examples_meteogram_metpy.py:
 
 
+=========
 Meteogram
 =========
 
 Plots time series data as a meteogram.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-220
+.. GENERATED FROM PYTHON SOURCE LINES 11-221
 
 
 
@@ -39,13 +40,13 @@ Plots time series data as a meteogram.
 
  .. code-block:: none
 
-    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:74: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:75: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax1.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:106: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:107: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax2.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:135: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:136: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax3.grid(b=True, which='major', axis='y', color='k', linestyle='--',
-    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:166: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:167: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax4.grid(b=True, which='major', axis='y', color='k', linestyle='--',
 
 
@@ -271,7 +272,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.049 seconds)
+   **Total running time of the script:** ( 0 minutes  1.092 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:

@@ -18,12 +18,13 @@
 .. _sphx_glr_examples_gridding_Point_Interpolation.py:
 
 
+===================
 Point Interpolation
 ===================
 
 Compares different point interpolation approaches.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-23
+.. GENERATED FROM PYTHON SOURCE LINES 11-24
 
 .. code-block:: default
 
@@ -47,7 +48,7 @@ Compares different point interpolation approaches.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-75
+.. GENERATED FROM PYTHON SOURCE LINES 25-76
 
 .. code-block:: default
 
@@ -109,12 +110,12 @@ Compares different point interpolation approaches.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-78
+.. GENERATED FROM PYTHON SOURCE LINES 77-79
 
 Scipy.interpolate linear
 ------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-84
+.. GENERATED FROM PYTHON SOURCE LINES 79-85
 
 .. code-block:: default
 
@@ -140,17 +141,17 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f539faf2fa0>
+    <matplotlib.colorbar.Colorbar object at 0x7fc48a6fc8e0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-88
+.. GENERATED FROM PYTHON SOURCE LINES 86-89
 
 Natural neighbor interpolation (MetPy implementation)
 -----------------------------------------------------
 `Reference <https://cwp.mines.edu/wp-content/uploads/sites/112/2018/09/cwp-657.pdf>`_
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-94
+.. GENERATED FROM PYTHON SOURCE LINES 89-95
 
 .. code-block:: default
 
@@ -176,11 +177,11 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f53a05ab3d0>
+    <matplotlib.colorbar.Colorbar object at 0x7fc46c6e3a60>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-102
+.. GENERATED FROM PYTHON SOURCE LINES 96-103
 
 Cressman interpolation
 ----------------------
@@ -190,7 +191,7 @@ grid resolution = 25 km
 
 min_neighbors = 1
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-109
+.. GENERATED FROM PYTHON SOURCE LINES 103-110
 
 .. code-block:: default
 
@@ -217,11 +218,11 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f537ed4ed30>
+    <matplotlib.colorbar.Colorbar object at 0x7fc46c9ff760>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-115
+.. GENERATED FROM PYTHON SOURCE LINES 111-116
 
 Barnes Interpolation
 --------------------
@@ -229,7 +230,7 @@ search_radius = 100km
 
 min_neighbors = 3
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-122
+.. GENERATED FROM PYTHON SOURCE LINES 116-123
 
 .. code-block:: default
 
@@ -256,17 +257,17 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f537cd8a040>
+    <matplotlib.colorbar.Colorbar object at 0x7fc46cb8b940>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-126
+.. GENERATED FROM PYTHON SOURCE LINES 124-127
 
 Radial basis function interpolation
 ------------------------------------
 linear
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-134
+.. GENERATED FROM PYTHON SOURCE LINES 127-135
 
 .. code-block:: default
 
@@ -293,7 +294,7 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.002 seconds)
+   **Total running time of the script:** ( 0 minutes  5.078 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:

@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
+============
 Parse angles
 ============
 
@@ -25,8 +26,8 @@ angle_deg = mpcalc.parse_angle(dir_str)
 print(angle_deg)
 
 ###########################################
-# The function can also handle arrays of string
-# in many different abbrieviations and capitalizations
+# The function can also handle arrays of strings
+# with different abbreviations and capitalizations
 dir_str_list = ['ne', 'NE', 'NORTHEAST', 'NORTH_EAST', 'NORTH east']
 angle_deg_list = mpcalc.parse_angle(dir_str_list)
 print(angle_deg_list)

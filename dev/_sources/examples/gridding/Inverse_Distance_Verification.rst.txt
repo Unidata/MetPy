@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_gridding_Inverse_Distance_Verification.py:
 
 
+==================================================
 Inverse Distance Verification: Cressman and Barnes
 ==================================================
 
@@ -41,7 +42,7 @@ Algorithmically:
    interpolated value.
 5. Steps 2 through 4 are repeated for each grid cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-44
+.. GENERATED FROM PYTHON SOURCE LINES 29-45
 
 .. code-block:: default
 
@@ -68,13 +69,13 @@ Algorithmically:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-48
+.. GENERATED FROM PYTHON SOURCE LINES 46-49
 
 Generate random x and y coordinates, and observation values proportional to x * y.
 
 Set up two test grid locations at (30, 30) and (60, 60).
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-58
+.. GENERATED FROM PYTHON SOURCE LINES 49-59
 
 .. code-block:: default
 
@@ -95,14 +96,14 @@ Set up two test grid locations at (30, 30) and (60, 60).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-63
+.. GENERATED FROM PYTHON SOURCE LINES 60-64
 
 Set up a cKDTree object and query all of the observations within "radius" of each grid point.
 
 The variable ``indices`` represents the index of each matched coordinate within the
 cKDTree's ``data`` list.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-69
+.. GENERATED FROM PYTHON SOURCE LINES 64-70
 
 .. code-block:: default
 
@@ -119,11 +120,11 @@ cKDTree's ``data`` list.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-71
+.. GENERATED FROM PYTHON SOURCE LINES 71-72
 
 For grid 0, we will use Cressman to interpolate its value.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-77
+.. GENERATED FROM PYTHON SOURCE LINES 72-78
 
 .. code-block:: default
 
@@ -140,13 +141,13 @@ For grid 0, we will use Cressman to interpolate its value.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-81
+.. GENERATED FROM PYTHON SOURCE LINES 79-82
 
 For grid 1, we will use barnes to interpolate its value.
 
 We need to calculate kappa--the average distance between observations over the domain.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-89
+.. GENERATED FROM PYTHON SOURCE LINES 82-90
 
 .. code-block:: default
 
@@ -165,11 +166,11 @@ We need to calculate kappa--the average distance between observations over the d
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-91
+.. GENERATED FROM PYTHON SOURCE LINES 91-92
 
 Plot all of the affiliated information and interpolation values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-110
+.. GENERATED FROM PYTHON SOURCE LINES 92-111
 
 .. code-block:: default
 
@@ -208,11 +209,11 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f537ccd3670>
+    <matplotlib.legend.Legend object at 0x7fc46ea91100>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-116
+.. GENERATED FROM PYTHON SOURCE LINES 112-117
 
 For each point, we will do a manual check of the interpolation values by doing a step by
 step and visual breakdown.
@@ -220,7 +221,7 @@ step and visual breakdown.
 Plot the grid point, observations within radius of the grid point, their locations, and
 their distances from the grid point.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-137
+.. GENERATED FROM PYTHON SOURCE LINES 117-138
 
 .. code-block:: default
 
@@ -257,11 +258,11 @@ their distances from the grid point.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-139
+.. GENERATED FROM PYTHON SOURCE LINES 139-140
 
 Step through the cressman calculations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-152
+.. GENERATED FROM PYTHON SOURCE LINES 140-153
 
 .. code-block:: default
 
@@ -294,11 +295,11 @@ Step through the cressman calculations.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-154
+.. GENERATED FROM PYTHON SOURCE LINES 154-155
 
 Now repeat for grid 1, except use barnes interpolation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-176
+.. GENERATED FROM PYTHON SOURCE LINES 155-177
 
 .. code-block:: default
 
@@ -336,11 +337,11 @@ Now repeat for grid 1, except use barnes interpolation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-178
+.. GENERATED FROM PYTHON SOURCE LINES 178-179
 
 Step through barnes calculations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-189
+.. GENERATED FROM PYTHON SOURCE LINES 179-190
 
 .. code-block:: default
 
@@ -374,7 +375,7 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.702 seconds)
+   **Total running time of the script:** ( 0 minutes  0.723 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:

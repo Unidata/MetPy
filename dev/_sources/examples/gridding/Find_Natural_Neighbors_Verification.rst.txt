@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py:
 
 
+===================================
 Find Natural Neighbors Verification
 ===================================
 
@@ -26,7 +27,7 @@ Finding natural neighbors in a triangulation
 A triangle is a natural neighbor of a point if that point is within a circumscribed
 circle ("circumcircle") containing the triangle.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-37
+.. GENERATED FROM PYTHON SOURCE LINES 14-38
 
 .. code-block:: default
 
@@ -66,7 +67,7 @@ circle ("circumcircle") containing the triangle.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-46
+.. GENERATED FROM PYTHON SOURCE LINES 39-47
 
 Since finding natural neighbors already calculates circumcenters, return
 that information for later use.
@@ -77,7 +78,7 @@ are the triangles that are natural neighbors of that particular test point.
 Since point 4 is far away from the triangulation, it has no natural neighbors.
 Point 3 is at the confluence of several triangles so it has many natural neighbors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-49
+.. GENERATED FROM PYTHON SOURCE LINES 47-50
 
 .. code-block:: default
 
@@ -99,12 +100,12 @@ Point 3 is at the confluence of several triangles so it has many natural neighbo
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 51-53
 
 We can plot all of the triangles as well as the circles representing the circumcircles
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-69
+.. GENERATED FROM PYTHON SOURCE LINES 53-70
 
 .. code-block:: default
 
@@ -140,7 +141,7 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.585 seconds)
+   **Total running time of the script:** ( 0 minutes  0.598 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:

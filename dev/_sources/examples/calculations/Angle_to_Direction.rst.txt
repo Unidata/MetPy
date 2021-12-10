@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_calculations_Angle_to_Direction.py:
 
 
+==================
 Angle to Direction
 ==================
 
@@ -26,7 +27,7 @@ Demonstrate how to convert angles to direction strings.
 The code below shows how to convert angles into directional text.
 It also  demonstrates the function's flexibility.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-16
+.. GENERATED FROM PYTHON SOURCE LINES 14-17
 
 .. code-block:: default
 
@@ -40,11 +41,11 @@ It also  demonstrates the function's flexibility.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-18
+.. GENERATED FROM PYTHON SOURCE LINES 18-19
 
 Create a test value of an angle
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-21
+.. GENERATED FROM PYTHON SOURCE LINES 19-22
 
 .. code-block:: default
 
@@ -66,12 +67,12 @@ Create a test value of an angle
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-24
+.. GENERATED FROM PYTHON SOURCE LINES 23-25
 
 Now throw that angle into the function to
 get the corresponding direction
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-27
+.. GENERATED FROM PYTHON SOURCE LINES 25-28
 
 .. code-block:: default
 
@@ -93,13 +94,13 @@ get the corresponding direction
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-31
+.. GENERATED FROM PYTHON SOURCE LINES 29-32
 
 The function can also handle array of angles,
 rounding to the nearest direction, handling angles > 360,
 and defaulting to degrees if no units are specified.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-35
+.. GENERATED FROM PYTHON SOURCE LINES 32-36
 
 .. code-block:: default
 
@@ -122,11 +123,11 @@ and defaulting to degrees if no units are specified.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 If you want the unabbrieviated version, input full=True
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-39
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 .. code-block:: default
 

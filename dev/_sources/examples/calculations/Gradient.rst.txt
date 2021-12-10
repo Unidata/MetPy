@@ -18,6 +18,7 @@
 .. _sphx_glr_examples_calculations_Gradient.py:
 
 
+========
 Gradient
 ========
 
@@ -26,7 +27,7 @@ Use `metpy.calc.gradient`.
 This example demonstrates the various ways that MetPy's gradient function
 can be utilized.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-19
+.. GENERATED FROM PYTHON SOURCE LINES 14-20
 
 .. code-block:: default
 
@@ -43,11 +44,11 @@ can be utilized.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
+.. GENERATED FROM PYTHON SOURCE LINES 21-22
 
 Create some test data to use for our example
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-37
+.. GENERATED FROM PYTHON SOURCE LINES 22-38
 
 .. code-block:: default
 
@@ -74,11 +75,11 @@ Create some test data to use for our example
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
+.. GENERATED FROM PYTHON SOURCE LINES 39-40
 
 Calculate the gradient using the coordinates of the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-43
+.. GENERATED FROM PYTHON SOURCE LINES 40-44
 
 .. code-block:: default
 
@@ -102,13 +103,13 @@ Calculate the gradient using the coordinates of the data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-47
+.. GENERATED FROM PYTHON SOURCE LINES 45-48
 
 It's also possible that we do not have the position of data points, but know
 that they are evenly spaced. We can then specify a scalar delta value for each
 axes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-53
+.. GENERATED FROM PYTHON SOURCE LINES 48-54
 
 .. code-block:: default
 
@@ -134,11 +135,11 @@ axes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-55
+.. GENERATED FROM PYTHON SOURCE LINES 55-56
 
 Finally, the deltas can be arrays for unevenly spaced data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-65
+.. GENERATED FROM PYTHON SOURCE LINES 56-66
 
 .. code-block:: default
 
