@@ -840,11 +840,7 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
     take_y = make_take(latitude.ndim, y_dim)
     take_x = make_take(latitude.ndim, x_dim)
 
-    if geod is None:
-        g = Geod(ellps='sphere')
-    else:
-        g = geod
-
+    g = Geod(ellps='sphere') if geod is None else geod
     forward_az, _, dy = g.inv(longitude[take_y(slice(None, -1))],
                               latitude[take_y(slice(None, -1))],
                               longitude[take_y(slice(1, None))],
@@ -891,11 +887,7 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, geod=None
     Credit to Brian Blaylock for the original implementation.
 
     """
-    if geod is None:
-        g = Geod(ellps='sphere')
-    else:
-        g = geod
-
+    g = Geod(ellps='sphere') if geod is None else geod
     try:  # convert range units to meters
         ranges = ranges.m_as('meters')
     except AttributeError:  # no units associated
@@ -1454,17 +1446,12 @@ def angle_to_direction(input_angle, full=False, level=3):
     round_angles[np.where(np.isnan(round_angles))] = UND_ANGLE
 
     dir_str_arr = itemgetter(*round_angles)(angle_dict)  # for array
-    if full:
-        dir_str_arr = ','.join(dir_str_arr)
-        dir_str_arr = _unabbrieviate_direction(dir_str_arr)
-        if not scalar:
-            dir_str = dir_str_arr.split(',')
-        else:
-            dir_str = dir_str_arr.replace(',', ' ')
-    else:
-        dir_str = dir_str_arr
+    if not full:
+        return dir_str_arr
 
-    return dir_str
+    dir_str_arr = ','.join(dir_str_arr)
+    dir_str_arr = _unabbrieviate_direction(dir_str_arr)
+    return dir_str_arr.replace(',', ' ') if scalar else dir_str_arr.split(',')
 
 
 def _unabbrieviate_direction(abb_dir_str):

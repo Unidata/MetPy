@@ -688,8 +688,8 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
                               direction='decreasing', log_x=True)
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpoint[0])
-    idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
+        idx = x < lcl_p
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
                                         parcel_temperature_profile, temperature, dewpoint,
                                         intersect_type='EL')

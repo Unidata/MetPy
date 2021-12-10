@@ -174,12 +174,7 @@ def circumcircle_radius(pt0, pt1, pt2):
 
     t_area = triangle_area(pt0, pt1, pt2)
 
-    if t_area > 0:
-        radius = (a * b * c) / (4 * t_area)
-    else:
-        radius = np.nan
-
-    return radius
+    return (a * b * c) / (4 * t_area) if t_area > 0 else np.nan
 
 
 def circumcenter(pt0, pt1, pt2):

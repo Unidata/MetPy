@@ -242,10 +242,7 @@ if not hasattr(Axes, 'scattertext'):
             If `None` is given, the option will be reset to use the value of
             `rcParams['text.usetex']`
             """
-            if usetex is None:
-                self._usetex = None
-            else:
-                self._usetex = bool(usetex)
+            self._usetex = None if usetex is None else bool(usetex)
             self.stale = True
 
         def get_usetex(self):

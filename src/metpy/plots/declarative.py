@@ -758,11 +758,7 @@ class MapPanel(Panel):
 
         """
         for item in self.layers:
-            if isinstance(item, str):
-                feat = lookup_map_feature(item)
-            else:
-                feat = item
-
+            feat = lookup_map_feature(item) if isinstance(item, str) else item
             yield feat
 
     @observe('area')
@@ -1030,7 +1026,7 @@ class Plots2D(SubsetTraits):
         """Generate a name for the plot."""
         if isinstance(self.field, tuple):
             ret = ''
-            ret += ' and '.join(f for f in self.field)
+            ret += ' and '.join(self.field)
         else:
             ret = self.field
         if self.level is not None:
@@ -1441,11 +1437,11 @@ class PlotVector(Plots2D):
         """Return the internal cached data."""
         if getattr(self, '_griddata_u', None) is None:
 
-            if self.field[0]:
-                u = self.data.metpy.parse_cf(self.field[0])
-                v = self.data.metpy.parse_cf(self.field[1])
-            else:
+            if not self.field[0]:
                 raise ValueError('field attribute not set correctly')
+
+            u = self.data.metpy.parse_cf(self.field[0])
+            v = self.data.metpy.parse_cf(self.field[1])
 
             # Subset to 2D using MetPy's fancy .sel
             subset = {'method': 'nearest'}
@@ -1721,7 +1717,7 @@ class PlotObs(MetPyHasTraits):
     def name(self):
         """Generate a name for the plot."""
         ret = ''
-        ret += ' and '.join(f for f in self.fields)
+        ret += ' and '.join(self.fields)
         if self.level is not None:
             ret += f'@{self.level:d}'
         return ret
@@ -1819,10 +1815,7 @@ class PlotObs(MetPyHasTraits):
 
         # Use the cartopy map projection to transform station locations to the map and
         # then refine the number of stations plotted by setting a radius
-        if self.parent._proj_obj == ccrs.PlateCarree():
-            scale = 1.
-        else:
-            scale = 100000.
+        scale = 1. if self.parent._proj_obj == ccrs.PlateCarree() else 100000.
         point_locs = self.parent._proj_obj.transform_points(ccrs.PlateCarree(), lon, lat)
         subset = reduce_point_density(point_locs, self.reduce_points * scale)
 
@@ -1831,10 +1824,7 @@ class PlotObs(MetPyHasTraits):
 
         for i, ob_type in enumerate(self.fields):
             field_kwargs = {}
-            if len(self.locations) > 1:
-                location = self.locations[i]
-            else:
-                location = self.locations[0]
+            location = self.locations[i] if len(self.locations) > 1 else self.locations[0]
             if len(self.colors) > 1:
                 field_kwargs['color'] = self.colors[i]
             else:
@@ -1867,9 +1857,11 @@ class PlotObs(MetPyHasTraits):
                 self.handle.plot_parameter(location, parameter, **field_kwargs)
 
         if self.vector_field[0] is not None:
-            vector_kwargs = {}
-            vector_kwargs['color'] = self.vector_field_color
-            vector_kwargs['plot_units'] = self.vector_plot_units
+            vector_kwargs = {
+                'color': self.vector_field_color,
+                'plot_units': self.vector_plot_units,
+            }
+
             if hasattr(self.data, 'units') and (vector_kwargs['plot_units'] is not None):
                 u = units.Quantity(data[self.vector_field[0]][subset].values,
                                    self.data.units[self.vector_field[0]])

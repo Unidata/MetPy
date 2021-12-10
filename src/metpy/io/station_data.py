@@ -66,7 +66,7 @@ def _read_master_text_file(input_file=None):
             lat = to_dec_deg(line[39:46].strip())
             lon = to_dec_deg(line[47:55].strip())
             alt_part = line[55:60].strip()
-            alt = int(alt_part if alt_part else 0.)
+            alt = int(alt_part or 0.)
             if stid:
                 if stid[0] in ('P', 'K'):
                     country = 'US'
