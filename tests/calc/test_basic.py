@@ -265,7 +265,7 @@ def test_heat_index_vs_nws():
     """Test heat_index against online calculated HI from NWS Website."""
     # https://www.wpc.ncep.noaa.gov/html/heatindex.shtml, visited 2019-Jul-17
     temp = units.Quantity(np.array([86, 111, 40, 96]), units.degF)
-    rh = np.ma.array([45, 27, 99, 60]) * units.percent
+    rh = units.Quantity(np.array([45, 27, 99, 60]), units.percent)
     hi = heat_index(temp, rh)
     truth = units.Quantity(np.ma.array([87, 121, 40, 116], mask=[False, False, True, False]),
                            units.degF)
