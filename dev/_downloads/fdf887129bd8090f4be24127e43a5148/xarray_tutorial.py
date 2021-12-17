@@ -6,7 +6,7 @@
 xarray with MetPy Tutorial
 ==========================
 
-`xarray <http://xarray.pydata.org/>`_ is a powerful Python package that provides N-dimensional
+`xarray <https://xarray.pydata.org/>`_ is a powerful Python package that provides N-dimensional
 labeled arrays and datasets following the Common Data Model. MetPy's suite of meteorological
 calculations are designed to integrate with xarray DataArrays as one of its two primary data
 models (the other being Pint Quantities). MetPy also provides DataArray and Dataset
@@ -44,7 +44,7 @@ data
 # be stored in a netCDF file), a common use case is working with gridded model output. Such
 # model data can be obtained from a THREDDS Data Server using the `siphon package
 # <https://unidata.github.io/siphon/>`_, but here we've used an example subset of GFS data
-# from Hurrican Irma (September 5th, 2017) included in MetPy's test suite. Generally,
+# from Hurricane Irma (September 5th, 2017) included in MetPy's test suite. Generally,
 # a local file (or remote file via OPeNDAP) can be opened with ``xr.open_dataset("path")``.
 #
 # Going back to the above object, this ``Dataset`` consists of *dimensions* and their
@@ -61,7 +61,7 @@ temperature
 # MetPy's calculations take as input (more on that in  `Calculations`_ section below).
 #
 # If you are more interested in learning about xarray's terminology and data structures, see
-# the `terminology section <http://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
+# the `terminology section <https://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
 # documentation.
 #
 # Coordinates and Coordinate Reference Systems
@@ -246,7 +246,7 @@ height_units
 # Calculations
 # ------------
 #
-# MetPy's xarray integration extends to its calcuation suite as well. Most grid-capable
+# MetPy's xarray integration extends to its calculation suite as well. Most grid-capable
 # calculations (such as thermodynamics, kinematics, and smoothers) fully support xarray
 # ``DataArray``\s by accepting them as inputs, returning them as outputs, and automatically
 # using the attached coordinate data/metadata to determine grid arguments

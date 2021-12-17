@@ -471,7 +471,7 @@ the U.S. for plotting purposes</p>
 </pre></div>
 </div>
 <p>For full details on xarray indexing/selection, see
-<a class="reference external" href="http://xarray.pydata.org/en/stable/indexing.html">xarray’s documentation</a>.</p>
+<a class="reference external" href="https://xarray.pydata.org/en/stable/indexing.html">xarray’s documentation</a>.</p>
 </section>
 <section id="calculations">
 <h2>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h2>
@@ -486,7 +486,7 @@ to our Dataset.</p>
 </section>
 <section id="plotting">
 <h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
-<p>With that miniaml preparation, we are now ready to use the simplified plotting syntax to be
+<p>With that minimal preparation, we are now ready to use the simplified plotting syntax to be
 able to plot our data and analyze the meteorological situation.</p>
 <p>General Structure</p>
 <ol class="arabic simple">
@@ -552,7 +552,7 @@ attribute.</p>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">plots</span></a> <span class="o">=</span> <span class="p">[</span><a href="../api/generated/metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cfill</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cntr2</span></a><span class="p">]</span>
 </pre></div>
 </div>
-<p>Finally we’ll collect all of the panels to plot on the figure, set the size of the figure,
+<p>Finally we’ll collect all the panels to plot on the figure, set the size of the figure,
 and ultimately show or save the figure.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the attributes for the panel and put the panel in the figure</span>
 <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">()</span>
@@ -608,8 +608,8 @@ Geopotential Height contours, and color-filled wind speed.</p>
 </pre></div>
 </div>
 <p>Now we’ll set the attributes for plotting wind barbs, with the required attributes of data,
-time, field, and level. The skip attribute is particularly useful for thining the number of
-wind barbs that are plotted on the map and again we’ll convert to units of knots.</p>
+time, field, and level. The skip attribute is particularly useful for thinning the number of
+wind barbs that are plotted on the map. Again we convert to units of knots.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set attributes for plotting wind barbs</span>
 <a href="../api/generated/metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">barbs</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">BarbPlot</span></a><span class="p">()</span>
 <a href="../api/generated/metpy.plots.BarbPlot.html#metpy.plots.BarbPlot.data" title="metpy.plots.BarbPlot.data" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-attribute"><span class="n">barbs</span><span class="o">.</span><span class="n">data</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ds</span></a>
@@ -681,13 +681,13 @@ to plot the figure; similar to what you would do for a gridded plot.</p>
       dtype=&#39;object&#39;)
 </pre></div>
 </div>
-<p>Setting of our attributes for plotting observations is pretty straignforward and just needs
+<p>Setting of our attributes for plotting observations is pretty straightforward and just needs
 to be lists for the variables, and a comparable number of items for plot characteristics that
 are specific to the individual fields. For example, the locations around a station plot, the
-plot units, and any plotting formats would all meed to have the same number of items as the
+plot units, and any plotting formats would all need to have the same number of items as the
 fields attribute.</p>
-<p>Plotting wind bards is done through the vector_field attribute and you can reduce the number
-of points plotted (especially important for surface observations) with the reduce points
+<p>Plotting wind bards is done through the vector_field attribute. You can reduce the number
+of points plotted (especially important for surface observations) with the <code class="docutils literal notranslate"><span class="pre">reduce_points</span></code>
 attribute.</p>
 <p>For a very basic plot of one field, the minimum required attributes are the data, time,
 fields, and location attributes.</p>
@@ -707,7 +707,7 @@ fields, and location attributes.</p>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span><span class="o">.</span><span class="n">vector_field</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eastward_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;northward_wind&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>We use the same Classes for plotting our data on a map panel and collecting all of the
+<p>We use the same Classes for plotting our data on a map panel and collecting all the
 panels on the figure. In this case we’ll focus in on the state of Indiana for plotting.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Panel for plot with Map features</span>
 <a href="../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a> <span class="o">=</span> <a href="../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">()</span>
@@ -851,7 +851,7 @@ This tuple defines a box from the lower-left to the upper-right corner.</p>
 <p>This attribute must be set to the variable that contains the vector components to be plotted.</p>
 <p><code class="docutils literal notranslate"><span class="pre">field</span></code></p>
 <p>This attribute is a list of the vector components to be plotted. For the typical
-meteorological case it would be the <code class="docutils literal notranslate"><span class="pre">[‘u-compopnent’,</span> <span class="pre">‘v-component’]</span></code>.</p>
+meteorological case it would be the <code class="docutils literal notranslate"><span class="pre">[‘u-component’,</span> <span class="pre">‘v-component’]</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">time</span></code></p>
 <p>This attribute should be set to a datetime object, the same as for all other declarative
 classes.</p>
@@ -911,7 +911,7 @@ Acceptable colors are those available through Matplotlib:
 <p><code class="docutils literal notranslate"><span class="pre">reduce_points</span></code></p>
 <p>This attribute can be set to a real number to reduce the number of stations that are plotted.
 Default value is zero (e.g., no points are removed from the plot).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  17.096 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.961 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-declarative-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/900d76c7356d09e4ca20b90f94a0732e/declarative_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">declarative_tutorial.py</span></code></a></p>

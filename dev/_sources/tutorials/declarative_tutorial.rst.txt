@@ -169,7 +169,7 @@ the U.S. for plotting purposes
 .. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 For full details on xarray indexing/selection, see
-`xarray's documentation <http://xarray.pydata.org/en/stable/indexing.html>`_.
+`xarray's documentation <https://xarray.pydata.org/en/stable/indexing.html>`_.
 
 .. GENERATED FROM PYTHON SOURCE LINES 70-78
 
@@ -201,7 +201,7 @@ to our Dataset.
 Plotting
 --------
 
-With that miniaml preparation, we are now ready to use the simplified plotting syntax to be
+With that minimal preparation, we are now ready to use the simplified plotting syntax to be
 able to plot our data and analyze the meteorological situation.
 
 General Structure
@@ -320,7 +320,7 @@ attribute.
 
 .. GENERATED FROM PYTHON SOURCE LINES 164-166
 
-Finally we'll collect all of the panels to plot on the figure, set the size of the figure,
+Finally we'll collect all the panels to plot on the figure, set the size of the figure,
 and ultimately show or save the figure.
 
 .. GENERATED FROM PYTHON SOURCE LINES 166-172
@@ -433,8 +433,8 @@ Geopotential Height contours, and color-filled wind speed.
 .. GENERATED FROM PYTHON SOURCE LINES 217-220
 
 Now we'll set the attributes for plotting wind barbs, with the required attributes of data,
-time, field, and level. The skip attribute is particularly useful for thining the number of
-wind barbs that are plotted on the map and again we'll convert to units of knots.
+time, field, and level. The skip attribute is particularly useful for thinning the number of
+wind barbs that are plotted on the map. Again we convert to units of knots.
 
 .. GENERATED FROM PYTHON SOURCE LINES 220-230
 
@@ -561,14 +561,14 @@ to plot the figure; similar to what you would do for a gridded plot.
 
 .. GENERATED FROM PYTHON SOURCE LINES 269-281
 
-Setting of our attributes for plotting observations is pretty straignforward and just needs
+Setting of our attributes for plotting observations is pretty straightforward and just needs
 to be lists for the variables, and a comparable number of items for plot characteristics that
 are specific to the individual fields. For example, the locations around a station plot, the
-plot units, and any plotting formats would all meed to have the same number of items as the
+plot units, and any plotting formats would all need to have the same number of items as the
 fields attribute.
 
-Plotting wind bards is done through the vector_field attribute and you can reduce the number
-of points plotted (especially important for surface observations) with the reduce points
+Plotting wind bards is done through the vector_field attribute. You can reduce the number
+of points plotted (especially important for surface observations) with the ``reduce_points``
 attribute.
 
 For a very basic plot of one field, the minimum required attributes are the data, time,
@@ -603,7 +603,7 @@ fields, and location attributes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 298-300
 
-We use the same Classes for plotting our data on a map panel and collecting all of the
+We use the same Classes for plotting our data on a map panel and collecting all the
 panels on the figure. In this case we'll focus in on the state of Indiana for plotting.
 
 .. GENERATED FROM PYTHON SOURCE LINES 300-317
@@ -840,7 +840,7 @@ This attribute must be set to the variable that contains the vector components t
 ``field``
 
 This attribute is a list of the vector components to be plotted. For the typical
-meteorological case it would be the ``[‘u-compopnent’, ‘v-component’]``.
+meteorological case it would be the ``[‘u-component’, ‘v-component’]``.
 
 ``time``
 
@@ -942,7 +942,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  17.096 seconds)
+   **Total running time of the script:** ( 0 minutes  14.961 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
