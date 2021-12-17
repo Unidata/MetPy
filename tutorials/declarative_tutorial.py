@@ -64,7 +64,7 @@ ds = data.metpy.sel(lat=slice(70, 10), lon=slice(360 - 150, 360 - 55))
 
 #########################################################################
 # For full details on xarray indexing/selection, see
-# `xarray's documentation <http://xarray.pydata.org/en/stable/indexing.html>`_.
+# `xarray's documentation <https://xarray.pydata.org/en/stable/indexing.html>`_.
 
 #########################################################################
 # Calculations
@@ -82,7 +82,7 @@ ds['wind_speed'] = mpcalc.wind_speed(ds['u-component_of_wind_isobaric'],
 # Plotting
 # --------
 #
-# With that miniaml preparation, we are now ready to use the simplified plotting syntax to be
+# With that minimal preparation, we are now ready to use the simplified plotting syntax to be
 # able to plot our data and analyze the meteorological situation.
 #
 # General Structure
@@ -161,7 +161,7 @@ panel.title = f'{cfill.level.m}-hPa Heights and Wind Speed at {plot_time}'
 panel.plots = [cfill, cntr2]
 
 #########################################################################
-# Finally we'll collect all of the panels to plot on the figure, set the size of the figure,
+# Finally we'll collect all the panels to plot on the figure, set the size of the figure,
 # and ultimately show or save the figure.
 
 # Set the attributes for the panel and put the panel in the figure
@@ -215,8 +215,8 @@ cfill.plot_units = 'knot'
 
 #########################################################################
 # Now we'll set the attributes for plotting wind barbs, with the required attributes of data,
-# time, field, and level. The skip attribute is particularly useful for thining the number of
-# wind barbs that are plotted on the map and again we'll convert to units of knots.
+# time, field, and level. The skip attribute is particularly useful for thinning the number of
+# wind barbs that are plotted on the map. Again we convert to units of knots.
 
 # Set attributes for plotting wind barbs
 barbs = BarbPlot()
@@ -266,14 +266,14 @@ print(df.keys())
 obs_time = datetime(2019, 7, 1, 12)
 
 #########################################################################
-# Setting of our attributes for plotting observations is pretty straignforward and just needs
+# Setting of our attributes for plotting observations is pretty straightforward and just needs
 # to be lists for the variables, and a comparable number of items for plot characteristics that
 # are specific to the individual fields. For example, the locations around a station plot, the
-# plot units, and any plotting formats would all meed to have the same number of items as the
+# plot units, and any plotting formats would all need to have the same number of items as the
 # fields attribute.
 #
-# Plotting wind bards is done through the vector_field attribute and you can reduce the number
-# of points plotted (especially important for surface observations) with the reduce points
+# Plotting wind bards is done through the vector_field attribute. You can reduce the number
+# of points plotted (especially important for surface observations) with the ``reduce_points``
 # attribute.
 #
 # For a very basic plot of one field, the minimum required attributes are the data, time,
@@ -295,7 +295,7 @@ obs.reduce_points = 0.75
 obs.vector_field = ['eastward_wind', 'northward_wind']
 
 #########################################################################
-# We use the same Classes for plotting our data on a map panel and collecting all of the
+# We use the same Classes for plotting our data on a map panel and collecting all the
 # panels on the figure. In this case we'll focus in on the state of Indiana for plotting.
 
 # Panel for plot with Map features
@@ -496,7 +496,7 @@ pc.show()
 # ``field``
 #
 # This attribute is a list of the vector components to be plotted. For the typical
-# meteorological case it would be the ``[‘u-compopnent’, ‘v-component’]``.
+# meteorological case it would be the ``[‘u-component’, ‘v-component’]``.
 #
 # ``time``
 #
