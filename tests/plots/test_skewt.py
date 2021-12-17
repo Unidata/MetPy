@@ -305,7 +305,7 @@ def test_hodograph_units():
     u = np.arange(10) * units.kt
     v = np.arange(10) * units.kt
     hodo.plot(u, v)
-    hodo.plot_colormapped(u, -v, np.sqrt(u * u + v * v), cmap='Greys')
+    hodo.plot_colormapped(u, -v, np.hypot(u, v), cmap='Greys')
     ax.set_xlabel('')
     ax.set_ylabel('')
     return fig

@@ -120,7 +120,7 @@ def dist_2(x0, y0, x1, y1):
     """
     d0 = x1 - x0
     d1 = y1 - y0
-    return d0 * d0 + d1 * d1
+    return d0**2 + d1**2
 
 
 def distance(p0, p1):
@@ -222,9 +222,9 @@ def circumcenter(pt0, pt1, pt2):
 
     d_inv = 0.5 / d_div
 
-    a_mag = a_x * a_x + a_y * a_y
-    b_mag = b_x * b_x + b_y * b_y
-    c_mag = c_x * c_x + c_y * c_y
+    a_mag = a_x**2 + a_y**2
+    b_mag = b_x**2 + b_y**2
+    c_mag = c_x**2 + c_y**2
 
     cx = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
     cy = (a_mag * cb_x_diff + b_mag * ac_x_diff + c_mag * ba_x_diff) * d_inv
@@ -236,7 +236,7 @@ def find_natural_neighbors(tri, grid_points):
     r"""Return the natural neighbor triangles for each given grid cell.
 
     These are determined by the properties of the given Delaunay triangulation.
-    A triangle is a natural neighbor of a grid cell if that triangles circumcenter
+    A triangle is a natural neighbor of a grid cell if that triangle's circumcenter
     is within the circumradius of the grid cell center.
 
     Parameters
@@ -318,7 +318,7 @@ def find_nn_triangles_point(tri, cur_tri, point):
         cur_x, cur_y = circumcenter(triangle[0], triangle[1], triangle[2])
         r = circumcircle_radius(triangle[0], triangle[1], triangle[2])
 
-        if dist_2(point[0], point[1], cur_x, cur_y) < r * r:
+        if dist_2(point[0], point[1], cur_x, cur_y) < r**2:
 
             nn.append(neighbor)
 

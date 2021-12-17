@@ -51,13 +51,13 @@ np.random.seed(100)
 pts = np.random.randint(0, 100, (10, 2))
 xp = pts[:, 0]
 yp = pts[:, 1]
-zp = xp * xp / 1000
+zp = xp**2 / 1000
 
 sim_gridx = [30, 60]
 sim_gridy = [30, 60]
 
 ###########################################
-# Set up a cKDTree object and query all of the observations within "radius" of each grid point.
+# Set up a cKDTree object and query all the observations within "radius" of each grid point.
 #
 # The variable ``indices`` represents the index of each matched coordinate within the
 # cKDTree's ``data`` list.
@@ -136,11 +136,11 @@ ax.set_ylim(0, 80)
 ax.set_aspect('equal', 'datalim')
 
 ###########################################
-# Step through the cressman calculations.
+# Step through the Cressman calculations.
 dists = np.array([22.803508502, 7.21110255093, 31.304951685, 33.5410196625])
 values = np.array([0.064, 1.156, 3.364, 0.225])
 
-cres_weights = (radius * radius - dists * dists) / (radius * radius + dists * dists)
+cres_weights = (radius**2 - dists**2) / (radius**2 + dists**2)
 total_weights = np.sum(cres_weights)
 proportion = cres_weights / total_weights
 value = values * proportion
@@ -151,7 +151,7 @@ print('Manual cressman value for grid 1:\t', np.sum(value))
 print('Metpy cressman value for grid 1:\t', val)
 
 ###########################################
-# Now repeat for grid 1, except use barnes interpolation.
+# Now repeat for grid 1, except use Barnes interpolation.
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 ax.annotate(f'grid 1: ({sim_gridx[1]}, {sim_gridy[1]})', xy=(sim_gridx[1] + 2, sim_gridy[1]))

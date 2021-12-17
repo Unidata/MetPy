@@ -104,9 +104,9 @@ def tke(u, v, w, perturbation=False, axis=-1):
         v = get_perturbation(v, axis=axis)
         w = get_perturbation(w, axis=axis)
 
-    u_cont = np.mean(u * u, axis=axis)
-    v_cont = np.mean(v * v, axis=axis)
-    w_cont = np.mean(w * w, axis=axis)
+    u_cont = np.mean(u**2, axis=axis)
+    v_cont = np.mean(v**2, axis=axis)
+    w_cont = np.mean(w**2, axis=axis)
 
     return 0.5 * np.sqrt(u_cont + v_cont + w_cont)
 
@@ -239,10 +239,10 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
 
     """
     uw = kinematic_flux(u, w, perturbation=perturbation, axis=axis)
-    kf = uw * uw
+    kf = uw**2
     if v is not None:
         vw = kinematic_flux(v, w, perturbation=perturbation, axis=axis)
-        kf += vw * vw
+        kf += vw**2
     # the friction velocity is the 4th root of the kinematic momentum flux
     # As an optimization, first do inplace square root, then return the
     # square root of that. This is faster than np.power(..., 0.25)

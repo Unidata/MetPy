@@ -301,7 +301,7 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
         rs = saturation_mixing_ratio(p, t)
         frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
                 / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
-                                    / (mpconsts.Rd * t * t)))).to('kelvin')
+                                    / (mpconsts.Rd * t**2)))).to('kelvin')
         return (frac / p).magnitude
 
     pressure = np.atleast_1d(pressure)
