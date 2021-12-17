@@ -1310,7 +1310,7 @@ is only done across the last two.</p></li>
 <p>This function is a close replication of the GEMPAK function <code class="docutils literal notranslate"><span class="pre">GWFS</span></code>,
 but is not identical.  The following notes are incorporated from
 the GEMPAK source code:</p>
-<p>This function smoothes a scalar grid using a moving average
+<p>This function smooths a scalar grid using a moving average
 low-pass filter whose weights are determined by the normal
 (Gaussian) probability distribution function for two dimensions.
 The weight given to any grid point within the area covered by the
@@ -1342,7 +1342,7 @@ deviation of the normal distribution is bigger.  Thus, increasing
 N has the effect of expanding the moving average window as well as
 changing the values of weights.  The patch is a square covering all
 points whose weight values are within two standard deviations of the
-mean of the two dimensional normal distribution.</p>
+mean of the two-dimensional normal distribution.</p>
 <p>The key difference between GEMPAK’s GWFS and this function is that,
 in GEMPAK, the leftover weight values representing the fringe of the
 distribution are applied to the target grid point.  In this

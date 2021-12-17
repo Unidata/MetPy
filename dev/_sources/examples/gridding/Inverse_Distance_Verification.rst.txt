@@ -84,7 +84,7 @@ Set up two test grid locations at (30, 30) and (60, 60).
     pts = np.random.randint(0, 100, (10, 2))
     xp = pts[:, 0]
     yp = pts[:, 1]
-    zp = xp * xp / 1000
+    zp = xp**2 / 1000
 
     sim_gridx = [30, 60]
     sim_gridy = [30, 60]
@@ -98,7 +98,7 @@ Set up two test grid locations at (30, 30) and (60, 60).
 
 .. GENERATED FROM PYTHON SOURCE LINES 60-64
 
-Set up a cKDTree object and query all of the observations within "radius" of each grid point.
+Set up a cKDTree object and query all the observations within "radius" of each grid point.
 
 The variable ``indices`` represents the index of each matched coordinate within the
 cKDTree's ``data`` list.
@@ -209,7 +209,7 @@ Plot all of the affiliated information and interpolation values.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fc5fd4acd60>
+    <matplotlib.legend.Legend object at 0x7f481c9f3430>
 
 
 
@@ -260,7 +260,7 @@ their distances from the grid point.
 
 .. GENERATED FROM PYTHON SOURCE LINES 139-140
 
-Step through the cressman calculations.
+Step through the Cressman calculations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 140-153
 
@@ -269,7 +269,7 @@ Step through the cressman calculations.
     dists = np.array([22.803508502, 7.21110255093, 31.304951685, 33.5410196625])
     values = np.array([0.064, 1.156, 3.364, 0.225])
 
-    cres_weights = (radius * radius - dists * dists) / (radius * radius + dists * dists)
+    cres_weights = (radius**2 - dists**2) / (radius**2 + dists**2)
     total_weights = np.sum(cres_weights)
     proportion = cres_weights / total_weights
     value = values * proportion
@@ -297,7 +297,7 @@ Step through the cressman calculations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 154-155
 
-Now repeat for grid 1, except use barnes interpolation.
+Now repeat for grid 1, except use Barnes interpolation.
 
 .. GENERATED FROM PYTHON SOURCE LINES 155-177
 
@@ -375,7 +375,7 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.644 seconds)
+   **Total running time of the script:** ( 0 minutes  0.819 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:
