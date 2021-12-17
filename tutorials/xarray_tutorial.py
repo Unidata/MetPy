@@ -6,7 +6,7 @@
 xarray with MetPy Tutorial
 ==========================
 
-`xarray <http://xarray.pydata.org/>`_ is a powerful Python package that provides N-dimensional
+`xarray <https://xarray.pydata.org/>`_ is a powerful Python package that provides N-dimensional
 labeled arrays and datasets following the Common Data Model. MetPy's suite of meteorological
 calculations are designed to integrate with xarray DataArrays as one of its two primary data
 models (the other being Pint Quantities). MetPy also provides DataArray and Dataset
@@ -61,7 +61,7 @@ temperature
 # MetPy's calculations take as input (more on that in  `Calculations`_ section below).
 #
 # If you are more interested in learning about xarray's terminology and data structures, see
-# the `terminology section <http://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
+# the `terminology section <https://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
 # documentation.
 #
 # Coordinates and Coordinate Reference Systems
