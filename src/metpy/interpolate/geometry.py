@@ -236,7 +236,7 @@ def find_natural_neighbors(tri, grid_points):
     r"""Return the natural neighbor triangles for each given grid cell.
 
     These are determined by the properties of the given Delaunay triangulation.
-    A triangle is a natural neighbor of a grid cell if that triangles circumcenter
+    A triangle is a natural neighbor of a grid cell if that triangle's circumcenter
     is within the circumradius of the grid cell center.
 
     Parameters

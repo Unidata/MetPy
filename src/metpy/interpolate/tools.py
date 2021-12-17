@@ -177,12 +177,10 @@ def cressman_weights(sq_dist, r):
     Parameters
     ----------
     sq_dist: (N, ) ndarray
-        Squared distances from interpolation point
-        associated with each observation in meters.
+        Squared distances from interpolation point associated with each observation in meters.
     r: float
-        Maximum distance an observation can be from an
-        interpolation point to be considered in the inter-
-        polation calculation.
+        Maximum distance an observation can be from an interpolation point to be considered
+        in the interpolation calculation.
 
     Returns
     -------

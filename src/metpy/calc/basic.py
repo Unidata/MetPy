@@ -263,7 +263,7 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     rh2 = relative_humidity**2
     delta2 = delta**2
 
-    # Simplifed Heat Index -- constants converted for relative_humidity in [0, 1]
+    # Simplified Heat Index -- constants converted for relative_humidity in [0, 1]
     a = (units.Quantity(-10.3, 'degF') + 1.1 * delta
          + units.Quantity(4.7, 'delta_degF') * relative_humidity)
 
@@ -590,7 +590,7 @@ def height_to_pressure_std(height):
 @exporter.export
 @preprocess_and_wrap(wrap_like='latitude')
 def coriolis_parameter(latitude):
-    r"""Calculate the coriolis parameter at each point.
+    r"""Calculate the Coriolis parameter at each point.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.370-371.
 
@@ -602,7 +602,7 @@ def coriolis_parameter(latitude):
     Returns
     -------
     `pint.Quantity`
-        Corresponding coriolis force at each point
+        Corresponding Coriolis force at each point
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
@@ -738,7 +738,7 @@ def smooth_gaussian(scalar_grid, n):
     but is not identical.  The following notes are incorporated from
     the GEMPAK source code:
 
-    This function smoothes a scalar grid using a moving average
+    This function smooths a scalar grid using a moving average
     low-pass filter whose weights are determined by the normal
     (Gaussian) probability distribution function for two dimensions.
     The weight given to any grid point within the area covered by the
@@ -773,7 +773,7 @@ def smooth_gaussian(scalar_grid, n):
     N has the effect of expanding the moving average window as well as
     changing the values of weights.  The patch is a square covering all
     points whose weight values are within two standard deviations of the
-    mean of the two dimensional normal distribution.
+    mean of the two-dimensional normal distribution.
 
     The key difference between GEMPAK's GWFS and this function is that,
     in GEMPAK, the leftover weight values representing the fringe of the
