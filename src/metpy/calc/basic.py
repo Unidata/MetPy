@@ -53,7 +53,7 @@ def wind_speed(u, v):
     wind_components
 
     """
-    return np.sqrt(u * u + v * v)
+    return np.hypot(u, v)
 
 
 @exporter.export
