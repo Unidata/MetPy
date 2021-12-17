@@ -44,7 +44,7 @@ data
 # be stored in a netCDF file), a common use case is working with gridded model output. Such
 # model data can be obtained from a THREDDS Data Server using the `siphon package
 # <https://unidata.github.io/siphon/>`_, but here we've used an example subset of GFS data
-# from Hurrican Irma (September 5th, 2017) included in MetPy's test suite. Generally,
+# from Hurricane Irma (September 5th, 2017) included in MetPy's test suite. Generally,
 # a local file (or remote file via OPeNDAP) can be opened with ``xr.open_dataset("path")``.
 #
 # Going back to the above object, this ``Dataset`` consists of *dimensions* and their
@@ -246,7 +246,7 @@ height_units
 # Calculations
 # ------------
 #
-# MetPy's xarray integration extends to its calcuation suite as well. Most grid-capable
+# MetPy's xarray integration extends to its calculation suite as well. Most grid-capable
 # calculations (such as thermodynamics, kinematics, and smoothers) fully support xarray
 # ``DataArray``\s by accepting them as inputs, returning them as outputs, and automatically
 # using the attached coordinate data/metadata to determine grid arguments
