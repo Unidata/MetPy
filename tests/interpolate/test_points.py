@@ -51,7 +51,7 @@ def test_nn_point(test_data):
     members, tri_info = find_natural_neighbors(tri,
                                                list(zip(sim_gridx, sim_gridy)))
 
-    val = natural_neighbor_point(xp, yp, z, [sim_gridx[0], sim_gridy[0]],
+    val = natural_neighbor_point(xp, yp, z, (sim_gridx[0], sim_gridy[0]),
                                  tri, members[0], tri_info)
 
     truth = 1.009
