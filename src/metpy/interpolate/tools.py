@@ -191,4 +191,4 @@ def cressman_weights(sq_dist, r):
         to the interpolation point.
 
     """
-    return (r * r - sq_dist) / (r * r + sq_dist)
+    return (r**2 - sq_dist) / (r**2 + sq_dist)

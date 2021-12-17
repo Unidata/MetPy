@@ -260,8 +260,8 @@ def heat_index(temperature, relative_humidity, mask_undefined=True):
     if not hasattr(relative_humidity, 'units'):
         relative_humidity = units.Quantity(relative_humidity, 'dimensionless')
     delta = temperature.to(units.degF) - units.Quantity(0., 'degF')
-    rh2 = relative_humidity * relative_humidity
-    delta2 = delta * delta
+    rh2 = relative_humidity**2
+    delta2 = delta**2
 
     # Simplifed Heat Index -- constants converted for relative_humidity in [0, 1]
     a = (units.Quantity(-10.3, 'degF') + 1.1 * delta
