@@ -12,6 +12,7 @@ from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
 
 from . import geometry, tools
 from ..package_tools import Exporter
+from ..units import units
 
 exporter = Exporter(globals())
 
@@ -260,12 +261,18 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     obs_tree = cKDTree(points)
     indices = obs_tree.query_ball_point(xi, r=r)
 
-    img = np.full(shape=xi.shape[0], dtype=values.dtype, fill_value=np.nan)
+    if hasattr(values, 'units'):
+        org_units = values.units
+        values = values.magnitude
+    else:
+        org_units = None
 
-    for idx, (matches, grid) in enumerate(zip(indices, xi)):
-        if len(matches) >= min_neighbors:
-            dists = geometry.dist_2(*grid, *obs_tree.data[matches].T)
-            img[idx] = interp_func(dists, values[matches])
+    img = np.asarray([interp_func(geometry.dist_2(*grid, *obs_tree.data[matches].T),
+                                  values[matches]) if len(matches) >= min_neighbors else np.nan
+                      for matches, grid in zip(indices, xi)])
+
+    if org_units:
+        img = units.Quantity(img, org_units)
 
     return img
 
