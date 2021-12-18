@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Interpolate data valid at one set of points to another in multiple dimensions."""
 
+import functools
 import logging
 
 import numpy as np
@@ -250,27 +251,22 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     inverse_distance_to_grid
 
     """
-    obs_tree = cKDTree(points)
+    if kind == 'cressman':
+        interp_func = functools.partial(cressman_point, radius=r)
+    elif kind == 'barnes':
+        interp_func = functools.partial(barnes_point, kappa=kappa, gamma=gamma)
+    else:
+        raise ValueError(f'{kind} interpolation not supported.')
 
+    obs_tree = cKDTree(points)
     indices = obs_tree.query_ball_point(xi, r=r)
 
-    img = np.empty(shape=(xi.shape[0]), dtype=values.dtype)
-    img.fill(np.nan)
+    img = np.full(shape=xi.shape[0], dtype=values.dtype, fill_value=np.nan)
 
     for idx, (matches, grid) in enumerate(zip(indices, xi)):
         if len(matches) >= min_neighbors:
-
-            x1, y1 = obs_tree.data[matches].T
-            values_subset = values[matches]
-            dists = geometry.dist_2(grid[0], grid[1], x1, y1)
-
-            if kind == 'cressman':
-                img[idx] = cressman_point(dists, values_subset, r)
-            elif kind == 'barnes':
-                img[idx] = barnes_point(dists, values_subset, kappa, gamma)
-
-            else:
-                raise ValueError(f'{kind} interpolation not supported.')
+            dists = geometry.dist_2(*grid, *obs_tree.data[matches].T)
+            img[idx] = interp_func(dists, values[matches])
 
     return img
 
