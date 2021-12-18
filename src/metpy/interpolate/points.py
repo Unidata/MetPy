@@ -217,7 +217,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     r"""Generate an inverse distance weighting interpolation to the given points.
 
     Values are assigned to the given interpolation points based on either [Cressman1959]_ or
-    [Barnes1964]_. The Barnes implementation used here based on [Koch1983]_.
+    [Barnes1964]_. The Barnes implementation used here is based on [Koch1983]_.
 
     Parameters
     ----------
@@ -228,8 +228,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     xi: array_like, shape (M, 2)
         Points to interpolate the data onto.
     r: float
-        Radius from grid center, within which observations
-        are considered and weighted.
+        Radius from grid center, within which observations are considered and weighted.
     gamma: float
         Adjustable smoothing parameter for the barnes interpolation. Default None.
     kappa: float
@@ -308,7 +307,7 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     gamma: float
         Adjustable smoothing parameter for the barnes interpolation. Default 0.25.
     kappa_star: float
-        Response parameter for barnes interpolation, specified nondimensionally
+        Response parameter for barnes interpolation, specified non-dimensionally
         in terms of the Nyquist. Default 5.052
     search_radius: float
         A search radius to use for the Barnes and Cressman interpolation schemes.
@@ -345,7 +344,7 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     elif interp_type == 'natural_neighbor':
         return natural_neighbor_to_points(points, values, xi)
 
-    # If this is Barnes/Cressman, determine search_radios and hand it along to
+    # If this is Barnes/Cressman, determine search_radius and hand it along to
     # `inverse_distance`
     elif interp_type in ['cressman', 'barnes']:
         ave_spacing = tools.average_spacing(points)
