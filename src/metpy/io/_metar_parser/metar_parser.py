@@ -3128,19 +3128,54 @@ class Grammar(object):
                             self._expected.append('"CB"')
                     if address4 is FAILURE:
                         self._offset = index7
-                        chunk9, max9 = None, self._offset + 3
+                        index8, elements2 = self._offset, []
+                        address5 = FAILURE
+                        chunk9, max9 = None, self._offset + 2
                         if max9 <= self._input_size:
                             chunk9 = self._input[self._offset:max9]
-                        if chunk9 == '///':
-                            address4 = TreeNode(self._input[self._offset:self._offset + 3], self._offset, [])
-                            self._offset = self._offset + 3
+                        if chunk9 == '//':
+                            address5 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
+                            self._offset = self._offset + 2
                         else:
-                            address4 = FAILURE
+                            address5 = FAILURE
                             if self._offset > self._failure:
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"///"')
+                                self._expected.append('"//"')
+                        if address5 is not FAILURE:
+                            elements2.append(address5)
+                            address6 = FAILURE
+                            index9 = self._offset
+                            chunk10, max10 = None, self._offset + 1
+                            if max10 <= self._input_size:
+                                chunk10 = self._input[self._offset:max10]
+                            if chunk10 == '/':
+                                address6 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
+                                self._offset = self._offset + 1
+                            else:
+                                address6 = FAILURE
+                                if self._offset > self._failure:
+                                    self._failure = self._offset
+                                    self._expected = []
+                                if self._offset == self._failure:
+                                    self._expected.append('"/"')
+                            if address6 is FAILURE:
+                                address6 = TreeNode(self._input[index9:index9], index9, [])
+                                self._offset = index9
+                            if address6 is not FAILURE:
+                                elements2.append(address6)
+                            else:
+                                elements2 = None
+                                self._offset = index8
+                        else:
+                            elements2 = None
+                            self._offset = index8
+                        if elements2 is None:
+                            address4 = FAILURE
+                        else:
+                            address4 = TreeNode(self._input[index8:self._offset], index8, elements2)
+                            self._offset = self._offset
                         if address4 is FAILURE:
                             self._offset = index7
                 if address4 is FAILURE:
@@ -3164,11 +3199,11 @@ class Grammar(object):
             self._offset = self._offset
         if address0 is FAILURE:
             self._offset = index1
-            index8 = self._offset
-            chunk10, max10 = None, self._offset + 3
-            if max10 <= self._input_size:
-                chunk10 = self._input[self._offset:max10]
-            if chunk10 == 'CLR':
+            index10 = self._offset
+            chunk11, max11 = None, self._offset + 3
+            if max11 <= self._input_size:
+                chunk11 = self._input[self._offset:max11]
+            if chunk11 == 'CLR':
                 address0 = TreeNode(self._input[self._offset:self._offset + 3], self._offset, [])
                 self._offset = self._offset + 3
             else:
@@ -3179,11 +3214,11 @@ class Grammar(object):
                 if self._offset == self._failure:
                     self._expected.append('"CLR"')
             if address0 is FAILURE:
-                self._offset = index8
-                chunk11, max11 = None, self._offset + 3
-                if max11 <= self._input_size:
-                    chunk11 = self._input[self._offset:max11]
-                if chunk11 == 'SKC':
+                self._offset = index10
+                chunk12, max12 = None, self._offset + 3
+                if max12 <= self._input_size:
+                    chunk12 = self._input[self._offset:max12]
+                if chunk12 == 'SKC':
                     address0 = TreeNode(self._input[self._offset:self._offset + 3], self._offset, [])
                     self._offset = self._offset + 3
                 else:
@@ -3194,11 +3229,11 @@ class Grammar(object):
                     if self._offset == self._failure:
                         self._expected.append('"SKC"')
                 if address0 is FAILURE:
-                    self._offset = index8
-                    chunk12, max12 = None, self._offset + 3
-                    if max12 <= self._input_size:
-                        chunk12 = self._input[self._offset:max12]
-                    if chunk12 == 'NSC':
+                    self._offset = index10
+                    chunk13, max13 = None, self._offset + 3
+                    if max13 <= self._input_size:
+                        chunk13 = self._input[self._offset:max13]
+                    if chunk13 == 'NSC':
                         address0 = TreeNode(self._input[self._offset:self._offset + 3], self._offset, [])
                         self._offset = self._offset + 3
                     else:
@@ -3209,11 +3244,11 @@ class Grammar(object):
                         if self._offset == self._failure:
                             self._expected.append('"NSC"')
                     if address0 is FAILURE:
-                        self._offset = index8
-                        chunk13, max13 = None, self._offset + 3
-                        if max13 <= self._input_size:
-                            chunk13 = self._input[self._offset:max13]
-                        if chunk13 == 'NCD':
+                        self._offset = index10
+                        chunk14, max14 = None, self._offset + 3
+                        if max14 <= self._input_size:
+                            chunk14 = self._input[self._offset:max14]
+                        if chunk14 == 'NCD':
                             address0 = TreeNode(self._input[self._offset:self._offset + 3], self._offset, [])
                             self._offset = self._offset + 3
                         else:
@@ -3224,16 +3259,16 @@ class Grammar(object):
                             if self._offset == self._failure:
                                 self._expected.append('"NCD"')
                         if address0 is FAILURE:
-                            self._offset = index8
+                            self._offset = index10
             if address0 is FAILURE:
                 self._offset = index1
                 address0 = self._read_wx()
                 if address0 is FAILURE:
                     self._offset = index1
-                    chunk14, max14 = None, self._offset + 2
-                    if max14 <= self._input_size:
-                        chunk14 = self._input[self._offset:max14]
-                    if chunk14 == '//':
+                    chunk15, max15 = None, self._offset + 2
+                    if max15 <= self._input_size:
+                        chunk15 = self._input[self._offset:max15]
+                    if chunk15 == '//':
                         address0 = TreeNode(self._input[self._offset:self._offset + 2], self._offset, [])
                         self._offset = self._offset + 2
                     else:
