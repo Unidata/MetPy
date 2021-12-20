@@ -15,6 +15,17 @@ class TreeNode(object):
         for el in self.elements:
             yield el
 
+    def __repr__(self):
+        rep = self.__class__.__name__ + '('
+        args = []
+        for key, value in self.__dict__.items():
+            if key == 'elements':
+                continue
+            args.append(key + '=' + repr(value))
+        dict_str = ', '.join(args) + ')'
+        rep += dict_str
+        return rep
+
 
 class TreeNode1(TreeNode):
     def __init__(self, text, offset, elements):
