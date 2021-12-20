@@ -10,6 +10,7 @@ import pytest
 
 from metpy.cbook import get_test_data
 from metpy.io import parse_metar_file, parse_metar_to_dataframe
+from metpy.io._metar_parser.metar_parser import parse
 from metpy.io.metar import Metar, parse_metar
 from metpy.units import units
 
@@ -352,3 +353,29 @@ def test_parse_no_pint_objects_in_df():
     for df in (parse_metar_file(input_file), parse_metar_to_dataframe(metar_str)):
         for column in df:
             assert not isinstance(df[column][0], units.Quantity)
+
+
+def test_repr():
+    """Test that the TreeNode string representation works."""
+    str1 = 'KSMQ 201953Z AUTO VRB05KT 10SM CLR 03/M10 A3026'
+    tree = parse(str1)
+    rep = repr(tree)
+    assert rep == ("TreeNode1(text='KSMQ 201953Z AUTO VRB05KT 10SM CLR 03/M10 A3026', "
+                   "offset=0, metar=TreeNode(text='', offset=0), "
+                   "siteid=TreeNode(text='KSMQ', offset=0), "
+                   "datetime=TreeNode2(text=' 201953Z', offset=4, "
+                   "sep=TreeNode(text=' ', offset=4)), "
+                   "auto=TreeNode(text=' AUTO', offset=12), "
+                   "wind=TreeNode4(text=' VRB05KT', offset=17, "
+                   "wind_dir=TreeNode(text='VRB', offset=18), "
+                   "wind_spd=TreeNode(text='05', offset=21), "
+                   "gust=TreeNode(text='', offset=23)), "
+                   "vis=TreeNode6(text=' 10SM', offset=25, "
+                   "sep=TreeNode(text=' ', offset=25)), run=TreeNode(text='', offset=30), "
+                   "curwx=TreeNode(text='', offset=30), "
+                   "skyc=TreeNode(text=' CLR', offset=30), "
+                   "temp_dewp=TreeNode13(text=' 03/M10', offset=34, "
+                   "sep=TreeNode(text=' ', offset=34), temp=TreeNode(text='03', offset=35), "
+                   "dewp=TreeNode(text='M10', offset=38)), "
+                   "altim=TreeNode(text=' A3026', offset=41), "
+                   "remarks=TreeNode(text='', offset=47), end=TreeNode(text='', offset=47))")
