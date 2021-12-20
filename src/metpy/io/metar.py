@@ -11,7 +11,7 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from ._metar_parser.metar_parser import parse, ParseError
+from ._metar_parser.metar_parser import parse, ParseError, TreeNode
 from ._tools import open_as_needed
 from .station_data import station_info
 from ..package_tools import Exporter
@@ -59,6 +59,23 @@ col_units = {'station_id': None,
              'current_wx1_symbol': None,
              'current_wx2_symbol': None,
              'current_wx3_symbol': None}
+
+
+def _tree_repr_(self):
+    """Produce string representation of a TreeNodex object."""
+    rep = self.__class__.__name__ + '('
+    args = []
+    for key, value in self.__dict__.items():
+        if key == 'elements':
+            continue
+        args.append(key + '=' + repr(value))
+        dict_str = ', '.join(args) + ')'
+    rep += dict_str
+    return rep
+
+
+# Monkey patch to improve debugging
+TreeNode.__repr__ = _tree_repr_
 
 
 @exporter.export
