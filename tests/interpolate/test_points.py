@@ -138,17 +138,22 @@ def test_inverse_distance_to_points(method, assume_units, test_data, test_points
     assert_array_almost_equal(truth, img)
 
 
-        img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
+def test_interpolate_to_points_invalid(test_data):
+    """Test that interpolate_to_points raises when given an invalid method."""
+    xp, yp, z = test_data
+    obs_points = np.vstack([xp, yp]).transpose() * 10
 
-        with get_test_data(test_file) as fobj:
-            truth = np.load(fobj)['img'].reshape(-1)
+    with get_test_data('interpolation_test_points.npz') as fobj:
+        test_points = np.load(fobj)['points']
 
-        assert_array_almost_equal(truth, img)
+    with pytest.raises(ValueError):
+        interpolate_to_points(obs_points, z, test_points, interp_type='shouldraise')
 
 
+@pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', ['natural_neighbor', 'cressman', 'barnes', 'linear',
-                                    'nearest', 'rbf', 'shouldraise', 'cubic'])
-def test_interpolate_to_points(method, test_data):
+                                    'nearest', 'rbf', 'cubic'])
+def test_interpolate_to_points(method, assume_units, test_data):
     r"""Test main grid interpolation function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose() * 10
@@ -156,23 +161,19 @@ def test_interpolate_to_points(method, test_data):
     with get_test_data('interpolation_test_points.npz') as fobj:
         test_points = np.load(fobj)['points']
 
-    extra_kw = {}
     if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
+        extra_kw = {'search_radius': 200, 'minimum_neighbors': 1}
     elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
-    elif method == 'shouldraise':
-        with pytest.raises(ValueError):
-            interpolate_to_points(
-                obs_points, z, test_points, interp_type=method, **extra_kw)
-        return
-
-    img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
+        extra_kw = {'search_radius': 400, 'minimum_neighbors': 1, 'gamma': 1}
+    else:
+        extra_kw = {}
 
     with get_test_data(f'{method}_test.npz') as fobj:
         truth = np.load(fobj)['img'].reshape(-1)
 
+    if assume_units:
+        z = units.Quantity(z, assume_units)
+        truth = units.Quantity(truth, assume_units)
+
+    img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
     assert_array_almost_equal(truth, img)

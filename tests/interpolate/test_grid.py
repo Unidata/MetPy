@@ -7,7 +7,6 @@
 import logging
 
 import numpy as np
-from numpy.testing import assert_array_almost_equal
 import pytest
 
 from metpy.cbook import get_test_data
@@ -15,6 +14,8 @@ from metpy.interpolate.grid import (generate_grid, generate_grid_coords, get_bou
                                     get_xy_range, get_xy_steps, interpolate_to_grid,
                                     interpolate_to_isosurface, inverse_distance_to_grid,
                                     natural_neighbor_to_grid)
+from metpy.testing import assert_array_almost_equal
+from metpy.units import units
 
 logging.getLogger('metpy.interpolate.grid').setLevel(logging.ERROR)
 
@@ -233,9 +234,10 @@ def test_interpolate_to_isosurface():
     assert_array_almost_equal(truth, dt_theta)
 
 
+@pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', interp_methods)
 @pytest.mark.parametrize('boundary_coords', boundary_types)
-def test_interpolate_to_grid(method, test_coords, boundary_coords):
+def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords):
     r"""Test main grid interpolation function."""
     xp, yp = test_coords
 
@@ -257,11 +259,14 @@ def test_interpolate_to_grid(method, test_coords, boundary_coords):
     if boundary_coords is not None:
         extra_kw['boundary_coords'] = boundary_coords
 
-    _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
-
     with get_test_data(f'{method}_test.npz') as fobj:
         truth = np.load(fobj)['img']
 
+    if assume_units:
+        z = units.Quantity(z, assume_units)
+        truth = units.Quantity(truth, assume_units)
+
+    _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
     assert_array_almost_equal(truth, img)
 
 

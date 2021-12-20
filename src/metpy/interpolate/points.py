@@ -195,19 +195,21 @@ def natural_neighbor_to_points(points, values, xi):
 
     """
     tri = Delaunay(points)
-
     members, circumcenters = geometry.find_natural_neighbors(tri, xi)
 
-    img = np.empty(shape=(xi.shape[0]), dtype=values.dtype)
-    img.fill(np.nan)
+    if hasattr(values, 'units'):
+        org_units = values.units
+        values = values.magnitude
+    else:
+        org_units = None
 
-    for ind, (grid, neighbors) in enumerate(members.items()):
+    img = np.asarray([natural_neighbor_point(*np.array(points).transpose(),
+                                             values, xi[grid], tri, neighbors, circumcenters)
+                      if len(neighbors) > 0 else np.nan
+                      for grid, neighbors in members.items()])
 
-        if len(neighbors) > 0:
-
-            points_transposed = np.array(points).transpose()
-            img[ind] = natural_neighbor_point(points_transposed[0], points_transposed[1],
-                                              values, xi[grid], tri, neighbors, circumcenters)
+    if org_units:
+        img = units.Quantity(img, org_units)
 
     return img
 
@@ -345,7 +347,18 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     """
     # If this is a type that `griddata` handles, hand it along to `griddata`
     if interp_type in ['linear', 'nearest', 'cubic']:
-        return griddata(points, values, xi, method=interp_type)
+        if hasattr(values, 'units'):
+            org_units = values.units
+            values = values.magnitude
+        else:
+            org_units = None
+
+        ret = griddata(points, values, xi, method=interp_type)
+
+        if org_units:
+            ret = units.Quantity(ret, org_units)
+
+        return ret
 
     # If this is natural neighbor, hand it along to `natural_neighbor`
     elif interp_type == 'natural_neighbor':
@@ -370,14 +383,25 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
 
     # If this is radial basis function, make the interpolator and apply it
     elif interp_type == 'rbf':
-
         points_transposed = np.array(points).transpose()
         xi_transposed = np.array(xi).transpose()
+
+        if hasattr(values, 'units'):
+            org_units = values.units
+            values = values.magnitude
+        else:
+            org_units = None
+
         rbfi = Rbf(points_transposed[0], points_transposed[1], values, function=rbf_func,
                    smooth=rbf_smooth)
-        return rbfi(xi_transposed[0], xi_transposed[1])
+        ret = rbfi(xi_transposed[0], xi_transposed[1])
+
+        if org_units:
+            ret = units.Quantity(ret, org_units)
+
+        return ret
 
     else:
-        raise ValueError('Interpolation option not available. '
+        raise ValueError(f'Interpolation option {interp_type} not available. '
                          'Try: linear, nearest, cubic, natural_neighbor, '
                          'barnes, cressman, rbf')
