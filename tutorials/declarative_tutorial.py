@@ -391,6 +391,13 @@ pc.show()
 # If you want to change the units for plotting purposes, add the string value of the units
 # desired. For example, if you want to plot temperature in Celsius, then set this attribute
 # to ``‘degC’``.
+#
+# ``scale``
+#
+# This attribute will scale the field by multiplying by the scale. For example, to
+# scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
+# the data values will be multiplied by 10^5.
+
 
 #########################################################################
 # FilledContourPlot()
