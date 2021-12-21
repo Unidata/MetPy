@@ -67,8 +67,7 @@ units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degre
 units.define('@alias meter = gpm')
 
 # Silence UnitStrippedWarning
-if hasattr(pint, 'UnitStrippedWarning'):
-    warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
+warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
