@@ -654,7 +654,7 @@ CO COLORADO SPRINGS KCOS  COS   72466  38 49N  104 41W 1856   X     T     A    3
 CO CO SPNGS MEADOW  KFLY  FLY          38 57N  104 34W 2096   X           A    7 US
 CO CORTEZ           KCEZ  CEZ          37 18N  108 38W 1797   X           A    7 US
 CO CRAIG            KCAG  CAG   72570  40 30N  107 31W 1887   X           A    4 US
-CO DAKOTA HILL      KC99  C99          29 52N  105 33W 3320   X                7 US
+CO DAKOTA HILL      KC99  C99          39 52N  105 33W 3320   X                7 US
 CO DEL NORTE        KRCV  RCV          37 43N  106 21W 2424   X                7 US
 CO DENVER/ARAPAHOE  KAPA  APA          39 34N  104 51W 1775   X     T     A    4 US
 CO DENVER F. RANGE  KFTG  FTG          39 47N  104 33W 1675   X  X             8 US
