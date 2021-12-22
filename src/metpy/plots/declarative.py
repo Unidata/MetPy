@@ -946,7 +946,7 @@ class Plots2D(SubsetTraits):
 
     This attribute will scale the field by multiplying by the scale. For example, to
     scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
-    the data values will be scaled by 10^5.
+    the data values will be multiplied by 10^5.
     """
 
     @property
