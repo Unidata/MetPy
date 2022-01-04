@@ -177,12 +177,18 @@ from metpy.units import units
     ('SKCG 031730Z 13004KT 0500 + TSRA BKN010 25/25 Q1012 RMK A2990',
      Metar('SKCG', 10.43, -75.52, 1, datetime(2017, 5, 3, 17, 30), 130, 4, np.nan, 500,
            '+TSRA', np.nan, np.nan, 'BKN', 1000, np.nan, np.nan, np.nan, np.nan, np.nan,
-           np.nan, 6, 25, 25, units.Quantity(1012, 'hPa').m_as('inHg'), 1097, 0, 0, 'A2990'))],
+           np.nan, 6, 25, 25, units.Quantity(1012, 'hPa').m_as('inHg'), 1097, 0, 0, 'A2990')),
+    # Truncated VV group
+    ('METAR ORER 172000Z 30006KT 0400 FG VV// 12/12 Q1013 NOSIG=',
+     Metar('ORER', 36.22, 43.97, 409, datetime(2017, 5, 17, 20, 0), 300, 6.0, np.nan,
+           400, 'FG', np.nan, np.nan, 'VV', np.nan, np.nan, np.nan, np.nan, np.nan,
+           np.nan, np.nan, 8, 12, 12, units.Quantity(1013, 'hPa').m_as('inHg'), 45, 0, 0,
+           'NOSIG'))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
          'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
-         'variable vis no dir', 'swapped wind and vis', 'space in wx code'])
+         'variable vis no dir', 'swapped wind and vis', 'space in wx code', 'truncated VV'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
@@ -251,7 +257,7 @@ def test_parse_file():
     assert counts.cloud_coverage == 8980
     assert counts.air_temperature == 8779
     assert counts.dew_point_temperature == 8740
-    assert counts.altimeter == 8450
+    assert counts.altimeter == 8458
     assert counts.remarks == 8980
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2
@@ -314,7 +320,7 @@ def test_parse_file_bad_encoding():
     assert counts.cloud_coverage == 8802
     assert counts.air_temperature == 8597
     assert counts.dew_point_temperature == 8536
-    assert counts.altimeter == 8246
+    assert counts.altimeter == 8252
     assert counts.remarks == 8802
     assert (df.current_wx1_symbol != 0).sum() == counts.current_wx1
     assert (df.current_wx2_symbol != 0).sum() == counts.current_wx2

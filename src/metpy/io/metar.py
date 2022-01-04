@@ -278,7 +278,7 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
     if tree.skyc.text[1:3] == 'VV':
         skyc[0] = 'VV'
         level = tree.skyc.text.strip()[2:5]
-        skylev[0] = np.nan if '/' in level else 100 * int(level)
+        skylev[0] = np.nan if not level or '/' in level else 100 * int(level)
     else:
         for ind, part in enumerate(tree.skyc.text.strip().split(maxsplit=3)):
             cover = part[:3]

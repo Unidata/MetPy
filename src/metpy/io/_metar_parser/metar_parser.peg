@@ -16,7 +16,7 @@ run      <- ((sep "R" [LRC]? [\d] [\d] [LRC]? "/" ([\d] [\d] [\d] [\d] "V")? ["M
 curwx    <- (((sep "//") / (sep "NSW") / (sep (wx))*))?
 wx       <- (([-+] " "?)? "VC"? ("MI" / "BC" / "PR" / "DR" / "BL" / "SH" / "TS" / "FZ" / "DZ" / "RA" / "SN" / "SG" / "PL" / "GR" / "GS" / "UP" / "BR" / "FG" / "FU" / "VA" / "DU" / "SA" / "HZ" / "PO" / "SQ" / "FC" / "SS" / "DS" / "IC" / "PY")+)
 skyc     <- ((sep (cover))*)?
-cover    <- (("FEW" / "SCT" / "BKN" / "OVC" / "VV" / "///") ([\d]*)? ("TCU" / "CB" / "///")?) / ("CLR" / "SKC" / "NSC" / "NCD") / wx / "//"
+cover    <- (("FEW" / "SCT" / "BKN" / "OVC" / "VV" / "///") ([\d]*)? ("TCU" / "CB" / "//" "/"?)?) / ("CLR" / "SKC" / "NSC" / "NCD") / wx / "//"
 temp_dewp <- ((sep "//"? temp "/" dewp "//"?))?
 temp     <- (([M])?  [\d]? [\d]?)
 dewp     <- (([M])?  [\d]? [\d]?)
