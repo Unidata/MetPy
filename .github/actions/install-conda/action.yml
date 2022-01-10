@@ -36,6 +36,10 @@ runs:
       shell: bash -l {0}
       run: mamba install --quiet --yes --file ci/${{ inputs.type }}_requirements.txt --file ci/extra_requirements.txt --file ci/requirements.txt
 
+    - name: Download Cartopy Maps
+      shell: bash -l {0}
+      run: ci/download_cartopy_maps.py
+
     - name: Install
       shell: bash -l {0}
       # For some reason on Windows 3.7 building the wheel fails to properly include our extra
