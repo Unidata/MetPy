@@ -16,6 +16,10 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Set test data directory
+      shell: bash
+      run: echo "TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata" >> $GITHUB_ENV
+
     - name: Set doc version
       id: docversion
       shell: bash -l {0}
@@ -28,7 +32,6 @@ runs:
       # starting with -l
       run: |
         set -e -o pipefail
-        export TEST_DATA_DIR=$GITHUB_WORKSPACE/staticdata
         pushd docs
         make overridecheck html O=-W 2>&1 | tee ../build.log && popd || (popd && false)
 
