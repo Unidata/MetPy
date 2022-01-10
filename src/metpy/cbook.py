@@ -19,10 +19,11 @@ POOCH = pooch.create(
 
 # Check if we have the data available directly from a git checkout, either from the
 # TEST_DATA_DIR variable, or looking relative to the path of this module's file. Use this
-# to override Pooch's path.
+# to override Pooch's path and disable downloading from GitHub.
 dev_data_path = os.environ.get('TEST_DATA_DIR', Path(__file__).parents[2] / 'staticdata')
 if Path(dev_data_path).exists():
     POOCH.path = dev_data_path
+    POOCH.base_url = 'NODOWNLOAD:'
 
 POOCH.load_registry(Path(__file__).parent / 'static-data-manifest.txt')
 
