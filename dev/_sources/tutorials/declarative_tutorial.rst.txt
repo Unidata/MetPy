@@ -660,7 +660,7 @@ Detailed Attribute Descriptions
 This final section contains verbose descriptions of the attributes that can be set by the
 plot types used in this tutorial.
 
-.. GENERATED FROM PYTHON SOURCE LINES 325-394
+.. GENERATED FROM PYTHON SOURCE LINES 325-400
 
 ContourPlot()
 -------------
@@ -732,7 +732,13 @@ If you want to change the units for plotting purposes, add the string value of t
 desired. For example, if you want to plot temperature in Celsius, then set this attribute
 to ``‘degC’``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 396-422
+``scale``
+
+This attribute will scale the field by multiplying by the scale. For example, to
+scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
+the data values will be multiplied by 10^5.
+
+.. GENERATED FROM PYTHON SOURCE LINES 403-429
 
 FilledContourPlot()
 -------------------
@@ -761,7 +767,7 @@ A set of values indicating the minimum and maximum for the data being plotted. T
 attribute should be set as ``(min_value, max_value)``, where min_value and max_value are
 numeric values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 424-444
+.. GENERATED FROM PYTHON SOURCE LINES 431-451
 
 PanelContainer()
 ----------------
@@ -784,7 +790,7 @@ Show the plot
 
 Save the figure using the Matplotlib arguments/keyword arguments
 
-.. GENERATED FROM PYTHON SOURCE LINES 446-483
+.. GENERATED FROM PYTHON SOURCE LINES 453-490
 
 MapPanel()
 ----------
@@ -824,7 +830,7 @@ This attribute sets a title for the panel.
 
 A list collecting the observations to be plotted in the panel.
 
-.. GENERATED FROM PYTHON SOURCE LINES 485-525
+.. GENERATED FROM PYTHON SOURCE LINES 492-532
 
 BarbPlot()
 ----------
@@ -867,7 +873,7 @@ or NARR output)
 This attribute can be set to a string value about where the wind barb will pivot relative to
 the grid point. Possible values include ``‘tip’`` or ``‘middle’``. Default is ``‘middle’``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 527-596
+.. GENERATED FROM PYTHON SOURCE LINES 534-603
 
 PlotObs()
 ---------
@@ -942,7 +948,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  19.659 seconds)
+   **Total running time of the script:** ( 0 minutes  18.099 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
