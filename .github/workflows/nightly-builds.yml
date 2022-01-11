@@ -8,6 +8,14 @@ on:
   # Allow a manual run
   workflow_dispatch:
 
+  # Run if we modify the workflow
+  push:
+    paths:
+      - .github/workflows/nightly-builds.yml
+  pull_request:
+    paths:
+      - .github/workflows/nightly-builds.yml
+
 jobs:
   Tests:
     runs-on: ubuntu-20.04
