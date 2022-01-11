@@ -25,8 +25,8 @@ jobs:
     - name: Assemble test requirements
       run: |
         cat ci/extra_requirements.txt >> ci/test_requirements.txt
-        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
-        echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/test_requirements.txt
+        echo git+https://github.com/hgrecco/pint@master#egg=pint >> ci/test_requirements.txt
+        echo git+https://github.com/pydata/xarray@main#egg=xarray >> ci/test_requirements.txt
 
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
@@ -68,8 +68,8 @@ jobs:
     - name: Assemble doc requirements
       run: |
         cat ci/extra_requirements.txt >> ci/doc_requirements.txt
-        echo git+git://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
-        echo git+git://github.com/pydata/xarray@main#egg=xarray >> ci/doc_requirements.txt
+        echo git+https://github.com/hgrecco/pint@master#egg=pint >> ci/doc_requirements.txt
+        echo git+https://github.com/pydata/xarray@main#egg=xarray >> ci/doc_requirements.txt
 
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
