@@ -8,6 +8,14 @@ on:
   # Allow a manual run
   workflow_dispatch:
 
+  # Run if we modify the workflow
+  push:
+    paths:
+      - .github/workflows/nightly-builds.yml
+  pull_request:
+    paths:
+      - .github/workflows/nightly-builds.yml
+
 jobs:
   Tests:
     runs-on: ubuntu-20.04
@@ -99,7 +107,7 @@ jobs:
   Report:
     name: Report
     needs: [Tests, Docs]
-    if: failure()
+    if: ${{ failure() || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -151,6 +159,12 @@ jobs:
               title: title,
               labels: ['Type: Maintenance']
             };
+            
+            // On PRs, avoid actually issuing an API request, since we don't have permission
+            if ( context.eventName === 'pull_request' ) {
+              github.hook.wrap('request', (request, options) => { return {}; })
+            }
+            
             if (existing.length === 0) {
                 console.log('Creating new issue.')
                 github.rest.issues.create(params)
