@@ -107,7 +107,7 @@ jobs:
   Report:
     name: Report
     needs: [Tests, Docs]
-    if: failure()
+    if: ${{ failure() || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
