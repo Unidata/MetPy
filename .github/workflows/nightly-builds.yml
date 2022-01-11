@@ -159,6 +159,12 @@ jobs:
               title: title,
               labels: ['Type: Maintenance']
             };
+            
+            // On PRs, avoid actually issuing an API request, since we don't have permission
+            if ( context.eventName === 'pull_request' ) {
+              github.hook.wrap('request', (request, options) => { return {}; })
+            }
+            
             if (existing.length === 0) {
                 console.log('Creating new issue.')
                 github.rest.issues.create(params)
