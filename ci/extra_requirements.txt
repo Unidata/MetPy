@@ -1,1 +1,1 @@
-cartopy==0.20.1
+cartopy==0.20.2
