@@ -71,6 +71,51 @@ def test_skewt_api_units():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+def test_skewt_adiabat_units():
+    """Test adiabats and mixing lines can handle different units."""
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        p = np.linspace(950, 100, 10) * units.hPa
+        t = np.linspace(18, -20, 10) * units.degC
+
+        skew.plot(p, t, 'r')
+
+        # Add lines with units different to the xaxis
+        t0 = (np.linspace(-20, 20, 5) * units.degC).to(units.degK)
+        skew.plot_dry_adiabats(t0=t0)
+        # add lines with no units
+        t0 = np.linspace(-20, 20, 5)
+        skew.plot_moist_adiabats(t0=t0)
+        skew.plot_mixing_lines()
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+def test_skewt_adiabat_kelvin_base():
+    """Test adiabats and mixing lines can handle different units."""
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig, rotation=45)
+        p = np.linspace(950, 100, 10) * units.hPa
+        t = (np.linspace(18, -30, 10) * units.degC).to(units.degK)
+
+        skew.plot(p, t, 'r')
+
+        # At this point the xaxis is actually degC
+        # Add lines using kelvin base
+        t0 = (np.linspace(-20, 40, 5) * units.degC).to(units.degK)
+        skew.plot_dry_adiabats(t0=t0)
+        # add lines with no units (but using kelvin)
+        t0 = np.linspace(253.15, 313.15, 5)
+        skew.plot_moist_adiabats(t0=t0)
+        skew.plot_mixing_lines()
+
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_default_aspect_empty():
     """Test SkewT with default aspect and no plots, only special lines."""
