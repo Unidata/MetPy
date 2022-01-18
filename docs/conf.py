@@ -110,7 +110,7 @@ copyright = (
 # built documents.
 #
 verinfo = metpy.__version__
-parsed_version = re.search(r'(?P<full>(?P<base>\d+\.\d+)\.\d+\w*)', verinfo).groupdict()
+parsed_version = re.search(r'(?P<full>(?P<base>\d+\.\d+)\.?\w*)', verinfo).groupdict()
 # The short X.Y version.
 version = parsed_version['base']
 if '+' in verinfo:
