@@ -295,9 +295,9 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
        Renamed ``ref_pressure`` parameter to ``reference_pressure``
 
     """
-    def dt(t, p):
-        t = units.Quantity(t, temperature.units)
-        p = units.Quantity(p, pressure.units)
+    def dt(p, t):
+        t = units.Quantity(t, 'kelvin')
+        p = units.Quantity(p, 'mbar')
         rs = saturation_mixing_ratio(p, t)
         frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
                 / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
@@ -307,39 +307,55 @@ def moist_lapse(pressure, temperature, reference_pressure=None):
     pressure = np.atleast_1d(pressure)
     if reference_pressure is None:
         reference_pressure = pressure[0]
-
-    if np.isnan(reference_pressure):
-        return units.Quantity(np.full(pressure.shape, np.nan), temperature.units)
-
     pressure = pressure.to('mbar')
     reference_pressure = reference_pressure.to('mbar')
     org_units = temperature.units
-    temperature = np.atleast_1d(temperature).to('kelvin')
+    temperature = np.atleast_1d(temperature).m_as('kelvin')
+
+    if np.isnan(reference_pressure) or np.all(np.isnan(temperature)):
+        return units.Quantity(np.full((temperature.size, pressure.size), np.nan), org_units)
 
     pres_decreasing = (pressure[0] > pressure[-1])
     if pres_decreasing:
         # Everything is easier if pressures are in increasing order
         pressure = pressure[::-1]
 
-    ref_pres_idx = np.searchsorted(pressure.m, reference_pressure.m, side='right')
-    ret_temperatures = np.empty((0, temperature.shape[0]))
+    # It would be preferable to use a regular solver like RK45, but as of scipy 1.8.0
+    # anything other than LSODA goes into an infinite loop when given NaNs for y0.
+    solver_args = {'fun': dt, 'y0': temperature,
+                   'method': 'LSODA', 'atol': 1e-7, 'rtol': 1.5e-8}
 
-    if _greater_or_close(reference_pressure, pressure.min()):
-        # Integrate downward in pressure
-        pres_down = np.append(reference_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
-        trace_down = si.odeint(dt, temperature.m.squeeze(), pres_down.squeeze())
-        ret_temperatures = np.concatenate((ret_temperatures, trace_down[:0:-1]))
+    # Need to handle close points to avoid an error in the solver
+    close = np.isclose(pressure, reference_pressure)
+    if np.any(close):
+        ret = np.broadcast_to(temperature[:, np.newaxis], (temperature.size, np.sum(close)))
+    else:
+        ret = np.empty((temperature.size, 0), dtype=temperature.dtype)
 
-    if reference_pressure < pressure.max():
-        # Integrate upward in pressure
-        pres_up = np.append(reference_pressure.m, pressure[ref_pres_idx:].m)
-        trace_up = si.odeint(dt, temperature.m.squeeze(), pres_up.squeeze())
-        ret_temperatures = np.concatenate((ret_temperatures, trace_up[1:]))
+    # Do we have any points above the reference pressure
+    points_above = (pressure < reference_pressure) & ~close
+    if np.any(points_above):
+        # Integrate upward--need to flip so values are properly ordered from ref to min
+        press_side = pressure[points_above][::-1].m
+
+        # Flip on exit so t values correspond to increasing pressure
+        trace = si.solve_ivp(t_span=(reference_pressure.m, press_side[-1]),
+                             t_eval=press_side, **solver_args).y[..., ::-1]
+        ret = np.concatenate((trace, ret), axis=-1)
+
+    # Do we have any points below the reference pressure
+    points_below = ~points_above & ~close
+    if np.any(points_below):
+        # Integrate downward
+        press_side = pressure[points_below].m
+        trace = si.solve_ivp(t_span=(reference_pressure.m, press_side[-1]),
+                             t_eval=press_side, **solver_args).y
+        ret = np.concatenate((ret, trace), axis=-1)
 
     if pres_decreasing:
-        ret_temperatures = ret_temperatures[::-1]
+        ret = ret[..., ::-1]
 
-    return units.Quantity(ret_temperatures.T.squeeze(), 'kelvin').to(org_units)
+    return units.Quantity(ret.squeeze(), 'kelvin').to(org_units)
 
 
 @exporter.export

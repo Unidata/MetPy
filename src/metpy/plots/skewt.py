@@ -545,8 +545,7 @@ class SkewT:
             pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), 'mbar')
 
         # Assemble into data for plotting
-        t = moist_lapse(pressure, t0[:, np.newaxis],
-                        units.Quantity(1000., 'mbar')).to(units.degC)
+        t = moist_lapse(pressure, t0, units.Quantity(1000., 'mbar')).to(units.degC)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
