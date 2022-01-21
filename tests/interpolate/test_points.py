@@ -7,7 +7,6 @@
 import logging
 
 import numpy as np
-from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pytest
 from scipy.spatial import cKDTree, Delaunay
 
@@ -16,6 +15,8 @@ from metpy.interpolate import (interpolate_to_points, inverse_distance_to_points
                                natural_neighbor_to_points)
 from metpy.interpolate.geometry import dist_2, find_natural_neighbors
 from metpy.interpolate.points import barnes_point, cressman_point, natural_neighbor_point
+from metpy.testing import assert_almost_equal, assert_array_almost_equal
+from metpy.units import units
 
 logging.getLogger('metpy.interpolate.points').setLevel(logging.ERROR)
 
@@ -51,7 +52,7 @@ def test_nn_point(test_data):
     members, tri_info = find_natural_neighbors(tri,
                                                list(zip(sim_gridx, sim_gridy)))
 
-    val = natural_neighbor_point(xp, yp, z, [sim_gridx[0], sim_gridy[0]],
+    val = natural_neighbor_point(xp, yp, z, (sim_gridx[0], sim_gridy[0]),
                                  tri, members[0], tri_info)
 
     truth = 1.009
@@ -108,43 +109,51 @@ def test_natural_neighbor_to_points(test_data, test_points):
     assert_array_almost_equal(truth, img)
 
 
-interp_methods = ['cressman', 'barnes', 'shouldraise']
+def test_inverse_distance_to_points_invalid(test_data, test_points):
+    """Test that inverse_distance_to_points raises when given an invalid method."""
+    xp, yp, z = test_data
+    obs_points = np.vstack([xp, yp]).transpose()
+    with pytest.raises(ValueError):
+        inverse_distance_to_points(obs_points, z, test_points, kind='shouldraise', r=40)
 
 
-@pytest.mark.parametrize('method', interp_methods)
-def test_inverse_distance_to_points(method, test_data, test_points):
-    r"""Test inverse distance interpolation to grid function."""
+@pytest.mark.parametrize('assume_units', [None, 'mbar'])
+@pytest.mark.parametrize('method', ['cressman', 'barnes'])
+def test_inverse_distance_to_points(method, assume_units, test_data, test_points):
+    r"""Test inverse distance interpolation to points function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose()
 
-    extra_kw = {}
-    if method == 'shouldraise':
-        extra_kw['r'] = 40
-        with pytest.raises(ValueError):
-            inverse_distance_to_points(
-                obs_points, z, test_points, kind=method, **extra_kw)
-    else:
-        test_file = ''
-        if method == 'cressman':
-            extra_kw['r'] = 20
-            extra_kw['min_neighbors'] = 1
-            test_file = 'cressman_r20_mn1.npz'
-        elif method == 'barnes':
-            extra_kw['r'] = 40
-            extra_kw['kappa'] = 100
-            test_file = 'barnes_r40_k100.npz'
+    extra_kw, test_file = {'cressman': ({'r': 20, 'min_neighbors': 1}, 'cressman_r20_mn1.npz'),
+                           'barnes': ({'r': 40, 'kappa': 100}, 'barnes_r40_k100.npz')}[method]
 
-        img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
+    with get_test_data(test_file) as fobj:
+        truth = np.load(fobj)['img'].reshape(-1)
 
-        with get_test_data(test_file) as fobj:
-            truth = np.load(fobj)['img'].reshape(-1)
+    if assume_units:
+        z = units.Quantity(z, assume_units)
+        truth = units.Quantity(truth, assume_units)
 
-        assert_array_almost_equal(truth, img)
+    img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
+    assert_array_almost_equal(truth, img)
 
 
+def test_interpolate_to_points_invalid(test_data):
+    """Test that interpolate_to_points raises when given an invalid method."""
+    xp, yp, z = test_data
+    obs_points = np.vstack([xp, yp]).transpose() * 10
+
+    with get_test_data('interpolation_test_points.npz') as fobj:
+        test_points = np.load(fobj)['points']
+
+    with pytest.raises(ValueError):
+        interpolate_to_points(obs_points, z, test_points, interp_type='shouldraise')
+
+
+@pytest.mark.parametrize('assume_units', [None, 'mbar'])
 @pytest.mark.parametrize('method', ['natural_neighbor', 'cressman', 'barnes', 'linear',
-                                    'nearest', 'rbf', 'shouldraise', 'cubic'])
-def test_interpolate_to_points(method, test_data):
+                                    'nearest', 'rbf', 'cubic'])
+def test_interpolate_to_points(method, assume_units, test_data):
     r"""Test main grid interpolation function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose() * 10
@@ -152,23 +161,19 @@ def test_interpolate_to_points(method, test_data):
     with get_test_data('interpolation_test_points.npz') as fobj:
         test_points = np.load(fobj)['points']
 
-    extra_kw = {}
     if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
+        extra_kw = {'search_radius': 200, 'minimum_neighbors': 1}
     elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
-    elif method == 'shouldraise':
-        with pytest.raises(ValueError):
-            interpolate_to_points(
-                obs_points, z, test_points, interp_type=method, **extra_kw)
-        return
-
-    img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
+        extra_kw = {'search_radius': 400, 'minimum_neighbors': 1, 'gamma': 1}
+    else:
+        extra_kw = {}
 
     with get_test_data(f'{method}_test.npz') as fobj:
         truth = np.load(fobj)['img'].reshape(-1)
 
+    if assume_units:
+        z = units.Quantity(z, assume_units)
+        truth = units.Quantity(truth, assume_units)
+
+    img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
     assert_array_almost_equal(truth, img)

@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Interpolate data valid at one set of points to another in multiple dimensions."""
 
+import functools
 import logging
 
 import numpy as np
@@ -11,6 +12,7 @@ from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
 
 from . import geometry, tools
 from ..package_tools import Exporter
+from ..units import units
 
 exporter = Exporter(globals())
 
@@ -193,19 +195,21 @@ def natural_neighbor_to_points(points, values, xi):
 
     """
     tri = Delaunay(points)
-
     members, circumcenters = geometry.find_natural_neighbors(tri, xi)
 
-    img = np.empty(shape=(xi.shape[0]), dtype=values.dtype)
-    img.fill(np.nan)
+    if hasattr(values, 'units'):
+        org_units = values.units
+        values = values.magnitude
+    else:
+        org_units = None
 
-    for ind, (grid, neighbors) in enumerate(members.items()):
+    img = np.asarray([natural_neighbor_point(*np.array(points).transpose(),
+                                             values, xi[grid], tri, neighbors, circumcenters)
+                      if len(neighbors) > 0 else np.nan
+                      for grid, neighbors in members.items()])
 
-        if len(neighbors) > 0:
-
-            points_transposed = np.array(points).transpose()
-            img[ind] = natural_neighbor_point(points_transposed[0], points_transposed[1],
-                                              values, xi[grid], tri, neighbors, circumcenters)
+    if org_units:
+        img = units.Quantity(img, org_units)
 
     return img
 
@@ -216,7 +220,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     r"""Generate an inverse distance weighting interpolation to the given points.
 
     Values are assigned to the given interpolation points based on either [Cressman1959]_ or
-    [Barnes1964]_. The Barnes implementation used here based on [Koch1983]_.
+    [Barnes1964]_. The Barnes implementation used here is based on [Koch1983]_.
 
     Parameters
     ----------
@@ -227,8 +231,7 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     xi: array_like, shape (M, 2)
         Points to interpolate the data onto.
     r: float
-        Radius from grid center, within which observations
-        are considered and weighted.
+        Radius from grid center, within which observations are considered and weighted.
     gamma: float
         Adjustable smoothing parameter for the barnes interpolation. Default None.
     kappa: float
@@ -250,27 +253,28 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
     inverse_distance_to_grid
 
     """
-    obs_tree = cKDTree(points)
+    if kind == 'cressman':
+        interp_func = functools.partial(cressman_point, radius=r)
+    elif kind == 'barnes':
+        interp_func = functools.partial(barnes_point, kappa=kappa, gamma=gamma)
+    else:
+        raise ValueError(f'{kind} interpolation not supported.')
 
+    obs_tree = cKDTree(points)
     indices = obs_tree.query_ball_point(xi, r=r)
 
-    img = np.empty(shape=(xi.shape[0]), dtype=values.dtype)
-    img.fill(np.nan)
+    if hasattr(values, 'units'):
+        org_units = values.units
+        values = values.magnitude
+    else:
+        org_units = None
 
-    for idx, (matches, grid) in enumerate(zip(indices, xi)):
-        if len(matches) >= min_neighbors:
+    img = np.asarray([interp_func(geometry.dist_2(*grid, *obs_tree.data[matches].T),
+                                  values[matches]) if len(matches) >= min_neighbors else np.nan
+                      for matches, grid in zip(indices, xi)])
 
-            x1, y1 = obs_tree.data[matches].T
-            values_subset = values[matches]
-            dists = geometry.dist_2(grid[0], grid[1], x1, y1)
-
-            if kind == 'cressman':
-                img[idx] = cressman_point(dists, values_subset, r)
-            elif kind == 'barnes':
-                img[idx] = barnes_point(dists, values_subset, kappa, gamma)
-
-            else:
-                raise ValueError(f'{kind} interpolation not supported.')
+    if org_units:
+        img = units.Quantity(img, org_units)
 
     return img
 
@@ -312,7 +316,7 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     gamma: float
         Adjustable smoothing parameter for the barnes interpolation. Default 0.25.
     kappa_star: float
-        Response parameter for barnes interpolation, specified nondimensionally
+        Response parameter for barnes interpolation, specified non-dimensionally
         in terms of the Nyquist. Default 5.052
     search_radius: float
         A search radius to use for the Barnes and Cressman interpolation schemes.
@@ -343,13 +347,24 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     """
     # If this is a type that `griddata` handles, hand it along to `griddata`
     if interp_type in ['linear', 'nearest', 'cubic']:
-        return griddata(points, values, xi, method=interp_type)
+        if hasattr(values, 'units'):
+            org_units = values.units
+            values = values.magnitude
+        else:
+            org_units = None
+
+        ret = griddata(points, values, xi, method=interp_type)
+
+        if org_units:
+            ret = units.Quantity(ret, org_units)
+
+        return ret
 
     # If this is natural neighbor, hand it along to `natural_neighbor`
     elif interp_type == 'natural_neighbor':
         return natural_neighbor_to_points(points, values, xi)
 
-    # If this is Barnes/Cressman, determine search_radios and hand it along to
+    # If this is Barnes/Cressman, determine search_radius and hand it along to
     # `inverse_distance`
     elif interp_type in ['cressman', 'barnes']:
         ave_spacing = tools.average_spacing(points)
@@ -368,14 +383,25 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
 
     # If this is radial basis function, make the interpolator and apply it
     elif interp_type == 'rbf':
-
         points_transposed = np.array(points).transpose()
         xi_transposed = np.array(xi).transpose()
+
+        if hasattr(values, 'units'):
+            org_units = values.units
+            values = values.magnitude
+        else:
+            org_units = None
+
         rbfi = Rbf(points_transposed[0], points_transposed[1], values, function=rbf_func,
                    smooth=rbf_smooth)
-        return rbfi(xi_transposed[0], xi_transposed[1])
+        ret = rbfi(xi_transposed[0], xi_transposed[1])
+
+        if org_units:
+            ret = units.Quantity(ret, org_units)
+
+        return ret
 
     else:
-        raise ValueError('Interpolation option not available. '
+        raise ValueError(f'Interpolation option {interp_type} not available. '
                          'Try: linear, nearest, cubic, natural_neighbor, '
                          'barnes, cressman, rbf')
