@@ -232,6 +232,14 @@
 <span class="n">UndefinedUnitError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UndefinedUnitError</span>
 <span class="n">DimensionalityError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">DimensionalityError</span>
 
+<span class="n">_base_unit_of_dimensionality</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;[pressure]&#39;</span><span class="p">:</span> <span class="s1">&#39;Pa&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;[temperature]&#39;</span><span class="p">:</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;[speed]&#39;</span><span class="p">:</span> <span class="s1">&#39;m s**-1&#39;</span>
+<span class="p">}</span>
+
 <span class="c1"># Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs</span>
 <span class="n">units</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span>
     <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -373,6 +381,22 @@
     <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">data_units</span><span class="p">)</span></div>
 
 
+<span class="k">def</span> <span class="nf">_mutate_arguments</span><span class="p">(</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">check_type</span><span class="p">,</span> <span class="n">mutate_arg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle adjusting bound arguments.</span>
+
+<span class="sd">    Calls ``mutate_arg`` on every argument, including those passed as ``*args``, if they are</span>
+<span class="sd">    of type ``check_type``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">arg_name</span><span class="p">,</span> <span class="n">arg_val</span> <span class="ow">in</span> <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="n">check_type</span><span class="p">):</span>
+            <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">arg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mutate_arg</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="n">arg_name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">mutate_arg</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="s1">&#39;(unnamed)&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="n">check_type</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg_val</span>
+            <span class="k">for</span> <span class="n">arg_val</span> <span class="ow">in</span> <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
+
+
 <span class="k">def</span> <span class="nf">_check_argument_units</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">dimensionality</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Yield arguments with improper dimensionality.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -406,48 +430,140 @@
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="k">if</span> <span class="n">matches</span> <span class="k">else</span> <span class="kc">None</span>
 
 
+<span class="k">def</span> <span class="nf">_check_units_outer_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get dims and defaults from function signature and specified dimensionalities.&quot;&quot;&quot;</span>
+    <span class="c1"># Match the signature of the function to the arguments given to the decorator</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">bound_units</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind_partial</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Convert our specified dimensionality (e.g. &quot;[pressure]&quot;) to one used by</span>
+    <span class="c1"># pint directly (e.g. &quot;[mass] / [length] / [time]**2). This is for both efficiency</span>
+    <span class="c1"># reasons and to ensure that problems with the decorator are caught at import,</span>
+    <span class="c1"># rather than runtime.</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">get_dimensionality</span><span class="p">(</span><span class="n">orig</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">orig</span> <span class="ow">in</span> <span class="n">bound_units</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span>
+                <span class="k">if</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">defaults</span>
+
+
+<span class="k">def</span> <span class="nf">_check_units_inner_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check bound arguments for unit correctness.&quot;&quot;&quot;</span>
+    <span class="c1"># Match all passed in value to their proper arguments so we can check units</span>
+    <span class="n">bound_args</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">bad</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_check_argument_units</span><span class="p">(</span><span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">dims</span><span class="p">))</span>
+
+    <span class="c1"># If there are any bad units, emit a proper error message making it clear</span>
+    <span class="c1"># what went wrong.</span>
+    <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">` given arguments with incorrect units: &#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">` requires &quot;</span><span class="si">{</span><span class="n">req</span><span class="si">}</span><span class="s1">&quot; but given &quot;</span><span class="si">{</span><span class="n">given</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">bad</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;none&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Any variable `x` can be assigned a unit as follows:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;    from metpy.units import units</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;    x = units.Quantity(x, &quot;m/s&quot;)&#39;</span><span class="p">)</span>
+
+        <span class="c1"># If function has changed, mention that fact</span>
+        <span class="k">if</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+            <span class="n">changed_version</span> <span class="o">=</span> <span class="n">_get_changed_version</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">changed_version</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;This function changed in </span><span class="si">{</span><span class="n">changed_version</span><span class="si">}</span><span class="s1">--double check &#39;</span>
+                    <span class="s1">&#39;that the function is being called properly.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="p">)</span> <span class="o">+</span> <span class="n">msg</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># Return the bound arguments for reuse</span>
+    <span class="k">return</span> <span class="n">bound_args</span>
+
+
 <div class="viewcode-block" id="check_units"><a class="viewcode-back" href="../../api/generated/metpy.units.check_units.html#metpy.units.check_units">[docs]</a><span class="k">def</span> <span class="nf">check_units</span><span class="p">(</span><span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a decorator to check units of function arguments.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="c1"># Match the signature of the function to the arguments given to the decorator</span>
-        <span class="n">sig</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="n">bound_units</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind_partial</span><span class="p">(</span><span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">)</span>
-
-        <span class="c1"># Convert our specified dimensionality (e.g. &quot;[pressure]&quot;) to one used by</span>
-        <span class="c1"># pint directly (e.g. &quot;[mass] / [length] / [time]**2). This is for both efficiency</span>
-        <span class="c1"># reasons and to ensure that problems with the decorator are caught at import,</span>
-        <span class="c1"># rather than runtime.</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">get_dimensionality</span><span class="p">(</span><span class="n">orig</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)))</span>
-                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">orig</span> <span class="ow">in</span> <span class="n">bound_units</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-
-        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span>
-                    <span class="k">if</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">}</span>
+        <span class="n">sig</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">defaults</span> <span class="o">=</span> <span class="n">_check_units_outer_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">)</span>
 
         <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="c1"># Match all passed in value to their proper arguments so we can check units</span>
-            <span class="n">bound_args</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">bad</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_check_argument_units</span><span class="p">(</span><span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">dims</span><span class="p">))</span>
-
-            <span class="c1"># If there are any bad units, emit a proper error message making it clear</span>
-            <span class="c1"># what went wrong.</span>
-            <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">` given arguments with incorrect units: &#39;</span>
-                <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">` requires &quot;</span><span class="si">{</span><span class="n">req</span><span class="si">}</span><span class="s1">&quot; but given &quot;</span><span class="si">{</span><span class="n">given</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                                 <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">bad</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s1">&#39;none&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Any variable `x` can be assigned a unit as follows:</span><span class="se">\n</span><span class="s1">&#39;</span>
-                            <span class="s1">&#39;    from metpy.units import units</span><span class="se">\n</span><span class="s1">&#39;</span>
-                            <span class="s1">&#39;    x = units.Quantity(x, &quot;m/s&quot;)&#39;</span><span class="p">)</span>
-
-                <span class="c1"># If function has changed, mention that fact</span>
-                <span class="k">if</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
-                    <span class="n">changed_version</span> <span class="o">=</span> <span class="n">_get_changed_version</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">changed_version</span><span class="p">:</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This function changed in </span><span class="si">{</span><span class="n">changed_version</span><span class="si">}</span><span class="s1">--double check &#39;</span>
-                               <span class="s1">&#39;that the function is being called properly.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">msg</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">_check_units_inner_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">dec</span></div>
+
+
+<div class="viewcode-block" id="process_units"><a class="viewcode-back" href="../../api/generated/metpy.units.process_units.html#metpy.units.process_units">[docs]</a><span class="k">def</span> <span class="nf">process_units</span><span class="p">(</span>
+    <span class="n">input_dimensionalities</span><span class="p">,</span>
+    <span class="n">output_dimensionalities</span><span class="p">,</span>
+    <span class="n">output_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ignore_inputs_for_output</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrap a non-Quantity-using function in base units to fully handle units.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">sig</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">defaults</span> <span class="o">=</span> <span class="n">_check_units_outer_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">input_dimensionalities</span><span class="p">)</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">bound_args</span> <span class="o">=</span> <span class="n">_check_units_inner_helper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Determine unit(s) with which to wrap output (first, since we mutate the bound</span>
+            <span class="c1"># args)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_dimensionalities</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">multiple_output</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="n">output_dimensionalities</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">multiple_output</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">output_dimensionalities</span><span class="p">,)</span>
+            <span class="n">output_control</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+                <span class="n">convert_to</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">output_to</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">multiple_output</span> <span class="ow">or</span> <span class="n">output_to</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">output_to</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="c1"># Find matching input, if it exists</span>
+                <span class="k">if</span> <span class="n">convert_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">this_dim</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">this_dim</span> <span class="o">==</span> <span class="n">output</span>
+                            <span class="ow">and</span> <span class="p">(</span>
+                                <span class="n">ignore_inputs_for_output</span> <span class="ow">is</span> <span class="kc">None</span>
+                                <span class="ow">or</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore_inputs_for_output</span>
+                            <span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">convert_to</span> <span class="o">=</span> <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
+                            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                                <span class="c1"># We don&#39;t have units, so given prior check, is dimensionless</span>
+                                <span class="n">convert_to</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                            <span class="k">break</span>
+
+                <span class="n">output_control</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_base_unit_of_dimensionality</span><span class="p">[</span><span class="n">output</span><span class="p">],</span> <span class="n">convert_to</span><span class="p">))</span>
+
+            <span class="c1"># Convert all inputs as specified, assuming dimensionality is fine based on above</span>
+            <span class="n">_mutate_arguments</span><span class="p">(</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+
+            <span class="c1"># Evaluate inner calculation</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">bound_args</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">bound_args</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Wrap output</span>
+            <span class="k">if</span> <span class="n">multiple_output</span><span class="p">:</span>
+                <span class="n">wrapped_result</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">this_result</span><span class="p">,</span> <span class="n">this_output_control</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">output_control</span><span class="p">):</span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">this_result</span><span class="p">,</span> <span class="n">this_output_control</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">this_output_control</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">this_output_control</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">wrapped_result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">wrapped_result</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">q</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">output_control</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">output_control</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">output_control</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">q</span>
+
+        <span class="c1"># Attach the unwrapped func for internal use</span>
+        <span class="n">wrapper</span><span class="o">.</span><span class="n">_nounit</span> <span class="o">=</span> <span class="n">func</span>
 
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">dec</span></div>

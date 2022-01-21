@@ -232,7 +232,7 @@
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">._vendor.xarray</span> <span class="kn">import</span> <span class="n">either_dict_or_kwargs</span><span class="p">,</span> <span class="n">expanded_indexer</span><span class="p">,</span> <span class="n">is_dict_like</span>
-<span class="kn">from</span> <span class="nn">.units</span> <span class="kn">import</span> <span class="n">DimensionalityError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">.units</span> <span class="kn">import</span> <span class="n">_mutate_arguments</span><span class="p">,</span> <span class="n">DimensionalityError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;MetPyDataArrayAccessor&#39;</span><span class="p">,</span> <span class="s1">&#39;MetPyDatasetAccessor&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_deltas_from_dataarray&#39;</span><span class="p">)</span>
 <span class="n">metpy_axes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">]</span>
@@ -1448,22 +1448,6 @@
                     <span class="k">return</span> <span class="n">wrapping</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">decorator</span>
-
-
-<span class="k">def</span> <span class="nf">_mutate_arguments</span><span class="p">(</span><span class="n">bound_args</span><span class="p">,</span> <span class="n">check_type</span><span class="p">,</span> <span class="n">mutate_arg</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Handle adjusting bound arguments.</span>
-
-<span class="sd">    Calls ``mutate_arg`` on every argument, including those passed as ``*args``, if they are</span>
-<span class="sd">    of type ``check_type``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">arg_name</span><span class="p">,</span> <span class="n">arg_val</span> <span class="ow">in</span> <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="n">check_type</span><span class="p">):</span>
-            <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">arg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mutate_arg</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="n">arg_name</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="n">mutate_arg</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="s1">&#39;(unnamed)&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_val</span><span class="p">,</span> <span class="n">check_type</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg_val</span>
-            <span class="k">for</span> <span class="n">arg_val</span> <span class="ow">in</span> <span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
 
 
 <span class="k">def</span> <span class="nf">_wrap_output_like_matching_units</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>

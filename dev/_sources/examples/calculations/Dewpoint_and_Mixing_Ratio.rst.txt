@@ -91,7 +91,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
  .. code-block:: none
 
-    15823.863685716977 gram * millibar / kilogram
+    15.823863685716976 millibar
 
 
 
@@ -116,7 +116,7 @@ Take the odd units and force them to millibars
 
  .. code-block:: none
 
-    15.823863685716978 millibar
+    15.823863685716976 millibar
 
 
 
@@ -142,7 +142,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
  .. code-block:: none
 
-    13.854699858753728 degree_Celsius
+    13.854699858753747 degree_Celsius
 
 
 
@@ -193,7 +193,7 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
  .. code-block:: none
 
-    13.45028413285943 millibar
+    13.450284132859428 millibar
 
 
 
@@ -218,7 +218,7 @@ And print the corresponding dewpoint
 
  .. code-block:: none
 
-    11.377098919513376 degree_Celsius 52.47877805512405 degree_Fahrenheit
+    11.3770989195134 degree_Celsius 52.47877805512405 degree_Fahrenheit
 
 
 
