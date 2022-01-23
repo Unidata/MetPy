@@ -1,0 +1,12 @@
+supercell_composite
+==============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: supercell_composite
+
+.. include:: metpy.calc.supercell_composite.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

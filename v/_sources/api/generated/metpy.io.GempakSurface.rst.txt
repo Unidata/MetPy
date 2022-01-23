@@ -1,0 +1,72 @@
+GempakSurface
+======================
+
+.. currentmodule:: metpy.io
+
+.. autoclass:: GempakSurface
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~GempakSurface.data_management_fmt
+      ~GempakSurface.grid_anl_fmt1
+      ~GempakSurface.grid_anl_fmt2
+      ~GempakSurface.grid_nav_fmt
+      ~GempakSurface.prod_desc_fmt
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~GempakSurface.__init__
+      ~GempakSurface.nearest_time
+      ~GempakSurface.sfinfo
+      ~GempakSurface.sfjson
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: data_management_fmt
+   .. autoattribute:: grid_anl_fmt1
+   .. autoattribute:: grid_anl_fmt2
+   .. autoattribute:: grid_nav_fmt
+   .. autoattribute:: prod_desc_fmt
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: nearest_time
+   .. automethod:: sfinfo
+   .. automethod:: sfjson
+
+   
+   
+
+.. include:: metpy.io.GempakSurface.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

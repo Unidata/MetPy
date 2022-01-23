@@ -1,0 +1,12 @@
+equivalent_potential_temperature
+===========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: equivalent_potential_temperature
+
+.. include:: metpy.calc.equivalent_potential_temperature.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

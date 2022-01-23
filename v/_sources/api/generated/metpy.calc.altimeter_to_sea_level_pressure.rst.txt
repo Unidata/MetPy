@@ -1,0 +1,12 @@
+altimeter_to_sea_level_pressure
+==========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: altimeter_to_sea_level_pressure
+
+.. include:: metpy.calc.altimeter_to_sea_level_pressure.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

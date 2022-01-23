@@ -1,0 +1,12 @@
+surface_based_cape_cin
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: surface_based_cape_cin
+
+.. include:: metpy.calc.surface_based_cape_cin.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

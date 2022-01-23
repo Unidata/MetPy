@@ -1,0 +1,12 @@
+mixed_layer_cape_cin
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: mixed_layer_cape_cin
+
+.. include:: metpy.calc.mixed_layer_cape_cin.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

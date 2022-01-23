@@ -1,0 +1,12 @@
+smooth_window
+========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: smooth_window
+
+.. include:: metpy.calc.smooth_window.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+saturation_vapor_pressure
+====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: saturation_vapor_pressure
+
+.. include:: metpy.calc.saturation_vapor_pressure.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

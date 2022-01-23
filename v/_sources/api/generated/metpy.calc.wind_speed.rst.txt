@@ -1,0 +1,12 @@
+wind_speed
+=====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: wind_speed
+
+.. include:: metpy.calc.wind_speed.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

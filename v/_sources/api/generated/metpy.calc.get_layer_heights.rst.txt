@@ -1,0 +1,12 @@
+get_layer_heights
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: get_layer_heights
+
+.. include:: metpy.calc.get_layer_heights.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

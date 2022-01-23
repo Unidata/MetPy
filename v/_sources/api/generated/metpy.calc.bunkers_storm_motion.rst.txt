@@ -1,0 +1,12 @@
+bunkers_storm_motion
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: bunkers_storm_motion
+
+.. include:: metpy.calc.bunkers_storm_motion.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+cross_totals
+=======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: cross_totals
+
+.. include:: metpy.calc.cross_totals.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+height_to_pressure_std
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: height_to_pressure_std
+
+.. include:: metpy.calc.height_to_pressure_std.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+total_totals_index
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: total_totals_index
+
+.. include:: metpy.calc.total_totals_index.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
