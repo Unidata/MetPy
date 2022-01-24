@@ -59,6 +59,10 @@ jobs:
         type: 'doc'
         python-version: ${{ matrix.python-version }}
 
+    # Needed to have a clean version on tags due to modifying requirements above
+    - name: Clean modified files
+      run: git checkout -- .
+
     - name: Build docs
       id: build-docs
       uses: ./.github/actions/build-docs
