@@ -62,7 +62,7 @@ Other required packages:
 There is also an optional dependency on the pyproj library for geographic
 projections (used with cross sections, grid spacing calculation, and the GiniFile interface).
 
-See the [installation guide](https://unidata.github.io/MetPy/dev/installguide.html)
+See the [installation guide](https://unidata.github.io/MetPy/latest/userguide/installguide.html)
 for more information.
 
 Code of Conduct
