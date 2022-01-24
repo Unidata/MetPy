@@ -10,6 +10,8 @@ on:
 
   # Run if we modify the workflow
   push:
+    branches:
+      - main
     paths:
       - .github/workflows/nightly-builds.yml
   pull_request:
