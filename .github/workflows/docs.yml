@@ -9,8 +9,6 @@ on:
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
   pull_request:
-  release:
-    types: [published]
 
 permissions:
   contents: write
@@ -37,7 +35,7 @@ jobs:
             check-links: true
             dep-versions: requirements.txt
     outputs:
-      doc_version: ${{ steps.build-docs.outputs.doc-version }}
+      doc-version: ${{ steps.build-docs.outputs.doc-version }}
 
     steps:
     # We check out only a limited depth and then pull tags to save time
@@ -58,6 +56,10 @@ jobs:
         need-cartopy: true
         type: 'doc'
         python-version: ${{ matrix.python-version }}
+
+    # Needed to have a clean version on tags due to modifying requirements above
+    - name: Clean modified files
+      run: git checkout -- .
 
     - name: Build docs
       id: build-docs

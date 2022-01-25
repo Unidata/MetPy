@@ -10,7 +10,7 @@ inputs:
     required: false
     default: ''
 outputs:
-  doc_version:
+  doc-version:
     description: 'What version the docs correspond to'
     value: ${{ steps.docversion.outputs.doc_version }}
 runs:
