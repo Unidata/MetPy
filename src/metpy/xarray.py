@@ -1000,11 +1000,17 @@ class MetPyDatasetAccessor:
         by this operation. Do not utilize on moderate- to large-sized remote datasets before
         subsetting!
         """
-        return self._dataset.map(lambda da: da.metpy.quantify(), keep_attrs=True)
+        _attr_save = self._dataset.attrs.copy()
+        dataset = self._dataset.map(lambda da: da.metpy.quantify())
+        dataset.attrs = _attr_save
+        return dataset
 
     def dequantify(self):
         """Return new dataset with variables cast to magnitude and units on attribute."""
-        return self._dataset.map(lambda da: da.metpy.dequantify(), keep_attrs=True)
+        _attr_save = self._dataset.attrs.copy()
+        dataset = self._dataset.map(lambda da: da.metpy.dequantify())
+        dataset.attrs = _attr_save
+        return dataset
 
 
 def _assign_axis(attributes, axis):
