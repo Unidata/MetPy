@@ -21,14 +21,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9, "3.10"]
+        python-version: [3.8, 3.9, '3.10']
         dep-versions: [requirements.txt]
         no-extras: ['']
         include:
-          - python-version: 3.7
+          - python-version: 3.8
             dep-versions: Minimum
             no-extras: 'No Extras'
-          - python-version: 3.9
+          - python-version: '3.10'
             dep-versions: requirements.txt
             no-extras: 'No Extras'
 

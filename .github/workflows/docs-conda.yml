@@ -10,9 +10,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  #
-  # Build our docs on macOS and Windows on Python 3.8 and 3.7, respectively.
-  #
   Docs:
     name: ${{ matrix.os }} ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
@@ -25,7 +22,7 @@ jobs:
         include:
           - python-version: 3.8
             os: macOS
-          - python-version: 3.7
+          - python-version: 3.9
             os: Windows
 
     steps:
