@@ -15,10 +15,7 @@ def get_version():
         return get_version(root='../..', relative_to=__file__,
                            version_scheme='post-release')
     except (ImportError, LookupError):
-        try:
-            from importlib.metadata import PackageNotFoundError, version
-        except ImportError:  # Can remove when we require Python > 3.7
-            from importlib_metadata import PackageNotFoundError, version
+        from importlib.metadata import PackageNotFoundError, version
 
         try:
             return version(__package__)
