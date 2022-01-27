@@ -199,7 +199,7 @@ def test_dataset_dequantify():
     original = xr.Dataset({
         'test': ('x', units.Quantity([280, 290, 300], 'K')),
         'x': np.arange(3)
-    }, attrs={'test': 'test'})
+    }, attrs={'test_': 'test'})
     result = original.metpy.dequantify()
     assert isinstance(result['test'].data, np.ndarray)
     assert result['test'].attrs['units'] == 'kelvin'
