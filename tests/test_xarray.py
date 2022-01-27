@@ -191,6 +191,7 @@ def test_dataset_quantify(test_ds_generic):
         result['test'].data,
         units.Quantity(test_ds_generic['test'].data)
     )
+    assert result.attrs == test_ds_generic.attrs
 
 
 def test_dataset_dequantify():
@@ -198,11 +199,12 @@ def test_dataset_dequantify():
     original = xr.Dataset({
         'test': ('x', units.Quantity([280, 290, 300], 'K')),
         'x': np.arange(3)
-    })
+    }, attrs={'test': 'test'})
     result = original.metpy.dequantify()
     assert isinstance(result['test'].data, np.ndarray)
     assert result['test'].attrs['units'] == 'kelvin'
     np.testing.assert_array_almost_equal(result['test'].data, original['test'].data.magnitude)
+    assert result.attrs == original.attrs
 
 
 def test_radian_projection_coords():
