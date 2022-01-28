@@ -11,23 +11,22 @@ import pooch
 
 from . import __version__
 
-pooch_path = pooch.os_cache('metpy')
-pooch_updates = True
+pooch_kwargs = {'path': pooch.os_cache('metpy')}
 
 # Check if we have the data available directly from a git checkout, either from the
 # TEST_DATA_DIR variable, or looking relative to the path of this module's file. Use this
 # to override Pooch's path and disable downloading from GitHub.
 dev_data_path = os.environ.get('TEST_DATA_DIR', Path(__file__).parents[2] / 'staticdata')
 if Path(dev_data_path).exists():
-    pooch_path = dev_data_path
-    pooch_updates = False
+    pooch_kwargs['path'] = dev_data_path
+    if pooch.__version__ >= 'v1.6.0':
+        pooch_kwargs['allow_updates'] = False
 
 POOCH = pooch.create(
-    path=pooch_path,
     base_url='https://github.com/Unidata/MetPy/raw/{version}/staticdata/',
     version='v' + __version__,
     version_dev='main',
-    allow_updates=pooch_updates)
+    **pooch_kwargs)
 
 POOCH.load_registry(Path(__file__).parent / 'static-data-manifest.txt')
 
