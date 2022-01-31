@@ -35,7 +35,7 @@ def test_ds_generic():
                             'c': xr.DataArray(np.arange(3), dims='c'),
                             'd': xr.DataArray(np.arange(5), dims='d'),
                             'e': xr.DataArray(np.arange(5), dims='e')
-    }, dims=['a', 'b', 'c', 'd', 'e'], name='test').to_dataset()
+    }, dims=['a', 'b', 'c', 'd', 'e'], attrs={'units': 'kelvin'}, name='test').to_dataset()
 
 
 @pytest.fixture
@@ -165,7 +165,7 @@ def test_quantify(test_ds_generic):
     original = test_ds_generic['test'].values
     result = test_ds_generic['test'].metpy.quantify()
     assert isinstance(result.data, units.Quantity)
-    assert result.data.units == units.dimensionless
+    assert result.data.units == units.kelvin
     assert 'units' not in result.attrs
     np.testing.assert_array_almost_equal(result.data, units.Quantity(original))
 
@@ -185,12 +185,13 @@ def test_dataset_quantify(test_ds_generic):
     """Test quantify method for converting data to Quantity on Datasets."""
     result = test_ds_generic.metpy.quantify()
     assert isinstance(result['test'].data, units.Quantity)
-    assert result['test'].data.units == units.dimensionless
+    assert result['test'].data.units == units.kelvin
     assert 'units' not in result['test'].attrs
     np.testing.assert_array_almost_equal(
         result['test'].data,
         units.Quantity(test_ds_generic['test'].data)
     )
+    assert result.attrs == test_ds_generic.attrs
 
 
 def test_dataset_dequantify():
@@ -198,11 +199,12 @@ def test_dataset_dequantify():
     original = xr.Dataset({
         'test': ('x', units.Quantity([280, 290, 300], 'K')),
         'x': np.arange(3)
-    })
+    }, attrs={'test': 'test'})
     result = original.metpy.dequantify()
     assert isinstance(result['test'].data, np.ndarray)
     assert result['test'].attrs['units'] == 'kelvin'
     np.testing.assert_array_almost_equal(result['test'].data, original['test'].data.magnitude)
+    assert result.attrs == original.attrs
 
 
 def test_radian_projection_coords():
