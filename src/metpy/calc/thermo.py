@@ -277,7 +277,7 @@ def water_latent_heat_melting(temperature):
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
 @check_units('[temperature]', '[temperature]')
-def relative_humidity_from_dewpoint(temperature, dewpoint):
+def relative_humidity_from_dewpoint(temperature, dewpoint, phase='liquid'):
     r"""Calculate the relative humidity.
 
     Uses temperature and dewpoint to calculate relative humidity as the ratio of vapor
@@ -315,8 +315,8 @@ def relative_humidity_from_dewpoint(temperature, dewpoint):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    e = saturation_vapor_pressure(dewpoint)
-    e_s = saturation_vapor_pressure(temperature)
+    e = saturation_vapor_pressure(dewpoint, phase)
+    e_s = saturation_vapor_pressure(temperature, phase)
     return e / e_s
 
 
@@ -1529,7 +1529,7 @@ def vapor_pressure(pressure, mixing_ratio):
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
 @process_units({'temperature': '[temperature]'}, '[pressure]')
-def saturation_vapor_pressure(temperature):
+def saturation_vapor_pressure(temperature, phase='liquid'):
     r"""Calculate the saturation (equilibrium) water vapor (partial) pressure.
 
     Parameters
@@ -1565,51 +1565,40 @@ def saturation_vapor_pressure(temperature):
                  - 9.44523\:ln(T) + 0.014025T)]
 
     """
-    # valid for 123 < T < 332
-    return np.exp(
-        54.842763 - 6763.22 / temperature - 4.210 * np.log(temperature)
-        + 0.000367 * temperature + np.tanh(0.0415 * (temperature - 218.8))
-        * (53.878 - 1331.22 / temperature - 9.44523 * np.log(temperature)
-           + 0.014025 * temperature)
-    )
 
+    def liquid(temperature):
+        # valid for 123 < T < 332
+        return np.exp(
+            54.842763 - 6763.22 / temperature - 4.210 * np.log(temperature)
+            + 0.000367 * temperature + np.tanh(0.0415 * (temperature - 218.8))
+            * (53.878 - 1331.22 / temperature - 9.44523 * np.log(temperature)
+               + 0.014025 * temperature)
+        )
 
-@exporter.export
-@preprocess_and_wrap(wrap_like='temperature')
-@process_units({'temperature': '[temperature]'}, '[pressure]')
-def ice_saturation_vapor_pressure(temperature):
-    r"""Calculate the ice saturation (equilibrium) water vapor (partial) pressure.
+    def ice(temperature):
+        # valid for T > 110 K
+        return np.exp(
+            9.550426 - 5723.265 / temperature + 3.53068 * np.log(temperature)
+            - 0.00728332 * temperature
+        )
 
-    Parameters
-    ----------
-    temperature : `pint.Quantity`
-        Air temperature
-
-    Returns
-    -------
-    `pint.Quantity`
-        Ice saturation water vapor (partial) pressure
-
-    See Also
-    --------
-    vapor_pressure
-
-    The formula used is from eq. 7 in [MurphyKoop2005]_ for T in degrees Kelvin:
-
-    .. math:: e^[9.550426 - \frac{5723.265}{T} + 3.53068\:ln(T) - 0.00728332T]
-
-    """
-    # valid for T > 110 K
-    return np.exp(
-        9.550426 - 5723.265 / temperature + 3.53068 * np.log(temperature)
-        - 0.00728332 * temperature
-    )
+    if phase == 'liquid':
+        return liquid(temperature)
+    elif phase == 'ice':
+        return ice(temperature)
+    else:
+        assert phase == 'temperature-dependent'
+        alpha = np.zeros_like(temperature, dtype=float)
+        t_sel = (temperature > 250.16) & (temperature < 273.16)
+        alpha[t_sel] = ((temperature[t_sel] - 250.16) / (273.16 - 250.16)) ** 2
+        alpha[temperature >= 273.16] = 1
+        return alpha * liquid(temperature) + (1 - alpha) * ice(temperature)
 
 
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
 @check_units('[temperature]', '[dimensionless]')
-def dewpoint_from_relative_humidity(temperature, relative_humidity):
+def dewpoint_from_relative_humidity(temperature, relative_humidity, phase='liquid'):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
     Parameters
@@ -1642,7 +1631,7 @@ def dewpoint_from_relative_humidity(temperature, relative_humidity):
     """
     if np.any(relative_humidity > 1.2):
         _warnings.warn('Relative humidity >120%, ensure proper units.')
-    return dewpoint(relative_humidity * saturation_vapor_pressure(temperature))
+    return dewpoint(relative_humidity * saturation_vapor_pressure(temperature, phase))
 
 
 @exporter.export
@@ -1755,7 +1744,7 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
     {'total_press': '[pressure]', 'temperature': '[temperature]'},
     '[dimensionless]'
 )
-def saturation_mixing_ratio(total_press, temperature):
+def saturation_mixing_ratio(total_press, temperature, phase='liquid'):
     r"""Calculate the saturation mixing ratio of water vapor.
 
     This calculation is given total atmospheric pressure and air temperature.
@@ -1797,7 +1786,7 @@ def saturation_mixing_ratio(total_press, temperature):
        Renamed ``tot_press`` parameter to ``total_press``
 
     """
-    e_s = saturation_vapor_pressure._nounit(temperature)
+    e_s = saturation_vapor_pressure._nounit(temperature, phase)
     undefined = e_s >= total_press
     if np.any(undefined):
         _warnings.warn('Saturation mixing ratio is undefined for some requested pressure/'
@@ -2355,7 +2344,8 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     broadcast=('pressure', 'temperature', 'relative_humidity')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity):
+def mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity, phase='liquid'):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
 
     Parameters
@@ -2407,7 +2397,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
        Changed signature from ``(relative_humidity, temperature, pressure)``
 
     """
-    w_s = saturation_mixing_ratio(pressure, temperature)
+    w_s = saturation_mixing_ratio(pressure, temperature, phase)
     return (mpconsts.nounit.epsilon * w_s * relative_humidity
             / (mpconsts.nounit.epsilon + w_s * (1 - relative_humidity))).to('dimensionless')
 
@@ -2418,7 +2408,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     broadcast=('pressure', 'temperature', 'mixing_ratio')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
+def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio, phase='liquid'):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
     Parameters
@@ -2465,7 +2455,7 @@ def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio):
        Changed signature from ``(mixing_ratio, temperature, pressure)``
 
     """
-    w_s = saturation_mixing_ratio(pressure, temperature)
+    w_s = saturation_mixing_ratio(pressure, temperature, phase)
     return (mixing_ratio / (mpconsts.nounit.epsilon + mixing_ratio)
             * (mpconsts.nounit.epsilon + w_s) / w_s)
 
@@ -2558,7 +2548,8 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     broadcast=('pressure', 'temperature', 'specific_humidity')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity):
+def relative_humidity_from_specific_humidity(
+        pressure, temperature, specific_humidity, phase='liquid'):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
 
     Parameters
@@ -2609,7 +2600,7 @@ def relative_humidity_from_specific_humidity(pressure, temperature, specific_hum
 
     """
     return relative_humidity_from_mixing_ratio(
-        pressure, temperature, mixing_ratio_from_specific_humidity(specific_humidity))
+        pressure, temperature, mixing_ratio_from_specific_humidity(specific_humidity), phase)
 
 
 @exporter.export
