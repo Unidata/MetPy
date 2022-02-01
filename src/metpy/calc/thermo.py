@@ -25,7 +25,7 @@ exporter = Exporter(globals())
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'dewpoint'))
 @check_units('[temperature]', '[temperature]')
-def relative_humidity_from_dewpoint(temperature, dewpoint, phase="liquid"):
+def relative_humidity_from_dewpoint(temperature, dewpoint, phase='liquid'):
     r"""Calculate the relative humidity.
 
     Uses temperature and dewpoint to calculate relative humidity as the ratio of vapor
@@ -996,7 +996,7 @@ def vapor_pressure(pressure, mixing_ratio):
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature')
 @process_units({'temperature': '[temperature]'}, '[pressure]')
-def saturation_vapor_pressure(temperature, phase="liquid"):
+def saturation_vapor_pressure(temperature, phase='liquid'):
     r"""Calculate the saturation water vapor (partial) pressure.
 
     Parameters
@@ -1036,12 +1036,12 @@ def saturation_vapor_pressure(temperature, phase="liquid"):
             22.587 * (temperature - 273.16) / (temperature + 0.7)
         )
 
-    if phase == "liquid":
+    if phase == 'liquid':
         return liquid(temperature)
-    elif phase == "ice":
+    elif phase == 'ice':
         return ice(temperature)
     else:
-        assert phase == "temperature-dependent"
+        assert phase == 'temperature-dependent'
         alpha = np.zeros_like(temperature, dtype=float)
         t_sel = (temperature > 250.16) & (temperature < 273.16)
         alpha[t_sel] = ((temperature[t_sel] - 250.16) / (273.16 - 250.16)) ** 2
@@ -1052,7 +1052,7 @@ def saturation_vapor_pressure(temperature, phase="liquid"):
 @exporter.export
 @preprocess_and_wrap(wrap_like='temperature', broadcast=('temperature', 'relative_humidity'))
 @check_units('[temperature]', '[dimensionless]')
-def dewpoint_from_relative_humidity(temperature, relative_humidity, phase="liquid"):
+def dewpoint_from_relative_humidity(temperature, relative_humidity, phase='liquid'):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
     Parameters
@@ -1178,7 +1178,7 @@ def mixing_ratio(partial_press, total_press, molecular_weight_ratio=mpconsts.nou
     {'total_press': '[pressure]', 'temperature': '[temperature]'},
     '[dimensionless]'
 )
-def saturation_mixing_ratio(total_press, temperature, phase="liquid"):
+def saturation_mixing_ratio(total_press, temperature, phase='liquid'):
     r"""Calculate the saturation mixing ratio of water vapor.
 
     This calculation is given total atmospheric pressure and air temperature.
@@ -1207,7 +1207,8 @@ def saturation_mixing_ratio(total_press, temperature, phase="liquid"):
        Renamed ``tot_press`` parameter to ``total_press``
 
     """
-    return mixing_ratio._nounit(saturation_vapor_pressure._nounit(temperature, phase), total_press)
+    return mixing_ratio._nounit(saturation_vapor_pressure._nounit(
+        temperature, phase), total_press)
 
 
 @exporter.export
@@ -1596,7 +1597,8 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     broadcast=('pressure', 'temperature', 'relative_humidity')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity, phase="liquid"):
+def mixing_ratio_from_relative_humidity(
+        pressure, temperature, relative_humidity, phase='liquid'):
     r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
 
     Parameters
@@ -1644,7 +1646,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     broadcast=('pressure', 'temperature', 'mixing_ratio')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio, phase="liquid"):
+def relative_humidity_from_mixing_ratio(pressure, temperature, mixing_ratio, phase='liquid'):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
     Parameters
@@ -1756,7 +1758,8 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     broadcast=('pressure', 'temperature', 'specific_humidity')
 )
 @check_units('[pressure]', '[temperature]', '[dimensionless]')
-def relative_humidity_from_specific_humidity(pressure, temperature, specific_humidity, phase="liquid"):
+def relative_humidity_from_specific_humidity(
+        pressure, temperature, specific_humidity, phase='liquid'):
     r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
 
     Parameters
