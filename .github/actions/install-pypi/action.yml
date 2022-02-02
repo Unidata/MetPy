@@ -29,7 +29,6 @@ runs:
           ci/${{ inputs.version-file }}
 
     - name: Setup PROJ
-      if: ${{ inputs.need-cartopy == 'true' }}
       uses: ./.github/actions/setup-proj
 
     # This installs the stuff needed to build and install Shapely and CartoPy from source.
