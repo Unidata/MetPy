@@ -596,7 +596,6 @@ class SkewT:
         else:
             mixing_ratio = mixing_ratio.reshape(-1, 1)
 
-
         # Set pressure range if necessary
         if pressure is None:
             pressure = units.Quantity(np.linspace(600, max(self.ax.get_ylim())), 'mbar')
