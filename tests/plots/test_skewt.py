@@ -87,7 +87,7 @@ def test_skewt_mixing_line_args():
     """Test plot_mixing_lines accepting kwargs for mixing ratio and pressure levels."""
     # Explicitly pass default values as kwargs the, should recreate NWS SkewT PDF as above
     mlines = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01, 0.016, 0.024, 0.032])
-    pres = units.Quantity(np.linspace(600, max(self.ax.get_ylim())), 'mbar')
+    press = units.Quantity(np.linspace(600, max(self.ax.get_ylim())), 'mbar')
     
     fig = plt.figure(figsize=(12, 9))
     skew = SkewT(fig, rotation=43)
