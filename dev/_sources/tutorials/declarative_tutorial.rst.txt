@@ -99,7 +99,11 @@ We'll start this tutorial by reading in a gridded dataset using Xarray.
     Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
     Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
     <xarray.Dataset>
-    Dimensions:                                  (time: 1, isobaric3: 26, lat: 46, lon: 101, height_above_ground1: 1, isobaric5: 25, height_above_ground: 1)
+    Dimensions:                                  (time: 1, isobaric3: 26, lat: 46,
+                                                  lon: 101,
+                                                  height_above_ground1: 1,
+                                                  isobaric5: 25,
+                                                  height_above_ground: 1)
     Coordinates:
       * time                                     (time) datetime64[ns] 2010-10-26...
       * isobaric3                                (isobaric3) float32 1e+03 ... 1e+05
@@ -923,7 +927,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.713 seconds)
+   **Total running time of the script:** ( 0 minutes  14.121 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
