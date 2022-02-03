@@ -8,4 +8,4 @@ pint==0.18
 pyproj==3.2.1
 scipy==1.7.3
 traitlets==5.1.1
-xarray==0.20.2
+xarray==0.21.1
