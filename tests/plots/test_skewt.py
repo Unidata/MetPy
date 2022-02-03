@@ -82,6 +82,20 @@ def test_skewt_default_aspect_empty():
     skew.plot_mixing_lines()
     return fig
 
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
+def test_skewt_mixing_line_args():
+    """Test plot_mixing_lines accepting kwargs for mixing ratio and pressure levels."""
+    # Explicitly pass default values as kwargs the, should recreate NWS SkewT PDF as above
+    mlines = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01, 0.016, 0.024, 0.032]
+    pres = units.Quantity(np.linspace(600, max(self.ax.get_ylim())), 'mbar')
+    
+    fig = plt.figure(figsize=(12, 9))
+    skew = SkewT(fig, rotation=43)
+    skew.plot_dry_adiabats()
+    skew.plot_moist_adiabats()
+    skew.plot_mixing_lines(mixing_lines=mlines, pressure=pres)
+    return fig
+
 
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
                                savefig_kwargs={'bbox_inches': 'tight'})
