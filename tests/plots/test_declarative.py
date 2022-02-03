@@ -188,7 +188,7 @@ def test_declarative_smooth_field():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.011)
 @needs_cartopy
 def test_declarative_contour_cam():
     """Test making a contour plot with CAM data."""
