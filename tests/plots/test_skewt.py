@@ -82,6 +82,7 @@ def test_skewt_default_aspect_empty():
     skew.plot_mixing_lines()
     return fig
 
+
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_mixing_line_args():
     """Test plot_mixing_lines accepting kwargs for mixing ratio and pressure levels."""
