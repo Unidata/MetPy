@@ -1,7 +1,7 @@
 importlib_metadata==4.10.1
 importlib_resources==5.4.0
 matplotlib==3.5.1
-numpy==1.22.1
+numpy==1.22.2
 pandas==1.4.0
 pooch==1.6.0
 pint==0.18
