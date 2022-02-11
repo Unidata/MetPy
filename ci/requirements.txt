@@ -1,4 +1,4 @@
-importlib_metadata==4.10.1
+importlib_metadata==4.11.0
 importlib_resources==5.4.0
 matplotlib==3.5.1
 numpy==1.22.2
