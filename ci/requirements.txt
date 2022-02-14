@@ -2,7 +2,7 @@ importlib_metadata==4.11.0
 importlib_resources==5.4.0
 matplotlib==3.5.1
 numpy==1.22.2
-pandas==1.4.0
+pandas==1.4.1
 pooch==1.6.0
 pint==0.18
 pyproj==3.3.0
