@@ -126,7 +126,7 @@ jobs:
           touch tests-nightly.log build.log linkchecker.log
 
       - name: Report failures
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
