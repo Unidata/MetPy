@@ -1,4 +1,4 @@
-        'vertical': (r'(lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
+            r'^(z|lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|isotherm)'
   | ``(thta, u, v, dx, dy, dim_order='yx')``                                                                         |
        Changed signature from ``(thta, u, v, dx, dy, dim_order='yx')``
     dpres = gempak.PRES.values

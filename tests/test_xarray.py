@@ -498,7 +498,10 @@ regex_matches = [
     ('time42', 'time'),
     ('Time', 'time'),
     ('TIME', 'time'),
+    ('XTIME', 'time'),
+    ('Times', 'time'),
     ('bottom_top', 'vertical'),
+    ('bottom_top_stag', 'vertical'),
     ('sigma', 'vertical'),
     ('HGHT', 'vertical'),
     ('height', 'vertical'),
@@ -512,18 +515,26 @@ regex_matches = [
     ('pressure', 'vertical'),
     ('pressure_difference_layer', 'vertical'),
     ('isothermal', 'vertical'),
+    ('z', 'vertical'),
+    ('z_stag', 'vertical'),
     ('y', 'y'),
     ('Y', 'y'),
+    ('y_stag', 'y'),
+    ('yc', 'y'),
     ('lat', 'latitude'),
     ('latitude', 'latitude'),
     ('Latitude', 'latitude'),
     ('XLAT', 'latitude'),
+    ('XLAT_U', 'latitude'),
     ('x', 'x'),
     ('X', 'x'),
+    ('x_stag', 'x'),
+    ('xc', 'x'),
     ('lon', 'longitude'),
     ('longitude', 'longitude'),
     ('Longitude', 'longitude'),
-    ('XLONG', 'longitude')
+    ('XLONG', 'longitude'),
+    ('XLONG_V', 'longitude')
 ]
 
 
