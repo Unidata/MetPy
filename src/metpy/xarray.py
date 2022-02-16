@@ -83,13 +83,15 @@ coordinate_criteria = {
         },
     },
     'regular_expression': {
-        'time': r'time[0-9]*',
-        'vertical': (r'(lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
-                     r'isotherm)[a-z_]*[0-9]*'),
-        'y': r'y',
-        'latitude': r'x?lat[a-z0-9]*',
-        'x': r'x',
-        'longitude': r'x?lon[a-z0-9]*'
+        'time': re.compile(r'^(x?)time(s?)[0-9]*$'),
+        'vertical': re.compile(
+            r'^(z|lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|isotherm)'
+            r'[a-z_]*[0-9]*$'
+        ),
+        'y': re.compile(r'^y(_?)[a-z0-9]*$'),
+        'latitude': re.compile(r'^(x?)lat[a-z0-9_]*$'),
+        'x': re.compile(r'^x(?!lon|lat|time).*(_?)[a-z0-9]*$'),
+        'longitude': re.compile(r'^(x?)lon[a-z0-9_]*$')
     }
 }
 
@@ -505,8 +507,7 @@ class MetPyDataArrayAccessor:
                 # vertical dim recognition
                 if axis in ('vertical', 'y', 'x'):
                     for i, dim in enumerate(self._data_array.dims):
-                        if re.match(coordinate_criteria['regular_expression'][axis],
-                                    dim.lower()):
+                        if coordinate_criteria['regular_expression'][axis].match(dim.lower()):
                             return i
                 raise exc
             except ValueError:
@@ -1067,7 +1068,7 @@ def check_axis(var, *axes):
                 return True
 
         # Check if name matches regular expression (non-CF failsafe)
-        if re.match(coordinate_criteria['regular_expression'][axis], var.name.lower()):
+        if coordinate_criteria['regular_expression'][axis].match(var.name.lower()):
             return True
 
     # If no match has been made, return False (rather than None)
