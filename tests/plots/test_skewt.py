@@ -93,7 +93,7 @@ def test_skewt_mixing_line_args():
     press = units.Quantity(np.linspace(600, max(skew.ax.get_ylim())), 'mbar')
     skew.plot_dry_adiabats()
     skew.plot_moist_adiabats()
-    skew.plot_mixing_lines(mixing_lines=mlines, pressure=press)
+    skew.plot_mixing_lines(mixing_ratio=mlines, pressure=press)
     return fig
 
 
