@@ -63,6 +63,9 @@ plot_html_show_formats = False
 plot_formats = ['png']
 plot_rcparams = {'savefig.bbox': 'tight'}
 
+# Make MyST generate anchors for headings
+myst_heading_anchors = 2
+
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
                        'pint': ('https://pint.readthedocs.io/en/stable/', None),
