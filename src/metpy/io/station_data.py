@@ -2,7 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Pull out station metadata."""
-from collections import namedtuple
+from collections import ChainMap, namedtuple
+from functools import cached_property
 
 import numpy as np
 import pandas as pd
@@ -122,23 +123,20 @@ def _read_airports_file(input_file=None):
 class StationLookup:
     """Look up station information from multiple sources."""
 
-    def __init__(self):
-        """Construct placeholder list to be loaded when needed later."""
-        self._sources = []
+    @cached_property
+    def tables(self):
+        """Return an iterable mapping combining all the tables."""
+        return ChainMap(dict(_read_station_table()),
+                        dict(_read_master_text_file()),
+                        dict(_read_station_text_file()),
+                        dict(_read_airports_file()))
 
     def __getitem__(self, stid):
         """Lookup station information from the ID."""
-        if not self._sources:
-            self._sources = [
-                dict(_read_station_table()),
-                dict(_read_master_text_file()),
-                dict(_read_station_text_file()),
-                dict(_read_airports_file()),
-            ]
-        for table in self._sources:
-            if stid in table:
-                return table[stid]
-        raise KeyError(f'No station information for {stid}')
+        try:
+            return self.tables[stid]
+        except KeyError:
+            raise KeyError(f'No station information for {stid}') from None
 
 
 with exporter:
