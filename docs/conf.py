@@ -73,7 +73,7 @@ intersphinx_mapping = {
                        'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://numpy.org/doc/stable/', None),
                        'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-                       'xarray': ('https://xarray.pydata.org/en/stable/', None)
+                       'xarray': ('https://docs.xarray.dev/en/stable/', None)
                        }
 
 # Tweak how docs are formatted
@@ -384,7 +384,6 @@ linkcheck_ignore = [
     ]
 
 linkcheck_allowed_redirects = {
-    r'https://xarray\.pydata\.org/': r'https://xarray\.pydata\.org/en/stable/',
     r'https://pint\.readthedocs\.io': r'https://pint\.readthedocs\.io/en/stable/',
     r'https://conda.io/docs/': r'https://conda.io/en/latest/',
     r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',

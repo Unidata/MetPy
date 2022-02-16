@@ -6,12 +6,12 @@
 xarray with MetPy Tutorial
 ==========================
 
-`xarray <https://xarray.pydata.org/>`_ is a powerful Python package that provides N-dimensional
-labeled arrays and datasets following the Common Data Model. MetPy's suite of meteorological
-calculations are designed to integrate with xarray DataArrays as one of its two primary data
-models (the other being Pint Quantities). MetPy also provides DataArray and Dataset
-*accessors* (collections of methods and properties attached to the ``.metpy`` property) for
-coordinate/CRS and unit operations.
+`xarray <https://docs.xarray.dev/en/stable/>`_ is a powerful Python package that provides
+N-dimensional labeled arrays and datasets following the Common Data Model. MetPy's suite of
+meteorological calculations are designed to integrate with xarray DataArrays as one of its two
+primary data models (the other being Pint Quantities). MetPy also provides DataArray and
+Dataset *accessors* (collections of methods and properties attached to the ``.metpy`` property)
+for coordinate/CRS and unit operations.
 
 Full information on MetPy's accessors is available in the :doc:`appropriate section of the
 reference guide </api/generated/metpy.xarray>`, otherwise, continue on in this
