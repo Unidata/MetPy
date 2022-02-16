@@ -11,7 +11,8 @@ import pooch
 
 from . import __version__
 
-pooch_kwargs = {'path': pooch.os_cache('metpy')}
+pooch_kwargs = {'path': pooch.os_cache('metpy'), 'version': 'v' + __version__,
+                'base_url': 'https://github.com/Unidata/MetPy/raw/{version}/staticdata/'}
 
 # Check if we have the data available directly from a git checkout, either from the
 # TEST_DATA_DIR variable, or looking relative to the path of this module's file. Use this
@@ -19,15 +20,12 @@ pooch_kwargs = {'path': pooch.os_cache('metpy')}
 dev_data_path = os.environ.get('TEST_DATA_DIR', Path(__file__).parents[2] / 'staticdata')
 if Path(dev_data_path).exists():
     pooch_kwargs['path'] = dev_data_path
+    pooch_kwargs['version'] = None
+    pooch_kwargs['base_url'] = pooch_kwargs['base_url'].format(version='main')
     if pooch.__version__ >= 'v1.6.0':
         pooch_kwargs['allow_updates'] = False
 
-POOCH = pooch.create(
-    base_url='https://github.com/Unidata/MetPy/raw/{version}/staticdata/',
-    version='v' + __version__,
-    version_dev='main',
-    **pooch_kwargs)
-
+POOCH = pooch.create(version_dev='main', **pooch_kwargs)
 POOCH.load_registry(Path(__file__).parent / 'static-data-manifest.txt')
 
 
