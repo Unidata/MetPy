@@ -23,7 +23,7 @@ approach taken in MetPy is correct.
 #    complexity for spatial searches.
 #
 # 2. We generate a `Delaunay Triangulation <https://docs.scipy.org/doc/scipy/
-#    reference/tutorial/spatial.html#delaunay-triangulations>`_
+#    tutorial/spatial.html#delaunay-triangulations>`_
 #    using the locations of the provided observations.
 #
 # 3. For each triangle, we calculate its circumcenter and circumradius. Using
@@ -47,7 +47,7 @@ approach taken in MetPy is correct.
 # 6. Increment the current edges to be checked, i.e.:
 #    n - 1 = n, n = n + 1, n + 1 = n + 2
 #
-# 7. Repeat steps 5 & 6 until all of the edge combinations of 3 have been visited.
+# 7. Repeat steps 5 & 6 until all the edge combinations of 3 have been visited.
 #
 # 8. Repeat steps 4 through 7 for each grid cell.
 import matplotlib.pyplot as plt
@@ -157,7 +157,7 @@ print('radii\n', r)
 
 ###########################################
 # Draw the natural neighbor triangles and their circumcenters. Also plot a `Voronoi diagram
-# <https://docs.scipy.org/doc/scipy/reference/tutorial/spatial.html#voronoi-diagrams>`_
+# <https://docs.scipy.org/doc/scipy/tutorial/spatial.html#voronoi-diagrams>`_
 # which serves as a complementary (but not necessary)
 # spatial data structure that we use here simply to show areal ratios.
 # Notice that the two natural neighbor triangle circumcenters are also vertices
