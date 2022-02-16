@@ -344,7 +344,7 @@
               
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="contributors-guide">
+  <section id="contributors-guide">
 <h1>Contributors Guide<a class="headerlink" href="#contributors-guide" title="Permalink to this headline">¶</a></h1>
 <p>Interested in helping build MetPy? Have code from your research that you believe others will
 find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
@@ -469,7 +469,7 @@ Remember that these must be executed within the <code class="docutils literal no
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install -e .
 </pre></div>
 </div>
-<p>Note sections on <a class="reference external" href="#documentation">documentation</a> and <a class="reference external" href="#code-style">code style</a> below,
+<p>Note sections on <a class="reference internal" href="#documentation"><span class="std std-doc">documentation</span></a> and <a class="reference internal" href="#code-style"><span class="std std-doc">code style</span></a> below,
 where you may need to install a few more packages into your new environment.</p>
 <p>Now you’re all set!
 You have an environment called <code class="docutils literal notranslate"><span class="pre">devel</span></code> that you can work in.
@@ -526,7 +526,7 @@ make sure that it gets marked as included if appropriate in the GEMPAK conversio
 <p>You can write examples in the documentation if they are simple concepts to demonstrate. If
 your feature is more complex, consider adding to the examples or tutorials for MetPy.</p>
 <p>You can build the documentation locally to see how your changes will look.
-After setting up your <a class="reference external" href="#setting-up-your-development-environment">development environment</a> above,
+After setting up your <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">development environment</span></a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
 use <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/doc_requirements.txt</span></code>
 to install required packages to build our documentation.
@@ -592,7 +592,7 @@ at the existing tests to get an idea of some of the common patterns.</p>
 <h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this headline">¶</a></h3>
 <p>Some tests (for matplotlib plotting code) are done as an image comparison, using the
 pytest-mpl plugin.
-By following the <a class="reference external" href="#setting-up-your-development-environment">guide</a> above,
+By following the <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">guide</span></a> above,
 you should have a <code class="docutils literal notranslate"><span class="pre">testing</span></code> install of matplotlib, which will guarantee that your image tests
 behave exactly the same as ours.
 To run these tests, use:</p>
@@ -632,7 +632,7 @@ Therefore, it makes sense to enforce this style as code is added to keep everyth
 uniform. To this end, part of the automated testing for MetPy checks style. To check style
 locally within the source directory you can use the
 <a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> tool.
-After setting up your <a class="reference external" href="#setting-up-your-development-environment">development environment</a> above,
+After setting up your <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">development environment</span></a> above,
 from within the <code class="docutils literal notranslate"><span class="pre">metpy</span></code> directory with your <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment active,
 install the code style tools we use with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">--file</span> <span class="pre">ci/linting_requirements.txt</span></code>.
 Checking your code style is then as easy as running <code class="docutils literal notranslate"><span class="pre">flake8</span> <span class="pre">.</span></code> in the base of the repository.</p>
