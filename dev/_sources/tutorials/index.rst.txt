@@ -58,7 +58,7 @@ common meteorological tasks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="`xarray &lt;https://xarray.pydata.org/&gt;`_ is a powerful Python package that provides N-dimensional...">
+    <div class="sphx-glr-thumbcontainer" tooltip="`xarray &lt;https://docs.xarray.dev/en/stable/&gt;`_ is a powerful Python package that provides N-dim...">
 
 .. only:: html
 
