@@ -5,7 +5,8 @@ are many ways to contact us:
 
 ## Help using MetPy
 
-Need some help using MetPy to solve your problem?
+Need some help using MetPy to solve your problem? The MetPy development team is following all
+of these, so you only need to pick one to share your problem. 😉
 
 * [Stack Overflow](https://stackoverflow.com/questions/tagged/metpy): Ask a question using the
   "metpy" tag. This is the highly preferred option as it allows the community to benefit from
