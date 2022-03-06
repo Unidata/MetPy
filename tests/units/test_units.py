@@ -190,6 +190,24 @@ def test_percent_units():
     assert str(units('%').units) == 'percent'
 
 
-def test_udunits_power_syntax():
+@pytest.mark.parametrize(
+    'unit_str,pint_unit',
+    (
+        # Validated against cf-units (UDUNITS-2 wrapper)
+        ('m s-1', units.m / units.s),
+        ('m2 s-2', units.m ** 2 / units.s ** 2),
+        ('kg(-1)', units.kg),
+        ('kg-1', units.kg ** -1),
+        ('W m(-2)', units.m ** 3 * units.kg * units.s ** -3),
+        ('W m-2', units.kg * units.s ** -3),
+        ('(W m-2 um-1)-1', units.m * units.kg ** -1 * units.s ** 3),
+        pytest.param(
+            '(J kg-1)(m s-1)-1', units.m / units.s,
+            marks=pytest.mark.xfail(reason='hgrecco/pint#1485')
+        ),
+        ('(J kg-1)(m s-1)(-1)', units.m ** 3 / units.s ** 3)
+    )
+)
+def test_udunits_power_syntax(unit_str, pint_unit):
     """Test that UDUNITS style powers are properly parsed and interpreted."""
-    assert units('m2 s-2').units == units.m ** 2 / units.s ** 2
+    assert units(unit_str).to_base_units().units == pint_unit
