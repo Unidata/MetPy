@@ -42,7 +42,7 @@ units = pint.UnitRegistry(
     preprocessors=[
         functools.partial(
             re.sub,
-            r'(?<=[A-Za-z])(?![A-Za-z])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])',
+            r'(?<=[A-Za-z\)])(?![A-Za-z\)])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])',
             '**'
         ),
         lambda string: string.replace('%', 'percent')
