@@ -7,7 +7,7 @@ import bz2
 from collections import namedtuple
 import contextlib
 import gzip
-from io import BytesIO
+from io import BytesIO, UnsupportedOperation
 import logging
 from struct import Struct
 import zlib
@@ -30,9 +30,9 @@ def open_as_needed(filename, mode='rb'):
 
         # If we can seek, seek back to start, otherwise read all the data into an
         # in-memory file-like object.
-        if hasattr(filename, 'seek'):
+        try:
             filename.seek(0)
-        else:
+        except (AttributeError, UnsupportedOperation):
             filename = BytesIO(lead + filename.read())
 
         # If the leading bytes match one of the signatures, pass into the appropriate class.
