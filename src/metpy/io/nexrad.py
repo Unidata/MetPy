@@ -1848,6 +1848,7 @@ class Level3File:
             layer_start = self._buffer.set_mark()
             while self._buffer.offset_from(layer_start) < layer_hdr.length:
                 packet_code = self._buffer.read_int(2, 'big', signed=False)
+                log.debug('Symbology packet: %d', packet_code)
                 if packet_code in self.packet_map:
                     layer.append(self.packet_map[packet_code](self, packet_code, True))
                 else:
