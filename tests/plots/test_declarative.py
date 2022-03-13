@@ -13,6 +13,7 @@ import pytest
 from traitlets import TraitError
 import xarray as xr
 
+from metpy.calc import wind_speed
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
@@ -93,6 +94,48 @@ def test_declarative_smooth_contour():
     panel.projection = 'lcc'
     panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
+@needs_cartopy
+def test_declarative_smooth_contour_calculation():
+    """Test making a contour plot using smooth_contour."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+    data = data.metpy.parse_cf()
+
+    data['wind_speed'] = wind_speed(data['u_wind'], data['v_wind'])
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'wind_speed'
+    contour.level = 300 * units.hPa
+    contour.contours = range(50, 211, 20)
+    contour.linewidth = 1
+    contour.linecolor = 'blue'
+    contour.smooth_contour = 10
+    contour.plot_units = 'kt'
+
+    contour2 = ContourPlot()
+    contour2.data = data
+    contour2.field = 'Geopotential_height'
+    contour2.level = 300 * units.hPa
+    contour2.contours = range(0, 15000, 120)
+    contour2.linewidth = 1
+    contour2.linecolor = 'black'
+    contour2.smooth_contour = 4
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour, contour2]
 
     pc = PanelContainer()
     pc.size = (8.0, 8)
