@@ -1153,6 +1153,9 @@ class PlotScalar(Plots2D):
                     'Must provide a combination of subsetting values to give 2D data subset '
                     'for plotting'
                 )
+            # Handle unit conversion (both direct unit specification and scaling)
+            if self.plot_units is not None:
+                data_subset = data_subset.metpy.convert_units(self.plot_units)
 
             # Handle smoothing of data
             if self.smooth_field is not None:
@@ -1167,9 +1170,6 @@ class PlotScalar(Plots2D):
                     order = 3
                 data_subset = zoom_xarray(data_subset, zoom, order=order)
 
-            # Handle unit conversion (both direct unit specification and scaling)
-            if self.plot_units is not None:
-                data_subset = data_subset.metpy.convert_units(self.plot_units)
             self._griddata = data_subset * self.scale
 
         return self._griddata
