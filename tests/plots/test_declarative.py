@@ -103,7 +103,7 @@ def test_declarative_smooth_contour():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.09)
 @needs_cartopy
 def test_declarative_smooth_contour_calculation():
     """Test making a contour plot using smooth_contour."""
