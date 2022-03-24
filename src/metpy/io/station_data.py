@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Pull out station metadata."""
 from collections import ChainMap, namedtuple
+from collections.abc import Mapping
 from functools import cached_property
 
 import numpy as np
@@ -120,7 +121,7 @@ def _read_airports_file(input_file=None):
                          }).to_dict()
 
 
-class StationLookup:
+class StationLookup(Mapping):
     """Look up station information from multiple sources."""
 
     @cached_property
@@ -130,6 +131,14 @@ class StationLookup:
                         dict(_read_master_text_file()),
                         dict(_read_station_text_file()),
                         dict(_read_airports_file()))
+
+    def __len__(self):
+        """Get the number of stations."""
+        return len(self.tables)
+
+    def __iter__(self):
+        """Allow iteration over the stations."""
+        return iter(self.tables)
 
     def __getitem__(self, stid):
         """Lookup station information from the ID."""
