@@ -3050,7 +3050,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     caution on large arrays.
 
     """
-    if not hasattr(pressure, 'shape'):
+    if not getattr(pressure, 'shape', False):
         pressure = np.atleast_1d(pressure)
         temperature = np.atleast_1d(temperature)
         dewpoint = np.atleast_1d(dewpoint)

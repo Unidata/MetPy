@@ -1507,6 +1507,16 @@ def test_wet_bulb_temperature_saturated():
     assert_almost_equal(val, 17.6 * units.degC, 7)
 
 
+def test_wet_bulb_temperature_numpy_scalars():
+    """Test wet bulb calculation with NumPy scalars, which have a shape attribute."""
+    pressure = units.Quantity(np.float32(1000), 'hPa')
+    temperature = units.Quantity(np.float32(25), 'degC')
+    dewpoint = units.Quantity(np.float32(15), 'degC')
+    val = wet_bulb_temperature(pressure, temperature, dewpoint)
+    truth = 18.3432116 * units.degC
+    assert_almost_equal(val, truth, 5)
+
+
 def test_wet_bulb_temperature_1d():
     """Test wet bulb calculation with 1d list."""
     pressures = [1013, 1000, 990] * units.hPa
