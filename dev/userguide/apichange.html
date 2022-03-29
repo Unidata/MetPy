@@ -8,28 +8,19 @@
 
     <title>MetPy 1.0 API Changes &#8212; MetPy 1.2dev</title>
     
-    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/apichange.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -277,7 +269,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -345,7 +337,7 @@
               <div>
                 
   <section id="metpy-1-0-api-changes">
-<h1>MetPy 1.0 API Changes<a class="headerlink" href="#metpy-1-0-api-changes" title="Permalink to this headline">¶</a></h1>
+<h1>MetPy 1.0 API Changes<a class="headerlink" href="#metpy-1-0-api-changes" title="Permalink to this headline">#</a></h1>
 <p>This is the overview of the changes to MetPy’s programming interface that are coming with the
 1.0 release of MetPy. These include changes made to unify and clarify MetPy’s API to be more
 consistent throughout. Changes are categorized to help you find breakages and see how your
@@ -353,7 +345,7 @@ code might need to change in upgrading to MetPy 1.0. You might find some functio
 categories. You can search this page for some of your commonly used functions to find any
 relevant breakages you might encounter.</p>
 <section id="xarray-support-for-function-input-output">
-<h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Permalink to this headline">¶</a></h2>
+<h2>Xarray support for function input/output<a class="headerlink" href="#xarray-support-for-function-input-output" title="Permalink to this headline">#</a></h2>
 <p>One of the most important changes you may run into is that many of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> would have only returned <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> even when provided
 <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>. Now, MetPy will properly return a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> when
@@ -361,7 +353,7 @@ provided one where able, except where otherwise explicitly stated. See the
 <a class="reference internal" href="../tutorials/xarray_tutorial.html"><span class="doc">MetPy xarray tutorial</span></a> for more information.</p>
 </section>
 <section id="positional-argument-name-changes">
-<h2>Positional argument name changes<a class="headerlink" href="#positional-argument-name-changes" title="Permalink to this headline">¶</a></h2>
+<h2>Positional argument name changes<a class="headerlink" href="#positional-argument-name-changes" title="Permalink to this headline">#</a></h2>
 <p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had changes to the names of their positional
 arguments to make parameter names consistent among functions and make the documentation of
 parameters clearer for users. Functions in your code with only this change will be unaffected
@@ -634,7 +626,7 @@ expanded as <code class="docutils literal notranslate"><span class="pre">wind_di
 </div>
 </section>
 <section id="keyword-only-argument-name-changes">
-<h2>Keyword-only argument name changes<a class="headerlink" href="#keyword-only-argument-name-changes" title="Permalink to this headline">¶</a></h2>
+<h2>Keyword-only argument name changes<a class="headerlink" href="#keyword-only-argument-name-changes" title="Permalink to this headline">#</a></h2>
 <p>Similar to the <a class="reference internal" href="#positional-argument-name-changes">positional argument name changes</a> above, some of the functions in
 <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had names changed for keyword-only arguments. If you have specified
 any of the affected parameters in your code, these functions will break with the upgrade to
@@ -676,7 +668,7 @@ MetPy 1.0. For example,</p>
 </div>
 </section>
 <section id="new-keyword-only-arguments">
-<h2>New keyword-only arguments<a class="headerlink" href="#new-keyword-only-arguments" title="Permalink to this headline">¶</a></h2>
+<h2>New keyword-only arguments<a class="headerlink" href="#new-keyword-only-arguments" title="Permalink to this headline">#</a></h2>
 <p>The following functions have had some of their positional or optional arguments changed to
 keyword-only arguments. As such, any use of these positionally, e.g.</p>
 <pre class="literal-block">vorticity(u, v, <strong>my_dx_values</strong>, <strong>my_dy_values</strong>)</pre>
@@ -718,7 +710,7 @@ keyword-only arguments. As such, any use of these positionally, e.g.</p>
 </div>
 </section>
 <section id="parameter-re-ordering">
-<h2>Parameter re-ordering<a class="headerlink" href="#parameter-re-ordering" title="Permalink to this headline">¶</a></h2>
+<h2>Parameter re-ordering<a class="headerlink" href="#parameter-re-ordering" title="Permalink to this headline">#</a></h2>
 <p>Some functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> have had the ordering of their arguments rearranged.
 If you are specifying values positionally, e.g.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span> <span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
@@ -799,7 +791,7 @@ however, e.g.</p>
 </div>
 </section>
 <section id="deltas-and-grid-specification">
-<h2>Deltas and grid specification<a class="headerlink" href="#deltas-and-grid-specification" title="Permalink to this headline">¶</a></h2>
+<h2>Deltas and grid specification<a class="headerlink" href="#deltas-and-grid-specification" title="Permalink to this headline">#</a></h2>
 <p>Many of the functions in <a class="reference internal" href="../api/generated/metpy.calc.html#module-metpy.calc" title="metpy.calc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.calc</span></code></a> relating to vorticity and advection require
 information about the space between your data points. MetPy has generally standardized the
 interface for these functions to more explicitly receive dimension information and ordering
@@ -911,7 +903,7 @@ information.</p>
 </div>
 </section>
 <section id="latitude-and-f">
-<h2>Latitude and f<a class="headerlink" href="#latitude-and-f" title="Permalink to this headline">¶</a></h2>
+<h2>Latitude and f<a class="headerlink" href="#latitude-and-f" title="Permalink to this headline">#</a></h2>
 <p>In MetPy 1.0, <a class="reference internal" href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="metpy.calc.geostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">geostrophic_wind()</span></code></a> and <a class="reference internal" href="../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind" title="metpy.calc.ageostrophic_wind"><code class="xref py py-func docutils literal notranslate"><span class="pre">ageostrophic_wind()</span></code></a>
 have been changed to expect <code class="docutils literal notranslate"><span class="pre">latitude</span></code> instead of the coriolis parameter <code class="docutils literal notranslate"><span class="pre">f</span></code>, where we
 will calculate <code class="docutils literal notranslate"><span class="pre">f</span></code> using <a class="reference internal" href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="metpy.calc.coriolis_parameter"><code class="xref py py-func docutils literal notranslate"><span class="pre">coriolis_parameter()</span></code></a>. These have also been
@@ -941,7 +933,7 @@ taken from your latitude coordinate information, if possible.</p>
 </div>
 </section>
 <section id="moved-renamed-miscellaneous">
-<h2>Moved, renamed, miscellaneous<a class="headerlink" href="#moved-renamed-miscellaneous" title="Permalink to this headline">¶</a></h2>
+<h2>Moved, renamed, miscellaneous<a class="headerlink" href="#moved-renamed-miscellaneous" title="Permalink to this headline">#</a></h2>
 <p>Functions that have been moved, replaced, or had their function signatures drastically altered.</p>
 <div class="api-table docutils container">
 <table class="table">
@@ -1019,8 +1011,9 @@ taken from your latitude coordinate information, if possible.</p>
       </div>
     </div>
   
-    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -1031,7 +1024,7 @@ taken from your latitude coordinate information, if possible.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

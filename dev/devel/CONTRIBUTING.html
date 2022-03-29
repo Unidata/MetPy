@@ -8,28 +8,19 @@
 
     <title>Contributors Guide &#8212; MetPy 1.2dev</title>
     
-    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/CONTRIBUTING.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -213,7 +205,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -345,12 +337,12 @@
               <div>
                 
   <section id="contributors-guide">
-<h1>Contributors Guide<a class="headerlink" href="#contributors-guide" title="Permalink to this headline">¶</a></h1>
+<h1>Contributors Guide<a class="headerlink" href="#contributors-guide" title="Permalink to this headline">#</a></h1>
 <p>Interested in helping build MetPy? Have code from your research that you believe others will
 find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
 integrated into contributing to MetPy!</p>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>First off, thank you for considering contributing to MetPy. MetPy is community-driven
 project. It’s people like you that make MetPy useful and successful. There are many ways
 to contribute, from writing tutorials or examples, improvements to the documentation,
@@ -364,7 +356,7 @@ helping you finalize your pull requests.</p>
 MetPy contributions. We’re glad you’re here!</p>
 </section>
 <section id="what-can-i-do">
-<h2>What Can I Do?<a class="headerlink" href="#what-can-i-do" title="Permalink to this headline">¶</a></h2>
+<h2>What Can I Do?<a class="headerlink" href="#what-can-i-do" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Tackle any <a class="reference external" href="https://github.com/Unidata/MetPy/issues">issues</a> you wish! We have a special
 label for issues that beginners might want to try. Have a look at our
@@ -379,7 +371,7 @@ things up, test it, etc.</p></li>
 </ul>
 </section>
 <section id="ground-rules">
-<h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this headline">¶</a></h2>
+<h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this headline">#</a></h2>
 <p>The goal is to maintain a diverse community that’s pleasant for everyone. Please
 be considerate and respectful of others by following our
 <a class="reference external" href="https://github.com/Unidata/MetPy/blob/main/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
@@ -404,7 +396,7 @@ fast rule–like to allow for some default arguments).</p></li>
 </ul>
 </section>
 <section id="reporting-a-bug">
-<h2>Reporting a bug<a class="headerlink" href="#reporting-a-bug" title="Permalink to this headline">¶</a></h2>
+<h2>Reporting a bug<a class="headerlink" href="#reporting-a-bug" title="Permalink to this headline">#</a></h2>
 <p>The easiest way to get involved is to report issues you encounter when using MetPy or by
 requesting something you think is missing.</p>
 <ul class="simple">
@@ -417,7 +409,7 @@ are running. If possible, include complete, minimal example code that reproduces
 </ul>
 </section>
 <section id="setting-up-your-development-environment">
-<h2>Setting up your development environment<a class="headerlink" href="#setting-up-your-development-environment" title="Permalink to this headline">¶</a></h2>
+<h2>Setting up your development environment<a class="headerlink" href="#setting-up-your-development-environment" title="Permalink to this headline">#</a></h2>
 <p>We recommend using the <a class="reference external" href="https://conda.io/docs/">conda</a> package manager for your Python environments.
 This requires some comfort with the command line and a little <code class="docutils literal notranslate"><span class="pre">git</span></code> knowledge.
 Our recommended setup for contributing:</p>
@@ -478,7 +470,7 @@ next time you want to use it after closing the terminal.
 If you want to get back to the root environment, run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">deactivate</span></code>.</p>
 </section>
 <section id="pull-requests">
-<h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
+<h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">#</a></h2>
 <p>The changes to the MetPy source (and documentation) should be made via GitHub pull requests
 against <code class="docutils literal notranslate"><span class="pre">main</span></code>, even for those with administration rights. While it’s tempting to
 make changes directly to <code class="docutils literal notranslate"><span class="pre">main</span></code> and push them up, it is better to make a pull request so
@@ -504,7 +496,7 @@ See <a class="reference external" href="https://github.com/Unidata/MetPy/blob/ma
 explanation and rationale behind MetPy’s CLA.</p>
 </section>
 <section id="source-code">
-<h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">#</a></h2>
 <p>MetPy’s source code is located in the <code class="docutils literal notranslate"><span class="pre">src/</span></code> directory in the root of the repository. Within
 <code class="docutils literal notranslate"><span class="pre">src/</span></code> is the <code class="docutils literal notranslate"><span class="pre">metpy/</span></code> directory, which is the base package. Inside here are the main
 top-level subpackages of MetPy:</p>
@@ -516,7 +508,7 @@ top-level subpackages of MetPy:</p>
 </ul>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h2>
 <p>Now that you’ve made your awesome contribution, it’s time to tell the world how to use it.
 Writing documentation strings is really important to make sure others use your functionality
 properly. Didn’t write new functions? That’s fine, but be sure that the documentation for
@@ -538,13 +530,13 @@ Then, still from within your <code class="docutils literal notranslate"><span cl
 </ul>
 </section>
 <section id="tests">
-<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">#</a></h2>
 <p>Unit tests are the lifeblood of the project, as it ensures that we can continue to add and
 change the code and stay confident that things have not broken. Running the tests requires
 <code class="docutils literal notranslate"><span class="pre">pytest</span></code>, which is easily available through <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">pip</span></code>. It was also installed if
 you made our default <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment.</p>
 <section id="running-tests">
-<h3>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
+<h3>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">#</a></h3>
 <p>Running the tests can be done by running <code class="docutils literal notranslate"><span class="pre">pytest</span></code></p>
 <p>Running the whole test suite isn’t that slow, but can be a burden if you’re working on just
 one module or a specific test. It is easy to run tests on a single directory:</p>
@@ -557,7 +549,7 @@ one module or a specific test. It is easy to run tests on a single directory:</p
 </div>
 </section>
 <section id="writing-tests">
-<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h3>
+<h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">#</a></h3>
 <p>Tests should ideally hit all of the lines of code added or changed. We have automated
 services that can help track down lines of code that are missed by tests. Watching the
 coverage has even helped find sections of dead code that could be removed!</p>
@@ -589,7 +581,7 @@ comparisons, parameterizing tests, testing that exceptions are raised, and more.
 at the existing tests to get an idea of some of the common patterns.</p>
 </section>
 <section id="image-tests">
-<h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this headline">¶</a></h3>
+<h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this headline">#</a></h3>
 <p>Some tests (for matplotlib plotting code) are done as an image comparison, using the
 pytest-mpl plugin.
 By following the <a class="reference internal" href="#setting-up-your-development-environment"><span class="std std-doc">guide</span></a> above,
@@ -610,7 +602,7 @@ to run only the test you just created for this step.</p>
 </section>
 </section>
 <section id="cached-data-files">
-<h2>Cached Data Files<a class="headerlink" href="#cached-data-files" title="Permalink to this headline">¶</a></h2>
+<h2>Cached Data Files<a class="headerlink" href="#cached-data-files" title="Permalink to this headline">#</a></h2>
 <p>MetPy keeps some test data, as well as things like shape files for US counties in a data cache
 supported by the pooch library. To add files to this, please ensure they are as small as
 possible. Put the files in the <code class="docutils literal notranslate"><span class="pre">staticdata</span></code> directory. Then run this command in the root of
@@ -622,7 +614,7 @@ the MetPy repository to recreate the data registry:</p>
 contribution.</p>
 </section>
 <section id="code-style">
-<h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this headline">¶</a></h2>
+<h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this headline">#</a></h2>
 <p>MetPy uses the Python code style outlined in <a class="reference external" href="https://pep8.org">PEP8</a>. For better or worse, this
 is what the majority of the Python world uses. The one deviation is that line length limit is
 95 characters. 80 is a good target, but some times longer lines are needed.</p>
@@ -642,11 +634,11 @@ in order, and all of the other nits that the bots will find. It is very importan
 this consistent style helps us keep MetPy readable, maintainable, and uniform.</p>
 </section>
 <section id="what-happens-after-the-pull-request">
-<h2>What happens after the pull request<a class="headerlink" href="#what-happens-after-the-pull-request" title="Permalink to this headline">¶</a></h2>
+<h2>What happens after the pull request<a class="headerlink" href="#what-happens-after-the-pull-request" title="Permalink to this headline">#</a></h2>
 <p>You’ve make your changes, documented them, added some tests, and submitted a pull request.
 What now?</p>
 <section id="automated-testing">
-<h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Permalink to this headline">¶</a></h3>
+<h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Permalink to this headline">#</a></h3>
 <p>First, our army of never sleeping robots will begin a series of automated checks.
 The test suite, documentation, style, and more will be checked on various versions of Python
 with current and legacy packages. Travis CI and GitHub Actions will run testing on Linux, and
@@ -659,7 +651,7 @@ In some cases, there will be exceptions to their suggestions, but these are rare
 changes to your code and push again, the tests will automatically run again.</p>
 </section>
 <section id="code-review">
-<h3>Code Review<a class="headerlink" href="#code-review" title="Permalink to this headline">¶</a></h3>
+<h3>Code Review<a class="headerlink" href="#code-review" title="Permalink to this headline">#</a></h3>
 <p>At this point you’re waiting on us. You should expect to hear at least a comment within a
 couple of days. We may suggest some changes or improvements or alternatives.</p>
 <p>Some things that will increase the chance that your pull request is accepted quickly:</p>
@@ -672,7 +664,7 @@ couple of days. We may suggest some changes or improvements or alternatives.</p>
 running both the unit tests as well as the <code class="docutils literal notranslate"><span class="pre">flake8</span></code> code linter.</p>
 </section>
 <section id="merging">
-<h3>Merging<a class="headerlink" href="#merging" title="Permalink to this headline">¶</a></h3>
+<h3>Merging<a class="headerlink" href="#merging" title="Permalink to this headline">#</a></h3>
 <p>Once we’re all happy with the pull request, it’s time for it to get merged in. Only the
 maintainers can merge pull requests and you should never merge a pull request you have commits
 on as it circumvents the code review. If this is your first or second pull request, we’ll
@@ -681,7 +673,7 @@ increase, we’ll help you learn how to do this.</p>
 </section>
 </section>
 <section id="more-questions">
-<h2>More Questions?<a class="headerlink" href="#more-questions" title="Permalink to this headline">¶</a></h2>
+<h2>More Questions?<a class="headerlink" href="#more-questions" title="Permalink to this headline">#</a></h2>
 <p>If you’re stuck somewhere or are interested in being a part of the community in
 other ways, feel free to contact us:</p>
 <ul class="simple">
@@ -692,7 +684,7 @@ other ways, feel free to contact us:</p>
 </ul>
 </section>
 <section id="further-reading">
-<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">#</a></h2>
 <p>There are a ton of great resources out there on contributing to open source and on the
 importance of writing tested and maintainable software.</p>
 <ul class="simple">
@@ -730,8 +722,9 @@ importance of writing tested and maintainable software.</p>
       </div>
     </div>
   
-    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -742,7 +735,7 @@ importance of writing tested and maintainable software.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

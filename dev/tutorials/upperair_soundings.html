@@ -8,28 +8,19 @@
 
     <title>Upper Air Sounding Tutorial &#8212; MetPy 1.2dev</title>
     
-    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/upperair_soundings.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -277,7 +269,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -335,7 +327,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="upper-air-sounding-tutorial">
-<span id="sphx-glr-tutorials-upperair-soundings-py"></span><h1>Upper Air Sounding Tutorial<a class="headerlink" href="#upper-air-sounding-tutorial" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-tutorials-upperair-soundings-py"></span><h1>Upper Air Sounding Tutorial<a class="headerlink" href="#upper-air-sounding-tutorial" title="Permalink to this headline">#</a></h1>
 <p>Upper air analysis is a staple of many synoptic and mesoscale analysis
 problems. In this tutorial we will gather weather balloon data, plot it,
 perform a series of thermodynamic calculations, and summarize the results.
@@ -353,7 +345,7 @@ air weather service guide.</p>
 </pre></div>
 </div>
 <section id="getting-data">
-<h2>Getting Data<a class="headerlink" href="#getting-data" title="Permalink to this headline">¶</a></h2>
+<h2>Getting Data<a class="headerlink" href="#getting-data" title="Permalink to this headline">#</a></h2>
 <p>Upper air data can be obtained using the siphon package, but for this tutorial we will use
 some of MetPy’s sample data. This event is the Veterans Day tornado outbreak in 2002.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">col_names</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">]</span>
@@ -379,7 +371,7 @@ some of MetPy’s sample data. This event is the Veterans Day tornado outbreak i
 </div>
 </section>
 <section id="thermodynamic-calculations">
-<h2>Thermodynamic Calculations<a class="headerlink" href="#thermodynamic-calculations" title="Permalink to this headline">¶</a></h2>
+<h2>Thermodynamic Calculations<a class="headerlink" href="#thermodynamic-calculations" title="Permalink to this headline">#</a></h2>
 <p>Often times we will want to calculate some thermodynamic parameters of a
 sounding. The MetPy calc module has many such calculations already implemented!</p>
 <ul class="simple">
@@ -399,12 +391,12 @@ reaching the LCL, then rising moist adiabatially.</p></li>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>923.1157642313738 hectopascal 15.595751336163403 degree_Celsius
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>923.1157642313726 hectopascal 15.595751336163403 degree_Celsius
 </pre></div>
 </div>
 </section>
 <section id="basic-skew-t-plotting">
-<h2>Basic Skew-T Plotting<a class="headerlink" href="#basic-skew-t-plotting" title="Permalink to this headline">¶</a></h2>
+<h2>Basic Skew-T Plotting<a class="headerlink" href="#basic-skew-t-plotting" title="Permalink to this headline">#</a></h2>
 <p>The Skew-T (log-P) diagram is the standard way to view rawinsonde data. The
 y-axis is height in pressure coordinates and the x-axis is temperature. The
 y coordinates are plotted on a logarithmic scale and the x coordinate system
@@ -438,7 +430,7 @@ components.</p></li>
 </div>
 <img src="../_images/sphx_glr_upperair_soundings_001.png" srcset="../_images/sphx_glr_upperair_soundings_001.png" alt="upperair soundings" class = "sphx-glr-single-img"/></section>
 <section id="advanced-skew-t-plotting">
-<h2>Advanced Skew-T Plotting<a class="headerlink" href="#advanced-skew-t-plotting" title="Permalink to this headline">¶</a></h2>
+<h2>Advanced Skew-T Plotting<a class="headerlink" href="#advanced-skew-t-plotting" title="Permalink to this headline">#</a></h2>
 <p>Fiducial lines indicating dry adiabats, moist adiabats, and mixing ratio are
 useful when performing further analysis on the Skew-T diagram. Often the
 0C isotherm is emphasized and areas of CAPE and CIN are shaded.</p>
@@ -478,7 +470,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 </div>
 <img src="../_images/sphx_glr_upperair_soundings_002.png" srcset="../_images/sphx_glr_upperair_soundings_002.png" alt="upperair soundings" class = "sphx-glr-single-img"/></section>
 <section id="adding-a-hodograph">
-<h2>Adding a Hodograph<a class="headerlink" href="#adding-a-hodograph" title="Permalink to this headline">¶</a></h2>
+<h2>Adding a Hodograph<a class="headerlink" href="#adding-a-hodograph" title="Permalink to this headline">#</a></h2>
 <p>A hodograph is a polar representation of the wind profile measured by the rawinsonde.
 Winds at different levels are plotted as vectors with their tails at the origin, the angle
 from the vertical axes representing the direction, and the length representing the speed.
@@ -526,7 +518,7 @@ which are not drawn.</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_upperair_soundings_003.png" srcset="../_images/sphx_glr_upperair_soundings_003.png" alt="upperair soundings" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.231 seconds)</p>
+<img src="../_images/sphx_glr_upperair_soundings_003.png" srcset="../_images/sphx_glr_upperair_soundings_003.png" alt="upperair soundings" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.829 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-upperair-soundings-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cf626a06a2e16be83be26aa926cd5642/upperair_soundings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></p>
@@ -567,8 +559,9 @@ which are not drawn.</p>
       </div>
     </div>
   
-    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -579,7 +572,7 @@ which are not drawn.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

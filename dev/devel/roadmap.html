@@ -8,28 +8,19 @@
 
     <title>MetPy Roadmap &#8212; MetPy 1.2dev</title>
     
-    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/devel/roadmap.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -213,7 +205,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -278,9 +270,9 @@
               <div>
                 
   <section id="metpy-roadmap">
-<h1>MetPy Roadmap<a class="headerlink" href="#metpy-roadmap" title="Permalink to this headline">¶</a></h1>
+<h1>MetPy Roadmap<a class="headerlink" href="#metpy-roadmap" title="Permalink to this headline">#</a></h1>
 <section id="goal">
-<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this headline">¶</a></h2>
+<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this headline">#</a></h2>
 <p>MetPy’s goal is to provide the domain-specific tools for building meteorological and
 atmospheric science applications in Python. This means supporting scripted workflows, like
 those done previously using GEMPAK, NCL, etc. MetPy’s functionality is not limited to
@@ -289,7 +281,7 @@ applications as well. Our focus on providing the domain-specific tools means tha
 functionality is moved upstream (to e.g. matplotlib, xarray) whenever sensible and possible.</p>
 </section>
 <section id="plans">
-<h2>Plans<a class="headerlink" href="#plans" title="Permalink to this headline">¶</a></h2>
+<h2>Plans<a class="headerlink" href="#plans" title="Permalink to this headline">#</a></h2>
 <p>We enumerate here general plans for how we plan to advance MetPy over the next couple of years.
 We have intentionally avoided assigning dates to any of these, acknowledging our complete
 inability to estimate time and level of effort, as well as because our priorities are flexible
@@ -304,7 +296,7 @@ of MetPy, visit the <a class="reference external" href="https://github.com/Unida
 These represent our best idea of what’s planned for a specific upcoming version, though are
 subject to rapid change as release dates approach.</p>
 <section id="declarative-plotting">
-<h3>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Permalink to this headline">¶</a></h3>
+<h3>Declarative Plotting<a class="headerlink" href="#declarative-plotting" title="Permalink to this headline">#</a></h3>
 <p>One of GEMPAK’s successes is the simplicity with which plots can be created. Part of this
 simplicity is enforced by the interface to GEMPAK: setting variables. MetPy 0.10 introduced the
 simplified plotting interface to begin to replicate this, with initial support for image and
@@ -324,7 +316,7 @@ instead, to aim for simplicity of the interface while replicating GEMPAK’s cap
 being able to do what is needed for most common use cases.</p>
 </section>
 <section id="xarray-integration-and-unit-handling">
-<h3>Xarray Integration and Unit Handling<a class="headerlink" href="#xarray-integration-and-unit-handling" title="Permalink to this headline">¶</a></h3>
+<h3>Xarray Integration and Unit Handling<a class="headerlink" href="#xarray-integration-and-unit-handling" title="Permalink to this headline">#</a></h3>
 <p>This item is the most important to having stable interfaces in advance of a 1.0 release of
 MetPy. Xarray has quickly proven to be a capable data model on which to base MetPy’s handling
 of gridded data (tabular/point data will likely use pandas). MetPy’s unit-handling based on
@@ -349,7 +341,7 @@ This is a 1.0 item because many calculations involving coordinate information wi
 change to simplify their interfaces.</p>
 </section>
 <section id="calculations">
-<h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h3>
+<h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">#</a></h3>
 <p>In addition to the work at the calculation infrastructure level, we have identified some
 specific calculations that are necessary to consider MetPy a solution to the majority of the
 problems users previously solved with GEMPAK:</p>
@@ -377,7 +369,7 @@ still exist for challenging cases. The solver will also enable the plotting of d
 quantities through the simplified plotting interface.</p>
 </section>
 <section id="file-format-support">
-<h3>File Format Support<a class="headerlink" href="#file-format-support" title="Permalink to this headline">¶</a></h3>
+<h3>File Format Support<a class="headerlink" href="#file-format-support" title="Permalink to this headline">#</a></h3>
 <p>MetPy’s file format support is an important part of its feature set, and we want to continue to
 expand the set of formats to which MetPy facilitates access. This also fits with filling
 GEMPAK’s feature set, since its support for a variety of data formats was important to its
@@ -405,7 +397,7 @@ aircraft reconnaissance, frontal positions). Support is planned, but considered 
 those formats above.</p>
 </section>
 <section id="other-items">
-<h3>Other Items<a class="headerlink" href="#other-items" title="Permalink to this headline">¶</a></h3>
+<h3>Other Items<a class="headerlink" href="#other-items" title="Permalink to this headline">#</a></h3>
 <p>Here are a few more items that did not fit above:</p>
 <ul class="simple">
 <li><p>Performance optimization</p>
@@ -449,8 +441,9 @@ been promising, though.</p></li>
       </div>
     </div>
   
-    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -461,7 +454,7 @@ been promising, though.</p></li>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

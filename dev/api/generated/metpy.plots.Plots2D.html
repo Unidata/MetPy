@@ -8,28 +8,19 @@
 
     <title>Plots2D &#8212; MetPy 1.2dev</title>
     
-    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.Plots2D.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -1266,7 +1258,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -1304,15 +1296,15 @@
               <div>
                 
   <section id="plots2d">
-<h1>Plots2D<a class="headerlink" href="#plots2d" title="Permalink to this headline">¶</a></h1>
+<h1>Plots2D<a class="headerlink" href="#plots2d" title="Permalink to this headline">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">Plots2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">Plots2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D" title="Permalink to this definition">#</a></dt>
 <dd><p>The highest level class related to plotting 2D data.</p>
 <p>This class collects all common methods no matter whether plotting a scalar variable or
 vector. Primary settings common to all types of 2D plots include those for data subsets.</p>
 <p class="rubric">Attributes Summary</p>
-<table class="longtable table autosummary">
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1357,7 +1349,7 @@ vector. Primary settings common to all types of 2D plots include those for data 
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table class="longtable table autosummary">
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1446,7 +1438,7 @@ vector. Primary settings common to all types of 2D plots include those for data 
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.cross_validation_lock">
-<span class="sig-name descname"><span class="pre">cross_validation_lock</span></span><a class="headerlink" href="#metpy.plots.Plots2D.cross_validation_lock" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cross_validation_lock</span></span><a class="headerlink" href="#metpy.plots.Plots2D.cross_validation_lock" title="Permalink to this definition">#</a></dt>
 <dd><p>A contextmanager for running a block with our cross validation lock set
 to True.</p>
 <p>At the end of the block, the lock’s value is restored to its value
@@ -1455,13 +1447,13 @@ prior to entering the block.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.data">
-<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#metpy.plots.Plots2D.data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#metpy.plots.Plots2D.data" title="Permalink to this definition">#</a></dt>
 <dd><p>Xarray dataset that contains the field to be plotted.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.latitude">
-<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.latitude" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.latitude" title="Permalink to this definition">#</a></dt>
 <dd><p>The latitude coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired latitude coordinate. For example,
 selecting a point or transect through 40 degrees north, set this parameter to
@@ -1471,7 +1463,7 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.level">
-<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.Plots2D.level" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.Plots2D.level" title="Permalink to this definition">#</a></dt>
 <dd><p>The level of the field to be plotted.</p>
 <p>This is a value with units to choose a desired plot level. For example, selecting the
 850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code>. Note that this requires your
@@ -1480,7 +1472,7 @@ data to have a vertical dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.longitude">
-<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.longitude" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.longitude" title="Permalink to this definition">#</a></dt>
 <dd><p>The longitude coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired longitude coordinate. For example,
 selecting a point or transect through 95 degrees west, set this parameter to
@@ -1490,13 +1482,13 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.Plots2D.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.Plots2D.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.parent">
-<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.Plots2D.parent" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.Plots2D.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>A trait whose value must be an instance of a specified class.</p>
 <p>The value can also be an instance of a subclass of the specified class.</p>
 <p>Subclasses can declare default classes by overriding the klass attribute</p>
@@ -1504,7 +1496,7 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.plot_units">
-<span class="sig-name descname"><span class="pre">plot_units</span></span><a class="headerlink" href="#metpy.plots.Plots2D.plot_units" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_units</span></span><a class="headerlink" href="#metpy.plots.Plots2D.plot_units" title="Permalink to this definition">#</a></dt>
 <dd><p>The desired units to plot the field in.</p>
 <p>Setting this attribute will convert the units of the field variable to the given units for
 plotting using the MetPy Units module.</p>
@@ -1512,7 +1504,7 @@ plotting using the MetPy Units module.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><a class="headerlink" href="#metpy.plots.Plots2D.scale" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">scale</span></span><a class="headerlink" href="#metpy.plots.Plots2D.scale" title="Permalink to this definition">#</a></dt>
 <dd><p>Scale the field to be plotted by the value given.</p>
 <p>This attribute will scale the field by multiplying by the scale. For example, to
 scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
@@ -1521,7 +1513,7 @@ the data values will be multiplied by 10^5.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.time">
-<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#metpy.plots.Plots2D.time" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#metpy.plots.Plots2D.time" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
 <p>If a forecast hour is to be plotted the time should be set to the valid future time, which
 can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
@@ -1531,7 +1523,7 @@ dimension coordinate.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.x">
-<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.Plots2D.x" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.Plots2D.x" title="Permalink to this definition">#</a></dt>
 <dd><p>The x coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired x coordinate. For example, selecting a
 point or transect through the projection origin, set this parameter to
@@ -1540,7 +1532,7 @@ point or transect through the projection origin, set this parameter to
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.y">
-<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.Plots2D.y" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.Plots2D.y" title="Permalink to this definition">#</a></dt>
 <dd><p>The y coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired x coordinate. For example, selecting a
 point or transect through the projection origin, set this parameter to
@@ -1550,32 +1542,32 @@ point or transect through the projection origin, set this parameter to
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.__init__" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.add_traits">
-<span class="sig-name descname"><span class="pre">add_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.add_traits" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.add_traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Dynamically add trait attributes to the HasTraits instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.class_own_trait_events">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_own_trait_events" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_own_trait_events" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a dict of all event handlers defined on this class, not a parent.</p>
 <p>Works like <code class="docutils literal notranslate"><span class="pre">event_handlers</span></code>, except for excluding traits from parents.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.class_own_traits">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_own_traits" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_own_traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a dict of all the traitlets defined on this class, not a parent.</p>
 <p>Works like <a class="reference internal" href="#metpy.plots.Plots2D.class_traits" title="metpy.plots.Plots2D.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>, except for excluding traits from parents.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.class_trait_names">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_trait_names" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_trait_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.Plots2D.trait_names" title="metpy.plots.Plots2D.trait_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trait_names()</span></code></a> method,
 but is unbound.</p>
@@ -1583,7 +1575,7 @@ but is unbound.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.class_traits">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_traits" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.Plots2D.traits" title="metpy.plots.Plots2D.traits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">traits()</span></code></a> method, but is unbound.</p>
@@ -1599,38 +1591,38 @@ to the function.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.clear_collections">
-<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear_collections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear_collections" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear_collections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear_collections" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear the handle collections to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.clear_handle">
-<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear_handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear_handle" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear_handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear_handle" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.copy" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.copy" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a copy of the plot.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.has_trait">
-<span class="sig-name descname"><span class="pre">has_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.has_trait" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">has_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.has_trait" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if the object has a trait with the specified name.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.hold_trait_notifications">
-<span class="sig-name descname"><span class="pre">hold_trait_notifications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.hold_trait_notifications" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hold_trait_notifications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.hold_trait_notifications" title="Permalink to this definition">#</a></dt>
 <dd><p>Context manager for bundling trait change notifications and cross
 validation.</p>
 <p>Use this when doing multiple trait assignments (init, config), to avoid
@@ -1640,13 +1632,13 @@ All trait notifications will fire after all values have been assigned.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.notify_change">
-<span class="sig-name descname"><span class="pre">notify_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.notify_change" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">notify_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.notify_change" title="Permalink to this definition">#</a></dt>
 <dd><p>Notify observers of a change event</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.observe">
-<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.observe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.observe" title="Permalink to this definition">#</a></dt>
 <dd><p>Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <dl class="field-list simple">
@@ -1674,7 +1666,7 @@ notifications are passed to the observe handler.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.on_trait_change">
-<span class="sig-name descname"><span class="pre">on_trait_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.on_trait_change" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">on_trait_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.on_trait_change" title="Permalink to this definition">#</a></dt>
 <dd><p>DEPRECATED: Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <p>Static handlers can be created by creating methods on a HasTraits
@@ -1702,19 +1694,19 @@ then unintall it.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.set_trait">
-<span class="sig-name descname"><span class="pre">set_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.set_trait" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.set_trait" title="Permalink to this definition">#</a></dt>
 <dd><p>Forcibly sets trait attribute, including read-only attributes.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.setup_instance">
-<span class="sig-name descname"><span class="pre">setup_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.setup_instance" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setup_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.setup_instance" title="Permalink to this definition">#</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_defaults">
-<span class="sig-name descname"><span class="pre">trait_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_defaults" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">trait_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_defaults" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a trait’s default value or a dictionary of them</p>
 <p class="rubric">Notes</p>
 <p>Dynamically generated default values may
@@ -1723,7 +1715,7 @@ depend on the current state of the object.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_events">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_events" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_events" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1738,7 +1730,7 @@ the event handlers of this class will be returned instead.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_has_value">
-<span class="sig-name descname"><span class="pre">trait_has_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_has_value" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">trait_has_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_has_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if the specified trait has a value.</p>
 <p>This will return false even if <code class="docutils literal notranslate"><span class="pre">getattr</span></code> would return a
 dynamically generated default value. These default values
@@ -1758,19 +1750,19 @@ generated.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_metadata">
-<span class="sig-name descname"><span class="pre">trait_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traitname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_metadata" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">trait_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traitname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Get metadata values for trait by key.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_names">
-<span class="sig-name descname"><span class="pre">trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_names" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_values">
-<span class="sig-name descname"><span class="pre">trait_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_values" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">trait_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_values" title="Permalink to this definition">#</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
 <p>The metadata kwargs allow functions to be passed in which
 filter traits based on metadata values.  The functions should
@@ -1791,7 +1783,7 @@ absence of a trait value in the result <code class="docutils literal notranslate
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.traits">
-<span class="sig-name descname"><span class="pre">traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.traits" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>The TraitTypes returned don’t know anything about the values
@@ -1806,7 +1798,7 @@ to the function.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.unobserve">
-<span class="sig-name descname"><span class="pre">unobserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.unobserve" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unobserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.unobserve" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove a trait change handler.</p>
 <p>This is used to unregister handlers to trait change notifications.</p>
 <dl class="field-list simple">
@@ -1825,7 +1817,7 @@ is uninstalled from the list of notifiers corresponding to all types.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.Plots2D.unobserve_all">
-<span class="sig-name descname"><span class="pre">unobserve_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.unobserve_all" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unobserve_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.unobserve_all" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove trait change handlers of any type for the specified name.
 If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
@@ -1833,23 +1825,23 @@ If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
 
 <section id="examples-using-metpy-plots-plots2d">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Plots2D</span></code><a class="headerlink" href="#examples-using-metpy-plots-plots2d" title="Permalink to this headline">¶</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Plots2D</span></code><a class="headerlink" href="#examples-using-metpy-plots-plots2d" title="Permalink to this headline">#</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface."><figure class="align-default" id="id1">
 <img alt="Simple Plotting" src="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots."><figure class="align-default" id="id2">
 <img alt="Combined Plotting" src="../../_images/sphx_glr_Combined_plotting_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data e..."><figure class="align-default" id="id3">
 <img alt="MetPy Declarative Syntax Tutorial" src="../../_images/sphx_glr_declarative_tutorial_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../tutorials/declarative_tutorial.html#sphx-glr-tutorials-declarative-tutorial-py"><span class="std std-ref">MetPy Declarative Syntax Tutorial</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/declarative_tutorial.html#sphx-glr-tutorials-declarative-tutorial-py"><span class="std std-ref">MetPy Declarative Syntax Tutorial</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div><div style='clear:both'></div></section>
@@ -1883,8 +1875,9 @@ If name is not specified, removes all trait notifiers.</p>
       </div>
     </div>
   
-    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -1895,7 +1888,7 @@ If name is not specified, removes all trait notifiers.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

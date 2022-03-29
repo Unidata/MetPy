@@ -8,28 +8,19 @@
 
     <title>StationPlot &#8212; MetPy 1.2dev</title>
     
-    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlot.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -1266,7 +1258,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -1304,10 +1296,10 @@
               <div>
                 
   <section id="stationplot">
-<h1>StationPlot<a class="headerlink" href="#stationplot" title="Permalink to this headline">¶</a></h1>
+<h1>StationPlot<a class="headerlink" href="#stationplot" title="Permalink to this headline">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">StationPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlot" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">StationPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.StationPlot" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a standard meteorological station plot.</p>
 <p>Plots values, symbols, or text spaced around a central location. Can also plot wind
 barbs as the center of the location.</p>
@@ -1332,7 +1324,7 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 </dd>
 </dl>
 <p class="rubric">Attributes Summary</p>
-<table class="longtable table autosummary">
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1344,7 +1336,7 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table class="longtable table autosummary">
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1373,13 +1365,13 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.location_names">
-<span class="sig-name descname"><span class="pre">location_names</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'C':</span> <span class="pre">(0,</span> <span class="pre">0),</span> <span class="pre">'E':</span> <span class="pre">(1,</span> <span class="pre">0),</span> <span class="pre">'E2':</span> <span class="pre">(2,</span> <span class="pre">0),</span> <span class="pre">'ENE':</span> <span class="pre">(2,</span> <span class="pre">1),</span> <span class="pre">'ESE':</span> <span class="pre">(2,</span> <span class="pre">-1),</span> <span class="pre">'N':</span> <span class="pre">(0,</span> <span class="pre">1),</span> <span class="pre">'N2':</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">'NE':</span> <span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">'NNE':</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">'NNW':</span> <span class="pre">(-1,</span> <span class="pre">2),</span> <span class="pre">'NW':</span> <span class="pre">(-1,</span> <span class="pre">1),</span> <span class="pre">'S':</span> <span class="pre">(0,</span> <span class="pre">-1),</span> <span class="pre">'S2':</span> <span class="pre">(0,</span> <span class="pre">-2),</span> <span class="pre">'SE':</span> <span class="pre">(1,</span> <span class="pre">-1),</span> <span class="pre">'SSE':</span> <span class="pre">(1,</span> <span class="pre">-2),</span> <span class="pre">'SSW':</span> <span class="pre">(-1,</span> <span class="pre">-2),</span> <span class="pre">'SW':</span> <span class="pre">(-1,</span> <span class="pre">-1),</span> <span class="pre">'W':</span> <span class="pre">(-1,</span> <span class="pre">0),</span> <span class="pre">'W2':</span> <span class="pre">(-2,</span> <span class="pre">0),</span> <span class="pre">'WNW':</span> <span class="pre">(-2,</span> <span class="pre">1),</span> <span class="pre">'WSW':</span> <span class="pre">(-2,</span> <span class="pre">-1)}</span></em><a class="headerlink" href="#metpy.plots.StationPlot.location_names" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">location_names</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'C':</span> <span class="pre">(0,</span> <span class="pre">0),</span> <span class="pre">'E':</span> <span class="pre">(1,</span> <span class="pre">0),</span> <span class="pre">'E2':</span> <span class="pre">(2,</span> <span class="pre">0),</span> <span class="pre">'ENE':</span> <span class="pre">(2,</span> <span class="pre">1),</span> <span class="pre">'ESE':</span> <span class="pre">(2,</span> <span class="pre">-1),</span> <span class="pre">'N':</span> <span class="pre">(0,</span> <span class="pre">1),</span> <span class="pre">'N2':</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">'NE':</span> <span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">'NNE':</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">'NNW':</span> <span class="pre">(-1,</span> <span class="pre">2),</span> <span class="pre">'NW':</span> <span class="pre">(-1,</span> <span class="pre">1),</span> <span class="pre">'S':</span> <span class="pre">(0,</span> <span class="pre">-1),</span> <span class="pre">'S2':</span> <span class="pre">(0,</span> <span class="pre">-2),</span> <span class="pre">'SE':</span> <span class="pre">(1,</span> <span class="pre">-1),</span> <span class="pre">'SSE':</span> <span class="pre">(1,</span> <span class="pre">-2),</span> <span class="pre">'SSW':</span> <span class="pre">(-1,</span> <span class="pre">-2),</span> <span class="pre">'SW':</span> <span class="pre">(-1,</span> <span class="pre">-1),</span> <span class="pre">'W':</span> <span class="pre">(-1,</span> <span class="pre">0),</span> <span class="pre">'W2':</span> <span class="pre">(-2,</span> <span class="pre">0),</span> <span class="pre">'WNW':</span> <span class="pre">(-2,</span> <span class="pre">1),</span> <span class="pre">'WSW':</span> <span class="pre">(-2,</span> <span class="pre">-1)}</span></em><a class="headerlink" href="#metpy.plots.StationPlot.location_names" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initialize the StationPlot with items that do not change.</p>
 <p>This sets up the axes and station locations. The <em class="xref py py-obj">fontsize</em> and <em class="xref py py-obj">spacing</em>
 are also specified here to ensure that they are consistent between individual
@@ -1404,7 +1396,7 @@ for all plot types, such as <em class="xref py py-obj">clip_on</em>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.plot_arrow">
-<span class="sig-name descname"><span class="pre">plot_arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_arrow" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_arrow" title="Permalink to this definition">#</a></dt>
 <dd><p>At the center of the station model plot wind arrows.</p>
 <p>Additional keyword arguments given will be passed onto matplotlib’s
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.quiver.html#matplotlib.axes.Axes.quiver" title="(in Matplotlib v3.5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">quiver()</span></code></a> function; this is useful for specifying things
@@ -1428,7 +1420,7 @@ like color or line width.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.plot_barb">
-<span class="sig-name descname"><span class="pre">plot_barb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_barb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_barb" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_barb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_barb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_barb" title="Permalink to this definition">#</a></dt>
 <dd><p>At the center of the station model plot wind barbs.</p>
 <p>Additional keyword arguments given will be passed onto matplotlib’s
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function; this is useful for specifying things
@@ -1452,7 +1444,7 @@ like color or line width.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.plot_parameter">
-<span class="sig-name descname"><span class="pre">plot_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.0f'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_parameter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.0f'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_parameter" title="Permalink to this definition">#</a></dt>
 <dd><p>At the specified location in the station model plot a set of values.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, the data in <em class="xref py py-obj">parameter</em> should be
 plotted. The conversion of the data values to a string is controlled by <code class="xref py py-obj docutils literal notranslate"><span class="pre">formatter</span></code>.</p>
@@ -1483,7 +1475,7 @@ value and return a string. Defaults to ‘0.f’.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.plot_symbol">
-<span class="sig-name descname"><span class="pre">plot_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_mapper</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_symbol" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_mapper</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_symbol" title="Permalink to this definition">#</a></dt>
 <dd><p>At the specified location in the station model plot a set of symbols.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, the data in <em class="xref py py-obj">codes</em> should be
 converted to unicode characters (for our <code class="xref py py-data docutils literal notranslate"><span class="pre">wx_symbol_font</span></code>) using <em class="xref py py-obj">symbol_mapper</em>,
@@ -1535,7 +1527,7 @@ character. See <code class="xref py py-mod docutils literal notranslate"><span c
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metpy.plots.StationPlot.plot_text">
-<span class="sig-name descname"><span class="pre">plot_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_text" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlot.plot_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlot.plot_text" title="Permalink to this definition">#</a></dt>
 <dd><p>At the specified location in the station model plot a collection of text.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, the strings in <em class="xref py py-obj">text</em> should be
 plotted.</p>
@@ -1563,23 +1555,23 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
 </dd></dl>
 
 <section id="examples-using-metpy-plots-stationplot">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.StationPlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-stationplot" title="Permalink to this headline">¶</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.StationPlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-stationplot" title="Permalink to this headline">#</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><figure class="align-default" id="id1">
 <img alt="Mesonet Station Plot" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><figure class="align-default" id="id2">
 <img alt="Station Plot" src="../../_images/sphx_glr_Station_Plot_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><figure class="align-default" id="id3">
 <img alt="Station Plot with Layout" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div><div style='clear:both'></div></section>
@@ -1613,8 +1605,9 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
       </div>
     </div>
   
-    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -1625,7 +1618,7 @@ are multiplied by <em class="xref py py-obj">spacing</em> to give offsets in x a
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

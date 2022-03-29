@@ -8,28 +8,19 @@
 
     <title>calc &#8212; MetPy 1.2dev</title>
     
-    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -1266,7 +1258,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -1344,12 +1336,12 @@
               <div>
                 
   <section id="module-metpy.calc">
-<span id="calc"></span><h1>calc<a class="headerlink" href="#module-metpy.calc" title="Permalink to this headline">¶</a></h1>
+<span id="calc"></span><h1>calc<a class="headerlink" href="#module-metpy.calc" title="Permalink to this headline">#</a></h1>
 <p>Provide tools for unit-aware, meteorological calculations.</p>
 <section id="dry-thermodynamics">
-<h2>Dry Thermodynamics<a class="headerlink" href="#dry-thermodynamics" title="Permalink to this headline">¶</a></h2>
+<h2>Dry Thermodynamics<a class="headerlink" href="#dry-thermodynamics" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1399,9 +1391,9 @@
 </div></blockquote>
 </section>
 <section id="moist-thermodynamics">
-<h2>Moist Thermodynamics<a class="headerlink" href="#moist-thermodynamics" title="Permalink to this headline">¶</a></h2>
+<h2>Moist Thermodynamics<a class="headerlink" href="#moist-thermodynamics" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1496,9 +1488,9 @@
 </div></blockquote>
 </section>
 <section id="soundings">
-<h2>Soundings<a class="headerlink" href="#soundings" title="Permalink to this headline">¶</a></h2>
+<h2>Soundings<a class="headerlink" href="#soundings" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1584,9 +1576,9 @@
 </div></blockquote>
 </section>
 <section id="dynamic-kinematic">
-<h2>Dynamic/Kinematic<a class="headerlink" href="#dynamic-kinematic" title="Permalink to this headline">¶</a></h2>
+<h2>Dynamic/Kinematic<a class="headerlink" href="#dynamic-kinematic" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1663,9 +1655,9 @@
 </div></blockquote>
 </section>
 <section id="boundary-layer-turbulence">
-<h2>Boundary Layer/Turbulence<a class="headerlink" href="#boundary-layer-turbulence" title="Permalink to this headline">¶</a></h2>
+<h2>Boundary Layer/Turbulence<a class="headerlink" href="#boundary-layer-turbulence" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1694,9 +1686,9 @@
 </div></blockquote>
 </section>
 <section id="mathematical-functions">
-<h2>Mathematical Functions<a class="headerlink" href="#mathematical-functions" title="Permalink to this headline">¶</a></h2>
+<h2>Mathematical Functions<a class="headerlink" href="#mathematical-functions" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1734,9 +1726,9 @@
 </div></blockquote>
 </section>
 <section id="apparent-temperature">
-<h2>Apparent Temperature<a class="headerlink" href="#apparent-temperature" title="Permalink to this headline">¶</a></h2>
+<h2>Apparent Temperature<a class="headerlink" href="#apparent-temperature" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1756,9 +1748,9 @@
 </div></blockquote>
 </section>
 <section id="standard-atmosphere">
-<h2>Standard Atmosphere<a class="headerlink" href="#standard-atmosphere" title="Permalink to this headline">¶</a></h2>
+<h2>Standard Atmosphere<a class="headerlink" href="#standard-atmosphere" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1781,9 +1773,9 @@
 </div></blockquote>
 </section>
 <section id="smoothing">
-<h2>Smoothing<a class="headerlink" href="#smoothing" title="Permalink to this headline">¶</a></h2>
+<h2>Smoothing<a class="headerlink" href="#smoothing" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1812,9 +1804,9 @@
 </div></blockquote>
 </section>
 <section id="other">
-<h2>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h2>
+<h2>Other<a class="headerlink" href="#other" title="Permalink to this headline">#</a></h2>
 <blockquote>
-<div><table class="longtable table autosummary">
+<div><table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1893,8 +1885,9 @@
       </div>
     </div>
   
-    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -1905,7 +1898,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

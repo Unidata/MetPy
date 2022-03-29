@@ -8,28 +8,19 @@
 
     <title>Citing MetPy &#8212; MetPy 1.2dev</title>
     
-    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
-</style>
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -37,8 +28,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../_static/theme-unidata.css" />
     
-    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -69,7 +61,7 @@
     <link rel="canonical" href="https://unidata.github.io/MetPy/latest/userguide/citing.html" />
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -277,7 +269,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -315,14 +307,14 @@
               <div>
                 
   <section id="citing-metpy">
-<span id="id1"></span><h1>Citing MetPy<a class="headerlink" href="#citing-metpy" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Citing MetPy<a class="headerlink" href="#citing-metpy" title="Permalink to this headline">#</a></h1>
 <p>If MetPy played an important role in your research, then please add us to
 your reference list using one of the options below.
 MetPy also maintains a <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> <a class="footnote-reference brackets" href="#id3" id="id2">1</a> file with human- and machine-readable
 metadata for generating up-to-date citations.</p>
 <p>DOI: <a class="reference external" href="https://doi.org/10.5065/D6WW7G29">10.5065/D6WW7G29</a></p>
 <section id="bibtex-entry">
-<h2>BibTeX entry<a class="headerlink" href="#bibtex-entry" title="Permalink to this headline">¶</a></h2>
+<h2>BibTeX entry<a class="headerlink" href="#bibtex-entry" title="Permalink to this headline">#</a></h2>
 <p>Example BibTeX entry:</p>
 <pre class="literal-block">&#64;software{metpy,
   author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman,
@@ -336,7 +328,7 @@ metadata for generating up-to-date citations.</p>
 }</pre>
 </section>
 <section id="ams-journal-style">
-<h2>AMS Journal Style<a class="headerlink" href="#ams-journal-style" title="Permalink to this headline">¶</a></h2>
+<h2>AMS Journal Style<a class="headerlink" href="#ams-journal-style" title="Permalink to this headline">#</a></h2>
 <p>AMS suggested BibTeX entry:</p>
 <pre class="literal-block">&#64;misc{metpy,
   author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman,
@@ -387,8 +379,9 @@ metadata for generating up-to-date citations.</p>
       </div>
     </div>
   
-    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -399,7 +392,7 @@ metadata for generating up-to-date citations.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     
