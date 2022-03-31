@@ -138,8 +138,9 @@ def wind_components(speed, wind_direction):
 
     Examples
     --------
+    >>> from metpy.calc import wind_components
     >>> from metpy.units import units
-    >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
+    >>> wind_components(10. * units('m/s'), 225. * units.deg)
      (<Quantity(7.07106781, 'meter / second')>, <Quantity(7.07106781, 'meter / second')>)
 
     .. versionchanged:: 1.0
