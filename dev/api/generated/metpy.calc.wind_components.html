@@ -1319,8 +1319,9 @@ directions, respectively.</p>
 <p><a class="reference internal" href="metpy.calc.wind_speed.html#metpy.calc.wind_speed" title="metpy.calc.wind_speed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_speed</span></code></a>, <a class="reference internal" href="metpy.calc.wind_direction.html#metpy.calc.wind_direction" title="metpy.calc.wind_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_direction</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">wind_components</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
 <span class="go"> (&lt;Quantity(7.07106781, &#39;meter / second&#39;)&gt;, &lt;Quantity(7.07106781, &#39;meter / second&#39;)&gt;)</span>
 </pre></div>
 </div>
