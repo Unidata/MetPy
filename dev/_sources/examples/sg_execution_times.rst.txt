@@ -5,20 +5,20 @@
 
 Computation times
 =================
-**00:46.056** total execution time for **examples** files:
+**00:44.958** total execution time for **examples** files:
 
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_isentropic_example.py` (``isentropic_example.py``)                           | 00:12.778 | 0.0 MB |
+| :ref:`sphx_glr_examples_isentropic_example.py` (``isentropic_example.py``)                           | 00:12.580 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_Four_Panel_Map.py` (``Four_Panel_Map.py``)                                   | 00:11.365 | 0.0 MB |
+| :ref:`sphx_glr_examples_Four_Panel_Map.py` (``Four_Panel_Map.py``)                                   | 00:11.038 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_XArray_Projections.py` (``XArray_Projections.py``)                           | 00:09.484 | 0.0 MB |
+| :ref:`sphx_glr_examples_XArray_Projections.py` (``XArray_Projections.py``)                           | 00:09.144 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py` (``sigma_to_pressure_interpolation.py``) | 00:05.671 | 0.0 MB |
+| :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py` (``sigma_to_pressure_interpolation.py``) | 00:05.562 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_cross_section.py` (``cross_section.py``)                                     | 00:05.215 | 0.0 MB |
+| :ref:`sphx_glr_examples_cross_section.py` (``cross_section.py``)                                     | 00:05.088 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_meteogram_metpy.py` (``meteogram_metpy.py``)                                 | 00:01.185 | 0.0 MB |
+| :ref:`sphx_glr_examples_meteogram_metpy.py` (``meteogram_metpy.py``)                                 | 00:01.188 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_Advanced_Sounding.py` (``Advanced_Sounding.py``)                             | 00:00.357 | 0.0 MB |
+| :ref:`sphx_glr_examples_Advanced_Sounding.py` (``Advanced_Sounding.py``)                             | 00:00.359 | 0.0 MB |
 +------------------------------------------------------------------------------------------------------+-----------+--------+
