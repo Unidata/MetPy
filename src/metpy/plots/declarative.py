@@ -2172,3 +2172,9 @@ class PlotGeometry(MetPyHasTraits):
 
                 # Finally, draw the label
                 self._draw_label(label, lon, lat, fontcolor, fontoutline, offset)
+
+
+def gpend():
+    """Terminate the plotting process and free up resources."""
+    import sys
+    sys.exit()
