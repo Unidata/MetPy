@@ -2242,7 +2242,7 @@ class Level3File:
                 scale = 1
             vals = self._read_trends()
             if code in (1, 2):
-                ret[f'{key} Limited'] = [bool(v > 700) for v in vals]
+                ret[f'{key} Limited'] = [v > 700 for v in vals]
                 vals = [v - 1000 if v > 700 else v for v in vals]
             ret[key] = [v * scale for v in vals]
 
