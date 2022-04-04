@@ -2575,9 +2575,9 @@
                     <span class="k">pass</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">text_sig</span><span class="p">:</span>
-                        <span class="c1"># If &#39;obj&#39; class has a __text_signature__ attribute:</span>
+                        <span class="c1"># If &#39;base&#39; class has a __text_signature__ attribute:</span>
                         <span class="c1"># return a signature based on it</span>
-                        <span class="k">return</span> <span class="n">_signature_fromstr</span><span class="p">(</span><span class="n">sigcls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">text_sig</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">_signature_fromstr</span><span class="p">(</span><span class="n">sigcls</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">text_sig</span><span class="p">)</span>
 
             <span class="c1"># No &#39;__text_signature__&#39; was found for the &#39;obj&#39; class.</span>
             <span class="c1"># Last option is to check if its &#39;__init__&#39; is</span>
