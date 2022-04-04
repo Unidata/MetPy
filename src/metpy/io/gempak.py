@@ -2696,22 +2696,17 @@ class GempakSurface(GempakFile):
 
         stnarr = []
         for stn in data:
-            stnobj = {}
-            stnobj['properties'] = {}
-            stnobj['values'] = {}
-            stnobj['properties']['date_time'] = datetime.combine(stn.pop('DATE'),
-                                                                 stn.pop('TIME'))
-            stnobj['properties']['station_id'] = stn.pop('STID') + stn.pop('STD2')
-            stnobj['properties']['station_number'] = stn.pop('STNM')
-            stnobj['properties']['longitude'] = stn.pop('SLON')
-            stnobj['properties']['latitude'] = stn.pop('SLAT')
-            stnobj['properties']['elevation'] = stn.pop('SELV')
-            stnobj['properties']['state'] = stn.pop('STAT')
-            stnobj['properties']['country'] = stn.pop('COUN')
-            stnobj['properties']['priority'] = stn.pop('SPRI')
+            props = {'date_time': datetime.combine(stn.pop('DATE'), stn.pop('TIME')),
+                     'station_id': stn.pop('STID') + stn.pop('STD2'),
+                     'station_number': stn.pop('STNM'),
+                     'longitude': stn.pop('SLON'),
+                     'latitude': stn.pop('SLAT'),
+                     'elevation': stn.pop('SELV'),
+                     'state': stn.pop('STAT'),
+                     'country': stn.pop('COUN'),
+                     'priority': stn.pop('SPRI')}
             if stn:
-                for name, ob in stn.items():
-                    stnobj['values'][name.lower()] = ob
-                stnarr.append(stnobj)
+                vals = {name.lower(): ob for name, ob in stn.items()}
+                stnarr.append({'properties': props, 'values': vals})
 
         return stnarr
