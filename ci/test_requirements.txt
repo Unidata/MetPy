@@ -2,4 +2,4 @@ pytest==7.1.1
 pytest-mpl==0.14.0
 netCDF4==1.5.8
 coverage==6.3.2
-dask==2022.3.0
+dask==2022.4.0
