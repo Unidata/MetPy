@@ -748,11 +748,17 @@ def parcel_profile(pressure, temperature, dewpoint):
 
     See Also
     --------
-    lcl, moist_lapse, dry_lapse
+    lcl, moist_lapse, dry_lapse, parcel_profile_with_lcl, parcel_profile_with_lcl_as_dataset
 
     Notes
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Duplicate pressure levels return duplicate parcel temperatures. Consider preprocessing
+    low-precision, high frequency profiles with tools like `scipy.medfilt`,
+    `pandas.drop_duplicates`, or `numpy.unique`.
+
+    Will only return Pint Quantities, even when given xarray DataArray profiles. To
+    obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
 
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
@@ -809,7 +815,11 @@ def parcel_profile_with_lcl(pressure, temperature, dewpoint):
     Notes
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Also, will only return Pint Quantities, even when given xarray DataArray profiles. To
+    Duplicate pressure levels return duplicate parcel temperatures. Consider preprocessing
+    low-precision, high frequency profiles with tools like `scipy.medfilt`,
+    `pandas.drop_duplicates`, or `numpy.unique`.
+
+    Will only return Pint Quantities, even when given xarray DataArray profiles. To
     obtain a xarray Dataset instead, use `parcel_profile_with_lcl_as_dataset` instead.
 
     .. versionchanged:: 1.0
@@ -934,9 +944,20 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
         return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
                 temp_lower[:-1], temp_lcl, units.Quantity(np.array([]), temp_lower.units))
 
-    # Find moist pseudo-adiabatic profile starting at the LCL
+    # Establish profile above LCL
     press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
-    temp_upper = moist_lapse(press_upper, temp_lower[-1]).to(temp_lower.units)
+
+    # Remove duplicate pressure values from remaining profile. Needed for solve_ivp in
+    # moist_lapse. unique will return remaining values sorted ascending.
+    unique, indices, counts = np.unique(press_upper.m, return_inverse=True, return_counts=True)
+    unique = units.Quantity(unique, press_upper.units)
+    if np.any(counts > 1):
+        warnings.warn(f'Duplicate pressure(s) {unique[counts > 1]:~P} provided. '
+                      'Output profile includes duplicate temperatures as a result.')
+
+    # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
+    temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
+    temp_upper = temp_upper[::-1][indices]
 
     # Return profile pieces
     return (press_lower[:-1], press_lcl, press_upper[1:],
