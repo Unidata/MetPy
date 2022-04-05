@@ -7,7 +7,7 @@ from numpy.testing import assert_almost_equal
 import pandas as pd
 import pytest
 
-from metpy.io import add_station_lat_lon
+from metpy.io import add_station_lat_lon, station_info
 
 
 def test_add_lat_lon_station_data():
@@ -39,3 +39,19 @@ def test_add_lat_lon_station_data_not_found():
 
     with pytest.raises(KeyError):
         add_station_lat_lon(df)
+
+
+def test_station_lookup_get_station():
+    """Test that you can get a station by ID from the lookup."""
+    assert station_info['KOUN'].id == 'KOUN'
+
+
+def test_station_lookup_len():
+    """Test that you can get the length of the station data."""
+    assert len(station_info) == 13798
+
+
+def test_station_lookup_iter():
+    """Test iterating over the station data."""
+    for stid in station_info:
+        assert stid in station_info
