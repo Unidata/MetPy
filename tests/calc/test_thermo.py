@@ -2092,3 +2092,23 @@ def test_cross_totals():
 
     ct = cross_totals(pressure, temperature, dewpoint)
     assert_almost_equal(ct, 21.40 * units.delta_degC, 2)
+
+
+def test_parcel_profile_drop_duplicates():
+    """Test handling repeat pressures in moist region of profile."""
+    pressure = np.array([962., 951., 937.9, 925., 908., 905.7, 894., 875.,
+                         41.3, 40.8, 37., 36.8, 32., 30., 27.7, 27.7, 26.4]) * units.hPa
+
+    temperature = units.Quantity(19.6, 'degC')
+
+    dewpoint = units.Quantity(18.6, 'degC')
+
+    truth = np.array([292.75, 291.78965331, 291.12778784, 290.61996294,
+                      289.93681828, 289.84313902, 289.36183185, 288.5626898,
+                      135.46280886, 134.99220142, 131.27369084, 131.07055878,
+                      125.93977169, 123.63877507, 120.85291224, 120.85291224,
+                      119.20448296]) * units.kelvin
+
+    with pytest.warns(UserWarning, match='Duplicate pressure'):
+        profile = parcel_profile(pressure, temperature, dewpoint)
+        assert_almost_equal(profile, truth, 5)
