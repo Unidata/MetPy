@@ -121,8 +121,18 @@ def _read_airports_file(input_file=None):
                          }).to_dict()
 
 
+@exporter.export
 class StationLookup(Mapping):
-    """Look up station information from multiple sources."""
+    """Look up station information from multiple sources.
+
+    This class follows the `Mapping` protocol with station ID as the key. This makes it
+    possible to e.g. iterate over all locations and get all of a certain criteria:
+
+    >>> import metpy.io
+    >>> conus_stations = [s for s in metpy.io.station_info if s.startswith('K')]
+    >>> conus_stations[:3]
+    ['KEET', 'K8A0', 'KALX']
+    """
 
     @cached_property
     def tables(self):
