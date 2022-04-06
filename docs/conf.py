@@ -90,7 +90,7 @@ source_suffix = ['.rst', '.md']
 
 # Controlling automatically generating summary tables in the docs
 autosummary_generate = True
-autosummary_imported_members = True
+autosummary_ignore_module_all = False
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
