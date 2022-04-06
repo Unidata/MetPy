@@ -416,10 +416,6 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
     The function is guaranteed to finish by virtue of the `max_iters` counter.
 
-    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
-    Since this function returns scalar values when given a profile, this will return Pint
-    Quantities even when given xarray DataArray profiles.
-
     .. versionchanged:: 1.0
        Renamed ``dewpt`` parameter to ``dewpoint``
 
