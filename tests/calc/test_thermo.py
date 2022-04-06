@@ -2092,3 +2092,68 @@ def test_cross_totals():
 
     ct = cross_totals(pressure, temperature, dewpoint)
     assert_almost_equal(ct, 21.40 * units.delta_degC, 2)
+
+
+def test_parcel_profile_drop_duplicates():
+    """Test handling repeat pressures in moist region of profile."""
+    pressure = np.array([962., 951., 937.9, 925., 908., 905.7, 894., 875.,
+                         41.3, 40.8, 37., 36.8, 32., 30., 27.7, 27.7, 26.4]) * units.hPa
+
+    temperature = units.Quantity(19.6, 'degC')
+
+    dewpoint = units.Quantity(18.6, 'degC')
+
+    truth = np.array([292.75, 291.78965331, 291.12778784, 290.61996294,
+                      289.93681828, 289.84313902, 289.36183185, 288.5626898,
+                      135.46280886, 134.99220142, 131.27369084, 131.07055878,
+                      125.93977169, 123.63877507, 120.85291224, 120.85291224,
+                      119.20448296]) * units.kelvin
+
+    with pytest.warns(UserWarning, match='Duplicate pressure'):
+        profile = parcel_profile(pressure, temperature, dewpoint)
+        assert_almost_equal(profile, truth, 5)
+
+
+def test_parcel_profile_with_lcl_as_dataset_duplicates():
+    """Test that parcel profile dataset creation works with duplicate pressures in profile."""
+    pressure = np.array(
+        [951., 951., 937.9, 925., 908., 30., 27.7, 27.7, 26.4, 25.1]
+    ) * units.hPa
+
+    temperature = np.array(
+        [20., 20., 19.5, 19., 18.6, -58.5, -58.1, -58.1, -57.2, -56.2]
+    ) * units.degC
+
+    dewpoint = np.array(
+        [19.4, 19.4, 19., 18.6, 18.3, -73.5, -75.1, -75.1, -77., -78.8]
+    ) * units.degC
+
+    truth = xr.Dataset(
+        {
+            'ambient_temperature': (
+                ('isobaric',),
+                np.insert(temperature.m, 2, 19.679237747615478) * units.degC
+            ),
+            'ambient_dew_point': (
+                ('isobaric',),
+                np.insert(dewpoint.m, 2, 19.143390198092384) * units.degC
+            ),
+            'parcel_temperature': (
+                ('isobaric',),
+                [
+                    293.15, 293.15, 292.40749167, 292.22841462, 291.73069653, 291.06139433,
+                    125.22698955, 122.40534065, 122.40534065, 120.73573642, 119.0063293
+                ] * units.kelvin
+            )
+        },
+        coords={
+            'isobaric': (
+                'isobaric',
+                np.insert(pressure.m, 2, 942.6)
+            )
+        }
+    )
+
+    profile = parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint)
+
+    xr.testing.assert_allclose(profile, truth, atol=1e-5)
