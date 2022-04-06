@@ -6,6 +6,8 @@ r"""Module to provide unit support.
 This makes use of the :mod:`pint` library and sets up the default settings
 for good temperature support.
 
+See Also: :doc:`Working with Units </tutorials/unit_tutorial>`.
+
 Attributes
 ----------
 units : :class:`pint.UnitRegistry`
