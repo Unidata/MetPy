@@ -3,9 +3,13 @@
 {% include 'overrides/' ~ fullname ~ '.rst' with context %}
 
 {% else %}
+   {% if name == 'io' %}
+      {% set nice_name = 'Reading Data' %}
+   {% else %}
+      {% set nice_name = name | title | escape %}
+   {% endif %}
 
-{{ objname }}
-{{ underline }}
+{{ (nice_name ~ ' ``(' ~ fullname ~ ')``')|underline }}
 
 .. automodule:: {{ fullname }}
 
