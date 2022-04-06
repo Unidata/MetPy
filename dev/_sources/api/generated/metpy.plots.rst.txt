@@ -1,9 +1,16 @@
 ﻿
+   
+      
+   
 
-plots
-===========
+Plots ``(metpy.plots)``
+=======================
 
 .. automodule:: metpy.plots
+
+   
+   
+   
 
    
    
@@ -11,14 +18,13 @@ plots
 
    .. autosummary::
       :toctree: ./
-
    
+      read_colortable
+      wx_code_to_numeric
       add_metpy_logo
       add_timestamp
       add_unidata_logo
       convert_gempak_color
-      read_colortable
-      wx_code_to_numeric
    
    
 
@@ -28,24 +34,22 @@ plots
 
    .. autosummary::
       :toctree: ./
-
    
-      BarbPlot
+      PanelContainer
+      MapPanel
+      Plots2D
+      PlotScalar
+      ImagePlot
       ContourPlot
       FilledContourPlot
-      Hodograph
-      ImagePlot
-      MapPanel
-      PanelContainer
-      PlotGeometry
-      PlotObs
-      PlotScalar
       PlotVector
-      Plots2D
+      BarbPlot
+      PlotObs
+      PlotGeometry
       SkewT
+      Hodograph
       StationPlot
       StationPlotLayout
-
    
    
 

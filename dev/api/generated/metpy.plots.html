@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>plots &#8212; MetPy 1.2dev</title>
+    <title>Plots (metpy.plots) &#8212; MetPy 1.2dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,7 +39,7 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html" />
+    <link rel="next" title="read_colortable" href="metpy.plots.read_colortable.html" />
     <link rel="prev" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -173,29 +173,27 @@
 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1">
   <a class="reference internal" href="metpy.constants.html">
-   constants
+   Constants
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.constants)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.constants.set_module.html">
-     set_module
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.units.html">
-   units
+   Units
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.units)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -225,46 +223,26 @@
      process_units
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.signature.html">
-     signature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.Parameter.html">
-     Parameter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.DimensionalityError.html">
-     DimensionalityError
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.UndefinedUnitError.html">
-     UndefinedUnitError
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.io.html">
-   metpy.io
+   Reading Data
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.io)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
-     add_station_lat_lon
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.is_precip_mode.html">
-     is_precip_mode
+    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
+     parse_metar_to_dataframe
     </a>
    </li>
    <li class="toctree-l2">
@@ -273,13 +251,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
-     parse_metar_to_dataframe
+    <a class="reference internal" href="metpy.io.is_precip_mode.html">
+     is_precip_mode
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.set_module.html">
-     set_module
+    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
+     add_station_lat_lon
     </a>
    </li>
    <li class="toctree-l2">
@@ -321,10 +299,15 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.calc.html">
-   calc
+   Calculations
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.calc)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -978,14 +961,29 @@
  </li>
  <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
-   plots
+   Plots
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.plots)
+    </span>
+   </code>
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.read_colortable.html">
+     read_colortable
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">
+     wx_code_to_numeric
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.add_metpy_logo.html">
      add_metpy_logo
@@ -1007,18 +1005,28 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.read_colortable.html">
-     read_colortable
+    <a class="reference internal" href="metpy.plots.PanelContainer.html">
+     PanelContainer
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">
-     wx_code_to_numeric
+    <a class="reference internal" href="metpy.plots.MapPanel.html">
+     MapPanel
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.BarbPlot.html">
-     BarbPlot
+    <a class="reference internal" href="metpy.plots.Plots2D.html">
+     Plots2D
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.PlotScalar.html">
+     PlotScalar
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.ImagePlot.html">
+     ImagePlot
     </a>
    </li>
    <li class="toctree-l2">
@@ -1032,28 +1040,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Hodograph.html">
-     Hodograph
+    <a class="reference internal" href="metpy.plots.PlotVector.html">
+     PlotVector
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ImagePlot.html">
-     ImagePlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.MapPanel.html">
-     MapPanel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PanelContainer.html">
-     PanelContainer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotGeometry.html">
-     PlotGeometry
+    <a class="reference internal" href="metpy.plots.BarbPlot.html">
+     BarbPlot
     </a>
    </li>
    <li class="toctree-l2">
@@ -1062,23 +1055,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotScalar.html">
-     PlotScalar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotVector.html">
-     PlotVector
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Plots2D.html">
-     Plots2D
+    <a class="reference internal" href="metpy.plots.PlotGeometry.html">
+     PlotGeometry
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.SkewT.html">
      SkewT
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.Hodograph.html">
+     Hodograph
     </a>
    </li>
    <li class="toctree-l2">
@@ -1095,10 +1083,15 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.plots.ctables.html">
-   ctables
+   Colortables
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.plots.ctables)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -1127,32 +1120,27 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.interpolate.html">
-   interpolate
+   Interpolate
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.interpolate)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.cross_section.html">
-     cross_section
+    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
+     natural_neighbor_to_grid
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.geodesic.html">
-     geodesic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_1d.html">
-     interpolate_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">
-     interpolate_nans_1d
+    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">
+     inverse_distance_to_grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -1166,6 +1154,31 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">
+     interpolate_nans_1d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.interpolate_1d.html">
+     interpolate_1d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">
+     log_interpolate_1d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">
+     natural_neighbor_to_points
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">
+     inverse_distance_to_points
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">
      interpolate_to_points
     </a>
@@ -1176,33 +1189,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">
-     inverse_distance_to_grid
+    <a class="reference internal" href="metpy.interpolate.geodesic.html">
+     geodesic
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">
-     inverse_distance_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">
-     log_interpolate_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
-     natural_neighbor_to_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">
-     natural_neighbor_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">
-     remove_nan_observations
+    <a class="reference internal" href="metpy.interpolate.cross_section.html">
+     cross_section
     </a>
    </li>
    <li class="toctree-l2">
@@ -1211,23 +1204,28 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">
-     remove_repeat_coordinates
+    <a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">
+     remove_nan_observations
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.set_module.html">
-     set_module
+    <a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">
+     remove_repeat_coordinates
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.xarray.html">
-   xarray
+   Xarray Integration
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.xarray)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -1286,7 +1284,7 @@
               <div>
                 
   <section id="module-metpy.plots">
-<span id="plots"></span><h1>plots<a class="headerlink" href="#module-metpy.plots" title="Permalink to this headline">#</a></h1>
+<span id="plots-metpy-plots"></span><h1>Plots <code class="docutils literal notranslate"><span class="pre">(metpy.plots)</span></code><a class="headerlink" href="#module-metpy.plots" title="Permalink to this headline">#</a></h1>
 <p>Contains functionality for making meteorological plots.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable table autosummary">
@@ -1295,6 +1293,12 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</p></td>
+<td><p>Read colortable information from a file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html#metpy.plots.wx_code_to_numeric" title="metpy.plots.wx_code_to_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wx_code_to_numeric</span></code></a>(codes)</p></td>
+<td><p>Determine the numeric weather symbol value from METAR code text.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_metpy_logo</span></code></a>(fig[, x, y, zorder, size])</p></td>
 <td><p>Add the MetPy logo to a figure.</p></td>
 </tr>
@@ -1307,12 +1311,6 @@
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.convert_gempak_color.html#metpy.plots.convert_gempak_color" title="metpy.plots.convert_gempak_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_gempak_color</span></code></a>(c[, style])</p></td>
 <td><p>Convert GEMPAK color numbers into corresponding Matplotlib colors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</p></td>
-<td><p>Read colortable information from a file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.wx_code_to_numeric.html#metpy.plots.wx_code_to_numeric" title="metpy.plots.wx_code_to_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wx_code_to_numeric</span></code></a>(codes)</p></td>
-<td><p>Determine the numeric weather symbol value from METAR code text.</p></td>
-</tr>
 </tbody>
 </table>
 <p class="rubric">Classes</p>
@@ -1322,8 +1320,20 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BarbPlot</span></code></a>(**kwargs)</p></td>
-<td><p>Make plots of wind barbs on a map with traits to refine the look of plotted elements.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(**kwargs)</p></td>
+<td><p>Collects panels and set complete figure related settings (e.g., size).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(**kwargs)</p></td>
+<td><p>Set figure related elements for an individual panel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Plots2D.html#metpy.plots.Plots2D" title="metpy.plots.Plots2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plots2D</span></code></a>(**kwargs)</p></td>
+<td><p>The highest level class related to plotting 2D data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotScalar.html#metpy.plots.PlotScalar" title="metpy.plots.PlotScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotScalar</span></code></a>(**kwargs)</p></td>
+<td><p>Defines the common elements of 2D scalar plots for single scalar value fields.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(**kwargs)</p></td>
+<td><p>Make raster image using <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.5.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>(**kwargs)</p></td>
 <td><p>Make contour plots by defining specific traits.</p></td>
@@ -1331,35 +1341,23 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>(**kwargs)</p></td>
 <td><p>Make color-filled contours plots by defining appropriate traits.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax, component_range])</p></td>
-<td><p>Make a hodograph of wind data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(**kwargs)</p></td>
-<td><p>Make raster image using <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="(in Matplotlib v3.5.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imshow</span></code></a> for satellite or colored image.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(**kwargs)</p></td>
-<td><p>Set figure related elements for an individual panel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(**kwargs)</p></td>
-<td><p>Collects panels and set complete figure related settings (e.g., size).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotGeometry</span></code></a>(**kwargs)</p></td>
-<td><p>Plot collections of Shapely objects and customize their appearance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotObs</span></code></a>(**kwargs)</p></td>
-<td><p>The highest level class related to plotting observed surface and upperair data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotScalar.html#metpy.plots.PlotScalar" title="metpy.plots.PlotScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotScalar</span></code></a>(**kwargs)</p></td>
-<td><p>Defines the common elements of 2D scalar plots for single scalar value fields.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotVector.html#metpy.plots.PlotVector" title="metpy.plots.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(**kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotVector.html#metpy.plots.PlotVector" title="metpy.plots.PlotVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotVector</span></code></a>(**kwargs)</p></td>
 <td><p>Defines common elements for 2D vector plots.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.Plots2D.html#metpy.plots.Plots2D" title="metpy.plots.Plots2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plots2D</span></code></a>(**kwargs)</p></td>
-<td><p>The highest level class related to plotting 2D data.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.BarbPlot.html#metpy.plots.BarbPlot" title="metpy.plots.BarbPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BarbPlot</span></code></a>(**kwargs)</p></td>
+<td><p>Make plots of wind barbs on a map with traits to refine the look of plotted elements.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PlotObs.html#metpy.plots.PlotObs" title="metpy.plots.PlotObs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotObs</span></code></a>(**kwargs)</p></td>
+<td><p>The highest level class related to plotting observed surface and upperair data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotGeometry</span></code></a>(**kwargs)</p></td>
+<td><p>Plot collections of Shapely objects and customize their appearance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
 <td><p>Make Skew-T log-P plots of data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax, component_range])</p></td>
+<td><p>Make a hodograph of wind data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax, x, y[, fontsize, spacing, ...])</p></td>
 <td><p>Make a standard meteorological station plot.</p></td>
@@ -1384,10 +1382,10 @@
             <p class="prev-next-title">resample_nn_1d</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.plots.add_metpy_logo.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.plots.read_colortable.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">add_metpy_logo</p>
+        <p class="prev-next-title">read_colortable</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

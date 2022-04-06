@@ -1,9 +1,16 @@
 ﻿
+   
+      
+   
 
-metpy.io
-========
+Reading Data ``(metpy.io)``
+===========================
 
 .. automodule:: metpy.io
+
+   
+   
+   
 
    
    
@@ -11,13 +18,11 @@ metpy.io
 
    .. autosummary::
       :toctree: ./
-
    
-      add_station_lat_lon
-      is_precip_mode
-      parse_metar_file
       parse_metar_to_dataframe
-      set_module
+      parse_metar_file
+      is_precip_mode
+      add_station_lat_lon
    
    
 
@@ -27,7 +32,6 @@ metpy.io
 
    .. autosummary::
       :toctree: ./
-
    
       GempakGrid
       GempakSounding
@@ -36,7 +40,6 @@ metpy.io
       Level2File
       Level3File
       StationLookup
-
    
    
 

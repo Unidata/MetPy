@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>metpy.io &#8212; MetPy 1.2dev</title>
+    <title>Reading Data (metpy.io) &#8212; MetPy 1.2dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="add_station_lat_lon" href="metpy.io.add_station_lat_lon.html" />
-    <link rel="prev" title="UndefinedUnitError" href="metpy.units.UndefinedUnitError.html" />
+    <link rel="next" title="parse_metar_to_dataframe" href="metpy.io.parse_metar_to_dataframe.html" />
+    <link rel="prev" title="process_units" href="metpy.units.process_units.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -173,29 +173,27 @@
 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1">
   <a class="reference internal" href="metpy.constants.html">
-   constants
+   Constants
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.constants)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.constants.set_module.html">
-     set_module
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.units.html">
-   units
+   Units
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.units)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -225,46 +223,26 @@
      process_units
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.signature.html">
-     signature
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.Parameter.html">
-     Parameter
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.DimensionalityError.html">
-     DimensionalityError
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.units.UndefinedUnitError.html">
-     UndefinedUnitError
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
-   metpy.io
+   Reading Data
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.io)
+    </span>
+   </code>
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
-     add_station_lat_lon
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.is_precip_mode.html">
-     is_precip_mode
+    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
+     parse_metar_to_dataframe
     </a>
    </li>
    <li class="toctree-l2">
@@ -273,13 +251,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html">
-     parse_metar_to_dataframe
+    <a class="reference internal" href="metpy.io.is_precip_mode.html">
+     is_precip_mode
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.io.set_module.html">
-     set_module
+    <a class="reference internal" href="metpy.io.add_station_lat_lon.html">
+     add_station_lat_lon
     </a>
    </li>
    <li class="toctree-l2">
@@ -321,10 +299,15 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.calc.html">
-   calc
+   Calculations
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.calc)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -978,14 +961,29 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.plots.html">
-   plots
+   Plots
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.plots)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.read_colortable.html">
+     read_colortable
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">
+     wx_code_to_numeric
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.add_metpy_logo.html">
      add_metpy_logo
@@ -1007,18 +1005,28 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.read_colortable.html">
-     read_colortable
+    <a class="reference internal" href="metpy.plots.PanelContainer.html">
+     PanelContainer
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.wx_code_to_numeric.html">
-     wx_code_to_numeric
+    <a class="reference internal" href="metpy.plots.MapPanel.html">
+     MapPanel
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.BarbPlot.html">
-     BarbPlot
+    <a class="reference internal" href="metpy.plots.Plots2D.html">
+     Plots2D
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.PlotScalar.html">
+     PlotScalar
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.ImagePlot.html">
+     ImagePlot
     </a>
    </li>
    <li class="toctree-l2">
@@ -1032,28 +1040,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Hodograph.html">
-     Hodograph
+    <a class="reference internal" href="metpy.plots.PlotVector.html">
+     PlotVector
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ImagePlot.html">
-     ImagePlot
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.MapPanel.html">
-     MapPanel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PanelContainer.html">
-     PanelContainer
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotGeometry.html">
-     PlotGeometry
+    <a class="reference internal" href="metpy.plots.BarbPlot.html">
+     BarbPlot
     </a>
    </li>
    <li class="toctree-l2">
@@ -1062,23 +1055,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotScalar.html">
-     PlotScalar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.PlotVector.html">
-     PlotVector
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.Plots2D.html">
-     Plots2D
+    <a class="reference internal" href="metpy.plots.PlotGeometry.html">
+     PlotGeometry
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.plots.SkewT.html">
      SkewT
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.Hodograph.html">
+     Hodograph
     </a>
    </li>
    <li class="toctree-l2">
@@ -1095,10 +1083,15 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.plots.ctables.html">
-   ctables
+   Colortables
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.plots.ctables)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -1127,32 +1120,27 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.interpolate.html">
-   interpolate
+   Interpolate
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.interpolate)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.cross_section.html">
-     cross_section
+    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
+     natural_neighbor_to_grid
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.geodesic.html">
-     geodesic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_1d.html">
-     interpolate_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">
-     interpolate_nans_1d
+    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">
+     inverse_distance_to_grid
     </a>
    </li>
    <li class="toctree-l2">
@@ -1166,6 +1154,31 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">
+     interpolate_nans_1d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.interpolate_1d.html">
+     interpolate_1d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">
+     log_interpolate_1d
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">
+     natural_neighbor_to_points
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">
+     inverse_distance_to_points
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">
      interpolate_to_points
     </a>
@@ -1176,33 +1189,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html">
-     inverse_distance_to_grid
+    <a class="reference internal" href="metpy.interpolate.geodesic.html">
+     geodesic
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html">
-     inverse_distance_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html">
-     log_interpolate_1d
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
-     natural_neighbor_to_grid
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html">
-     natural_neighbor_to_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">
-     remove_nan_observations
+    <a class="reference internal" href="metpy.interpolate.cross_section.html">
+     cross_section
     </a>
    </li>
    <li class="toctree-l2">
@@ -1211,23 +1204,28 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">
-     remove_repeat_coordinates
+    <a class="reference internal" href="metpy.interpolate.remove_nan_observations.html">
+     remove_nan_observations
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="metpy.interpolate.set_module.html">
-     set_module
+    <a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html">
+     remove_repeat_coordinates
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.xarray.html">
-   xarray
+   Xarray Integration
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     (metpy.xarray)
+    </span>
+   </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -1286,7 +1284,7 @@
               <div>
                 
   <section id="module-metpy.io">
-<span id="metpy-io"></span><h1>metpy.io<a class="headerlink" href="#module-metpy.io" title="Permalink to this headline">#</a></h1>
+<span id="reading-data-metpy-io"></span><h1>Reading Data <code class="docutils literal notranslate"><span class="pre">(metpy.io)</span></code><a class="headerlink" href="#module-metpy.io" title="Permalink to this headline">#</a></h1>
 <p>Tools for reading various file formats.</p>
 <p>Classes supporting formats are written to take both file names (for local files) or file-like
 objects; this allows reading files that are already in memory
@@ -1301,20 +1299,17 @@ objects; this allows reading files that are already in memory
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.add_station_lat_lon.html#metpy.io.add_station_lat_lon" title="metpy.io.add_station_lat_lon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_station_lat_lon</span></code></a>(df[, stn_var])</p></td>
-<td><p>Lookup station information to add the station latitude and longitude to the DataFrame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.io.is_precip_mode.html#metpy.io.is_precip_mode" title="metpy.io.is_precip_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_precip_mode</span></code></a>(vcp_num)</p></td>
-<td><p>Determine if the NEXRAD radar is operating in precipitation mode.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.parse_metar_file.html#metpy.io.parse_metar_file" title="metpy.io.parse_metar_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_metar_file</span></code></a>(filename, *[, year, month])</p></td>
-<td><p>Parse a text file containing multiple METAR reports and/or text products.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html#metpy.io.parse_metar_to_dataframe" title="metpy.io.parse_metar_to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_metar_to_dataframe</span></code></a>(metar_text, *[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html#metpy.io.parse_metar_to_dataframe" title="metpy.io.parse_metar_to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_metar_to_dataframe</span></code></a>(metar_text, *[, ...])</p></td>
 <td><p>Parse a single METAR report into a Pandas DataFrame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.set_module.html#metpy.io.set_module" title="metpy.io.set_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_module</span></code></a>(globls)</p></td>
-<td><p>Set the module for all functions in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.io.parse_metar_file.html#metpy.io.parse_metar_file" title="metpy.io.parse_metar_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_metar_file</span></code></a>(filename, *[, year, month])</p></td>
+<td><p>Parse a text file containing multiple METAR reports and/or text products.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.is_precip_mode.html#metpy.io.is_precip_mode" title="metpy.io.is_precip_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_precip_mode</span></code></a>(vcp_num)</p></td>
+<td><p>Determine if the NEXRAD radar is operating in precipitation mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.io.add_station_lat_lon.html#metpy.io.add_station_lat_lon" title="metpy.io.add_station_lat_lon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_station_lat_lon</span></code></a>(df[, stn_var])</p></td>
+<td><p>Lookup station information to add the station latitude and longitude to the DataFrame.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1356,17 +1351,17 @@ objects; this allows reading files that are already in memory
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.units.UndefinedUnitError.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.units.process_units.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">UndefinedUnitError</p>
+            <p class="prev-next-title">process_units</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.io.add_station_lat_lon.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.io.parse_metar_to_dataframe.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">add_station_lat_lon</p>
+        <p class="prev-next-title">parse_metar_to_dataframe</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
