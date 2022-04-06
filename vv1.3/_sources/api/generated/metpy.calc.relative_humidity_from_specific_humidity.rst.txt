@@ -1,0 +1,12 @@
+relative_humidity_from_specific_humidity
+===================================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: relative_humidity_from_specific_humidity
+
+.. include:: metpy.calc.relative_humidity_from_specific_humidity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

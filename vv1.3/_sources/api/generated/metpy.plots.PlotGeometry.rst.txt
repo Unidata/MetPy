@@ -1,0 +1,124 @@
+PlotGeometry
+========================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: PlotGeometry
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~PlotGeometry.cross_validation_lock
+      ~PlotGeometry.fill
+      ~PlotGeometry.geometry
+      ~PlotGeometry.label_edgecolor
+      ~PlotGeometry.label_facecolor
+      ~PlotGeometry.label_fontsize
+      ~PlotGeometry.labels
+      ~PlotGeometry.marker
+      ~PlotGeometry.name
+      ~PlotGeometry.parent
+      ~PlotGeometry.stroke
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PlotGeometry.__init__
+      ~PlotGeometry.add_traits
+      ~PlotGeometry.class_own_trait_events
+      ~PlotGeometry.class_own_traits
+      ~PlotGeometry.class_trait_names
+      ~PlotGeometry.class_traits
+      ~PlotGeometry.copy
+      ~PlotGeometry.draw
+      ~PlotGeometry.has_trait
+      ~PlotGeometry.hold_trait_notifications
+      ~PlotGeometry.notify_change
+      ~PlotGeometry.observe
+      ~PlotGeometry.on_trait_change
+      ~PlotGeometry.set_trait
+      ~PlotGeometry.setup_instance
+      ~PlotGeometry.trait_defaults
+      ~PlotGeometry.trait_events
+      ~PlotGeometry.trait_has_value
+      ~PlotGeometry.trait_metadata
+      ~PlotGeometry.trait_names
+      ~PlotGeometry.trait_values
+      ~PlotGeometry.traits
+      ~PlotGeometry.unobserve
+      ~PlotGeometry.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: fill
+   .. autoattribute:: geometry
+   .. autoattribute:: label_edgecolor
+   .. autoattribute:: label_facecolor
+   .. autoattribute:: label_fontsize
+   .. autoattribute:: labels
+   .. autoattribute:: marker
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: stroke
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.PlotGeometry.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

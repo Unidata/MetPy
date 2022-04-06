@@ -1,0 +1,146 @@
+PlotVector
+======================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: PlotVector
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~PlotVector.color
+      ~PlotVector.cross_validation_lock
+      ~PlotVector.data
+      ~PlotVector.earth_relative
+      ~PlotVector.field
+      ~PlotVector.griddata
+      ~PlotVector.latitude
+      ~PlotVector.level
+      ~PlotVector.longitude
+      ~PlotVector.name
+      ~PlotVector.parent
+      ~PlotVector.pivot
+      ~PlotVector.plot_units
+      ~PlotVector.plotdata
+      ~PlotVector.scale
+      ~PlotVector.skip
+      ~PlotVector.time
+      ~PlotVector.x
+      ~PlotVector.y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PlotVector.__init__
+      ~PlotVector.add_traits
+      ~PlotVector.class_own_trait_events
+      ~PlotVector.class_own_traits
+      ~PlotVector.class_trait_names
+      ~PlotVector.class_traits
+      ~PlotVector.clear
+      ~PlotVector.clear_collections
+      ~PlotVector.clear_handle
+      ~PlotVector.copy
+      ~PlotVector.draw
+      ~PlotVector.has_trait
+      ~PlotVector.hold_trait_notifications
+      ~PlotVector.notify_change
+      ~PlotVector.observe
+      ~PlotVector.on_trait_change
+      ~PlotVector.set_trait
+      ~PlotVector.setup_instance
+      ~PlotVector.trait_defaults
+      ~PlotVector.trait_events
+      ~PlotVector.trait_has_value
+      ~PlotVector.trait_metadata
+      ~PlotVector.trait_names
+      ~PlotVector.trait_values
+      ~PlotVector.traits
+      ~PlotVector.unobserve
+      ~PlotVector.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: color
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: earth_relative
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: latitude
+   .. autoattribute:: level
+   .. autoattribute:: longitude
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: pivot
+   .. autoattribute:: plot_units
+   .. autoattribute:: plotdata
+   .. autoattribute:: scale
+   .. autoattribute:: skip
+   .. autoattribute:: time
+   .. autoattribute:: x
+   .. autoattribute:: y
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: copy
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_defaults
+   .. automethod:: trait_events
+   .. automethod:: trait_has_value
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: trait_values
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.PlotVector.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

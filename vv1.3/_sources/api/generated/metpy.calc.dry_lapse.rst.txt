@@ -1,0 +1,12 @@
+dry_lapse
+====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: dry_lapse
+
+.. include:: metpy.calc.dry_lapse.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

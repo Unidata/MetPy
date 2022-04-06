@@ -1,0 +1,12 @@
+inertial_advective_wind
+==================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: inertial_advective_wind
+
+.. include:: metpy.calc.inertial_advective_wind.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

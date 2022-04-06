@@ -1,0 +1,12 @@
+second_derivative
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: second_derivative
+
+.. include:: metpy.calc.second_derivative.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
