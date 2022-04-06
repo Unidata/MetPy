@@ -1,7 +1,5 @@
-
-
-ctables
-===================
+Colortables ``(metpy.plots.ctables)``
+=====================================
 
 .. automodule:: metpy.plots.ctables
 

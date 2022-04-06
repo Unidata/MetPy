@@ -104,6 +104,16 @@ def test_bad(func, args, kwargs, bad_parts):
         assert 'unitless_const' not in message
 
 
+@pytest.mark.parametrize('func', test_funcs, ids=['some kwargs', 'all kwargs', 'all pos'])
+def test_bad_masked_array(func):
+    """Test getting a masked array-specific message when missing units."""
+    with pytest.raises(ValueError) as exc:
+        func(np.ma.array([30]), 1000 * units.mbar, 1.0 * units('kg/m^3'), 1, 5.)
+
+    message = str(exc.value)
+    assert 'units.Quantity' in message
+
+
 def test_pandas_units_simple():
     """Simple unit attachment to two columns."""
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])

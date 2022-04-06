@@ -1,5 +1,5 @@
-xarray
-==========
+Xarray Integration ``(metpy.xarray)``
+=====================================
 
 .. automodule:: metpy.xarray
 

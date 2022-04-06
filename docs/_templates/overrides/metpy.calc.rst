@@ -1,5 +1,5 @@
-calc
-==========
+Calculations ``(metpy.calc)``
+=============================
 
 .. automodule:: metpy.calc
 

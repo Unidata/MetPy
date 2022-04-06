@@ -6,6 +6,8 @@ r"""Module to provide unit support.
 This makes use of the :mod:`pint` library and sets up the default settings
 for good temperature support.
 
+See Also: :doc:`Working with Units </tutorials/unit_tutorial>`.
+
 Attributes
 ----------
 units : :class:`pint.UnitRegistry`
@@ -212,12 +214,12 @@ def _check_argument_units(args, defaults, dimensionality):
         # See if the value passed in is appropriate
         try:
             if val.dimensionality != parsed:
-                yield arg, val.units, need
+                yield arg, val, val.units, need
         # No dimensionality
         except AttributeError:
             # If this argument is dimensionless, don't worry
             if parsed != '':
-                yield arg, 'none', need
+                yield arg, val, 'none', need
 
 
 def _get_changed_version(docstring):
@@ -256,12 +258,20 @@ def _check_units_inner_helper(func, sig, defaults, dims, *args, **kwargs):
     if bad:
         msg = f'`{func.__name__}` given arguments with incorrect units: '
         msg += ', '.join(
-            f'`{arg}` requires "{req}" but given "{given}"' for arg, given, req in bad
+            f'`{arg}` requires "{req}" but given "{given}"' for arg, _, given, req in bad
         )
         if 'none' in msg:
-            msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
-                    '    from metpy.units import units\n'
-                    '    x = units.Quantity(x, "m/s")')
+            if any(isinstance(x, np.ma.core.MaskedArray) for _, x, _, _ in bad):
+                msg += ('\nA masked array `m` can be assigned a unit as follows:\n'
+                        '    from metpy.units import units\n'
+                        '    m = units.Quantity(m, "m/s")')
+            else:
+                msg += ('\nA xarray DataArray or numpy array `x` can be assigned a unit as '
+                        'follows:\n'
+                        '    from metpy.units import units\n'
+                        '    x = x * units("m/s")')
+            msg += ('\nFor more information see the Units Tutorial: '
+                    'https://unidata.github.io/MetPy/latest/tutorials/unit_tutorial.html')
 
         # If function has changed, mention that fact
         if func.__doc__:
