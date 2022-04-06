@@ -47,19 +47,12 @@ jobs:
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-    - name: Add extras to requirements
-      run: cat ci/extra_requirements.txt >> ci/doc_requirements.txt
-
     - name: Install using PyPI
       uses: ./.github/actions/install-pypi
       with:
         need-cartopy: true
         type: 'doc'
         python-version: ${{ matrix.python-version }}
-
-    # Needed to have a clean version on tags due to modifying requirements above
-    - name: Clean modified files
-      run: git checkout -- .
 
     - name: Build docs
       id: build-docs

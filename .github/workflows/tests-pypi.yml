@@ -42,10 +42,6 @@ jobs:
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-    - name: Add extras to requirements
-      if: ${{ matrix.no-extras != 'No Extras' }}
-      run: cat ci/extra_requirements.txt >> ci/test_requirements.txt
-
     - name: Generate minimum dependencies
       if: ${{ matrix.dep-versions == 'Minimum' }}
       run: |
