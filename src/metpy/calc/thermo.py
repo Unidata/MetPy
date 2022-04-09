@@ -3278,11 +3278,11 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 
     Parameters
     ----------
-    dewpoint: `pint.Quantity`
-        Dewpoint temperature
-
     pressure: `pint.Quantity`
         Pressure
+
+    dewpoint: `pint.Quantity`
+        Dewpoint temperature
 
     Returns
     -------
