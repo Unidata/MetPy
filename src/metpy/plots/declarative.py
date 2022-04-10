@@ -697,6 +697,22 @@ class MapPanel(Panel, ValidationMixin):
     Cartopy Feature objects.
     """
 
+    layers_edgecolor = List(Unicode(allow_none=True), default_value=['black'])
+    layers_edgecolor.__doc__ = """A list of strings for a pre-defined edgecolor for a layer.
+
+    An option to set a different color for the map layer edge colors. Length of list should
+    match that of layers if not using default value. Behavior is to repeat colors if not enough
+    provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+    """
+
+    layers_linewidth = List(Union([Int(), Float()], allow_none=True), default_value=[1])
+    layers_linewidth.__doc__ = """A list of values defining the linewidth for a layer.
+
+    An option to set a different color for the map layer edge colors. Length of list should
+    match that of layers if not using default value. Behavior is to repeat colors if not enough
+    provided by user. Use `None` value for 'ocean', 'lakes', 'rivers', and 'land'.
+    """
+
     title = Unicode()
     title.__doc__ = """A string to set a title for the figure.
 
@@ -866,8 +882,14 @@ class MapPanel(Panel, ValidationMixin):
                     p.draw()
 
             # Add all of the maps
-            for feat in self._layer_features:
-                self.ax.add_feature(feat)
+            if len(self.layers) > len(self.layers_edgecolor):
+                self.layers_edgecolor *= len(self.layers)
+            if len(self.layers) > len(self.layers_linewidth):
+                self.layers_linewidth *= len(self.layers)
+            for feat, color, width in zip(self._layer_features,
+                                          self.layers_edgecolor,
+                                          self.layers_linewidth):
+                self.ax.add_feature(feat, edgecolor=color, linewidth=width)
 
             # Use the set title or generate one.
             title = self.title or ',\n'.join(plot.name for plot in self.plots)
