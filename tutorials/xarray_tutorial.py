@@ -230,8 +230,8 @@ temperature_degc
 #########################################################################
 # To base unit conversion:
 
-temperature_degK = temperature_degc.metpy.convert_to_base_units()
-temperature_degK
+temperature_degk = temperature_degc.metpy.convert_to_base_units()
+temperature_degk
 
 #########################################################################
 # Unit conversion for coordinates:
