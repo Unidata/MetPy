@@ -288,7 +288,7 @@ def test_declarative_contour_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.05)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
 @needs_cartopy
 def test_declarative_layers_plot_options():
     """Test making a contour plot."""

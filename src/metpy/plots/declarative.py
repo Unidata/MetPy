@@ -886,9 +886,12 @@ class MapPanel(Panel, ValidationMixin):
                 self.layers_edgecolor *= len(self.layers)
             if len(self.layers) > len(self.layers_linewidth):
                 self.layers_linewidth *= len(self.layers)
-            for feat, color, width in zip(self._layer_features,
-                                          self.layers_edgecolor,
-                                          self.layers_linewidth):
+            for i, feat in enumerate(self._layer_features):
+                if self.layers[i] in ['', 'land', 'lake', 'river']:
+                    color = 'face'
+                else:
+                    color = self.layers_edgecolor[i]
+                width = self.layers_linewidth[i]
                 self.ax.add_feature(feat, edgecolor=color, linewidth=width)
 
             # Use the set title or generate one.
