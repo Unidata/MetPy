@@ -174,6 +174,22 @@ class MetPyDataArrayAccessor:
         """
         return self.quantify().copy(data=self.unit_array.to(units))
 
+    def convert_to_base_units(self):
+        """Return new DataArray with values converted to base units.
+
+        See Also
+        --------
+        convert_units
+
+        Notes
+        -----
+        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+        by this operation. Do not utilize on moderate- to large-sized remote datasets before
+        subsetting!
+
+        """
+        return self.quantify().copy(data=self.unit_array.to_base_units())
+
     def convert_coordinate_units(self, coord, units):
         """Return new DataArray with specified coordinate converted to different units.
 

@@ -228,6 +228,12 @@ temperature_degc = temperature[0].metpy.convert_units('degC')
 temperature_degc
 
 #########################################################################
+# To base unit conversion:
+
+temperature_degK = temperature_degc.metpy.convert_to_base_units()
+temperature_degK
+
+#########################################################################
 # Unit conversion for coordinates:
 heights_on_hpa_levels = heights.metpy.convert_coordinate_units('isobaric3', 'hPa')
 heights_on_hpa_levels['isobaric3']
