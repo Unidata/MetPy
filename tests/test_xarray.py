@@ -153,6 +153,19 @@ def test_convert_units(test_var):
     assert_almost_equal(result[0, 0, 0, 0], 18.44 * units.degC, 2)
 
 
+def test_convert_to_base_units(test_ds):
+    """Test conversion of units."""
+    uwnd = test_ds.u_wind.metpy.quantify()
+    result = (uwnd * (500 * units.hPa)).metpy.convert_to_base_units()
+
+    # Check that units are updated without modifying original
+    assert result.metpy.units == units('kg s**-3')
+    assert test_ds.u_wind.metpy.units == units('m/s')
+
+    # Make sure we now get an array back with properly converted values
+    assert_almost_equal(result[0, 0, 0, 0], -448416.12 * units('kg s**-3'), 2)
+
+
 def test_convert_coordinate_units(test_ds_generic):
     """Test conversion of coordinate units."""
     result = test_ds_generic['test'].metpy.convert_coordinate_units('b', 'percent')
