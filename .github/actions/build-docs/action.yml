@@ -49,7 +49,7 @@ runs:
 
     - name: Upload docs as artifact
       if: ${{ always() && inputs.key != '' }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.key }}-docs
         path: |
