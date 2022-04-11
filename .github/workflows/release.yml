@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download packages
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
 
     - name: Consolidate packages for upload
       run: |
