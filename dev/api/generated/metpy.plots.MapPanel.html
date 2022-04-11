@@ -1327,6 +1327,12 @@ projection, graphics area, and title.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers" title="metpy.plots.MapPanel.layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers</span></code></a></p></td>
 <td><p>A list of strings for a pre-defined feature layer or a Cartopy Feature object.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_edgecolor" title="metpy.plots.MapPanel.layers_edgecolor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_edgecolor</span></code></a></p></td>
+<td><p>A list of strings for a pre-defined edgecolor for a layer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers_linewidth" title="metpy.plots.MapPanel.layers_linewidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers_linewidth</span></code></a></p></td>
+<td><p>A list of values defining the linewidth for a layer.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layout" title="metpy.plots.MapPanel.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
 <td><p>A tuple that contains the description (nrows, ncols, index) of the panel position; default value is (1, 1, 1).</p></td>
 </tr>
@@ -1472,6 +1478,24 @@ prior to entering the block.</p>
 using a short name. The pre-defined layers are: ‘coastline’, ‘states’, ‘borders’, ‘lakes’,
 ‘land’, ‘ocean’, ‘rivers’, ‘usstates’, and ‘uscounties’. Additionally, this can accept
 Cartopy Feature objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_edgecolor">
+<span class="sig-name descname"><span class="pre">layers_edgecolor</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_edgecolor" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of strings for a pre-defined edgecolor for a layer.</p>
+<p>An option to set a different color for the map layer edge colors. Length of list should
+match that of layers if not using default value. Behavior is to repeat colors if not enough
+provided by user. Use <em class="xref py py-obj">None</em> value for ‘ocean’, ‘lakes’, ‘rivers’, and ‘land’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.layers_linewidth">
+<span class="sig-name descname"><span class="pre">layers_linewidth</span></span><a class="headerlink" href="#metpy.plots.MapPanel.layers_linewidth" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of values defining the linewidth for a layer.</p>
+<p>An option to set a different color for the map layer edge colors. Length of list should
+match that of layers if not using default value. Behavior is to repeat colors if not enough
+provided by user. Use <em class="xref py py-obj">None</em> value for ‘ocean’, ‘lakes’, ‘rivers’, and ‘land’.</p>
 </dd></dl>
 
 <dl class="py attribute">

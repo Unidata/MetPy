@@ -16,6 +16,8 @@ MapPanel
       ~MapPanel.ax
       ~MapPanel.cross_validation_lock
       ~MapPanel.layers
+      ~MapPanel.layers_edgecolor
+      ~MapPanel.layers_linewidth
       ~MapPanel.layout
       ~MapPanel.parent
       ~MapPanel.plots
@@ -72,6 +74,8 @@ MapPanel
    .. autoattribute:: ax
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: layers
+   .. autoattribute:: layers_edgecolor
+   .. autoattribute:: layers_linewidth
    .. autoattribute:: layout
    .. autoattribute:: parent
    .. autoattribute:: plots
