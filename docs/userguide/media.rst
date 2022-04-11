@@ -2,6 +2,8 @@
 Talks and Other Media
 ---------------------
 
+* `AMS 2022 talk`_ about plans to benchmark and optimize MetPy's computational performance
+* `AMS 2021 talk`_ on MetPy's plans after the 1.0 release
 * `AMS 2020 talk`_ on MetPy being ready for a 1.0 release
 * `AMS 2019 talk`_ on bringing GEMPAK-like syntax to MetPy's declarative plotting interface
 * `AMS 2019 poster`_ on recent development and community building with MetPy
@@ -32,3 +34,5 @@ Talks and Other Media
 .. _`AMS 2019 talk`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/352384
 .. _`AMS 2019 poster`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/354058
 .. _`AMS 2020 talk`: https://ams.confex.com/ams/2020Annual/meetingapp.cgi/Paper/369011
+.. _`AMS 2021 talk`: https://ams.confex.com/ams/101ANNUAL/meetingapp.cgi/Paper/384315
+.. _`AMS 2022 talk`: https://ams.confex.com/ams/102ANNUAL/meetingapp.cgi/Paper/399731
