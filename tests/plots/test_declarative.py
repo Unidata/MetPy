@@ -288,6 +288,36 @@ def test_declarative_contour_options():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
+@needs_cartopy
+def test_declarative_layers_plot_options():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 5
+    contour.linewidth = 1
+    contour.linecolor = 'grey'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'usstates', 'borders']
+    panel.layers_edgecolor = ['blue', 'red', 'black']
+    panel.layers_linewidth = [0.75, 0.75, 1]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.0188)
 @needs_cartopy
 def test_declarative_contour_convert_units():
