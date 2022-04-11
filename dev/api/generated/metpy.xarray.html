@@ -1447,6 +1447,20 @@ into memory by this operation.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.convert_to_base_units">
+<span class="sig-name descname"><span class="pre">convert_to_base_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_to_base_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_to_base_units" title="Permalink to this definition">#</a></dt>
+<dd><p>Return new DataArray with values converted to base units.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="metpy.xarray.MetPyDataArrayAccessor.convert_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_units</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
+by this operation. Do not utilize on moderate- to large-sized remote datasets before
+subsetting!</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor.convert_units">
 <span class="sig-name descname"><span class="pre">convert_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.convert_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.convert_units" title="Permalink to this definition">#</a></dt>
 <dd><p>Return new DataArray with values converted to different units.</p>

@@ -370,6 +370,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantify</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">))</span></div>
 
+<div class="viewcode-block" id="MetPyDataArrayAccessor.convert_to_base_units"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.convert_to_base_units">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_base_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return new DataArray with values converted to base units.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        convert_units</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory</span>
+<span class="sd">        by this operation. Do not utilize on moderate- to large-sized remote datasets before</span>
+<span class="sd">        subsetting!</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantify</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span></div>
+
 <div class="viewcode-block" id="MetPyDataArrayAccessor.convert_coordinate_units"><a class="viewcode-back" href="../../api/generated/metpy.xarray.html#metpy.xarray.MetPyDataArrayAccessor.convert_coordinate_units">[docs]</a>    <span class="k">def</span> <span class="nf">convert_coordinate_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return new DataArray with specified coordinate converted to different units.</span>
 
