@@ -389,3 +389,8 @@ linkcheck_allowed_redirects = {
     r'https://github.com/Unidata/MetPy/issues/new/choose': r'https://github.com/login.*choose',
     r'https://doi.org/.*': r'https://.*'
 }
+
+linkcheck_request_headers = {
+    r'https://docs.github.com/': {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; '
+                                                'rv:24.0) Gecko/20100101 Firefox/24.0'}
+}
