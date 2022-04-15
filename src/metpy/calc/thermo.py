@@ -715,10 +715,20 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
                 units.Quantity(np.nan, temperature.units))
 
 
+class parcelPathAssumptions(object):
+    """
+    Holds assumptions made about the parcel path during calculations.
+    """
+    def __init__(self):
+        self.use_virtual_temperature = True
+        self.moist_adiabat = 'pseudoadiabatic'
+
+
 @exporter.export
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def parcel_profile(pressure, temperature, dewpoint):
+def parcel_profile(pressure, temperature, dewpoint,
+                   assumptions=parcelPathAssumptions()):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -760,7 +770,8 @@ def parcel_profile(pressure, temperature, dewpoint):
        Renamed ``dewpt`` parameter to ``dewpoint``
 
     """
-    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint)
+    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpoint,
+                                                  assumptions=assumptions)
     return concatenate((t_l, t_u))
 
 
@@ -911,7 +922,8 @@ def _check_pressure(pressure):
     return np.all(pressure[:-1] >= pressure[1:])
 
 
-def _parcel_profile_helper(pressure, temperature, dewpoint):
+def _parcel_profile_helper(pressure, temperature, dewpoint,
+                           assumptions=parcelPathAssumptions()):
     """Help calculate parcel profiles.
 
     Returns the temperature and pressure, above, below, and including the LCL. The
@@ -935,6 +947,13 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     press_lower = concatenate((pressure[pressure >= press_lcl], press_lcl))
     temp_lower = dry_lapse(press_lower, temperature)
 
+    # Do the virtual temperature correction for the parcel below the LCL
+    if assumptions.use_virtual_temperature:
+        # Calculate the relative humidity, mixing ratio, and virtual temperature
+        rh_lowest = relative_humidity_from_dewpoint(temperature, dewpoint)
+        rv_lower = mixing_ratio_from_relative_humidity(press_lower[0], temperature, rh_lowest)
+        temp_lower = virtual_temperature(temp_lower, rv_lower).to(temp_lower.units)
+
     # If the pressure profile doesn't make it to the lcl, we can stop here
     if _greater_or_close(np.nanmin(pressure), press_lcl):
         return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
@@ -954,6 +973,13 @@ def _parcel_profile_helper(pressure, temperature, dewpoint):
     # Find moist pseudo-adiabatic profile starting at the LCL, reversing above sorting
     temp_upper = moist_lapse(unique[::-1], temp_lower[-1]).to(temp_lower.units)
     temp_upper = temp_upper[::-1][indices]
+
+    # Do the virtual temperature correction for the parcel above the LCL
+    if assumptions.use_virtual_temperature:
+
+        # Calculate the mixing ratio and virtual temperature
+        rv_upper = mixing_ratio(saturation_vapor_pressure(temp_lcl), press_upper)
+        temp_upper = virtual_temperature(temp_upper, rv_upper).to(temp_lower.units)
 
     # Return profile pieces
     return (press_lower[:-1], press_lcl, press_upper[1:],
