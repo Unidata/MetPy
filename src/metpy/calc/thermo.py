@@ -715,10 +715,9 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
                 units.Quantity(np.nan, temperature.units))
 
 
-class parcelPathAssumptions(object):
-    """
-    Holds assumptions made about the parcel path during calculations.
-    """
+class ParcelPathAssumptions():
+    """Holds assumptions made about the parcel path during calculations."""
+
     def __init__(self):
         self.use_virtual_temperature = True
         self.moist_adiabat = 'pseudoadiabatic'
@@ -728,7 +727,7 @@ class parcelPathAssumptions(object):
 @preprocess_and_wrap(wrap_like='pressure')
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def parcel_profile(pressure, temperature, dewpoint,
-                   assumptions=parcelPathAssumptions()):
+                   assumptions=ParcelPathAssumptions()):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpoint`, lifted up
@@ -923,7 +922,7 @@ def _check_pressure(pressure):
 
 
 def _parcel_profile_helper(pressure, temperature, dewpoint,
-                           assumptions=parcelPathAssumptions()):
+                           assumptions=ParcelPathAssumptions()):
     """Help calculate parcel profiles.
 
     Returns the temperature and pressure, above, below, and including the LCL. The
