@@ -1,0 +1,27 @@
+name: Check Citation Info
+
+concurrency:
+  group: ${{ github.workflow}}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    paths:
+      - CITATION.cff
+  pull_request:
+    paths:
+      - CITATION.cff
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out a copy of the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Check validity of CITATION.cff
+        uses: citation-file-format/cffconvert-github-action@2.0.0
+        with:
+          args: "--validate"
