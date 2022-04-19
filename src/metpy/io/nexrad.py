@@ -915,8 +915,11 @@ class GenericDigitalMapper(DataMapper):
 
     def __init__(self, prod):
         """Initialize the mapper by pulling out all the information from the product."""
+        # Need to treat this value as unsigned, so we can use the full 16-bit range. This
+        # is necessary at least for the DPR product, otherwise it has a value of -1.
+        max_data_val = prod.thresholds[5] & 0xFFFF
+
         # Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.
-        max_data_val = prod.thresholds[5]
         super().__init__(max_data_val + 1)
 
         scale = float32(prod.thresholds[0], prod.thresholds[1])
