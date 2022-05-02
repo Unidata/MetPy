@@ -46,6 +46,50 @@ def test_declarative_image():
     return pc.figure
 
 
+@needs_cartopy
+def test_declarative_three_dims_error():
+    """Test making an image plot with three dimensions."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    img = ImagePlot()
+    img.data = data
+    img.field = 'Temperature'
+    img.colormap = 'coolwarm'
+
+    panel = MapPanel()
+    panel.plots = [img]
+
+    pc = PanelContainer()
+    pc.panel = panel
+
+    with pytest.raises(ValueError, match='subset for plotting'):
+        pc.draw()
+
+
+@needs_cartopy
+def test_declarative_four_dims_error():
+    """Test making a contour plot with four dimensions."""
+    data = xr.open_dataset(get_test_data('CAM_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'PN'
+    contour.linecolor = 'black'
+    contour.contours = list(range(0, 1200, 4))
+
+    panel = MapPanel()
+    panel.plots = [contour]
+    panel.layout = (1, 1, 1)
+    panel.layers = ['coastline', 'borders', 'states', 'land']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panels = [panel]
+
+    with pytest.raises(ValueError, match='subset for plotting'):
+        pc.draw()
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
 @needs_cartopy
 def test_declarative_contour():

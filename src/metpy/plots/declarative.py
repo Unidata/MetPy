@@ -1173,11 +1173,19 @@ class PlotScalar(Plots2D):
                 if selector is not None:
                     subset[dim_coord] = selector
             data_subset = data.metpy.sel(**subset).squeeze()
-            if data_subset.ndim != 2:
-                raise ValueError(
-                    'Must provide a combination of subsetting values to give 2D data subset '
-                    'for plotting'
-                )
+            if (data_subset.ndim != 2):
+                if data_subset.ndim == 3:
+                    if (data_subset.shape[-1] not in (3, 4)):
+                        raise ValueError(
+                            'Must provide a combination of subsetting values to give either 2D'
+                            ' data or 3D data subset for plotting with third dimension size 3'
+                            ' or 4'
+                        )
+                else:
+                    raise ValueError(
+                        'Must provide a combination of subsetting values to give 2D data '
+                        'subset for plotting'
+                    )
             # Handle unit conversion (both direct unit specification and scaling)
             if self.plot_units is not None:
                 data_subset = data_subset.metpy.convert_units(self.plot_units)
