@@ -1369,11 +1369,19 @@
                 <span class="k">if</span> <span class="n">selector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">subset</span><span class="p">[</span><span class="n">dim_coord</span><span class="p">]</span> <span class="o">=</span> <span class="n">selector</span>
             <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">subset</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;Must provide a combination of subsetting values to give 2D data subset &#39;</span>
-                    <span class="s1">&#39;for plotting&#39;</span>
-                <span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">data_subset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">data_subset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s1">&#39;Must provide a combination of subsetting values to give either 2D&#39;</span>
+                            <span class="s1">&#39; data or 3D data subset for plotting with third dimension size 3&#39;</span>
+                            <span class="s1">&#39; or 4&#39;</span>
+                        <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Must provide a combination of subsetting values to give 2D data &#39;</span>
+                        <span class="s1">&#39;subset for plotting&#39;</span>
+                    <span class="p">)</span>
             <span class="c1"># Handle unit conversion (both direct unit specification and scaling)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data_subset</span> <span class="o">=</span> <span class="n">data_subset</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_units</span><span class="p">)</span>

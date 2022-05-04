@@ -245,7 +245,7 @@ Add the geometry plot to a panel and container.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/metpy/plots/declarative.py:2086: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
+    /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/metpy/plots/declarative.py:2094: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
       geo_obj = max(geo_obj, key=lambda x: x.length)
 
 
@@ -254,7 +254,7 @@ Add the geometry plot to a panel and container.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.810 seconds)
+   **Total running time of the script:** ( 0 minutes  7.973 seconds)
 
 
 .. _sphx_glr_download_examples_plots_spc_convective_outlook.py:
