@@ -16,8 +16,9 @@ updates:
       separator: "-"
     labels:
       - "Type: Maintenance"
+      - "Area: Infrastructure"
     commit-message:
-      prefix: "MNT: "
+      prefix: "CI: "
       include: "scope"
 
   - package-ecosystem: "github-actions"
@@ -35,6 +36,7 @@ updates:
       separator: "-"
     labels:
       - "Type: Maintenance"
+      - "Area: Infrastructure"
     commit-message:
-      prefix: "MNT: "
+      prefix: "CI: "
       include: "scope"
