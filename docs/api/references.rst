@@ -141,6 +141,10 @@ References
            *Journal of Geodesy* **74**, 128-133, doi:`10.1007/s001900050278
            <https://doi.org/10.1007/s001900050278>`_.
 
+.. [MurphyKoop2005] Murphy, D.M. and T. Koop, 2005: Review of the vapour pressures of ice and
+           supercooled water for atmospheric applications. *Q.J.R. Meteorol. Soc.*, **131**,
+           1539-1565, doi:`10.1256/qj.04.94 <https://doi.org/10.1256/qj.04.94>`_.
+
 .. [NOAA1976] National Oceanic and Atmospheric Administration, National Aeronautics and
            Space Administration, and U. S. Air Force, 1976: `U. S. Standard Atmosphere 1976
            <https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf>`_,
