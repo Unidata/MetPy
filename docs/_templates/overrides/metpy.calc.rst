@@ -35,6 +35,7 @@ Moist Thermodynamics
       dewpoint_from_relative_humidity
       dewpoint_from_specific_humidity
       equivalent_potential_temperature
+      ice_saturation_vapor_pressure
       mixing_ratio
       mixing_ratio_from_relative_humidity
       mixing_ratio_from_specific_humidity
