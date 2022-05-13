@@ -25,7 +25,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         relative_humidity_from_specific_humidity,
                         relative_humidity_wet_psychrometric,
                         saturation_equivalent_potential_temperature, saturation_mixing_ratio,
-                        saturation_vapor_pressure, showalter_index,
+                        saturation_vapor_pressure, ice_saturation_vapor_pressure, showalter_index,
                         specific_humidity_from_dewpoint, specific_humidity_from_mixing_ratio,
                         static_stability, surface_based_cape_cin,
                         temperature_from_potential_temperature, thickness_hydrostatic,
@@ -293,6 +293,16 @@ def test_sat_vapor_pressure():
     temp = np.array([5., 10., 18., 25.]) * units.degC
     real_es = np.array([8.72, 12.27, 20.63, 31.67]) * units.mbar
     assert_array_almost_equal(saturation_vapor_pressure(temp), real_es, 2)
+
+
+def test_ice_sat_vapor_pressure():
+    """Test ice_saturation_vapor_pressure calculation."""
+    temp = (np.arange(1, 38) * units.degC).to(units.degK)
+    assert np.all(calcs.saturation_vapor_pressure(temp)
+                  < calcs.ice_saturation_vapor_pressure(temp))
+    temp = (temp.to(units.degC) * (-1)).to(units.degK)
+    assert np.all(calcs.saturation_vapor_pressure(temp)
+                  > calcs.ice_saturation_vapor_pressure(temp))
 
 
 def test_sat_vapor_pressure_scalar():
