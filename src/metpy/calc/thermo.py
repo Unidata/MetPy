@@ -1035,14 +1035,19 @@ def saturation_vapor_pressure(temperature):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is that from [Bolton1980]_ for T in degrees Celsius:
+    The formula used is from eq. 10 in [MurphyKoop2005]_ for T in degrees Kelvin:
 
-    .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
+    .. math:: e^[54.842763 - \frac{6763.22}{T} - 4.210\:ln(T) + 0.000367T
+                 + tanh(0.0415(T - 218.8))(53.878 - \frac{1331.22}{T}
+                 - 9.44523\:ln(T) + 0.014025T)]
 
     """
-    # Converted from original in terms of C to use kelvin.
-    return mpconsts.nounit.sat_pressure_0c * np.exp(
-        17.67 * (temperature - 273.15) / (temperature - 29.65)
+    # valid for 123 < T < 332
+    return np.exp(
+        54.842763 - 6763.22 / temperature - 4.210 * np.log(temperature)
+        + 0.000367 * temperature + np.tanh(0.0415 * (temperature - 218.8))
+        * (53.878 - 1331.22 / temperature - 9.44523 * np.log(temperature)
+        + 0.014025 * temperature)
     )
 
 
