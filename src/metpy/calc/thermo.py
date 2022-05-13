@@ -1014,7 +1014,7 @@ def vapor_pressure(pressure, mixing_ratio):
 @preprocess_and_wrap(wrap_like='temperature')
 @process_units({'temperature': '[temperature]'}, '[pressure]')
 def saturation_vapor_pressure(temperature):
-    r"""Calculate the saturation water vapor (partial) pressure.
+    r"""Calculate the saturation (equilibrium) water vapor (partial) pressure.
 
     Parameters
     ----------
@@ -1048,6 +1048,38 @@ def saturation_vapor_pressure(temperature):
         + 0.000367 * temperature + np.tanh(0.0415 * (temperature - 218.8))
         * (53.878 - 1331.22 / temperature - 9.44523 * np.log(temperature)
         + 0.014025 * temperature)
+    )
+
+
+@exporter.export
+@preprocess_and_wrap(wrap_like='temperature')
+@process_units({'temperature': '[temperature]'}, '[pressure]')
+def ice_saturation_vapor_pressure(temperature):
+    r"""Calculate the ice saturation (equilibrium) water vapor (partial) pressure.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        Air temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        Ice saturation water vapor (partial) pressure
+
+    See Also
+    --------
+    vapor_pressure
+
+    The formula used is from eq. 7 in [MurphyKoop2005]_ for T in degrees Kelvin:
+
+    .. math:: e^[9.550426 - \frac{5723.265}{T} + 3.53068\:ln(T) - 0.00728332T]
+
+    """
+    # valid for T > 110 K
+    return np.exp(
+        9.550426 - 5723.265 / temperature + 3.53068 * np.log(temperature)
+        - 0.00728332 * temperature
     )
 
 
