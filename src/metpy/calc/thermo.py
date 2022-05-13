@@ -1047,7 +1047,7 @@ def saturation_vapor_pressure(temperature):
         54.842763 - 6763.22 / temperature - 4.210 * np.log(temperature)
         + 0.000367 * temperature + np.tanh(0.0415 * (temperature - 218.8))
         * (53.878 - 1331.22 / temperature - 9.44523 * np.log(temperature)
-        + 0.014025 * temperature)
+           + 0.014025 * temperature)
     )
 
 
