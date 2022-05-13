@@ -298,11 +298,11 @@ def test_sat_vapor_pressure():
 def test_ice_sat_vapor_pressure():
     """Test ice_saturation_vapor_pressure calculation."""
     temp = (np.arange(1, 38) * units.degC).to(units.degK)
-    assert np.all(calcs.saturation_vapor_pressure(temp)
-                  < calcs.ice_saturation_vapor_pressure(temp))
+    assert np.all(saturation_vapor_pressure(temp)
+                  < ice_saturation_vapor_pressure(temp))
     temp = (temp.to(units.degC) * (-1)).to(units.degK)
-    assert np.all(calcs.saturation_vapor_pressure(temp)
-                  > calcs.ice_saturation_vapor_pressure(temp))
+    assert np.all(saturation_vapor_pressure(temp)
+                  > ice_saturation_vapor_pressure(temp))
 
 
 def test_sat_vapor_pressure_scalar():
