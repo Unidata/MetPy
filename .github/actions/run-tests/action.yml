@@ -26,10 +26,11 @@ runs:
       # By running coverage in "parallel" mode and "combining", we can clean up the path names
       run: |
         set -e -o pipefail
-        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning tests/ 2>&1 | tee tests-${{ inputs.key }}.log
+        python -m coverage run -p -m pytest --mpl -W error::metpy.deprecation.MetpyDeprecationWarning --html report.html --self-contained-html tests/ 2>&1 | tee tests-${{ inputs.key }}.log
         python -m coverage combine
         python -m coverage report
         python -m coverage xml
+        cat report.html >> $GITHUB_STEP_SUMMARY
 
     - name: Run doctests
       if: ${{ inputs.run-doctests == 'true' }}
