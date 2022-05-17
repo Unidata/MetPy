@@ -30,7 +30,10 @@ runs:
         python -m coverage combine
         python -m coverage report
         python -m coverage xml
-        cat report.html >> $GITHUB_STEP_SUMMARY
+
+    - name: Output Summary
+      shell: bash
+      run: cat report.html >> $GITHUB_STEP_SUMMARY
 
     - name: Run doctests
       if: ${{ inputs.run-doctests == 'true' }}
