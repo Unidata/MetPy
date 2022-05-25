@@ -417,7 +417,7 @@ def test_declarative_events():
     panel = MapPanel()
     panel.area = 'us'
     panel.projection = 'lcc'
-    panel.layers = ['coastline', 'borders', 'states']
+    panel.layers = []
     panel.plots = [contour, img]
 
     pc = PanelContainer()
@@ -527,7 +527,7 @@ def test_projection_object(ccrs, cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.02)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
 def test_colorfill(cfeature):
     """Test that we can use ContourFillPlot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -541,7 +541,7 @@ def test_colorfill(cfeature):
 
     panel = MapPanel()
     panel.area = (-110, -60, 25, 55)
-    panel.layers = [cfeature.STATES]
+    panel.layers = []
     panel.plots = [contour]
 
     pc = PanelContainer()
@@ -552,7 +552,7 @@ def test_colorfill(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.03)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 def test_colorfill_horiz_colorbar(cfeature):
     """Test that we can use ContourFillPlot with a horizontal colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -566,7 +566,7 @@ def test_colorfill_horiz_colorbar(cfeature):
 
     panel = MapPanel()
     panel.area = (-110, -60, 25, 55)
-    panel.layers = [cfeature.STATES]
+    panel.layers = []
     panel.plots = [contour]
 
     pc = PanelContainer()
@@ -577,7 +577,7 @@ def test_colorfill_horiz_colorbar(cfeature):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
 def test_colorfill_no_colorbar(cfeature):
     """Test that we can use ContourFillPlot with no colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -1078,7 +1078,7 @@ def test_declarative_sfc_obs(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.)
 @needs_cartopy
 def test_declarative_sfc_text():
     """Test making a surface observation plot with text."""
@@ -1099,7 +1099,7 @@ def test_declarative_sfc_text():
     panel.layout = (1, 1, 1)
     panel.projection = 'lcc'
     panel.area = 'in'
-    panel.layers = ['states']
+    panel.layers = []
     panel.plots = [obs]
 
     # Bringing it all together
@@ -1255,7 +1255,7 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.11)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.114)
 @needs_cartopy
 def test_declarative_upa_obs_convert_barb_units():
     """Test making a full upperair observation plot with barbs converting units."""
@@ -1283,7 +1283,7 @@ def test_declarative_upa_obs_convert_barb_units():
     panel.layout = (1, 1, 1)
     panel.area = (-124, -72, 20, 53)
     panel.projection = 'lcc'
-    panel.layers = ['coastline', 'borders', 'states', 'land']
+    panel.layers = []
     panel.plots = [obs]
 
     # Bringing it all together
