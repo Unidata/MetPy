@@ -554,7 +554,7 @@ def test_colorfill(cfeature):
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.03)
 def test_colorfill_horiz_colorbar(cfeature):
-    """Test that we can use ContourFillPlot."""
+    """Test that we can use ContourFillPlot with a horizontal colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
     contour = FilledContourPlot()
@@ -579,7 +579,7 @@ def test_colorfill_horiz_colorbar(cfeature):
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 def test_colorfill_no_colorbar(cfeature):
-    """Test that we can use ContourFillPlot."""
+    """Test that we can use ContourFillPlot with no colorbar."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
 
     contour = FilledContourPlot()
@@ -1258,7 +1258,7 @@ def test_declarative_upa_obs():
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.11)
 @needs_cartopy
 def test_declarative_upa_obs_convert_barb_units():
-    """Test making a full upperair observation plot."""
+    """Test making a full upperair observation plot with barbs converting units."""
     data = pd.read_csv(get_test_data('UPA_obs.csv', as_file_obj=False))
     data.units = ''
     data.units = {'pressure': 'hPa', 'height': 'meters', 'temperature': 'degC',
