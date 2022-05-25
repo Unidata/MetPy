@@ -504,6 +504,7 @@ def test_no_field_error_barbs():
         barbs.draw()
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
 def test_projection_object(ccrs, cfeature):
     """Test that we can pass a custom map projection."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
