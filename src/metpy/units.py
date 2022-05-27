@@ -23,7 +23,6 @@ import warnings
 
 import numpy as np
 import pint
-import pint.unit
 
 log = logging.getLogger(__name__)
 
@@ -56,9 +55,8 @@ with warnings.catch_warnings():
     warnings.simplefilter('ignore')
     units.Quantity([])
 
-# For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
-units.define(pint.unit.UnitDefinition('percent', '%', (),
-             pint.converters.ScaleConverter(0.01)))
+# Add a percent unit
+units.define('percent = 0.01 = %')
 
 # Define commonly encountered units not defined by pint
 units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
