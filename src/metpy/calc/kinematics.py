@@ -10,6 +10,7 @@ from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
+from thermo import brunt_vaisala_frequency
 
 exporter = Exporter(globals())
 
@@ -1056,3 +1057,25 @@ def q_vector(
     q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
 
     return q1.to_base_units(), q2.to_base_units()
+
+
+
+@exporter.export
+@add_grid_arguments_from_xarray
+@preprocess_and_wrap(wrap_like='u')
+@check_units('[temperature]', '[speed]','[length]','[dimensionless]',)
+def eady_growth_rate(
+    th,u ,z,latitude=None,opt=None,dim=None  
+):
+    r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability
+
+    .. math::  0.3098*g*abs(f)*abs(du/dz)/brunt_vaisala_atm   
+
+    Parameters
+    ----------
+    
+
+    Returns
+    -------
+    
+
