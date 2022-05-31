@@ -1062,20 +1062,28 @@ def q_vector(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
+@preprocess_and_wrap(wrap_like='u',broadcast='latitude')
 @check_units('[temperature]', '[speed]','[length]','[dimensionless]',)
 def eady_growth_rate(
-    th,u ,z,latitude=None,opt=None,dim=None  
+    potential_temperature,u,height,latitude  
 ):
     r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability
 
-    .. math::  0.3098*g*abs(f)*abs(du/dz)/brunt_vaisala_atm   
+    .. math::  0.3098*g*abs(1/Coriolis parameter)*abs(du/dheight)/brunt_vaisala_frequency 
 
     Parameters
     ----------
-    
+    potential_temperature : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
+        potential temperature
+    u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
+        zonal wind    
+    height : `xarray.DataArray` or `pint.Quantity`
+        Atmospheric (geopotential) height
+    latitude : `xarray.DataArray` or `pint.Quantity`
+        The latitude,Note that an argument without units is treated as
+        dimensionless, which is equivalent to radians.    
 
     Returns
     -------
-    
+    """
 
