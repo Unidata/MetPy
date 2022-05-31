@@ -219,7 +219,6 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pint</span>
-<span class="kn">import</span> <span class="nn">pint.unit</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -252,9 +251,8 @@
     <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
     <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">([])</span>
 
-<span class="c1"># For pint 0.6, this is the best way to define a dimensionless unit. See pint #185</span>
-<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">pint</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">UnitDefinition</span><span class="p">(</span><span class="s1">&#39;percent&#39;</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="p">(),</span>
-             <span class="n">pint</span><span class="o">.</span><span class="n">converters</span><span class="o">.</span><span class="n">ScaleConverter</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)))</span>
+<span class="c1"># Add a percent unit</span>
+<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;percent = 0.01 = %&#39;</span><span class="p">)</span>
 
 <span class="c1"># Define commonly encountered units not defined by pint</span>
 <span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_north = degree = degrees_N = degreesN = degree_north = degree_N &#39;</span>
