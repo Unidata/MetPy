@@ -10,8 +10,7 @@ from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
-from thermo import brunt_vaisala_frequency
-
+from .thermo import brunt_vaisala_frequency
 exporter = Exporter(globals())
 
 
@@ -1059,10 +1058,9 @@ def q_vector(
     return q1.to_base_units(), q2.to_base_units()
 
 
-
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u',broadcast='latitude')
+@preprocess_and_wrap(wrap_like='u')
 @check_units('[temperature]', '[speed]','[length]','[dimensionless]',)
 def eady_growth_rate(
     potential_temperature,u,height,latitude  
@@ -1085,5 +1083,10 @@ def eady_growth_rate(
 
     Returns
     -------
+     (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
+        Eady_growth_rate
     """
+    dudheight=gradient(u,axes=height)
+    egr=0.3098*mpconsts.earth_gravity*abs(1/coriolis_parameter)*abs(dudheight)/brunt_vaisala_frequency
+    return egr
 
