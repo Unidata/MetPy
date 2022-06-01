@@ -138,7 +138,7 @@ def test_pandas_units_on_dataframe():
 
 
 @pytest.mark.filterwarnings("ignore:Pandas doesn't allow columns to be created")
-def test_pandas_units_on_dataframe_not_all_united():
+def test_pandas_units_on_dataframe_not_all_with_units():
     """Unit attachment with units attribute with a column with no units."""
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
     df.units = {'cola': 'kilometers'}
