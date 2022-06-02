@@ -72,7 +72,7 @@ if hasattr(pint, 'UnitStrippedWarning'):
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
-    """Attach units to data in pandas dataframes and return united arrays.
+    """Attach units to data in pandas dataframes and return quantities.
 
     Parameters
     ----------
@@ -85,7 +85,7 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
 
     Returns
     -------
-        Dictionary containing united arrays with keys corresponding to the dataframe
+        Dictionary containing `Quantity` instances with keys corresponding to the dataframe
         column names.
 
     """
@@ -107,7 +107,7 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
 
 
 def concatenate(arrs, axis=0):
-    r"""Concatenate multiple values into a new unitized object.
+    r"""Concatenate multiple values into a new quantity.
 
     This is essentially a scalar-/masked array-aware version of `numpy.concatenate`. All items
     must be able to be converted to the same units. If an item has no units, it will be given

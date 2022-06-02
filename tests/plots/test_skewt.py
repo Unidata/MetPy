@@ -298,7 +298,7 @@ def test_hodograph_api():
 
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.6 if MPL_VERSION == '3.3' else 0.)
 def test_hodograph_units():
-    """Test passing unit-ed quantities to Hodograph."""
+    """Test passing quantities to Hodograph."""
     fig = plt.figure(figsize=(9, 9))
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax)
@@ -402,7 +402,7 @@ def test_skewt_barb_no_default_unit_conversion():
 @pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
                                  (np.array([3]), np.array([3]) * units('m/s'))])
 def test_skewt_barb_unit_conversion_exception(u, v):
-    """Test that errors are raise if unit conversion is requested on un-united data."""
+    """Test that an error is raised if unit conversion is requested on plain arrays."""
     p_wind = np.array([500]) * units.hPa
 
     fig = plt.figure(figsize=(9, 9))
@@ -496,8 +496,8 @@ def test_hodograph_wind_vectors():
     return fig
 
 
-def test_united_hodograph_range():
-    """Tests making a hodograph with a united ranged."""
+def test_hodograph_range_with_units():
+    """Tests making a hodograph with a range with units."""
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(1, 1, 1)
     Hodograph(ax, component_range=60. * units.knots)
