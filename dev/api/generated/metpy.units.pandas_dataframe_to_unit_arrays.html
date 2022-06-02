@@ -1288,7 +1288,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.units.pandas_dataframe_to_unit_arrays">
 <span class="sig-prename descclassname"><span class="pre">metpy.units.</span></span><span class="sig-name descname"><span class="pre">pandas_dataframe_to_unit_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#pandas_dataframe_to_unit_arrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.pandas_dataframe_to_unit_arrays" title="Permalink to this definition">#</a></dt>
-<dd><p>Attach units to data in pandas dataframes and return united arrays.</p>
+<dd><p>Attach units to data in pandas dataframes and return quantities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1299,7 +1299,7 @@ the units attribute if it is attached to the dataframe.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em>Dictionary containing united arrays with keys corresponding to the dataframe</em></p></li>
+<li><p>Dictionary containing <em class="xref py py-obj">Quantity</em> instances with keys corresponding to the dataframe</p></li>
 <li><p><em>column names.</em></p></li>
 </ul>
 </p>

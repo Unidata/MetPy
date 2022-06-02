@@ -268,7 +268,7 @@
 
 
 <div class="viewcode-block" id="pandas_dataframe_to_unit_arrays"><a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a><span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attach units to data in pandas dataframes and return united arrays.</span>
+    <span class="sd">&quot;&quot;&quot;Attach units to data in pandas dataframes and return quantities.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -281,7 +281,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Dictionary containing united arrays with keys corresponding to the dataframe</span>
+<span class="sd">        Dictionary containing `Quantity` instances with keys corresponding to the dataframe</span>
 <span class="sd">        column names.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -303,7 +303,7 @@
 
 
 <div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenate multiple values into a new unitized object.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenate multiple values into a new quantity.</span>
 
 <span class="sd">    This is essentially a scalar-/masked array-aware version of `numpy.concatenate`. All items</span>
 <span class="sd">    must be able to be converted to the same units. If an item has no units, it will be given</span>
