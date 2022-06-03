@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
+from cgi import print_directory
 import numpy as np
 
 from . import coriolis_parameter
@@ -10,7 +11,7 @@ from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
-from .thermo import brunt_vaisala_frequency
+from .thermo import brunt_vaisala_frequency, brunt_vaisala_frequency_squared
 exporter = Exporter(globals())
 
 
@@ -1060,10 +1061,10 @@ def q_vector(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like='u')
-@check_units('[temperature]', '[speed]','[length]','[dimensionless]',)
+@preprocess_and_wrap(wrap_like=('u','u'),broadcast=('potential_temperature', 'u', 'height', 'latitude'))
+@check_units('[temperature]', '[speed]','[length]','[dimensionless]')
 def eady_growth_rate(
-    potential_temperature,u,height,latitude  
+    potential_temperature,u,height,latitude,x_dim=-1, y_dim=-2,vertical_dim=-3
 ):
     r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability
 
@@ -1086,7 +1087,10 @@ def eady_growth_rate(
      (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         Eady_growth_rate
     """
-    dudheight=gradient(u,axes=height)
-    egr=0.3098*mpconsts.earth_gravity*abs(1/coriolis_parameter)*abs(dudheight)/brunt_vaisala_frequency
-    return egr
+   
+    #dudheight=first_derivative(u, delta=height, axis=y_dim)
+    #egr=0.3098*mpconsts.earth_gravity*abs(1/coriolis_parameter(latitude))*abs(dudheight)/brunt_vaisala_frequency(height,potential_temperature)
+    #print(egr)
+    #return egr
+    print(brunt_vaisala_frequency_squared(height,potential_temperature,vertical_dim=0))
 
