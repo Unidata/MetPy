@@ -1288,22 +1288,32 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.bunkers_storm_motion">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">bunkers_storm_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.bunkers_storm_motion" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.</p>
-<p>Uses the storm motion calculation from <a class="reference internal" href="../references.html#bunkers2000" id="id1"><span>[Bunkers2000]</span></a>.</p>
+<dd><p>Calculate right-mover and left-mover supercell storm motions using the Bunkers method.</p>
+<p>This is a physically based, shear-relative, and Galilean invariant method for predicting
+supercell motion. Full atmospheric profiles of wind components, as well as pressure and
+heights, need to be provided so that calculation can properly calculate the required
+surface to 6 km mean flow.</p>
+<p>The calculation in summary is (from <a class="reference internal" href="../references.html#bunkers2000" id="id1"><span>[Bunkers2000]</span></a>):</p>
+<ul class="simple">
+<li><p>surface to 6 km non-pressure-weighted mean wind</p></li>
+<li><p>a deviation from the sfc to 6 km mean wind of 7.5 m s−1</p></li>
+<li><p>a 5.5 to 6 km mean wind for the head of the vertical wind shear vector</p></li>
+<li><p>a surface to 0.5 km mean wind for the tail of the vertical wind shear vector</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure from sounding</p></li>
-<li><p><strong>u</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – U component of the wind</p></li>
-<li><p><strong>v</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – V component of the wind</p></li>
-<li><p><strong>height</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Height from sounding</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure from full profile</p></li>
+<li><p><strong>u</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Full profile of the U-component of the wind</p></li>
+<li><p><strong>v</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Full profile of the V-component of the wind</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Full profile of height</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>right_mover</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – U and v component of Bunkers RM storm motion</p></li>
-<li><p><strong>left_mover</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – U and v component of Bunkers LM storm motion</p></li>
-<li><p><strong>wind_mean</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – U and v component of sfc-6km mean flow</p></li>
+<li><p><strong>right_mover</strong> ((<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>)) – Scalar U- and V- components of Bunkers right-mover storm motion</p></li>
+<li><p><strong>left_mover</strong> ((<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>)) – Scalar U- and V- components of Bunkers left-mover storm motion</p></li>
+<li><p><strong>wind_mean</strong> ((<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>)) – Scalar U- and V- components of surface to 6 km mean flow</p></li>
 </ul>
 </p>
 </dd>
