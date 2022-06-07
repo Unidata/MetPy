@@ -1088,12 +1088,10 @@ def eady_growth_rate(
         Eady_growth_rate
     """
    
-    #dudheight=first_derivative(u, delta=height)
-    dudheight=gradient(u,axes=height)
-    print(dudheight)
+    dudheight=first_derivative(u,x=height)
     #egr=0.3098*mpconsts.earth_gravity*abs(1/coriolis_parameter(latitude))*abs(dudheight)/brunt_vaisala_frequency(height,potential_temperature)
-    #test=0.398*mpconsts.earth_gravity*abs(1/coriolis_parameter(latitude))
-    #print(test)
+    test=brunt_vaisala_frequency(height,potential_temperature)
+    print(test)
     #print(potential_temperature.shape,u.shape,height.shape,latitude.shape)
     #return egr
     
