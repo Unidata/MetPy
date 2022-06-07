@@ -1061,7 +1061,7 @@ def q_vector(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(wrap_like=('u','u'),broadcast=('potential_temperature', 'u', 'height', 'latitude'))
+@preprocess_and_wrap(broadcast=('height', 'u','latitude','potential_temperature'))
 @check_units('[temperature]', '[speed]','[length]','[dimensionless]')
 def eady_growth_rate(
     potential_temperature,u,height,latitude,x_dim=-1, y_dim=-2,vertical_dim=-3
@@ -1088,9 +1088,13 @@ def eady_growth_rate(
         Eady_growth_rate
     """
    
-    #dudheight=first_derivative(u, delta=height, axis=y_dim)
+    #dudheight=first_derivative(u, delta=height)
+    dudheight=gradient(u,axes=height)
+    print(dudheight)
     #egr=0.3098*mpconsts.earth_gravity*abs(1/coriolis_parameter(latitude))*abs(dudheight)/brunt_vaisala_frequency(height,potential_temperature)
-    #print(egr)
+    #test=0.398*mpconsts.earth_gravity*abs(1/coriolis_parameter(latitude))
+    #print(test)
+    #print(potential_temperature.shape,u.shape,height.shape,latitude.shape)
     #return egr
-    print(brunt_vaisala_frequency_squared(height,potential_temperature,vertical_dim=0))
+    
 
