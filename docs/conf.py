@@ -380,7 +380,9 @@ linkcheck_ignore = [
     # This one appears to be blocking robots
     r'https://doi\.org/10\.1088/0026-1394/45/2/004',
     # Frequently fails the linkchecker
-    r'https://ams\.confex\.com/ams/[\d\w]+/meetingapp\.cgi/.*'
+    r'https://ams\.confex\.com/ams/[\d\w]+/meetingapp\.cgi/.*',
+    # Can't seem to get around inconsistent retry errors
+    r'https://doi\.org/10\.1289/ehp\.1206273'
     ]
 
 linkcheck_allowed_redirects = {
