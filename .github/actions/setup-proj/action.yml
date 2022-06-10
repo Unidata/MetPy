@@ -16,7 +16,7 @@ runs:
       uses: actions/cache@v3
       id: cache-proj
       with:
-        path: ~/${{ inputs.install-path }}
+        path: ${{ inputs.install-path }}
         key: proj-${{ runner.os }}-${{ inputs.version }}-0
 
     - name: Download and build PROJ
@@ -28,7 +28,7 @@ runs:
         pushd proj-build
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/${{ inputs.install-path }} -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
+        cmake .. -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/${{ inputs.install-path }} -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
           -DENABLE_IPO=ON -DENABLE_CURL=OFF -DBUILD_CCT:BOOL=OFF -DBUILD_CS2CS:BOOL=OFF -DBUILD_GEOD:BOOL=OFF \
           -DBUILD_GIE:BOOL=OFF -DBUILD_PROJINFO:BOOL=OFF -DBUILD_PROJSYNC:BOOL=OFF -DBUILD_TESTING:BOOL=OFF
         cmake --build . -j6
@@ -38,7 +38,7 @@ runs:
     - name: Update environment
       shell: bash
       run: |
-        echo "CPATH=$CPATH:$HOME/${{ inputs.install-path }}/include" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$LIBRARY_PATH:$HOME/${{ inputs.install-path }}/lib" >> $GITHUB_ENV
-        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/${{ inputs.install-path }}/lib" >> $GITHUB_ENV
-        echo "$HOME/${{ inputs.install-path }}/bin" >> $GITHUB_PATH
+        echo "CPATH=$CPATH:$GITHUB_WORKSPACE/${{ inputs.install-path }}/include" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$LIBRARY_PATH:$GITHUB_WORKSPACE/${{ inputs.install-path }}/lib" >> $GITHUB_ENV
+        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$GITHUB_WORKSPACE/${{ inputs.install-path }}/lib" >> $GITHUB_ENV
+        echo "$GITHUB_WORKSPACE/${{ inputs.install-path }}/bin" >> $GITHUB_PATH
