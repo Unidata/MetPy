@@ -13,7 +13,7 @@ runs:
   using: composite
   steps:
     - name: Set up caching
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache-proj
       with:
         path: ~/${{ inputs.install-path }}
