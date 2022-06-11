@@ -2751,30 +2751,24 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
         The thickness of the layer in meters
 
     Examples
-    -------
+    --------
     >>> import metpy.calc as mpcalc
     >>> from metpy.units import units
     >>> temperature = [278, 275, 270] * units.kelvin
     >>> pressure = [950, 925, 900] * units.millibar
     >>> mpcalc.thickness_hydrostatic(pressure, temperature)
-    434.37688923426924 meter
-    
+    <Quantity(434.376889, 'meter')>
+
     >>> bottom, depth = 950*units.millibar, 25*units.millibar
     >>> mpcalc.thickness_hydrostatic(pressure, temperature, bottom=bottom, depth=depth)
-    215.83540443336247 meter
-
-    The parameter `depth` must be specified if the pressure profile spans 
-    less than 100 hPa and `bottom` is given:
-
-    >>> mpcalc.thickness_hydrostatic(pressure, temperature, bottom=bottom)
-    ValueError: Specified bound is outside pressure range.
+    <Quantity(215.835404, 'meter')>
 
     To include the mixing ratio in the calculation:
 
     >>> r = [0.005, 0.006, 0.002] * units.dimensionless
-    >>> mpcalc.thickness_hydrostatic(pressure, temperature, mixing_ratio=r, 
+    >>> mpcalc.thickness_hydrostatic(pressure, temperature, mixing_ratio=r,
     >>>                              bottom=bottom, depth=depth)
-    216.55262330206793 meter
+    <Quantity(216.552623, 'meter')>
 
     See Also
     --------
