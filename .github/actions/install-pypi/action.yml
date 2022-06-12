@@ -37,7 +37,7 @@ runs:
       shell: bash
       run: |
         sudo apt-get install libgeos-dev
-        python -m pip install --no-binary :all: shapely
+        python -m pip install --no-binary shapely -c ci/${{ inputs.version-file }} shapely
 
     - name: Install dependencies
       shell: bash
