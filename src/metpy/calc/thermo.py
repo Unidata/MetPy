@@ -2759,7 +2759,7 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     >>> mpcalc.thickness_hydrostatic(pressure, temperature)
     <Quantity(434.376889, 'meter')>
 
-    >>> bottom, depth = 950*units.millibar, 25*units.millibar
+    >>> bottom, depth = 950 * units.millibar, 25 * units.millibar
     >>> mpcalc.thickness_hydrostatic(pressure, temperature, bottom=bottom, depth=depth)
     <Quantity(215.835404, 'meter')>
 
