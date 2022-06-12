@@ -37,6 +37,10 @@ runs:
       shell: bash
       run: sudo apt-get install libgeos-dev
 
+    - name: Disable Shapely Wheels
+      shell: bash
+      run: echo "PIP_NO_BINARY=shapely" >> $GITHUB_ENV
+
     - name: Install dependencies
       shell: bash
       run: python -m pip install -r ci/${{ inputs.type }}_requirements.txt -c ci/${{ inputs.version-file }}
@@ -44,7 +48,7 @@ runs:
     - name: Install extra dependencies
       if: ${{ inputs.need-cartopy == 'true' }}
       shell: bash
-      run: python -m pip install --no-binary shapely -r ci/extra_requirements.txt -c ci/${{ inputs.version-file }}
+      run: python -m pip install -r ci/extra_requirements.txt -c ci/${{ inputs.version-file }}
 
     - name: Download Cartopy Maps
       if: ${{ inputs.need-cartopy == 'true' }}
