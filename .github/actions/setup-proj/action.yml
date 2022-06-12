@@ -4,9 +4,9 @@ inputs:
   version:
     description: 'What version of PROJ to install'
     required: true
-    default: 8.1.1
+    default: 8.2.1
   install-path:
-    description: 'Where to install PROJ relative to home'
+    description: 'Where to install PROJ relative to workspace'
     required: false
     default: local
 runs:
