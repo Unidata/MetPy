@@ -2750,6 +2750,26 @@ def thickness_hydrostatic(pressure, temperature, mixing_ratio=None,
     `pint.Quantity`
         The thickness of the layer in meters
 
+    Examples
+    --------
+    >>> import metpy.calc as mpcalc
+    >>> from metpy.units import units
+    >>> temperature = [278, 275, 270] * units.kelvin
+    >>> pressure = [950, 925, 900] * units.millibar
+    >>> mpcalc.thickness_hydrostatic(pressure, temperature)
+    <Quantity(434.376889, 'meter')>
+
+    >>> bottom, depth = 950 * units.millibar, 25 * units.millibar
+    >>> mpcalc.thickness_hydrostatic(pressure, temperature, bottom=bottom, depth=depth)
+    <Quantity(215.835404, 'meter')>
+
+    To include the mixing ratio in the calculation:
+
+    >>> r = [0.005, 0.006, 0.002] * units.dimensionless
+    >>> mpcalc.thickness_hydrostatic(pressure, temperature, mixing_ratio=r,
+    ...                              bottom=bottom, depth=depth)
+    <Quantity(216.552623, 'meter')>
+
     See Also
     --------
     thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature
