@@ -35,10 +35,11 @@ runs:
     - name: Install CartoPy build dependencies
       if: ${{ inputs.need-cartopy == 'true' }}
       shell: bash
-      run: |
-        sudo apt-get install libgeos-dev
-        python -m pip install --upgrade pip setuptools
-        python -m pip install --no-binary :all: shapely
+      run: sudo apt-get install libgeos-dev
+
+    - name: Disable Shapely Wheels
+      shell: bash
+      run: echo "PIP_NO_BINARY=shapely" >> $GITHUB_ENV
 
     - name: Install dependencies
       shell: bash
