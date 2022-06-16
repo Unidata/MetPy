@@ -1,4 +1,4 @@
-importlib_resources==5.7.1
+importlib_resources==5.8.0
 matplotlib==3.5.2
 numpy==1.22.4
 pandas==1.4.2
