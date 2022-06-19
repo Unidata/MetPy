@@ -54,6 +54,10 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
+.. [DaviesJones2008] Davies-Jones, R., 2008: An Efficient and Accurate Method for Computing the Wet-Bulb Temperature along Pseudoadiabats.
+           *Mon. Wea. Rev.*, **136**, 2764-2785,
+           doi: `10.1175/2007mwr2224.1 <https://doi.org/10.1175/2007MWR2224.1>`_.
+
 .. [DoswellSchultz2006] Doswell, C. A. III, and D. M. Schultz, 2006: `On the Use of Indices and
            Parameters in Forecasting Severe Storms <https://ejssm.org/archives/2006/vol-1-3-2006/>`_.
            *Electronic J. Severe Storms Meteor.*, **1** (3), 1-22.

@@ -61,6 +61,7 @@ Moist Thermodynamics
       virtual_temperature
       virtual_temperature_from_dewpoint
       wet_bulb_temperature
+      wetbulb_potential_temperature
 
 
 Soundings
