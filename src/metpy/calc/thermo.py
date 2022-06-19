@@ -9,6 +9,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
+from .basic import add_height_to_pressure
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
@@ -440,6 +441,114 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
     lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p)
 
     return lcl_p, globals()['dewpoint']._nounit(vapor_pressure._nounit(lcl_p, w))
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]', '[length]')
+def ccl(pressure, temperature, dewpoint, mixed_layer_depth=None, which='top'):
+    r"""Calculate the convective condensation level (CCL).
+
+    This function is implemented by simplifying the mixing ratio and
+    the saturation vapor pressure equation to
+
+    .. math:: A(P) = ln(\frac{rP}{6.112(r+\epsilon)}) = \frac{17.67T}{T+243.5}
+
+    where `P` is pressure, and `T` is temperature in degrees C.
+
+    This gives us a direct relationship of how temperature changes with pressure
+    in the atmosphere with a constant mixing ratio.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+
+    temperature : `pint.Quantity`
+        Temperature at the levels given by `pressure`
+
+    dewpoint : `pint.Quantity`
+        Dewpoint at the levels given by `pressure`
+
+    mixed_layer_depth : `pint.Quantity`, optional
+        The depth of the mixed layer, defaults to` None`. If provided, should be
+        in a unit of length.
+
+    which: str, optional
+        Pick which CCL value to return; must be one of 'top', 'bottom', or 'all'.
+        'top' returns the lowest-pressure CCL (default),
+        'bottom' returns the highest-pressure CCL,
+        'all' returns every CCL in a `Pint.Quantity` array.
+
+    Returns
+    -------
+    `pint.Quantity`
+        CCL Pressure
+
+    `pint.Quantity`
+        CCL Temperature
+
+    `pint.Quantity`
+        Convective Temperature
+
+    See Also
+    --------
+    lcl, lfc, el
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    """
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+
+    dewpoint, temperature = dewpoint.to(units.degC), temperature.to(units.degC)
+    pressure = pressure.to(units.hPa)
+
+    p_start = pressure[0]
+
+    # If the mixed layer is not defined, take the starting dewpoint to be the
+    # first element of the dewpoint array.
+    if mixed_layer_depth is None:
+        dewpoint_start = dewpoint[0]
+        vapor_pressure_start = saturation_vapor_pressure(dewpoint_start)
+        r_start = mixing_ratio(vapor_pressure_start, p_start)
+
+    # If it is defined, sample 10 values from the mixed layer and calculate the
+    # corresponding mixing ratio. Take the numeric average of these 10 values.
+    else:
+        p_top = add_height_to_pressure(p_start, mixed_layer_depth)
+        p_sample = np.linspace(p_start, p_top, 10)
+
+        dewpoint_profile = interpolate_1d(p_sample, pressure, dewpoint)
+        vapor_pressure_profile = saturation_vapor_pressure(dewpoint_profile)
+
+        r_profile = mixing_ratio(vapor_pressure_profile, p_sample)
+        r_start = np.mean(r_profile)
+
+    a_p = np.log(r_start * pressure / (
+        mpconsts.default.sat_pressure_0c * (mpconsts.nounit.epsilon + r_start)))
+    # rt_profile is the temperature-pressure profile with a fixed mixing ratio
+    rt_profile = units.Quantity((243.5 * a_p / (17.67 - a_p)).magnitude, 'degC')
+
+    x, y = find_intersections(pressure, rt_profile, temperature,
+                              direction='increasing', log_x=True)
+
+    # In the case of multiple CCLs, select which to return
+    if which == 'top':
+        x, y = x[-1], y[-1]
+    elif which == 'bottom':
+        x, y = x[0], y[0]
+    elif which == 'all':
+        pass
+    else:
+        raise ValueError('Invalid option for "which". Valid options are "top", "bottom", '
+                         'and "all".')
+
+    x, y = x.to(pressure.units), y.to(temperature.units)
+    return x, y, potential_temperature(x, y)
 
 
 @exporter.export
