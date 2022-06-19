@@ -541,8 +541,6 @@ def ccl(pressure, temperature, dewpoint, mixed_layer_depth=None, which='top'):
         x, y = x[-1], y[-1]
     elif which == 'bottom':
         x, y = x[0], y[0]
-    elif which == 'all':
-        pass
     else:
         raise ValueError('Invalid option for "which". Valid options are "top", "bottom", '
                          'and "all".')
