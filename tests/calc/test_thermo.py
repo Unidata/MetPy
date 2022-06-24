@@ -511,11 +511,11 @@ def test_ccl_with_ml():
                             mixed_layer_depth=500 * units.m, which='all')
 
     assert_array_almost_equal(ccl_p, np.array(
-        [849.476714, 777.672978, 736.820907, 647.160197]) * units.mbar, 5)
+        [850.600930, 784.325312, 737.767377, 648.076147]) * units.mbar, 5)
     assert_array_almost_equal(ccl_t, np.array(
-        [0.761954, -0.456521, -1.195136, -2.952801]) * units.degC, 5)
+        [0.840118, -0.280299, -1.118757, -2.875716]) * units.degC, 5)
     assert_array_almost_equal(t_c, np.array(
-        [13.831182, 19.855389, 23.601839, 32.819031]) * units.degC, 5)
+        [13.804624, 19.332071, 23.576331, 32.782670]) * units.degC, 5)
 
 
 def test_lfc_basic():
