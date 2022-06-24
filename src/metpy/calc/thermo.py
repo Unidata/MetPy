@@ -444,7 +444,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
 @exporter.export
 @preprocess_and_wrap()
-@check_units('[pressure]', '[temperature]', '[temperature]', '[length]')
+@check_units('[pressure]', '[temperature]', '[temperature]')
 def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
     r"""Calculate the convective condensation level (CCL).
 
@@ -512,7 +512,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     # If the mixed layer is not defined, take the starting dewpoint to be the
     # first element of the dewpoint array.
     if mixed_layer_depth is None:
-        p_start, dewpoint_start = dewpoint[0], pressure[0]
+        p_start, dewpoint_start = pressure[0], dewpoint[0]
         vapor_pressure_start = saturation_vapor_pressure(dewpoint_start)
         r_start = mixing_ratio(vapor_pressure_start, p_start)
 
