@@ -9,6 +9,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 import xarray as xr
 
+from .basic import add_height_to_pressure
 from .exceptions import InvalidSoundingError
 from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
@@ -445,7 +446,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 @exporter.export
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[length]')
-def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
+def ccl(pressure, temperature, dewpoint, mixed_layer_depth=None, which='top'):
     r"""Calculate the convective condensation level (CCL).
 
     This function is implemented by simplifying the mixing ratio and
@@ -469,12 +470,9 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     dewpoint : `pint.Quantity`
         Dewpoint at the levels given by `pressure`
 
-    height : `pint.Quantity`, optional
-        Atmospheric heights at the levels given by `pressure`
-
     mixed_layer_depth : `pint.Quantity`, optional
-        The thickness of the mixed layer as a pressure or height above the bottom
-        of the layer (default None)
+        The depth of the mixed layer, defaults to` None`. If provided, should be
+        in a unit of length.
 
     which: str, optional
         Pick which CCL value to return; must be one of 'top', 'bottom', or 'all'.
@@ -509,20 +507,26 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     dewpoint, temperature = dewpoint.to(units.degC), temperature.to(units.degC)
     pressure = pressure.to(units.hPa)
 
+    p_start = pressure[0]
+
     # If the mixed layer is not defined, take the starting dewpoint to be the
     # first element of the dewpoint array.
     if mixed_layer_depth is None:
-        p_start, dewpoint_start = dewpoint[0], pressure[0]
+        dewpoint_start = dewpoint[0]
         vapor_pressure_start = saturation_vapor_pressure(dewpoint_start)
         r_start = mixing_ratio(vapor_pressure_start, p_start)
 
     # If it is defined, sample 10 values from the mixed layer and calculate the
     # corresponding mixing ratio. Take the numeric average of these 10 values.
     else:
-        vapor_pressure_profile = saturation_vapor_pressure(dewpoint)
-        r_profile = mixing_ratio(vapor_pressure_profile, pressure)
-        r_start = mixed_layer(pressure, r_profile, height=height,
-                              depth=mixed_layer_depth)[0]
+        p_top = add_height_to_pressure(p_start, mixed_layer_depth)
+        p_sample = np.linspace(p_start, p_top, 10)
+
+        dewpoint_profile = interpolate_1d(p_sample, pressure, dewpoint)
+        vapor_pressure_profile = saturation_vapor_pressure(dewpoint_profile)
+
+        r_profile = mixing_ratio(vapor_pressure_profile, p_sample)
+        r_start = np.mean(r_profile)
 
     a_p = np.log(r_start * pressure / (
         mpconsts.default.sat_pressure_0c * (mpconsts.nounit.epsilon + r_start)))
@@ -542,7 +546,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
                          'and "all".')
 
     x, y = x.to(pressure.units), y.to(temperature.units)
-    return x, y, potential_temperature(x, y).to(temperature.units)
+    return x, y, potential_temperature(x, y)
 
 
 @exporter.export
