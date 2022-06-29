@@ -3,7 +3,9 @@ name: Build Docs (Conda)
 # We don't want pushes (or PRs) to gh-pages to kick anything off
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - '[0-9]+.[0-9]+.x'
 
 concurrency:
   group: ${{ github.workflow}}-${{ github.head_ref }}
