@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NOAA NHC Wind Speed Probabilities &#8212; MetPy 1.3dev</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/doc_shared.js"></script>
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Skew-T with Complex Layout" href="Skew-T_Layout.html" />
+    <link rel="prev" title="Upper Air Analysis using Declarative Syntax" href="upperair_declarative.html" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-92978945-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/plots/nhc_wind_probabilities.html" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+  <nav class="navbar navbar-dark navbar-expand-lg bg-unidata fixed-top bd-navbar shadow" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class=" collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../userguide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api/index.html">
+  Reference Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../devel/index.html">
+  Developer’s Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  Example Gallery
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../userguide/SUPPORT.html">
+  Support
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://github.com/Unidata/MetPy/releases">Release Notes<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/Unidata/MetPy" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/MetPy" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+  </nav>
+
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Version 1.3dev
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../XArray_Projections.html">
+   XArray Projection Handling
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sigma_to_pressure_interpolation.html">
+   Sigma to Pressure Interpolation
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Advanced_Sounding.html">
+   Advanced Sounding
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../cross_section.html">
+   Cross Section Analysis
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Four_Panel_Map.html">
+   Four Panel Map
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../isentropic_example.html">
+   Isentropic Analysis
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../meteogram_metpy.html">
+   Meteogram
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../calculations/Parse_Angles.html">
+   Parse angles
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../calculations/Dewpoint_and_Mixing_Ratio.html">
+   Dewpoint and Mixing Ratio
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../calculations/Angle_to_Direction.html">
+   Angle to Direction
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../calculations/Gradient.html">
+   Gradient
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../calculations/Smoothing.html">
+   Smoothing
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../formats/GINI_Water_Vapor.html">
+   GINI Water Vapor Imagery
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../formats/NEXRAD_Level_3_File.html">
+   NEXRAD Level 3 File
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../formats/NEXRAD_Level_2_File.html">
+   NEXRAD Level 2 File
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../gridding/Find_Natural_Neighbors_Verification.html">
+   Find Natural Neighbors Verification
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../gridding/Wind_SLP_Interpolation.html">
+   Wind and Sea Level Pressure Interpolation
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../gridding/Point_Interpolation.html">
+   Point Interpolation
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../gridding/Inverse_Distance_Verification.html">
+   Inverse Distance Verification: Cressman and Barnes
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../gridding/Natural_Neighbor_Verification.html">
+   Natural Neighbor Verification
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Simplified_Image_Plot.html">
+   Simple Plotting
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="US_Counties.html">
+   US Counties
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="spc_convective_outlook.html">
+   NOAA SPC Convective Outlook
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Combined_plotting.html">
+   Combined Plotting
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="surface_declarative.html">
+   Surface Analysis using Declarative Syntax
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="upperair_declarative.html">
+   Upper Air Analysis using Declarative Syntax
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   NOAA NHC Wind Speed Probabilities
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Skew-T_Layout.html">
+   Skew-T with Complex Layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Hodograph_Inset.html">
+   Hodograph Inset
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Simple_Sounding.html">
+   Simple Sounding
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Mesonet_Stationplot.html">
+   Mesonet Station Plot
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Station_Plot.html">
+   Station Plot
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Station_Plot_with_Layout.html">
+   Station Plot with Layout
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-nhc-wind-probabilities-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="noaa-nhc-wind-speed-probabilities">
+<span id="sphx-glr-examples-plots-nhc-wind-probabilities-py"></span><h1>NOAA NHC Wind Speed Probabilities<a class="headerlink" href="#noaa-nhc-wind-speed-probabilities" title="Permalink to this headline">#</a></h1>
+<p>Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy’s simplified
+plotting interface. This example walks through plotting cities, along with 5-day
+tropical-storm-force wind speed probabilities from NOAA National Hurricane Center.</p>
+<p>The wind probabilities shapefile was retrieved from the <a class="reference external" href="https://www.nhc.noaa.gov/gis/">National Hurricane Center’s GIS page</a>. The cities shapefile was retrieved from <a class="reference external" href="https://earthworks.stanford.edu/catalog/stanford-bx729wr3020">Stanford Libraries</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span>
+
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a>
+</pre></div>
+</div>
+<p>Read in the shapefile file containing the wind probabilities.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wind_data</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;nhc_wind_prob_2021082012.zip&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Add the color scheme to the GeoDataFrame. This is the same color scheme used by the National
+Hurricane Center for their wind speed probability plots.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wind_data</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;#008B00&#39;</span><span class="p">,</span> <span class="s1">&#39;#00CD00&#39;</span><span class="p">,</span> <span class="s1">&#39;#7FFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="s1">&#39;#FFD700&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;#CD8500&#39;</span><span class="p">,</span> <span class="s1">&#39;#FF7F00&#39;</span><span class="p">,</span> <span class="s1">&#39;#CD0000&#39;</span><span class="p">,</span> <span class="s1">&#39;#8B0000&#39;</span><span class="p">,</span> <span class="s1">&#39;#8B008B&#39;</span><span class="p">]</span>
+<span class="n">wind_data</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PERCENTAGE</th>
+      <th>geometry</th>
+      <th>fill</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>&lt;5%</td>
+      <td>MULTIPOLYGON (((-148.82395 16.55476, -148.8239...</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5-10%</td>
+      <td>MULTIPOLYGON (((-150.35245 19.02733, -150.3524...</td>
+      <td>#008B00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10-20%</td>
+      <td>MULTIPOLYGON (((-150.53228 19.61176, -150.5322...</td>
+      <td>#00CD00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20-30%</td>
+      <td>MULTIPOLYGON (((-144.55314 19.88150, -144.5531...</td>
+      <td>#7FFF00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>30-40%</td>
+      <td>MULTIPOLYGON (((-144.19349 19.97141, -144.1934...</td>
+      <td>#FFFF00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>40-50%</td>
+      <td>MULTIPOLYGON (((-144.37331 20.10628, -144.3733...</td>
+      <td>#FFD700</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>50-60%</td>
+      <td>MULTIPOLYGON (((-144.23845 20.19619, -144.2384...</td>
+      <td>#CD8500</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>60-70%</td>
+      <td>MULTIPOLYGON (((-142.88977 20.42097, -142.8897...</td>
+      <td>#FF7F00</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>70-80%</td>
+      <td>MULTIPOLYGON (((-144.01367 20.33106, -144.0136...</td>
+      <td>#CD0000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>80-90%</td>
+      <td>MULTIPOLYGON (((-93.43823 19.47689, -93.43823 ...</td>
+      <td>#8B0000</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>&gt;90%</td>
+      <td>MULTIPOLYGON (((-144.05862 20.46592, -144.0586...</td>
+      <td>#8B008B</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Read in the shapefile file containing the cities.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cities</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;us_cities.zip&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>There are thousands of cities in the United States. We choose a few cities here that we want
+to display on our plot.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cities</span> <span class="o">=</span> <span class="n">cities</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="p">((</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Myrtle Beach&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;SC&#39;</span><span class="p">))</span>
+    <span class="o">|</span> <span class="p">((</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Hatteras&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NC&#39;</span><span class="p">))</span>
+    <span class="o">|</span> <span class="p">((</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Ocean City&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">))</span>
+    <span class="o">|</span> <span class="p">((</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;New York&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NY&#39;</span><span class="p">))</span>
+    <span class="o">|</span> <span class="p">((</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Nantucket&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MA&#39;</span><span class="p">))</span>
+    <span class="o">|</span> <span class="p">((</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Portland&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cities</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ME&#39;</span><span class="p">))</span>
+<span class="p">]</span>
+<span class="n">cities</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GNIS_ID</th>
+      <th>ANSICODE</th>
+      <th>FEATURE</th>
+      <th>FEATURE2</th>
+      <th>NAME</th>
+      <th>POP_2010</th>
+      <th>COUNTY</th>
+      <th>COUNTYFIPS</th>
+      <th>STATE</th>
+      <th>STATE_FIPS</th>
+      <th>LATITUDE</th>
+      <th>LONGITUDE</th>
+      <th>PopPlLat</th>
+      <th>PopPlLong</th>
+      <th>ELEV_IN_M</th>
+      <th>ELEV_IN_FT</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>327</th>
+      <td>573692.0</td>
+      <td>582683</td>
+      <td>Civil</td>
+      <td>County Seat</td>
+      <td>Portland</td>
+      <td>66194.0</td>
+      <td>Cumberland</td>
+      <td>005</td>
+      <td>ME</td>
+      <td>23</td>
+      <td>43.661471</td>
+      <td>-70.255326</td>
+      <td>43.661471</td>
+      <td>-70.255326</td>
+      <td>19.0</td>
+      <td>62.0</td>
+      <td>POINT (-70.25533 43.66147)</td>
+    </tr>
+    <tr>
+      <th>4913</th>
+      <td>616716.0</td>
+      <td>2378175</td>
+      <td>Census</td>
+      <td>County Seat</td>
+      <td>Nantucket</td>
+      <td>7446.0</td>
+      <td>Nantucket</td>
+      <td>019</td>
+      <td>MA</td>
+      <td>25</td>
+      <td>41.283456</td>
+      <td>-70.099461</td>
+      <td>41.283456</td>
+      <td>-70.099461</td>
+      <td>7.0</td>
+      <td>23.0</td>
+      <td>POINT (-70.09946 41.28346)</td>
+    </tr>
+    <tr>
+      <th>6259</th>
+      <td>586284.0</td>
+      <td>2391341</td>
+      <td>Civil</td>
+      <td>-999</td>
+      <td>Ocean City</td>
+      <td>7102.0</td>
+      <td>Worcester</td>
+      <td>047</td>
+      <td>MD</td>
+      <td>24</td>
+      <td>38.336503</td>
+      <td>-75.084906</td>
+      <td>38.336503</td>
+      <td>-75.084906</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>POINT (-75.08491 38.33650)</td>
+    </tr>
+    <tr>
+      <th>8329</th>
+      <td>-999.0</td>
+      <td>2395220</td>
+      <td>Civil</td>
+      <td>-999</td>
+      <td>New York</td>
+      <td>8175133.0</td>
+      <td>New York</td>
+      <td>061</td>
+      <td>NY</td>
+      <td>36</td>
+      <td>40.761493</td>
+      <td>-73.981431</td>
+      <td>40.663931</td>
+      <td>-73.938270</td>
+      <td>32.0</td>
+      <td>105.0</td>
+      <td>POINT (-73.98143 40.76149)</td>
+    </tr>
+    <tr>
+      <th>14717</th>
+      <td>1249770.0</td>
+      <td>2404346</td>
+      <td>Civil</td>
+      <td>-999</td>
+      <td>Myrtle Beach</td>
+      <td>27109.0</td>
+      <td>Horry</td>
+      <td>051</td>
+      <td>SC</td>
+      <td>45</td>
+      <td>33.689060</td>
+      <td>-78.886694</td>
+      <td>33.689060</td>
+      <td>-78.886694</td>
+      <td>8.0</td>
+      <td>26.0</td>
+      <td>POINT (-78.88669 33.68906)</td>
+    </tr>
+    <tr>
+      <th>25784</th>
+      <td>1020636.0</td>
+      <td>2628633</td>
+      <td>Census</td>
+      <td>-999</td>
+      <td>Hatteras</td>
+      <td>504.0</td>
+      <td>Dare</td>
+      <td>055</td>
+      <td>NC</td>
+      <td>37</td>
+      <td>35.219342</td>
+      <td>-75.690161</td>
+      <td>35.219342</td>
+      <td>-75.690161</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>POINT (-75.69016 35.21934)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Make sure that both GeoDataFrames have the same coordinate reference system (CRS).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cities</span> <span class="o">=</span> <span class="n">cities</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">wind_data</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We want to find out what the probability of tropical-storm-force winds is for each of the
+cities we selected above. Geopandas provides a spatial join method, which merges the two
+GeoDataFrames and can tell us which wind speed probability polygon each of our city points
+lies within. That information is stored in the ‘PERCENTAGE’ column below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cities</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">cities</span><span class="p">,</span> <span class="n">wind_data</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="s1">&#39;within&#39;</span><span class="p">)</span>
+<span class="n">cities</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.13/x64/lib/python3.9/site-packages/sphinx_gallery/gen_gallery.py:207: FutureWarning: The `op` parameter is deprecated and will be removed in a future release. Please use the `predicate` parameter instead.
+  return 0., func()
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GNIS_ID</th>
+      <th>ANSICODE</th>
+      <th>FEATURE</th>
+      <th>FEATURE2</th>
+      <th>NAME</th>
+      <th>POP_2010</th>
+      <th>COUNTY</th>
+      <th>COUNTYFIPS</th>
+      <th>STATE</th>
+      <th>STATE_FIPS</th>
+      <th>LATITUDE</th>
+      <th>LONGITUDE</th>
+      <th>PopPlLat</th>
+      <th>PopPlLong</th>
+      <th>ELEV_IN_M</th>
+      <th>ELEV_IN_FT</th>
+      <th>geometry</th>
+      <th>index_right</th>
+      <th>PERCENTAGE</th>
+      <th>fill</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>327</th>
+      <td>573692.0</td>
+      <td>582683</td>
+      <td>Civil</td>
+      <td>County Seat</td>
+      <td>Portland</td>
+      <td>66194.0</td>
+      <td>Cumberland</td>
+      <td>005</td>
+      <td>ME</td>
+      <td>23</td>
+      <td>43.661471</td>
+      <td>-70.255326</td>
+      <td>43.661471</td>
+      <td>-70.255326</td>
+      <td>19.0</td>
+      <td>62.0</td>
+      <td>POINT (-70.25533 43.66147)</td>
+      <td>5</td>
+      <td>40-50%</td>
+      <td>#FFD700</td>
+    </tr>
+    <tr>
+      <th>4913</th>
+      <td>616716.0</td>
+      <td>2378175</td>
+      <td>Census</td>
+      <td>County Seat</td>
+      <td>Nantucket</td>
+      <td>7446.0</td>
+      <td>Nantucket</td>
+      <td>019</td>
+      <td>MA</td>
+      <td>25</td>
+      <td>41.283456</td>
+      <td>-70.099461</td>
+      <td>41.283456</td>
+      <td>-70.099461</td>
+      <td>7.0</td>
+      <td>23.0</td>
+      <td>POINT (-70.09946 41.28346)</td>
+      <td>8</td>
+      <td>70-80%</td>
+      <td>#CD0000</td>
+    </tr>
+    <tr>
+      <th>6259</th>
+      <td>586284.0</td>
+      <td>2391341</td>
+      <td>Civil</td>
+      <td>-999</td>
+      <td>Ocean City</td>
+      <td>7102.0</td>
+      <td>Worcester</td>
+      <td>047</td>
+      <td>MD</td>
+      <td>24</td>
+      <td>38.336503</td>
+      <td>-75.084906</td>
+      <td>38.336503</td>
+      <td>-75.084906</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>POINT (-75.08491 38.33650)</td>
+      <td>3</td>
+      <td>20-30%</td>
+      <td>#7FFF00</td>
+    </tr>
+    <tr>
+      <th>8329</th>
+      <td>-999.0</td>
+      <td>2395220</td>
+      <td>Civil</td>
+      <td>-999</td>
+      <td>New York</td>
+      <td>8175133.0</td>
+      <td>New York</td>
+      <td>061</td>
+      <td>NY</td>
+      <td>36</td>
+      <td>40.761493</td>
+      <td>-73.981431</td>
+      <td>40.663931</td>
+      <td>-73.938270</td>
+      <td>32.0</td>
+      <td>105.0</td>
+      <td>POINT (-73.98143 40.76149)</td>
+      <td>5</td>
+      <td>40-50%</td>
+      <td>#FFD700</td>
+    </tr>
+    <tr>
+      <th>14717</th>
+      <td>1249770.0</td>
+      <td>2404346</td>
+      <td>Civil</td>
+      <td>-999</td>
+      <td>Myrtle Beach</td>
+      <td>27109.0</td>
+      <td>Horry</td>
+      <td>051</td>
+      <td>SC</td>
+      <td>45</td>
+      <td>33.689060</td>
+      <td>-78.886694</td>
+      <td>33.689060</td>
+      <td>-78.886694</td>
+      <td>8.0</td>
+      <td>26.0</td>
+      <td>POINT (-78.88669 33.68906)</td>
+      <td>0</td>
+      <td>&lt;5%</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>25784</th>
+      <td>1020636.0</td>
+      <td>2628633</td>
+      <td>Census</td>
+      <td>-999</td>
+      <td>Hatteras</td>
+      <td>504.0</td>
+      <td>Dare</td>
+      <td>055</td>
+      <td>NC</td>
+      <td>37</td>
+      <td>35.219342</td>
+      <td>-75.690161</td>
+      <td>35.219342</td>
+      <td>-75.690161</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>POINT (-75.69016 35.21934)</td>
+      <td>2</td>
+      <td>10-20%</td>
+      <td>#00CD00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Plot the wind speed probability polygons from the ‘geometry’ column. Use the ‘fill’ column
+we created above as the fill colors for the polygons, and set the stroke color to ‘none’ for
+all of the polygons.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_geo</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_geo</span><span class="o">.</span><span class="n">geometry</span></a> <span class="o">=</span> <span class="n">wind_data</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_geo</span><span class="o">.</span><span class="n">fill</span></a> <span class="o">=</span> <span class="n">wind_data</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_geo</span><span class="o">.</span><span class="n">stroke</span></a> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+</pre></div>
+</div>
+<p>Plot the cities from the ‘geometry’ column, marked with diamonds (‘D’). Label each point
+with the name of the city, and it’s probability of tropical-storm-force winds on the line
+below. Points are set to plot in white and the font color is set to black.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PlotGeometry</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span><span class="o">.</span><span class="n">geometry</span></a> <span class="o">=</span> <span class="n">cities</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span><span class="o">.</span><span class="n">marker</span></a> <span class="o">=</span> <span class="s1">&#39;D&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span><span class="o">.</span><span class="n">labels</span></a> <span class="o">=</span> <span class="n">cities</span><span class="p">[</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">(&#39;</span> <span class="o">+</span> <span class="n">cities</span><span class="p">[</span><span class="s1">&#39;PERCENTAGE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span><span class="o">.</span><span class="n">fill</span></a> <span class="o">=</span> <span class="s1">&#39;white&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span><span class="o">.</span><span class="n">label_facecolor</span></a> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+</pre></div>
+</div>
+<p>Add the geometry plots to a panel and container. Finally, we are left with a complete plot of
+wind speed probabilities, along with some select cities and their specific probabilities.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">MapPanel</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">title</span></a> <span class="o">=</span> <span class="s1">&#39;NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">plots</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wind_geo</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PlotGeometry.html#metpy.plots.PlotGeometry" title="metpy.plots.PlotGeometry" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">city_geo</span></a><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">area</span></a> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">-</span><span class="mi">52</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">48</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">projection</span></a> <span class="o">=</span> <span class="s1">&#39;mer&#39;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span><span class="o">.</span><span class="n">layers</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lakes&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="s1">&#39;coastline&#39;</span><span class="p">,</span> <span class="s1">&#39;borders&#39;</span><span class="p">]</span>
+
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a> <span class="o">=</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class"><span class="n">PanelContainer</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span><span class="o">.</span><span class="n">size</span></a> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span><span class="o">.</span><span class="n">panels</span></a> <span class="o">=</span> <span class="p">[</span><a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">panel</span></a><span class="p">]</span>
+<a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_nhc_wind_probabilities_001.png" srcset="../../_images/sphx_glr_nhc_wind_probabilities_001.png" alt="NHC 5-Day Tropical-Storm-Force Wind Probabilities (Valid 12z Aug 20 2021)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  13.014 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-nhc-wind-probabilities-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cc6c4fb37c902abececa4939864b2b8a/nhc_wind_probabilities.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">nhc_wind_probabilities.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/6942e8beca3b4515ffd0e6d7988f8561/nhc_wind_probabilities.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nhc_wind_probabilities.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="upperair_declarative.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Upper Air Analysis using Declarative Syntax</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="Skew-T_Layout.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Skew-T with Complex Layout</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008–2022, MetPy Developers.Development is supported by Unidata and the National Science Foundation..<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

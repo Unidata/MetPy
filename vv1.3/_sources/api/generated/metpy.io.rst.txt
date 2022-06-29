@@ -1,0 +1,49 @@
+﻿
+   
+      
+   
+
+Reading Data ``(metpy.io)``
+===========================
+
+.. automodule:: metpy.io
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+   
+      parse_metar_to_dataframe
+      parse_metar_file
+      is_precip_mode
+      add_station_lat_lon
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+   
+      GempakGrid
+      GempakSounding
+      GempakSurface
+      GiniFile
+      Level2File
+      Level3File
+      StationLookup
+   
+   
+
+   
+   
+   
+

@@ -1,0 +1,12 @@
+thickness_hydrostatic
+================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: thickness_hydrostatic
+
+.. include:: metpy.calc.thickness_hydrostatic.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

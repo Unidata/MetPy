@@ -1,0 +1,12 @@
+smooth_gaussian
+==========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: smooth_gaussian
+
+.. include:: metpy.calc.smooth_gaussian.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
