@@ -4,6 +4,7 @@ name: Assign Latest Milestone
 on:
   pull_request_target:
     types: [closed]
+    branches: [main]
 
 permissions:
   pull-requests: write
