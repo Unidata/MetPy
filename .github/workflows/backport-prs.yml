@@ -47,6 +47,7 @@ jobs:
           base: ${{ steps.get-branch.outputs.backport-branch}}
           branch: backport-pr-${{ github.event.number }}
           delete-branch: true
+          labels: 'backported-pr,${{ join(github.event.pull_request.labels.*.name) }}'
 
       - name: Comment on completion
         uses: actions/github-script@v6
