@@ -23,7 +23,7 @@ runs:
     - name: Set doc version
       id: docversion
       shell: bash -l {0}
-      run: echo "::set-output name=doc_version::v$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')"
+      run: echo "::set-output name=doc_version::$(python -c 'import metpy,re; print(re.search(r"(\d+\.\d+)", metpy.__version__)[0])')"
 
     - name: Build docs
       shell: bash -l {0}
@@ -49,7 +49,7 @@ runs:
 
     - name: Upload docs as artifact
       if: ${{ always() && inputs.key != '' }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.key }}-docs
         path: |

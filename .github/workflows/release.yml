@@ -19,7 +19,7 @@ jobs:
 
     - name: Set up Python
       id: setup
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: 3.x
 
@@ -32,7 +32,7 @@ jobs:
       run: python setup.py sdist bdist_wheel
 
     - name: Save built packages as artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: packages-${{ runner.os }}-${{ steps.setup.outputs.python-version }}
         path: dist/
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download packages
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
 
     - name: Consolidate packages for upload
       run: |
