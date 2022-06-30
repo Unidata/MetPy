@@ -40,13 +40,13 @@ runs:
 
     - name: Upload test images
       if: failure()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.key }}-images
         path: test_output/
 
     - name: Upload coverage
       if: ${{ always() && inputs.upload-coverage == 'true' }}
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         name: ${{ inputs.key }}

@@ -40,6 +40,6 @@ if __name__ == '__main__':
         if check_link(link):
             ret = 1
             print(f'{link["filename"]}:{link["lineno"]}: {link["uri"]} -> '
-                  f'{link["status"]} {link["code"]}')
+                  f'{link["status"]} {link["info"]}')
 
     sys.exit(ret)
