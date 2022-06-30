@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>interpolate_to_grid &#8212; MetPy 1.3</title>
+    <title>interpolate_to_grid &#8212; MetPy 1.3dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -168,7 +168,7 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar">
               <div class="sidebar-start-items"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  Version 1.3
+  Version 1.3dev
 </a>
 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="version-menu"></div><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
@@ -1311,7 +1311,7 @@
 <li><p><strong>y</strong> (<em>array_like</em>) – y coordinate, can have units of linear distance or degrees</p></li>
 <li><p><strong>z</strong> (<em>array_like</em>) – observation value</p></li>
 <li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.8.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
+1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.8.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</p></li>
 <li><p><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The horizontal resolution of the generated grid, given in the same units as the
@@ -1326,7 +1326,7 @@ If search_radius is not specified, it will default to 5 times the average spacin
 observations.</p></li>
 <li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Default ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.8.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
+‘quintic’, and ‘thin_plate’. Default ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.8.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</p></li>
 <li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
 <li><p><strong>boundary_coords</strong> (<em>dictionary</em>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
