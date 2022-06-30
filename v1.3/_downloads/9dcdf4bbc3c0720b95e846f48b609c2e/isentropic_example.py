@@ -149,7 +149,7 @@ fig.tight_layout()
 msf = mpcalc.montgomery_streamfunction(
     isent_data['Geopotential_height'],
     isent_data['temperature']
-).values / 100.
+).data.to_base_units() * 1e-2
 
 # Choose a level to plot, in this case 296 K
 level = 0
