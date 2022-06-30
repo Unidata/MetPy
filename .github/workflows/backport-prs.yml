@@ -49,6 +49,11 @@ jobs:
           delete-branch: true
           labels: 'backported-pr,${{ join(github.event.pull_request.labels.*.name) }}'
 
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          number: ${{ steps.create-pr.outputs.pull-request-number }}
+          labels: backport
+
       - name: Comment on completion
         uses: actions/github-script@v6
         with:
