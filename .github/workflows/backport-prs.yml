@@ -15,10 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout PR HEAD
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 100
+
+      - name: Fetch PR merge base
+        run: git fetch --no-tags --depth=100 origin ${{ github.event.pull_request.base.sha }}
 
       - name: Set up git
         run: |
@@ -28,7 +32,7 @@ jobs:
       - name: Get backport branch
         id: get-branch
         run: |
-          git fetch --no-tags origin 'refs/heads/*.x:refs/remotes/origin/*.x'
+          git fetch --no-tags --depth=100 origin 'refs/heads/*.x:refs/remotes/origin/*.x'
           echo "::set-output name=backport-branch::$(git branch -r | grep '.*.x' | sort -V | tail -n 1 | cut -d / -f 2)"
 
       - name: Apply PR commits to ${{ steps.get-branch.outputs.backport-branch}} branch
