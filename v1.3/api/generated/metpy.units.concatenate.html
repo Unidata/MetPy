@@ -1288,7 +1288,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.units.concatenate">
 <span class="sig-prename descclassname"><span class="pre">metpy.units.</span></span><span class="sig-name descname"><span class="pre">concatenate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#concatenate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.units.concatenate" title="Permalink to this definition">#</a></dt>
-<dd><p>Concatenate multiple values into a new unitized object.</p>
+<dd><p>Concatenate multiple values into a new quantity.</p>
 <p>This is essentially a scalar-/masked array-aware version of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>. All items
 must be able to be converted to the same units. If an item has no units, it will be given
 those of the rest of the collection, without conversion. The first units found in the
