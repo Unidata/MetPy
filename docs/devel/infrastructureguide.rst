@@ -24,7 +24,7 @@ Documentation
 
 MetPy's documentation is built using sphinx >= 2.1. API documentation is automatically
 generated from docstrings, written using the
-`NumPy docstring standard <https://github.com/numpy/numpy/blob/main/doc/HOWTO_DOCUMENT.rst.txt>`_.
+`NumPy docstring standard <https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard>`_.
 There are also example scripts in the ``examples`` directory, as well as our
 :doc:`/userguide/index` tutorials in the ``tutorials``. Using the ``sphinx-gallery``
 extension, these scripts are executed and turned into a gallery of thumbnails. The
