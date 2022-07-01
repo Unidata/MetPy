@@ -152,34 +152,44 @@ def mean_pressure_weighted(pressure, *args, height=None, bottom=None, depth=None
 @preprocess_and_wrap()
 @check_units('[pressure]', '[speed]', '[speed]', '[length]')
 def bunkers_storm_motion(pressure, u, v, height):
-    r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
+    r"""Calculate right-mover and left-mover supercell storm motions using the Bunkers method.
 
-    Uses the storm motion calculation from [Bunkers2000]_.
+    This is a physically based, shear-relative, and Galilean invariant method for predicting
+    supercell motion. Full atmospheric profiles of wind components, as well as pressure and
+    heights, need to be provided so that calculation can properly calculate the required
+    surface to 6 km mean flow.
+
+    The calculation in summary is (from [Bunkers2000]_):
+
+    * surface to 6 km non-pressure-weighted mean wind
+    * a deviation from the sfc to 6 km mean wind of 7.5 m s−1
+    * a 5.5 to 6 km mean wind for the head of the vertical wind shear vector
+    * a surface to 0.5 km mean wind for the tail of the vertical wind shear vector
 
     Parameters
     ----------
     pressure : `pint.Quantity`
-        Pressure from sounding
+        Pressure from full profile
 
     u : `pint.Quantity`
-        U component of the wind
+        Full profile of the U-component of the wind
 
     v : `pint.Quantity`
-        V component of the wind
+        Full profile of the V-component of the wind
 
     height : `pint.Quantity`
-        Height from sounding
+        Full profile of height
 
     Returns
     -------
-    right_mover: `pint.Quantity`
-        U and v component of Bunkers RM storm motion
+    right_mover: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Bunkers right-mover storm motion
 
-    left_mover: `pint.Quantity`
-        U and v component of Bunkers LM storm motion
+    left_mover: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of Bunkers left-mover storm motion
 
-    wind_mean: `pint.Quantity`
-        U and v component of sfc-6km mean flow
+    wind_mean: (`pint.Quantity`, `pint.Quantity`)
+        Scalar U- and V- components of surface to 6 km mean flow
 
     Notes
     -----
