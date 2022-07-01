@@ -413,16 +413,7 @@ data), Pandas (for CSV data), or the MetPy METAR parser (for METAR data).</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-&lt;xarray.Dataset&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
 Dimensions:                                  (time: 1, isobaric3: 26, lat: 46,
                                               lon: 101,
                                               height_above_ground1: 1,
@@ -447,6 +438,7 @@ Data variables:
     Temperature_height_above_ground          (time, height_above_ground, lat, lon) float32 ...
     Geopotential_height_isobaric             (time, isobaric3, lat, lon) float32 ...
     Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 ...
+    LatLon_Projection                        int64 ...
 </pre></div>
 </div>
 </section>
@@ -561,11 +553,7 @@ and ultimately show or save the figure.</p>
 <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_declarative_tutorial_001.png" srcset="../_images/sphx_glr_declarative_tutorial_001.png" alt="300-hPa Heights and Wind Speed at 2010-10-26 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-</pre></div>
-</div>
-<p>That’s it! What a nice looking map, with relatively simple set of code.</p>
+<img src="../_images/sphx_glr_declarative_tutorial_001.png" srcset="../_images/sphx_glr_declarative_tutorial_001.png" alt="300-hPa Heights and Wind Speed at 2010-10-26 12:00:00" class = "sphx-glr-single-img"/><p>That’s it! What a nice looking map, with relatively simple set of code.</p>
 </section>
 <section id="adding-wind-barbs">
 <h2>Adding Wind Barbs<a class="headerlink" href="#adding-wind-barbs" title="Permalink to this headline">#</a></h2>
@@ -629,13 +617,7 @@ list!</p>
 <a href="../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show" title="metpy.plots.PanelContainer.show" class="sphx-glr-backref-module-metpy-plots sphx-glr-backref-type-py-method"><span class="n">pc</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_declarative_tutorial_002.png" srcset="../_images/sphx_glr_declarative_tutorial_002.png" alt="300-hPa Heights and Wind Speed at 2010-10-26 12:00:00" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-</pre></div>
-</div>
-</section>
+<img src="../_images/sphx_glr_declarative_tutorial_002.png" srcset="../_images/sphx_glr_declarative_tutorial_002.png" alt="300-hPa Heights and Wind Speed at 2010-10-26 12:00:00" class = "sphx-glr-single-img"/></section>
 <section id="plot-surface-obs">
 <h2>Plot Surface Obs<a class="headerlink" href="#plot-surface-obs" title="Permalink to this headline">#</a></h2>
 <p>We can also plot surface (or upper-air) observations at point locations using the simplified
@@ -890,7 +872,7 @@ Acceptable colors are those available through Matplotlib:
 <p><code class="docutils literal notranslate"><span class="pre">reduce_points</span></code></p>
 <p>This attribute can be set to a real number to reduce the number of stations that are plotted.
 Default value is zero (e.g., no points are removed from the plot).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.368 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.375 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-declarative-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/900d76c7356d09e4ca20b90f94a0732e/declarative_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">declarative_tutorial.py</span></code></a></p>

@@ -89,15 +89,6 @@ We'll start this tutorial by reading in a gridded dataset using Xarray.
 
  .. code-block:: none
 
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
     <xarray.Dataset>
     Dimensions:                                  (time: 1, isobaric3: 26, lat: 46,
                                                   lon: 101,
@@ -123,6 +114,7 @@ We'll start this tutorial by reading in a gridded dataset using Xarray.
         Temperature_height_above_ground          (time, height_above_ground, lat, lon) float32 ...
         Geopotential_height_isobaric             (time, isobaric3, lat, lon) float32 ...
         Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 ...
+        LatLon_Projection                        int64 ...
 
 
 
@@ -365,14 +357,6 @@ All of our setting now produce the following map!
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-
 
 
 
@@ -490,16 +474,6 @@ list!
    :srcset: /tutorials/images/sphx_glr_declarative_tutorial_002.png
    :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
-    Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
 
 
 
@@ -927,7 +901,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.368 seconds)
+   **Total running time of the script:** ( 0 minutes  12.375 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
