@@ -138,7 +138,13 @@ def test_level3_files(fname):
     if hasattr(f, 'sym_block'):
         block = f.sym_block[0][0]
         if 'data' in block:
-            f.map_data(block['data'])
+            data = block['data']
+        # Looks for radials in the XDR generic products
+        elif 'components' in block and hasattr(block['components'], 'radials'):
+            data = np.array([rad.data for rad in block['components'].radials])
+        else:
+            data = []
+        f.map_data(data)
 
     assert f.filename == fname
 
