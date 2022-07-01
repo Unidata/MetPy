@@ -1111,8 +1111,11 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the mapper by pulling out all the information from the product.&quot;&quot;&quot;</span>
+        <span class="c1"># Need to treat this value as unsigned, so we can use the full 16-bit range. This</span>
+        <span class="c1"># is necessary at least for the DPR product, otherwise it has a value of -1.</span>
+        <span class="n">max_data_val</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+
         <span class="c1"># Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.</span>
-        <span class="n">max_data_val</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">max_data_val</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="n">scale</span> <span class="o">=</span> <span class="n">float32</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">thresholds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
