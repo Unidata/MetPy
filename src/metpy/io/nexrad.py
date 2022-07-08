@@ -1044,7 +1044,7 @@ class Level3File:
     product_name : str
         Name of the product contained in file
     max_range : float
-        Maximum range of the product, taken from the NIDS ICD
+        Maximum kilometer range of the product, taken from the NIDS ICD
     map_data : Mapper
         Class instance mapping data int values to proper floating point values
     sym_block : list, optional
