@@ -90,6 +90,7 @@ Soundings
       storm_relative_helicity
       supercell_composite
       surface_based_cape_cin
+      sweat_index
       total_totals_index
       vertical_totals
 
