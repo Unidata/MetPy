@@ -137,14 +137,6 @@ References
            of the Air Force Global Weather Central*. `AD0744042
            <https://apps.dtic.mil/sti/citations/AD0744042>`_.
 
-.. [MillerBidnerMaddox1971] Miller, R. C, A. Bidner, and R. A. Maddox, 1971: *The use of
-           computer products in severe weather forecasting (the SWEAT index)*. Preprints.
-           Seventh Conf. Severe Local Storms. Kansas City, Amer. Meteor. Soc., 1-6.
-
-.. [MillerBidnerMaddox1972] Miller, R. C, A. Bidner, and R. A. Maddox, 1972: *The use of
-           computer products in severe weather forecasting (the SWEAT index)*. Air Weather
-           Service Aerospace Sciences Review. AWS RP 105-2, No. 72-1, 2-9.
-
 .. [Moritz2000] Moritz, H., 2000: Geodetic Reference System 1980.
            *Journal of Geodesy* **74**, 128-133, doi:`10.1007/s001900050278
            <https://doi.org/10.1007/s001900050278>`_.

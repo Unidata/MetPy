@@ -4355,27 +4355,28 @@ def cross_totals(pressure, temperature, dewpoint):
 def sweat_index(pressure, temperature, dewpoint, speed, direction):
     """Calculate SWEAT Index.
 
-    SWEAT Index derived from [MillerBidnerMaddox1971]_ and
-    [MillerBidnerMaddox1972]_:
-    SWEAT = 12Td850 + 20(TT - 49) + 2f850 + f500 + 125(S + 0.2)
+    SWEAT Index derived from [Miller1972]_:
+
+    .. math:: SWEAT = 12Td_{850} + 20(TT - 49) + 2f_{850} + f_{500} + 125(S + 0.2)
 
     where:
 
-    Td850 is the dewpoint at 850 hPa, the first term is set to zero
-    if Td850 is negative
-    TT is the total totals index, the second term is set to zero
-    if TT is less than 49
-    f850 is the wind speed at 850 hPa
-    f500 is the wind speed at 500 hPa
-    S is sin(the wind direction at 850 hPa - the wind direction at 500 hPa),
-    the shear term is set to zero if any of the following conditions are not met:
-    1) the wind direction at 850 hPa is between 130 - 250 degrees
-    2) the wind direction at 500 hPa is between 210 - 310 degrees
-    3) (the wind direction at 500 - the wind direction at 850 hPa)
-    is greater than zero
-    4) both the wind speeds are greater than or equal to 15 kts
+    * :math:`Td_{850}` is the dewpoint at 850 hPa; the first term is set to zero
+      if :math:`Td_{850}` is negative.
+    * :math:`TT` is the total totals index; the second term is set to zero
+      if :math:`TT` is less than 49
+    * :math:`f_{850}` is the wind speed at 850 hPa
+    * :math:`f_{500}` is the wind speed at 500 hPa
+    * :math:`S` is the shear term: :math:`sin{(dd_{850} - dd_{500})}`, where
+      :math:`dd_{850}` and :math:`dd_{500}` are the wind directions at 850 hPa and 500 hPa,
+      respectively. It is set to zero if any of the following conditions are not met:
 
-    Calculation of the SWEAT Index consists of a low-level moisture, instability
+    1. :math:`dd_{850}` is between 130 - 250 degrees
+    2. :math:`dd_{500}` is between 210 - 310 degrees
+    3. :math:`dd_{500} - dd_{850} > 0`
+    4. both the wind speeds are greater than or equal to 15 kts
+
+    Calculation of the SWEAT Index consists of a low-level moisture, instability,
     and the vertical wind shear (both speed and direction). This index aim to
     determine the likeliness of severe weather and tornadoes.
 
@@ -4414,25 +4415,19 @@ def sweat_index(pressure, temperature, dewpoint, speed, direction):
                                                   direction)
 
     # First term is set to zero if Td850 is negative
-    if td850.m[0] < 0:
-        first_term = 0
-    else:
-        first_term = 12 * td850.m[0]
+    first_term = 12 * np.clip(td850.m_as('degC'), 0, None)
 
     # Second term is set to zero if TT is less than 49
-    if tt.m < 49:
-        second_term = 0
-    else:
-        second_term = 20 * (tt.m - 49)
+    second_term = 20 * np.clip(tt.m_as('degC') - 49, 0, None)
 
     # Shear term is set to zero if any of four conditions are not met
-    if np.invert(130 <= dd850.m <= 250) \
-       or np.invert(210 <= dd500.m <= 310) \
-       or np.invert(dd500.m - dd850.m > 0) \
-       or np.invert((f850.m >= 15) and (f500.m >= 15)):
-        shear_term = 0
-    else:
-        shear_term = 125 * (np.sin(np.deg2rad(dd500.m - dd850.m)) + 0.2)
+    required = ((units.Quantity(130, 'deg') <= dd850) & (dd850 <= units.Quantity(250, 'deg'))
+                & (units.Quantity(210, 'deg') <= dd500) & (dd500 <= units.Quantity(310, 'deg'))
+                & (dd500 - dd850 > 0)
+                & (f850 >= units.Quantity(15, 'knots'))
+                & (f500 >= units.Quantity(15, 'knots')))
+    shear_term = np.atleast_1d(125 * (np.sin(dd500 - dd850) + 0.2))
+    shear_term[~required] = 0
 
     # Calculate sweat index.
     return first_term + second_term + (2 * f850.m) + f500.m + shear_term
