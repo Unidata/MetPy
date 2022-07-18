@@ -15,7 +15,7 @@ flake8-print==5.0.0
 flake8-quotes==3.3.1
 flake8-requirements==1.6.0
 flake8-simplify==0.19.2
-pep8-naming==0.13.0
+pep8-naming==0.13.1
 
 flake8-rst-docstrings==0.2.6
 flake8-docstrings==1.6.0
