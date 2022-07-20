@@ -18,7 +18,7 @@ from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
 from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
-                         MapPanel, PanelContainer, PlotGeometry, PlotObs)
+                         MapPanel, PanelContainer, PlotGeometry, PlotObs, RasterPlot)
 from metpy.testing import needs_cartopy
 from metpy.units import units
 
@@ -433,6 +433,37 @@ def test_declarative_events():
     img.field = 'Geopotential_height'
     img.colormap = 'plasma'
     img.colorbar = 'horizontal'
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@needs_cartopy
+def test_declarative_raster_events():
+    """Test that resetting traitlets properly propagates in RasterPlot()."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    raster = RasterPlot()
+    raster.data = data
+    raster.field = 'Temperature'
+    raster.level = 700 * units.hPa
+    raster.colormap = 'hot'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.plots = [raster]
+
+    pc = PanelContainer()
+    pc.size = (8, 8.0)
+    pc.panels = [panel]
+    pc.draw()
+
+    # Update some properties to make sure it regenerates the figure
+    raster.level = 700 * units.hPa
+    raster.field = 'Geopotential_height'
+    raster.colormap = 'viridis'
+    raster.colorbar = 'vertical'
 
     return pc.figure
 
@@ -1644,6 +1675,32 @@ def test_declarative_contour_label_fontsize():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0)
+@needs_cartopy
+def test_declarative_raster():
+    """Test making a raster plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    raster = RasterPlot()
+    raster.data = data
+    raster.colormap = 'viridis'
+    raster.field = 'Temperature'
+    raster.level = 700 * units.hPa
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline']
+    panel.plots = [raster]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.607)
 @needs_cartopy
 def test_declarative_region_modifier_zoom_in():
@@ -1750,8 +1807,8 @@ def test_panel():
 def test_copy():
     """Test that the copy method works for all classes in `declarative.py`."""
     # Copies of plot objects
-    objects = [ImagePlot(), ContourPlot(), FilledContourPlot(), BarbPlot(), PlotObs(),
-               PlotGeometry()]
+    objects = [ImagePlot(), ContourPlot(), FilledContourPlot(), RasterPlot(), BarbPlot(),
+               PlotObs(), PlotGeometry()]
 
     for obj in objects:
         obj.time = datetime.now()
@@ -1775,7 +1832,7 @@ def test_copy():
     # Copies of plots in MapPanels should not point to same location in memory
     obj = MapPanel()
     obj.plots = [PlotObs(), PlotGeometry(), BarbPlot(), FilledContourPlot(), ContourPlot(),
-                 ImagePlot()]
+                 RasterPlot(), ImagePlot()]
     copied_obj = obj.copy()
 
     for i in range(len(obj.plots)):
@@ -1912,6 +1969,7 @@ def test_drop_traitlets_dir():
             BarbPlot,
             ContourPlot,
             FilledContourPlot,
+            RasterPlot,
             ImagePlot,
             MapPanel,
             PanelContainer,

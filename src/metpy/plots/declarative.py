@@ -1433,6 +1433,28 @@ class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits, ValidationMi
 
 
 @exporter.export
+class RasterPlot(PlotScalar, ColorfillTraits):
+    """Make raster plots by defining relevant traits."""
+
+    @observe('image_range', 'colorbar', 'colormap')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of pcolormesh()
+        self.clear()
+
+    def _build(self):
+        """Build the raster plot by calling any plotting methods as necessary."""
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = plot_kwargs(imdata)
+
+        self.handle = self.parent.ax.pcolormesh(x_like, y_like, imdata,
+                                                cmap=self._cmap_obj, norm=self._norm_obj,
+                                                **kwargs)
+
+
+@exporter.export
 class PlotVector(Plots2D):
     """Defines common elements for 2D vector plots.
 
