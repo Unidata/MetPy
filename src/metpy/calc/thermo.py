@@ -1787,11 +1787,11 @@ def psychrometric_vapor_pressure_wet(pressure, dry_bulb_temperature, wet_bulb_te
     >>> from metpy.units import units
     >>> vp = psychrometric_vapor_pressure_wet(958 * units.hPa, 25 * units.degC,
     ...                                       12 * units.degC)
-    >>> print(f'Vapor Pressure: {vp}')
-    Vapor Pressure: 628.1458704250932 pascal
+    >>> print(f'Vapor Pressure: {vp:.2f}')
+    Vapor Pressure: 628.15 pascal
     >>> rh = (vp / saturation_vapor_pressure(25 * units.degC)).to('percent')
-    >>> print(f'RH:{rh}')
-    RH:19.831408499543663 percent
+    >>> print(f'RH: {rh:.2f}')
+    RH: 19.83 percent
 
     See Also
     --------
