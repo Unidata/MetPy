@@ -1179,7 +1179,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
     gamma = lapse rate in [NOAA1976]_ standard atmosphere below the isothermal layer
     :math:`6.5^{\circ}C. km.^{-1}`
 
-    :math:`t_{0}` = standard sea-level temperature 288 K
+    :math:`T_{0}` = standard sea-level temperature 288 K
 
     :math:`H_{b} =` station elevation in meters (elevation for which station pressure is given)
 

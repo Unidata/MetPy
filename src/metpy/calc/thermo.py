@@ -747,7 +747,7 @@ def el(pressure, temperature, dewpoint, parcel_temperature_profile=None, which='
     >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
     ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
     ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
-    >>> # calcualte dewpoint
+    >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # compute parcel profile temperature
     >>> prof = parcel_profile(p, T[0], Td[0]).to('degC')
@@ -845,12 +845,12 @@ def parcel_profile(pressure, temperature, dewpoint):
     >>> Td = dewpoint_from_relative_humidity(T, rh)
     >>> # computer parcel temperature
     >>> parcel_profile(p, T[0], Td[0]).to('degC')
-    <Quantity([29.3 28.61221952 25.22214738 23.46097535 21.5835928
-      19.57260398   17.40636185  15.05748615   12.49064866    9.6592539
-       6.50023491    2.92560365  -1.19172846   -6.04257884  -11.92497517
-     -19.3176536   -28.97672464 -41.94444385  -50.01173076  -59.30936248
-     -70.02760604  -82.53084923 -94.2966713  -100.99074331 -108.40829933
-    -116.77024489 -126.4291022 -138.00649584 -144.86615886 -152.7896702], 'degree_Celsius')>
+    <Quantity([  29.3          28.61221952   25.22214738   23.46097535   21.5835928
+    19.57260398   17.40636185   15.05748615   12.49064866    9.6592539
+        6.50023491    2.92560365   -1.19172846   -6.04257884  -11.92497517
+    -19.3176536   -28.97672464  -41.94444385  -50.01173076  -59.30936248
+    -70.02760604  -82.53084923  -94.2966713  -100.99074331 -108.40829933
+    -116.77024489 -126.42910222 -138.00649584 -144.86615886 -152.78967029], 'degree_Celsius')>
 
     See Also
     --------
@@ -1957,7 +1957,8 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     >>> from metpy.units import units
     >>> sh = [4.77, 12.14, 6.16, 15.29, 12.25] * units('g/kg')
     >>> mixing_ratio_from_specific_humidity(sh).to('g/kg')
-    <Quantity([4.7928619 12.2891907 6.19818079 15.5274141 12.40192356], 'gram / kilogram')>
+    <Quantity([ 4.79286195 12.28919078  6.19818079 15.52741416 12.40192356],
+    'gram / kilogram')>
 
     See Also
     --------
@@ -4269,7 +4270,7 @@ def vertical_totals(pressure, temperature):
     ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
     ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
     ...      -56.3, -51.7, -50.7, -47.5] * units.degC
-    >>> # compute veritcal totals index
+    >>> # compute vertical totals index
     >>> vertical_totals(p, T)
     <Quantity(22.9, 'delta_degree_Celsius')>
 
