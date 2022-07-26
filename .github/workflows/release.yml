@@ -58,5 +58,4 @@ jobs:
     - name: Publish Package
       uses: pypa/gh-action-pypi-publish@v1.5.1
       with:
-        user: __token__
         password: ${{ secrets.PYPI_TOKEN }}
