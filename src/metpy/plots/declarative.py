@@ -689,7 +689,8 @@ class MapPanel(Panel, ValidationMixin):
 
     layers = List(Union([Unicode(), Instance('cartopy.feature.Feature')]),
                   default_value=['coastline'])
-    layers.__doc__ = """A list of strings for a pre-defined feature layer or a Cartopy Feature object.
+    layers.__doc__ = """A list of strings for a pre-defined feature layer or a Cartopy Feature
+    object.
 
     Like the projection, there are a couple of pre-defined feature layers that can be called
     using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
@@ -720,8 +721,8 @@ class MapPanel(Panel, ValidationMixin):
     """
 
     title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    title_fontsize.__doc__ = """An integer or string value for the font size of the title of the
-    figure.
+    title_fontsize.__doc__ = """An integer or string value for the font size of the title of
+    the figure.
 
     This trait sets the font size for the title that will plot at the top center of the figure.
     Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
@@ -1259,7 +1260,8 @@ class ContourTraits(MetPyHasTraits):
     """
 
     label_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    label_fontsize.__doc__ = """An integer, float, or string value to set the font size of labels for contours.
+    label_fontsize.__doc__ = """An integer, float, or string value to set the font size of
+    labels for contours.
 
     This trait sets the font size for labels that will plot along contour lines. Accepts
     size in points or relative size. Allowed relative sizes are those of Matplotlib:
@@ -1286,7 +1288,8 @@ class ColorfillTraits(MetPyHasTraits):
     """
 
     colorbar = Unicode(default_value=None, allow_none=True)
-    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the plot.
+    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the
+    plot.
 
     To add a colorbar associated with the plot, set the trait to ``horizontal`` or
     ``vertical``,specifying the orientation of the produced colorbar. The default value is
