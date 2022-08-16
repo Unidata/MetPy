@@ -64,7 +64,7 @@ ds = data.metpy.sel(lat=slice(70, 10), lon=slice(360 - 150, 360 - 55))
 
 #########################################################################
 # For full details on xarray indexing/selection, see
-# `xarray's documentation <https://xarray.pydata.org/en/stable/indexing.html>`_.
+# `xarray's documentation <https://docs.xarray.dev/en/stable/indexing.html>`_.
 
 #########################################################################
 # Calculations

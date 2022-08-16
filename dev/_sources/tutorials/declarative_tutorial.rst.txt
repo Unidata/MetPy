@@ -165,7 +165,7 @@ the U.S. for plotting purposes
 .. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 For full details on xarray indexing/selection, see
-`xarray's documentation <https://xarray.pydata.org/en/stable/indexing.html>`_.
+`xarray's documentation <https://docs.xarray.dev/en/stable/indexing.html>`_.
 
 .. GENERATED FROM PYTHON SOURCE LINES 70-78
 
@@ -901,7 +901,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.485 seconds)
+   **Total running time of the script:** ( 0 minutes  12.369 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:

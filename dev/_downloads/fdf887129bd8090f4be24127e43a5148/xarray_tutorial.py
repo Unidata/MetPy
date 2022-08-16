@@ -61,7 +61,7 @@ temperature
 # MetPy's calculations take as input (more on that in  `Calculations`_ section below).
 #
 # If you are more interested in learning about xarray's terminology and data structures, see
-# the `terminology section <https://xarray.pydata.org/en/stable/terminology.html>`_ of xarray's
+# the `terminology section <https://docs.xarray.dev/en/stable/terminology.html>`_ of xarray's
 # documentation.
 #
 # Coordinates and Coordinate Reference Systems
