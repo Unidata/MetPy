@@ -55,7 +55,7 @@ The setup
 
 First read in the data. We use the metar reader because it simplifies a lot of tasks,
 like dealing with separating text and assembling a pandas dataframe
-https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
+https://thredds-dev.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
 
 .. GENERATED FROM PYTHON SOURCE LINES 31-37
 
@@ -184,7 +184,7 @@ The payoff
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.708 seconds)
+   **Total running time of the script:** ( 0 minutes  16.059 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot.py:
