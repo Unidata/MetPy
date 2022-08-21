@@ -44,7 +44,7 @@ def example_data():
     """Access sample xarray Dataset example for calculating and plotting 2D variables."""
     import xarray as xr
 
-    # make data based on Matplotlib exaple data for wind barbs
+    # make data based on Matplotlib example data for wind barbs
     x, y = np.meshgrid(np.linspace(-3, 3, 25), np.linspace(-3, 3, 25))
     z = (1 - x / 2 + x**5 + y**3) * np.exp(-x**2 - y**2)
 
