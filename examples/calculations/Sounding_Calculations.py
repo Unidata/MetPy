@@ -81,7 +81,7 @@ df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
                        ), how='all').reset_index(drop=True)
 
 ###########################################
-# Isolate needed varaiables from our data file and attach units
+# Isolate needed variables from our data file and attach units
 p = df['pressure'].values * units.hPa
 T = df['temperature'].values * units.degC
 Td = df['dewpoint'].values * units.degC
@@ -197,7 +197,7 @@ print()
 print('Most Unstable - Lowest 50-hPa')
 print(f'     MU Temp: {mu_T:.2f}')
 print(f'     MU Dewp: {mu_Td:.2f}')
-print(f'     MU Pres: {mu_p:.2f}')
+print(f' MU Pressure: {mu_p:.2f}')
 print(f'     MU CAPE: {mucape:.2f}')
 print(f'      MU CIN: {mucin:.2f}')
 print()
