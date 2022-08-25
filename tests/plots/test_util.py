@@ -9,8 +9,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+import xarray as xr
 
 from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo, convert_gempak_color
+from metpy.testing import get_test_data
 
 MPL_VERSION = matplotlib.__version__[:3]
 
@@ -49,6 +51,16 @@ def test_add_timestamp_high_contrast():
     ax = plt.subplot(1, 1, 1)
     add_timestamp(ax, time=datetime(2017, 1, 1), high_contrast=True)
     return fig
+
+
+def test_add_timestamp_xarray():
+    """Test that add_timestamp can work with xarray datetime accessor."""
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ds = xr.open_dataset(get_test_data('AK-REGIONAL_8km_3.9_20160408_1445.gini'),
+                         engine='gini')
+    txt = add_timestamp(ax, ds.time.dt, pretext='')
+    assert txt.get_text() == '2016-04-08T14:45:20Z'
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.004, remove_text=True)
