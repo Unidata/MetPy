@@ -132,6 +132,42 @@ def test_gini_xarray(filename, bounds, data_var, proj_attrs, image, dt):
     assert np.asarray(dt, dtype='datetime64[ms]') == ds.variables['time']
 
 
+@pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
+                         ids=['LCC', 'Stereographic', 'Mercator'])
+@pytest.mark.parametrize('specify_engine', [True, False], ids=['engine', 'no engine'])
+def test_gini_xarray_entrypoint(filename, bounds, data_var, proj_attrs, image, dt,
+                                specify_engine):
+    """Test that GINI files can be opened directly by xarray using the v2 API."""
+    ds = xr.open_dataset(get_test_data(filename, as_file_obj=specify_engine),
+                         **({'engine': 'gini'} if specify_engine else {}))
+
+    # Check our calculated x and y arrays
+    x0, x1, y0, y1 = bounds
+    x = ds.variables['x']
+    assert_almost_equal(x[0], x0, 4)
+    assert_almost_equal(x[-1], x1, 4)
+
+    # Because the actual data raster has the top row first, the maximum y value is y[0],
+    # while the minimum y value is y[-1]
+    y = ds.variables['y']
+    assert_almost_equal(y[-1], y0, 4)
+    assert_almost_equal(y[0], y1, 4)
+
+    # Check the projection metadata
+    proj_name = ds.variables[data_var].attrs['grid_mapping']
+    proj_var = ds.variables[proj_name]
+    for attr, val in proj_attrs.items():
+        assert proj_var.attrs[attr] == val, 'Values mismatch for ' + attr
+
+    # Check a pixel of the image to make sure we're decoding correctly
+    x_ind, y_ind, val = image
+    assert val == ds.variables[data_var][x_ind, y_ind]
+
+    # Check time decoding
+    assert 'time' in ds.coords
+    assert np.asarray(dt, dtype='datetime64[ms]') == ds.variables['time']
+
+
 def test_gini_mercator_upper_corner():
     """Test that the upper corner of the Mercator coordinates is correct."""
     f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
