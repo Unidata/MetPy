@@ -141,7 +141,7 @@ Scipy.interpolate linear
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7efd73b15d90>
+    <matplotlib.colorbar.Colorbar object at 0x7f1af533ac40>
 
 
 
@@ -177,7 +177,7 @@ Natural neighbor interpolation (MetPy implementation)
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7efd69f3d310>
+    <matplotlib.colorbar.Colorbar object at 0x7f1aee7c7640>
 
 
 
@@ -218,7 +218,7 @@ min_neighbors = 1
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7efd4eefb310>
+    <matplotlib.colorbar.Colorbar object at 0x7f1aef021340>
 
 
 
@@ -257,7 +257,7 @@ min_neighbors = 3
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7efd73b322e0>
+    <matplotlib.colorbar.Colorbar object at 0x7f1aee53d5e0>
 
 
 
