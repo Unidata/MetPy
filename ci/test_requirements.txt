@@ -1,4 +1,4 @@
-pytest==7.1.2
+pytest==7.1.3
 pytest-mpl==0.16.1
 netCDF4==1.6.0
 coverage==6.4.4
