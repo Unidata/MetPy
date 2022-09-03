@@ -720,6 +720,20 @@ class MapPanel(Panel, ValidationMixin):
     This trait sets a user-defined title that will plot at the top center of the figure.
     """
 
+    left_title = Unicode(allow_none=True, default_value=None)
+    left_title.__doc__ = """A string to set a title for the figure with the location on the
+    top left of the figure.
+
+    This trait sets a user-defined title that will plot at the top left of the figure.
+    """
+
+    right_title = Unicode(allow_none=True, default_value=None)
+    right_title.__doc__ = """A string to set a title for the figure with the location on the
+    top right of the figure.
+
+    This trait sets a user-defined title that will plot at the top right of the figure.
+    """
+
     title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
     title_fontsize.__doc__ = """An integer or string value for the font size of the title of
     the figure.
@@ -896,8 +910,18 @@ class MapPanel(Panel, ValidationMixin):
                 self.ax.add_feature(feat, edgecolor=color, linewidth=width)
 
             # Use the set title or generate one.
-            title = self.title or ',\n'.join(plot.name for plot in self.plots)
-            self.ax.set_title(title, fontsize=self.title_fontsize)
+            if (self.right_title is None) and (self.left_title is None):
+                title = self.title or ',\n'.join(plot.name for plot in self.plots)
+                self.ax.set_title(title, fontsize=self.title_fontsize)
+            else:
+                if self.title is not None:
+                    self.ax.set_title(self.title, fontsize=self.title_fontsize)
+                if self.right_title is not None:
+                    self.ax.set_title(self.right_title, fontsize=self.title_fontsize,
+                                      loc='right')
+                if self.left_title is not None:
+                    self.ax.set_title(self.left_title, fontsize=self.title_fontsize,
+                                      loc='left')
             self._need_redraw = False
 
     def __copy__(self):
