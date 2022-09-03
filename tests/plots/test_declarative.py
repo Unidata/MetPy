@@ -17,8 +17,8 @@ from metpy.calc import wind_speed
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.metar import parse_metar_file
-from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
-                         PanelContainer, PlotGeometry, PlotObs)
+from metpy.plots import (ArrowPlot, BarbPlot, ContourPlot, FilledContourPlot, ImagePlot,
+                         MapPanel, PanelContainer, PlotGeometry, PlotObs)
 from metpy.testing import needs_cartopy
 from metpy.units import units
 
@@ -680,6 +680,97 @@ def test_declarative_barb_options():
     pc.size = (8, 8)
     pc.panels = [panel]
     pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
+@needs_cartopy
+def test_declarative_arrowplot():
+    """Test making a arrow plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    arrows = ArrowPlot()
+    arrows.data = data
+    arrows.level = 300 * units.hPa
+    arrows.field = ['u_wind', 'v_wind']
+    arrows.skip = (10, 10)
+    arrows.color = 'blue'
+    arrows.pivot = 'mid'
+    arrows.arrowscale = 1000
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [arrows]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
+@needs_cartopy
+def test_declarative_arrowkey():
+    """Test making a arrow plot with an arrow key."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    arrows = ArrowPlot()
+    arrows.data = data
+    arrows.level = 300 * units.hPa
+    arrows.field = ['u_wind', 'v_wind']
+    arrows.skip = (10, 10)
+    arrows.color = 'red'
+    arrows.pivot = 'mid'
+    arrows.arrowscale = 1e3
+    arrows.arrowkey = (100, None, 1.05, None, '100 kt')
+    arrows.plot_units = 'kt'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [arrows]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
+@needs_cartopy
+def test_declarative_arrow_changes():
+    """Test making a arrow plot with an arrow key."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    arrows = ArrowPlot()
+    arrows.data = data
+    arrows.level = 300 * units.hPa
+    arrows.field = ['u_wind', 'v_wind']
+    arrows.skip = (10, 10)
+    arrows.color = 'red'
+    arrows.pivot = 'mid'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [arrows]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    arrows.color = 'green'
+    arrows.arrowkey = (None, 0.9, 1.1, 'W', '100 m/s')
 
     return pc.figure
 
