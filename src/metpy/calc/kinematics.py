@@ -622,6 +622,24 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
     `pint.Quantity`
         Total storm-relative helicity
 
+    Examples
+    --------
+    >>> from metpy.calc import storm_relative_helicity, wind_components
+    >>> from metpy.units import units
+    >>> # set needed values of pressure, height, wind direction/speed
+    >>> p = [1000, 925, 850, 700, 500, 400] * units.hPa
+    >>> h = [250, 700, 1500, 3100, 5720, 7120] * units.meters
+    >>> wdir = [165, 180, 190, 210, 220, 250] * units.degree
+    >>> sped = [5, 15, 20, 30, 50, 60] * units.knots
+    >>> # compute wind components
+    >>> u, v = wind_components(sped, wdir)
+    >>> # compute SRH with a storm vector
+    >>> storm_relative_helicity(h, u, v, depth=1 * units.km,
+    ...                         storm_u=7 * units('m/s'), storm_v=7 * units('m/s'))
+    (<Quantity(49.6086162, 'meter ** 2 / second ** 2')>,
+    <Quantity(0.0, 'meter ** 2 / second ** 2')>,
+    <Quantity(49.6086162, 'meter ** 2 / second ** 2')>)
+
     Notes
     -----
     Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
