@@ -1325,6 +1325,13 @@ for every index. This function does work with surface grids as a result.</p>
 </p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">lcl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lcl</span><span class="p">(</span><span class="mi">943</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="mi">33</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+<span class="go">(&lt;Quantity(877.563323, &#39;hectopascal&#39;)&gt;, &lt;Quantity(26.7734921, &#39;degree_Celsius&#39;)&gt;)</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parcel_profile</span></code></a></p>

@@ -1298,6 +1298,15 @@
 <dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Mixing ratio</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">mixing_ratio_from_specific_humidity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sh</span> <span class="o">=</span> <span class="p">[</span><span class="mf">4.77</span><span class="p">,</span> <span class="mf">12.14</span><span class="p">,</span> <span class="mf">6.16</span><span class="p">,</span> <span class="mf">15.29</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mixing_ratio_from_specific_humidity</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
+<span class="go">&lt;Quantity([ 4.79286195 12.28919078  6.19818079 15.52741416 12.40192356],</span>
+<span class="go">&#39;gram / kilogram&#39;)&gt;</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio" title="metpy.calc.mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixing_ratio</span></code></a>, <a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio" title="metpy.calc.specific_humidity_from_mixing_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specific_humidity_from_mixing_ratio</span></code></a></p>

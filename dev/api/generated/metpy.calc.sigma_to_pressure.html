@@ -1302,6 +1302,15 @@
 <dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Pressure values at the given sigma levels</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">sigma_to_pressure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma_levs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigma_to_pressure</span><span class="p">(</span><span class="n">sigma_levs</span><span class="p">,</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)</span>
+<span class="go">&lt;Quantity([  10.  120.  230.  340.  450.  560.  670.  780.  890. 1000.], &#39;hectopascal&#39;)&gt;</span>
+</pre></div>
+</div>
 <p class="rubric">Notes</p>
 <p>Sigma definition adapted from <a class="reference internal" href="../references.html#philips1957" id="id1"><span>[Philips1957]</span></a>:</p>
 <div class="math notranslate nohighlight">

@@ -1304,6 +1304,13 @@ equation 3.72 in <a class="reference internal" href="../references.html#hobbs200
 <dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Moist static energy</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">moist_static_energy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">moist_static_energy</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">))</span>
+<span class="go">&lt;Quantity(312.275277, &#39;kilojoule / kilogram&#39;)&gt;</span>
+</pre></div>
+</div>
 <p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[\text{moist static energy} = c_{pd} T + gz + L_v q\]</div>

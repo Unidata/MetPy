@@ -1318,6 +1318,24 @@
 </p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">storm_relative_helicity</span><span class="p">,</span> <span class="n">wind_components</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># set needed values of pressure, height, wind direction/speed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">925</span><span class="p">,</span> <span class="mi">850</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">3100</span><span class="p">,</span> <span class="mi">5720</span><span class="p">,</span> <span class="mi">7120</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wdir</span> <span class="o">=</span> <span class="p">[</span><span class="mi">165</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">250</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degree</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sped</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knots</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># compute wind components</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">wind_components</span><span class="p">(</span><span class="n">sped</span><span class="p">,</span> <span class="n">wdir</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># compute SRH with a storm vector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storm_relative_helicity</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">km</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">storm_u</span><span class="o">=</span><span class="mi">7</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="n">storm_v</span><span class="o">=</span><span class="mi">7</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
+<span class="go">(&lt;Quantity(49.6086162, &#39;meter ** 2 / second ** 2&#39;)&gt;,</span>
+<span class="go">&lt;Quantity(0.0, &#39;meter ** 2 / second ** 2&#39;)&gt;,</span>
+<span class="go">&lt;Quantity(49.6086162, &#39;meter ** 2 / second ** 2&#39;)&gt;)</span>
+</pre></div>
+</div>
 <p class="rubric">Notes</p>
 <p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
 Since this function returns scalar values when given a profile, this will return Pint

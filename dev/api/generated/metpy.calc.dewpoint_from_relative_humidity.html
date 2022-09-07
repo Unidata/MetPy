@@ -1315,6 +1315,13 @@
 <dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Dewpoint temperature</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">dewpoint_from_relative_humidity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">50</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.0536760815, &#39;degree_Celsius&#39;)&gt;</span>
+</pre></div>
+</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">rh</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">relative_humidity</span></code></p>
 </div>

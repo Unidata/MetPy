@@ -1317,6 +1317,14 @@ exceeds 30 m/s.</p>
 <dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – Significant tornado parameter</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">significant_tornado</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">significant_tornado</span><span class="p">(</span><span class="mi">3000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">),</span> <span class="mi">750</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="mi">150</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m^2/s^2&#39;</span><span class="p">),</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knot</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+<span class="go">&lt;Quantity([1.28611111], &#39;dimensionless&#39;)&gt;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
