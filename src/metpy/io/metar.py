@@ -238,6 +238,8 @@ def parse_metar(metar_text, year, month, station_metadata=station_info):
             # Handle fraction regardless
             if '/' in vis_str:
                 num, denom = vis_str.split('/', maxsplit=1)
+                if int(denom) == 0:
+                    raise ValueError('Visibility denominator is 0.')
                 visibility += int(num) / int(denom)
             else:  # Should be getting all cases of whole number without fraction
                 visibility += int(vis_str)

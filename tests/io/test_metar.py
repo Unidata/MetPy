@@ -183,12 +183,19 @@ from metpy.units import units
      Metar('ORER', 36.22, 43.97, 409, datetime(2017, 5, 17, 20, 0), 300, 6.0, np.nan,
            400, 'FG', np.nan, np.nan, 'VV', np.nan, np.nan, np.nan, np.nan, np.nan,
            np.nan, np.nan, 8, 12, 12, units.Quantity(1013, 'hPa').m_as('inHg'), 45, 0, 0,
-           'NOSIG'))],
+           'NOSIG')),
+    # Invalid Visibility Unidata/Metpy#2652
+    ('KGYR 072147Z 12006KT 1/0SM FEW100 SCT250 41/14 A2992',
+     Metar('KGYR', 33.42, -112.37, 295, datetime(2017, 5, 7, 21, 47), 120, 6.0, np.nan,
+           np.nan, np.nan, np.nan, np.nan, 'FEW', 10000, 'SCT', 25000, np.nan, np.nan,
+           np.nan, np.nan, 4, 41, 14, 29.92, 0, 0, 0,
+           ''))],
     ids=['missing station', 'BKN', 'FEW', 'current weather', 'smoke', 'CAVOK', 'vis fraction',
          'missing temps', 'missing data', 'vertical vis', 'missing vertical vis', 'BCFG',
          '-DZ', 'sky cover CB', '5 sky levels', '-FZUP', 'VV group', 'COR placement',
          'M1/4SM vis', 'variable vis', 'runway vis', 'odd COR', 'IC', 'NSW',
-         'variable vis no dir', 'swapped wind and vis', 'space in wx code', 'truncated VV'])
+         'variable vis no dir', 'swapped wind and vis', 'space in wx code', 'truncated VV',
+         'vis div zero'])
 def test_metar_parser(metar, truth):
     """Test parsing individual METARs."""
     assert parse_metar(metar, 2017, 5) == truth
