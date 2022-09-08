@@ -2,11 +2,15 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
-===============
-Simple Sounding
-===============
+===========================
+Sounding as Dataset Example
+===========================
 
-Use MetPy to make a Skew-T LogP plot from an xarray Dataset after computing LCL parcel profile.
+Use MetPy to make a Skew-T LogP plot from an xarray Dataset after computing LCL parcel
+profile.
+
+This example makes a skewT diagram with specified special lines while storing the sounding
+data as an xarray dataset.
 """
 
 import matplotlib.pyplot as plt
@@ -15,11 +19,10 @@ import pandas as pd
 
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import SkewT, add_metpy_logo
+from metpy.plots import add_metpy_logo, SkewT
 from metpy.units import units
 
 ###########################################
-
 # Upper air data can be obtained using the siphon package, but for this example we will use
 # some of MetPy's sample data.
 
@@ -29,8 +32,8 @@ df = pd.read_fwf(get_test_data('20110522_OUN_12Z.txt', as_file_obj=False),
                  skiprows=7, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
 # Drop any rows with all NaN values for T, Td, winds
-df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
-                       ), how='all').reset_index(drop=True)
+df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'),
+               how='all').reset_index(drop=True)
 
 ###########################################
 # We will pull the data out of the example dataset into individual variables and

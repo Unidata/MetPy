@@ -18,7 +18,6 @@ import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.units import units
 
-
 ###########################################
 # Effective Shear Algorithm for use in Supercell Composite Calculation
 
@@ -118,13 +117,13 @@ el_pressure, _ = mpcalc.el(p, T, Td, prof)
 
 ###########################################
 # Compute the characteristics of a mean layer parcel (50-hPa depth)
-ml_T, ml_Td = mpcalc.mixed_layer(p, T, Td, depth=50 * units.hPa)
+ml_t, ml_td = mpcalc.mixed_layer(p, T, Td, depth=50 * units.hPa)
 ml_p, _, _ = mpcalc.mixed_parcel(p, T, Td, depth=50 * units.hPa)
 mlcape, mlcin = mpcalc.mixed_layer_cape_cin(p, T, prof, depth=50 * units.hPa)
 
 ###########################################
 # Compute the characteristics of the most unstable parcel (50-hPa depth)
-mu_p, mu_T, mu_Td, _ = mpcalc.most_unstable_parcel(p, T, Td, depth=50 * units.hPa)
+mu_p, mu_t, mu_td, _ = mpcalc.most_unstable_parcel(p, T, Td, depth=50 * units.hPa)
 mucape, mucin = mpcalc.most_unstable_cape_cin(p, T, Td, depth=50 * units.hPa)
 
 ###########################################
@@ -138,8 +137,8 @@ critical_angle = mpcalc.critical_angle(p, u, v, height, u_storm, v_storm)
 
 # Estimate height of LCL in meters from hydrostatic thickness
 new_p = np.append(p[p > lclp], lclp)
-new_T = np.append(T[p > lclp], lclt)
-lcl_height = mpcalc.thickness_hydrostatic(new_p, new_T)
+new_t = np.append(T[p > lclp], lclt)
+lcl_height = mpcalc.thickness_hydrostatic(new_p, new_t)
 
 # Compute Surface-based CAPE
 sbcape, _ = mpcalc.surface_based_cape_cin(p, T, Td)
@@ -189,14 +188,14 @@ print(f'   Total Totals: {total_totals:.2f}')
 print(f'Vertical Totals: {vert_totals:.2f}')
 print()
 print('Mixed Layer - Lowest 50-hPa')
-print(f'     ML Temp: {ml_T:.2f}')
-print(f'     ML Dewp: {ml_Td:.2f}')
+print(f'     ML Temp: {ml_t:.2f}')
+print(f'     ML Dewp: {ml_td:.2f}')
 print(f'     ML CAPE: {mlcape:.2f}')
 print(f'      ML CIN: {mlcin:.2f}')
 print()
 print('Most Unstable - Lowest 50-hPa')
-print(f'     MU Temp: {mu_T:.2f}')
-print(f'     MU Dewp: {mu_Td:.2f}')
+print(f'     MU Temp: {mu_t:.2f}')
+print(f'     MU Dewp: {mu_td:.2f}')
 print(f' MU Pressure: {mu_p:.2f}')
 print(f'     MU CAPE: {mucape:.2f}')
 print(f'      MU CIN: {mucin:.2f}')
