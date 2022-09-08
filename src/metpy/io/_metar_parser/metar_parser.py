@@ -1,5 +1,5 @@
 # This file was generated from metar_parser.peg
-# See http://canopy.jcoglan.com/ for documentation.
+# See https://canopy.jcoglan.com/ for documentation
 
 from collections import defaultdict
 import re
@@ -110,10 +110,6 @@ class TreeNode13(TreeNode):
         self.sep = elements[0]
         self.temp = elements[2]
         self.dewp = elements[4]
-
-
-class ParseError(SyntaxError):
-    pass
 
 
 FAILURE = object()
@@ -309,7 +305,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('"COR "')
+                self._expected.append(('METAR::metar', '"COR "'))
         if address1 is FAILURE:
             address1 = TreeNode(self._input[index2:index2], index2, [])
             self._offset = index2
@@ -330,7 +326,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"METAR"')
+                    self._expected.append(('METAR::metar', '"METAR"'))
             if address2 is FAILURE:
                 self._offset = index4
                 chunk2, max2 = None, self._offset + 5
@@ -345,7 +341,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"SPECI"')
+                        self._expected.append(('METAR::metar', '"SPECI"'))
                 if address2 is FAILURE:
                     self._offset = index4
             if address2 is FAILURE:
@@ -384,8 +380,8 @@ class Grammar(object):
         if cached:
             self._offset = cached[1]
             return cached[0]
-        remaining0, index1, elements0, address1 = 1, self._offset, [], True
-        while address1 is not FAILURE:
+        index1, elements0, address1 = self._offset, [], None
+        while True:
             chunk0, max0 = None, self._offset + 1
             if max0 <= self._input_size:
                 chunk0 = self._input[self._offset:max0]
@@ -398,11 +394,12 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('" "')
+                    self._expected.append(('METAR::sep', '" "'))
             if address1 is not FAILURE:
                 elements0.append(address1)
-                remaining0 -= 1
-        if remaining0 <= 0:
+            else:
+                break
+        if len(elements0) >= 1:
             address0 = TreeNode(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
         else:
@@ -438,7 +435,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[0-9A-Z]')
+                    self._expected.append(('METAR::siteid', '[0-9A-Z]'))
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
@@ -454,7 +451,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[0-9A-Z]')
+                        self._expected.append(('METAR::siteid', '[0-9A-Z]'))
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
@@ -470,7 +467,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[0-9A-Z]')
+                            self._expected.append(('METAR::siteid', '[0-9A-Z]'))
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
@@ -486,7 +483,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('[0-9A-Z]')
+                                self._expected.append(('METAR::siteid', '[0-9A-Z]'))
                         if address5 is not FAILURE:
                             elements0.append(address5)
                         else:
@@ -524,8 +521,8 @@ class Grammar(object):
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
-            remaining0, index2, elements1, address3 = 1, self._offset, [], True
-            while address3 is not FAILURE:
+            index2, elements1, address3 = self._offset, [], None
+            while True:
                 chunk0, max0 = None, self._offset + 1
                 if max0 <= self._input_size:
                     chunk0 = self._input[self._offset:max0]
@@ -538,11 +535,12 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::datetime', '[\\d]'))
                 if address3 is not FAILURE:
                     elements1.append(address3)
-                    remaining0 -= 1
-            if remaining0 <= 0:
+                else:
+                    break
+            if len(elements1) >= 1:
                 address2 = TreeNode(self._input[index2:self._offset], index2, elements1)
                 self._offset = self._offset
             else:
@@ -562,7 +560,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"Z"')
+                        self._expected.append(('METAR::datetime', '"Z"'))
                 if address4 is not FAILURE:
                     elements0.append(address4)
                 else:
@@ -589,8 +587,8 @@ class Grammar(object):
             self._offset = cached[1]
             return cached[0]
         index1 = self._offset
-        remaining0, index2, elements0, address1 = 1, self._offset, [], True
-        while address1 is not FAILURE:
+        index2, elements0, address1 = self._offset, [], None
+        while True:
             index3, elements1 = self._offset, []
             address2 = FAILURE
             address2 = self._read_sep()
@@ -610,7 +608,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"AUTO"')
+                        self._expected.append(('METAR::auto', '"AUTO"'))
                 if address3 is FAILURE:
                     self._offset = index4
                     chunk1, max1 = None, self._offset + 3
@@ -625,7 +623,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"COR"')
+                            self._expected.append(('METAR::auto', '"COR"'))
                     if address3 is FAILURE:
                         self._offset = index4
                 if address3 is not FAILURE:
@@ -643,8 +641,9 @@ class Grammar(object):
                 self._offset = self._offset
             if address1 is not FAILURE:
                 elements0.append(address1)
-                remaining0 -= 1
-        if remaining0 <= 0:
+            else:
+                break
+        if len(elements0) >= 1:
             address0 = TreeNode(self._input[index2:self._offset], index2, elements0)
             self._offset = self._offset
         else:
@@ -697,7 +696,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"KT"')
+                                self._expected.append(('METAR::wind', '"KT"'))
                         if address5 is FAILURE:
                             self._offset = index4
                             chunk1, max1 = None, self._offset + 3
@@ -712,7 +711,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"MPS"')
+                                    self._expected.append(('METAR::wind', '"MPS"'))
                             if address5 is FAILURE:
                                 self._offset = index4
                         if address5 is not FAILURE:
@@ -776,7 +775,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('[\\d]')
+                self._expected.append(('METAR::wind_dir', '[\\d]'))
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
@@ -792,7 +791,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::wind_dir', '[\\d]'))
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
@@ -808,7 +807,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::wind_dir', '[\\d]'))
                 if address3 is not FAILURE:
                     elements0.append(address3)
                 else:
@@ -839,7 +838,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('\'VAR\'')
+                    self._expected.append(('METAR::wind_dir', '\'VAR\''))
             if address0 is FAILURE:
                 self._offset = index2
                 chunk4, max4 = None, self._offset + 3
@@ -854,7 +853,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('\'VRB\'')
+                        self._expected.append(('METAR::wind_dir', '\'VRB\''))
                 if address0 is FAILURE:
                     self._offset = index2
                     chunk5, max5 = None, self._offset + 3
@@ -869,7 +868,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"///"')
+                            self._expected.append(('METAR::wind_dir', '"///"'))
                     if address0 is FAILURE:
                         self._offset = index2
         if address0 is FAILURE:
@@ -900,7 +899,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('[\\d]')
+                self._expected.append(('METAR::wind_spd', '[\\d]'))
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
@@ -916,7 +915,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::wind_spd', '[\\d]'))
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
@@ -933,7 +932,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::wind_spd', '[\\d]'))
                 if address3 is FAILURE:
                     address3 = TreeNode(self._input[index4:index4], index4, [])
                     self._offset = index4
@@ -967,7 +966,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"//"')
+                    self._expected.append(('METAR::wind_spd', '"//"'))
             if address0 is FAILURE:
                 self._offset = index2
         if address0 is FAILURE:
@@ -997,12 +996,12 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('"G"')
+                self._expected.append(('METAR::gust', '"G"'))
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
-            remaining0, index3, elements1, address3 = 1, self._offset, [], True
-            while address3 is not FAILURE:
+            index3, elements1, address3 = self._offset, [], None
+            while True:
                 chunk1, max1 = None, self._offset + 1
                 if max1 <= self._input_size:
                     chunk1 = self._input[self._offset:max1]
@@ -1015,11 +1014,12 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::gust', '[\\d]'))
                 if address3 is not FAILURE:
                     elements1.append(address3)
-                    remaining0 -= 1
-            if remaining0 <= 0:
+                else:
+                    break
+            if len(elements1) >= 1:
                 address2 = TreeNode(self._input[index3:self._offset], index3, elements1)
                 self._offset = self._offset
             else:
@@ -1067,7 +1067,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::varwind', '[\\d]'))
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
@@ -1083,7 +1083,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::varwind', '[\\d]'))
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
@@ -1099,7 +1099,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[\\d]')
+                            self._expected.append(('METAR::varwind', '[\\d]'))
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
@@ -1115,7 +1115,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"V"')
+                                self._expected.append(('METAR::varwind', '"V"'))
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
@@ -1131,7 +1131,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('[\\d]')
+                                    self._expected.append(('METAR::varwind', '[\\d]'))
                             if address6 is not FAILURE:
                                 elements0.append(address6)
                                 address7 = FAILURE
@@ -1147,7 +1147,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('[\\d]')
+                                        self._expected.append(('METAR::varwind', '[\\d]'))
                                 if address7 is not FAILURE:
                                     elements0.append(address7)
                                     address8 = FAILURE
@@ -1163,7 +1163,7 @@ class Grammar(object):
                                             self._failure = self._offset
                                             self._expected = []
                                         if self._offset == self._failure:
-                                            self._expected.append('[\\d]')
+                                            self._expected.append(('METAR::varwind', '[\\d]'))
                                     if address8 is not FAILURE:
                                         elements0.append(address8)
                                     else:
@@ -1226,7 +1226,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::vis', '[\\d]'))
             if address3 is not FAILURE:
                 elements1.append(address3)
                 address4 = FAILURE
@@ -1242,7 +1242,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::vis', '[\\d]'))
                 if address4 is not FAILURE:
                     elements1.append(address4)
                     address5 = FAILURE
@@ -1258,7 +1258,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[\\d]')
+                            self._expected.append(('METAR::vis', '[\\d]'))
                     if address5 is not FAILURE:
                         elements1.append(address5)
                         address6 = FAILURE
@@ -1274,7 +1274,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('[\\d]')
+                                self._expected.append(('METAR::vis', '[\\d]'))
                         if address6 is not FAILURE:
                             elements1.append(address6)
                             address7 = FAILURE
@@ -1291,7 +1291,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"NDV"')
+                                    self._expected.append(('METAR::vis', '"NDV"'))
                             if address7 is FAILURE:
                                 address7 = TreeNode(self._input[index5:index5], index5, [])
                                 self._offset = index5
@@ -1333,7 +1333,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::vis', '[\\d]'))
                 if address8 is not FAILURE:
                     elements2.append(address8)
                     address9 = FAILURE
@@ -1351,7 +1351,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[\\d]')
+                            self._expected.append(('METAR::vis', '[\\d]'))
                     if address9 is FAILURE:
                         self._offset = index8
                         index9, elements3 = self._offset, []
@@ -1371,7 +1371,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('" "')
+                                self._expected.append(('METAR::vis', '" "'))
                         if address11 is not FAILURE:
                             elements4.append(address11)
                             address12 = FAILURE
@@ -1387,7 +1387,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('[\\d]')
+                                    self._expected.append(('METAR::vis', '[\\d]'))
                             if address12 is not FAILURE:
                                 elements4.append(address12)
                             else:
@@ -1419,7 +1419,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"/"')
+                                    self._expected.append(('METAR::vis', '"/"'))
                             if address13 is not FAILURE:
                                 elements3.append(address13)
                                 address14 = FAILURE
@@ -1435,7 +1435,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('[\\d]')
+                                        self._expected.append(('METAR::vis', '[\\d]'))
                                 if address14 is not FAILURE:
                                     elements3.append(address14)
                                 else:
@@ -1472,7 +1472,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"SM"')
+                                self._expected.append(('METAR::vis', '"SM"'))
                         if address15 is not FAILURE:
                             elements2.append(address15)
                         else:
@@ -1505,7 +1505,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"M"')
+                            self._expected.append(('METAR::vis', '"M"'))
                     if address16 is not FAILURE:
                         elements5.append(address16)
                         address17 = FAILURE
@@ -1521,7 +1521,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('[\\d]')
+                                self._expected.append(('METAR::vis', '[\\d]'))
                         if address17 is not FAILURE:
                             elements5.append(address17)
                             address18 = FAILURE
@@ -1537,7 +1537,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"/"')
+                                    self._expected.append(('METAR::vis', '"/"'))
                             if address18 is not FAILURE:
                                 elements5.append(address18)
                                 address19 = FAILURE
@@ -1553,7 +1553,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('[\\d]')
+                                        self._expected.append(('METAR::vis', '[\\d]'))
                                 if address19 is not FAILURE:
                                     elements5.append(address19)
                                     address20 = FAILURE
@@ -1569,7 +1569,7 @@ class Grammar(object):
                                             self._failure = self._offset
                                             self._expected = []
                                         if self._offset == self._failure:
-                                            self._expected.append('"SM"')
+                                            self._expected.append(('METAR::vis', '"SM"'))
                                     if address20 is not FAILURE:
                                         elements5.append(address20)
                                     else:
@@ -1606,7 +1606,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"CAVOK"')
+                                self._expected.append(('METAR::vis', '"CAVOK"'))
                         if address2 is FAILURE:
                             self._offset = index3
                             chunk18, max18 = None, self._offset + 4
@@ -1621,7 +1621,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"////"')
+                                    self._expected.append(('METAR::vis', '"////"'))
                             if address2 is FAILURE:
                                 self._offset = index3
             if address2 is not FAILURE:
@@ -1678,7 +1678,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::varvis', '[\\d]'))
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
@@ -1694,7 +1694,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::varvis', '[\\d]'))
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
@@ -1710,7 +1710,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[\\d]')
+                            self._expected.append(('METAR::varvis', '[\\d]'))
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
@@ -1726,7 +1726,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('[\\d]')
+                                self._expected.append(('METAR::varvis', '[\\d]'))
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
@@ -1743,7 +1743,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('[NSEW]')
+                                    self._expected.append(('METAR::varvis', '[NSEW]'))
                             if address6 is FAILURE:
                                 address6 = TreeNode(self._input[index2:index2], index2, [])
                                 self._offset = index2
@@ -1763,7 +1763,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('[NSEW]')
+                                        self._expected.append(('METAR::varvis', '[NSEW]'))
                                 if address7 is FAILURE:
                                     address7 = TreeNode(self._input[index3:index3], index3, [])
                                     self._offset = index3
@@ -1804,8 +1804,8 @@ class Grammar(object):
         if cached:
             self._offset = cached[1]
             return cached[0]
-        remaining0, index1, elements0, address1 = 0, self._offset, [], True
-        while address1 is not FAILURE:
+        index1, elements0, address1 = self._offset, [], None
+        while True:
             index2, elements1 = self._offset, []
             address2 = FAILURE
             address2 = self._read_sep()
@@ -1824,7 +1824,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"R"')
+                        self._expected.append(('METAR::run', '"R"'))
                 if address3 is not FAILURE:
                     elements1.append(address3)
                     address4 = FAILURE
@@ -1841,7 +1841,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[LRC]')
+                            self._expected.append(('METAR::run', '[LRC]'))
                     if address4 is FAILURE:
                         address4 = TreeNode(self._input[index3:index3], index3, [])
                         self._offset = index3
@@ -1860,7 +1860,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('[\\d]')
+                                self._expected.append(('METAR::run', '[\\d]'))
                         if address5 is not FAILURE:
                             elements1.append(address5)
                             address6 = FAILURE
@@ -1876,7 +1876,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('[\\d]')
+                                    self._expected.append(('METAR::run', '[\\d]'))
                             if address6 is not FAILURE:
                                 elements1.append(address6)
                                 address7 = FAILURE
@@ -1893,7 +1893,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('[LRC]')
+                                        self._expected.append(('METAR::run', '[LRC]'))
                                 if address7 is FAILURE:
                                     address7 = TreeNode(self._input[index4:index4], index4, [])
                                     self._offset = index4
@@ -1912,7 +1912,7 @@ class Grammar(object):
                                             self._failure = self._offset
                                             self._expected = []
                                         if self._offset == self._failure:
-                                            self._expected.append('"/"')
+                                            self._expected.append(('METAR::run', '"/"'))
                                     if address8 is not FAILURE:
                                         elements1.append(address8)
                                         address9 = FAILURE
@@ -1931,7 +1931,7 @@ class Grammar(object):
                                                 self._failure = self._offset
                                                 self._expected = []
                                             if self._offset == self._failure:
-                                                self._expected.append('[\\d]')
+                                                self._expected.append(('METAR::run', '[\\d]'))
                                         if address10 is not FAILURE:
                                             elements2.append(address10)
                                             address11 = FAILURE
@@ -1947,7 +1947,7 @@ class Grammar(object):
                                                     self._failure = self._offset
                                                     self._expected = []
                                                 if self._offset == self._failure:
-                                                    self._expected.append('[\\d]')
+                                                    self._expected.append(('METAR::run', '[\\d]'))
                                             if address11 is not FAILURE:
                                                 elements2.append(address11)
                                                 address12 = FAILURE
@@ -1963,7 +1963,7 @@ class Grammar(object):
                                                         self._failure = self._offset
                                                         self._expected = []
                                                     if self._offset == self._failure:
-                                                        self._expected.append('[\\d]')
+                                                        self._expected.append(('METAR::run', '[\\d]'))
                                                 if address12 is not FAILURE:
                                                     elements2.append(address12)
                                                     address13 = FAILURE
@@ -1979,7 +1979,7 @@ class Grammar(object):
                                                             self._failure = self._offset
                                                             self._expected = []
                                                         if self._offset == self._failure:
-                                                            self._expected.append('[\\d]')
+                                                            self._expected.append(('METAR::run', '[\\d]'))
                                                     if address13 is not FAILURE:
                                                         elements2.append(address13)
                                                         address14 = FAILURE
@@ -1995,7 +1995,7 @@ class Grammar(object):
                                                                 self._failure = self._offset
                                                                 self._expected = []
                                                             if self._offset == self._failure:
-                                                                self._expected.append('"V"')
+                                                                self._expected.append(('METAR::run', '"V"'))
                                                         if address14 is not FAILURE:
                                                             elements2.append(address14)
                                                         else:
@@ -2037,7 +2037,7 @@ class Grammar(object):
                                                     self._failure = self._offset
                                                     self._expected = []
                                                 if self._offset == self._failure:
-                                                    self._expected.append('["M" / "P"]')
+                                                    self._expected.append(('METAR::run', '["M" / "P"]'))
                                             if address15 is FAILURE:
                                                 address15 = TreeNode(self._input[index7:index7], index7, [])
                                                 self._offset = index7
@@ -2056,7 +2056,7 @@ class Grammar(object):
                                                         self._failure = self._offset
                                                         self._expected = []
                                                     if self._offset == self._failure:
-                                                        self._expected.append('[\\d]')
+                                                        self._expected.append(('METAR::run', '[\\d]'))
                                                 if address16 is not FAILURE:
                                                     elements1.append(address16)
                                                     address17 = FAILURE
@@ -2072,7 +2072,7 @@ class Grammar(object):
                                                             self._failure = self._offset
                                                             self._expected = []
                                                         if self._offset == self._failure:
-                                                            self._expected.append('[\\d]')
+                                                            self._expected.append(('METAR::run', '[\\d]'))
                                                     if address17 is not FAILURE:
                                                         elements1.append(address17)
                                                         address18 = FAILURE
@@ -2088,7 +2088,7 @@ class Grammar(object):
                                                                 self._failure = self._offset
                                                                 self._expected = []
                                                             if self._offset == self._failure:
-                                                                self._expected.append('[\\d]')
+                                                                self._expected.append(('METAR::run', '[\\d]'))
                                                         if address18 is not FAILURE:
                                                             elements1.append(address18)
                                                             address19 = FAILURE
@@ -2104,7 +2104,7 @@ class Grammar(object):
                                                                     self._failure = self._offset
                                                                     self._expected = []
                                                                 if self._offset == self._failure:
-                                                                    self._expected.append('[\\d]')
+                                                                    self._expected.append(('METAR::run', '[\\d]'))
                                                             if address19 is not FAILURE:
                                                                 elements1.append(address19)
                                                                 address20 = FAILURE
@@ -2121,7 +2121,7 @@ class Grammar(object):
                                                                         self._failure = self._offset
                                                                         self._expected = []
                                                                     if self._offset == self._failure:
-                                                                        self._expected.append('"FT"')
+                                                                        self._expected.append(('METAR::run', '"FT"'))
                                                                 if address20 is FAILURE:
                                                                     address20 = TreeNode(self._input[index8:index8], index8, [])
                                                                     self._offset = index8
@@ -2144,7 +2144,7 @@ class Grammar(object):
                                                                             self._failure = self._offset
                                                                             self._expected = []
                                                                         if self._offset == self._failure:
-                                                                            self._expected.append('"/"')
+                                                                            self._expected.append(('METAR::run', '"/"'))
                                                                     if address22 is FAILURE:
                                                                         address22 = TreeNode(self._input[index11:index11], index11, [])
                                                                         self._offset = index11
@@ -2163,7 +2163,7 @@ class Grammar(object):
                                                                                 self._failure = self._offset
                                                                                 self._expected = []
                                                                             if self._offset == self._failure:
-                                                                                self._expected.append('[UDN]')
+                                                                                self._expected.append(('METAR::run', '[UDN]'))
                                                                         if address23 is not FAILURE:
                                                                             elements3.append(address23)
                                                                         else:
@@ -2234,8 +2234,9 @@ class Grammar(object):
                 self._offset = self._offset
             if address1 is not FAILURE:
                 elements0.append(address1)
-                remaining0 -= 1
-        if remaining0 <= 0:
+            else:
+                break
+        if len(elements0) >= 0:
             address0 = TreeNode(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
         else:
@@ -2269,7 +2270,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"//"')
+                    self._expected.append(('METAR::curwx', '"//"'))
             if address2 is not FAILURE:
                 elements0.append(address2)
             else:
@@ -2303,7 +2304,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"NSW"')
+                        self._expected.append(('METAR::curwx', '"NSW"'))
                 if address4 is not FAILURE:
                     elements1.append(address4)
                 else:
@@ -2319,8 +2320,8 @@ class Grammar(object):
                 self._offset = self._offset
             if address0 is FAILURE:
                 self._offset = index2
-                remaining0, index5, elements2, address5 = 0, self._offset, [], True
-                while address5 is not FAILURE:
+                index5, elements2, address5 = self._offset, [], None
+                while True:
                     index6, elements3 = self._offset, []
                     address6 = FAILURE
                     address6 = self._read_sep()
@@ -2343,8 +2344,9 @@ class Grammar(object):
                         self._offset = self._offset
                     if address5 is not FAILURE:
                         elements2.append(address5)
-                        remaining0 -= 1
-                if remaining0 <= 0:
+                    else:
+                        break
+                if len(elements2) >= 0:
                     address0 = TreeNode(self._input[index5:self._offset], index5, elements2)
                     self._offset = self._offset
                 else:
@@ -2380,7 +2382,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('[-+]')
+                self._expected.append(('METAR::wx', '[-+]'))
         if address2 is not FAILURE:
             elements1.append(address2)
             address3 = FAILURE
@@ -2397,7 +2399,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('" "')
+                    self._expected.append(('METAR::wx', '" "'))
             if address3 is FAILURE:
                 address3 = TreeNode(self._input[index4:index4], index4, [])
                 self._offset = index4
@@ -2433,15 +2435,15 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"VC"')
+                    self._expected.append(('METAR::wx', '"VC"'))
             if address4 is FAILURE:
                 address4 = TreeNode(self._input[index5:index5], index5, [])
                 self._offset = index5
             if address4 is not FAILURE:
                 elements0.append(address4)
                 address5 = FAILURE
-                remaining0, index6, elements2, address6 = 1, self._offset, [], True
-                while address6 is not FAILURE:
+                index6, elements2, address6 = self._offset, [], None
+                while True:
                     index7 = self._offset
                     chunk3, max3 = None, self._offset + 2
                     if max3 <= self._input_size:
@@ -2455,7 +2457,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"MI"')
+                            self._expected.append(('METAR::wx', '"MI"'))
                     if address6 is FAILURE:
                         self._offset = index7
                         chunk4, max4 = None, self._offset + 2
@@ -2470,7 +2472,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"BC"')
+                                self._expected.append(('METAR::wx', '"BC"'))
                         if address6 is FAILURE:
                             self._offset = index7
                             chunk5, max5 = None, self._offset + 2
@@ -2485,7 +2487,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"PR"')
+                                    self._expected.append(('METAR::wx', '"PR"'))
                             if address6 is FAILURE:
                                 self._offset = index7
                                 chunk6, max6 = None, self._offset + 2
@@ -2500,7 +2502,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('"DR"')
+                                        self._expected.append(('METAR::wx', '"DR"'))
                                 if address6 is FAILURE:
                                     self._offset = index7
                                     chunk7, max7 = None, self._offset + 2
@@ -2515,7 +2517,7 @@ class Grammar(object):
                                             self._failure = self._offset
                                             self._expected = []
                                         if self._offset == self._failure:
-                                            self._expected.append('"BL"')
+                                            self._expected.append(('METAR::wx', '"BL"'))
                                     if address6 is FAILURE:
                                         self._offset = index7
                                         chunk8, max8 = None, self._offset + 2
@@ -2530,7 +2532,7 @@ class Grammar(object):
                                                 self._failure = self._offset
                                                 self._expected = []
                                             if self._offset == self._failure:
-                                                self._expected.append('"SH"')
+                                                self._expected.append(('METAR::wx', '"SH"'))
                                         if address6 is FAILURE:
                                             self._offset = index7
                                             chunk9, max9 = None, self._offset + 2
@@ -2545,7 +2547,7 @@ class Grammar(object):
                                                     self._failure = self._offset
                                                     self._expected = []
                                                 if self._offset == self._failure:
-                                                    self._expected.append('"TS"')
+                                                    self._expected.append(('METAR::wx', '"TS"'))
                                             if address6 is FAILURE:
                                                 self._offset = index7
                                                 chunk10, max10 = None, self._offset + 2
@@ -2560,7 +2562,7 @@ class Grammar(object):
                                                         self._failure = self._offset
                                                         self._expected = []
                                                     if self._offset == self._failure:
-                                                        self._expected.append('"FZ"')
+                                                        self._expected.append(('METAR::wx', '"FZ"'))
                                                 if address6 is FAILURE:
                                                     self._offset = index7
                                                     chunk11, max11 = None, self._offset + 2
@@ -2575,7 +2577,7 @@ class Grammar(object):
                                                             self._failure = self._offset
                                                             self._expected = []
                                                         if self._offset == self._failure:
-                                                            self._expected.append('"DZ"')
+                                                            self._expected.append(('METAR::wx', '"DZ"'))
                                                     if address6 is FAILURE:
                                                         self._offset = index7
                                                         chunk12, max12 = None, self._offset + 2
@@ -2590,7 +2592,7 @@ class Grammar(object):
                                                                 self._failure = self._offset
                                                                 self._expected = []
                                                             if self._offset == self._failure:
-                                                                self._expected.append('"RA"')
+                                                                self._expected.append(('METAR::wx', '"RA"'))
                                                         if address6 is FAILURE:
                                                             self._offset = index7
                                                             chunk13, max13 = None, self._offset + 2
@@ -2605,7 +2607,7 @@ class Grammar(object):
                                                                     self._failure = self._offset
                                                                     self._expected = []
                                                                 if self._offset == self._failure:
-                                                                    self._expected.append('"SN"')
+                                                                    self._expected.append(('METAR::wx', '"SN"'))
                                                             if address6 is FAILURE:
                                                                 self._offset = index7
                                                                 chunk14, max14 = None, self._offset + 2
@@ -2620,7 +2622,7 @@ class Grammar(object):
                                                                         self._failure = self._offset
                                                                         self._expected = []
                                                                     if self._offset == self._failure:
-                                                                        self._expected.append('"SG"')
+                                                                        self._expected.append(('METAR::wx', '"SG"'))
                                                                 if address6 is FAILURE:
                                                                     self._offset = index7
                                                                     chunk15, max15 = None, self._offset + 2
@@ -2635,7 +2637,7 @@ class Grammar(object):
                                                                             self._failure = self._offset
                                                                             self._expected = []
                                                                         if self._offset == self._failure:
-                                                                            self._expected.append('"PL"')
+                                                                            self._expected.append(('METAR::wx', '"PL"'))
                                                                     if address6 is FAILURE:
                                                                         self._offset = index7
                                                                         chunk16, max16 = None, self._offset + 2
@@ -2650,7 +2652,7 @@ class Grammar(object):
                                                                                 self._failure = self._offset
                                                                                 self._expected = []
                                                                             if self._offset == self._failure:
-                                                                                self._expected.append('"GR"')
+                                                                                self._expected.append(('METAR::wx', '"GR"'))
                                                                         if address6 is FAILURE:
                                                                             self._offset = index7
                                                                             chunk17, max17 = None, self._offset + 2
@@ -2665,7 +2667,7 @@ class Grammar(object):
                                                                                     self._failure = self._offset
                                                                                     self._expected = []
                                                                                 if self._offset == self._failure:
-                                                                                    self._expected.append('"GS"')
+                                                                                    self._expected.append(('METAR::wx', '"GS"'))
                                                                             if address6 is FAILURE:
                                                                                 self._offset = index7
                                                                                 chunk18, max18 = None, self._offset + 2
@@ -2680,7 +2682,7 @@ class Grammar(object):
                                                                                         self._failure = self._offset
                                                                                         self._expected = []
                                                                                     if self._offset == self._failure:
-                                                                                        self._expected.append('"UP"')
+                                                                                        self._expected.append(('METAR::wx', '"UP"'))
                                                                                 if address6 is FAILURE:
                                                                                     self._offset = index7
                                                                                     chunk19, max19 = None, self._offset + 2
@@ -2695,7 +2697,7 @@ class Grammar(object):
                                                                                             self._failure = self._offset
                                                                                             self._expected = []
                                                                                         if self._offset == self._failure:
-                                                                                            self._expected.append('"BR"')
+                                                                                            self._expected.append(('METAR::wx', '"BR"'))
                                                                                     if address6 is FAILURE:
                                                                                         self._offset = index7
                                                                                         chunk20, max20 = None, self._offset + 2
@@ -2710,7 +2712,7 @@ class Grammar(object):
                                                                                                 self._failure = self._offset
                                                                                                 self._expected = []
                                                                                             if self._offset == self._failure:
-                                                                                                self._expected.append('"FG"')
+                                                                                                self._expected.append(('METAR::wx', '"FG"'))
                                                                                         if address6 is FAILURE:
                                                                                             self._offset = index7
                                                                                             chunk21, max21 = None, self._offset + 2
@@ -2725,7 +2727,7 @@ class Grammar(object):
                                                                                                     self._failure = self._offset
                                                                                                     self._expected = []
                                                                                                 if self._offset == self._failure:
-                                                                                                    self._expected.append('"FU"')
+                                                                                                    self._expected.append(('METAR::wx', '"FU"'))
                                                                                             if address6 is FAILURE:
                                                                                                 self._offset = index7
                                                                                                 chunk22, max22 = None, self._offset + 2
@@ -2740,7 +2742,7 @@ class Grammar(object):
                                                                                                         self._failure = self._offset
                                                                                                         self._expected = []
                                                                                                     if self._offset == self._failure:
-                                                                                                        self._expected.append('"VA"')
+                                                                                                        self._expected.append(('METAR::wx', '"VA"'))
                                                                                                 if address6 is FAILURE:
                                                                                                     self._offset = index7
                                                                                                     chunk23, max23 = None, self._offset + 2
@@ -2755,7 +2757,7 @@ class Grammar(object):
                                                                                                             self._failure = self._offset
                                                                                                             self._expected = []
                                                                                                         if self._offset == self._failure:
-                                                                                                            self._expected.append('"DU"')
+                                                                                                            self._expected.append(('METAR::wx', '"DU"'))
                                                                                                     if address6 is FAILURE:
                                                                                                         self._offset = index7
                                                                                                         chunk24, max24 = None, self._offset + 2
@@ -2770,7 +2772,7 @@ class Grammar(object):
                                                                                                                 self._failure = self._offset
                                                                                                                 self._expected = []
                                                                                                             if self._offset == self._failure:
-                                                                                                                self._expected.append('"SA"')
+                                                                                                                self._expected.append(('METAR::wx', '"SA"'))
                                                                                                         if address6 is FAILURE:
                                                                                                             self._offset = index7
                                                                                                             chunk25, max25 = None, self._offset + 2
@@ -2785,7 +2787,7 @@ class Grammar(object):
                                                                                                                     self._failure = self._offset
                                                                                                                     self._expected = []
                                                                                                                 if self._offset == self._failure:
-                                                                                                                    self._expected.append('"HZ"')
+                                                                                                                    self._expected.append(('METAR::wx', '"HZ"'))
                                                                                                             if address6 is FAILURE:
                                                                                                                 self._offset = index7
                                                                                                                 chunk26, max26 = None, self._offset + 2
@@ -2800,7 +2802,7 @@ class Grammar(object):
                                                                                                                         self._failure = self._offset
                                                                                                                         self._expected = []
                                                                                                                     if self._offset == self._failure:
-                                                                                                                        self._expected.append('"PO"')
+                                                                                                                        self._expected.append(('METAR::wx', '"PO"'))
                                                                                                                 if address6 is FAILURE:
                                                                                                                     self._offset = index7
                                                                                                                     chunk27, max27 = None, self._offset + 2
@@ -2815,7 +2817,7 @@ class Grammar(object):
                                                                                                                             self._failure = self._offset
                                                                                                                             self._expected = []
                                                                                                                         if self._offset == self._failure:
-                                                                                                                            self._expected.append('"SQ"')
+                                                                                                                            self._expected.append(('METAR::wx', '"SQ"'))
                                                                                                                     if address6 is FAILURE:
                                                                                                                         self._offset = index7
                                                                                                                         chunk28, max28 = None, self._offset + 2
@@ -2830,7 +2832,7 @@ class Grammar(object):
                                                                                                                                 self._failure = self._offset
                                                                                                                                 self._expected = []
                                                                                                                             if self._offset == self._failure:
-                                                                                                                                self._expected.append('"FC"')
+                                                                                                                                self._expected.append(('METAR::wx', '"FC"'))
                                                                                                                         if address6 is FAILURE:
                                                                                                                             self._offset = index7
                                                                                                                             chunk29, max29 = None, self._offset + 2
@@ -2845,7 +2847,7 @@ class Grammar(object):
                                                                                                                                     self._failure = self._offset
                                                                                                                                     self._expected = []
                                                                                                                                 if self._offset == self._failure:
-                                                                                                                                    self._expected.append('"SS"')
+                                                                                                                                    self._expected.append(('METAR::wx', '"SS"'))
                                                                                                                             if address6 is FAILURE:
                                                                                                                                 self._offset = index7
                                                                                                                                 chunk30, max30 = None, self._offset + 2
@@ -2860,7 +2862,7 @@ class Grammar(object):
                                                                                                                                         self._failure = self._offset
                                                                                                                                         self._expected = []
                                                                                                                                     if self._offset == self._failure:
-                                                                                                                                        self._expected.append('"DS"')
+                                                                                                                                        self._expected.append(('METAR::wx', '"DS"'))
                                                                                                                                 if address6 is FAILURE:
                                                                                                                                     self._offset = index7
                                                                                                                                     chunk31, max31 = None, self._offset + 2
@@ -2875,7 +2877,7 @@ class Grammar(object):
                                                                                                                                             self._failure = self._offset
                                                                                                                                             self._expected = []
                                                                                                                                         if self._offset == self._failure:
-                                                                                                                                            self._expected.append('"IC"')
+                                                                                                                                            self._expected.append(('METAR::wx', '"IC"'))
                                                                                                                                     if address6 is FAILURE:
                                                                                                                                         self._offset = index7
                                                                                                                                         chunk32, max32 = None, self._offset + 2
@@ -2890,13 +2892,14 @@ class Grammar(object):
                                                                                                                                                 self._failure = self._offset
                                                                                                                                                 self._expected = []
                                                                                                                                             if self._offset == self._failure:
-                                                                                                                                                self._expected.append('"PY"')
+                                                                                                                                                self._expected.append(('METAR::wx', '"PY"'))
                                                                                                                                         if address6 is FAILURE:
                                                                                                                                             self._offset = index7
                     if address6 is not FAILURE:
                         elements2.append(address6)
-                        remaining0 -= 1
-                if remaining0 <= 0:
+                    else:
+                        break
+                if len(elements2) >= 1:
                     address5 = TreeNode(self._input[index6:self._offset], index6, elements2)
                     self._offset = self._offset
                 else:
@@ -2927,8 +2930,8 @@ class Grammar(object):
             self._offset = cached[1]
             return cached[0]
         index1 = self._offset
-        remaining0, index2, elements0, address1 = 0, self._offset, [], True
-        while address1 is not FAILURE:
+        index2, elements0, address1 = self._offset, [], None
+        while True:
             index3, elements1 = self._offset, []
             address2 = FAILURE
             address2 = self._read_sep()
@@ -2951,8 +2954,9 @@ class Grammar(object):
                 self._offset = self._offset
             if address1 is not FAILURE:
                 elements0.append(address1)
-                remaining0 -= 1
-        if remaining0 <= 0:
+            else:
+                break
+        if len(elements0) >= 0:
             address0 = TreeNode(self._input[index2:self._offset], index2, elements0)
             self._offset = self._offset
         else:
@@ -2985,7 +2989,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('"FEW"')
+                self._expected.append(('METAR::cover', '"FEW"'))
         if address1 is FAILURE:
             self._offset = index3
             chunk1, max1 = None, self._offset + 3
@@ -3000,7 +3004,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"SCT"')
+                    self._expected.append(('METAR::cover', '"SCT"'))
             if address1 is FAILURE:
                 self._offset = index3
                 chunk2, max2 = None, self._offset + 3
@@ -3015,7 +3019,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"BKN"')
+                        self._expected.append(('METAR::cover', '"BKN"'))
                 if address1 is FAILURE:
                     self._offset = index3
                     chunk3, max3 = None, self._offset + 3
@@ -3030,7 +3034,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"OVC"')
+                            self._expected.append(('METAR::cover', '"OVC"'))
                     if address1 is FAILURE:
                         self._offset = index3
                         chunk4, max4 = None, self._offset + 2
@@ -3045,7 +3049,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"VV"')
+                                self._expected.append(('METAR::cover', '"VV"'))
                         if address1 is FAILURE:
                             self._offset = index3
                             chunk5, max5 = None, self._offset + 3
@@ -3060,15 +3064,15 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"///"')
+                                    self._expected.append(('METAR::cover', '"///"'))
                             if address1 is FAILURE:
                                 self._offset = index3
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
             index4 = self._offset
-            remaining0, index5, elements1, address3 = 0, self._offset, [], True
-            while address3 is not FAILURE:
+            index5, elements1, address3 = self._offset, [], None
+            while True:
                 chunk6, max6 = None, self._offset + 1
                 if max6 <= self._input_size:
                     chunk6 = self._input[self._offset:max6]
@@ -3081,11 +3085,12 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::cover', '[\\d]'))
                 if address3 is not FAILURE:
                     elements1.append(address3)
-                    remaining0 -= 1
-            if remaining0 <= 0:
+                else:
+                    break
+            if len(elements1) >= 0:
                 address2 = TreeNode(self._input[index5:self._offset], index5, elements1)
                 self._offset = self._offset
             else:
@@ -3110,7 +3115,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"TCU"')
+                        self._expected.append(('METAR::cover', '"TCU"'))
                 if address4 is FAILURE:
                     self._offset = index7
                     chunk8, max8 = None, self._offset + 2
@@ -3125,7 +3130,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"CB"')
+                            self._expected.append(('METAR::cover', '"CB"'))
                     if address4 is FAILURE:
                         self._offset = index7
                         index8, elements2 = self._offset, []
@@ -3142,7 +3147,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"//"')
+                                self._expected.append(('METAR::cover', '"//"'))
                         if address5 is not FAILURE:
                             elements2.append(address5)
                             address6 = FAILURE
@@ -3159,7 +3164,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"/"')
+                                    self._expected.append(('METAR::cover', '"/"'))
                             if address6 is FAILURE:
                                 address6 = TreeNode(self._input[index9:index9], index9, [])
                                 self._offset = index9
@@ -3212,7 +3217,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"CLR"')
+                    self._expected.append(('METAR::cover', '"CLR"'))
             if address0 is FAILURE:
                 self._offset = index10
                 chunk12, max12 = None, self._offset + 3
@@ -3227,7 +3232,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('"SKC"')
+                        self._expected.append(('METAR::cover', '"SKC"'))
                 if address0 is FAILURE:
                     self._offset = index10
                     chunk13, max13 = None, self._offset + 3
@@ -3242,7 +3247,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"NSC"')
+                            self._expected.append(('METAR::cover', '"NSC"'))
                     if address0 is FAILURE:
                         self._offset = index10
                         chunk14, max14 = None, self._offset + 3
@@ -3257,7 +3262,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"NCD"')
+                                self._expected.append(('METAR::cover', '"NCD"'))
                         if address0 is FAILURE:
                             self._offset = index10
             if address0 is FAILURE:
@@ -3277,7 +3282,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"//"')
+                            self._expected.append(('METAR::cover', '"//"'))
                     if address0 is FAILURE:
                         self._offset = index1
         self._cache['cover'][index0] = (address0, self._offset)
@@ -3309,7 +3314,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"//"')
+                    self._expected.append(('METAR::temp_dewp', '"//"'))
             if address2 is FAILURE:
                 address2 = TreeNode(self._input[index3:index3], index3, [])
                 self._offset = index3
@@ -3332,7 +3337,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"/"')
+                            self._expected.append(('METAR::temp_dewp', '"/"'))
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
@@ -3353,7 +3358,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('"//"')
+                                    self._expected.append(('METAR::temp_dewp', '"//"'))
                             if address6 is FAILURE:
                                 address6 = TreeNode(self._input[index4:index4], index4, [])
                                 self._offset = index4
@@ -3409,7 +3414,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('[M]')
+                self._expected.append(('METAR::temp', '[M]'))
         if address1 is FAILURE:
             address1 = TreeNode(self._input[index2:index2], index2, [])
             self._offset = index2
@@ -3429,7 +3434,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::temp', '[\\d]'))
             if address2 is FAILURE:
                 address2 = TreeNode(self._input[index3:index3], index3, [])
                 self._offset = index3
@@ -3449,7 +3454,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::temp', '[\\d]'))
                 if address3 is FAILURE:
                     address3 = TreeNode(self._input[index4:index4], index4, [])
                     self._offset = index4
@@ -3493,7 +3498,7 @@ class Grammar(object):
                 self._failure = self._offset
                 self._expected = []
             if self._offset == self._failure:
-                self._expected.append('[M]')
+                self._expected.append(('METAR::dewp', '[M]'))
         if address1 is FAILURE:
             address1 = TreeNode(self._input[index2:index2], index2, [])
             self._offset = index2
@@ -3513,7 +3518,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[\\d]')
+                    self._expected.append(('METAR::dewp', '[\\d]'))
             if address2 is FAILURE:
                 address2 = TreeNode(self._input[index3:index3], index3, [])
                 self._offset = index3
@@ -3533,7 +3538,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::dewp', '[\\d]'))
                 if address3 is FAILURE:
                     address3 = TreeNode(self._input[index4:index4], index4, [])
                     self._offset = index4
@@ -3585,7 +3590,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('["Q" / "A"]')
+                    self._expected.append(('METAR::altim', '["Q" / "A"]'))
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
@@ -3601,7 +3606,7 @@ class Grammar(object):
                         self._failure = self._offset
                         self._expected = []
                     if self._offset == self._failure:
-                        self._expected.append('[\\d]')
+                        self._expected.append(('METAR::altim', '[\\d]'))
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
@@ -3617,7 +3622,7 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('[\\d]')
+                            self._expected.append(('METAR::altim', '[\\d]'))
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
@@ -3633,7 +3638,7 @@ class Grammar(object):
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('[\\d]')
+                                self._expected.append(('METAR::altim', '[\\d]'))
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
@@ -3649,7 +3654,7 @@ class Grammar(object):
                                     self._failure = self._offset
                                     self._expected = []
                                 if self._offset == self._failure:
-                                    self._expected.append('[\\d]')
+                                    self._expected.append(('METAR::altim', '[\\d]'))
                             if address6 is not FAILURE:
                                 elements0.append(address6)
                                 address7 = FAILURE
@@ -3666,7 +3671,7 @@ class Grammar(object):
                                         self._failure = self._offset
                                         self._expected = []
                                     if self._offset == self._failure:
-                                        self._expected.append('"="')
+                                        self._expected.append(('METAR::altim', '"="'))
                                 if address7 is FAILURE:
                                     address7 = TreeNode(self._input[index4:index4], index4, [])
                                     self._offset = index4
@@ -3734,11 +3739,11 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"RMK"')
+                    self._expected.append(('METAR::remarks', '"RMK"'))
             if address2 is FAILURE:
                 self._offset = index4
-                remaining0, index5, elements1, address3 = 0, self._offset, [], True
-                while address3 is not FAILURE:
+                index5, elements1, address3 = self._offset, [], None
+                while True:
                     chunk1, max1 = None, self._offset + 5
                     if max1 <= self._input_size:
                         chunk1 = self._input[self._offset:max1]
@@ -3751,11 +3756,12 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('"NOSIG"')
+                            self._expected.append(('METAR::remarks', '"NOSIG"'))
                     if address3 is not FAILURE:
                         elements1.append(address3)
-                        remaining0 -= 1
-                if remaining0 <= 0:
+                    else:
+                        break
+                if len(elements1) >= 0:
                     address2 = TreeNode(self._input[index5:self._offset], index5, elements1)
                     self._offset = self._offset
                 else:
@@ -3765,8 +3771,8 @@ class Grammar(object):
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address4 = FAILURE
-                remaining1, index6, elements2, address5 = 0, self._offset, [], True
-                while address5 is not FAILURE:
+                index6, elements2, address5 = self._offset, [], None
+                while True:
                     if self._offset < self._input_size:
                         address5 = TreeNode(self._input[self._offset:self._offset + 1], self._offset, [])
                         self._offset = self._offset + 1
@@ -3776,11 +3782,12 @@ class Grammar(object):
                             self._failure = self._offset
                             self._expected = []
                         if self._offset == self._failure:
-                            self._expected.append('<any char>')
+                            self._expected.append(('METAR::remarks', '<any char>'))
                     if address5 is not FAILURE:
                         elements2.append(address5)
-                        remaining1 -= 1
-                if remaining1 <= 0:
+                    else:
+                        break
+                if len(elements2) >= 0:
                     address4 = TreeNode(self._input[index6:self._offset], index6, elements2)
                     self._offset = self._offset
                 else:
@@ -3836,7 +3843,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"="')
+                    self._expected.append(('METAR::end', '"="'))
             if address2 is not FAILURE:
                 elements0.append(address2)
             else:
@@ -3874,21 +3881,36 @@ class Parser(Grammar):
             return tree
         if not self._expected:
             self._failure = self._offset
-            self._expected.append('<EOF>')
+            self._expected.append(('METAR', '<EOF>'))
         raise ParseError(format_error(self._input, self._failure, self._expected))
 
 
-def format_error(input, offset, expected):
-    lines, line_no, position = input.split('\n'), 0, 0
-    while position <= offset:
-        position += len(lines[line_no]) + 1
-        line_no += 1
-    message, line = 'Line ' + str(line_no) + ': expected ' + ', '.join(expected) + '\n', lines[line_no - 1]
-    message += line + '\n'
-    position -= len(line) + 1
-    message += ' ' * (offset - position)
-    return message + '^'
+class ParseError(SyntaxError):
+    pass
+
 
 def parse(input, actions=None, types=None):
     parser = Parser(input, actions, types)
     return parser.parse()
+
+def format_error(input, offset, expected):
+    lines = input.split('\n')
+    line_no, position = 0, 0
+
+    while position <= offset:
+        position += len(lines[line_no]) + 1
+        line_no += 1
+
+    line = lines[line_no - 1]
+    message = 'Line ' + str(line_no) + ': expected one of:\n\n'
+
+    for pair in expected:
+        message += '    - ' + pair[1] + ' from ' + pair[0] + '\n'
+
+    number = str(line_no)
+    while len(number) < 6:
+        number = ' ' + number
+
+    message += '\n' + number + ' | ' + line + '\n'
+    message += ' ' * (len(line) + 10 + offset - position)
+    return message + '^'
