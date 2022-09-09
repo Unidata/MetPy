@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Plots2D &#8212; MetPy 1.3dev</title>
+    <title>ArrowPlot &#8212; MetPy 1.3dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="PlotScalar" href="metpy.plots.PlotScalar.html" />
-    <link rel="prev" title="MapPanel" href="metpy.plots.MapPanel.html" />
+    <link rel="next" title="PlotObs" href="metpy.plots.PlotObs.html" />
+    <link rel="prev" title="BarbPlot" href="metpy.plots.BarbPlot.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -58,7 +58,7 @@
                         ga('send', 'pageview');
                     </script>
 
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.Plots2D.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ArrowPlot.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
@@ -1014,8 +1014,8 @@
      MapPanel
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.plots.Plots2D.html">
      Plots2D
     </a>
    </li>
@@ -1049,8 +1049,8 @@
      BarbPlot
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.plots.ArrowPlot.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      ArrowPlot
     </a>
    </li>
@@ -1266,24 +1266,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples-using-metpy-plots-plots2d">
-   Examples using
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     metpy.plots.Plots2D
-    </span>
-   </code>
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -1303,14 +1288,12 @@
               
               <div>
                 
-  <section id="plots2d">
-<h1>Plots2D<a class="headerlink" href="#plots2d" title="Permalink to this headline">#</a></h1>
+  <section id="arrowplot">
+<h1>ArrowPlot<a class="headerlink" href="#arrowplot" title="Permalink to this headline">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">Plots2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D" title="Permalink to this definition">#</a></dt>
-<dd><p>The highest level class related to plotting 2D data.</p>
-<p>This class collects all common methods no matter whether plotting a scalar variable or
-vector. Primary settings common to all types of 2D plots include those for data subsets.</p>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">ArrowPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot" title="Permalink to this definition">#</a></dt>
+<dd><p>Make plots of wind barbs on a map with traits to refine the look of plotted elements.</p>
 <p class="rubric">Attributes Summary</p>
 <table class="autosummary longtable table autosummary">
 <colgroup>
@@ -1318,40 +1301,67 @@ vector. Primary settings common to all types of 2D plots include those for data 
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.cross_validation_lock" title="metpy.plots.Plots2D.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.arrowkey" title="metpy.plots.ArrowPlot.arrowkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrowkey</span></code></a></p></td>
+<td><p>Set the characteristics of an arrow key using a tuple of values representing (value, xloc, yloc, position, string).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.arrowscale" title="metpy.plots.ArrowPlot.arrowscale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrowscale</span></code></a></p></td>
+<td><p>Number of data units per arrow length unit, e.g., m/s per plot width; a smaller scale parameter makes the arrow longer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.color" title="metpy.plots.ArrowPlot.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a></p></td>
+<td><p>A string value that controls the color of the vectors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.cross_validation_lock" title="metpy.plots.ArrowPlot.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
 <td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.data" title="metpy.plots.Plots2D.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.data" title="metpy.plots.ArrowPlot.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
 <td><p>Xarray dataset that contains the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.latitude" title="metpy.plots.Plots2D.latitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">latitude</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.earth_relative" title="metpy.plots.ArrowPlot.earth_relative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">earth_relative</span></code></a></p></td>
+<td><p>A boolean value to indicate whether the vector to be plotted is earth- or grid-relative.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.field" title="metpy.plots.ArrowPlot.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a></p></td>
+<td><p>A tuple containing the two components of the vector field from the dataset in the form (east-west component, north-south component).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.griddata" title="metpy.plots.ArrowPlot.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></p></td>
+<td><p>Return the internal cached data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.latitude" title="metpy.plots.ArrowPlot.latitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">latitude</span></code></a></p></td>
 <td><p>The latitude coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.level" title="metpy.plots.Plots2D.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.level" title="metpy.plots.ArrowPlot.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
 <td><p>The level of the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.longitude" title="metpy.plots.Plots2D.longitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.longitude" title="metpy.plots.ArrowPlot.longitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitude</span></code></a></p></td>
 <td><p>The longitude coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.name" title="metpy.plots.Plots2D.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.name" title="metpy.plots.ArrowPlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.parent" title="metpy.plots.Plots2D.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.parent" title="metpy.plots.ArrowPlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.plot_units" title="metpy.plots.Plots2D.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.pivot" title="metpy.plots.ArrowPlot.pivot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pivot</span></code></a></p></td>
+<td><p>A string setting the pivot point of the vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.plot_units" title="metpy.plots.ArrowPlot.plot_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_units</span></code></a></p></td>
 <td><p>The desired units to plot the field in.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.scale" title="metpy.plots.Plots2D.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.plotdata" title="metpy.plots.ArrowPlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<td><p>Return the data for plotting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.scale" title="metpy.plots.ArrowPlot.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the field to be plotted by the value given.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.time" title="metpy.plots.Plots2D.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.skip" title="metpy.plots.ArrowPlot.skip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip</span></code></a></p></td>
+<td><p>A tuple of integers to indicate the number of grid points to skip between plotting vectors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.time" title="metpy.plots.ArrowPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
 <td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.x" title="metpy.plots.Plots2D.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.x" title="metpy.plots.ArrowPlot.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
 <td><p>The x coordinate of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.y" title="metpy.plots.Plots2D.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.y" title="metpy.plots.ArrowPlot.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
 <td><p>The y coordinate of the field to be plotted.</p></td>
 </tr>
 </tbody>
@@ -1363,90 +1373,131 @@ vector. Primary settings common to all types of 2D plots include those for data 
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.__init__" title="metpy.plots.Plots2D.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.__init__" title="metpy.plots.ArrowPlot.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.add_traits" title="metpy.plots.Plots2D.add_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_traits</span></code></a>(**traits)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.add_traits" title="metpy.plots.ArrowPlot.add_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_traits</span></code></a>(**traits)</p></td>
 <td><p>Dynamically add trait attributes to the HasTraits instance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.class_own_trait_events" title="metpy.plots.Plots2D.class_own_trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_trait_events</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.class_own_trait_events" title="metpy.plots.ArrowPlot.class_own_trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_trait_events</span></code></a>(name)</p></td>
 <td><p>Get a dict of all event handlers defined on this class, not a parent.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.class_own_traits" title="metpy.plots.Plots2D.class_own_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_traits</span></code></a>(**metadata)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.class_own_traits" title="metpy.plots.ArrowPlot.class_own_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a dict of all the traitlets defined on this class, not a parent.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.class_trait_names" title="metpy.plots.Plots2D.class_trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_trait_names</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.class_trait_names" title="metpy.plots.ArrowPlot.class_trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_trait_names</span></code></a>(**metadata)</p></td>
 <td><p>Get a list of all the names of this class' traits.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.class_traits" title="metpy.plots.Plots2D.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>(**metadata)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.class_traits" title="metpy.plots.ArrowPlot.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.clear" title="metpy.plots.Plots2D.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.clear" title="metpy.plots.ArrowPlot.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p>Clear the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.clear_collections" title="metpy.plots.Plots2D.clear_collections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collections</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.clear_collections" title="metpy.plots.ArrowPlot.clear_collections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collections</span></code></a>()</p></td>
 <td><p>Clear the handle collections to the plot instance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.clear_handle" title="metpy.plots.Plots2D.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.clear_handle" title="metpy.plots.ArrowPlot.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</p></td>
 <td><p>Clear the handle to the plot instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.copy" title="metpy.plots.Plots2D.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.copy" title="metpy.plots.ArrowPlot.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
 <td><p>Return a copy of the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.has_trait" title="metpy.plots.Plots2D.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.draw" title="metpy.plots.ArrowPlot.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<td><p>Draw the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.has_trait" title="metpy.plots.ArrowPlot.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
 <td><p>Returns True if the object has a trait with the specified name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.hold_trait_notifications" title="metpy.plots.Plots2D.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.hold_trait_notifications" title="metpy.plots.ArrowPlot.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
 <td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.notify_change" title="metpy.plots.Plots2D.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.notify_change" title="metpy.plots.ArrowPlot.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
 <td><p>Notify observers of a change event</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.observe" title="metpy.plots.Plots2D.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.observe" title="metpy.plots.ArrowPlot.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
 <td><p>Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.on_trait_change" title="metpy.plots.Plots2D.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.on_trait_change" title="metpy.plots.ArrowPlot.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
 <td><p>DEPRECATED: Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.set_trait" title="metpy.plots.Plots2D.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.set_trait" title="metpy.plots.ArrowPlot.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
 <td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.setup_instance" title="metpy.plots.Plots2D.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(**kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.setup_instance" title="metpy.plots.ArrowPlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(**kwargs)</p></td>
 <td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.trait_defaults" title="metpy.plots.Plots2D.trait_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code></a>(*names, **metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.trait_defaults" title="metpy.plots.ArrowPlot.trait_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code></a>(*names, **metadata)</p></td>
 <td><p>Return a trait's default value or a dictionary of them</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.trait_events" title="metpy.plots.Plots2D.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.trait_events" title="metpy.plots.ArrowPlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.trait_has_value" title="metpy.plots.Plots2D.trait_has_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.trait_has_value" title="metpy.plots.ArrowPlot.trait_has_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code></a>(name)</p></td>
 <td><p>Returns True if the specified trait has a value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.trait_metadata" title="metpy.plots.Plots2D.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.trait_metadata" title="metpy.plots.ArrowPlot.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
 <td><p>Get metadata values for trait by key.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.trait_names" title="metpy.plots.Plots2D.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.trait_names" title="metpy.plots.ArrowPlot.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
 <td><p>Get a list of all the names of this class' traits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.trait_values" title="metpy.plots.Plots2D.trait_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code></a>(**metadata)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.trait_values" title="metpy.plots.ArrowPlot.trait_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code></a>(**metadata)</p></td>
 <td><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.traits" title="metpy.plots.Plots2D.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.traits" title="metpy.plots.ArrowPlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.unobserve" title="metpy.plots.Plots2D.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.unobserve" title="metpy.plots.ArrowPlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
 <td><p>Remove a trait change handler.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Plots2D.unobserve_all" title="metpy.plots.Plots2D.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ArrowPlot.unobserve_all" title="metpy.plots.ArrowPlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
 <td><p>Remove trait change handlers of any type for the specified name.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.cross_validation_lock">
-<span class="sig-name descname"><span class="pre">cross_validation_lock</span></span><a class="headerlink" href="#metpy.plots.Plots2D.cross_validation_lock" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.arrowkey">
+<span class="sig-name descname"><span class="pre">arrowkey</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.arrowkey" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the characteristics of an arrow key using a tuple of values
+representing (value, xloc, yloc, position, string).</p>
+<p>Default is <em class="xref py py-obj">None</em>.</p>
+<p>If <em class="xref py py-obj">None</em>, no vector key will be plotted.</p>
+<p>value default is 100
+xloc default is 0.85
+yloc default is 1.02
+position default is ‘E’ (options are ‘N’, ‘S’, ‘E’, ‘W’)
+label default is an empty string</p>
+<p>If you wish to change a characteristic of the arrowkey you’ll need to have a tuple of five
+elements, fill in the full tuple using <em class="xref py py-obj">None</em> for those characteristics you wish to use the
+default value and put in the new values for the other elements. This trait corresponds to
+the keyword length in <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiverkey.html#matplotlib.pyplot.quiverkey" title="(in Matplotlib v3.5.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.quiverkey</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.arrowscale">
+<span class="sig-name descname"><span class="pre">arrowscale</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.arrowscale" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of data units per arrow length unit, e.g., m/s per plot
+width; a smaller scale parameter makes the arrow longer. Default is <em class="xref py py-obj">None</em>.</p>
+<p>If <em class="xref py py-obj">None</em>, a simple autoscaling algorithm is used, based on the average
+vector length and the number of vectors. The arrow length unit is given by
+the <em class="xref py py-obj">key_length</em> attribute.</p>
+<p>This trait corresponds to the keyword length in <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiver.html#matplotlib.pyplot.quiver" title="(in Matplotlib v3.5.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.quiver</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.color">
+<span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.color" title="Permalink to this definition">#</a></dt>
+<dd><p>A string value that controls the color of the vectors. Default value is
+black.</p>
+<p>This trait can be set to any named color from
+<em class="xref py py-obj">Matplotlibs Colors</em></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.cross_validation_lock">
+<span class="sig-name descname"><span class="pre">cross_validation_lock</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.cross_validation_lock" title="Permalink to this definition">#</a></dt>
 <dd><p>A contextmanager for running a block with our cross validation lock set
 to True.</p>
 <p>At the end of the block, the lock’s value is restored to its value
@@ -1454,14 +1505,42 @@ prior to entering the block.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.data">
-<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#metpy.plots.Plots2D.data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.data" title="Permalink to this definition">#</a></dt>
 <dd><p>Xarray dataset that contains the field to be plotted.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.latitude">
-<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.latitude" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.earth_relative">
+<span class="sig-name descname"><span class="pre">earth_relative</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.earth_relative" title="Permalink to this definition">#</a></dt>
+<dd><p>A boolean value to indicate whether the vector to be plotted
+is earth- or grid-relative. Default value is <em class="xref py py-obj">True</em>, indicating that vectors are
+earth-relative.</p>
+<p>Common gridded meteorological datasets including GFS and NARR output contain wind
+components that are earth-relative. The primary exception is NAM output with wind
+components that are grid-relative. For any grid-relative vectors set this trait to
+<em class="xref py py-obj">False</em>. This value is ignored for 2D vector fields not in the plane of the plot (e.g.,
+cross sections).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.field">
+<span class="sig-name descname"><span class="pre">field</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.field" title="Permalink to this definition">#</a></dt>
+<dd><p>A tuple containing the two components of the vector field from the
+dataset in the form (east-west component, north-south component).</p>
+<p>For a wind barb plot each component of the wind must be specified and should be of the form
+(u-wind, v-wind).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.griddata">
+<span class="sig-name descname"><span class="pre">griddata</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.griddata" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the internal cached data.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.latitude">
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.latitude" title="Permalink to this definition">#</a></dt>
 <dd><p>The latitude coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired latitude coordinate. For example,
 selecting a point or transect through 40 degrees north, set this parameter to
@@ -1470,8 +1549,8 @@ dimension coordinate.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.level">
-<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.Plots2D.level" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.level">
+<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.level" title="Permalink to this definition">#</a></dt>
 <dd><p>The level of the field to be plotted.</p>
 <p>This is a value with units to choose a desired plot level. For example, selecting the
 850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code>. Note that this requires your
@@ -1479,8 +1558,8 @@ data to have a vertical dimension coordinate.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.longitude">
-<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.Plots2D.longitude" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.longitude">
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.longitude" title="Permalink to this definition">#</a></dt>
 <dd><p>The longitude coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired longitude coordinate. For example,
 selecting a point or transect through 95 degrees west, set this parameter to
@@ -1489,30 +1568,46 @@ dimension coordinate.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.Plots2D.name" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.parent">
-<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.Plots2D.parent" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>A trait whose value must be an instance of a specified class.</p>
 <p>The value can also be an instance of a subclass of the specified class.</p>
 <p>Subclasses can declare default classes by overriding the klass attribute</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.plot_units">
-<span class="sig-name descname"><span class="pre">plot_units</span></span><a class="headerlink" href="#metpy.plots.Plots2D.plot_units" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.pivot">
+<span class="sig-name descname"><span class="pre">pivot</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.pivot" title="Permalink to this definition">#</a></dt>
+<dd><p>A string setting the pivot point of the vector. Default value is
+‘middle’.</p>
+<p>This trait takes the values of the keyword argument from <em class="xref py py-obj">matplotlin.pyplot.barbs</em>:
+‘tip’ or ‘middle’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.plot_units">
+<span class="sig-name descname"><span class="pre">plot_units</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.plot_units" title="Permalink to this definition">#</a></dt>
 <dd><p>The desired units to plot the field in.</p>
 <p>Setting this attribute will convert the units of the field variable to the given units for
 plotting using the MetPy Units module.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><a class="headerlink" href="#metpy.plots.Plots2D.scale" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.plotdata">
+<span class="sig-name descname"><span class="pre">plotdata</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.plotdata" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the data for plotting.</p>
+<p>The dimension coordinates and data arrays.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.scale" title="Permalink to this definition">#</a></dt>
 <dd><p>Scale the field to be plotted by the value given.</p>
 <p>This attribute will scale the field by multiplying by the scale. For example, to
 scale vorticity to be whole values for contouring you could set the scale to 1e5, such that
@@ -1520,8 +1615,18 @@ the data values will be multiplied by 10^5.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.time">
-<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#metpy.plots.Plots2D.time" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.skip">
+<span class="sig-name descname"><span class="pre">skip</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.skip" title="Permalink to this definition">#</a></dt>
+<dd><p>A tuple of integers to indicate the number of grid points to skip between
+plotting vectors. Default is (1, 1).</p>
+<p>This trait is to be used to reduce the number of vectors plotted in the (east-west,
+north-south) components. The two values can be set to the same or different integer values
+depending on what is desired.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.time">
+<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.time" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the valid time to be plotted as a datetime object.</p>
 <p>If a forecast hour is to be plotted the time should be set to the valid future time, which
 can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
@@ -1530,8 +1635,8 @@ dimension coordinate.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.x">
-<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.Plots2D.x" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.x" title="Permalink to this definition">#</a></dt>
 <dd><p>The x coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired x coordinate. For example, selecting a
 point or transect through the projection origin, set this parameter to
@@ -1539,8 +1644,8 @@ point or transect through the projection origin, set this parameter to
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.y">
-<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.Plots2D.y" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#metpy.plots.ArrowPlot.y" title="Permalink to this definition">#</a></dt>
 <dd><p>The y coordinate of the field to be plotted.</p>
 <p>This is a value with units to choose a desired x coordinate. For example, selecting a
 point or transect through the projection origin, set this parameter to
@@ -1549,44 +1654,44 @@ point or transect through the projection origin, set this parameter to
 
 <p class="rubric">Methods Documentation</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.__init__" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.__init__" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.add_traits">
-<span class="sig-name descname"><span class="pre">add_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.add_traits" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.add_traits">
+<span class="sig-name descname"><span class="pre">add_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.add_traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Dynamically add trait attributes to the HasTraits instance.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.class_own_trait_events">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_own_trait_events" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.class_own_trait_events">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.class_own_trait_events" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a dict of all event handlers defined on this class, not a parent.</p>
 <p>Works like <code class="docutils literal notranslate"><span class="pre">event_handlers</span></code>, except for excluding traits from parents.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.class_own_traits">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_own_traits" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.class_own_traits">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_own_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.class_own_traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a dict of all the traitlets defined on this class, not a parent.</p>
-<p>Works like <a class="reference internal" href="#metpy.plots.Plots2D.class_traits" title="metpy.plots.Plots2D.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>, except for excluding traits from parents.</p>
+<p>Works like <a class="reference internal" href="#metpy.plots.ArrowPlot.class_traits" title="metpy.plots.ArrowPlot.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>, except for excluding traits from parents.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.class_trait_names">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_trait_names" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.class_trait_names">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.class_trait_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
-<p>This method is just like the <a class="reference internal" href="#metpy.plots.Plots2D.trait_names" title="metpy.plots.Plots2D.trait_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trait_names()</span></code></a> method,
+<p>This method is just like the <a class="reference internal" href="#metpy.plots.ArrowPlot.trait_names" title="metpy.plots.ArrowPlot.trait_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trait_names()</span></code></a> method,
 but is unbound.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.class_traits">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.class_traits" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.class_traits">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.class_traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
-<p>This method is just like the <a class="reference internal" href="#metpy.plots.Plots2D.traits" title="metpy.plots.Plots2D.traits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">traits()</span></code></a> method, but is unbound.</p>
+<p>This method is just like the <a class="reference internal" href="#metpy.plots.ArrowPlot.traits" title="metpy.plots.ArrowPlot.traits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">traits()</span></code></a> method, but is unbound.</p>
 <p>The TraitTypes returned don’t know anything about the values
 that the various HasTrait’s instances are holding.</p>
 <p>The metadata kwargs allow functions to be passed in which
@@ -1598,39 +1703,45 @@ to the function.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.clear_collections">
-<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear_collections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear_collections" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.clear_collections">
+<span class="sig-name descname"><span class="pre">clear_collections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.clear_collections" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear the handle collections to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.clear_handle">
-<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.clear_handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.clear_handle" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.clear_handle">
+<span class="sig-name descname"><span class="pre">clear_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.clear_handle" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#Plots2D.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.Plots2D.copy" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.copy" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a copy of the plot.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.has_trait">
-<span class="sig-name descname"><span class="pre">has_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.has_trait" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.draw" title="Permalink to this definition">#</a></dt>
+<dd><p>Draw the plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.has_trait">
+<span class="sig-name descname"><span class="pre">has_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.has_trait" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if the object has a trait with the specified name.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.hold_trait_notifications">
-<span class="sig-name descname"><span class="pre">hold_trait_notifications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.hold_trait_notifications" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.hold_trait_notifications">
+<span class="sig-name descname"><span class="pre">hold_trait_notifications</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.hold_trait_notifications" title="Permalink to this definition">#</a></dt>
 <dd><p>Context manager for bundling trait change notifications and cross
 validation.</p>
 <p>Use this when doing multiple trait assignments (init, config), to avoid
@@ -1639,14 +1750,14 @@ All trait notifications will fire after all values have been assigned.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.notify_change">
-<span class="sig-name descname"><span class="pre">notify_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.notify_change" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.notify_change">
+<span class="sig-name descname"><span class="pre">notify_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.notify_change" title="Permalink to this definition">#</a></dt>
 <dd><p>Notify observers of a change event</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.observe">
-<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.observe" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.observe">
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.observe" title="Permalink to this definition">#</a></dt>
 <dd><p>Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <dl class="field-list simple">
@@ -1673,8 +1784,8 @@ notifications are passed to the observe handler.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.on_trait_change">
-<span class="sig-name descname"><span class="pre">on_trait_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.on_trait_change" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.on_trait_change">
+<span class="sig-name descname"><span class="pre">on_trait_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.on_trait_change" title="Permalink to this definition">#</a></dt>
 <dd><p>DEPRECATED: Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <p>Static handlers can be created by creating methods on a HasTraits
@@ -1701,20 +1812,20 @@ then unintall it.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.set_trait">
-<span class="sig-name descname"><span class="pre">set_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.set_trait" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.set_trait">
+<span class="sig-name descname"><span class="pre">set_trait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.set_trait" title="Permalink to this definition">#</a></dt>
 <dd><p>Forcibly sets trait attribute, including read-only attributes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.setup_instance">
-<span class="sig-name descname"><span class="pre">setup_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.setup_instance" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.setup_instance">
+<span class="sig-name descname"><span class="pre">setup_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.setup_instance" title="Permalink to this definition">#</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_defaults">
-<span class="sig-name descname"><span class="pre">trait_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_defaults" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.trait_defaults">
+<span class="sig-name descname"><span class="pre">trait_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.trait_defaults" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a trait’s default value or a dictionary of them</p>
 <p class="rubric">Notes</p>
 <p>Dynamically generated default values may
@@ -1722,8 +1833,8 @@ depend on the current state of the object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_events">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_events" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.trait_events">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trait_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.trait_events" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1737,8 +1848,8 @@ the event handlers of this class will be returned instead.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_has_value">
-<span class="sig-name descname"><span class="pre">trait_has_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_has_value" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.trait_has_value">
+<span class="sig-name descname"><span class="pre">trait_has_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.trait_has_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if the specified trait has a value.</p>
 <p>This will return false even if <code class="docutils literal notranslate"><span class="pre">getattr</span></code> would return a
 dynamically generated default value. These default values
@@ -1757,20 +1868,20 @@ generated.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_metadata">
-<span class="sig-name descname"><span class="pre">trait_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traitname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_metadata" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.trait_metadata">
+<span class="sig-name descname"><span class="pre">trait_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traitname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.trait_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Get metadata values for trait by key.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_names">
-<span class="sig-name descname"><span class="pre">trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_names" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.trait_names">
+<span class="sig-name descname"><span class="pre">trait_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.trait_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.trait_values">
-<span class="sig-name descname"><span class="pre">trait_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.trait_values" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.trait_values">
+<span class="sig-name descname"><span class="pre">trait_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.trait_values" title="Permalink to this definition">#</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p>
 <p>The metadata kwargs allow functions to be passed in which
 filter traits based on metadata values.  The functions should
@@ -1790,8 +1901,8 @@ absence of a trait value in the result <code class="docutils literal notranslate
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.traits">
-<span class="sig-name descname"><span class="pre">traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.traits" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.traits">
+<span class="sig-name descname"><span class="pre">traits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.traits" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>The TraitTypes returned don’t know anything about the values
@@ -1805,8 +1916,8 @@ to the function.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.unobserve">
-<span class="sig-name descname"><span class="pre">unobserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.unobserve" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.unobserve">
+<span class="sig-name descname"><span class="pre">unobserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'change'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.unobserve" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove a trait change handler.</p>
 <p>This is used to unregister handlers to trait change notifications.</p>
 <dl class="field-list simple">
@@ -1824,27 +1935,15 @@ is uninstalled from the list of notifiers corresponding to all types.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metpy.plots.Plots2D.unobserve_all">
-<span class="sig-name descname"><span class="pre">unobserve_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.Plots2D.unobserve_all" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="metpy.plots.ArrowPlot.unobserve_all">
+<span class="sig-name descname"><span class="pre">unobserve_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">traitlets.All</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ArrowPlot.unobserve_all" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove trait change handlers of any type for the specified name.
 If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
 
 </dd></dl>
 
-<section id="examples-using-metpy-plots-plots2d">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Plots2D</span></code><a class="headerlink" href="#examples-using-metpy-plots-plots2d" title="Permalink to this headline">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface."><img alt="Simple Plotting" src="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" />
-<p><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Simple Plotting</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots."><img alt="Combined Plotting" src="../../_images/sphx_glr_Combined_plotting_thumb.png" />
-<p><a class="reference internal" href="../../examples/plots/Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Combined Plotting</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The declarative syntax that is a part of the MetPy packaged is designed to aid in simple data e..."><img alt="MetPy Declarative Syntax Tutorial" src="../../_images/sphx_glr_declarative_tutorial_thumb.png" />
-<p><a class="reference internal" href="../../tutorials/declarative_tutorial.html#sphx-glr-tutorials-declarative-tutorial-py"><span class="std std-ref">MetPy Declarative Syntax Tutorial</span></a></p>
-  <div class="sphx-glr-thumbnail-title">MetPy Declarative Syntax Tutorial</div>
-</div></div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
               </div>
@@ -1852,17 +1951,17 @@ If name is not specified, removes all trait notifiers.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.plots.MapPanel.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.plots.BarbPlot.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">MapPanel</p>
+            <p class="prev-next-title">BarbPlot</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.plots.PlotScalar.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.plots.PlotObs.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">PlotScalar</p>
+        <p class="prev-next-title">PlotObs</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

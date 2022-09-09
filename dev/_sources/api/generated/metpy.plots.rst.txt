@@ -44,6 +44,7 @@ Plots ``(metpy.plots)``
       FilledContourPlot
       PlotVector
       BarbPlot
+      ArrowPlot
       PlotObs
       PlotGeometry
       SkewT

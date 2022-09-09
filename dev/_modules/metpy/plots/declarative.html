@@ -1815,6 +1815,76 @@
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">class</span> <span class="nc">ArrowPlot</span><span class="p">(</span><span class="n">PlotVector</span><span class="p">,</span> <span class="n">ValidationMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make plots of wind barbs on a map with traits to refine the look of plotted elements.&quot;&quot;&quot;</span>
+
+    <span class="n">arrowscale</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">arrowscale</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Number of data units per arrow length unit, e.g., m/s per plot</span>
+<span class="s2">    width; a smaller scale parameter makes the arrow longer. Default is `None`.</span>
+
+<span class="s2">    If `None`, a simple autoscaling algorithm is used, based on the average</span>
+<span class="s2">    vector length and the number of vectors. The arrow length unit is given by</span>
+<span class="s2">    the `key_length` attribute.</span>
+
+<span class="s2">    This trait corresponds to the keyword length in `matplotlib.pyplot.quiver`.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">arrowkey</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Float</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                     <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">arrowkey</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Set the characteristics of an arrow key using a tuple of values</span>
+<span class="s2">    representing (value, xloc, yloc, position, string).</span>
+
+<span class="s2">    Default is `None`.</span>
+
+<span class="s2">    If `None`, no vector key will be plotted.</span>
+
+<span class="s2">    value default is 100</span>
+<span class="s2">    xloc default is 0.85</span>
+<span class="s2">    yloc default is 1.02</span>
+<span class="s2">    position default is &#39;E&#39; (options are &#39;N&#39;, &#39;S&#39;, &#39;E&#39;, &#39;W&#39;)</span>
+<span class="s2">    label default is an empty string</span>
+
+<span class="s2">    If you wish to change a characteristic of the arrowkey you&#39;ll need to have a tuple of five</span>
+<span class="s2">    elements, fill in the full tuple using `None` for those characteristics you wish to use the</span>
+<span class="s2">    default value and put in the new values for the other elements. This trait corresponds to</span>
+<span class="s2">    the keyword length in `matplotlib.pyplot.quiverkey`.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;arrowscale&#39;</span><span class="p">,</span> <span class="s1">&#39;pivot&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;earth_relative&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;arrowkey&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
+        <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
+        <span class="c1"># to trigger a clear and re-call of quiver()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the plot by calling needed plotting methods as necessary.&quot;&quot;&quot;</span>
+        <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+
+        <span class="c1"># Conditionally apply the proper transform</span>
+        <span class="k">if</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">earth_relative</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+
+        <span class="n">wind_slice</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+            <span class="n">x_like</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">y_like</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arrowscale</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># The order here needs to match the order of the tuple</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrowkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">1.02</span><span class="p">,</span> <span class="s1">&#39;labelpos&#39;</span><span class="p">:</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">key_kwargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrowkey</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">key_kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">quiverkey</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">key_kwargs</span><span class="p">)</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PlotObs</span><span class="p">(</span><span class="n">MetPyHasTraits</span><span class="p">,</span> <span class="n">ValidationMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The highest level class related to plotting observed surface and upperair data.</span>
 
