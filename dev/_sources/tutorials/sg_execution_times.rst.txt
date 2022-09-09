@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**00:16.992** total execution time for **tutorials** files:
+**00:22.924** total execution time for **tutorials** files:
 
 +---------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_tutorials_declarative_tutorial.py` (``declarative_tutorial.py``) | 00:13.636 | 0.0 MB |
+| :ref:`sphx_glr_tutorials_declarative_tutorial.py` (``declarative_tutorial.py``) | 00:18.538 | 0.0 MB |
 +---------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``xarray_tutorial.py``)           | 00:01.874 | 0.0 MB |
+| :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``xarray_tutorial.py``)           | 00:02.558 | 0.0 MB |
 +---------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_tutorials_upperair_soundings.py` (``upperair_soundings.py``)     | 00:01.466 | 0.0 MB |
+| :ref:`sphx_glr_tutorials_upperair_soundings.py` (``upperair_soundings.py``)     | 00:01.808 | 0.0 MB |
 +---------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_tutorials_unit_tutorial.py` (``unit_tutorial.py``)               | 00:00.016 | 0.0 MB |
+| :ref:`sphx_glr_tutorials_unit_tutorial.py` (``unit_tutorial.py``)               | 00:00.019 | 0.0 MB |
 +---------------------------------------------------------------------------------+-----------+--------+
