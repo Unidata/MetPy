@@ -175,6 +175,31 @@ print(dewpoint)
 print(dewpoint.to('degF'))
 
 #########################################################################
+# Dropping Units
+# --------------
+# While units are part of the MetPy ecosystem, they can be a headache after we have
+# computed the desired quantities with MetPy and would like to move on. For example,
+# we might have computed the dewpoint temperature for two points, say A and B, and
+# would like to compute the average:
+temperature_a = 73.2 * units.degF
+rh_a = 64 * units.percent
+dewpoint_a = mpcalc.dewpoint_from_relative_humidity(temperature_a, rh_a)
+
+temperature_b = 71.1 * units.degF
+rh_b = 52 * units.percent
+dewpoint_b = mpcalc.dewpoint_from_relative_humidity(temperature_b, rh_b)
+
+#########################################################################
+# Per our previous discussion on temperature units, adding two temperatures together
+# won't work. In this case, the easiest way to add two quantities and compute
+# an average is by dropping the units attached to the values via ``.magnitude``:
+print(dewpoint_b.magnitude)
+
+#########################################################################
+dewpoint_mean = (dewpoint_a.magnitude + dewpoint_b.magnitude) / 2.
+print(dewpoint_mean)
+
+#########################################################################
 # Common Mistakes
 # ---------------
 # There are a few common mistakes the new users often make. Be sure to check
