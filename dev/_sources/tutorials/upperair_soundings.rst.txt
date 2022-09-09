@@ -135,8 +135,6 @@ sounding. The MetPy calc module has many such calculations already implemented!
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     923.1157642313738 hectopascal 15.595751336163403 degree_Celsius
@@ -331,28 +329,23 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.648 seconds)
+   **Total running time of the script:** ( 0 minutes  1.466 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: upperair_soundings.py <upperair_soundings.py>`
 
-     :download:`Download Python source code: upperair_soundings.py <upperair_soundings.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: upperair_soundings.ipynb <upperair_soundings.ipynb>`
+      :download:`Download Jupyter notebook: upperair_soundings.ipynb <upperair_soundings.ipynb>`
 
 
 .. only:: html

@@ -1,0 +1,117 @@
+
+
+.. _sphx_glr_examples_calculations:
+
+.. _calc_examples:
+
+Calculations
+------------
+
+Examples using various calculation functions from MetPy.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert direction strings to angles.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Parse_Angles_thumb.png
+    :alt: Parse angles
+
+  :ref:`sphx_glr_examples_calculations_Parse_Angles.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Parse angles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png
+    :alt: Dewpoint and Mixing Ratio
+
+  :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Dewpoint and Mixing Ratio</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert angles to direction strings.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Angle_to_Direction_thumb.png
+    :alt: Angle to Direction
+
+  :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Angle to Direction</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.gradient.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Gradient_thumb.png
+    :alt: Gradient
+
+  :ref:`sphx_glr_examples_calculations_Gradient.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Gradient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Using MetPy&#x27;s smoothing functions.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Smoothing_thumb.png
+    :alt: Smoothing
+
+  :ref:`sphx_glr_examples_calculations_Smoothing.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Smoothing</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Parse_Angles
+   /examples/calculations/Dewpoint_and_Mixing_Ratio
+   /examples/calculations/Angle_to_Direction
+   /examples/calculations/Gradient
+   /examples/calculations/Smoothing
+

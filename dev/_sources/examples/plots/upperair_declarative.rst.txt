@@ -125,28 +125,23 @@ Use the declarative plotting interface to create a CONUS upper-air map for 500 h
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.915 seconds)
+   **Total running time of the script:** ( 0 minutes  0.933 seconds)
 
 
 .. _sphx_glr_download_examples_plots_upperair_declarative.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: upperair_declarative.py <upperair_declarative.py>`
 
-     :download:`Download Python source code: upperair_declarative.py <upperair_declarative.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: upperair_declarative.ipynb <upperair_declarative.ipynb>`
+      :download:`Download Jupyter notebook: upperair_declarative.ipynb <upperair_declarative.ipynb>`
 
 
 .. only:: html

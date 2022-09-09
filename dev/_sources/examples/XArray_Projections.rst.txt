@@ -68,28 +68,23 @@ data on a map using CartoPy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.078 seconds)
+   **Total running time of the script:** ( 0 minutes  7.726 seconds)
 
 
 .. _sphx_glr_download_examples_XArray_Projections.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: XArray_Projections.py <XArray_Projections.py>`
 
-     :download:`Download Python source code: XArray_Projections.py <XArray_Projections.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: XArray_Projections.ipynb <XArray_Projections.ipynb>`
+      :download:`Download Jupyter notebook: XArray_Projections.ipynb <XArray_Projections.ipynb>`
 
 
 .. only:: html

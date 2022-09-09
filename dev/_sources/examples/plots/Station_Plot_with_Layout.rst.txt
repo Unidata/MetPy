@@ -117,8 +117,6 @@ a few from around the U.S. and pull those out of the data file.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
@@ -335,28 +333,23 @@ or instead, a custom layout can be used:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.006 seconds)
+   **Total running time of the script:** ( 0 minutes  1.973 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Station_Plot_with_Layout.py <Station_Plot_with_Layout.py>`
 
-     :download:`Download Python source code: Station_Plot_with_Layout.py <Station_Plot_with_Layout.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Station_Plot_with_Layout.ipynb <Station_Plot_with_Layout.ipynb>`
+      :download:`Download Jupyter notebook: Station_Plot_with_Layout.ipynb <Station_Plot_with_Layout.ipynb>`
 
 
 .. only:: html

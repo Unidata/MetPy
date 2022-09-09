@@ -148,8 +148,6 @@ The locations of these observations are then used to generate a Delaunay triangu
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
@@ -208,12 +206,10 @@ examine the results to see if they are correct.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f2d5e72b7f0>
+    <matplotlib.legend.Legend object at 0x7ff1dc2f60a0>
 
 
 
@@ -238,8 +234,6 @@ grid 0 included in that circle?
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -269,8 +263,6 @@ Grab the circumcenters and radii for natural neighbors
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -398,8 +390,6 @@ Calculate the total area of all of the generated polygons.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     605.2930000000001
@@ -424,8 +414,6 @@ For each polygon area, calculate its percent of total area.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     [0.09984256 0.74062644 0.04281563 0.11671538]
@@ -449,8 +437,6 @@ Multiply the percent of total area by the respective values.
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -479,8 +465,6 @@ The sum of this array is the interpolation value!
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     1.0090841476772403 1.009084244425604
@@ -508,28 +492,23 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.522 seconds)
+   **Total running time of the script:** ( 0 minutes  0.540 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Natural_Neighbor_Verification.py <Natural_Neighbor_Verification.py>`
 
-     :download:`Download Python source code: Natural_Neighbor_Verification.py <Natural_Neighbor_Verification.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Natural_Neighbor_Verification.ipynb <Natural_Neighbor_Verification.ipynb>`
+      :download:`Download Jupyter notebook: Natural_Neighbor_Verification.ipynb <Natural_Neighbor_Verification.ipynb>`
 
 
 .. only:: html

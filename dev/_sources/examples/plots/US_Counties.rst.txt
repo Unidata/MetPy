@@ -70,28 +70,23 @@ Demonstrate how to plot US counties at all three available resolutions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.087 seconds)
+   **Total running time of the script:** ( 0 minutes  1.161 seconds)
 
 
 .. _sphx_glr_download_examples_plots_US_Counties.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: US_Counties.py <US_Counties.py>`
 
-     :download:`Download Python source code: US_Counties.py <US_Counties.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: US_Counties.ipynb <US_Counties.ipynb>`
+      :download:`Download Jupyter notebook: US_Counties.ipynb <US_Counties.ipynb>`
 
 
 .. only:: html

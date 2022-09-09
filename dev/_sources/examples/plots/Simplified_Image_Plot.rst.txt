@@ -38,8 +38,6 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     Adjusting bad PDB size from 0 to 512.
@@ -77,28 +75,23 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.645 seconds)
+   **Total running time of the script:** ( 0 minutes  0.644 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simplified_Image_Plot.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Simplified_Image_Plot.py <Simplified_Image_Plot.py>`
 
-     :download:`Download Python source code: Simplified_Image_Plot.py <Simplified_Image_Plot.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Simplified_Image_Plot.ipynb <Simplified_Image_Plot.ipynb>`
+      :download:`Download Jupyter notebook: Simplified_Image_Plot.ipynb <Simplified_Image_Plot.ipynb>`
 
 
 .. only:: html

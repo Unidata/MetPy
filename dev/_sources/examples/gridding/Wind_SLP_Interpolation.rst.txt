@@ -247,28 +247,23 @@ Set up the map and plot the interpolated grids appropriately.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  14.892 seconds)
+   **Total running time of the script:** ( 0 minutes  14.935 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Wind_SLP_Interpolation.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Wind_SLP_Interpolation.py <Wind_SLP_Interpolation.py>`
 
-     :download:`Download Python source code: Wind_SLP_Interpolation.py <Wind_SLP_Interpolation.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Wind_SLP_Interpolation.ipynb <Wind_SLP_Interpolation.ipynb>`
+      :download:`Download Jupyter notebook: Wind_SLP_Interpolation.ipynb <Wind_SLP_Interpolation.ipynb>`
 
 
 .. only:: html

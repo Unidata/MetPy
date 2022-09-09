@@ -93,8 +93,6 @@ Calculate the gradient using the coordinates of the data
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     Gradient in y direction:  [[2.0 2.0 2.0] [2.0 2.0 2.0] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
@@ -124,8 +122,6 @@ axes.
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -159,8 +155,6 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     Gradient in y direction:  [[0.3333333333333428 0.6666666666666572 2.333333333333357] [1.6666666666666572 0.6666666666666714 1.6666666666666714] [0.8333333333333286 -0.1666666666666643 -1.6666666666666856] [-3.8333333333333144 -1.8333333333333428 -4.333333333333371]] kelvin / kilometer
@@ -172,28 +166,23 @@ Finally, the deltas can be arrays for unevenly spaced data.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.017 seconds)
+   **Total running time of the script:** ( 0 minutes  0.020 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Gradient.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Gradient.py <Gradient.py>`
 
-     :download:`Download Python source code: Gradient.py <Gradient.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Gradient.ipynb <Gradient.ipynb>`
+      :download:`Download Jupyter notebook: Gradient.ipynb <Gradient.ipynb>`
 
 
 .. only:: html

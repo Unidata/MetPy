@@ -124,28 +124,23 @@ Georgia.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.394 seconds)
+   **Total running time of the script:** ( 0 minutes  1.481 seconds)
 
 
 .. _sphx_glr_download_examples_plots_surface_declarative.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: surface_declarative.py <surface_declarative.py>`
 
-     :download:`Download Python source code: surface_declarative.py <surface_declarative.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: surface_declarative.ipynb <surface_declarative.ipynb>`
+      :download:`Download Jupyter notebook: surface_declarative.ipynb <surface_declarative.ipynb>`
 
 
 .. only:: html

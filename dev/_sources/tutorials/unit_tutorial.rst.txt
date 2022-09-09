@@ -171,8 +171,6 @@ proper units:
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     [0.5 0.5 0.5 0.5] meter / second
@@ -196,8 +194,6 @@ instead the operands must have compatible units. For instance, this works:
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -226,8 +222,6 @@ operation can be performed:
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -258,8 +252,6 @@ desired units:
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     25.4 millimeter
@@ -286,8 +278,6 @@ in-place:
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     [0.0 3.2808398950131235 6.561679790026247 9.84251968503937 13.123359580052494] foot
@@ -312,8 +302,6 @@ which converts a quantity to SI units, performing any needed cancellation:
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -346,8 +334,6 @@ operations you could get some seemingly odd results:
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     52.0 centimeter * inch
@@ -370,8 +356,6 @@ This is another place where :meth:`~pint.Quantity.to` comes in handy:
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -417,8 +401,6 @@ not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees C
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     5 delta_degree_Celsius
@@ -441,8 +423,6 @@ We can add a delta to an offset unit as well since it is a relative change.
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -469,8 +449,6 @@ delta version of the unit.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     283 kelvin
@@ -489,8 +467,6 @@ delta version of the unit.
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -524,8 +500,6 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     15.726236381245258 degree_Celsius
@@ -548,8 +522,6 @@ or back to Fahrenheit:
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -604,8 +576,6 @@ an average is by dropping the units attached to the values via ``.magnitude``:
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     11.445590005179099
@@ -625,8 +595,6 @@ an average is by dropping the units attached to the values via ``.magnitude``:
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -653,28 +621,23 @@ these when you're having issues.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.014 seconds)
+   **Total running time of the script:** ( 0 minutes  0.016 seconds)
 
 
 .. _sphx_glr_download_tutorials_unit_tutorial.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: unit_tutorial.py <unit_tutorial.py>`
 
-     :download:`Download Python source code: unit_tutorial.py <unit_tutorial.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: unit_tutorial.ipynb <unit_tutorial.ipynb>`
+      :download:`Download Jupyter notebook: unit_tutorial.ipynb <unit_tutorial.ipynb>`
 
 
 .. only:: html

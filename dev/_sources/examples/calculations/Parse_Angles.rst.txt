@@ -58,8 +58,6 @@ Create a test value of a directional text
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     SOUTH SOUTH EAST
@@ -84,8 +82,6 @@ the corresponding angle
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -112,8 +108,6 @@ with different abbreviations and capitalizations
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     (<Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>)
@@ -129,23 +123,18 @@ with different abbreviations and capitalizations
 
 .. _sphx_glr_download_examples_calculations_Parse_Angles.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Parse_Angles.py <Parse_Angles.py>`
 
-     :download:`Download Python source code: Parse_Angles.py <Parse_Angles.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Parse_Angles.ipynb <Parse_Angles.ipynb>`
+      :download:`Download Jupyter notebook: Parse_Angles.ipynb <Parse_Angles.ipynb>`
 
 
 .. only:: html

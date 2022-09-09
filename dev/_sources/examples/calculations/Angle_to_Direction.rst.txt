@@ -58,8 +58,6 @@ Create a test value of an angle
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     70 degree
@@ -84,8 +82,6 @@ get the corresponding direction
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -114,8 +110,6 @@ and defaulting to degrees if no units are specified.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     ('N', 'N', 'N')
@@ -139,8 +133,6 @@ If you want the unabbrieviated version, input full=True
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     ['North', 'North', 'North']
@@ -151,28 +143,23 @@ If you want the unabbrieviated version, input full=True
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.004 seconds)
+   **Total running time of the script:** ( 0 minutes  0.006 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Angle_to_Direction.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Angle_to_Direction.py <Angle_to_Direction.py>`
 
-     :download:`Download Python source code: Angle_to_Direction.py <Angle_to_Direction.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Angle_to_Direction.ipynb <Angle_to_Direction.ipynb>`
+      :download:`Download Jupyter notebook: Angle_to_Direction.ipynb <Angle_to_Direction.ipynb>`
 
 
 .. only:: html

@@ -123,28 +123,23 @@ Plot the data on a map
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.563 seconds)
+   **Total running time of the script:** ( 0 minutes  4.433 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Combined_plotting.py <Combined_plotting.py>`
 
-     :download:`Download Python source code: Combined_plotting.py <Combined_plotting.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Combined_plotting.ipynb <Combined_plotting.ipynb>`
+      :download:`Download Jupyter notebook: Combined_plotting.ipynb <Combined_plotting.ipynb>`
 
 
 .. only:: html

@@ -1,0 +1,261 @@
+
+
+.. _sphx_glr_examples_plots:
+
+.. _plotting_examples:
+
+Plotting
+--------
+
+Examples using MetPy's various specialty plotting routines.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Simplified_Image_Plot_thumb.png
+    :alt: Simple Plotting
+
+  :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Simple Plotting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
+    :alt: US Counties
+
+  :ref:`sphx_glr_examples_plots_US_Counties.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">US Counties</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plott...">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_spc_convective_outlook_thumb.png
+    :alt: NOAA SPC Convective Outlook
+
+  :ref:`sphx_glr_examples_plots_spc_convective_outlook.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NOAA SPC Convective Outlook</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Combined_plotting_thumb.png
+    :alt: Combined Plotting
+
+  :ref:`sphx_glr_examples_plots_Combined_plotting.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Combined Plotting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_surface_declarative_thumb.png
+    :alt: Surface Analysis using Declarative Syntax
+
+  :ref:`sphx_glr_examples_plots_surface_declarative.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Surface Analysis using Declarative Syntax</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy declarative syntax allows for a simplified interface to creating common meteorologica...">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_upperair_declarative_thumb.png
+    :alt: Upper Air Analysis using Declarative Syntax
+
+  :ref:`sphx_glr_examples_plots_upperair_declarative.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Upper Air Analysis using Declarative Syntax</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of geoJSON and shapefile data with PlotGeometry in MetPy&#x27;s simplified plott...">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_nhc_wind_probabilities_thumb.png
+    :alt: NOAA NHC Wind Speed Probabilities
+
+  :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NOAA NHC Wind Speed Probabilities</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Skew-T_Layout_thumb.png
+    :alt: Skew-T with Complex Layout
+
+  :ref:`sphx_glr_examples_plots_Skew-T_Layout.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Skew-T with Complex Layout</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Hodograph_Inset_thumb.png
+    :alt: Hodograph Inset
+
+  :ref:`sphx_glr_examples_plots_Hodograph_Inset.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hodograph Inset</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Simple_Sounding_thumb.png
+    :alt: Simple Sounding
+
+  :ref:`sphx_glr_examples_plots_Simple_Sounding.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Simple Sounding</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Mesonet_Stationplot_thumb.png
+    :alt: Mesonet Station Plot
+
+  :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mesonet Station Plot</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Station_Plot_thumb.png
+    :alt: Station Plot
+
+  :ref:`sphx_glr_examples_plots_Station_Plot.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Station Plot</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b...">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Station_Plot_with_Layout_thumb.png
+    :alt: Station Plot with Layout
+
+  :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Station Plot with Layout</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Simplified_Image_Plot
+   /examples/plots/US_Counties
+   /examples/plots/spc_convective_outlook
+   /examples/plots/Combined_plotting
+   /examples/plots/surface_declarative
+   /examples/plots/upperair_declarative
+   /examples/plots/nhc_wind_probabilities
+   /examples/plots/Skew-T_Layout
+   /examples/plots/Hodograph_Inset
+   /examples/plots/Simple_Sounding
+   /examples/plots/Mesonet_Stationplot
+   /examples/plots/Station_Plot
+   /examples/plots/Station_Plot_with_Layout
+

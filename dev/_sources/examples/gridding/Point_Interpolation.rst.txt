@@ -136,12 +136,10 @@ Scipy.interpolate linear
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f2d5d8a2490>
+    <matplotlib.colorbar.Colorbar object at 0x7ff1dba31f70>
 
 
 
@@ -172,12 +170,10 @@ Natural neighbor interpolation (MetPy implementation)
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f2d408f41c0>
+    <matplotlib.colorbar.Colorbar object at 0x7ff1dc237f10>
 
 
 
@@ -213,12 +209,10 @@ min_neighbors = 1
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f2d42769be0>
+    <matplotlib.colorbar.Colorbar object at 0x7ff1dbdd4c70>
 
 
 
@@ -252,12 +246,10 @@ min_neighbors = 3
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
 
-    <matplotlib.colorbar.Colorbar object at 0x7f2d43bca6a0>
+    <matplotlib.colorbar.Colorbar object at 0x7ff1ca653790>
 
 
 
@@ -294,28 +286,23 @@ linear
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.127 seconds)
+   **Total running time of the script:** ( 0 minutes  4.234 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Point_Interpolation.py <Point_Interpolation.py>`
 
-     :download:`Download Python source code: Point_Interpolation.py <Point_Interpolation.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Point_Interpolation.ipynb <Point_Interpolation.ipynb>`
+      :download:`Download Jupyter notebook: Point_Interpolation.ipynb <Point_Interpolation.ipynb>`
 
 
 .. only:: html

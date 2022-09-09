@@ -91,8 +91,6 @@ Point 3 is at the confluence of several triangles so it has many natural neighbo
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     {0: [0, 1], 1: [18, 19], 2: [16, 17, 22, 23], 3: [24, 25, 26, 27, 28, 29, 30, 31], 4: []}
@@ -141,28 +139,23 @@ We can plot all of the triangles as well as the circles representing the circumc
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.379 seconds)
+   **Total running time of the script:** ( 0 minutes  0.404 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Find_Natural_Neighbors_Verification.py <Find_Natural_Neighbors_Verification.py>`
 
-     :download:`Download Python source code: Find_Natural_Neighbors_Verification.py <Find_Natural_Neighbors_Verification.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Find_Natural_Neighbors_Verification.ipynb <Find_Natural_Neighbors_Verification.ipynb>`
+      :download:`Download Jupyter notebook: Find_Natural_Neighbors_Verification.ipynb <Find_Natural_Neighbors_Verification.ipynb>`
 
 
 .. only:: html

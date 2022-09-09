@@ -73,8 +73,6 @@ dimension.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     <xarray.Dataset>
@@ -149,8 +147,6 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     <xarray.Dataset>
@@ -222,8 +218,6 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -346,8 +340,6 @@ Now, we can make the plot.
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     /home/runner/work/MetPy/MetPy/examples/cross_section.py:99: UserWarning: FixedFormatter should only be used together with FixedLocator
@@ -365,28 +357,23 @@ to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL out
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.307 seconds)
+   **Total running time of the script:** ( 0 minutes  4.274 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: cross_section.py <cross_section.py>`
 
-     :download:`Download Python source code: cross_section.py <cross_section.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: cross_section.ipynb <cross_section.ipynb>`
+      :download:`Download Jupyter notebook: cross_section.ipynb <cross_section.ipynb>`
 
 
 .. only:: html

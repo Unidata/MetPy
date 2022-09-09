@@ -60,8 +60,6 @@ Create a test value of mixing ratio in grams per kilogram
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     10.0 gram / kilogram
@@ -87,8 +85,6 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     15.823863685716976 millibar
@@ -111,8 +107,6 @@ Take the odd units and force them to millibars
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -138,8 +132,6 @@ Take the raw vapor pressure and throw into the dewpoint function
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     13.854699858753747 degree_Celsius
@@ -162,8 +154,6 @@ Which can of course be converted to Fahrenheit
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -189,8 +179,6 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     13.450284132859428 millibar
@@ -214,8 +202,6 @@ And print the corresponding dewpoint
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
     11.3770989195134 degree_Celsius 52.47877805512405 degree_Fahrenheit
@@ -226,28 +212,23 @@ And print the corresponding dewpoint
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.005 seconds)
+   **Total running time of the script:** ( 0 minutes  0.007 seconds)
 
 
 .. _sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: Dewpoint_and_Mixing_Ratio.py <Dewpoint_and_Mixing_Ratio.py>`
 
-     :download:`Download Python source code: Dewpoint_and_Mixing_Ratio.py <Dewpoint_and_Mixing_Ratio.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: Dewpoint_and_Mixing_Ratio.ipynb <Dewpoint_and_Mixing_Ratio.ipynb>`
+      :download:`Download Jupyter notebook: Dewpoint_and_Mixing_Ratio.ipynb <Dewpoint_and_Mixing_Ratio.ipynb>`
 
 
 .. only:: html
