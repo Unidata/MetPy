@@ -54,7 +54,8 @@ sphinx_gallery_conf = {
     'filename_pattern': r'\.py',
     'backreferences_dir': str(Path('api') / 'generated'),
     'default_thumb_file': str(Path('_static') / 'metpy_150x150_white_bg.png'),
-    'abort_on_example_error': True
+    'abort_on_example_error': True,
+    'reset_modules': [lambda conf, fname: sys.modules.pop('pint', None)]
 }
 
 # Turn off code and image links for embedded mpl plots
