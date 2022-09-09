@@ -306,6 +306,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dropping-units">
+   Dropping Units
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#common-mistakes">
    Common Mistakes
   </a>
@@ -562,6 +567,40 @@ under the hood. Below we calculate dewpoint from the temperature and relative hu
 </pre></div>
 </div>
 </section>
+<section id="dropping-units">
+<h2>Dropping Units<a class="headerlink" href="#dropping-units" title="Permalink to this headline">#</a></h2>
+<p>While units are part of the MetPy ecosystem, they can be a headache after we have
+computed the desired quantities with MetPy and would like to move on. For example,
+we might have computed the dewpoint temperature for two points, say A and B, and
+would like to compute the average:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temperature_a</span> <span class="o">=</span> <span class="mf">73.2</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">degF</span>
+<span class="n">rh_a</span> <span class="o">=</span> <span class="mi">64</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">percent</span>
+<span class="n">dewpoint_a</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span></a><span class="p">(</span><span class="n">temperature_a</span><span class="p">,</span> <span class="n">rh_a</span><span class="p">)</span>
+
+<span class="n">temperature_b</span> <span class="o">=</span> <span class="mf">71.1</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">degF</span>
+<span class="n">rh_b</span> <span class="o">=</span> <span class="mi">52</span> <span class="o">*</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.UnitRegistry" title="pint.UnitRegistry" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">units</span></a><span class="o">.</span><span class="n">percent</span>
+<span class="n">dewpoint_b</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.dewpoint_from_relative_humidity.html#metpy.calc.dewpoint_from_relative_humidity" title="metpy.calc.dewpoint_from_relative_humidity" class="sphx-glr-backref-module-metpy-calc sphx-glr-backref-type-py-function"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span></a><span class="p">(</span><span class="n">temperature_b</span><span class="p">,</span> <span class="n">rh_b</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Per our previous discussion on temperature units, adding two temperatures together
+won’t work. In this case, the easiest way to add two quantities and compute
+an average is by dropping the units attached to the values via <code class="docutils literal notranslate"><span class="pre">.magnitude</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_b</span><span class="o">.</span><span class="n">magnitude</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>11.445590005179099
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">dewpoint_mean</span></a> <span class="o">=</span> <span class="p">(</span><a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_a</span><span class="o">.</span><span class="n">magnitude</span></a> <span class="o">+</span> <a href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity.magnitude" title="pint.Quantity.magnitude" class="sphx-glr-backref-module-pint sphx-glr-backref-type-py-property"><span class="n">dewpoint_b</span><span class="o">.</span><span class="n">magnitude</span></a><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">dewpoint_mean</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>13.585913193212178
+</pre></div>
+</div>
+</section>
 <section id="common-mistakes">
 <h2>Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permalink to this headline">#</a></h2>
 <p>There are a few common mistakes the new users often make. Be sure to check
@@ -575,7 +614,7 @@ ecosystem. The expected error will be
 <em class="xref py py-obj">AttributeError: ‘MaskedArray’ object has no attribute ‘units’</em> or calculation
 functions complaining about expecting a units and getting “dimensionless”.</p></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.013 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.014 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5efd259fad2625b979995a43ebbb8b81/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>

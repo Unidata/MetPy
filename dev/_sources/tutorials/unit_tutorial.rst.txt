@@ -558,7 +558,84 @@ or back to Fahrenheit:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-190
+.. GENERATED FROM PYTHON SOURCE LINES 178-184
+
+Dropping Units
+--------------
+While units are part of the MetPy ecosystem, they can be a headache after we have
+computed the desired quantities with MetPy and would like to move on. For example,
+we might have computed the dewpoint temperature for two points, say A and B, and
+would like to compute the average:
+
+.. GENERATED FROM PYTHON SOURCE LINES 184-192
+
+.. code-block:: default
+
+    temperature_a = 73.2 * units.degF
+    rh_a = 64 * units.percent
+    dewpoint_a = mpcalc.dewpoint_from_relative_humidity(temperature_a, rh_a)
+
+    temperature_b = 71.1 * units.degF
+    rh_b = 52 * units.percent
+    dewpoint_b = mpcalc.dewpoint_from_relative_humidity(temperature_b, rh_b)
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 193-196
+
+Per our previous discussion on temperature units, adding two temperatures together
+won't work. In this case, the easiest way to add two quantities and compute
+an average is by dropping the units attached to the values via ``.magnitude``:
+
+.. GENERATED FROM PYTHON SOURCE LINES 196-198
+
+.. code-block:: default
+
+    print(dewpoint_b.magnitude)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    11.445590005179099
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 199-202
+
+.. code-block:: default
+
+    dewpoint_mean = (dewpoint_a.magnitude + dewpoint_b.magnitude) / 2.
+    print(dewpoint_mean)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    13.585913193212178
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 203-215
 
 Common Mistakes
 ---------------
@@ -576,7 +653,7 @@ these when you're having issues.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.013 seconds)
+   **Total running time of the script:** ( 0 minutes  0.014 seconds)
 
 
 .. _sphx_glr_download_tutorials_unit_tutorial.py:
