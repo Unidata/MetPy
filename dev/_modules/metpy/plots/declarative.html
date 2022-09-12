@@ -1629,6 +1629,28 @@
 
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">class</span> <span class="nc">RasterPlot</span><span class="p">(</span><span class="n">PlotScalar</span><span class="p">,</span> <span class="n">ColorfillTraits</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make raster plots by defining relevant traits.&quot;&quot;&quot;</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;image_range&#39;</span><span class="p">,</span> <span class="s1">&#39;colorbar&#39;</span><span class="p">,</span> <span class="s1">&#39;colormap&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
+        <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
+        <span class="c1"># to trigger a clear and re-call of pcolormesh()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the raster plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
+        <span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x_like</span><span class="p">,</span> <span class="n">y_like</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span>
+                                                <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
+                                                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PlotVector</span><span class="p">(</span><span class="n">Plots2D</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Defines common elements for 2D vector plots.</span>
 

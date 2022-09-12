@@ -42,6 +42,7 @@ Plots ``(metpy.plots)``
       ImagePlot
       ContourPlot
       FilledContourPlot
+      RasterPlot
       PlotVector
       BarbPlot
       ArrowPlot
