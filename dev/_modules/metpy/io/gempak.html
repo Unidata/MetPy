@@ -217,10 +217,13 @@
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">constants</span>
-<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="p">(</span><span class="n">scale_height</span><span class="p">,</span> <span class="n">specific_humidity_from_dewpoint</span><span class="p">,</span> <span class="n">thickness_hydrostatic</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="kn">import</span> <span class="p">(</span><span class="n">altimeter_to_sea_level_pressure</span><span class="p">,</span> <span class="n">scale_height</span><span class="p">,</span>
+                    <span class="n">specific_humidity_from_dewpoint</span><span class="p">,</span> <span class="n">thickness_hydrostatic</span><span class="p">,</span>
                     <span class="n">virtual_temperature</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..io.metar</span> <span class="kn">import</span> <span class="n">parse_metar</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="kn">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..plots.mapping</span> <span class="kn">import</span> <span class="n">CFProjection</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="kn">import</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -363,6 +366,11 @@
     <span class="s1">&#39;STATE&#39;</span><span class="p">,</span>
     <span class="s1">&#39;COUNTRY&#39;</span><span class="p">,</span>
 <span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_check_nan</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check for nan values and replace with missing.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">missing</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
 
 
 <span class="k">def</span> <span class="nf">convert_degc_to_k</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
@@ -674,6 +682,86 @@
             <span class="n">outdata</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">missing</span>
 
     <span class="k">return</span> <span class="n">outdata</span>
+
+
+<span class="k">def</span> <span class="nf">_wx_to_wnum</span><span class="p">(</span><span class="n">wx1</span><span class="p">,</span> <span class="n">wx2</span><span class="p">,</span> <span class="n">wx3</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert METAR present weather code to GEMPAK weather number.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See GEMAPK function PT_WNMT.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">metar_codes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;BR&#39;</span><span class="p">,</span> <span class="s1">&#39;DS&#39;</span><span class="p">,</span> <span class="s1">&#39;DU&#39;</span><span class="p">,</span> <span class="s1">&#39;DZ&#39;</span><span class="p">,</span> <span class="s1">&#39;FC&#39;</span><span class="p">,</span> <span class="s1">&#39;FG&#39;</span><span class="p">,</span> <span class="s1">&#39;FU&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;GS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HZ&#39;</span><span class="p">,</span> <span class="s1">&#39;IC&#39;</span><span class="p">,</span> <span class="s1">&#39;PL&#39;</span><span class="p">,</span> <span class="s1">&#39;PO&#39;</span><span class="p">,</span> <span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;SA&#39;</span><span class="p">,</span> <span class="s1">&#39;SG&#39;</span><span class="p">,</span> <span class="s1">&#39;SN&#39;</span><span class="p">,</span> <span class="s1">&#39;SQ&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SS&#39;</span><span class="p">,</span> <span class="s1">&#39;TS&#39;</span><span class="p">,</span> <span class="s1">&#39;UP&#39;</span><span class="p">,</span> <span class="s1">&#39;VA&#39;</span><span class="p">,</span> <span class="s1">&#39;+DS&#39;</span><span class="p">,</span> <span class="s1">&#39;-DZ&#39;</span><span class="p">,</span> <span class="s1">&#39;+DZ&#39;</span><span class="p">,</span> <span class="s1">&#39;+FC&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-GS&#39;</span><span class="p">,</span> <span class="s1">&#39;+GS&#39;</span><span class="p">,</span> <span class="s1">&#39;-PL&#39;</span><span class="p">,</span> <span class="s1">&#39;+PL&#39;</span><span class="p">,</span> <span class="s1">&#39;-RA&#39;</span><span class="p">,</span> <span class="s1">&#39;+RA&#39;</span><span class="p">,</span> <span class="s1">&#39;-SG&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;+SG&#39;</span><span class="p">,</span> <span class="s1">&#39;-SN&#39;</span><span class="p">,</span> <span class="s1">&#39;+SN&#39;</span><span class="p">,</span> <span class="s1">&#39;+SS&#39;</span><span class="p">,</span> <span class="s1">&#39;BCFG&#39;</span><span class="p">,</span> <span class="s1">&#39;BLDU&#39;</span><span class="p">,</span> <span class="s1">&#39;BLPY&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;BLSA&#39;</span><span class="p">,</span> <span class="s1">&#39;BLSN&#39;</span><span class="p">,</span> <span class="s1">&#39;DRDU&#39;</span><span class="p">,</span> <span class="s1">&#39;DRSA&#39;</span><span class="p">,</span> <span class="s1">&#39;DRSN&#39;</span><span class="p">,</span> <span class="s1">&#39;FZDZ&#39;</span><span class="p">,</span> <span class="s1">&#39;FZFG&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;FZRA&#39;</span><span class="p">,</span> <span class="s1">&#39;MIFG&#39;</span><span class="p">,</span> <span class="s1">&#39;PRFG&#39;</span><span class="p">,</span> <span class="s1">&#39;SHGR&#39;</span><span class="p">,</span> <span class="s1">&#39;SHGS&#39;</span><span class="p">,</span> <span class="s1">&#39;SHPL&#39;</span><span class="p">,</span> <span class="s1">&#39;SHRA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SHSN&#39;</span><span class="p">,</span> <span class="s1">&#39;TSRA&#39;</span><span class="p">,</span> <span class="s1">&#39;+BLDU&#39;</span><span class="p">,</span> <span class="s1">&#39;+BLSA&#39;</span><span class="p">,</span> <span class="s1">&#39;+BLSN&#39;</span><span class="p">,</span> <span class="s1">&#39;-FZDZ&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;+FZDZ&#39;</span><span class="p">,</span> <span class="s1">&#39;+FZFG&#39;</span><span class="p">,</span> <span class="s1">&#39;-FZRA&#39;</span><span class="p">,</span> <span class="s1">&#39;+FZRA&#39;</span><span class="p">,</span> <span class="s1">&#39;-SHGS&#39;</span><span class="p">,</span> <span class="s1">&#39;+SHGS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-SHPL&#39;</span><span class="p">,</span> <span class="s1">&#39;+SHPL&#39;</span><span class="p">,</span> <span class="s1">&#39;-SHRA&#39;</span><span class="p">,</span> <span class="s1">&#39;+SHRA&#39;</span><span class="p">,</span> <span class="s1">&#39;-SHSN&#39;</span><span class="p">,</span> <span class="s1">&#39;+SHSN&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-TSRA&#39;</span><span class="p">,</span> <span class="s1">&#39;+TSRA&#39;</span>
+    <span class="p">]</span>
+
+    <span class="n">gempak_wnum</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mi">9</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="mi">35</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="mi">21</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span>
+        <span class="mi">63</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span>
+        <span class="mi">52</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">78</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">wx1</span> <span class="ow">in</span> <span class="n">metar_codes</span><span class="p">:</span>
+        <span class="n">wn1</span> <span class="o">=</span> <span class="n">gempak_wnum</span><span class="p">[</span><span class="n">metar_codes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">wx1</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wn1</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">wx2</span> <span class="ow">in</span> <span class="n">metar_codes</span><span class="p">:</span>
+        <span class="n">wn2</span> <span class="o">=</span> <span class="n">gempak_wnum</span><span class="p">[</span><span class="n">metar_codes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">wx2</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wn2</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">wx3</span> <span class="ow">in</span> <span class="n">metar_codes</span><span class="p">:</span>
+        <span class="n">wn3</span> <span class="o">=</span> <span class="n">gempak_wnum</span><span class="p">[</span><span class="n">metar_codes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">wx3</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wn3</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">[</span><span class="n">wn1</span><span class="p">,</span> <span class="n">wn2</span><span class="p">,</span> <span class="n">wn3</span><span class="p">]):</span>
+        <span class="n">wnum</span> <span class="o">=</span> <span class="n">wn3</span> <span class="o">*</span> <span class="mi">80</span> <span class="o">*</span> <span class="mi">80</span> <span class="o">+</span> <span class="n">wn2</span> <span class="o">*</span> <span class="mi">80</span> <span class="o">+</span> <span class="n">wn1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wnum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">wn1</span><span class="p">,</span> <span class="n">wn2</span><span class="p">,</span> <span class="n">wn3</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">wnum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">wnum</span> <span class="o">=</span> <span class="n">missing</span>
+
+    <span class="k">return</span> <span class="n">wnum</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_clouds</span><span class="p">(</span><span class="n">cover</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert METAR cloud cover to GEMPAK code.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See GEMPAK function BR_CMTN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cover_text</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CLR&#39;</span><span class="p">,</span> <span class="s1">&#39;SCT&#39;</span><span class="p">,</span> <span class="s1">&#39;BKN&#39;</span><span class="p">,</span> <span class="s1">&#39;OVC&#39;</span><span class="p">,</span> <span class="s1">&#39;VV&#39;</span><span class="p">,</span> <span class="s1">&#39;FEW&#39;</span><span class="p">,</span> <span class="s1">&#39;SKC&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cover</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">missing</span>
+
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">cover</span> <span class="ow">in</span> <span class="n">cover_text</span><span class="p">:</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">cover_text</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cover</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+        <span class="n">code</span> <span class="o">+=</span> <span class="n">height</span>
+        <span class="k">if</span> <span class="n">height</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">code</span>
 
 
 <span class="k">class</span> <span class="nc">GempakFile</span><span class="p">():</span>
@@ -1589,6 +1677,10 @@
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
                                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                        <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
+
                     <span class="n">packed_buffer</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span>
                             <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefmt</span><span class="si">}{</span><span class="n">lendat</span><span class="si">}{</span><span class="n">fmt_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1652,6 +1744,10 @@
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
                                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                        <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
+
                     <span class="n">packed_buffer</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span>
                             <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefmt</span><span class="si">}{</span><span class="n">lendat</span><span class="si">}{</span><span class="n">fmt_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1875,7 +1971,7 @@
                 <span class="n">hght</span><span class="p">,</span>
                 <span class="n">drct</span><span class="p">,</span>
                 <span class="n">sped</span>
-            <span class="p">]:</span>
+            <span class="p">]</span> <span class="ow">or</span> <span class="n">hght</span> <span class="o">&lt;=</span> <span class="n">zold</span><span class="p">:</span>
                 <span class="n">skip</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">zold</span> <span class="o">-</span> <span class="n">hght</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">skip</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1885,8 +1981,6 @@
                 <span class="p">]:</span>
                     <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DRCT&#39;</span><span class="p">][</span><span class="n">ilev</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">drct</span>
                     <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;SPED&#39;</span><span class="p">][</span><span class="n">ilev</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sped</span>
-            <span class="k">elif</span> <span class="n">hght</span> <span class="o">&lt;=</span> <span class="n">zold</span><span class="p">:</span>
-                <span class="n">skip</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="n">hght</span> <span class="o">&gt;=</span> <span class="n">znxt</span><span class="p">:</span>
                 <span class="k">while</span> <span class="n">more</span> <span class="ow">and</span> <span class="n">hght</span> <span class="o">&gt;</span> <span class="n">znxt</span><span class="p">:</span>
                     <span class="n">zold</span> <span class="o">=</span> <span class="n">znxt</span>
@@ -2331,7 +2425,7 @@
             <span class="k">if</span> <span class="n">snd</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">&#39;PRES&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">snd</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">station_pressure</span> <span class="o">=</span> <span class="n">snd</span><span class="p">[</span><span class="s1">&#39;PRES&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">radat_text</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">wmo_text</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;station_id&#39;</span><span class="p">:</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STID&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;station_number&#39;</span><span class="p">:</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STNM&#39;</span><span class="p">),</span>
@@ -2344,15 +2438,15 @@
             <span class="p">}</span>
 
             <span class="k">if</span> <span class="s1">&#39;TXTA&#39;</span> <span class="ow">in</span> <span class="n">snd</span><span class="p">:</span>
-                <span class="n">radat_text</span><span class="p">[</span><span class="s1">&#39;txta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXTA&#39;</span><span class="p">)</span>
+                <span class="n">wmo_text</span><span class="p">[</span><span class="s1">&#39;txta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXTA&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s1">&#39;TXTB&#39;</span> <span class="ow">in</span> <span class="n">snd</span><span class="p">:</span>
-                <span class="n">radat_text</span><span class="p">[</span><span class="s1">&#39;txtb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXTB&#39;</span><span class="p">)</span>
+                <span class="n">wmo_text</span><span class="p">[</span><span class="s1">&#39;txtb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXTB&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s1">&#39;TXTC&#39;</span> <span class="ow">in</span> <span class="n">snd</span><span class="p">:</span>
-                <span class="n">radat_text</span><span class="p">[</span><span class="s1">&#39;txtc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXTC&#39;</span><span class="p">)</span>
+                <span class="n">wmo_text</span><span class="p">[</span><span class="s1">&#39;txtc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXTC&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s1">&#39;TXPB&#39;</span> <span class="ow">in</span> <span class="n">snd</span><span class="p">:</span>
-                <span class="n">radat_text</span><span class="p">[</span><span class="s1">&#39;txpb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXPB&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">radat_text</span><span class="p">:</span>
-                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RADAT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radat_text</span>
+                <span class="n">wmo_text</span><span class="p">[</span><span class="s1">&#39;txpb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TXPB&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">wmo_text</span><span class="p">:</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;WMO_CODES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wmo_text</span>
 
             <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;DATE&#39;</span><span class="p">),</span> <span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TIME&#39;</span><span class="p">))</span>
             <span class="n">press</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">snd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;PRES&#39;</span><span class="p">))</span>
@@ -2408,59 +2502,36 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
-                    <span class="n">pointer</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">data_block_ptr</span>
-                               <span class="o">+</span> <span class="p">(</span><span class="n">irow</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">columns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span>
-                               <span class="o">+</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">iprt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">)):</span>
+                        <span class="n">pointer</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">data_block_ptr</span>
+                                   <span class="o">+</span> <span class="p">(</span><span class="n">irow</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">columns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span>
+                                   <span class="o">+</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span> <span class="o">+</span> <span class="n">iprt</span><span class="p">))</span>
 
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">,</span> <span class="n">_word_to_position</span><span class="p">(</span><span class="n">pointer</span><span class="p">))</span>
-                    <span class="n">data_ptr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">,</span> <span class="n">_word_to_position</span><span class="p">(</span><span class="n">pointer</span><span class="p">))</span>
+                        <span class="n">data_ptr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-                    <span class="k">if</span> <span class="n">data_ptr</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_sfinfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="n">Surface</span><span class="p">(</span>
-                                <span class="n">irow</span><span class="p">,</span>
-                                <span class="n">icol</span><span class="p">,</span>
-                                <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">row_head</span><span class="o">.</span><span class="n">DATE</span><span class="p">,</span> <span class="n">row_head</span><span class="o">.</span><span class="n">TIME</span><span class="p">),</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">STID</span> <span class="o">+</span> <span class="n">col_head</span><span class="o">.</span><span class="n">STD2</span><span class="p">,</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">STNM</span><span class="p">,</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">SLAT</span><span class="p">,</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">SLON</span><span class="p">,</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">SELV</span><span class="p">,</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">STAT</span><span class="p">,</span>
-                                <span class="n">col_head</span><span class="o">.</span><span class="n">COUN</span><span class="p">,</span>
+                        <span class="k">if</span> <span class="n">data_ptr</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_sfinfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="n">Surface</span><span class="p">(</span>
+                                    <span class="n">irow</span><span class="p">,</span>
+                                    <span class="n">icol</span><span class="p">,</span>
+                                    <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">row_head</span><span class="o">.</span><span class="n">DATE</span><span class="p">,</span> <span class="n">row_head</span><span class="o">.</span><span class="n">TIME</span><span class="p">),</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">STID</span> <span class="o">+</span> <span class="n">col_head</span><span class="o">.</span><span class="n">STD2</span><span class="p">,</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">STNM</span><span class="p">,</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">SLAT</span><span class="p">,</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">SLON</span><span class="p">,</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">SELV</span><span class="p">,</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">STAT</span><span class="p">,</span>
+                                    <span class="n">col_head</span><span class="o">.</span><span class="n">COUN</span><span class="p">,</span>
+                                <span class="p">)</span>
                             <span class="p">)</span>
-                        <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span> <span class="o">==</span> <span class="s1">&#39;ship&#39;</span><span class="p">:</span>
             <span class="n">irow</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
-                <span class="n">pointer</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">data_block_ptr</span>
-                           <span class="o">+</span> <span class="p">(</span><span class="n">irow</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">columns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span>
-                           <span class="o">+</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">))</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">,</span> <span class="n">_word_to_position</span><span class="p">(</span><span class="n">pointer</span><span class="p">))</span>
-                <span class="n">data_ptr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">data_ptr</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_sfinfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">Surface</span><span class="p">(</span>
-                            <span class="n">irow</span><span class="p">,</span>
-                            <span class="n">icol</span><span class="p">,</span>
-                            <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">col_head</span><span class="o">.</span><span class="n">DATE</span><span class="p">,</span> <span class="n">col_head</span><span class="o">.</span><span class="n">TIME</span><span class="p">),</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">STID</span> <span class="o">+</span> <span class="n">col_head</span><span class="o">.</span><span class="n">STD2</span><span class="p">,</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">STNM</span><span class="p">,</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">SLAT</span><span class="p">,</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">SLON</span><span class="p">,</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">SELV</span><span class="p">,</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">STAT</span><span class="p">,</span>
-                            <span class="n">col_head</span><span class="o">.</span><span class="n">COUN</span><span class="p">,</span>
-                        <span class="p">)</span>
-                    <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span> <span class="o">==</span> <span class="s1">&#39;climate&#39;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">iprt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">)):</span>
                     <span class="n">pointer</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">data_block_ptr</span>
                                <span class="o">+</span> <span class="p">(</span><span class="n">irow</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">columns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span>
-                               <span class="o">+</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">))</span>
+                               <span class="o">+</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span> <span class="o">+</span> <span class="n">iprt</span><span class="p">))</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">,</span> <span class="n">_word_to_position</span><span class="p">(</span><span class="n">pointer</span><span class="p">))</span>
                     <span class="n">data_ptr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -2471,15 +2542,41 @@
                                 <span class="n">irow</span><span class="p">,</span>
                                 <span class="n">icol</span><span class="p">,</span>
                                 <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">col_head</span><span class="o">.</span><span class="n">DATE</span><span class="p">,</span> <span class="n">col_head</span><span class="o">.</span><span class="n">TIME</span><span class="p">),</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">STID</span> <span class="o">+</span> <span class="n">row_head</span><span class="o">.</span><span class="n">STD2</span><span class="p">,</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">STNM</span><span class="p">,</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">SLAT</span><span class="p">,</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">SLON</span><span class="p">,</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">SELV</span><span class="p">,</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">STAT</span><span class="p">,</span>
-                                <span class="n">row_head</span><span class="o">.</span><span class="n">COUN</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">STID</span> <span class="o">+</span> <span class="n">col_head</span><span class="o">.</span><span class="n">STD2</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">STNM</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">SLAT</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">SLON</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">SELV</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">STAT</span><span class="p">,</span>
+                                <span class="n">col_head</span><span class="o">.</span><span class="n">COUN</span><span class="p">,</span>
                             <span class="p">)</span>
                         <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span> <span class="o">==</span> <span class="s1">&#39;climate&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">icol</span><span class="p">,</span> <span class="n">col_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_headers</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="n">row_head</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_headers</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">iprt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">)):</span>
+                        <span class="n">pointer</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">data_block_ptr</span>
+                                   <span class="o">+</span> <span class="p">(</span><span class="n">irow</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">columns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span>
+                                   <span class="o">+</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">parts</span> <span class="o">+</span> <span class="n">iprt</span><span class="p">))</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">,</span> <span class="n">_word_to_position</span><span class="p">(</span><span class="n">pointer</span><span class="p">))</span>
+                        <span class="n">data_ptr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_int</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endian</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">data_ptr</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_sfinfo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="n">Surface</span><span class="p">(</span>
+                                    <span class="n">irow</span><span class="p">,</span>
+                                    <span class="n">icol</span><span class="p">,</span>
+                                    <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">col_head</span><span class="o">.</span><span class="n">DATE</span><span class="p">,</span> <span class="n">col_head</span><span class="o">.</span><span class="n">TIME</span><span class="p">),</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">STID</span> <span class="o">+</span> <span class="n">row_head</span><span class="o">.</span><span class="n">STD2</span><span class="p">,</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">STNM</span><span class="p">,</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">SLAT</span><span class="p">,</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">SLON</span><span class="p">,</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">SELV</span><span class="p">,</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">STAT</span><span class="p">,</span>
+                                    <span class="n">row_head</span><span class="o">.</span><span class="n">COUN</span><span class="p">,</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Unknown surface type </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">))</span></div>
 
@@ -2556,6 +2653,10 @@
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
                                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                        <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
+
                     <span class="n">packed_buffer</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span>
                             <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefmt</span><span class="si">}{</span><span class="n">lendat</span><span class="si">}{</span><span class="n">fmt_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -2623,6 +2724,10 @@
                 <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
                                               <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                    <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
+
                 <span class="n">packed_buffer</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span>
                         <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefmt</span><span class="si">}{</span><span class="n">lendat</span><span class="si">}{</span><span class="n">fmt_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -2690,6 +2795,10 @@
                     <span class="k">if</span> <span class="n">fmt_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No methods for data type </span><span class="si">{}</span><span class="s1">&#39;</span>
                                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">data_type</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">fmt_code</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                        <span class="n">lendat</span> <span class="o">*=</span> <span class="n">BYTES_PER_WORD</span>
+
                     <span class="n">packed_buffer</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span>
                             <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefmt</span><span class="si">}{</span><span class="n">lendat</span><span class="si">}{</span><span class="n">fmt_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -2711,6 +2820,40 @@
 
                 <span class="n">stations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">stations</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_decode_special_observation</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">missing</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode raw special obsrvation text.&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s1">&#39;SPCL&#39;</span><span class="p">]</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s1">&#39;DATE&#39;</span><span class="p">],</span> <span class="n">station</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">])</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_metar</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">date_time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">nan</span> <span class="ow">in</span> <span class="p">[</span><span class="n">parsed</span><span class="o">.</span><span class="n">altimeter</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">temperature</span><span class="p">]:</span>
+            <span class="n">station</span><span class="p">[</span><span class="s1">&#39;PMSL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">missing</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">station</span><span class="p">[</span><span class="s1">&#39;PMSL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">altimeter_to_sea_level_pressure</span><span class="p">(</span>
+                <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">altimeter</span><span class="p">,</span> <span class="s1">&#39;inHg&#39;</span><span class="p">),</span>
+                <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span>
+                <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span> <span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;hPa&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;ALTI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_nan</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">altimeter</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;TMPC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_nan</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;DWPC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_nan</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">dewpoint</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;SKNT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_nan</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;DRCT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_nan</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">),</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;GUST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_nan</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">wind_gust</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;WNUM&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">_wx_to_wnum</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">current_wx1</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">current_wx2</span><span class="p">,</span>
+                                            <span class="n">parsed</span><span class="o">.</span><span class="n">current_wx3</span><span class="p">,</span> <span class="n">missing</span><span class="p">))</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;CHC1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_clouds</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">skyc1</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">skylev1</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;CHC2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_clouds</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">skyc2</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">skylev2</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="n">station</span><span class="p">[</span><span class="s1">&#39;CHC3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_clouds</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">skyc3</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">skylev3</span><span class="p">,</span> <span class="n">missing</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">visibility</span><span class="p">):</span>
+            <span class="n">station</span><span class="p">[</span><span class="s1">&#39;VSBY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">missing</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">station</span><span class="p">[</span><span class="s1">&#39;VSBY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">visibility</span> <span class="o">/</span> <span class="mf">1609.344</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">station</span>
 
 <div class="viewcode-block" id="GempakSurface.nearest_time"><a class="viewcode-back" href="../../../api/generated/metpy.io.GempakSurface.html#metpy.io.GempakSurface.nearest_time">[docs]</a>    <span class="k">def</span> <span class="nf">nearest_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_time</span><span class="p">,</span> <span class="n">station_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">station_number</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get nearest observation to given time for selected stations.</span>
@@ -2892,6 +3035,8 @@
 
         <span class="n">stnarr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">stn</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;SPCL&#39;</span> <span class="ow">in</span> <span class="n">stn</span><span class="p">:</span>
+                <span class="n">stn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode_special_observation</span><span class="p">(</span><span class="n">stn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">missing_float</span><span class="p">)</span>
             <span class="n">props</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;date_time&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;DATE&#39;</span><span class="p">),</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TIME&#39;</span><span class="p">)),</span>
                      <span class="s1">&#39;station_id&#39;</span><span class="p">:</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STID&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STD2&#39;</span><span class="p">),</span>
                      <span class="s1">&#39;station_number&#39;</span><span class="p">:</span> <span class="n">stn</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;STNM&#39;</span><span class="p">),</span>
