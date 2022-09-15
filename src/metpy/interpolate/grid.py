@@ -98,8 +98,8 @@ def get_xy_steps(bbox, h_dim):
     """
     x_range, y_range = get_xy_range(bbox)
 
-    x_steps = np.ceil(x_range / h_dim)
-    y_steps = np.ceil(y_range / h_dim)
+    x_steps = np.ceil(x_range / h_dim) + 1
+    y_steps = np.ceil(y_range / h_dim) + 1
 
     return int(x_steps), int(y_steps)
 
