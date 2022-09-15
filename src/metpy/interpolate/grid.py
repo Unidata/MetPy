@@ -18,10 +18,11 @@ def generate_grid(horiz_dim, bbox):
 
     Parameters
     ----------
-    horiz_dim: integer
+    horiz_dim: int or float
         Horizontal resolution
-    bbox: dictionary
-        Dictionary containing coordinates for corners of study area.
+    bbox: dict
+        Dictionary with keys 'east', 'west', 'north', 'south' with the box extents
+        in those directions.
 
     Returns
     -------
@@ -36,9 +37,7 @@ def generate_grid(horiz_dim, bbox):
     grid_x = np.linspace(bbox['west'], bbox['east'], x_steps)
     grid_y = np.linspace(bbox['south'], bbox['north'], y_steps)
 
-    gx, gy = np.meshgrid(grid_x, grid_y)
-
-    return gx, gy
+    return np.meshgrid(grid_x, grid_y)
 
 
 def generate_grid_coords(gx, gy):
@@ -63,8 +62,9 @@ def generate_grid_coords(gx, gy):
 def get_xy_range(bbox):
     r"""Return x and y ranges in meters based on bounding box.
 
-    bbox: dictionary
-        dictionary containing coordinates for corners of study area
+    bbox: dict
+        Dictionary with keys 'east', 'west', 'north', 'south' with the box extents
+        in those directions.
 
     Returns
     -------
@@ -83,9 +83,10 @@ def get_xy_range(bbox):
 def get_xy_steps(bbox, h_dim):
     r"""Return meshgrid spacing based on bounding box.
 
-    bbox: dictionary
-        Dictionary containing coordinates for corners of study area.
-    h_dim: integer
+    bbox: dict
+        Dictionary with keys 'east', 'west', 'north', 'south' with the box extents
+        in those directions.
+    h_dim: int or float
         Horizontal resolution in meters.
 
     Returns
@@ -111,14 +112,14 @@ def get_boundary_coords(x, y, spatial_pad=0):
         x coordinates.
     y: numeric
         y coordinates.
-    spatial_pad: numeric
-        Number of meters to add to the x and y dimensions to reduce
-        edge effects.
+    spatial_pad: int or float
+        Number of meters to add to the x and y dimensions to reduce edge effects.
 
     Returns
     -------
-    bbox: dictionary
-        dictionary containing coordinates for corners of study area
+    bbox: dict
+        Dictionary with keys 'east', 'west', 'north', 'south' with the box extents
+        in those directions.
 
     """
     west = np.min(x) - spatial_pad
