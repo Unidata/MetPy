@@ -470,7 +470,8 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
         Dewpoint at the levels given by `pressure`
 
     height : `pint.Quantity`, optional
-        Atmospheric heights at the levels given by `pressure`
+        Atmospheric heights at the levels given by `pressure`. Only needed when specifying a mixed layer
+        depth as a height.
 
     mixed_layer_depth : `pint.Quantity`, optional
         The thickness of the mixed layer as a pressure or height above the bottom
