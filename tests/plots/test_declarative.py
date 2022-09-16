@@ -118,6 +118,37 @@ def test_declarative_contour():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=False, tolerance=0)
+@needs_cartopy
+def test_declarative_titles():
+    """Test making a contour plot with multiple titles."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 30
+    contour.linewidth = 1
+    contour.linecolor = 'red'
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'lcc'
+    panel.layers = ['coastline']
+    panel.left_title = '700-hPa Temperature'
+    panel.right_title = 'Valid at a time'
+    panel.title = 'Plot of data'
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8.0, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
 @needs_cartopy
 def test_declarative_smooth_contour():
