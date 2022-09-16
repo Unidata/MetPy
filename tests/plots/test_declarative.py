@@ -2244,7 +2244,7 @@ def test_declarative_plot_geometry_points(ccrs):
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.002)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.03)
 def test_declarative_skewt_plot():
     """Test plotting of a simple skewT with declarative."""
     date = datetime(2016, 5, 22, 0)
@@ -2272,7 +2272,7 @@ def test_declarative_skewt_plot():
     return panel.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.002)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.03)
 def test_declarative_skewt_plot_shade_cape():
     """Test plotting of a skewT with declarative and shading."""
     from metpy.calc import parcel_profile
