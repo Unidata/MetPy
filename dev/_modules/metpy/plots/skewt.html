@@ -325,12 +325,15 @@
         <span class="k">return</span> <span class="n">SkewXTick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="n">major</span><span class="p">)</span>
 
     <span class="c1"># Needed to properly handle tight bbox</span>
-    <span class="k">def</span> <span class="nf">_get_tick_bboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_ticklabel_bboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">([</span><span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
                  <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span> <span class="k">if</span> <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">tick</span><span class="o">.</span><span class="n">lower_in_bounds</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">tick</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
                  <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span> <span class="k">if</span> <span class="n">tick</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">tick</span><span class="o">.</span><span class="n">upper_in_bounds</span><span class="p">])</span>
+
+    <span class="c1"># Older name used on Matplotlib &lt; 3.6</span>
+    <span class="n">_get_tick_bboxes</span> <span class="o">=</span> <span class="n">_get_ticklabel_bboxes</span>
 
     <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
