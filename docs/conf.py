@@ -54,7 +54,8 @@ sphinx_gallery_conf = {
     'filename_pattern': r'\.py',
     'backreferences_dir': str(Path('api') / 'generated'),
     'default_thumb_file': str(Path('_static') / 'metpy_150x150_white_bg.png'),
-    'abort_on_example_error': True
+    'abort_on_example_error': True,
+    'reset_modules': [lambda conf, fname: sys.modules.pop('pint', None)]
 }
 
 # Turn off code and image links for embedded mpl plots
@@ -369,6 +370,9 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
+# -- Options for linkcheck builder ----------------------------------------
+
+# List of regular expressions, links matching them will be ignored.
 linkcheck_ignore = [
     r'https://codecov.io/github/Unidata/MetPy',
     r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+',
@@ -380,9 +384,12 @@ linkcheck_ignore = [
     # This one appears to be blocking robots
     r'https://doi\.org/10\.1088/0026-1394/45/2/004',
     # Frequently fails the linkchecker
-    r'https://ams\.confex\.com/ams/[\d\w]+/meetingapp\.cgi/.*'
+    r'https://ams\.confex\.com/ams/[\d\w]+/meetingapp\.cgi/.*',
+    # Can't seem to get around inconsistent retry errors
+    r'https://doi\.org/10\.1289/ehp\.1206273'
     ]
 
+# Dictionary of URL redirects allowed
 linkcheck_allowed_redirects = {
     r'https://pint\.readthedocs\.io': r'https://pint\.readthedocs\.io/en/stable/',
     r'https://conda.io/docs/': r'https://conda.io/en/latest/',
@@ -390,6 +397,7 @@ linkcheck_allowed_redirects = {
     r'https://doi.org/.*': r'https://.*'
 }
 
+# Domain-specific HTTP headers for requests
 linkcheck_request_headers = {
     r'https://docs.github.com/': {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; '
                                                 'rv:24.0) Gecko/20100101 Firefox/24.0'}

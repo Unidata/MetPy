@@ -689,7 +689,8 @@ class MapPanel(Panel, ValidationMixin):
 
     layers = List(Union([Unicode(), Instance('cartopy.feature.Feature')]),
                   default_value=['coastline'])
-    layers.__doc__ = """A list of strings for a pre-defined feature layer or a Cartopy Feature object.
+    layers.__doc__ = """A list of strings for a pre-defined feature layer or a Cartopy Feature
+    object.
 
     Like the projection, there are a couple of pre-defined feature layers that can be called
     using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
@@ -720,8 +721,8 @@ class MapPanel(Panel, ValidationMixin):
     """
 
     title_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    title_fontsize.__doc__ = """An integer or string value for the font size of the title of the
-    figure.
+    title_fontsize.__doc__ = """An integer or string value for the font size of the title of
+    the figure.
 
     This trait sets the font size for the title that will plot at the top center of the figure.
     Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:
@@ -1259,7 +1260,8 @@ class ContourTraits(MetPyHasTraits):
     """
 
     label_fontsize = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
-    label_fontsize.__doc__ = """An integer, float, or string value to set the font size of labels for contours.
+    label_fontsize.__doc__ = """An integer, float, or string value to set the font size of
+    labels for contours.
 
     This trait sets the font size for labels that will plot along contour lines. Accepts
     size in points or relative size. Allowed relative sizes are those of Matplotlib:
@@ -1286,7 +1288,8 @@ class ColorfillTraits(MetPyHasTraits):
     """
 
     colorbar = Unicode(default_value=None, allow_none=True)
-    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the plot.
+    colorbar.__doc__ = """A string (horizontal/vertical) on whether to add a colorbar to the
+    plot.
 
     To add a colorbar associated with the plot, set the trait to ``horizontal`` or
     ``vertical``,specifying the orientation of the produced colorbar. The default value is
@@ -1427,6 +1430,28 @@ class FilledContourPlot(PlotScalar, ColorfillTraits, ContourTraits, ValidationMi
         self.handle = self.parent.ax.contourf(x_like, y_like, imdata, self.contours,
                                               cmap=self._cmap_obj, norm=self._norm_obj,
                                               **kwargs)
+
+
+@exporter.export
+class RasterPlot(PlotScalar, ColorfillTraits):
+    """Make raster plots by defining relevant traits."""
+
+    @observe('image_range', 'colorbar', 'colormap')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of pcolormesh()
+        self.clear()
+
+    def _build(self):
+        """Build the raster plot by calling any plotting methods as necessary."""
+        x_like, y_like, imdata = self.plotdata
+
+        kwargs = plot_kwargs(imdata)
+
+        self.handle = self.parent.ax.pcolormesh(x_like, y_like, imdata,
+                                                cmap=self._cmap_obj, norm=self._norm_obj,
+                                                **kwargs)
 
 
 @exporter.export
@@ -1613,6 +1638,76 @@ class BarbPlot(PlotVector, ValidationMixin):
             x_like[wind_slice], y_like[wind_slice],
             u.values[wind_slice], v.values[wind_slice],
             color=self.color, pivot=self.pivot, length=self.barblength, **kwargs)
+
+
+@exporter.export
+class ArrowPlot(PlotVector, ValidationMixin):
+    """Make plots of wind barbs on a map with traits to refine the look of plotted elements."""
+
+    arrowscale = Union([Int(), Float(), Unicode()], allow_none=True, default_value=None)
+    arrowscale.__doc__ = """Number of data units per arrow length unit, e.g., m/s per plot
+    width; a smaller scale parameter makes the arrow longer. Default is `None`.
+
+    If `None`, a simple autoscaling algorithm is used, based on the average
+    vector length and the number of vectors. The arrow length unit is given by
+    the `key_length` attribute.
+
+    This trait corresponds to the keyword length in `matplotlib.pyplot.quiver`.
+    """
+
+    arrowkey = Tuple(Float(allow_none=True), Float(allow_none=True), Float(allow_none=True),
+                     Unicode(allow_none=True), Unicode(allow_none=True), default_value=None,
+                     allow_none=True)
+    arrowkey.__doc__ = """Set the characteristics of an arrow key using a tuple of values
+    representing (value, xloc, yloc, position, string).
+
+    Default is `None`.
+
+    If `None`, no vector key will be plotted.
+
+    value default is 100
+    xloc default is 0.85
+    yloc default is 1.02
+    position default is 'E' (options are 'N', 'S', 'E', 'W')
+    label default is an empty string
+
+    If you wish to change a characteristic of the arrowkey you'll need to have a tuple of five
+    elements, fill in the full tuple using `None` for those characteristics you wish to use the
+    default value and put in the new values for the other elements. This trait corresponds to
+    the keyword length in `matplotlib.pyplot.quiverkey`.
+    """
+
+    @observe('arrowscale', 'pivot', 'skip', 'earth_relative', 'color', 'arrowkey')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of quiver()
+        self.clear()
+
+    def _build(self):
+        """Build the plot by calling needed plotting methods as necessary."""
+        x_like, y_like, u, v = self.plotdata
+
+        kwargs = plot_kwargs(u)
+
+        # Conditionally apply the proper transform
+        if 'transform' in kwargs and self.earth_relative:
+            kwargs['transform'] = ccrs.PlateCarree()
+
+        wind_slice = (slice(None, None, self.skip[0]), slice(None, None, self.skip[1]))
+
+        self.handle = self.parent.ax.quiver(
+            x_like[wind_slice], y_like[wind_slice],
+            u.values[wind_slice], v.values[wind_slice],
+            color=self.color, pivot=self.pivot, scale=self.arrowscale, **kwargs)
+
+        # The order here needs to match the order of the tuple
+        if self.arrowkey is not None:
+            key_kwargs = {'U': 100, 'X': 0.85, 'Y': 1.02, 'labelpos': 'E', 'label': ''}
+            for name, val in zip(key_kwargs, self.arrowkey):
+                if val is not None:
+                    key_kwargs[name] = val
+            self.parent.ax.quiverkey(self.handle, labelcolor=self.color, **key_kwargs)
 
 
 @exporter.export

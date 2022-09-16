@@ -625,6 +625,13 @@ def add_height_to_pressure(pressure, height):
     height : `pint.Quantity`
         Height above a pressure level
 
+    Examples
+    --------
+    >>> from metpy.calc import add_height_to_pressure
+    >>> from metpy.units import units
+    >>> add_height_to_pressure(1000 * units.hPa, 500 * units.meters)
+    <Quantity(941.953016, 'hectopascal')>
+
     Returns
     -------
     `pint.Quantity`
@@ -659,6 +666,13 @@ def add_pressure_to_height(height, pressure):
     `pint.Quantity`
         The corresponding height value for the pressure above the height level
 
+    Examples
+    --------
+    >>> from metpy.calc import add_pressure_to_height
+    >>> from metpy.units import units
+    >>> add_pressure_to_height(1000 * units.meters, 100 * units.hPa)
+    <Quantity(1.96117548, 'kilometer')>
+
     See Also
     --------
     pressure_to_height_std, height_to_pressure_std, add_height_to_pressure
@@ -689,6 +703,15 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
     -------
     `pint.Quantity`
         Pressure values at the given sigma levels
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from metpy.calc import sigma_to_pressure
+    >>> from metpy.units import units
+    >>> sigma_levs = np.linspace(0, 1, 10)
+    >>> sigma_to_pressure(sigma_levs, 1000 * units.hPa, 10 * units.hPa)
+    <Quantity([  10.  120.  230.  340.  450.  560.  670.  780.  890. 1000.], 'hectopascal')>
 
     Notes
     -----
@@ -1156,7 +1179,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
     gamma = lapse rate in [NOAA1976]_ standard atmosphere below the isothermal layer
     :math:`6.5^{\circ}C. km.^{-1}`
 
-    :math:`t_{0}` = standard sea-level temperature 288 K
+    :math:`T_{0}` = standard sea-level temperature 288 K
 
     :math:`H_{b} =` station elevation in meters (elevation for which station pressure is given)
 

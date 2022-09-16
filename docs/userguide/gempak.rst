@@ -319,7 +319,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">AVG(S1, S2)</td>
         <td class="tg-implemented">Average</td>
-        <td class="tg-implemented"><a href="http://xarray.pydata.org/en/stable/generated/xarray.concat.html#xarray-concat">xr.concat</a>([S1, S2], dim='new').mean(axis=0)</td>
+        <td class="tg-implemented"><a href="https://docs.xarray.dev/en/stable/generated/xarray.concat.html#xarray-concat">xr.concat</a>([S1, S2], dim='new').mean(axis=0)</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
@@ -431,7 +431,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">DOT(V1, V2)</td>
         <td class="tg-implemented">Vector dot product</td>
-        <td class="tg-implemented"><a href="http://xarray.pydata.org/en/stable/generated/xarray.dot.html#xarray-dot">xr.dot</a>(xr.concat([V1u, V1v], dim='component'), xr.concat([V2u, V2v], dim='component'), dims='component')</td>
+        <td class="tg-implemented"><a href="https://docs.xarray.dev/en/stable/generated/xarray.dot.html#xarray-dot">xr.dot</a>(xr.concat([V1u, V1v], dim='component'), xr.concat([V2u, V2v], dim='component'), dims='component')</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>

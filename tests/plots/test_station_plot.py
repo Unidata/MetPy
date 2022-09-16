@@ -400,7 +400,7 @@ def test_barb_no_default_unit_conversion():
 @pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
                                  (np.array([3]), np.array([3]) * units('m/s'))])
 def test_barb_unit_conversion_exception(u, v):
-    """Test that errors are raise if unit conversion is requested on un-united data."""
+    """Test that an error is raised if unit conversion is requested on plain arrays."""
     x_pos = np.array([0])
     y_pos = np.array([0])
 
@@ -451,7 +451,7 @@ def test_stationplot_unit_conversion():
 
 
 def test_scalar_unit_conversion_exception():
-    """Test that errors are raise if unit conversion is requested on un-united data."""
+    """Test that an error is raised if unit conversion is requested on plain arrays."""
     x_pos = np.array([0])
     y_pos = np.array([0])
 

@@ -20,7 +20,7 @@ runs:
   using: composite
   steps:
     - name: Set up Python ${{ inputs.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
@@ -35,10 +35,11 @@ runs:
     - name: Install CartoPy build dependencies
       if: ${{ inputs.need-cartopy == 'true' }}
       shell: bash
-      run: |
-        sudo apt-get install libgeos-dev
-        python -m pip install --upgrade pip setuptools
-        python -m pip install --no-binary :all: shapely
+      run: sudo apt-get install libgeos-dev
+
+    - name: Disable Shapely Wheels
+      shell: bash
+      run: echo "PIP_NO_BINARY=shapely" >> $GITHUB_ENV
 
     - name: Install dependencies
       shell: bash
