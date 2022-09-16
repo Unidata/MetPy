@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -8,7 +8,7 @@ Vorticity
 
 Use `metpy.calc.vorticity`.
 
-This example demonstrates the calculatation of relative vorticity using the example xarray
+This example demonstrates the calculation of relative vorticity using the example xarray
 Dataset and plotting using Matplotlib.
 """
 import matplotlib.pyplot as plt

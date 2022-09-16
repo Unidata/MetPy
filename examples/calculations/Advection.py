@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -41,6 +41,6 @@ ax.barbs(ds.lon.values[::2], ds.lat.values[::2],
          ds.uwind[::2, ::2], ds.vwind[::2, ::2],
          color='black', length=6, alpha=0.5)
 ax.set(xlim=(260, 270), ylim=(30, 40))
-ax.set_title('Temperature Advectionn Calculation')
+ax.set_title('Temperature Advection Calculation')
 
 plt.show()

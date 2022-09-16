@@ -41,7 +41,7 @@ def get_test_data(fname, as_file_obj=True, mode='rb'):
 
 
 def example_data():
-    """Access sample xarray Dataset example for calculating and plotting 2D variables."""
+    """Create a sample xarray Dataset with 2D variables."""
     import xarray as xr
 
     # make data based on Matplotlib example data for wind barbs

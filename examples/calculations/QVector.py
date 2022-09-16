@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -25,7 +25,6 @@ tadv = mpcalc.advection(ds.temperature, ds.uwind, ds.vwind)
 
 # Calculate the q-vectors
 u_qvect, v_qvect = mpcalc.q_vector(ds.uwind, ds.vwind, ds.temperature, 850 * units.hPa)
-print(u_qvect.data.units)
 
 # start figure and set axis
 fig, ax = plt.subplots(figsize=(5, 5))
@@ -45,7 +44,7 @@ qvec = ax.quiver(ds.lon.values[::2], ds.lat.values[::2],
                  u_qvect[::2, ::2] * 1e13, v_qvect[::2, ::2] * 1e13,
                  color='black', scale=1000, alpha=0.5, width=0.01)
 
-qk = ax.quiverkey(qvec, 0.8, 0.9, 200, r'$200 m^2/kg/s}$', labelpos='E',
+qk = ax.quiverkey(qvec, 0.8, 0.9, 200, r'$200 m^2/kg/s$', labelpos='E',
                   coordinates='figure')
 
 ax.set(xlim=(260, 270), ylim=(30, 40))
