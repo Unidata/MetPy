@@ -19,9 +19,11 @@ MapPanel
       ~MapPanel.layers_edgecolor
       ~MapPanel.layers_linewidth
       ~MapPanel.layout
+      ~MapPanel.left_title
       ~MapPanel.parent
       ~MapPanel.plots
       ~MapPanel.projection
+      ~MapPanel.right_title
       ~MapPanel.title
       ~MapPanel.title_fontsize
 
@@ -77,9 +79,11 @@ MapPanel
    .. autoattribute:: layers_edgecolor
    .. autoattribute:: layers_linewidth
    .. autoattribute:: layout
+   .. autoattribute:: left_title
    .. autoattribute:: parent
    .. autoattribute:: plots
    .. autoattribute:: projection
+   .. autoattribute:: right_title
    .. autoattribute:: title
    .. autoattribute:: title_fontsize
 

@@ -1346,14 +1346,20 @@ projection, graphics area, and title.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layout" title="metpy.plots.MapPanel.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
 <td><p>A tuple that contains the description (nrows, ncols, index) of the panel position; default value is (1, 1, 1).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.left_title" title="metpy.plots.MapPanel.left_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_title</span></code></a></p></td>
+<td><p>A string to set a title for the figure with the location on the top left of the figure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
 <td><p>A list of handles that represent the plots (e.g., <a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>) to put on a given panel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
 <td><p>A string for a pre-defined projection or a Cartopy projection object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.right_title" title="metpy.plots.MapPanel.right_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_title</span></code></a></p></td>
+<td><p>A string to set a title for the figure with the location on the top right of the figure.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
 <td><p>A string to set a title for the figure.</p></td>
@@ -1522,6 +1528,14 @@ lower-right as (2, 2, 4). For more details see the documentation for
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.left_title">
+<span class="sig-name descname"><span class="pre">left_title</span></span><a class="headerlink" href="#metpy.plots.MapPanel.left_title" title="Permalink to this definition">#</a></dt>
+<dd><p>A string to set a title for the figure with the location on the
+top left of the figure.</p>
+<p>This trait sets a user-defined title that will plot at the top left of the figure.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.MapPanel.parent">
 <span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#metpy.plots.MapPanel.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>A trait whose value must be an instance of a specified class.</p>
@@ -1546,6 +1560,14 @@ object.</p>
 <p>There are three pre-defined projections that can be called with a short name:
 Lambert conformal conic (‘lcc’), Mercator (‘mer’), or polar-stereographic (‘ps’).
 Additionally, this trait can be set to a Cartopy projection object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metpy.plots.MapPanel.right_title">
+<span class="sig-name descname"><span class="pre">right_title</span></span><a class="headerlink" href="#metpy.plots.MapPanel.right_title" title="Permalink to this definition">#</a></dt>
+<dd><p>A string to set a title for the figure with the location on the
+top right of the figure.</p>
+<p>This trait sets a user-defined title that will plot at the top right of the figure.</p>
 </dd></dl>
 
 <dl class="py attribute">
