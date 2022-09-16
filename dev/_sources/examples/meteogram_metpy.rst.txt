@@ -38,12 +38,26 @@ Plots time series data as a meteogram.
 
  .. code-block:: none
 
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:74: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      self.ax1.set_ylim(plot_range[0], plot_range[1], plot_range[2])
     /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:75: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax1.grid(b=True, which='major', axis='y', color='k', linestyle='--',
     /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:107: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax2.grid(b=True, which='major', axis='y', color='k', linestyle='--',
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:109: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      self.ax2.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:115: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      ax_twin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
     /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:136: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax3.grid(b=True, which='major', axis='y', color='k', linestyle='--',
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:138: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      self.ax3.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:144: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      axtwin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:159: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      self.ax4.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+    /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:162: MatplotlibDeprecationWarning: Passing the emit parameter of set_ylim() positionally is deprecated since Matplotlib 3.6; the parameter will become keyword-only two minor releases later.
+      axtwin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
     /home/runner/work/MetPy/MetPy/examples/meteogram_metpy.py:167: MatplotlibDeprecationWarning: The 'b' parameter of grid() has been renamed 'visible' since Matplotlib 3.5; support for the old name will be dropped two minor releases later.
       self.ax4.grid(b=True, which='major', axis='y', color='k', linestyle='--',
 
@@ -270,7 +284,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.841 seconds)
+   **Total running time of the script:** ( 0 minutes  1.178 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:
