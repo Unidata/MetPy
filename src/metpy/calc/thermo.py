@@ -453,7 +453,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
 
     .. math:: A(P) = ln(\frac{rP}{6.112(r+\epsilon)}) = \frac{17.67T}{T+243.5}
 
-    where `P` is pressure, and `T` is temperature in degrees C.
+    where :math:`P` is pressure, and :math:`T` is temperature in degrees C.
 
     This gives us a direct relationship of how temperature changes with pressure
     in the atmosphere with a constant mixing ratio.
