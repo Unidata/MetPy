@@ -225,6 +225,20 @@ class PanelTraits(MetPyHasTraits):
     'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'.
     """
 
+    left_title = Unicode(allow_none=True, default_value=None)
+    left_title.__doc__ = """A string to set a title for the figure with the location on the
+    top left of the figure.
+
+    This trait sets a user-defined title that will plot at the top left of the figure.
+    """
+
+    right_title = Unicode(allow_none=True, default_value=None)
+    right_title.__doc__ = """A string to set a title for the figure with the location on the
+    top right of the figure.
+
+    This trait sets a user-defined title that will plot at the top right of the figure.
+    """
+
     plots = List(Any())
     plots.__doc__ = """A list of handles that represent the plots (e.g., `ContourPlot`,
     `FilledContourPlot`, `ImagePlot`, `SkewPlot`) to put on a given panel.

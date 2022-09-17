@@ -46,23 +46,8 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
-def test_skewt_labeled_lines():
-    """Test the SkewT with the labeled plot lines function."""
-    fig = plt.figure(figsize=(8.5, 11))
-    skew = SkewT(fig, rotation=45)
-
-    # Set sensible axis limits
-    skew.ax.set_ylim(1000, 100)
-    skew.ax.set_xlim(-30, 50)
-
-    # Add the relevant special lines
-    skew.plot_labeled_skewt_lines()
-
-    return fig
-
-
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.069)
+@pytest.mark.mpl_image_compare(remove_text=True, style='default',
+                               tolerance=1.99 if MPL_VERSION.startswith('3.3') else 0.069)
 def test_skewt_labeled_lines():
     """Test the SkewT with the labeled plot lines function."""
     fig = plt.figure(figsize=(8.5, 11))
