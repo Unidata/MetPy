@@ -2,16 +2,15 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
-from cgi import print_directory
 import numpy as np
 
 from . import coriolis_parameter
+from .thermo import brunt_vaisala_frequency
 from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import check_units, units
 from ..xarray import add_grid_arguments_from_xarray, preprocess_and_wrap
-from .thermo import brunt_vaisala_frequency, brunt_vaisala_frequency_squared
 exporter = Exporter(globals())
 
 
@@ -1079,15 +1078,17 @@ def q_vector(
 
 @exporter.export
 @add_grid_arguments_from_xarray
-@preprocess_and_wrap(broadcast=('height', 'u','latitude','potential_temperature'))
-@check_units('[temperature]', '[speed]','[length]','[dimensionless]')
-def eady_growth_rate(
-    potential_temperature,u,height,latitude,x_dim=-1, y_dim=-2,vertical_dim=-3
-):
+@preprocess_and_wrap(broadcast=('height', 'u', 'latitude', 'potential_temperature'))
+@check_units('[temperature]', '[speed]', '[length]', '[dimensionless]')
+def eady_growth_rate(potential_temperature, u, height, latitude, vertical_dim=0):
     r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability
 
-    .. math::  0.3098*g*abs(1/Coriolis parameter)*abs(du/dheight)/brunt_vaisala_frequency 
-
+    .. math::  \frac{0.3098 g}{|f|} \frac{|du/dheight|}{N}
+    where:
+    * :math:`g` is the gravitational acceleration
+    * :math:`f` is the Coriolis parameter
+    * :math:`N` is the Brunt-Vaisala frequency
+    
     Parameters
     ----------
     potential_temperature : (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
@@ -1104,11 +1105,22 @@ def eady_growth_rate(
     -------
      (..., P, M, N) `xarray.DataArray` or `pint.Quantity`
         Eady_growth_rate
+    
+    Examples
+    --------
+    >>> from metpy.calc import eady_growth_rate
+    >>> from metpy.units import units
+    >>> # set needed values of potential_temperature, u, height, latitude
+    >>> potential_temperature = [1.012, 1.925, 1.850, 2.700, 2.500, 4.400] * units.K
+    >>> h = [0.250, 0.700, 0.1500, 0.3100, 0.5720, 0.7120] * units.meters
+    >>> u = [0.165, 0.180, 0.190, 0.210, 0.220, 0.250] * units('m/s')
+    >>> lattitude= [5, 0.5, 0.20, 0.30, 0.50, 0.60]* units('') 
+    >>> # compute edr
+    >>> print(eady_growth_rate(potential_temperature,u,h,lattitude))
     """
    
-    dudheight=first_derivative(u,x=height)
-    egr=0.3098*mpconsts.earth_gravity*abs(1/coriolis_parameter(latitude))*abs(dudheight)/brunt_vaisala_frequency(height,potential_temperature)
-    print(egr)
+    dudheight = first_derivative(u, x=height, axis=vertical_dim)
+    egr = 0.3098 * mpconsts.earth_gravity * abs(1 / coriolis_parameter(latitude)) * abs(dudheight) / brunt_vaisala_frequency(height, potential_temperature)
     return egr
     
 
