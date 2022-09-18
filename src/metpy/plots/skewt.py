@@ -129,12 +129,15 @@ class SkewXAxis(maxis.XAxis):
         return SkewXTick(self.axes, None, major=major)
 
     # Needed to properly handle tight bbox
-    def _get_tick_bboxes(self, ticks, renderer):
+    def _get_ticklabel_bboxes(self, ticks, renderer):
         """Return lists of bboxes for ticks' label1's and label2's."""
         return ([tick.label1.get_window_extent(renderer)
                  for tick in ticks if tick.label1.get_visible() and tick.lower_in_bounds],
                 [tick.label2.get_window_extent(renderer)
                  for tick in ticks if tick.label2.get_visible() and tick.upper_in_bounds])
+
+    # Older name used on Matplotlib < 3.6
+    _get_tick_bboxes = _get_ticklabel_bboxes
 
     def get_view_interval(self):
         """Get the view interval."""
