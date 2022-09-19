@@ -518,10 +518,8 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
         r_start = mixed_layer(pressure, r_profile, height=height,
                               depth=mixed_layer_depth)[0]
 
-    a_p = np.log(r_start * pressure / (
-        mpconsts.default.sat_pressure_0c * (mpconsts.nounit.epsilon + r_start)))
     # rt_profile is the temperature-pressure profile with a fixed mixing ratio
-    rt_profile = units.Quantity((243.5 * a_p / (17.67 - a_p)).magnitude, 'degC')
+    rt_profile = globals()['dewpoint'](vapor_pressure(pressure, r_start))
 
     x, y = find_intersections(pressure, rt_profile, temperature,
                               direction='increasing', log_x=True)
