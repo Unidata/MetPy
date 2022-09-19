@@ -223,6 +223,142 @@ Examples using various calculation functions from MetPy.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.wind_speed.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Wind_Speed_thumb.png
+    :alt: Wind Speed
+
+  :ref:`sphx_glr_examples_calculations_Wind_Speed.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Wind Speed</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.divergence.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Divergence_thumb.png
+    :alt: Divergence
+
+  :ref:`sphx_glr_examples_calculations_Divergence.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Divergence</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.vorticity.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Vorticity_thumb.png
+    :alt: Vorticity
+
+  :ref:`sphx_glr_examples_calculations_Vorticity.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Vorticity</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.absolute_vorticity.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Absolute_Vorticity_thumb.png
+    :alt: Absolute Vorticity
+
+  :ref:`sphx_glr_examples_calculations_Absolute_Vorticity.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Absolute Vorticity</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.total_deformation.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Total_Deformation_thumb.png
+    :alt: Total Deformation
+
+  :ref:`sphx_glr_examples_calculations_Total_Deformation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Total Deformation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.shearing_deformation.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Shearing_Deformation_thumb.png
+    :alt: Shearing Deformation
+
+  :ref:`sphx_glr_examples_calculations_Shearing_Deformation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Shearing Deformation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.stretching_deformation.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Stretching_Deformation_thumb.png
+    :alt: Stretching Deformation
+
+  :ref:`sphx_glr_examples_calculations_Stretching_Deformation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Stretching Deformation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.advection.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Advection_thumb.png
+    :alt: Advection
+
+  :ref:`sphx_glr_examples_calculations_Advection.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Advection</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.gradient.">
 
 .. only:: html
@@ -235,6 +371,23 @@ Examples using various calculation functions from MetPy.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Gradient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.q_vector.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_QVector_thumb.png
+    :alt: Q-Vector
+
+  :ref:`sphx_glr_examples_calculations_QVector.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Q-Vector</div>
     </div>
 
 
