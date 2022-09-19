@@ -448,15 +448,9 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
     r"""Calculate the convective condensation level (CCL).
 
-    This function is implemented by simplifying the mixing ratio and
-    the saturation vapor pressure equation to
-
-    .. math:: A(P) = ln(\frac{rP}{6.112(r+\epsilon)}) = \frac{17.67T}{T+243.5}
-
-    where :math:`P` is pressure, and :math:`T` is temperature in degrees C.
-
-    This gives us a direct relationship of how temperature changes with pressure
-    in the atmosphere with a constant mixing ratio.
+    This function is implemented directly based on the definition of the CCL, as in [USAF1990]_, and finding
+    where the ambient temperature profile intersects the line of constant mixing ratio starting at the surface,
+    using the surface dewpoint.
 
     Parameters
     ----------
