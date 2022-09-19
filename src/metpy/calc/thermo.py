@@ -448,8 +448,9 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
     r"""Calculate the convective condensation level (CCL).
 
-    This function is implemented directly based on the definition of the CCL, as in [USAF1990]_, and finding
-    where the ambient temperature profile intersects the line of constant mixing ratio starting at the surface,
+    This function is implemented directly based on the definition of the CCL,
+    as in [USAF1990]_, and finding where the ambient temperature profile
+    intersects the line of constant mixing ratio starting at the surface,
     using the surface dewpoint.
 
     Parameters
