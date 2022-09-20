@@ -3870,12 +3870,13 @@ def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
     Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
-    LI = T500 - Tp500
+
+    .. math:: LI = T500 - Tp500
 
     where:
 
-    T500 is the measured temperature at 500 hPa
-    Tp500 is the temperature of the lifted parcel at 500 hPa
+    * :math:`T500` is the measured temperature at 500 hPa
+    * :math:`Tp500` is the temperature of the lifted parcel at 500 hPa
 
     Calculation of the lifted index is defined as the temperature difference between the
     observed 500 hPa temperature and the temperature of a parcel lifted from the
@@ -3940,15 +3941,16 @@ def k_index(pressure, temperature, dewpoint):
     """Calculate K Index from the pressure temperature and dewpoint.
 
     K Index formula derived from [George1960]_:
-    K = (T850 - T500) + Td850 - (T700 - Td700)
+
+    .. math:: K = (T850 - T500) + Td850 - (T700 - Td700)
 
     where:
 
-    T850 is the temperature at 850 hPa
-    T700 is the temperature at 700 hPa
-    T500 is the temperature at 500 hPa
-    Td850 is the dewpoint at 850 hPa
-    Td700 is the dewpoint at 700 hPa
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T700` is the temperature at 700 hPa
+    * :math:`T500` is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
+    * :math:`Td700` is the dewpoint at 700 hPa
 
     Calculation of the K Index is defined as the temperature difference between
     the static instability between 850 hPa and 500 hPa, add with the moisture
@@ -4061,7 +4063,7 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 def scale_height(temperature_bottom, temperature_top):
     r"""Calculate the scale height of a layer.
 
-    .. math::   H = \frac{R_d \overline{T}}{g}
+    .. math:: H = \frac{R_d \overline{T}}{g}
 
     This function assumes dry air, but can be used with the virtual temperature
     to account for moisture.
@@ -4098,11 +4100,13 @@ def showalter_index(pressure, temperature, dewpoint):
     """Calculate Showalter Index.
 
     Showalter Index derived from [Galway1956]_:
-    SI = T500 - Tp500
+
+    .. math:: SI = T500 - Tp500
 
     where:
-    T500 is the measured temperature at 500 hPa
-    Tp500 is the temperature of the parcel at 500 hPa when lifted from 850 hPa
+
+    * :math:`T500` is the measured temperature at 500 hPa
+    * :math:`Tp500` is the temperature of the parcel at 500 hPa when lifted from 850 hPa
 
     Parameters
     ----------
@@ -4165,13 +4169,14 @@ def total_totals_index(pressure, temperature, dewpoint):
     """Calculate Total Totals Index from the pressure temperature and dewpoint.
 
     Total Totals Index formula derived from [Miller1972]_:
-    TT = (T850 + Td850) - (2 * T500)
+
+    .. math:: TT = (T850 + Td850) - (2 * T500)
 
     where:
 
-    T850 is the temperature at 850 hPa
-    T500 is the temperature at 500 hPa
-    Td850 is the dewpoint at 850 hPa
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
 
     Calculation of the Total Totals Index is defined as the temperature at 850 hPa plus
     the dewpoint at 850 hPa, minus twice the temperature at 500 hPa. This index consists of
@@ -4233,12 +4238,13 @@ def vertical_totals(pressure, temperature):
     """Calculate Vertical Totals from the pressure and temperature.
 
     Vertical Totals formula derived from [Miller1972]_:
-    VT = T850 - T500
+
+    .. math:: VT = T850 - T500
 
     where:
 
-    T850 is the temperature at 850 hPa
-    T500 is the temperature at 500 hPa
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
 
     Calculation of the Vertical Totals is defined as the temperature difference between
     850 hPa and 500 hPa. This is a part of the Total Totals Index.
@@ -4290,12 +4296,13 @@ def cross_totals(pressure, temperature, dewpoint):
     """Calculate Cross Totals from the pressure temperature and dewpoint.
 
     Cross Totals formula derived from [Miller1972]_:
-    CT = Td850 - T500
+
+    .. math:: CT = Td850 - T500
 
     where:
 
-    Td850 is the dewpoint at 850 hPa
-    T500 is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
 
     Calculation of the Cross Totals is defined as the difference between dewpoint
     at 850 hPa and temperature at 500 hPa. This is a part of the Total Totals Index.
