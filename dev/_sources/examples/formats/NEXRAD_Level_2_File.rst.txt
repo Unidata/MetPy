@@ -73,7 +73,7 @@ Open the file
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-58
+.. GENERATED FROM PYTHON SOURCE LINES 29-36
 
 .. code-block:: default
 
@@ -83,13 +83,52 @@ Open the file
 
     # First item in ray is header, which has azimuth angle
     az = np.array([ray[0].az_angle for ray in f.sweeps[sweep]])
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 37-40
+
+We need to take the single azimuth (nominally a mid-point) we get in the data and
+convert it to be the azimuth of the boundary between rays of data, taking care to handle
+where the azimuth crosses from 0 to 360.
+
+.. GENERATED FROM PYTHON SOURCE LINES 40-53
+
+.. code-block:: default
+
     diff = np.diff(az)
-    diff[diff > 180] -= 360.
-    diff[diff < -180] += 360.
+    crossed = diff < -180
+    diff[crossed] += 360.
     avg_spacing = diff.mean()
+
+    # Convert mid-point to edge
     az = (az[:-1] + az[1:]) / 2
+    az[crossed] += 180.
+
+    # Concatenate with overall start and end of data we calculate using the average spacing
     az = np.concatenate(([az[0] - avg_spacing], az, [az[-1] + avg_spacing]))
     az = units.Quantity(az, 'degrees')
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 54-55
+
+Calculate ranges for the gates from the metadata
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-71
+
+.. code-block:: default
+
 
     # 5th item is a dict mapping a var name (byte string) to a tuple
     # of (header, data array)
@@ -113,7 +152,7 @@ Open the file
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-81
+.. GENERATED FROM PYTHON SOURCE LINES 72-94
 
 .. code-block:: default
 
@@ -154,7 +193,7 @@ Open the file
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.956 seconds)
+   **Total running time of the script:** ( 0 minutes  7.534 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_2_File.py:

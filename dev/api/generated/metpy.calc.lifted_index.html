@@ -35,6 +35,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -1299,11 +1300,14 @@
 <dt class="sig sig-object py" id="metpy.calc.lifted_index">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">lifted_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parcel_profile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.lifted_index" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate Lifted Index from the pressure temperature and parcel profile.</p>
-<p>Lifted index formula derived from <a class="reference internal" href="../references.html#galway1956" id="id1"><span>[Galway1956]</span></a> and referenced by <a class="reference internal" href="../references.html#doswellschultz2006" id="id2"><span>[DoswellSchultz2006]</span></a>:
-LI = T500 - Tp500</p>
+<p>Lifted index formula derived from <a class="reference internal" href="../references.html#galway1956" id="id1"><span>[Galway1956]</span></a> and referenced by <a class="reference internal" href="../references.html#doswellschultz2006" id="id2"><span>[DoswellSchultz2006]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[LI = T500 - Tp500\]</div>
 <p>where:</p>
-<p>T500 is the measured temperature at 500 hPa
-Tp500 is the temperature of the lifted parcel at 500 hPa</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T500\)</span> is the measured temperature at 500 hPa</p></li>
+<li><p><span class="math notranslate nohighlight">\(Tp500\)</span> is the temperature of the lifted parcel at 500 hPa</p></li>
+</ul>
 <p>Calculation of the lifted index is defined as the temperature difference between the
 observed 500 hPa temperature and the temperature of a parcel lifted from the
 surface to 500 hPa.</p>

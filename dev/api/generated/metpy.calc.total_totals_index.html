@@ -35,6 +35,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -1299,12 +1300,15 @@
 <dt class="sig sig-object py" id="metpy.calc.total_totals_index">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">total_totals_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.total_totals_index" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate Total Totals Index from the pressure temperature and dewpoint.</p>
-<p>Total Totals Index formula derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:
-TT = (T850 + Td850) - (2 * T500)</p>
+<p>Total Totals Index formula derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[TT = (T850 + Td850) - (2 * T500)\]</div>
 <p>where:</p>
-<p>T850 is the temperature at 850 hPa
-T500 is the temperature at 500 hPa
-Td850 is the dewpoint at 850 hPa</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T850\)</span> is the temperature at 850 hPa</p></li>
+<li><p><span class="math notranslate nohighlight">\(T500\)</span> is the temperature at 500 hPa</p></li>
+<li><p><span class="math notranslate nohighlight">\(Td850\)</span> is the dewpoint at 850 hPa</p></li>
+</ul>
 <p>Calculation of the Total Totals Index is defined as the temperature at 850 hPa plus
 the dewpoint at 850 hPa, minus twice the temperature at 500 hPa. This index consists of
 two components, the Vertical Totals (VT) and the Cross Totals (CT).</p>

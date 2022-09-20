@@ -35,6 +35,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -1299,11 +1300,14 @@
 <dt class="sig sig-object py" id="metpy.calc.vertical_totals">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">vertical_totals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.vertical_totals" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate Vertical Totals from the pressure and temperature.</p>
-<p>Vertical Totals formula derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:
-VT = T850 - T500</p>
+<p>Vertical Totals formula derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[VT = T850 - T500\]</div>
 <p>where:</p>
-<p>T850 is the temperature at 850 hPa
-T500 is the temperature at 500 hPa</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T850\)</span> is the temperature at 850 hPa</p></li>
+<li><p><span class="math notranslate nohighlight">\(T500\)</span> is the temperature at 500 hPa</p></li>
+</ul>
 <p>Calculation of the Vertical Totals is defined as the temperature difference between
 850 hPa and 500 hPa. This is a part of the Total Totals Index.</p>
 <dl class="field-list simple">
