@@ -47,9 +47,9 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.)
+@pytest.mark.mpl_image_compare(remove_text=True, style='default', tolerance=0.32)
 def test_skewt_api_units():
-    """#Test the SkewT API when units are provided."""
+    """Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
         skew = SkewT(fig)
@@ -130,7 +130,7 @@ def test_skewt_subplot_rect_conflict():
         SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
 
 
-@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.0198, remove_text=True, style='default')
 def test_skewt_units():
     """Test that plotting with SkewT works with units properly."""
     fig = plt.figure(figsize=(9, 9))
@@ -350,7 +350,7 @@ def test_hodograph_plot_colormapped():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.141, remove_text=True, style='default')
 def test_skewt_barb_color():
     """Test plotting colored wind barbs on the Skew-T."""
     fig = plt.figure(figsize=(9, 9))

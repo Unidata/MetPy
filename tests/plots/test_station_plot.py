@@ -194,7 +194,7 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1848, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.688, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     fig = plt.figure(figsize=(3, 3))
@@ -276,7 +276,7 @@ def wind_plot():
     return u, v, x, y
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.01)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.499)
 def test_barb_projection(wind_plot, ccrs):
     """Test that barbs are properly projected (#598)."""
     u, v, x, y = wind_plot
@@ -379,7 +379,7 @@ def test_arrow_unit_conversion(barbs_units):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.0878, remove_text=True)
 def test_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     x_pos = np.array([0])
