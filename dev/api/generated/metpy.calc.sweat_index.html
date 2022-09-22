@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>interpolate_nans_1d &#8212; MetPy 1.3dev</title>
+    <title>sweat_index &#8212; MetPy 1.3dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -35,12 +35,13 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="interpolate_1d" href="metpy.interpolate.interpolate_1d.html" />
-    <link rel="prev" title="interpolate_to_isosurface" href="metpy.interpolate.interpolate_to_isosurface.html" />
+    <link rel="next" title="total_totals_index" href="metpy.calc.total_totals_index.html" />
+    <link rel="prev" title="surface_based_cape_cin" href="metpy.calc.surface_based_cape_cin.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -58,7 +59,7 @@
                         ga('send', 'pageview');
                     </script>
 
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.interpolate.interpolate_nans_1d.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.sweat_index.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
@@ -297,7 +298,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="metpy.calc.html">
    Calculations
    <code class="docutils literal notranslate">
@@ -306,12 +307,12 @@
     </span>
    </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.add_height_to_pressure.html">
      add_height_to_pressure
@@ -632,8 +633,8 @@
      surface_based_cape_cin
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.sweat_index.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      sweat_index
     </a>
    </li>
@@ -1133,7 +1134,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.interpolate.html">
    Interpolate
    <code class="docutils literal notranslate">
@@ -1142,12 +1143,12 @@
     </span>
    </code>
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
   <label for="toctree-checkbox-6">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
      natural_neighbor_to_grid
@@ -1168,8 +1169,8 @@
      interpolate_to_isosurface
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">
      interpolate_nans_1d
     </a>
    </li>
@@ -1298,24 +1299,48 @@
               
               <div>
                 
-  <section id="interpolate-nans-1d">
-<h1>interpolate_nans_1d<a class="headerlink" href="#interpolate-nans-1d" title="Permalink to this headline">#</a></h1>
+  <section id="sweat-index">
+<h1>sweat_index<a class="headerlink" href="#sweat-index" title="Permalink to this headline">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.interpolate.interpolate_nans_1d">
-<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate_nans_1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.interpolate.interpolate_nans_1d" title="Permalink to this definition">#</a></dt>
-<dd><p>Interpolate NaN values in y.</p>
-<p>Interpolate NaN values in the y dimension. Works with unsorted x values.</p>
+<dt class="sig sig-object py" id="metpy.calc.sweat_index">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">sweat_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dewpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.sweat_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate SWEAT Index.</p>
+<p>SWEAT Index derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[SWEAT = 12Td_{850} + 20(TT - 49) + 2f_{850} + f_{500} + 125(S + 0.2)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Td_{850}\)</span> is the dewpoint at 850 hPa; the first term is set to zero
+if <span class="math notranslate nohighlight">\(Td_{850}\)</span> is negative.</p></li>
+<li><p><span class="math notranslate nohighlight">\(TT\)</span> is the total totals index; the second term is set to zero
+if <span class="math notranslate nohighlight">\(TT\)</span> is less than 49</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_{850}\)</span> is the wind speed at 850 hPa</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_{500}\)</span> is the wind speed at 500 hPa</p></li>
+<li><p><span class="math notranslate nohighlight">\(S\)</span> is the shear term: <span class="math notranslate nohighlight">\(sin{(dd_{850} - dd_{500})}\)</span>, where
+<span class="math notranslate nohighlight">\(dd_{850}\)</span> and <span class="math notranslate nohighlight">\(dd_{500}\)</span> are the wind directions at 850 hPa and 500 hPa,
+respectively. It is set to zero if any of the following conditions are not met:</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(dd_{850}\)</span> is between 130 - 250 degrees</p></li>
+<li><p><span class="math notranslate nohighlight">\(dd_{500}\)</span> is between 210 - 310 degrees</p></li>
+<li><p><span class="math notranslate nohighlight">\(dd_{500} - dd_{850} &gt; 0\)</span></p></li>
+<li><p>both the wind speeds are greater than or equal to 15 kts</p></li>
+</ol>
+<p>Calculation of the SWEAT Index consists of a low-level moisture, instability,
+and the vertical wind shear (both speed and direction). This index aim to
+determine the likeliness of severe weather and tornadoes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array-like</em>) – 1-dimensional array of numeric x-values</p></li>
-<li><p><strong>y</strong> (<em>array-like</em>) – 1-dimensional array of numeric y-values</p></li>
-<li><p><strong>kind</strong> (<em>string</em>) – specifies the kind of interpolation x coordinate - ‘linear’ or ‘log’, optional.
-Defaults to ‘linear’.</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure level(s), in order from highest to lowest pressure</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature corresponding to pressure</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Dewpoint temperature corresponding to pressure</p></li>
+<li><p><strong>speed</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Wind speed corresponding to pressure</p></li>
+<li><p><strong>direction</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Wind direction corresponding to pressure</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>An array of the y coordinate data with NaN values interpolated.</em></p>
+<dd class="field-even"><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – SWEAT Index</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1328,17 +1353,17 @@ Defaults to ‘linear’.</p></li>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.interpolate.interpolate_to_isosurface.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.calc.surface_based_cape_cin.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">interpolate_to_isosurface</p>
+            <p class="prev-next-title">surface_based_cape_cin</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.interpolate.interpolate_1d.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.calc.total_totals_index.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">interpolate_1d</p>
+        <p class="prev-next-title">total_totals_index</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
