@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -6,8 +6,7 @@
 Static Stability
 ================
 
-Use functions the `metpy.calc.static_stability` as well as pint's unit support to perform
-calculations.
+Use `metpy.calc.static_stability` as well as pint's unit support to perform calculations.
 
 The code below uses example data from our test suite to calculate the static stability for each
 layer of the provided sounding data.

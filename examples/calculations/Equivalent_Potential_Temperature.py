@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -6,10 +6,10 @@
 Equivalent Potential Temperature
 ================================
 
-Use functions the `metpy.calc` as well as pint's unit support to perform calculations.
+Use functions from `metpy.calc` as well as pint's unit support to perform calculations.
 
 The code below uses example data from our test suite to calculate the equivalent potential
-tempearture over the provided sounding data and plots the values up to 300-hPa.
+temperature over the provided sounding data and plots the values up to 300-hPa.
 """
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -43,7 +43,7 @@ h = df['height'].values * units.meter
 
 ###########################################
 # Calculate the equivalent potential temperature for the whole sounding
-thetae = equivalent_potential_temperature(p, T, Td)
+theta_e = equivalent_potential_temperature(p, T, Td)
 
 ###########################################
 # Define a layer with pressure greater than 300 hPa
@@ -52,6 +52,6 @@ layer = p > 300 * units.hPa
 ###########################################
 # Use the layer defined above and plot the equivalent potential temperature
 plt.figure(figsize=(8, 8))
-plt.plot(thetae[layer], h[layer])
+plt.plot(theta_e[layer], h[layer])
 plt.title('Equivalent Potential Temperature (Kelvin)')
 plt.show()

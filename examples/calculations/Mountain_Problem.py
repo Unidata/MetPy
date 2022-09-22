@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -6,11 +6,12 @@
 Mountain Problem
 ================
 
-Use functions the `metpy.calc` to perform calculations for a rising and sinking parcel.
+Use functions from `metpy.calc` to perform calculations for a rising and sinking parcel.
 
 The code below explores a common problem in meteorology where a parcel can be defined and
-lifted initiatlly dry adibatically until saturation is reached. Then ascend moist adiabatically
-to a desired level before descending back to the original level from which the parcel started.
+lifted initiatlly dry adibatically until saturation is reached. It then ascends moist
+adiabatically to a desired level before descending back to the original level from which the
+parcel started.
 """
 import numpy as np
 
@@ -29,7 +30,7 @@ Td = 10 * units.degC
 # We first need to determine the maximum level of dry ascent. For this we can use the LCL
 # function and retain the pressure level and temperature of the parcel at the LCL
 lclp, lclt = lcl(p[0], T, Td)
-print('Initiatl dry ascent yields:')
+print('Initial dry ascent yields:')
 print(f'  LCL Pressure: {lclp:.2f}')
 print(f'  LCL Temperature: {lclt:.2f}')
 print()
@@ -39,7 +40,7 @@ print()
 # know how to begin our moist ascent. Begin by subsetting the pressure to begin at levels
 # less than or equal to the LCL pressure and use the moist_lapse to find the temperature
 # at the top of our ascent (700-hPa in our case)
-moist_ascent_p = p[p <= lclp.astype('int64')]
+moist_ascent_p = p[p <= lclp]
 moist_ascent_t = moist_lapse(moist_ascent_p, lclt)
 print('After moist ascent:')
 print(f'  Temperature at top of ascent: {moist_ascent_t[-1]:.2f}')
@@ -54,8 +55,7 @@ dry_descent = dry_lapse(p[::-1], moist_ascent_t[-1]).to('degC')
 ###########################################
 # Pulling it all together
 print(f'Starting Temperature: {T:.2f}')
-print(f'Starting Dewpoint: {Td:.2f}')
-print()
+print(f'Starting Dewpoint: {Td:.2f}', end='\n\n')
 print(f'Final Temperature: {dry_descent[-1]:.2f}')
 print(f'Final Dewpoint: {moist_ascent_t[-1]:.2f}')
 

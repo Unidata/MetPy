@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -6,10 +6,9 @@
 Mean Pressure Weighted
 ======================
 
-Use functions the `metpy.calc.mean_pressure_weighted` as well as pint's unit support to perform
-calculations.
+Use `metpy.calc.mean_pressure_weighted` as well as pint's unit support to perform calculations.
 
-The code below uses example data from our test suite to calculate the mean pressure weighted
+The code below uses example data from our test suite to calculate the pressure-weighted mean
 temperature over a depth of 500 hPa.
 """
 import pandas as pd
@@ -31,8 +30,8 @@ df = pd.read_fwf(get_test_data('jan20_sounding.txt', as_file_obj=False),
 
 ###########################################
 # Drop any rows with all NaN values for T, Td, winds
-df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
-                       ), how='all').reset_index(drop=True)
+df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'),
+               how='all').reset_index(drop=True)
 
 ###########################################
 # Isolate pressure, temperature, and height and add units

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -6,7 +6,7 @@
 Sounding Calculation Examples
 =============================
 
-Use functions the `metpy.calc` to perform a number of calculations using sounding data.
+Use functions from `metpy.calc` to perform a number of calculations using sounding data.
 
 The code below uses example data to perform many sounding calculations for a severe weather
 event on May 22, 2011 from the Norman, OK sounding.
@@ -128,8 +128,7 @@ mucape, mucin = mpcalc.most_unstable_cape_cin(p, T, Td, depth=50 * units.hPa)
 
 ###########################################
 # Compute the Bunkers Storm Motion vector and use to calculate the critical angle
-bunkers = mpcalc.bunkers_storm_motion(p, u, v, height)
-u_storm, v_storm = bunkers[0]
+(u_storm, v_storm), *_ = mpcalc.bunkers_storm_motion(p, u, v, height)
 critical_angle = mpcalc.critical_angle(p, u, v, height, u_storm, v_storm)
 
 ###########################################
@@ -144,15 +143,16 @@ lcl_height = mpcalc.thickness_hydrostatic(new_p, new_t)
 sbcape, _ = mpcalc.surface_based_cape_cin(p, T, Td)
 
 # Compute SRH, given a motion vector toward the NE at 9.9 m/s
-srh = mpcalc.storm_relative_helicity(height, u, v, depth=1 * units.km,
-                                     storm_u=u_storm, storm_v=v_storm)
+*_, total_helicity = mpcalc.storm_relative_helicity(height, u, v, depth=1 * units.km,
+                                                    storm_u=u_storm, storm_v=v_storm)
 
 # Copmute Bulk Shear components and then magnitude
 ubshr, vbshr = mpcalc.bulk_shear(p, u, v, height=height, depth=6 * units.km)
 bshear = mpcalc.wind_speed(ubshr, vbshr)
 
 # Use all computed pieces to calculate the Significant Tornado parameter
-sig_tor = mpcalc.significant_tornado(sbcape, lcl_height, srh[2], bshear).to_base_units()
+sig_tor = mpcalc.significant_tornado(sbcape, lcl_height,
+                                     total_helicity, bshear).to_base_units()
 
 ###########################################
 # Compute the supercell composite parameter, if possible
@@ -205,6 +205,6 @@ print(f'  u_storm: {u_storm:.2f}')
 print(f'  v_storm: {v_storm:.2f}')
 print(f'Critical Angle: {critical_angle:.2f}')
 print()
-print(f'Storm Relative Helicity: {srh[0]:.2f}')
+print(f'Storm Relative Helicity: {total_helicity:.2f}')
 print(f'Significant Tornado Parameter: {sig_tor:.2f}')
 print(f'Supercell Composite Parameter: {super_comp:.2f}')

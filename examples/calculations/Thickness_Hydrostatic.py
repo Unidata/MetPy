@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 MetPy Developers.
+# Copyright (c) 2022 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -6,7 +6,7 @@
 Hydrostatic Thickness
 =====================
 
-Use functions the `metpy.calc` as well as pint's unit support to perform calculations.
+Use functions from `metpy.calc` as well as pint's unit support to perform calculations.
 
 The code below uses example data from our test suite to calculate the hydrostatic thickness
 between the surface and 500-hPa level for the provided sounding data.
