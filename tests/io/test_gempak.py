@@ -249,9 +249,14 @@ def test_coordinates_creation(proj_type):
 def test_metpy_crs_creation(proj_type, proj_attrs):
     """Test grid mapping metadata."""
     grid = GempakGrid(get_test_data(f'gem_{proj_type}.grd'))
-    metpy_crs = grid.gdxarray()[0].metpy.crs
+    arr = grid.gdxarray()[0]
+    metpy_crs = arr.metpy.crs
     for k, v in proj_attrs.items():
         assert metpy_crs[k] == v
+    x_unit = arr['x'].units
+    y_unit = arr['y'].units
+    assert x_unit == 'meters'
+    assert y_unit == 'meters'
 
 
 def test_date_parsing():
