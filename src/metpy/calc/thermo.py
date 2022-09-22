@@ -4352,3 +4352,87 @@ def cross_totals(pressure, temperature, dewpoint):
 
     # Calculate vertical totals.
     return td850 - t500
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]', '[speed]')
+def sweat_index(pressure, temperature, dewpoint, speed, direction):
+    """Calculate SWEAT Index.
+
+    SWEAT Index derived from [Miller1972]_:
+
+    .. math:: SWEAT = 12Td_{850} + 20(TT - 49) + 2f_{850} + f_{500} + 125(S + 0.2)
+
+    where:
+
+    * :math:`Td_{850}` is the dewpoint at 850 hPa; the first term is set to zero
+      if :math:`Td_{850}` is negative.
+    * :math:`TT` is the total totals index; the second term is set to zero
+      if :math:`TT` is less than 49
+    * :math:`f_{850}` is the wind speed at 850 hPa
+    * :math:`f_{500}` is the wind speed at 500 hPa
+    * :math:`S` is the shear term: :math:`sin{(dd_{850} - dd_{500})}`, where
+      :math:`dd_{850}` and :math:`dd_{500}` are the wind directions at 850 hPa and 500 hPa,
+      respectively. It is set to zero if any of the following conditions are not met:
+
+    1. :math:`dd_{850}` is between 130 - 250 degrees
+    2. :math:`dd_{500}` is between 210 - 310 degrees
+    3. :math:`dd_{500} - dd_{850} > 0`
+    4. both the wind speeds are greater than or equal to 15 kts
+
+    Calculation of the SWEAT Index consists of a low-level moisture, instability,
+    and the vertical wind shear (both speed and direction). This index aim to
+    determine the likeliness of severe weather and tornadoes.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature corresponding to pressure
+
+    speed : `pint.Quantity`
+        Wind speed corresponding to pressure
+
+    direction : `pint.Quantity`
+        Wind direction corresponding to pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        SWEAT Index
+
+    """
+    # Find dewpoint at 850 hPa.
+    td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, dewpoint)
+
+    # Find total totals index.
+    tt = total_totals_index(pressure, temperature, dewpoint)
+
+    # Find wind speed and direction at 850 and 500 hPa
+    (f850, f500), (dd850, dd500) = interpolate_1d(units.Quantity([850, 500],
+                                                  'hPa'), pressure, speed,
+                                                  direction)
+
+    # First term is set to zero if Td850 is negative
+    first_term = 12 * np.clip(td850.m_as('degC'), 0, None)
+
+    # Second term is set to zero if TT is less than 49
+    second_term = 20 * np.clip(tt.m_as('degC') - 49, 0, None)
+
+    # Shear term is set to zero if any of four conditions are not met
+    required = ((units.Quantity(130, 'deg') <= dd850) & (dd850 <= units.Quantity(250, 'deg'))
+                & (units.Quantity(210, 'deg') <= dd500) & (dd500 <= units.Quantity(310, 'deg'))
+                & (dd500 - dd850 > 0)
+                & (f850 >= units.Quantity(15, 'knots'))
+                & (f500 >= units.Quantity(15, 'knots')))
+    shear_term = np.atleast_1d(125 * (np.sin(dd500 - dd850) + 0.2))
+    shear_term[~required] = 0
+
+    # Calculate sweat index.
+    return first_term + second_term + (2 * f850.m) + f500.m + shear_term
