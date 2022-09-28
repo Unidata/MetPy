@@ -1558,6 +1558,9 @@
                             <span class="s1">&#39;gempak_grid_type&#39;</span><span class="p">:</span> <span class="n">ftype</span><span class="p">,</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
+                    <span class="n">xrda</span> <span class="o">=</span> <span class="n">xrda</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">assign_latitude_longitude</span><span class="p">()</span>
+                    <span class="n">xrda</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;meters&#39;</span>
+                    <span class="n">xrda</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;meters&#39;</span>
                     <span class="n">grids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xrda</span><span class="p">)</span>
 
                 <span class="k">else</span><span class="p">:</span>
