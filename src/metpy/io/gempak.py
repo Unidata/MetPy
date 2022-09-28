@@ -1362,6 +1362,9 @@ class GempakGrid(GempakFile):
                             'gempak_grid_type': ftype,
                         }
                     )
+                    xrda = xrda.metpy.assign_latitude_longitude()
+                    xrda['x'].attrs['units'] = 'meters'
+                    xrda['y'].attrs['units'] = 'meters'
                     grids.append(xrda)
 
                 else:
