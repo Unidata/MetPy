@@ -499,6 +499,16 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     Since this function returns scalar values when given a profile, this will return Pint
     Quantities even when given xarray DataArray profiles.
 
+    Examples
+    --------
+    >>> import metpy.calc as mpcalc
+    >>> from metpy.units import units
+    >>> pressure = [993, 957, 925, 886, 850, 813, 798, 732, 716, 700] * units.mbar
+    >>> temperature = [34.6, 31.1, 27.8, 24.3, 21.4, 19.6, 18.7, 13, 13.5, 13] * units.degC
+    >>> dewpoint = [19.6, 18.7, 17.8, 16.3, 12.4, -0.4, -3.8, -6, -13.2, -11] * units.degC
+    >>> ccl_p, ccl_t, t_c = mpcalc.ccl(pressure, temperature, dewpoint)
+    >>> ccl_p, t_c
+    (<Quantity(758.348093, 'millibar')>, <Quantity(39.0596139, 'degree_Celsius')>)
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
 
