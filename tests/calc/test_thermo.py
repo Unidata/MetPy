@@ -450,6 +450,10 @@ def test_ccl_unit():
     assert_almost_equal(ccl_t, (15.429946 + 273.15) * units.kelvin, 3)
     assert_almost_equal(t_c, (38.616596 + 273.15) * units.kelvin, 3)
 
+    assert ccl_p.units == pressure.units
+    assert ccl_t.units == temperature.units
+    assert t_c.units == temperature.units
+
 
 def test_multiple_ccl():
     """Tests the case where there are multiple CCLs. Data: BUF, May 18 2022 12Z."""
