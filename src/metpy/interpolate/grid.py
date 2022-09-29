@@ -326,8 +326,8 @@ def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=Tru
     level: int or float
         Desired interpolated level (e.g., 2 PVU surface)
     bottom_up_search : bool, optional
-        Controls whether to search for levels bottom-up, or top-down. Defaults to
-        True, which is bottom-up search.
+        Controls whether to search for levels bottom-up (starting at lower indices),
+        or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
 
     Returns
     -------
