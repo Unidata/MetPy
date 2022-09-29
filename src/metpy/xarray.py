@@ -28,7 +28,8 @@ from pyproj import CRS, Proj
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
-from .units import _mutate_arguments, DimensionalityError, UndefinedUnitError, units
+from .units import (_mutate_arguments, DimensionalityError, is_quantity, UndefinedUnitError,
+                    units)
 
 __all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor', 'grid_deltas_from_dataarray')
 metpy_axes = ['time', 'vertical', 'y', 'latitude', 'x', 'longitude']
@@ -130,7 +131,7 @@ class MetPyDataArrayAccessor:
     @property
     def units(self):
         """Return the units of this DataArray as a `pint.Unit`."""
-        if isinstance(self._data_array.variable._data, units.Quantity):
+        if is_quantity(self._data_array.variable._data):
             return self._data_array.variable._data.units
         else:
             return units.parse_units(self._data_array.attrs.get('units', 'dimensionless'))
@@ -138,7 +139,7 @@ class MetPyDataArrayAccessor:
     @property
     def magnitude(self):
         """Return the magnitude of the data values of this DataArray (i.e., without units)."""
-        if isinstance(self._data_array.data, units.Quantity):
+        if is_quantity(self._data_array.data):
             return self._data_array.data.magnitude
         else:
             return self._data_array.data
@@ -153,7 +154,7 @@ class MetPyDataArrayAccessor:
         will be loaded into memory by this operation. Do not utilize on moderate- to
         large-sized remote datasets before subsetting!
         """
-        if isinstance(self._data_array.data, units.Quantity):
+        if is_quantity(self._data_array.data):
             return self._data_array.data
         else:
             return units.Quantity(self._data_array.data, self.units)
@@ -222,7 +223,7 @@ class MetPyDataArrayAccessor:
         subsetting!
         """
         if (
-            not isinstance(self._data_array.data, units.Quantity)
+            not is_quantity(self._data_array.data)
             and np.issubdtype(self._data_array.data.dtype, np.number)
         ):
             # Only quantify if not already quantified and is quantifiable
@@ -235,7 +236,7 @@ class MetPyDataArrayAccessor:
 
     def dequantify(self):
         """Return a new DataArray with the data as magnitude and the units as an attribute."""
-        if isinstance(self._data_array.data, units.Quantity):
+        if is_quantity(self._data_array.data):
             # Only dequantify if quantified
             dequantified_dataarray = self._data_array.copy(
                 data=self._data_array.data.magnitude
@@ -1277,7 +1278,7 @@ def _wrap_output_like_matching_units(result, match):
         return result if output_xarray else result.metpy.unit_array
     else:
         result = (
-            result.to(match_units) if isinstance(result, units.Quantity)
+            result.to(match_units) if is_quantity(result)
             else units.Quantity(result, match_units)
         )
         return (
@@ -1293,10 +1294,8 @@ def _wrap_output_like_not_matching_units(result, match):
         return result if output_xarray else result.metpy.unit_array
     # Determine if need to upcast to Quantity
     if (
-        not isinstance(result, units.Quantity)
-        and (
-            isinstance(match, units.Quantity)
-            or (output_xarray and isinstance(match.data, units.Quantity))
+        not is_quantity(result) and (
+            is_quantity(match) or (output_xarray and is_quantity(match.data))
         )
     ):
         result = units.Quantity(result)

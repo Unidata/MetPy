@@ -35,7 +35,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         virtual_temperature, wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
-from metpy.units import masked_array, units
+from metpy.units import is_quantity, masked_array, units
 
 
 def test_relative_humidity_from_dewpoint():
@@ -632,7 +632,7 @@ def test_equivalent_potential_temperature_masked():
         np.ma.array([311.18586, 313.51781, 315.93971], mask=[False, True, False]),
         units.kelvin
     )
-    assert isinstance(ept, units.Quantity)
+    assert is_quantity(ept)
     assert isinstance(ept.m, np.ma.MaskedArray)
     assert_array_almost_equal(ept, expected, 3)
 
@@ -656,7 +656,7 @@ def test_saturation_equivalent_potential_temperature_masked():
         np.ma.array([335.02750, 338.95813, 343.08740]),
         units.kelvin
     )
-    assert isinstance(s_ept, units.Quantity)
+    assert is_quantity(s_ept)
     assert isinstance(s_ept.m, np.ma.MaskedArray)
     assert_array_almost_equal(s_ept, expected, 3)
 

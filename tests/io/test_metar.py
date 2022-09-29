@@ -12,7 +12,7 @@ from metpy.cbook import get_test_data
 from metpy.io import parse_metar_file, parse_metar_to_dataframe
 from metpy.io._metar_parser.metar_parser import parse
 from metpy.io.metar import Metar, parse_metar
-from metpy.units import units
+from metpy.units import is_quantity, units
 
 
 @pytest.mark.parametrize(['metar', 'truth'], [
@@ -365,7 +365,7 @@ def test_parse_no_pint_objects_in_df():
 
     for df in (parse_metar_file(input_file), parse_metar_to_dataframe(metar_str)):
         for column in df:
-            assert not isinstance(df[column][0], units.Quantity)
+            assert not is_quantity(df[column][0])
 
 
 def test_repr():

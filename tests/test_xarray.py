@@ -13,7 +13,7 @@ import xarray as xr
 from metpy.plots.mapping import CFProjection
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
-from metpy.units import DimensionalityError, units
+from metpy.units import DimensionalityError, is_quantity, units
 from metpy.xarray import (add_grid_arguments_from_xarray, add_vertical_dim_from_xarray,
                           check_axis, check_matching_coordinates, grid_deltas_from_dataarray,
                           preprocess_and_wrap)
@@ -102,7 +102,7 @@ def test_geodetic(test_var, ccrs):
 def test_unit_array(test_var):
     """Test unit handling through the accessor."""
     arr = test_var.metpy.unit_array
-    assert isinstance(arr, units.Quantity)
+    assert is_quantity(arr)
     assert arr.units == units.kelvin
 
 
@@ -177,7 +177,7 @@ def test_quantify(test_ds_generic):
     """Test quantify method for converting data to Quantity."""
     original = test_ds_generic['test'].values
     result = test_ds_generic['test'].metpy.quantify()
-    assert isinstance(result.data, units.Quantity)
+    assert is_quantity(result.data)
     assert result.data.units == units.kelvin
     assert 'units' not in result.attrs
     np.testing.assert_array_almost_equal(result.data, units.Quantity(original))
@@ -197,7 +197,7 @@ def test_dequantify():
 def test_dataset_quantify(test_ds_generic):
     """Test quantify method for converting data to Quantity on Datasets."""
     result = test_ds_generic.metpy.quantify()
-    assert isinstance(result['test'].data, units.Quantity)
+    assert is_quantity(result['test'].data)
     assert result['test'].data.units == units.kelvin
     assert 'units' not in result['test'].attrs
     np.testing.assert_array_almost_equal(
@@ -1365,7 +1365,7 @@ def test_preprocess_and_wrap_with_variable():
 
     assert isinstance(result_12, xr.DataArray)
     xr.testing.assert_identical(func(data1, data2), expected_12)
-    assert isinstance(result_21, units.Quantity)
+    assert is_quantity(result_21)
     assert_array_equal(func(data2, data1), expected_21)
 
 

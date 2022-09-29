@@ -124,6 +124,11 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
     return res
 
 
+def is_quantity(*args):
+    """Check whether an instance is a quantity."""
+    return all(isinstance(a, pint.Quantity) for a in args)
+
+
 def concatenate(arrs, axis=0):
     r"""Concatenate multiple values into a new quantity.
 
@@ -389,6 +394,3 @@ def process_units(
 
         return wrapper
     return dec
-
-
-del pint
