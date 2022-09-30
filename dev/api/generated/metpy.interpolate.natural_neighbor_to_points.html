@@ -1319,13 +1319,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>, </em><em>2</em><em>)</em>) – Coordinates of the data points.</p></li>
-<li><p><strong>values</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
-<li><p><strong>xi</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>M</em><em>, </em><em>2</em><em>)</em>) – Points to interpolate the data onto.</p></li>
+<li><p><strong>points</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>, </em><em>2</em><em>)</em>) – Coordinates of the data points.</p></li>
+<li><p><strong>values</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
+<li><p><strong>xi</strong> (<em>array-like</em><em>, </em><em>(</em><em>M</em><em>, </em><em>2</em><em>)</em>) – Points to interpolate the data onto.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>img</strong> (<em>(M,) ndarray</em>) – Array representing the interpolated values for each input point in <em class="xref py py-obj">xi</em></p>
+<dd class="field-even"><p><strong>img</strong> (<em>numpy.ndarray, (M,)</em>) – Array representing the interpolated values for each input point in <em class="xref py py-obj">xi</em></p>
 </dd>
 </dl>
 <div class="admonition seealso">

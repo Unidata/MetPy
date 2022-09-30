@@ -1333,12 +1333,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>azimuths</strong> (<em>array_like</em>) – array of azimuths defining the grid. If not a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>,
+<li><p><strong>azimuths</strong> (<em>array-like</em>) – array of azimuths defining the grid. If not a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>,
 assumed to be in degrees.</p></li>
-<li><p><strong>ranges</strong> (<em>array_like</em>) – array of range distances from the pole. Typically in meters.</p></li>
+<li><p><strong>ranges</strong> (<em>array-like</em>) – array of range distances from the pole. Typically in meters.</p></li>
 <li><p><strong>center_lat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The latitude of the pole in decimal degrees</p></li>
 <li><p><strong>center_lon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The longitude of the pole in decimal degrees</p></li>
-<li><p><strong>geod</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyproj.Geod</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – PyProj Geod to use for forward azimuth and distance calculations. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, use a
+<li><p><strong>geod</strong> (<a class="reference external" href="https://pyproj4.github.io/pyproj/stable/api/geod.html#pyproj.Geod" title="(in pyproj v3.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyproj.Geod</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – PyProj Geod to use for forward azimuth and distance calculations. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, use a
 default spherical ellipsoid.</p></li>
 </ul>
 </dd>

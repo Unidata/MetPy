@@ -1328,10 +1328,10 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="metpy.plots.StationPlotLayout">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.plots.</span></span><span class="sig-name descname"><span class="pre">StationPlotLayout</span></span><a class="headerlink" href="#metpy.plots.StationPlotLayout" title="Permalink to this definition">#</a></dt>
-<dd><p>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</p>
+<dd><p>Make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</p>
 <p>This class keeps a collection of offsets, plot formats, etc. for a parameter based
 on its name. This then allows a dictionary of data (or any object that allows looking
-up of arrays based on a name) to be passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> to plot the data all at once.</p>
+up of arrays based on a name) to be passed to <em class="xref py py-obj">plot()</em> to plot the data all at once.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a></p>
@@ -1422,7 +1422,7 @@ code; this is useful for specifying things like color or line width.</p>
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
 <li><p><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the parameter for the v-component for <em class="xref py py-obj">barbs</em>, which is used as
 a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
+<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Unit" title="(in pint v0.19.2)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v3.6.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</p></li>
@@ -1440,7 +1440,7 @@ conversion to a string. If not specified, no conversion is done.</p></li>
 <span class="sig-name descname"><span class="pre">add_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_mapper</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlotLayout.add_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.plots.StationPlotLayout.add_symbol" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a symbol to the station layout.</p>
 <p>This specifies that at the offset <em class="xref py py-obj">location</em>, data should be pulled from the data
-container using the key <em class="xref py py-obj">name</em> and plotted. Data values will converted to glyphs
+container using the key <em class="xref py py-obj">name</em> and plotted. Data values will be converted to glyphs
 appropriate for MetPy’s symbol font using the callable <em class="xref py py-obj">symbol_mapper</em>.</p>
 <p>Additional keyword arguments given will be passed onto the actual plotting
 code; this is useful for specifying things like color or font properties.</p>
@@ -1452,9 +1452,10 @@ code; this is useful for specifying things like color or font properties.</p>
 specifying the number of increments in the x and y directions.</p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
 data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>symbol_mapper</strong> (<em>callable</em>) – Controls converting data values to unicode code points for the
-<code class="xref py py-data docutils literal notranslate"><span class="pre">wx_symbol_font</span></code> font. This should take a value and return a single unicode
-character. See <code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.plots.wx_symbols</span></code> for included mappers.</p></li>
+<li><p><strong>symbol_mapper</strong> (<em>Callable</em>) – Controls converting data values to unicode code points for the
+<code class="xref py py-data docutils literal notranslate"><span class="pre">metpy.plots.wx_symbols.wx_symbol_font</span></code> font. This should take a value and
+return a single unicode character. See <code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.plots.wx_symbols</span></code> for included
+mappers.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>
 </dd>
@@ -1511,10 +1512,10 @@ code; this is useful for specifying things like color or font properties.</p>
 specifying the number of increments in the x and y directions.</p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
 data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p></li>
-<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
+<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>Callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
 compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</p></li>
-<li><p><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
+<li><p><strong>units</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Unit" title="(in pint v0.19.2)"><em>pint.Unit</em></a><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</p></li>
 <li><p><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</p></li>
 </ul>

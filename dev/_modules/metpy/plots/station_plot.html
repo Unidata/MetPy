@@ -235,17 +235,18 @@
 <span class="sd">        ----------</span>
 <span class="sd">        ax : matplotlib.axes.Axes</span>
 <span class="sd">            The :class:`~matplotlib.axes.Axes` for plotting</span>
-<span class="sd">        x : array_like</span>
+<span class="sd">        x : array-like</span>
 <span class="sd">            The x location of the stations in the plot</span>
-<span class="sd">        y : array_like</span>
+<span class="sd">        y : array-like</span>
 <span class="sd">            The y location of the stations in the plot</span>
 <span class="sd">        fontsize : int</span>
 <span class="sd">            The fontsize to use for drawing text</span>
 <span class="sd">        spacing : int</span>
 <span class="sd">            The spacing, in points, that corresponds to a single increment between</span>
 <span class="sd">            station plot elements.</span>
-<span class="sd">        transform : matplotlib.transforms.Transform (or compatible)</span>
-<span class="sd">            The default transform to apply to the x and y positions when plotting.</span>
+<span class="sd">        transform : matplotlib.transforms.Transform</span>
+<span class="sd">            The default transform to apply to the x and y positions when plotting. Works</span>
+<span class="sd">            with anything compatible with the ``Transform`` interface.</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
 <span class="sd">            These will be passed to all the plotting methods, and thus need to be valid</span>
@@ -267,8 +268,8 @@
         <span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a set of symbols.</span>
 
 <span class="sd">        This specifies that at the offset `location`, the data in `codes` should be</span>
-<span class="sd">        converted to unicode characters (for our :data:`wx_symbol_font`) using `symbol_mapper`,</span>
-<span class="sd">        and plotted.</span>
+<span class="sd">        converted to unicode characters (for our</span>
+<span class="sd">        :data:`!metpy.plots.wx_symbols.wx_symbol_font`) using `symbol_mapper`, and plotted.</span>
 
 <span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
 <span class="sd">        code; this is useful for specifying things like color or font properties.</span>
@@ -282,12 +283,13 @@
 <span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
 <span class="sd">            specifying the number of increments in the x and y directions; increments</span>
 <span class="sd">            are multiplied by `spacing` to give offsets in x and y relative to the center.</span>
-<span class="sd">        codes : array_like</span>
+<span class="sd">        codes : array-like</span>
 <span class="sd">            The numeric values that should be converted to unicode characters for plotting.</span>
-<span class="sd">        symbol_mapper : callable</span>
+<span class="sd">        symbol_mapper : Callable</span>
 <span class="sd">            Controls converting data values to unicode code points for the</span>
-<span class="sd">            :data:`wx_symbol_font` font. This should take a value and return a single unicode</span>
-<span class="sd">            character. See :mod:`metpy.plots.wx_symbols` for included mappers.</span>
+<span class="sd">            :data:`!metpy.plots.wx_symbols.wx_symbol_font` font. This should take a value</span>
+<span class="sd">            and return a single unicode</span>
+<span class="sd">            character. See :mod:`!metpy.plots.wx_symbols` for included mappers.</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
 
@@ -361,7 +363,7 @@
         <span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a set of values.</span>
 
 <span class="sd">        This specifies that at the offset `location`, the data in `parameter` should be</span>
-<span class="sd">        plotted. The conversion of the data values to a string is controlled by `formatter`.</span>
+<span class="sd">        plotted. The conversion of the data values to a string is controlled by ``formatter``.</span>
 
 <span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
 <span class="sd">        code; this is useful for specifying things like color or font properties.</span>
@@ -375,9 +377,9 @@
 <span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
 <span class="sd">            specifying the number of increments in the x and y directions; increments</span>
 <span class="sd">            are multiplied by `spacing` to give offsets in x and y relative to the center.</span>
-<span class="sd">        parameter : array_like</span>
+<span class="sd">        parameter : array-like</span>
 <span class="sd">            The numeric values that should be plotted</span>
-<span class="sd">        formatter : str or callable, optional</span>
+<span class="sd">        formatter : str or Callable, optional</span>
 <span class="sd">            How to format the data as a string for plotting. If a string, it should be</span>
 <span class="sd">            compatible with the :func:`format` builtin. If a callable, this should take a</span>
 <span class="sd">            value and return a string. Defaults to &#39;0.f&#39;.</span>
@@ -418,7 +420,7 @@
 <span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
 <span class="sd">            specifying the number of increments in the x and y directions; increments</span>
 <span class="sd">            are multiplied by `spacing` to give offsets in x and y relative to the center.</span>
-<span class="sd">        text : list (or array) of strings</span>
+<span class="sd">        text : Sequence[str]</span>
 <span class="sd">            The strings that should be plotted</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
@@ -452,7 +454,7 @@
 <span class="sd">            The data to use for the u-component of the barbs.</span>
 <span class="sd">        v : array-like</span>
 <span class="sd">            The data to use for the v-component of the barbs.</span>
-<span class="sd">        plot_units: `pint.unit`</span>
+<span class="sd">        plot_units: `pint.Unit`</span>
 <span class="sd">            Units to plot in (performing conversion if necessary). Defaults to given units.</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Additional keyword arguments to pass to matplotlib&#39;s</span>
@@ -585,11 +587,11 @@
 
 <span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">StationPlotLayout</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;make a layout to encapsulate plotting using :class:`StationPlot`.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a layout to encapsulate plotting using `StationPlot`.</span>
 
 <span class="sd">    This class keeps a collection of offsets, plot formats, etc. for a parameter based</span>
 <span class="sd">    on its name. This then allows a dictionary of data (or any object that allows looking</span>
-<span class="sd">    up of arrays based on a name) to be passed to :meth:`plot()` to plot the data all at once.</span>
+<span class="sd">    up of arrays based on a name) to be passed to `plot()` to plot the data all at once.</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -629,11 +631,11 @@
 <span class="sd">        name : str</span>
 <span class="sd">            The name of the parameter, which is used as a key to pull data out of the</span>
 <span class="sd">            data container passed to :meth:`plot`.</span>
-<span class="sd">        fmt : str or callable, optional</span>
+<span class="sd">        fmt : str or Callable, optional</span>
 <span class="sd">            How to format the data as a string for plotting. If a string, it should be</span>
 <span class="sd">            compatible with the :func:`format` builtin. If a callable, this should take a</span>
 <span class="sd">            value and return a string. Defaults to &#39;0.f&#39;.</span>
-<span class="sd">        units : pint-compatible unit, optional</span>
+<span class="sd">        units : pint.Unit, optional</span>
 <span class="sd">            The units to use for plotting. Data will be converted to this unit before</span>
 <span class="sd">            conversion to a string. If not specified, no conversion is done.</span>
 <span class="sd">        kwargs</span>
@@ -650,7 +652,7 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a symbol to the station layout.</span>
 
 <span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
-<span class="sd">        container using the key `name` and plotted. Data values will converted to glyphs</span>
+<span class="sd">        container using the key `name` and plotted. Data values will be converted to glyphs</span>
 <span class="sd">        appropriate for MetPy&#39;s symbol font using the callable `symbol_mapper`.</span>
 
 <span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
@@ -665,10 +667,11 @@
 <span class="sd">        name : str</span>
 <span class="sd">            The name of the parameter, which is used as a key to pull data out of the</span>
 <span class="sd">            data container passed to :meth:`plot`.</span>
-<span class="sd">        symbol_mapper : callable</span>
+<span class="sd">        symbol_mapper : Callable</span>
 <span class="sd">            Controls converting data values to unicode code points for the</span>
-<span class="sd">            :data:`wx_symbol_font` font. This should take a value and return a single unicode</span>
-<span class="sd">            character. See :mod:`metpy.plots.wx_symbols` for included mappers.</span>
+<span class="sd">            :data:`!metpy.plots.wx_symbols.wx_symbol_font` font. This should take a value and</span>
+<span class="sd">            return a single unicode character. See :mod:`!metpy.plots.wx_symbols` for included</span>
+<span class="sd">            mappers.</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
 
@@ -727,7 +730,7 @@
 <span class="sd">        v_name : str</span>
 <span class="sd">            The name of the parameter for the v-component for `barbs`, which is used as</span>
 <span class="sd">            a key to pull data out of the data container passed to :meth:`plot`.</span>
-<span class="sd">        units : pint-compatible unit, optional</span>
+<span class="sd">        units : pint.Unit, optional</span>
 <span class="sd">            The units to use for plotting. Data will be converted to this unit before</span>
 <span class="sd">            conversion to a string. If not specified, no conversion is done.</span>
 <span class="sd">        kwargs</span>

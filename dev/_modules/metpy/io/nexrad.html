@@ -316,19 +316,19 @@
 <span class="sd">    ----------</span>
 <span class="sd">    stid : str</span>
 <span class="sd">        The ID of the radar station</span>
-<span class="sd">    dt : Datetime instance</span>
+<span class="sd">    dt : `~datetime.datetime`</span>
 <span class="sd">        The date and time of the data</span>
-<span class="sd">    vol_hdr : namedtuple</span>
+<span class="sd">    vol_hdr : `collections.namedtuple`</span>
 <span class="sd">        The unpacked volume header</span>
-<span class="sd">    sweeps : list of tuples</span>
+<span class="sd">    sweeps : list[tuple]</span>
 <span class="sd">        Data for each of the sweeps found in the file</span>
-<span class="sd">    rda_status : namedtuple, optional</span>
+<span class="sd">    rda_status : `collections.namedtuple`, optional</span>
 <span class="sd">        Unpacked RDA status information, if found</span>
-<span class="sd">    maintenance_data : namedtuple, optional</span>
+<span class="sd">    maintenance_data : `collections.namedtuple`, optional</span>
 <span class="sd">        Unpacked maintenance data information, if found</span>
 <span class="sd">    maintenance_data_desc : dict, optional</span>
 <span class="sd">        Descriptions of maintenance data fields, if maintenance data present</span>
-<span class="sd">    vcp_info : namedtuple, optional</span>
+<span class="sd">    vcp_info : `collections.namedtuple`, optional</span>
 <span class="sd">        Unpacked VCP information, if found</span>
 <span class="sd">    clutter_filter_bypass_map : dict, optional</span>
 <span class="sd">        Unpacked clutter filter bypass map, if present</span>
@@ -1218,16 +1218,16 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</span>
 
 <span class="sd">    This class attempts to decode every byte that is in a given product file.</span>
-<span class="sd">    It supports all of the various compression formats that exist for these</span>
+<span class="sd">    It supports all the various compression formats that exist for these</span>
 <span class="sd">    products in the wild.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    metadata : dict</span>
 <span class="sd">        Various general metadata available from the product</span>
-<span class="sd">    header : namedtuple</span>
+<span class="sd">    header : `collections.namedtuple`</span>
 <span class="sd">        Decoded product header</span>
-<span class="sd">    prod_desc : namedtuple</span>
+<span class="sd">    prod_desc : `collections.namedtuple`</span>
 <span class="sd">        Decoded product description block</span>
 <span class="sd">    siteID : str</span>
 <span class="sd">        ID of the site found in the header, empty string if none found</span>
@@ -1241,7 +1241,7 @@
 <span class="sd">        Name of the product contained in file</span>
 <span class="sd">    max_range : float</span>
 <span class="sd">        Maximum kilometer range of the product, taken from the NIDS ICD</span>
-<span class="sd">    map_data : Mapper</span>
+<span class="sd">    map_data : `DataMapper`</span>
 <span class="sd">        Class instance mapping data int values to proper floating point values</span>
 <span class="sd">    sym_block : list, optional</span>
 <span class="sd">        Any symbology block packets that were found</span>

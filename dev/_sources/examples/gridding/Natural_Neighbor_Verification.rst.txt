@@ -158,7 +158,7 @@ The locations of these observations are then used to generate a Delaunay triangu
 .. GENERATED FROM PYTHON SOURCE LINES 106-109
 
 Using the circumcenter and circumcircle radius information from
-:func:`metpy.interpolate.geometry.find_natural_neighbors`, we can visually
+`metpy.interpolate.find_natural_neighbors`, we can visually
 examine the results to see if they are correct.
 
 .. GENERATED FROM PYTHON SOURCE LINES 109-139
@@ -209,7 +209,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f6a03d74970>
+    <matplotlib.legend.Legend object at 0x7f5f568fdb10>
 
 
 
@@ -492,7 +492,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.554 seconds)
+   **Total running time of the script:** ( 0 minutes  0.548 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:

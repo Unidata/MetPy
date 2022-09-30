@@ -301,7 +301,7 @@
 <span class="k">class</span> <span class="nc">MetPyDataArrayAccessor</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provide custom attributes and methods on xarray DataArrays for MetPy functionality.</span>
 
-<span class="sd">    This accessor provides several convenient attributes and methods through the `.metpy`</span>
+<span class="sd">    This accessor provides several convenient attributes and methods through the ``.metpy``</span>
 <span class="sd">    attribute on a DataArray. For example, MetPy can identify the coordinate corresponding</span>
 <span class="sd">    to a particular axis (given sufficient metadata):</span>
 
@@ -902,7 +902,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        varname : str or iterable of str, optional</span>
+<span class="sd">        varname : str or Sequence[str], optional</span>
 <span class="sd">            Name of the variable(s) to extract from the dataset while parsing for CF metadata.</span>
 <span class="sd">            Defaults to all variables.</span>
 <span class="sd">        coordinates : dict, optional</span>
@@ -1167,7 +1167,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        attribute : str,</span>
 <span class="sd">            Name of attribute to update</span>
-<span class="sd">        mapping : dict or callable</span>
+<span class="sd">        mapping : dict or Callable</span>
 <span class="sd">            Either a dict, with keys as variable names and values as attribute values to set,</span>
 <span class="sd">            or a callable, which must accept one positional argument (variable name) and</span>
 <span class="sd">            arbitrary keyword arguments (all existing variable attributes). If a variable name</span>
@@ -1370,7 +1370,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    broadcast : iterable of str or None</span>
+<span class="sd">    broadcast : Sequence[str] or None</span>
 <span class="sd">        Iterable of string labels for arguments to broadcast against each other using xarray,</span>
 <span class="sd">        assuming they are supplied as `xarray.DataArray`. No automatic broadcasting will occur</span>
 <span class="sd">        with default of None.</span>
@@ -1573,7 +1573,7 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    lat_lon_grid_deltas</span>
+<span class="sd">    `~metpy.calc.lat_lon_grid_deltas`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <span class="n">lat_lon_grid_deltas</span>

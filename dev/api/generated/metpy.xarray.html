@@ -1341,7 +1341,7 @@ Dataset.</p>
 <dt class="sig sig-object py" id="metpy.xarray.MetPyDataArrayAccessor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metpy.xarray.</span></span><span class="sig-name descname"><span class="pre">MetPyDataArrayAccessor</span></span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor" title="Permalink to this definition">#</a></dt>
 <dd><p>Provide custom attributes and methods on xarray DataArrays for MetPy functionality.</p>
-<p>This accessor provides several convenient attributes and methods through the <code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy</span></code>
+<p>This accessor provides several convenient attributes and methods through the <code class="docutils literal notranslate"><span class="pre">.metpy</span></code>
 attribute on a DataArray. For example, MetPy can identify the coordinate corresponding
 to a particular axis (given sufficient metadata):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -1764,7 +1764,7 @@ preserved.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>varname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>iterable of str</em><em>, </em><em>optional</em>) – Name of the variable(s) to extract from the dataset while parsing for CF metadata.
+<li><p><strong>varname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Name of the variable(s) to extract from the dataset while parsing for CF metadata.
 Defaults to all variables.</p></li>
 <li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
 if you wish to override MetPy’s automatic parsing of some axis type(s).</p></li>
@@ -1804,7 +1804,7 @@ subsetting!</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>attribute</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>,</em>) – Name of attribute to update</p></li>
-<li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><em>callable</em>) – Either a dict, with keys as variable names and values as attribute values to set,
+<li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><em>Callable</em>) – Either a dict, with keys as variable names and values as attribute values to set,
 or a callable, which must accept one positional argument (variable name) and
 arbitrary keyword arguments (all existing variable attributes). If a variable name
 is not present/the callable returns None, the attribute will not be updated.</p></li>

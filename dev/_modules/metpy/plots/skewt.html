@@ -478,7 +478,7 @@
 <span class="sd">        rect : tuple[float, float, float, float], optional</span>
 <span class="sd">            Rectangle (left, bottom, width, height) in which to place the axes. This</span>
 <span class="sd">            allows the user to place the axes at an arbitrary point on the figure.</span>
-<span class="sd">        aspect : float, int, or &#39;auto&#39;, optional</span>
+<span class="sd">        aspect : float, int, or Literal[&#39;auto&#39;], optional</span>
 <span class="sd">            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.</span>
 <span class="sd">            Defaults to 80.5. Passing the string ``&#39;auto&#39;`` tells matplotlib to handle</span>
 <span class="sd">            the aspect ratio automatically (this is not recommended for SkewT).</span>
@@ -542,9 +542,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        pressure : array-like</span>
 <span class="sd">            pressure values</span>
-<span class="sd">        t : array_like</span>
+<span class="sd">        t : array-like</span>
 <span class="sd">            temperature values, can also be used for things like dew point</span>
 <span class="sd">        args</span>
 <span class="sd">            Other positional arguments to pass to :func:`~matplotlib.pyplot.plot`</span>
@@ -575,13 +575,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        pressure : array-like</span>
 <span class="sd">            pressure values</span>
-<span class="sd">        u : array_like</span>
+<span class="sd">        u : array-like</span>
 <span class="sd">            U (East-West) component of wind</span>
-<span class="sd">        v : array_like</span>
+<span class="sd">        v : array-like</span>
 <span class="sd">            V (North-South) component of wind</span>
-<span class="sd">        c:</span>
+<span class="sd">        c : array-like, optional</span>
 <span class="sd">            An optional array used to map colors to the barbs</span>
 <span class="sd">        xloc : float, optional</span>
 <span class="sd">            Position for the barbs, in normalized axes coordinates, where 0.0</span>
@@ -592,7 +592,7 @@
 <span class="sd">        y_clip_radius : float, optional</span>
 <span class="sd">            Space, in normalized axes coordinates, to leave above/below plot</span>
 <span class="sd">            before clipping wind barbs in the y-direction. Defaults to 0.08.</span>
-<span class="sd">        plot_units: `pint.unit`</span>
+<span class="sd">        plot_units: `pint.Unit`</span>
 <span class="sd">            Units to plot in (performing conversion if necessary). Defaults to given units.</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other keyword arguments to pass to :func:`~matplotlib.pyplot.barbs`</span>
@@ -647,11 +647,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        t0 : array_like, optional</span>
+<span class="sd">        t0 : array-like, optional</span>
 <span class="sd">            Starting temperature values in Kelvin. If none are given, they will be</span>
 <span class="sd">            generated using the current temperature range at the bottom of</span>
 <span class="sd">            the plot.</span>
-<span class="sd">        pressure : array_like, optional</span>
+<span class="sd">        pressure : array-like, optional</span>
 <span class="sd">            Pressure values to be included in the dry adiabats. If not</span>
 <span class="sd">            specified, they will be linearly distributed across the current</span>
 <span class="sd">            plotted pressure range.</span>
@@ -665,7 +665,7 @@
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-<span class="sd">        :func:`~metpy.calc.thermo.dry_lapse`</span>
+<span class="sd">        :func:`~metpy.calc.dry_lapse`</span>
 <span class="sd">        :meth:`plot_moist_adiabats`</span>
 <span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
 
@@ -706,11 +706,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        t0 : array_like, optional</span>
+<span class="sd">        t0 : array-like, optional</span>
 <span class="sd">            Starting temperature values in Kelvin. If none are given, they will be</span>
 <span class="sd">            generated using the current temperature range at the bottom of</span>
 <span class="sd">            the plot.</span>
-<span class="sd">        pressure : array_like, optional</span>
+<span class="sd">        pressure : array-like, optional</span>
 <span class="sd">            Pressure values to be included in the moist adiabats. If not</span>
 <span class="sd">            specified, they will be linearly distributed across the current</span>
 <span class="sd">            plotted pressure range.</span>
@@ -724,7 +724,7 @@
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-<span class="sd">        :func:`~metpy.calc.thermo.moist_lapse`</span>
+<span class="sd">        :func:`~metpy.calc.moist_lapse`</span>
 <span class="sd">        :meth:`plot_dry_adiabats`</span>
 <span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
 
@@ -764,10 +764,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        mixing_ratio : array_like, optional</span>
+<span class="sd">        mixing_ratio : array-like, optional</span>
 <span class="sd">            Unitless mixing ratio values to plot. If none are given, default</span>
 <span class="sd">            values are used.</span>
-<span class="sd">        pressure : array_like, optional</span>
+<span class="sd">        pressure : array-like, optional</span>
 <span class="sd">            Pressure values to be included in the isohumes. If not</span>
 <span class="sd">            specified, they will be linearly distributed across the current</span>
 <span class="sd">            plotted pressure range up to 600 mb.</span>
@@ -818,13 +818,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        y : array_like</span>
+<span class="sd">        y : array-like</span>
 <span class="sd">            1-dimensional array of numeric y-values</span>
-<span class="sd">        x1 : array_like</span>
+<span class="sd">        x1 : array-like</span>
 <span class="sd">            1-dimensional array of numeric x-values</span>
-<span class="sd">        x2 : array_like</span>
+<span class="sd">        x2 : array-like</span>
 <span class="sd">            1-dimensional array of numeric x-values</span>
-<span class="sd">        which : string</span>
+<span class="sd">        which : str</span>
 <span class="sd">            Specifies if `positive`, `negative`, or `both` areas are being shaded.</span>
 <span class="sd">            Will be overridden by where.</span>
 <span class="sd">        kwargs</span>
@@ -837,7 +837,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
-<span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
+<span class="sd">        :meth:`matplotlib.axes.Axes.fill_betweenx`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fill_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;positive&#39;</span><span class="p">:</span>
@@ -873,13 +873,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        pressure : array-like</span>
 <span class="sd">            Pressure values</span>
-<span class="sd">        t : array_like</span>
+<span class="sd">        t : array-like</span>
 <span class="sd">            Temperature values</span>
-<span class="sd">        dewpoint : array_like</span>
-<span class="sd">            Dewpoint values</span>
-<span class="sd">        t_parcel : array_like</span>
+<span class="sd">        t_parcel : array-like</span>
 <span class="sd">            Parcel path temperature values</span>
 <span class="sd">        limit_shading : bool</span>
 <span class="sd">            Eliminate shading below the LCL or above the EL, default is True</span>
@@ -893,7 +891,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
-<span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
+<span class="sd">        :meth:`matplotlib.axes.Axes.fill_betweenx`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
@@ -907,13 +905,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pressure : array_like</span>
+<span class="sd">        pressure : array-like</span>
 <span class="sd">            Pressure values</span>
-<span class="sd">        t : array_like</span>
+<span class="sd">        t : array-like</span>
 <span class="sd">            Temperature values</span>
-<span class="sd">        t_parcel : array_like</span>
+<span class="sd">        t_parcel : array-like</span>
 <span class="sd">            Parcel path temperature values</span>
-<span class="sd">        dewpoint : array_like</span>
+<span class="sd">        dewpoint : array-like</span>
 <span class="sd">            Dew point values, optional</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`</span>
@@ -925,7 +923,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
-<span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
+<span class="sd">        :meth:`matplotlib.axes.Axes.fill_betweenx`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dewpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -962,7 +960,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        ax : `matplotlib.axes.Axes`, optional</span>
 <span class="sd">            The `Axes` instance used for plotting</span>
-<span class="sd">        component_range : value</span>
+<span class="sd">        component_range : int</span>
 <span class="sd">            The maximum range of the plot. Used to set plot bounds and control the maximum</span>
 <span class="sd">            number of grid rings needed.</span>
 
@@ -986,7 +984,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        increment : value, optional</span>
+<span class="sd">        increment : int, optional</span>
 <span class="sd">            The value increment between rings</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other kwargs to control appearance of lines</span>
@@ -1034,9 +1032,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : array_like</span>
+<span class="sd">        u : array-like</span>
 <span class="sd">            u-component of wind</span>
-<span class="sd">        v : array_like</span>
+<span class="sd">        v : array-like</span>
 <span class="sd">            v-component of wind</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other keyword arguments to pass to :meth:`matplotlib.axes.Axes.plot`</span>
@@ -1062,9 +1060,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : array_like</span>
+<span class="sd">        u : array-like</span>
 <span class="sd">            u-component of wind</span>
-<span class="sd">        v : array_like</span>
+<span class="sd">        v : array-like</span>
 <span class="sd">            v-component of wind</span>
 <span class="sd">        kwargs</span>
 <span class="sd">            Other keyword arguments to pass to :meth:`matplotlib.axes.Axes.quiver`</span>
@@ -1095,11 +1093,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : array_like</span>
+<span class="sd">        u : array-like</span>
 <span class="sd">            u-component of wind</span>
-<span class="sd">        v : array_like</span>
+<span class="sd">        v : array-like</span>
 <span class="sd">            v-component of wind</span>
-<span class="sd">        c : array_like</span>
+<span class="sd">        c : array-like</span>
 <span class="sd">            data to use for colormapping (e.g. heights, pressure, wind speed)</span>
 <span class="sd">        intervals: array-like, optional</span>
 <span class="sd">            Array of intervals for c to use in coloring the hodograph.</span>

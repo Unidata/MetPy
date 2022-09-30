@@ -1314,9 +1314,9 @@
 <dt class="sig sig-object py" id="metpy.interpolate.interpolate_to_points">
 <span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate_to_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_star</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.052</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.interpolate.interpolate_to_points" title="Permalink to this definition">#</a></dt>
 <dd><p>Interpolate unstructured point data to the given points.</p>
-<p>This function interpolates the given <em class="xref py py-obj">values</em> valid at <code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code> to the points <em class="xref py py-obj">xi</em>. This is
-modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.9.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by including
-the following types of interpolation:</p>
+<p>This function interpolates the given <em class="xref py py-obj">values</em> valid at <code class="docutils literal notranslate"><span class="pre">points</span></code> to the points <em class="xref py py-obj">xi</em>.
+This is modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.9.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by
+including the following types of interpolation:</p>
 <ul class="simple">
 <li><p>Linear</p></li>
 <li><p>Nearest Neighbor</p></li>
@@ -1329,9 +1329,9 @@ the following types of interpolation:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>, </em><em>D</em><em>)</em>) – Coordinates of the data points.</p></li>
-<li><p><strong>values</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
-<li><p><strong>xi</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>M</em><em>, </em><em>D</em><em>)</em>) – Points to interpolate the data onto.</p></li>
+<li><p><strong>points</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>, </em><em>P</em><em>)</em>) – Coordinates of the data points.</p></li>
+<li><p><strong>values</strong> (<em>array-like</em><em>, </em><em>(</em><em>N</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
+<li><p><strong>xi</strong> (<em>array-like</em><em>, </em><em>(</em><em>M</em><em>, </em><em>P</em><em>)</em>) – Points to interpolate the data onto.</p></li>
 <li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – What type of interpolation to use. Available options include:
 1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.9.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
@@ -1340,7 +1340,7 @@ Default “linear”.</p></li>
 point. Default is 3.</p></li>
 <li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
 <li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Response parameter for barnes interpolation, specified non-dimensionally
-in terms of the Nyquist. Default 5.052</p></li>
+in terms of the Nyquist. Default 5.052.</p></li>
 <li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – A search radius to use for the Barnes and Cressman interpolation schemes.
 If search_radius is not specified, it will default to 5 times the average spacing of
 observations.</p></li>
@@ -1352,7 +1352,7 @@ information.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>values_interpolated</strong> (<em>(M,) ndarray</em>) – Array representing the interpolated values for each input point in <em class="xref py py-obj">xi</em>.</p>
+<dd class="field-even"><p><strong>values_interpolated</strong> (<em>ndarray, (M,)</em>) – Array representing the interpolated values for each input point in <em class="xref py py-obj">xi</em>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">

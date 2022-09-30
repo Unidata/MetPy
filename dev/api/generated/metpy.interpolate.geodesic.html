@@ -1314,14 +1314,14 @@
 <dt class="sig sig-object py" id="metpy.interpolate.geodesic">
 <span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">geodesic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.interpolate.geodesic" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a geodesic path between two points.</p>
-<p>This function acts as a wrapper for the geodesic construction available in <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyproj</span></code>.</p>
+<p>This function acts as a wrapper for the geodesic construction available in <code class="docutils literal notranslate"><span class="pre">pyproj</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>crs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyproj.CRS</span></code>) – PyProj Coordinate Reference System to use for the output</p></li>
-<li><p><strong>start</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the start point of the geodesic (units are
+<li><p><strong>crs</strong> (<a class="reference external" href="https://pyproj4.github.io/pyproj/stable/api/crs/crs.html#pyproj.crs.CRS" title="(in pyproj v3.4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyproj.crs.CRS</span></code></a>) – PyProj Coordinate Reference System to use for the output</p></li>
+<li><p><strong>start</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array-like</em>) – A latitude-longitude pair designating the start point of the geodesic (units are
 degrees north and degrees east).</p></li>
-<li><p><strong>end</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the end point of the geodesic (units are degrees
+<li><p><strong>end</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array-like</em>) – A latitude-longitude pair designating the end point of the geodesic (units are degrees
 north and degrees east).</p></li>
 <li><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – The number of points along the geodesic between the start and the end point
 (including the end points).</p></li>

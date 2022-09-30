@@ -1317,9 +1317,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>levels</strong> (<em>array</em>) – One-dimensional array of desired potential temperature surfaces</p></li>
-<li><p><strong>pressure</strong> (<em>array</em>) – One-dimensional array of pressure levels</p></li>
-<li><p><strong>temperature</strong> (<em>array</em>) – Array of temperature</p></li>
+<li><p><strong>levels</strong> (<em>array-like</em>) – One-dimensional array of desired potential temperature surfaces</p></li>
+<li><p><strong>pressure</strong> (<em>array-like</em>) – One-dimensional array of pressure levels</p></li>
+<li><p><strong>temperature</strong> (<em>array-like</em>) – Array of temperature</p></li>
+<li><p><strong>args</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Any additional variables will be interpolated to each isentropic level.</p></li>
 <li><p><strong>vertical_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to the vertical in the temperature array, defaults to 0.</p></li>
 <li><p><strong>temperature_out</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – If true, will calculate temperature and output as the last item in the output list.
 Defaults to False.</p></li>
@@ -1327,7 +1328,6 @@ Defaults to False.</p></li>
 <li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
 <li><p><strong>bottom_up_search</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Controls whether to search for levels bottom-up (starting at lower indices),
 or top-down (starting at higher indices). Defaults to True, which is bottom-up search.</p></li>
-<li><p><strong>args</strong> (<em>array</em><em>, </em><em>optional</em>) – Any additional variables will be interpolated to each isentropic level</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

@@ -206,7 +206,7 @@
 
 <span class="sd">Attributes</span>
 <span class="sd">----------</span>
-<span class="sd">units : :class:`pint.UnitRegistry`</span>
+<span class="sd">units : :class: `pint.UnitRegistry()`</span>
 <span class="sd">    The unit registry used throughout the package. Any use of units in MetPy should</span>
 <span class="sd">    import this registry and use it to grab units.</span>
 
@@ -312,10 +312,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    arrs : Sequence of arrays</span>
+<span class="sd">    arrs : Sequence[pint.Quantity or numpy.ndarray]</span>
 <span class="sd">        The items to be joined together</span>
 
-<span class="sd">    axis : integer, optional</span>
+<span class="sd">    axis : int, optional</span>
 <span class="sd">        The array axis along which to join the arrays. Defaults to 0 (the first dimension)</span>
 
 <span class="sd">    Returns</span>
@@ -348,14 +348,14 @@
 <div class="viewcode-block" id="masked_array"><a class="viewcode-back" href="../../api/generated/metpy.units.masked_array.html#metpy.units.masked_array">[docs]</a><span class="k">def</span> <span class="nf">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a :class:`numpy.ma.MaskedArray` with units attached.</span>
 
-<span class="sd">    This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that</span>
+<span class="sd">    This is a thin wrapper around :class:`numpy.ma.MaskedArray` that ensures that</span>
 <span class="sd">    units are properly attached to the result (otherwise units are silently lost). Units</span>
 <span class="sd">    are taken from the ``data_units`` argument, or if this is ``None``, the units on ``data``</span>
 <span class="sd">    are used.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    data : array_like</span>
+<span class="sd">    data : array-like</span>
 <span class="sd">        The source data. If ``data_units`` is `None`, this should be a `pint.Quantity` with</span>
 <span class="sd">        the desired units.</span>
 <span class="sd">    data_units : str or `pint.Unit`, optional</span>
