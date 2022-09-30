@@ -85,7 +85,7 @@ jobs:
         need-cartopy: true
         type: doc
         version-file: Prerelease
-        python-version: 3.9
+        python-version: '3.10'
 
     - name: Build docs
       id: build
