@@ -105,7 +105,7 @@ _axis_identifier_error = ('Given axis is not valid. Must be an axis number, a di
 class MetPyDataArrayAccessor:
     r"""Provide custom attributes and methods on xarray DataArrays for MetPy functionality.
 
-    This accessor provides several convenient attributes and methods through the `.metpy`
+    This accessor provides several convenient attributes and methods through the ``.metpy``
     attribute on a DataArray. For example, MetPy can identify the coordinate corresponding
     to a particular axis (given sufficient metadata):
 
@@ -706,7 +706,7 @@ class MetPyDatasetAccessor:
 
         Parameters
         ----------
-        varname : str or iterable of str, optional
+        varname : str or Sequence[str], optional
             Name of the variable(s) to extract from the dataset while parsing for CF metadata.
             Defaults to all variables.
         coordinates : dict, optional
@@ -971,7 +971,7 @@ class MetPyDatasetAccessor:
         ----------
         attribute : str,
             Name of attribute to update
-        mapping : dict or callable
+        mapping : dict or Callable
             Either a dict, with keys as variable names and values as attribute values to set,
             or a callable, which must accept one positional argument (variable name) and
             arbitrary keyword arguments (all existing variable attributes). If a variable name
@@ -1174,7 +1174,7 @@ def preprocess_and_wrap(broadcast=None, wrap_like=None, match_unit=False, to_mag
 
     Parameters
     ----------
-    broadcast : iterable of str or None
+    broadcast : Sequence[str] or None
         Iterable of string labels for arguments to broadcast against each other using xarray,
         assuming they are supplied as `xarray.DataArray`. No automatic broadcasting will occur
         with default of None.
@@ -1377,7 +1377,7 @@ def grid_deltas_from_dataarray(f, kind='default'):
 
     See Also
     --------
-    lat_lon_grid_deltas
+    `~metpy.calc.lat_lon_grid_deltas`
 
     """
     from metpy.calc import lat_lon_grid_deltas

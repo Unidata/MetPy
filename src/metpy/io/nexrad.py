@@ -120,19 +120,19 @@ class Level2File:
     ----------
     stid : str
         The ID of the radar station
-    dt : Datetime instance
+    dt : `~datetime.datetime`
         The date and time of the data
-    vol_hdr : namedtuple
+    vol_hdr : `collections.namedtuple`
         The unpacked volume header
-    sweeps : list of tuples
+    sweeps : list[tuple]
         Data for each of the sweeps found in the file
-    rda_status : namedtuple, optional
+    rda_status : `collections.namedtuple`, optional
         Unpacked RDA status information, if found
-    maintenance_data : namedtuple, optional
+    maintenance_data : `collections.namedtuple`, optional
         Unpacked maintenance data information, if found
     maintenance_data_desc : dict, optional
         Descriptions of maintenance data fields, if maintenance data present
-    vcp_info : namedtuple, optional
+    vcp_info : `collections.namedtuple`, optional
         Unpacked VCP information, if found
     clutter_filter_bypass_map : dict, optional
         Unpacked clutter filter bypass map, if present
@@ -1022,16 +1022,16 @@ class Level3File:
     r"""Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.
 
     This class attempts to decode every byte that is in a given product file.
-    It supports all of the various compression formats that exist for these
+    It supports all the various compression formats that exist for these
     products in the wild.
 
     Attributes
     ----------
     metadata : dict
         Various general metadata available from the product
-    header : namedtuple
+    header : `collections.namedtuple`
         Decoded product header
-    prod_desc : namedtuple
+    prod_desc : `collections.namedtuple`
         Decoded product description block
     siteID : str
         ID of the site found in the header, empty string if none found
@@ -1045,7 +1045,7 @@ class Level3File:
         Name of the product contained in file
     max_range : float
         Maximum kilometer range of the product, taken from the NIDS ICD
-    map_data : Mapper
+    map_data : `DataMapper`
         Class instance mapping data int values to proper floating point values
     sym_block : list, optional
         Any symbology block packets that were found

@@ -116,7 +116,7 @@ def concatenate(arrs, axis=0):
 
     Parameters
     ----------
-    arrs : sequence of arrays
+    arrs : Sequence[pint.Quantity or numpy.ndarray]
         The items to be joined together
 
     axis : int, optional

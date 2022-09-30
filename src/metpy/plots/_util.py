@@ -215,7 +215,7 @@ def convert_gempak_color(c, style='psc'):
 
     Parameters
     ----------
-    c : int or sequence of ints
+    c : int or Sequence[int]
         GEMPAK color number(s)
     style : str, optional
         The GEMPAK 'device' to use to interpret color numbers. May be 'psc'

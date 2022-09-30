@@ -552,7 +552,7 @@ def montgomery_streamfunction(height, temperature):
 
     See Also
     --------
-    get_isentropic_pressure, dry_static_energy
+    dry_static_energy
 
     Notes
     -----

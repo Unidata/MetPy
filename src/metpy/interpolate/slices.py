@@ -70,11 +70,11 @@ def interpolate_to_slice(data, points, interp_type='linear'):
 def geodesic(crs, start, end, steps):
     r"""Construct a geodesic path between two points.
 
-    This function acts as a wrapper for the geodesic construction available in `pyproj`.
+    This function acts as a wrapper for the geodesic construction available in ``pyproj``.
 
     Parameters
     ----------
-    crs: `pyproj.CRS`
+    crs: `pyproj.crs.CRS`
         PyProj Coordinate Reference System to use for the output
     start: (2, ) array-like
         A latitude-longitude pair designating the start point of the geodesic (units are

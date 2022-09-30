@@ -282,7 +282,7 @@ class SkewT:
         rect : tuple[float, float, float, float], optional
             Rectangle (left, bottom, width, height) in which to place the axes. This
             allows the user to place the axes at an arbitrary point on the figure.
-        aspect : float, int, or 'auto', optional
+        aspect : float, int, or Literal['auto'], optional
             Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
             Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
             the aspect ratio automatically (this is not recommended for SkewT).
@@ -385,7 +385,7 @@ class SkewT:
             U (East-West) component of wind
         v : array-like
             V (North-South) component of wind
-        c:
+        c : array-like, optional
             An optional array used to map colors to the barbs
         xloc : float, optional
             Position for the barbs, in normalized axes coordinates, where 0.0
@@ -714,7 +714,7 @@ class SkewT:
             Temperature values
         t_parcel : array-like
             Parcel path temperature values
-        dewpoint : array_like
+        dewpoint : array-like
             Dew point values, optional
         kwargs
             Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`
