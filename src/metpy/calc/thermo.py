@@ -475,6 +475,109 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
 @exporter.export
 @preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
+    r"""Calculate the convective condensation level (CCL) and convective temperature.
+
+    This function is implemented directly based on the definition of the CCL,
+    as in [USAF1990]_, and finding where the ambient temperature profile intersects
+    the line of constant mixing ratio starting at the surface, using the surface dewpoint
+    or the average dewpoint of a shallow layer near the surface.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+
+    temperature : `pint.Quantity`
+        Temperature at the levels given by `pressure`
+
+    dewpoint : `pint.Quantity`
+        Dewpoint at the levels given by `pressure`
+
+    height : `pint.Quantity`, optional
+        Atmospheric heights at the levels given by `pressure`.
+        Only needed when specifying a mixed layer depth as a height.
+
+    mixed_layer_depth : `pint.Quantity`, optional
+        The thickness of the mixed layer as a pressure or height above the bottom
+        of the layer (default None).
+
+    which: str, optional
+        Pick which CCL value to return; must be one of 'top', 'bottom', or 'all'.
+        'top' returns the lowest-pressure CCL (default),
+        'bottom' returns the highest-pressure CCL,
+        'all' returns every CCL in a `Pint.Quantity` array.
+
+    Returns
+    -------
+    `pint.Quantity`
+        CCL Pressure
+
+    `pint.Quantity`
+        CCL Temperature
+
+    `pint.Quantity`
+        Convective Temperature
+
+    See Also
+    --------
+    lcl, lfc, el
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    Examples
+    --------
+    >>> import metpy.calc as mpcalc
+    >>> from metpy.units import units
+    >>> pressure = [993, 957, 925, 886, 850, 813, 798, 732, 716, 700] * units.mbar
+    >>> temperature = [34.6, 31.1, 27.8, 24.3, 21.4, 19.6, 18.7, 13, 13.5, 13] * units.degC
+    >>> dewpoint = [19.6, 18.7, 17.8, 16.3, 12.4, -0.4, -3.8, -6, -13.2, -11] * units.degC
+    >>> ccl_p, ccl_t, t_c = mpcalc.ccl(pressure, temperature, dewpoint)
+    >>> ccl_p, t_c
+    (<Quantity(758.348093, 'millibar')>, <Quantity(38.4336274, 'degree_Celsius')>)
+    """
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+
+    # If the mixed layer is not defined, take the starting dewpoint to be the
+    # first element of the dewpoint array and calculate the corresponding mixing ratio.
+    if mixed_layer_depth is None:
+        p_start, dewpoint_start = pressure[0], dewpoint[0]
+        vapor_pressure_start = saturation_vapor_pressure(dewpoint_start)
+        r_start = mixing_ratio(vapor_pressure_start, p_start)
+
+    # Else, calculate the mixing ratio of the mixed layer.
+    else:
+        vapor_pressure_profile = saturation_vapor_pressure(dewpoint)
+        r_profile = mixing_ratio(vapor_pressure_profile, pressure)
+        r_start = mixed_layer(pressure, r_profile, height=height,
+                              depth=mixed_layer_depth)[0]
+
+    # rt_profile is the temperature-pressure profile with a fixed mixing ratio
+    rt_profile = globals()['dewpoint'](vapor_pressure(pressure, r_start))
+
+    x, y = find_intersections(pressure, rt_profile, temperature,
+                              direction='increasing', log_x=True)
+
+    # In the case of multiple CCLs, select which to return
+    if which == 'top':
+        x, y = x[-1], y[-1]
+    elif which == 'bottom':
+        x, y = x[0], y[0]
+    elif which not in ['top', 'bottom', 'all']:
+        raise ValueError(f'Invalid option for "which": {which}. Valid options are '
+                         '"top", "bottom", and "all".')
+
+    x, y = x.to(pressure.units), y.to(temperature.units)
+    return x, y, dry_lapse(pressure[0], y, x).to(temperature.units)
+
+
+@exporter.export
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
         which='top'):
