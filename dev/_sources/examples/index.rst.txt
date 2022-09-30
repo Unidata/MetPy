@@ -342,6 +342,108 @@ Examples using various calculation functions from MetPy.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.static_stability as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Static_Stability_thumb.png
+    :alt: Static Stability
+
+  :ref:`sphx_glr_examples_calculations_Static_Stability.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Static Stability</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.mean_pressure_weighted as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Mean_Pressure_Weighted_thumb.png
+    :alt: Mean Pressure Weighted
+
+  :ref:`sphx_glr_examples_calculations_Mean_Pressure_Weighted.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mean Pressure Weighted</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform calculations for a rising and sinking parcel.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Mountain_Problem_thumb.png
+    :alt: Mountain Problem
+
+  :ref:`sphx_glr_examples_calculations_Mountain_Problem.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mountain Problem</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Bulk_Shear_thumb.png
+    :alt: Bulk Shear
+
+  :ref:`sphx_glr_examples_calculations_Bulk_Shear.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bulk Shear</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Thickness_Hydrostatic_thumb.png
+    :alt: Hydrostatic Thickness
+
+  :ref:`sphx_glr_examples_calculations_Thickness_Hydrostatic.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hydrostatic Thickness</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Equivalent_Potential_Temperature_thumb.png
+    :alt: Equivalent Potential Temperature
+
+  :ref:`sphx_glr_examples_calculations_Equivalent_Potential_Temperature.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Equivalent Potential Temperature</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.advection.">
 
 .. only:: html
@@ -405,6 +507,23 @@ Examples using various calculation functions from MetPy.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Smoothing</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc to perform a number of calculations using sounding data.">
+
+.. only:: html
+
+  .. image:: /examples/calculations/images/thumb/sphx_glr_Sounding_Calculations_thumb.png
+    :alt: Sounding Calculation Examples
+
+  :ref:`sphx_glr_examples_calculations_Sounding_Calculations.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sounding Calculation Examples</div>
     </div>
 
 
@@ -762,6 +881,23 @@ Examples using MetPy's various specialty plotting routines.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Hodograph Inset</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to make a Skew-T LogP plot from an xarray Dataset after computing LCL parcel profile.">
+
+.. only:: html
+
+  .. image:: /examples/plots/images/thumb/sphx_glr_Sounding_LCL_Dataset_thumb.png
+    :alt: Sounding as Dataset Example
+
+  :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sounding as Dataset Example</div>
     </div>
 
 

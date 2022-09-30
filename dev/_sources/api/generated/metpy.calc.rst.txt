@@ -73,6 +73,7 @@ Soundings
       bulk_shear
       bunkers_storm_motion
       cape_cin
+      ccl
       critical_angle
       cross_totals
       el
