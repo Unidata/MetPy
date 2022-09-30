@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>interpolate_to_grid &#8212; MetPy 1.3dev</title>
+    <title>weighted_continuous_average &#8212; MetPy 1.3dev</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -35,12 +35,13 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/doc_shared.js"></script>
     <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="interpolate_to_isosurface" href="metpy.interpolate.interpolate_to_isosurface.html" />
-    <link rel="prev" title="inverse_distance_to_grid" href="metpy.interpolate.inverse_distance_to_grid.html" />
+    <link rel="next" title="dewpoint" href="metpy.calc.dewpoint.html" />
+    <link rel="prev" title="thickness_hydrostatic" href="metpy.calc.thickness_hydrostatic.html" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -58,7 +59,7 @@
                         ga('send', 'pageview');
                     </script>
 
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.interpolate.interpolate_to_grid.html" />
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.weighted_continuous_average.html" />
 
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
@@ -297,7 +298,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="metpy.calc.html">
    Calculations
    <code class="docutils literal notranslate">
@@ -306,12 +307,12 @@
     </span>
    </code>
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.calc.add_height_to_pressure.html">
      add_height_to_pressure
@@ -377,8 +378,8 @@
      thickness_hydrostatic
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="metpy.calc.weighted_continuous_average.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      weighted_continuous_average
     </a>
    </li>
@@ -1138,7 +1139,7 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="metpy.interpolate.html">
    Interpolate
    <code class="docutils literal notranslate">
@@ -1147,12 +1148,12 @@
     </span>
    </code>
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
   <label for="toctree-checkbox-6">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html">
      natural_neighbor_to_grid
@@ -1163,8 +1164,8 @@
      inverse_distance_to_grid
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">
      interpolate_to_grid
     </a>
    </li>
@@ -1281,24 +1282,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples-using-metpy-interpolate-interpolate-to-grid">
-   Examples using
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     metpy.interpolate.interpolate_to_grid
-    </span>
-   </code>
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -1318,71 +1304,47 @@
               
               <div>
                 
-  <section id="interpolate-to-grid">
-<h1>interpolate_to_grid<a class="headerlink" href="#interpolate-to-grid" title="Permalink to this headline">#</a></h1>
+  <section id="weighted-continuous-average">
+<h1>weighted_continuous_average<a class="headerlink" href="#weighted-continuous-average" title="Permalink to this headline">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="metpy.interpolate.interpolate_to_grid">
-<span class="sig-prename descclassname"><span class="pre">metpy.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate_to_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hres</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_star</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.052</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbf_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.interpolate.interpolate_to_grid" title="Permalink to this definition">#</a></dt>
-<dd><p>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</p>
+<dt class="sig sig-object py" id="metpy.calc.weighted_continuous_average">
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">weighted_continuous_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.weighted_continuous_average" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate weighted-continuous mean of an arbitrary variable through a layer.</p>
+<p>Layer top and bottom specified in height or pressure.</p>
+<p>Formula based on that from <a class="reference internal" href="../references.html#holton2004" id="id1"><span>[Holton2004]</span></a> pg. 76 and the NCL function _wgt_vertical_n_</p>
+<div class="math notranslate nohighlight">
+\[WCA = \frac{\int_{p_s}^{p} A dp}{\int_{p_s}^{p} dp},\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(WCA\)</span> is the weighted continuous average of a variable.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is the bottom pressure level.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_s\)</span> is the top pressure level.</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is the variable whose weighted continuous average is being calculated.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array_like</em>) – x coordinate, can have units of linear distance or degrees</p></li>
-<li><p><strong>y</strong> (<em>array_like</em>) – y coordinate, can have units of linear distance or degrees</p></li>
-<li><p><strong>z</strong> (<em>array_like</em>) – observation value</p></li>
-<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.9.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
-2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
-Default “linear”.</p></li>
-<li><p><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The horizontal resolution of the generated grid, given in the same units as the
-x and y parameters. Default 50000.</p></li>
-<li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Minimum number of neighbors needed to perform Barnes or Cressman interpolation for a
-point. Default is 3.</p></li>
-<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
-<li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Response parameter for barnes interpolation, specified nondimensionally
-in terms of the Nyquist. Default 5.052</p></li>
-<li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – A search radius to use for the Barnes and Cressman interpolation schemes.
-If search_radius is not specified, it will default to 5 times the average spacing of
-observations.</p></li>
-<li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
-Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Default ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.9.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
-information.</p></li>
-<li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
-<li><p><strong>boundary_coords</strong> (<em>dictionary</em>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
-should be in format: {‘west’: west, ‘south’: south, ‘east’: east, ‘north’: north}</p></li>
+<li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Atmospheric pressure profile.</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Parameters for which the weighted-continuous mean is to be calculated.</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Heights from sounding. Standard atmosphere heights assumed (if needed)
+if no heights are given.</p></li>
+<li><p><strong>bottom</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – The bottom of the layer in either the provided height coordinate
+or in pressure. Don’t provide in meters AGL unless the provided
+height coordinate is meters AGL. Default is the first observation,
+assumed to be the surface.</p></li>
+<li><p><strong>depth</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, optional) – Depth of the layer in meters or hPa.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>grid_x</strong> (<em>(N, 2) ndarray</em>) – Meshgrid for the resulting interpolation in the x dimension</p></li>
-<li><p><strong>grid_y</strong> (<em>(N, 2) ndarray</em>) – Meshgrid for the resulting interpolation in the y dimension ndarray</p></li>
-<li><p><strong>img</strong> (<em>(M, N) ndarray</em>) – 2-dimensional array representing the interpolated values for each grid.</p></li>
-</ul>
-</p>
+<dd class="field-even"><p>list of <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> – list of layer mean value for each profile in args.</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html#metpy.interpolate.interpolate_to_points" title="metpy.interpolate.interpolate_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_points</span></code></a></p>
-</div>
 <p class="rubric">Notes</p>
-<p>This function acts as a wrapper for <em class="xref py py-obj">interpolate_points</em> to allow it to generate a regular
-grid.</p>
-<p>This function interpolates points to a Cartesian plane, even if lat/lon coordinates
-are provided.</p>
+<p>Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+Since this function returns scalar values when given a profile, this will return Pint
+Quantities even when given xarray DataArray profiles.</p>
 </dd></dl>
 
-<section id="examples-using-metpy-interpolate-interpolate-to-grid">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.interpolate.interpolate_to_grid</span></code><a class="headerlink" href="#examples-using-metpy-interpolate-interpolate-to-grid" title="Permalink to this headline">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an..."><img alt="Wind and Sea Level Pressure Interpolation" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
-<p><a class="reference internal" href="../../examples/gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Wind and Sea Level Pressure Interpolation</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches."><img alt="Point Interpolation" src="../../_images/sphx_glr_Point_Interpolation_thumb.png" />
-<p><a class="reference internal" href="../../examples/gridding/Point_Interpolation.html#sphx-glr-examples-gridding-point-interpolation-py"><span class="std std-ref">Point Interpolation</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Point Interpolation</div>
-</div></div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
               </div>
@@ -1390,17 +1352,17 @@ are provided.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="metpy.interpolate.inverse_distance_to_grid.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="metpy.calc.thickness_hydrostatic.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">inverse_distance_to_grid</p>
+            <p class="prev-next-title">thickness_hydrostatic</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="metpy.interpolate.interpolate_to_isosurface.html" title="next page">
+    <a class='right-next' id="next-link" href="metpy.calc.dewpoint.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">interpolate_to_isosurface</p>
+        <p class="prev-next-title">dewpoint</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
