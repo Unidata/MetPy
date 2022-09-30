@@ -508,7 +508,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
     >>> dewpoint = [19.6, 18.7, 17.8, 16.3, 12.4, -0.4, -3.8, -6, -13.2, -11] * units.degC
     >>> ccl_p, ccl_t, t_c = mpcalc.ccl(pressure, temperature, dewpoint)
     >>> ccl_p, t_c
-    (<Quantity(758.348093, 'millibar')>, <Quantity(39.0596139, 'degree_Celsius')>)
+    (<Quantity(758.348093, 'millibar')>, <Quantity(38.4336274, 'degree_Celsius')>)
     """
     pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
 

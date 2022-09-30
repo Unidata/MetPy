@@ -413,7 +413,7 @@ def test_ccl_basic():
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
     assert_almost_equal(ccl_p, 763.006048 * units.mbar, 5)
     assert_almost_equal(ccl_t, 15.429946 * units.degC, 5)
-    assert_almost_equal(t_c, 38.616596 * units.degC, 5)
+    assert_almost_equal(t_c, 37.991498 * units.degC, 5)
 
 
 def test_ccl_nans():
@@ -430,7 +430,7 @@ def test_ccl_nans():
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
     assert_almost_equal(ccl_p, 763.006048 * units.mbar, 5)
     assert_almost_equal(ccl_t, 15.429946 * units.degC, 5)
-    assert_almost_equal(t_c, 38.616596 * units.degC, 5)
+    assert_almost_equal(t_c, 37.991498 * units.degC, 5)
 
 
 def test_ccl_unit():
@@ -448,7 +448,7 @@ def test_ccl_unit():
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
     assert_almost_equal(ccl_p, (763.006048 * 100) * units.Pa, 3)
     assert_almost_equal(ccl_t, (15.429946 + 273.15) * units.kelvin, 3)
-    assert_almost_equal(t_c, (38.616596 + 273.15) * units.kelvin, 3)
+    assert_almost_equal(t_c, (37.991498 + 273.15) * units.kelvin, 3)
 
     assert ccl_p.units == pressure.units
     assert ccl_t.units == temperature.units
@@ -478,17 +478,17 @@ def test_multiple_ccl():
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
     assert_almost_equal(ccl_p, 680.191653 * units.mbar, 5)
     assert_almost_equal(ccl_t, -0.204408 * units.degC, 5)
-    assert_almost_equal(t_c, 31.566319 * units.degC, 5)
+    assert_almost_equal(t_c, 30.8678258 * units.degC, 5)
 
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint, which='bottom')
     assert_almost_equal(ccl_p, 886.835325 * units.mbar, 5)
     assert_almost_equal(ccl_t, 3.500840 * units.degC, 5)
-    assert_almost_equal(t_c, 13.158340 * units.degC, 5)
+    assert_almost_equal(t_c, 12.5020423 * units.degC, 5)
 
     ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint, which='all')
     assert_array_almost_equal(ccl_p, np.array([886.835325, 680.191653]) * units.mbar, 5)
     assert_array_almost_equal(ccl_t, np.array([3.500840, -0.204408]) * units.degC, 5)
-    assert_array_almost_equal(t_c, np.array([13.158340, 31.566319]) * units.degC, 5)
+    assert_array_almost_equal(t_c, np.array([12.5020423, 30.8678258]) * units.degC, 5)
 
 
 def test_ccl_with_ml():
@@ -519,7 +519,7 @@ def test_ccl_with_ml():
     assert_array_almost_equal(ccl_t, np.array(
         [0.840118, -0.280299, -1.118757, -2.875716]) * units.degC, 5)
     assert_array_almost_equal(t_c, np.array(
-        [13.804624, 19.332071, 23.576331, 32.782670]) * units.degC, 5)
+        [13.146845, 18.661621, 22.896152, 32.081388]) * units.degC, 5)
 
 
 def test_lfc_basic():
