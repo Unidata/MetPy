@@ -39,17 +39,18 @@ class StationPlot:
         ----------
         ax : matplotlib.axes.Axes
             The :class:`~matplotlib.axes.Axes` for plotting
-        x : array_like
+        x : array-like
             The x location of the stations in the plot
-        y : array_like
+        y : array-like
             The y location of the stations in the plot
         fontsize : int
             The fontsize to use for drawing text
         spacing : int
             The spacing, in points, that corresponds to a single increment between
             station plot elements.
-        transform : matplotlib.transforms.Transform (or compatible)
-            The default transform to apply to the x and y positions when plotting.
+        transform : matplotlib.transforms.Transform
+            The default transform to apply to the x and y positions when plotting. Works
+            with anything compatible with the ``Transform`` interface.
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.
             These will be passed to all the plotting methods, and thus need to be valid
@@ -71,8 +72,8 @@ class StationPlot:
         """At the specified location in the station model plot a set of symbols.
 
         This specifies that at the offset `location`, the data in `codes` should be
-        converted to unicode characters (for our :data:`wx_symbol_font`) using `symbol_mapper`,
-        and plotted.
+        converted to unicode characters (for our
+        :data:`!metpy.plots.wx_symbols.wx_symbol_font`) using `symbol_mapper`, and plotted.
 
         Additional keyword arguments given will be passed onto the actual plotting
         code; this is useful for specifying things like color or font properties.
@@ -86,12 +87,13 @@ class StationPlot:
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
-        codes : array_like
+        codes : array-like
             The numeric values that should be converted to unicode characters for plotting.
-        symbol_mapper : callable
+        symbol_mapper : Callable
             Controls converting data values to unicode code points for the
-            :data:`wx_symbol_font` font. This should take a value and return a single unicode
-            character. See :mod:`metpy.plots.wx_symbols` for included mappers.
+            :data:`!metpy.plots.wx_symbols.wx_symbol_font` font. This should take a value
+            and return a single unicode
+            character. See :mod:`!metpy.plots.wx_symbols` for included mappers.
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.
 
@@ -165,7 +167,7 @@ class StationPlot:
         """At the specified location in the station model plot a set of values.
 
         This specifies that at the offset `location`, the data in `parameter` should be
-        plotted. The conversion of the data values to a string is controlled by `formatter`.
+        plotted. The conversion of the data values to a string is controlled by ``formatter``.
 
         Additional keyword arguments given will be passed onto the actual plotting
         code; this is useful for specifying things like color or font properties.
@@ -179,9 +181,9 @@ class StationPlot:
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
-        parameter : array_like
+        parameter : array-like
             The numeric values that should be plotted
-        formatter : str or callable, optional
+        formatter : str or Callable, optional
             How to format the data as a string for plotting. If a string, it should be
             compatible with the :func:`format` builtin. If a callable, this should take a
             value and return a string. Defaults to '0.f'.
@@ -222,7 +224,7 @@ class StationPlot:
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
-        text : list (or array) of strings
+        text : Sequence[str]
             The strings that should be plotted
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.
@@ -256,7 +258,7 @@ class StationPlot:
             The data to use for the u-component of the barbs.
         v : array-like
             The data to use for the v-component of the barbs.
-        plot_units: `pint.unit`
+        plot_units: `pint.Unit`
             Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Additional keyword arguments to pass to matplotlib's
@@ -389,11 +391,11 @@ class StationPlot:
 
 @exporter.export
 class StationPlotLayout(dict):
-    r"""make a layout to encapsulate plotting using :class:`StationPlot`.
+    r"""Make a layout to encapsulate plotting using `StationPlot`.
 
     This class keeps a collection of offsets, plot formats, etc. for a parameter based
     on its name. This then allows a dictionary of data (or any object that allows looking
-    up of arrays based on a name) to be passed to :meth:`plot()` to plot the data all at once.
+    up of arrays based on a name) to be passed to `plot()` to plot the data all at once.
 
     See Also
     --------
@@ -433,11 +435,11 @@ class StationPlotLayout(dict):
         name : str
             The name of the parameter, which is used as a key to pull data out of the
             data container passed to :meth:`plot`.
-        fmt : str or callable, optional
+        fmt : str or Callable, optional
             How to format the data as a string for plotting. If a string, it should be
             compatible with the :func:`format` builtin. If a callable, this should take a
             value and return a string. Defaults to '0.f'.
-        units : pint-compatible unit, optional
+        units : pint.Unit, optional
             The units to use for plotting. Data will be converted to this unit before
             conversion to a string. If not specified, no conversion is done.
         kwargs
@@ -454,7 +456,7 @@ class StationPlotLayout(dict):
         r"""Add a symbol to the station layout.
 
         This specifies that at the offset `location`, data should be pulled from the data
-        container using the key `name` and plotted. Data values will converted to glyphs
+        container using the key `name` and plotted. Data values will be converted to glyphs
         appropriate for MetPy's symbol font using the callable `symbol_mapper`.
 
         Additional keyword arguments given will be passed onto the actual plotting
@@ -469,10 +471,11 @@ class StationPlotLayout(dict):
         name : str
             The name of the parameter, which is used as a key to pull data out of the
             data container passed to :meth:`plot`.
-        symbol_mapper : callable
+        symbol_mapper : Callable
             Controls converting data values to unicode code points for the
-            :data:`wx_symbol_font` font. This should take a value and return a single unicode
-            character. See :mod:`metpy.plots.wx_symbols` for included mappers.
+            :data:`!metpy.plots.wx_symbols.wx_symbol_font` font. This should take a value and
+            return a single unicode character. See :mod:`!metpy.plots.wx_symbols` for included
+            mappers.
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.
 
@@ -531,7 +534,7 @@ class StationPlotLayout(dict):
         v_name : str
             The name of the parameter for the v-component for `barbs`, which is used as
             a key to pull data out of the data container passed to :meth:`plot`.
-        units : pint-compatible unit, optional
+        units : pint.Unit, optional
             The units to use for plotting. Data will be converted to this unit before
             conversion to a string. If not specified, no conversion is done.
         kwargs

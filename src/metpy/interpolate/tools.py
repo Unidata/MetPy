@@ -34,7 +34,7 @@ def average_spacing(points):
 
     Parameters
     ----------
-    points : (M, N) array_like
+    points : (M, N) array-like
          M points in N dimensional space
 
     Returns
@@ -56,11 +56,11 @@ def remove_observations_below_value(x, y, z, val=0):
 
     Parameters
     ----------
-    x: array_like
+    x: array-like
         x coordinate.
-    y: array_like
+    y: array-like
         y coordinate.
-    z: array_like
+    z: array-like
         Observation value.
     val: float
         Value at which to threshold z.
@@ -87,11 +87,11 @@ def remove_nan_observations(x, y, z):
 
     Parameters
     ----------
-    x: array_like
+    x: array-like
         x coordinate
-    y: array_like
+    y: array-like
         y coordinate
-    z: array_like
+    z: array-like
         observation value
 
     Returns
@@ -116,11 +116,11 @@ def remove_repeat_coordinates(x, y, z):
 
     Parameters
     ----------
-    x: array_like
+    x: array-like
         x coordinate
-    y: array_like
+    y: array-like
         y coordinate
-    z: array_like
+    z: array-like
         observation value
 
     Returns
@@ -153,7 +153,7 @@ def barnes_weights(sq_dist, kappa, gamma):
 
     Parameters
     ----------
-    sq_dist: (N, ) ndarray
+    sq_dist: (N, ) numpy.ndarray
         Squared distances from interpolation point
         associated with each observation in meters.
     kappa: float
@@ -163,7 +163,7 @@ def barnes_weights(sq_dist, kappa, gamma):
 
     Returns
     -------
-    weights: (N, ) ndarray
+    weights: (N, ) numpy.ndarray
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
 
@@ -176,7 +176,7 @@ def cressman_weights(sq_dist, r):
 
     Parameters
     ----------
-    sq_dist: (N, ) ndarray
+    sq_dist: (N, ) numpy.ndarray
         Squared distances from interpolation point associated with each observation in meters.
     r: float
         Maximum distance an observation can be from an interpolation point to be considered
@@ -184,7 +184,7 @@ def cressman_weights(sq_dist, r):
 
     Returns
     -------
-    weights: (N, ) ndarray
+    weights: (N, ) numpy.ndarray
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
 

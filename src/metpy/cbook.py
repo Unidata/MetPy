@@ -94,7 +94,7 @@ class Registry:
 
         Returns
         -------
-        dec : callable
+        dec : Callable
             A decorator that takes a function and will register it under the name.
 
         """

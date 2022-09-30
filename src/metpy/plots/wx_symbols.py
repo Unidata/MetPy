@@ -35,16 +35,17 @@ def wx_code_to_numeric(codes):
     decoded METAR current weather group. The METAR codes should be strings with no missing
     values or NaN strings (empty strings are okay).
 
-    For example, if from a Pandas Dataframe sfc_df.wxcodes.fillna('')
+    For example, if from a Pandas Dataframe ``sfc_df.wxcodes.fillna('')``.
 
     Parameters
     ----------
-    codes : Array like containing string values of METAR weather codes
+    codes : Sequence[str]
+        String values of METAR weather codes
 
     Returns
     -------
-    array of numeric codes of current weather symbols from the wx_code_map for use in
-    plotting.
+    `numpy.ndarray`
+        numeric codes of current weather symbols from the wx_code_map for use in plotting.
     """
     wx_sym_list = []
     for s in codes:

@@ -1943,7 +1943,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     temperature: `pint.Quantity`
         Air temperature
 
-    relative_humidity: array_like
+    relative_humidity: array-like
         The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
         a percentage if proper units are attached.
 
@@ -2466,14 +2466,26 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
     Parameters
     ----------
-    levels : array
+    levels : array-like
         One-dimensional array of desired potential temperature surfaces
 
-    pressure : array
+    pressure : array-like
         One-dimensional array of pressure levels
 
-    temperature : array
+    temperature : array-like
         Array of temperature
+
+    args : array-like, optional
+        Any additional variables will be interpolated to each isentropic level.
+
+    Returns
+    -------
+    list
+        List with pressure at each isentropic level, followed by each additional
+        argument interpolated to isentropic coordinates.
+
+    Other Parameters
+    ----------------
     vertical_dim : int, optional
         The axis corresponding to the vertical in the temperature array, defaults to 0.
 
@@ -2490,15 +2502,6 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     bottom_up_search : bool, optional
         Controls whether to search for levels bottom-up (starting at lower indices),
         or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
-
-    args : array, optional
-        Any additional variables will be interpolated to each isentropic level
-
-    Returns
-    -------
-    list
-        List with pressure at each isentropic level, followed by each additional
-        argument interpolated to isentropic coordinates.
 
     See Also
     --------

@@ -73,7 +73,7 @@ def read_colortable(fobj):
 
     Parameters
     ----------
-    fobj : a file-like object
+    fobj : file-like object
         A file-like object to read the colors from
 
     Returns
@@ -242,7 +242,7 @@ class ColortableRegistry(dict):
         ----------
         name : str
             The name under which the color table will be stored
-        boundaries : array_like
+        boundaries : array-like
             The list of boundaries for the norm
 
         Returns

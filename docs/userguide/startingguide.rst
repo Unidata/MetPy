@@ -250,7 +250,7 @@ Station Plots
 Station plots display surface or upper-air station data in a concise manner. The creation of
 these plots is made straightforward with MetPy. MetPy supplies the ability to create each
 station plot and place the points on the map. The creation of 2-D cartographic maps, commonly
-used in meteorology for observational and model visualization, relies upon the :mod:`CartoPy`
+used in meteorology for observational and model visualization, relies upon the :mod:`cartopy`
 library. This package handles projections and transforms to make sure your data is plotted in
 the correct location.
 
