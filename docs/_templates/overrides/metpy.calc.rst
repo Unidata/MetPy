@@ -23,6 +23,7 @@ Dry Thermodynamics
       static_stability
       temperature_from_potential_temperature
       thickness_hydrostatic
+      weighted_continuous_average
 
 
 Moist Thermodynamics
