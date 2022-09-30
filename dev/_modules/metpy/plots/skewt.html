@@ -791,7 +791,8 @@
         <span class="c1"># Default mixing level values if necessary</span>
         <span class="k">if</span> <span class="n">mixing_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">mixing_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
-                                     <span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="mf">0.032</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                                     <span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="mf">0.032</span><span class="p">])</span>
+        <span class="n">mixing_ratio</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Set pressure range if necessary</span>
         <span class="k">if</span> <span class="n">pressure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
