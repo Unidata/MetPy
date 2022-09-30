@@ -2488,8 +2488,8 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
         The desired absolute error in the calculated value, defaults to 1e-6.
 
     bottom_up_search : bool, optional
-        Controls whether to search for levels bottom-up, or top-down. Defaults to
-        True, which is bottom-up search.
+        Controls whether to search for levels bottom-up (starting at lower indices),
+        or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
 
     args : array, optional
         Any additional variables will be interpolated to each isentropic level
@@ -2643,8 +2643,8 @@ def isentropic_interpolation_as_dataset(
     eps : float, optional
         The desired absolute error in the calculated value, defaults to 1e-6.
     bottom_up_search : bool, optional
-        Controls whether to search for levels bottom-up, or top-down. Defaults to
-        True, which is bottom-up search.
+        Controls whether to search for levels bottom-up (starting at lower indices),
+        or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
 
     Returns
     -------
