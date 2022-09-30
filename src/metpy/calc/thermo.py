@@ -542,7 +542,7 @@ def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, wh
                          '"top", "bottom", and "all".')
 
     x, y = x.to(pressure.units), y.to(temperature.units)
-    return x, y, potential_temperature(x, y).to(temperature.units)
+    return x, y, dry_lapse(pressure[0], y, x).to(temperature.units)
 
 
 @exporter.export
