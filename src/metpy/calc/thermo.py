@@ -446,7 +446,7 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 @preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
-    r"""Calculate the convective condensation level (CCL).
+    r"""Calculate the convective condensation level (CCL) and convective temperature.
 
     This function is implemented directly based on the definition of the CCL,
     as in [USAF1990]_, and finding where the ambient temperature profile intersects
