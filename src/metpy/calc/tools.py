@@ -108,7 +108,7 @@ def find_intersections(x, a, b, direction='all', log_x=False):
         1-dimensional array of y-values for line 1
     b : array-like
         1-dimensional array of y-values for line 2
-    direction : string, optional
+    direction : str, optional
         specifies direction of crossing. 'all', 'increasing' (a becoming greater than b),
         or 'decreasing' (b becoming greater than a). Defaults to 'all'.
     log_x : bool, optional
@@ -253,11 +253,11 @@ def reduce_point_density(points, radius, priority=None):
 
     Parameters
     ----------
-    points : (N, K) array-like
-        N locations of the points in K dimensional space
+    points : (N, M) array-like
+        N locations of the points in M dimensional space
     radius : `pint.Quantity` or float
         Minimum radius allowed between points. If units are not provided, meters is assumed.
-    priority : (N, K) array-like, optional
+    priority : (N, M) array-like, optional
         If given, this should have the same shape as ``points``; these values will
         be used to control selection priority for points.
 
@@ -786,17 +786,20 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
 
     Parameters
     ----------
-    longitude : array_like
+    longitude : array-like
         Array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
 
-    latitude : array_like
+    latitude : array-like
         Array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
+
     x_dim: int
         axis number for the x dimension, defaults to -1.
+
     y_dim : int
         axis number for the y dimension, defaults to -2.
+
     geod : `pyproj.Geod` or ``None``
         PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a
         default spherical ellipsoid.
@@ -865,10 +868,10 @@ def azimuth_range_to_lat_lon(azimuths, ranges, center_lon, center_lat, geod=None
 
     Parameters
     ----------
-    azimuths : array_like
+    azimuths : array-like
         array of azimuths defining the grid. If not a `pint.Quantity`,
         assumed to be in degrees.
-    ranges : array_like
+    ranges : array-like
         array of range distances from the pole. Typically in meters.
     center_lat : float
         The latitude of the pole in decimal degrees
@@ -1149,7 +1152,7 @@ def gradient(f, axes=None, coordinates=None, deltas=None):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    axes : sequence, optional
+    axes : Sequence[str] or Sequence[int], optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
         take the derivatives. Defaults to all axes of `f`. If given, and used with
@@ -1205,7 +1208,7 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    axes : sequence, optional
+    axes : Sequence[str] or Sequence[int], optional
         Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
         `pint.Quantity` is not used) or integers that specify the array axes along which to
         take the derivatives. Defaults to all axes of `f`. If given, and used with
@@ -1319,12 +1322,12 @@ def _process_deriv_args(f, axis, x, delta):
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 
-    Works for abbrieviations or whole words (E -> 90 | South -> 180)
+    Works for abbreviations or whole words (E -> 90 | South -> 180)
     and also is able to parse 22.5 degree angles such as ESE/East South East.
 
     Parameters
     ----------
-    input_dir : string or array-like
+    input_dir : str or Sequence[str]
         Directional text such as west, [south-west, ne], etc.
 
     Returns
@@ -1351,13 +1354,13 @@ def _clean_direction(dir_list, preprocess=False):
     if preprocess:  # primarily to remove None from list so ','.join works
         return [UND if not isinstance(the_dir, str) else the_dir
                 for the_dir in dir_list]
-    else:  # remove extraneous abbrieviated directions
+    else:  # remove extraneous abbreviated directions
         return [UND if the_dir not in DIR_STRS else the_dir
                 for the_dir in dir_list]
 
 
 def _abbrieviate_direction(ext_dir_str):
-    """Convert extended (non-abbrievated) directions to abbrieviation."""
+    """Convert extended (non-abbreviated) directions to abbreviation."""
     return (ext_dir_str
             .upper()
             .replace('_', '')
@@ -1380,10 +1383,10 @@ def angle_to_direction(input_angle, full=False, level=3):
 
     Parameters
     ----------
-    input_angle : numeric or array-like numeric
+    input_angle : float or array-like
         Angles such as 0, 25, 45, 360, 410, etc.
-    full : boolean
-        True returns full text (South), False returns abbrieviated text (S)
+    full : bool
+        True returns full text (South), False returns abbreviated text (S)
     level : int
         Level of detail (3 = N/NNE/NE/ENE/E... 2 = N/NE/E/SE... 1 = N/E/S/W)
 

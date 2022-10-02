@@ -23,6 +23,7 @@ Dry Thermodynamics
       static_stability
       temperature_from_potential_temperature
       thickness_hydrostatic
+      weighted_continuous_average
 
 
 Moist Thermodynamics
@@ -70,6 +71,7 @@ Soundings
       bulk_shear
       bunkers_storm_motion
       cape_cin
+      ccl
       critical_angle
       cross_totals
       el
@@ -90,6 +92,7 @@ Soundings
       storm_relative_helicity
       supercell_composite
       surface_based_cape_cin
+      sweat_index
       total_totals_index
       vertical_totals
 

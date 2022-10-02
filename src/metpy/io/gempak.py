@@ -1206,30 +1206,30 @@ class GempakGrid(GempakFile):
 
         Parameters
         ----------
-        parameter : str or array-like of str
+        parameter : str or Sequence[str]
             Name of GEMPAK parameter.
 
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        coordinate : str or array-like of str
+        coordinate : str or Sequence[str]
             Vertical coordinate.
 
-        level : float or array-like of float
+        level : float or Sequence[float]
             Vertical level.
 
-        date_time2 : datetime or array-like of datetime
+        date_time2 : `~datetime.datetime` or Sequence[datetime]
             Secondary valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        level2: float or array_like of float
+        level2: float or Sequence[float]
             Secondary vertical level. Typically used for layers.
 
         Returns
         -------
         list
-            List of xarray.DataArray objects for each grid.
+            List of `xarray.DataArray` objects for each grid.
         """
         if parameter is not None:
             if (not isinstance(parameter, Iterable)
@@ -1362,6 +1362,9 @@ class GempakGrid(GempakFile):
                             'gempak_grid_type': ftype,
                         }
                     )
+                    xrda = xrda.metpy.assign_latitude_longitude()
+                    xrda['x'].attrs['units'] = 'meters'
+                    xrda['y'].attrs['units'] = 'meters'
                     grids.append(xrda)
 
                 else:
@@ -2127,26 +2130,26 @@ class GempakSounding(GempakFile):
 
         Parameters
         ----------
-        station_id : str or array-like of str
+        station_id : str or Sequence[str]
             Station ID of sounding site.
 
-        station_number : int or array-like of int
+        station_number : int or Sequence[int]
             Station number of sounding site.
 
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        state : str or array-like of str
+        state : str or Sequence[str]
             State where sounding site is located.
 
-        country : str or array-like of str
+        country : str or Sequence[str]
             Country where sounding site is located.
 
         Returns
         -------
-        list
-            List of xarray.Dataset objects for each sounding.
+        list[xarray.Dataset]
+            List of `xarray.Dataset` objects for each sounding.
         """
         if station_id is not None:
             if (not isinstance(station_id, Iterable)
@@ -2664,14 +2667,14 @@ class GempakSurface(GempakFile):
 
         Parameters
         ----------
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid/observed datetime of the surface station. Alternatively
             object or a string with the format YYYYmmddHHMM.
 
-        station_id : str or array-like of str
-            Station ID of the surface station.
+        station_id : str or Sequence[str]
+            Station ID of the surface station(s).
 
-        station_number : int or array-like of int
+        station_number : int or Sequence[int]
             Station number of the surface station.
 
         Returns
@@ -2737,20 +2740,20 @@ class GempakSurface(GempakFile):
 
         Parameters
         ----------
-        station_id : str or array-like of str
+        station_id : str or Sequence[str]
             Station ID of the surface station.
 
-        station_number : int or array-like of int
+        station_number : int or Sequence[int]
             Station number of the surface station.
 
-        date_time : datetime or array-like of datetime
+        date_time : `~datetime.datetime` or Sequence[datetime]
             Valid datetime of the grid. Alternatively can be
             a string with the format YYYYmmddHHMM.
 
-        state : str or array-like of str
+        state : str or Sequence[str]
             State where surface station is located.
 
-        country : str or array-like of str
+        country : str or Sequence[str]
             Country where surface station is located.
 
         Returns

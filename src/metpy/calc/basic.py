@@ -597,7 +597,7 @@ def coriolis_parameter(latitude):
 
     Parameters
     ----------
-    latitude : array_like
+    latitude : array-like
         Latitude at each point
 
     Returns
@@ -690,7 +690,7 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
 
     Parameters
     ----------
-    sigma : ndarray
+    sigma : numpy.ndarray
         Sigma levels to be converted to pressure levels
 
     pressure_sfc : `pint.Quantity`
@@ -842,7 +842,7 @@ def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
     scalar_grid : array-like
         N-dimensional scalar grid to be smoothed
 
-    window : ndarray
+    window : numpy.ndarray
         Window to use in smoothing. Can have dimension less than or equal to N. If
         dimension less than N, the scalar grid will be smoothed along its trailing dimensions.
         Shape along each dimension must be odd.
@@ -933,7 +933,7 @@ def smooth_rectangular(scalar_grid, size, passes=1):
     scalar_grid : array-like
         N-dimensional scalar grid to be smoothed
 
-    size : int or sequence of ints
+    size : int or Sequence[int]
         Shape of rectangle along the trailing dimension(s) of the scalar grid
 
     passes : int
@@ -1073,7 +1073,7 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
     input_field  : `xarray.DataArray`
         The 2D data array to be interpolated.
 
-    zoom : float or sequence
+    zoom : float or Sequence[float]
         The zoom factor along the axes. If a float, zoom is the same for each axis. If a
         sequence, zoom should contain one value for each axis.
 
@@ -1081,15 +1081,15 @@ def zoom_xarray(input_field, zoom, output=None, order=3, mode='constant', cval=0
         The order of the spline interpolation, default is 3. The order has to be in the
         range 0-5.
 
-    mode : {‘reflect’, ‘grid-mirror’, ‘constant’, ‘grid-constant’, ‘nearest’, ‘mirror’,
-        ‘grid-wrap’, ‘wrap’}, optional
+    mode : str, optional
+        One of {'reflect', 'grid-mirror', 'constant', 'grid-constant', 'nearest', 'mirror',
+        'grid-wrap', 'wrap'}. See `scipy.ndimage.zoom` documentation for details.
+
+    cval : float or int, optional
         See `scipy.ndimage.zoom` documentation for details.
 
-    cval : scalar, optional
-        See `scipy.ndimage.zoom` documentation for details.
-
-    prefilter : bool (default = True)
-        See `scipy.ndimage.zoom` documentation for details.
+    prefilter : bool, optional
+        See `scipy.ndimage.zoom` documentation for details. Defaults to `True`.
 
     Returns
     -------
@@ -1224,19 +1224,19 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
 
     Parameters
     ----------
-    altimeter_value : 'pint.Quantity'
+    altimeter_value : `pint.Quantity`
         The altimeter setting value is defined by the METAR or other observation,
         with units of inches of mercury (in Hg) or millibars (hPa).
 
-    height  : 'pint.Quantity'
+    height  : `pint.Quantity`
         Elevation of the station measuring pressure. Often times measured in meters
 
-    temperature : 'pint.Quantity'
+    temperature : `pint.Quantity`
         Temperature at the station
 
     Returns
     -------
-    'pint.Quantity'
+    `pint.Quantity`
         The sea-level pressure in hPa and makes pressure values easier to compare
         between different stations.
 

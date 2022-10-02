@@ -1,10 +1,10 @@
 importlib_resources==5.9.0
 matplotlib==3.6.0
 numpy==1.23.3
-pandas==1.4.4
+pandas==1.5.0
 pooch==1.6.0
 pint==0.19.2
 pyproj==3.4.0
 scipy==1.9.1
 traitlets==5.4.0
-xarray==2022.6.0
+xarray==2022.9.0

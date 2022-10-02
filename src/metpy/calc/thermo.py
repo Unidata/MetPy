@@ -475,6 +475,109 @@ def lcl(pressure, temperature, dewpoint, max_iters=50, eps=1e-5):
 
 @exporter.export
 @preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def ccl(pressure, temperature, dewpoint, height=None, mixed_layer_depth=None, which='top'):
+    r"""Calculate the convective condensation level (CCL) and convective temperature.
+
+    This function is implemented directly based on the definition of the CCL,
+    as in [USAF1990]_, and finding where the ambient temperature profile intersects
+    the line of constant mixing ratio starting at the surface, using the surface dewpoint
+    or the average dewpoint of a shallow layer near the surface.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+
+    temperature : `pint.Quantity`
+        Temperature at the levels given by `pressure`
+
+    dewpoint : `pint.Quantity`
+        Dewpoint at the levels given by `pressure`
+
+    height : `pint.Quantity`, optional
+        Atmospheric heights at the levels given by `pressure`.
+        Only needed when specifying a mixed layer depth as a height.
+
+    mixed_layer_depth : `pint.Quantity`, optional
+        The thickness of the mixed layer as a pressure or height above the bottom
+        of the layer (default None).
+
+    which: str, optional
+        Pick which CCL value to return; must be one of 'top', 'bottom', or 'all'.
+        'top' returns the lowest-pressure CCL (default),
+        'bottom' returns the highest-pressure CCL,
+        'all' returns every CCL in a `Pint.Quantity` array.
+
+    Returns
+    -------
+    `pint.Quantity`
+        CCL Pressure
+
+    `pint.Quantity`
+        CCL Temperature
+
+    `pint.Quantity`
+        Convective Temperature
+
+    See Also
+    --------
+    lcl, lfc, el
+
+    Notes
+    -----
+    Only functions on 1D profiles (not higher-dimension vertical cross sections or grids).
+    Since this function returns scalar values when given a profile, this will return Pint
+    Quantities even when given xarray DataArray profiles.
+
+    Examples
+    --------
+    >>> import metpy.calc as mpcalc
+    >>> from metpy.units import units
+    >>> pressure = [993, 957, 925, 886, 850, 813, 798, 732, 716, 700] * units.mbar
+    >>> temperature = [34.6, 31.1, 27.8, 24.3, 21.4, 19.6, 18.7, 13, 13.5, 13] * units.degC
+    >>> dewpoint = [19.6, 18.7, 17.8, 16.3, 12.4, -0.4, -3.8, -6, -13.2, -11] * units.degC
+    >>> ccl_p, ccl_t, t_c = mpcalc.ccl(pressure, temperature, dewpoint)
+    >>> ccl_p, t_c
+    (<Quantity(758.348093, 'millibar')>, <Quantity(38.4336274, 'degree_Celsius')>)
+    """
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
+
+    # If the mixed layer is not defined, take the starting dewpoint to be the
+    # first element of the dewpoint array and calculate the corresponding mixing ratio.
+    if mixed_layer_depth is None:
+        p_start, dewpoint_start = pressure[0], dewpoint[0]
+        vapor_pressure_start = saturation_vapor_pressure(dewpoint_start)
+        r_start = mixing_ratio(vapor_pressure_start, p_start)
+
+    # Else, calculate the mixing ratio of the mixed layer.
+    else:
+        vapor_pressure_profile = saturation_vapor_pressure(dewpoint)
+        r_profile = mixing_ratio(vapor_pressure_profile, pressure)
+        r_start = mixed_layer(pressure, r_profile, height=height,
+                              depth=mixed_layer_depth)[0]
+
+    # rt_profile is the temperature-pressure profile with a fixed mixing ratio
+    rt_profile = globals()['dewpoint'](vapor_pressure(pressure, r_start))
+
+    x, y = find_intersections(pressure, rt_profile, temperature,
+                              direction='increasing', log_x=True)
+
+    # In the case of multiple CCLs, select which to return
+    if which == 'top':
+        x, y = x[-1], y[-1]
+    elif which == 'bottom':
+        x, y = x[0], y[0]
+    elif which not in ['top', 'bottom', 'all']:
+        raise ValueError(f'Invalid option for "which": {which}. Valid options are '
+                         '"top", "bottom", and "all".')
+
+    x, y = x.to(pressure.units), y.to(temperature.units)
+    return x, y, dry_lapse(pressure[0], y, x).to(temperature.units)
+
+
+@exporter.export
+@preprocess_and_wrap()
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
 def lfc(pressure, temperature, dewpoint, parcel_temperature_profile=None, dewpoint_start=None,
         which='top'):
@@ -1840,7 +1943,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     temperature: `pint.Quantity`
         Air temperature
 
-    relative_humidity: array_like
+    relative_humidity: array-like
         The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
         a percentage if proper units are attached.
 
@@ -2363,14 +2466,26 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
     Parameters
     ----------
-    levels : array
+    levels : array-like
         One-dimensional array of desired potential temperature surfaces
 
-    pressure : array
+    pressure : array-like
         One-dimensional array of pressure levels
 
-    temperature : array
+    temperature : array-like
         Array of temperature
+
+    args : array-like, optional
+        Any additional variables will be interpolated to each isentropic level.
+
+    Returns
+    -------
+    list
+        List with pressure at each isentropic level, followed by each additional
+        argument interpolated to isentropic coordinates.
+
+    Other Parameters
+    ----------------
     vertical_dim : int, optional
         The axis corresponding to the vertical in the temperature array, defaults to 0.
 
@@ -2385,17 +2500,8 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
         The desired absolute error in the calculated value, defaults to 1e-6.
 
     bottom_up_search : bool, optional
-        Controls whether to search for levels bottom-up, or top-down. Defaults to
-        True, which is bottom-up search.
-
-    args : array, optional
-        Any additional variables will be interpolated to each isentropic level
-
-    Returns
-    -------
-    list
-        List with pressure at each isentropic level, followed by each additional
-        argument interpolated to isentropic coordinates.
+        Controls whether to search for levels bottom-up (starting at lower indices),
+        or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
 
     See Also
     --------
@@ -2540,8 +2646,8 @@ def isentropic_interpolation_as_dataset(
     eps : float, optional
         The desired absolute error in the calculated value, defaults to 1e-6.
     bottom_up_search : bool, optional
-        Controls whether to search for levels bottom-up, or top-down. Defaults to
-        True, which is bottom-up search.
+        Controls whether to search for levels bottom-up (starting at lower indices),
+        or top-down (starting at higher indices). Defaults to True, which is bottom-up search.
 
     Returns
     -------
@@ -2789,7 +2895,6 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Examples
     --------
     >>> from metpy.calc import dewpoint_from_relative_humidity, mixed_layer_cape_cin
-    >>> from metpy.calc import parcel_profile
     >>> from metpy.units import units
     >>> # pressure
     >>> p = [1008., 1000., 950., 900., 850., 800., 750., 700., 650., 600.,
@@ -2797,19 +2902,18 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     ...      175., 150., 125., 100., 80., 70., 60., 50.,
     ...      40., 30., 25., 20.] * units.hPa
     >>> # temperature
-    >>> T = [29.3, 28.1, 23.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
+    >>> T = [29.3, 28.1, 25.5, 20.9, 18.4, 15.9, 13.1, 10.1, 6.7, 3.1,
     ...      -0.5, -4.5, -9.0, -14.8, -21.5, -29.7, -40.0, -52.4,
     ...      -59.2, -66.5, -74.1, -78.5, -76.0, -71.6, -66.7, -61.3,
     ...      -56.3, -51.7, -50.7, -47.5] * units.degC
     >>> # relative humidity
-    >>> rh = [.85, .65, .36, .39, .82, .72, .75, .86, .65, .22, .52,
+    >>> rh = [.85, .75, .56, .39, .82, .72, .75, .86, .65, .22, .52,
     ...       .66, .64, .20, .05, .75, .76, .45, .25, .48, .76, .88,
     ...       .56, .88, .39, .67, .15, .04, .94, .35] * units.dimensionless
     >>> # calculate dewpoint
     >>> Td = dewpoint_from_relative_humidity(T, rh)
-    >>> prof = parcel_profile(p, T[0], Td[0])
-    >>> mixed_layer_cape_cin(p, T, prof, depth = 50 * units.hPa)
-    (<Quantity(6003.85223, 'joule / kilogram')>, <Quantity(0, 'joule / kilogram')>)
+    >>> mixed_layer_cape_cin(p, T, Td, depth=50 * units.hPa)
+    (<Quantity(587.144138, 'joule / kilogram')>, <Quantity(-46.8016713, 'joule / kilogram')>)
 
     See Also
     --------
@@ -3870,12 +3974,13 @@ def lifted_index(pressure, temperature, parcel_profile):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
     Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
-    LI = T500 - Tp500
+
+    .. math:: LI = T500 - Tp500
 
     where:
 
-    T500 is the measured temperature at 500 hPa
-    Tp500 is the temperature of the lifted parcel at 500 hPa
+    * :math:`T500` is the measured temperature at 500 hPa
+    * :math:`Tp500` is the temperature of the lifted parcel at 500 hPa
 
     Calculation of the lifted index is defined as the temperature difference between the
     observed 500 hPa temperature and the temperature of a parcel lifted from the
@@ -3940,15 +4045,16 @@ def k_index(pressure, temperature, dewpoint):
     """Calculate K Index from the pressure temperature and dewpoint.
 
     K Index formula derived from [George1960]_:
-    K = (T850 - T500) + Td850 - (T700 - Td700)
+
+    .. math:: K = (T850 - T500) + Td850 - (T700 - Td700)
 
     where:
 
-    T850 is the temperature at 850 hPa
-    T700 is the temperature at 700 hPa
-    T500 is the temperature at 500 hPa
-    Td850 is the dewpoint at 850 hPa
-    Td700 is the dewpoint at 700 hPa
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T700` is the temperature at 700 hPa
+    * :math:`T500` is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
+    * :math:`Td700` is the dewpoint at 700 hPa
 
     Calculation of the K Index is defined as the temperature difference between
     the static instability between 850 hPa and 500 hPa, add with the moisture
@@ -4061,7 +4167,7 @@ def gradient_richardson_number(height, potential_temperature, u, v, vertical_dim
 def scale_height(temperature_bottom, temperature_top):
     r"""Calculate the scale height of a layer.
 
-    .. math::   H = \frac{R_d \overline{T}}{g}
+    .. math:: H = \frac{R_d \overline{T}}{g}
 
     This function assumes dry air, but can be used with the virtual temperature
     to account for moisture.
@@ -4098,11 +4204,13 @@ def showalter_index(pressure, temperature, dewpoint):
     """Calculate Showalter Index.
 
     Showalter Index derived from [Galway1956]_:
-    SI = T500 - Tp500
+
+    .. math:: SI = T500 - Tp500
 
     where:
-    T500 is the measured temperature at 500 hPa
-    Tp500 is the temperature of the parcel at 500 hPa when lifted from 850 hPa
+
+    * :math:`T500` is the measured temperature at 500 hPa
+    * :math:`Tp500` is the temperature of the parcel at 500 hPa when lifted from 850 hPa
 
     Parameters
     ----------
@@ -4165,13 +4273,14 @@ def total_totals_index(pressure, temperature, dewpoint):
     """Calculate Total Totals Index from the pressure temperature and dewpoint.
 
     Total Totals Index formula derived from [Miller1972]_:
-    TT = (T850 + Td850) - (2 * T500)
+
+    .. math:: TT = (T850 + Td850) - (2 * T500)
 
     where:
 
-    T850 is the temperature at 850 hPa
-    T500 is the temperature at 500 hPa
-    Td850 is the dewpoint at 850 hPa
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
 
     Calculation of the Total Totals Index is defined as the temperature at 850 hPa plus
     the dewpoint at 850 hPa, minus twice the temperature at 500 hPa. This index consists of
@@ -4233,12 +4342,13 @@ def vertical_totals(pressure, temperature):
     """Calculate Vertical Totals from the pressure and temperature.
 
     Vertical Totals formula derived from [Miller1972]_:
-    VT = T850 - T500
+
+    .. math:: VT = T850 - T500
 
     where:
 
-    T850 is the temperature at 850 hPa
-    T500 is the temperature at 500 hPa
+    * :math:`T850` is the temperature at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
 
     Calculation of the Vertical Totals is defined as the temperature difference between
     850 hPa and 500 hPa. This is a part of the Total Totals Index.
@@ -4290,12 +4400,13 @@ def cross_totals(pressure, temperature, dewpoint):
     """Calculate Cross Totals from the pressure temperature and dewpoint.
 
     Cross Totals formula derived from [Miller1972]_:
-    CT = Td850 - T500
+
+    .. math:: CT = Td850 - T500
 
     where:
 
-    Td850 is the dewpoint at 850 hPa
-    T500 is the temperature at 500 hPa
+    * :math:`Td850` is the dewpoint at 850 hPa
+    * :math:`T500` is the temperature at 500 hPa
 
     Calculation of the Cross Totals is defined as the difference between dewpoint
     at 850 hPa and temperature at 500 hPa. This is a part of the Total Totals Index.
@@ -4347,3 +4458,87 @@ def cross_totals(pressure, temperature, dewpoint):
 
     # Calculate vertical totals.
     return td850 - t500
+
+
+@exporter.export
+@preprocess_and_wrap()
+@check_units('[pressure]', '[temperature]', '[temperature]', '[speed]')
+def sweat_index(pressure, temperature, dewpoint, speed, direction):
+    """Calculate SWEAT Index.
+
+    SWEAT Index derived from [Miller1972]_:
+
+    .. math:: SWEAT = 12Td_{850} + 20(TT - 49) + 2f_{850} + f_{500} + 125(S + 0.2)
+
+    where:
+
+    * :math:`Td_{850}` is the dewpoint at 850 hPa; the first term is set to zero
+      if :math:`Td_{850}` is negative.
+    * :math:`TT` is the total totals index; the second term is set to zero
+      if :math:`TT` is less than 49
+    * :math:`f_{850}` is the wind speed at 850 hPa
+    * :math:`f_{500}` is the wind speed at 500 hPa
+    * :math:`S` is the shear term: :math:`sin{(dd_{850} - dd_{500})}`, where
+      :math:`dd_{850}` and :math:`dd_{500}` are the wind directions at 850 hPa and 500 hPa,
+      respectively. It is set to zero if any of the following conditions are not met:
+
+    1. :math:`dd_{850}` is between 130 - 250 degrees
+    2. :math:`dd_{500}` is between 210 - 310 degrees
+    3. :math:`dd_{500} - dd_{850} > 0`
+    4. both the wind speeds are greater than or equal to 15 kts
+
+    Calculation of the SWEAT Index consists of a low-level moisture, instability,
+    and the vertical wind shear (both speed and direction). This index aim to
+    determine the likeliness of severe weather and tornadoes.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level(s), in order from highest to lowest pressure
+
+    temperature : `pint.Quantity`
+        Temperature corresponding to pressure
+
+    dewpoint : `pint.Quantity`
+        Dewpoint temperature corresponding to pressure
+
+    speed : `pint.Quantity`
+        Wind speed corresponding to pressure
+
+    direction : `pint.Quantity`
+        Wind direction corresponding to pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        SWEAT Index
+
+    """
+    # Find dewpoint at 850 hPa.
+    td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, dewpoint)
+
+    # Find total totals index.
+    tt = total_totals_index(pressure, temperature, dewpoint)
+
+    # Find wind speed and direction at 850 and 500 hPa
+    (f850, f500), (dd850, dd500) = interpolate_1d(units.Quantity([850, 500],
+                                                  'hPa'), pressure, speed,
+                                                  direction)
+
+    # First term is set to zero if Td850 is negative
+    first_term = 12 * np.clip(td850.m_as('degC'), 0, None)
+
+    # Second term is set to zero if TT is less than 49
+    second_term = 20 * np.clip(tt.m_as('degC') - 49, 0, None)
+
+    # Shear term is set to zero if any of four conditions are not met
+    required = ((units.Quantity(130, 'deg') <= dd850) & (dd850 <= units.Quantity(250, 'deg'))
+                & (units.Quantity(210, 'deg') <= dd500) & (dd500 <= units.Quantity(310, 'deg'))
+                & (dd500 - dd850 > 0)
+                & (f850 >= units.Quantity(15, 'knots'))
+                & (f500 >= units.Quantity(15, 'knots')))
+    shear_term = np.atleast_1d(125 * (np.sin(dd500 - dd850) + 0.2))
+    shear_term[~required] = 0
+
+    # Calculate sweat index.
+    return first_term + second_term + (2 * f850.m) + f500.m + shear_term

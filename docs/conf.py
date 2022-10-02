@@ -69,13 +69,34 @@ myst_heading_anchors = 2
 
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
-                       'pint': ('https://pint.readthedocs.io/en/stable/', None),
+                       'cartopy': ('https://scitools.org.uk/cartopy/docs/latest/', None),
                        'matplotlib': ('https://matplotlib.org/stable/', None),
-                       'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://numpy.org/doc/stable/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+                       'pandas': ('https://pandas.pydata.org/docs/', None),
+                       'pint': ('https://pint.readthedocs.io/en/stable/', None),
+                       'pyproj': ('https://pyproj4.github.io/pyproj/stable/', None),
+                       'python': ('https://docs.python.org/3/', None),
+                       'scipy': ('https://docs.scipy.org/doc/scipy/', None),
                        'xarray': ('https://docs.xarray.dev/en/stable/', None)
                        }
+
+nitpicky = True
+nitpick_ignore = [
+    ('py:class', 'M'), ('py:class', 'N'), ('py:class', 'P'), ('py:class', '2'),
+    ('py:class', 'optional'), ('py:class', 'array-like'), ('py:class', 'file-like object'),
+    # For traitlets docstrings
+    ('py:class', 'All'), ('py:class', 'callable'),
+    # Next two are from Python dict docstring that we inherit
+    ('py:class', 'a shallow copy of D'),
+    ('py:class', 'v, remove specified key and return the corresponding value.')
+]
+
+nitpick_ignore_regex = [
+    ('py:class', r'default:.*'),  # For some traitlets docstrings
+    ('py:class', r'.*object providing a view on.*'),  # Python dict docstring
+    ('py:class', r'None.  .*'),  # Python dict docstring
+    ('py:class', r'.*D\[k\].*'),  # Python dict docstring
+]
 
 # Tweak how docs are formatted
 napoleon_use_rtype = False

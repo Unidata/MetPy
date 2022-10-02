@@ -127,4 +127,4 @@ def test_interpolate_to_grid_pandas():
     }, index=[1, 2, 3, 4, 5, 6])
     interpolate_to_grid(
         df['lon'], df['lat'], df['tmp'],
-        interp_type='natural_neighbor', hres=0.5)
+        interp_type='natural_neighbor', hres=0.6)

@@ -8,7 +8,7 @@ objects; this allows reading files that are already in memory
 (using :class:`python:io.StringIO`) or remote files
 (using :func:`~python:urllib.request.urlopen`).
 
-`station_info` is an instance of `StationLookup` to find information about station locations
+``station_info`` is an instance of `StationLookup` to find information about station locations
 (e.g. latitude, longitude, altitude) from various sources.
 """
 

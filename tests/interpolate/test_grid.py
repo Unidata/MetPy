@@ -73,8 +73,8 @@ def test_get_xy_steps():
 
     x_steps, y_steps = get_xy_steps(bbox, 3)
 
-    truth_x = 3
-    truth_y = 3
+    truth_x = 4
+    truth_y = 4
 
     assert x_steps == truth_x
     assert y_steps == truth_y
@@ -105,13 +105,15 @@ def test_generate_grid():
 
     gx, gy = generate_grid(3, bbox)
 
-    truth_x = np.array([[0.0, 4.5, 9.0],
-                        [0.0, 4.5, 9.0],
-                        [0.0, 4.5, 9.0]])
+    truth_x = np.array([[0.0, 3.0, 6.0, 9.0],
+                        [0.0, 3.0, 6.0, 9.0],
+                        [0.0, 3.0, 6.0, 9.0],
+                        [0.0, 3.0, 6.0, 9.0]])
 
-    truth_y = np.array([[0.0, 0.0, 0.0],
-                        [4.5, 4.5, 4.5],
-                        [9.0, 9.0, 9.0]])
+    truth_y = np.array([[0.0, 0.0, 0.0, 0.0],
+                        [3.0, 3.0, 3.0, 3.0],
+                        [6.0, 6.0, 6.0, 6.0],
+                        [9.0, 9.0, 9.0, 9.0]])
 
     assert_array_almost_equal(gx, truth_x)
     assert_array_almost_equal(gy, truth_y)
@@ -127,13 +129,20 @@ def test_generate_grid_coords():
     gx, gy = generate_grid(3, bbox)
 
     truth = [[0.0, 0.0],
-             [4.5, 0.0],
+             [3.0, 0.0],
+             [6.0, 0.0],
              [9.0, 0.0],
-             [0.0, 4.5],
-             [4.5, 4.5],
-             [9.0, 4.5],
+             [0.0, 3.0],
+             [3.0, 3.0],
+             [6.0, 3.0],
+             [9.0, 3.0],
+             [0.0, 6.0],
+             [3.0, 6.0],
+             [6.0, 6.0],
+             [9.0, 6.0],
              [0.0, 9.0],
-             [4.5, 9.0],
+             [3.0, 9.0],
+             [6.0, 9.0],
              [9.0, 9.0]]
 
     pts = generate_grid_coords(gx, gy)
@@ -266,7 +275,13 @@ def test_interpolate_to_grid(method, assume_units, test_coords, boundary_coords)
         z = units.Quantity(z, assume_units)
         truth = units.Quantity(truth, assume_units)
 
-    _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
+    # Value is tuned to keep the old results working after fixing an off-by-one error
+    # in the grid generation (desired value was 10) See #2319.
+    hres = 10.121
+    xg, yg, img = interpolate_to_grid(xp, yp, z, hres=hres, interp_type=method, **extra_kw)
+
+    assert np.all(np.diff(xg, axis=-1) <= hres)
+    assert np.all(np.diff(yg, axis=0) <= hres)
     assert_array_almost_equal(truth, img)
 
 

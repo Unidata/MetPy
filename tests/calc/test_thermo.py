@@ -10,7 +10,7 @@ import pytest
 import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
-                        brunt_vaisala_period, cape_cin, cross_totals, density, dewpoint,
+                        brunt_vaisala_period, cape_cin, ccl, cross_totals, density, dewpoint,
                         dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
                         exner_function, gradient_richardson_number, InvalidSoundingError,
@@ -27,7 +27,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         saturation_equivalent_potential_temperature, saturation_mixing_ratio,
                         saturation_vapor_pressure, showalter_index,
                         specific_humidity_from_dewpoint, specific_humidity_from_mixing_ratio,
-                        static_stability, surface_based_cape_cin,
+                        static_stability, surface_based_cape_cin, sweat_index,
                         temperature_from_potential_temperature, thickness_hydrostatic,
                         thickness_hydrostatic_from_relative_humidity, total_totals_index,
                         vapor_pressure, vertical_totals, vertical_velocity,
@@ -397,6 +397,129 @@ def test_lcl_nans():
                                                    np.nan, 836.4098648012595]) * units.hPa)
     assert_array_almost_equal(lcl_temp, np.array([np.nan, 18.82281982535794,
                                                   np.nan, 18.82281982535794]) * units.degC)
+
+
+def test_ccl_basic():
+    """First test of CCL calculation. Data: ILX, June 17 2022 00Z."""
+    pressure = np.array([993.0, 984.0, 957.0, 948.0, 925.0, 917.0, 886.0, 868.0, 850.0,
+                         841.0, 813.0, 806.0, 798.0, 738.0, 732.0, 723.0, 716.0, 711.0,
+                         700.0, 623.0, 621.0, 582.0, 541.0, 500.0, 468.0]) * units.mbar
+    temperature = np.array([34.6, 33.7, 31.1, 30.1, 27.8, 27.1, 24.3, 22.6, 21.4,
+                            20.8, 19.6, 19.4, 18.7, 13.0, 13.0, 13.4, 13.5, 13.6,
+                            13.0, 5.2, 5.0, 1.5, -2.4, -6.7, -10.7]) * units.degC
+    dewpoint = np.array([19.6, 19.4, 18.7, 18.4, 17.8, 17.5, 16.3, 15.6, 12.4, 10.8,
+                         -0.4, -3.6, -3.8, -5.0, -6.0, -15.6, -13.2, -11.4, -11.0,
+                         -5.8, -6.2, -14.8, -24.3, -34.7, -38.1]) * units.degC
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
+    assert_almost_equal(ccl_p, 763.006048 * units.mbar, 5)
+    assert_almost_equal(ccl_t, 15.429946 * units.degC, 5)
+    assert_almost_equal(t_c, 37.991498 * units.degC, 5)
+
+
+def test_ccl_nans():
+    """Tests CCL handles nans."""
+    pressure = np.array([993.0, 984.0, 957.0, np.nan, 925.0, 917.0, np.nan, 868.0, 850.0,
+                         841.0, 813.0, 806.0, 798.0, 738.0, 732.0, 723.0, 716.0, 711.0,
+                         700.0, 623.0, 621.0, 582.0, 541.0, 500.0, 468.0]) * units.mbar
+    temperature = np.array([34.6, np.nan, 31.1, np.nan, 27.8, 27.1, 24.3, 22.6, 21.4,
+                            20.8, 19.6, 19.4, 18.7, 13.0, 13.0, 13.4, 13.5, 13.6,
+                            13.0, 5.2, 5.0, 1.5, -2.4, -6.7, -10.7]) * units.degC
+    dewpoint = np.array([19.6, 19.4, 18.7, np.nan, 17.8, 17.5, 16.3, 15.6, 12.4, 10.8,
+                         -0.4, -3.6, -3.8, -5.0, -6.0, -15.6, -13.2, -11.4, -11.0,
+                         -5.8, -6.2, -14.8, -24.3, -34.7, -38.1]) * units.degC
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
+    assert_almost_equal(ccl_p, 763.006048 * units.mbar, 5)
+    assert_almost_equal(ccl_t, 15.429946 * units.degC, 5)
+    assert_almost_equal(t_c, 37.991498 * units.degC, 5)
+
+
+def test_ccl_unit():
+    """Tests CCL pressure and temperature is returned in the correct unit."""
+    pressure = (np.array([993.0, 984.0, 957.0, 948.0, 925.0, 917.0, 886.0, 868.0, 850.0,
+                         841.0, 813.0, 806.0, 798.0, 738.0, 732.0, 723.0, 716.0, 711.0,
+                         700.0, 623.0, 621.0, 582.0, 541.0, 500.0, 468.0]) * 100) * units.Pa
+    temperature = (np.array([34.6, 33.7, 31.1, 30.1, 27.8, 27.1, 24.3, 22.6, 21.4,
+                             20.8, 19.6, 19.4, 18.7, 13.0, 13.0, 13.4, 13.5, 13.6,
+                             13.0, 5.2, 5.0, 1.5, -2.4, -6.7, -10.7]) + 273.15) * units.kelvin
+    dewpoint = (np.array([19.6, 19.4, 18.7, 18.4, 17.8, 17.5, 16.3, 15.6, 12.4, 10.8,
+                          -0.4, -3.6, -3.8, -5.0, -6.0, -15.6, -13.2, -11.4, -11.0,
+                          -5.8, -6.2, -14.8, -24.3, -34.7, -38.1]) + 273.15) * units.kelvin
+
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
+    assert_almost_equal(ccl_p, (763.006048 * 100) * units.Pa, 3)
+    assert_almost_equal(ccl_t, (15.429946 + 273.15) * units.kelvin, 3)
+    assert_almost_equal(t_c, (37.991498 + 273.15) * units.kelvin, 3)
+
+    assert ccl_p.units == pressure.units
+    assert ccl_t.units == temperature.units
+    assert t_c.units == temperature.units
+
+
+def test_multiple_ccl():
+    """Tests the case where there are multiple CCLs. Data: BUF, May 18 2022 12Z."""
+    pressure = np.array([992.0, 990.0, 983.0, 967.0, 950.0, 944.0, 928.0, 925.0, 922.0,
+                         883.0, 877.7, 858.0, 853.0, 850.0, 835.0, 830.0, 827.0, 826.0,
+                         813.6, 808.0, 799.0, 784.0, 783.3, 769.0, 760.0, 758.0, 754.0,
+                         753.0, 738.0, 725.7, 711.0, 704.0, 700.0, 685.0, 672.0, 646.6,
+                         598.6, 596.0, 587.0, 582.0, 567.0, 560.0, 555.0, 553.3, 537.0,
+                         526.0, 521.0, 519.0, 515.0, 500.0]) * units.mbar
+    temperature = np.array([6.8, 6.2, 7.8, 7.6, 7.2, 7.6, 6.6, 6.4, 6.2, 3.2, 2.8, 1.2,
+                            1.0, 0.8, -0.3, -0.1, 0.4, 0.6, 0.9, 1.0, 0.6, -0.3, -0.3,
+                            -0.7, -1.5, -1.3, 0.2, 0.2, -1.1, -2.1, -3.3, -2.3, -1.7, 0.2,
+                            -0.9, -3.0, -7.3, -7.5, -8.1, -8.3, -9.5, -10.1, -10.7,
+                            -10.8, -12.1, -12.5, -12.7, -12.9, -13.5, -15.5]) * units.degC
+    dewpoint = np.array([5.1, 5.0, 4.2, 2.7, 2.2, 0.6, -2.4, -2.6, -2.8, -3.8, -3.6,
+                        -3.1, -5.0, -4.2, -1.8, -4.3, -7.6, -6.4, -8.2, -9.0, -10.4,
+                        -9.3, -9.6, -14.7, -11.5, -12.3, -25.8, -25.8, -19.1, -19.6,
+                        -20.3, -42.3, -39.7, -46.8, -46.8, -46.7, -46.5, -46.5,
+                        -52.1, -36.3, -47.5, -30.1, -29.7, -30.4, -37.1, -49.5,
+                        -36.7, -28.9, -28.5, -22.5]) * units.degC
+
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint)
+    assert_almost_equal(ccl_p, 680.191653 * units.mbar, 5)
+    assert_almost_equal(ccl_t, -0.204408 * units.degC, 5)
+    assert_almost_equal(t_c, 30.8678258 * units.degC, 5)
+
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint, which='bottom')
+    assert_almost_equal(ccl_p, 886.835325 * units.mbar, 5)
+    assert_almost_equal(ccl_t, 3.500840 * units.degC, 5)
+    assert_almost_equal(t_c, 12.5020423 * units.degC, 5)
+
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint, which='all')
+    assert_array_almost_equal(ccl_p, np.array([886.835325, 680.191653]) * units.mbar, 5)
+    assert_array_almost_equal(ccl_t, np.array([3.500840, -0.204408]) * units.degC, 5)
+    assert_array_almost_equal(t_c, np.array([12.5020423, 30.8678258]) * units.degC, 5)
+
+
+def test_ccl_with_ml():
+    """Test CCL calculation with a specified mixed-layer depth."""
+    pressure = np.array([992.0, 990.0, 983.0, 967.0, 950.0, 944.0, 928.0, 925.0, 922.0,
+                         883.0, 877.7, 858.0, 853.0, 850.0, 835.0, 830.0, 827.0, 826.0,
+                         813.6, 808.0, 799.0, 784.0, 783.3, 769.0, 760.0, 758.0, 754.0,
+                         753.0, 738.0, 725.7, 711.0, 704.0, 700.0, 685.0, 672.0, 646.6,
+                         598.6, 596.0, 587.0, 582.0, 567.0, 560.0, 555.0, 553.3, 537.0,
+                         526.0, 521.0, 519.0, 515.0, 500.0]) * units.mbar
+    temperature = np.array([6.8, 6.2, 7.8, 7.6, 7.2, 7.6, 6.6, 6.4, 6.2, 3.2, 2.8, 1.2,
+                            1.0, 0.8, -0.3, -0.1, 0.4, 0.6, 0.9, 1.0, 0.6, -0.3, -0.3,
+                            -0.7, -1.5, -1.3, 0.2, 0.2, -1.1, -2.1, -3.3, -2.3, -1.7, 0.2,
+                            -0.9, -3.0, -7.3, -7.5, -8.1, -8.3, -9.5, -10.1, -10.7,
+                            -10.8, -12.1, -12.5, -12.7, -12.9, -13.5, -15.5]) * units.degC
+    dewpoint = np.array([5.1, 5.0, 4.2, 2.7, 2.2, 0.6, -2.4, -2.6, -2.8, -3.8, -3.6,
+                        -3.1, -5.0, -4.2, -1.8, -4.3, -7.6, -6.4, -8.2, -9.0, -10.4,
+                        -9.3, -9.6, -14.7, -11.5, -12.3, -25.8, -25.8, -19.1, -19.6,
+                        -20.3, -42.3, -39.7, -46.8, -46.8, -46.7, -46.5, -46.5,
+                        -52.1, -36.3, -47.5, -30.1, -29.7, -30.4, -37.1, -49.5,
+                        -36.7, -28.9, -28.5, -22.5]) * units.degC
+
+    ccl_p, ccl_t, t_c = ccl(pressure, temperature, dewpoint,
+                            mixed_layer_depth=500 * units.m, which='all')
+
+    assert_array_almost_equal(ccl_p, np.array(
+        [850.600930, 784.325312, 737.767377, 648.076147]) * units.mbar, 5)
+    assert_array_almost_equal(ccl_t, np.array(
+        [0.840118, -0.280299, -1.118757, -2.875716]) * units.degC, 5)
+    assert_array_almost_equal(t_c, np.array(
+        [13.146845, 18.661621, 22.896152, 32.081388]) * units.degC, 5)
 
 
 def test_lfc_basic():
@@ -2157,3 +2280,40 @@ def test_parcel_profile_with_lcl_as_dataset_duplicates():
     profile = parcel_profile_with_lcl_as_dataset(pressure, temperature, dewpoint)
 
     xr.testing.assert_allclose(profile, truth, atol=1e-5)
+
+
+def test_sweat_index():
+    """Test the SWEAT Index calculation."""
+    pressure = np.array([1008., 1000., 947., 925., 921., 896., 891., 889., 866.,
+                         858., 850., 835., 820., 803., 733., 730., 700., 645.,
+                         579., 500., 494., 466., 455., 441., 433., 410., 409.,
+                         402., 400., 390., 388., 384., 381., 349., 330., 320.,
+                         306., 300., 278., 273., 250., 243., 208., 200., 196.,
+                         190., 179., 159., 151., 150., 139.]) * units.hPa
+    temperature = np.array([27.4, 26.4, 22.9, 21.4, 21.2, 20.7, 20.6, 21.2, 19.4,
+                            19.1, 18.8, 17.8, 17.4, 16.3, 11.4, 11.2, 10.2, 6.1,
+                            0.6, -4.9, -5.5, -8.5, -9.9, -11.7, -12.3, -13.7, -13.8,
+                            -14.9, -14.9, -16.1, -16.1, -16.9, -17.3, -21.7, -24.5, -26.1,
+                            -28.3, -29.5, -33.1, -34.2, -39.3, -41., -50.2, -52.5, -53.5,
+                            -55.2, -58.6, -65.2, -68.1, -68.5, -72.5]) * units.degC
+    dewpoint = np.array([24.9, 24.6, 22., 20.9, 20.7, 14.8, 13.6, 12.2, 16.8,
+                         16.6, 16.5, 15.9, 13.6, 13.2, 11.3, 11.2, 8.6, 4.5,
+                         -0.8, -8.1, -9.5, -12.7, -12.7, -12.8, -13.1, -24.7, -24.4,
+                         -21.9, -24.9, -36.1, -31.1, -26.9, -27.4, -33., -36.5, -47.1,
+                         -31.4, -33.5, -40.1, -40.8, -44.1, -45.6, -54., -56.1, -56.9,
+                         -58.6, -61.9, -68.4, -71.2, -71.6, -77.2]) * units.degC
+    speed = np.array([0., 3., 10., 12., 12., 14., 14., 14., 12.,
+                      12., 12., 12., 11., 11., 12., 12., 10., 10.,
+                      8., 5., 4., 1., 0., 3., 5., 10., 10.,
+                      11., 11., 13., 14., 14., 15., 23., 23., 24.,
+                      24., 24., 26., 27., 28., 30., 25., 24., 26.,
+                      28., 33., 29., 32., 26., 26.]) * units.knot
+    direction = np.array([0., 170., 200., 205., 204., 200., 197., 195., 180.,
+                          175., 175., 178., 181., 185., 160., 160., 165., 165.,
+                          203., 255., 268., 333., 0., 25., 40., 83., 85.,
+                          89., 90., 100., 103., 107., 110., 90., 88., 87.,
+                          86., 85., 85., 85., 60., 55., 60., 50., 46.,
+                          40., 45., 35., 50., 50., 50.]) * units.degree
+
+    sweat = sweat_index(pressure, temperature, dewpoint, speed, direction)
+    assert_almost_equal(sweat, 227., 2)

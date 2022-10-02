@@ -40,7 +40,7 @@ def get_upper_air_data(date, station):
 
     Parameters
     ----------
-    time : datetime
+    time : `~datetime.datetime`
           The date and time of the desired observation.
     station : str
          The three letter ICAO identifier of the station for which data should be
