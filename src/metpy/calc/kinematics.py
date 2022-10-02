@@ -1081,10 +1081,8 @@ def q_vector(
 @preprocess_and_wrap(broadcast=('height', 'u', 'latitude', 'potential_temperature'))
 @check_units('[temperature]', '[speed]', '[length]', '[dimensionless]')
 def eady_growth_rate(potential_temperature, u, height, latitude, vertical_dim=0):
-    r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability
-
+    r"""Calculate Eady growth rate (EGR) which is measure of baroclinic instability.
     .. math::  \frac{0.3098 g}{|f|} \frac{|du/dheight|}{N}
-    where:
     * :math:`g` is the gravitational acceleration
     * :math:`f` is the Coriolis parameter
     * :math:`N` is the Brunt-Vaisala frequency
