@@ -1114,9 +1114,8 @@ def eady_growth_rate(potential_temperature, u, height, latitude, vertical_dim=0)
     >>> potential_temperature = [1.012, 1.925, 1.850, 2.700, 2.500, 4.400] * units.K
     >>> h = [0.250, 0.700, 0.1500, 0.3100, 0.5720, 0.7120] * units.meters
     >>> u = [0.165, 0.180, 0.190, 0.210, 0.220, 0.250] * units('m/s')
-    >>> lattitude= [5, 0.5, 0.20, 0.30, 0.50, 0.60]* units('') 
-    >>> # compute edr
-    >>> print(eady_growth_rate(potential_temperature,u,h,lattitude))
+    >>> latitude = [5, 0.5, 0.20, 0.30, 0.50, 0.60] * units('degree') 
+    >>> eady_growth_rate(potential_temperature, u, h, latitude)
     """
    
     dudheight = first_derivative(u, x=height, axis=vertical_dim)
