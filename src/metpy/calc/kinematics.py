@@ -1119,7 +1119,7 @@ def eady_growth_rate(potential_temperature, u, height, latitude, vertical_dim=0)
     """
    
     dudheight = first_derivative(u, x=height, axis=vertical_dim)
-    egr = 0.3098 * mpconsts.earth_gravity * abs(1 / coriolis_parameter(latitude)) * abs(dudheight) / brunt_vaisala_frequency(height, potential_temperature)
+    egr = 0.3098 * mpconsts.earth_gravity * np.abs(1 / coriolis_parameter(latitude)) * np.abs(dudheight) / brunt_vaisala_frequency(height, potential_temperature)
     return egr
     
 
