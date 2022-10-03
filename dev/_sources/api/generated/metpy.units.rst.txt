@@ -21,9 +21,11 @@ Units ``(metpy.units)``
    
       check_units
       concatenate
+      is_quantity
       masked_array
       pandas_dataframe_to_unit_arrays
       process_units
+      setup_registry
    
    
 

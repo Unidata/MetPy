@@ -209,6 +209,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="metpy.units.is_quantity.html">
+     is_quantity
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="metpy.units.masked_array.html">
      masked_array
     </a>
@@ -221,6 +226,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="metpy.units.process_units.html">
      process_units
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="metpy.units.setup_registry.html">
+     setup_registry
     </a>
    </li>
   </ul>
@@ -1343,14 +1353,20 @@ import this registry and use it to grab units.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.units.concatenate.html#metpy.units.concatenate" title="metpy.units.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(arrs[, axis])</p></td>
 <td><p>Concatenate multiple values into a new quantity.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.masked_array.html#metpy.units.masked_array" title="metpy.units.masked_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">masked_array</span></code></a>(data[, data_units])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.is_quantity.html#metpy.units.is_quantity" title="metpy.units.is_quantity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quantity</span></code></a>(*args)</p></td>
+<td><p>Check whether an instance is a quantity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.masked_array.html#metpy.units.masked_array" title="metpy.units.masked_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">masked_array</span></code></a>(data[, data_units])</p></td>
 <td><p>Create a <a class="reference external" href="https://numpy.org/doc/stable/reference/maskedarray.baseclass.html#numpy.ma.MaskedArray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ma.MaskedArray</span></code></a> with units attached.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays" title="metpy.units.pandas_dataframe_to_unit_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas_dataframe_to_unit_arrays</span></code></a>(df[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays" title="metpy.units.pandas_dataframe_to_unit_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas_dataframe_to_unit_arrays</span></code></a>(df[, ...])</p></td>
 <td><p>Attach units to data in pandas dataframes and return quantities.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.process_units.html#metpy.units.process_units" title="metpy.units.process_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_units</span></code></a>(input_dimensionalities, ...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.units.process_units.html#metpy.units.process_units" title="metpy.units.process_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_units</span></code></a>(input_dimensionalities, ...[, ...])</p></td>
 <td><p>Wrap a non-Quantity-using function in base units to fully handle units.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.units.setup_registry.html#metpy.units.setup_registry" title="metpy.units.setup_registry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_registry</span></code></a>(reg)</p></td>
+<td><p>Set up a given registry with MetPy's default tweaks and settings.</p></td>
 </tr>
 </tbody>
 </table>

@@ -211,6 +211,7 @@
 <span class="sd">    import this registry and use it to grab units.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">signature</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -233,38 +234,55 @@
     <span class="s1">&#39;[speed]&#39;</span><span class="p">:</span> <span class="s1">&#39;m s**-1&#39;</span>
 <span class="p">}</span>
 
-<span class="c1"># Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs</span>
-<span class="n">units</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span>
-    <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">preprocessors</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-            <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span>
-            <span class="sa">r</span><span class="s1">&#39;(?&lt;=[A-Za-z\)])(?![A-Za-z\)])(?&lt;![0-9\-][eE])(?&lt;![0-9\-])(?=[0-9\-])&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;**&#39;</span>
-        <span class="p">),</span>
-        <span class="k">lambda</span> <span class="n">string</span><span class="p">:</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">)</span>
-    <span class="p">]</span>
-<span class="p">)</span>
 
-<span class="c1"># Capture v0.10 NEP 18 warning on first creation</span>
-<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-    <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">([])</span>
+<span class="k">def</span> <span class="nf">_fix_udunits_powers</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replace UDUNITS-style powers (m2 s-2) with exponent symbols (m**2 s**-2).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_UDUNIT_POWER</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
 
-<span class="c1"># Add a percent unit</span>
-<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;percent = 0.01 = %&#39;</span><span class="p">)</span>
 
-<span class="c1"># Define commonly encountered units not defined by pint</span>
-<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_north = degree = degrees_N = degreesN = degree_north = degree_N &#39;</span>
-             <span class="s1">&#39;= degreeN&#39;</span><span class="p">)</span>
-<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE&#39;</span><span class="p">)</span>
+<span class="c1"># Fix UDUNITS-style powers and percent signs</span>
+<span class="n">_UDUNIT_POWER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?&lt;=[A-Za-z\)])(?![A-Za-z\)])&#39;</span>
+                           <span class="sa">r</span><span class="s1">&#39;(?&lt;![0-9\-][eE])(?&lt;![0-9\-])(?=[0-9\-])&#39;</span><span class="p">)</span>
+<span class="n">_unit_preprocessors</span> <span class="o">=</span> <span class="p">[</span><span class="n">_fix_udunits_powers</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">string</span><span class="p">:</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;percent&#39;</span><span class="p">)]</span>
 
-<span class="c1"># Alias geopotential meters (gpm) to just meters</span>
-<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;@alias meter = gpm&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="setup_registry"><a class="viewcode-back" href="../../api/generated/metpy.units.setup_registry.html#metpy.units.setup_registry">[docs]</a><span class="k">def</span> <span class="nf">setup_registry</span><span class="p">(</span><span class="n">reg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set up a given registry with MetPy&#39;s default tweaks and settings.&quot;&quot;&quot;</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">autoconvert_offset_to_baseunit</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># For Pint 0.18.0, need to deal with the fact that the wrapper isn&#39;t forwarding on setting</span>
+    <span class="c1"># the attribute.</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
+        <span class="n">reg</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">autoconvert_offset_to_baseunit</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">for</span> <span class="n">pre</span> <span class="ow">in</span> <span class="n">_unit_preprocessors</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pre</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reg</span><span class="o">.</span><span class="n">preprocessors</span><span class="p">:</span>
+            <span class="n">reg</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span>
+
+    <span class="c1"># Add a percent unit</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;percent = 0.01 = %&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Define commonly encountered units not defined by pint</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_north = degree = degrees_N = degreesN = degree_north = degree_N &#39;</span>
+               <span class="s1">&#39;= degreeN&#39;</span><span class="p">)</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_east = degree = degrees_E = degreesE = degree_east = degree_E &#39;</span>
+               <span class="s1">&#39;= degreeE&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Alias geopotential meters (gpm) to just meters</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;@alias meter = gpm&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Enable pint&#39;s built-in matplotlib support</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">setup_matplotlib</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">reg</span></div>
+
+
+<span class="c1"># Make our modifications using pint&#39;s application registry--which allows us to better</span>
+<span class="c1"># interoperate with other libraries using Pint.</span>
+<span class="n">units</span> <span class="o">=</span> <span class="n">setup_registry</span><span class="p">(</span><span class="n">pint</span><span class="o">.</span><span class="n">get_application_registry</span><span class="p">())</span>
 
 <span class="c1"># Silence UnitStrippedWarning</span>
-<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pint</span><span class="p">,</span> <span class="s1">&#39;UnitStrippedWarning&#39;</span><span class="p">):</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">pint</span><span class="o">.</span><span class="n">UnitStrippedWarning</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">pint</span><span class="o">.</span><span class="n">UnitStrippedWarning</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="pandas_dataframe_to_unit_arrays"><a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a><span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -300,6 +318,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">res</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="is_quantity"><a class="viewcode-back" href="../../api/generated/metpy.units.is_quantity.html#metpy.units.is_quantity">[docs]</a><span class="k">def</span> <span class="nf">is_quantity</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check whether an instance is a quantity.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">pint</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -567,12 +590,6 @@
 
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">dec</span></div>
-
-
-<span class="c1"># Enable pint&#39;s built-in matplotlib support</span>
-<span class="n">units</span><span class="o">.</span><span class="n">setup_matplotlib</span><span class="p">()</span>
-
-<span class="k">del</span> <span class="n">pint</span>
 </pre></div>
 
               </div>
