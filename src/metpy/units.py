@@ -15,6 +15,7 @@ units : :class: `pint.UnitRegistry()`
     import this registry and use it to grab units.
 
 """
+import contextlib
 import functools
 from inspect import Parameter, signature
 import logging
@@ -37,38 +38,55 @@ _base_unit_of_dimensionality = {
     '[speed]': 'm s**-1'
 }
 
-# Create registry, with preprocessors for UDUNITS-style powers (m2 s-2) and percent signs
-units = pint.UnitRegistry(
-    autoconvert_offset_to_baseunit=True,
-    preprocessors=[
-        functools.partial(
-            re.sub,
-            r'(?<=[A-Za-z\)])(?![A-Za-z\)])(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])',
-            '**'
-        ),
-        lambda string: string.replace('%', 'percent')
-    ]
-)
 
-# Capture v0.10 NEP 18 warning on first creation
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore')
-    units.Quantity([])
+def _fix_udunits_powers(string):
+    """Replace UDUNITS-style powers (m2 s-2) with exponent symbols (m**2 s**-2)."""
+    return _UDUNIT_POWER.sub('**', string)
 
-# Add a percent unit
-units.define('percent = 0.01 = %')
 
-# Define commonly encountered units not defined by pint
-units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
-             '= degreeN')
-units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
+# Fix UDUNITS-style powers and percent signs
+_UDUNIT_POWER = re.compile(r'(?<=[A-Za-z\)])(?![A-Za-z\)])'
+                           r'(?<![0-9\-][eE])(?<![0-9\-])(?=[0-9\-])')
+_unit_preprocessors = [_fix_udunits_powers, lambda string: string.replace('%', 'percent')]
 
-# Alias geopotential meters (gpm) to just meters
-units.define('@alias meter = gpm')
+
+def setup_registry(reg):
+    """Set up a given registry with MetPy's default tweaks and settings."""
+    reg.autoconvert_offset_to_baseunit = True
+
+    # For Pint 0.18.0, need to deal with the fact that the wrapper isn't forwarding on setting
+    # the attribute.
+    with contextlib.suppress(AttributeError):
+        reg.get().autoconvert_offset_to_baseunit = True
+
+    for pre in _unit_preprocessors:
+        if pre not in reg.preprocessors:
+            reg.preprocessors.append(pre)
+
+    # Add a percent unit
+    reg.define('percent = 0.01 = %')
+
+    # Define commonly encountered units not defined by pint
+    reg.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
+               '= degreeN')
+    reg.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E '
+               '= degreeE')
+
+    # Alias geopotential meters (gpm) to just meters
+    reg.define('@alias meter = gpm')
+
+    # Enable pint's built-in matplotlib support
+    reg.setup_matplotlib()
+
+    return reg
+
+
+# Make our modifications using pint's application registry--which allows us to better
+# interoperate with other libraries using Pint.
+units = setup_registry(pint.get_application_registry())
 
 # Silence UnitStrippedWarning
-if hasattr(pint, 'UnitStrippedWarning'):
-    warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
+warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
@@ -104,6 +122,11 @@ def pandas_dataframe_to_unit_arrays(df, column_units=None):
         else:
             res[column] = df[column].values
     return res
+
+
+def is_quantity(*args):
+    """Check whether an instance is a quantity."""
+    return all(isinstance(a, pint.Quantity) for a in args)
 
 
 def concatenate(arrs, axis=0):
@@ -371,9 +394,3 @@ def process_units(
 
         return wrapper
     return dec
-
-
-# Enable pint's built-in matplotlib support
-units.setup_matplotlib()
-
-del pint

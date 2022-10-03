@@ -9,7 +9,8 @@ import pandas as pd
 import pytest
 
 from metpy.testing import assert_array_almost_equal, assert_array_equal, assert_nan
-from metpy.units import check_units, concatenate, pandas_dataframe_to_unit_arrays, units
+from metpy.units import (check_units, concatenate, is_quantity,
+                         pandas_dataframe_to_unit_arrays, units)
 
 
 def test_concatenate():
@@ -175,6 +176,18 @@ def test_added_degrees_units():
     assert units('degrees_north').to_base_units().units == units.radian
     assert units('degrees_east') == units('degrees')
     assert units('degrees_east').to_base_units().units == units.radian
+
+
+def test_is_quantity():
+    """Test is_quantity properly works."""
+    assert is_quantity(1 * units.m)
+    assert not is_quantity(np.array([1]))
+
+
+def test_is_quantity_multiple():
+    """Test is_quantity with multiple inputs."""
+    assert is_quantity(1 * units.m, np.array([4.]) * units.degree)
+    assert not is_quantity(1 * units.second, np.array([5., 2.]))
 
 
 def test_gpm_unit():
