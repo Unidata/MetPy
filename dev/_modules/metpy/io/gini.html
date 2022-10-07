@@ -205,11 +205,15 @@
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>  <span class="c1"># noqa: I202</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">xarray</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">xarray</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">xarray.backends</span> <span class="kn">import</span> <span class="n">BackendEntrypoint</span>
 <span class="kn">from</span> <span class="nn">xarray.backends.common</span> <span class="kn">import</span> <span class="n">AbstractDataStore</span>
+<span class="kn">from</span> <span class="nn">xarray.coding.times</span> <span class="kn">import</span> <span class="n">CFDatetimeCoder</span>
+<span class="kn">from</span> <span class="nn">xarray.coding.variables</span> <span class="kn">import</span> <span class="n">CFMaskCoder</span>
 <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="kn">import</span> <span class="n">FrozenDict</span>
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="kn">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
@@ -538,29 +542,27 @@
 
         <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">y_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lon_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">lat_var</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
-
-<span class="sd">        This is used by `xarray.open_dataset`.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_make_data_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_proj_var</span><span class="p">()</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_time_var</span><span class="p">(),</span> <span class="p">(</span><span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">)]</span>
-        <span class="n">variables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_coord_vars</span><span class="p">())</span>
-
-        <span class="c1"># Now the data</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">channel</span>
         <span class="k">if</span> <span class="s1">&#39;(&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 
         <span class="n">missing_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="s1">&#39;missing_value&#39;</span><span class="p">:</span> <span class="n">missing_val</span><span class="p">,</span>
-                 <span class="s1">&#39;coordinates&#39;</span><span class="p">:</span> <span class="s1">&#39;y x time&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_mapping&#39;</span><span class="p">:</span> <span class="n">proj_var_name</span><span class="p">}</span>
-        <span class="n">data_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span>
-                            <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
-                                             <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">missing_val</span><span class="p">),</span>
-                            <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
-        <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">data_var</span><span class="p">))</span>
+                 <span class="s1">&#39;coordinates&#39;</span><span class="p">:</span> <span class="s1">&#39;lon lat time&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_mapping&#39;</span><span class="p">:</span> <span class="n">proj_var_name</span><span class="p">}</span>
+        <span class="n">data_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">),</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data_var</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
+
+<span class="sd">        This is used by `xarray.open_dataset`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_time_var</span><span class="p">()]</span>
+        <span class="n">variables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_coord_vars</span><span class="p">())</span>
+        <span class="n">variables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_data_vars</span><span class="p">())</span>
 
         <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span></div>
 
@@ -572,6 +574,38 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">FrozenDict</span><span class="p">(</span><span class="n">satellite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">creating_entity</span><span class="p">,</span>
                           <span class="n">sector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">GiniXarrayBackend</span><span class="p">(</span><span class="n">BackendEntrypoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Entry point for direct reading of GINI data into Xarray.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename_or_obj</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">drop_variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open the GINI datafile as a Xarray dataset.</span>
+
+<span class="sd">        This is the main entrypoint for plugging into Xarray read support.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: This can be structured much better when we&#39;re not still supporting both the</span>
+        <span class="c1"># old Xarray API as well as direct use of GiniFile itself. In MetPy 2.0 the only</span>
+        <span class="c1"># access should be as an xarray backend entrypoint.</span>
+        <span class="n">gini</span> <span class="o">=</span> <span class="n">GiniFile</span><span class="p">(</span><span class="n">filename_or_obj</span><span class="p">)</span>
+        <span class="n">gini_attrs</span> <span class="o">=</span> <span class="n">gini</span><span class="o">.</span><span class="n">get_attrs</span><span class="p">()</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">gini</span><span class="o">.</span><span class="n">_make_coord_vars</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">gini</span><span class="o">.</span><span class="n">_make_time_var</span><span class="p">()])</span>
+        <span class="n">coords</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CFDatetimeCoder</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+        <span class="p">(</span><span class="n">proj_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">),</span> <span class="p">(</span><span class="n">data_name</span><span class="p">,</span> <span class="n">data_var</span><span class="p">)</span> <span class="o">=</span> <span class="n">gini</span><span class="o">.</span><span class="n">_make_data_vars</span><span class="p">()</span>
+        <span class="n">data_var</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;coordinates&#39;</span><span class="p">)</span>
+        <span class="n">decoded_data_var</span> <span class="o">=</span> <span class="n">CFMaskCoder</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">data_var</span><span class="p">,</span> <span class="n">data_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="p">({</span><span class="n">proj_name</span><span class="p">:</span> <span class="n">proj_var</span><span class="p">,</span> <span class="n">data_name</span><span class="p">:</span> <span class="n">decoded_data_var</span><span class="p">},</span> <span class="n">coords</span><span class="p">,</span> <span class="n">gini_attrs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">guess_can_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename_or_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Try to guess whether we can read this file.</span>
+
+<span class="sd">        This allows files ending in &#39;.gini&#39; to be automatically opened by xarray.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename_or_obj</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.gini&#39;</span>
+        <span class="k">return</span> <span class="kc">False</span>
 </pre></div>
 
               </div>
