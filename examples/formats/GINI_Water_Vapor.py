@@ -14,21 +14,17 @@ import matplotlib.pyplot as plt
 import xarray as xr
 
 from metpy.cbook import get_test_data
-from metpy.io import GiniFile
 from metpy.plots import add_metpy_logo, add_timestamp, colortables
 
 ###########################################
 
-# Open the GINI file from the test data
-f = GiniFile(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini'))
-print(f)
+# Use Xarray together with MetPy's GINI backend to directly open the file from the test data
+ds = xr.open_dataset(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini', as_file_obj=False))
+print(ds)
 
 ###########################################
-# Get a Dataset view of the data (essentially a NetCDF-like interface to the
-# underlying data). Pull out the data and (x, y) coordinates. We use `metpy.parse_cf` to
-# handle parsing some netCDF Climate and Forecasting (CF) metadata to simplify working with
-# projections.
-ds = xr.open_dataset(f)
+# Pull out the data and (x, y) coordinates. We use `metpy.parse_cf` to handle parsing some
+# netCDF Climate and Forecasting (CF) metadata to simplify working with projections.
 x = ds.variables['x'][:]
 y = ds.variables['y'][:]
 dat = ds.metpy.parse_cf('WV')
@@ -44,6 +40,6 @@ wv_cmap.set_under('k')
 im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm,
                extent=(x.min(), x.max(), y.min(), y.max()), origin='upper')
 ax.add_feature(cfeature.COASTLINE.with_scale('50m'))
-add_timestamp(ax, f.prod_desc.datetime, y=0.02, high_contrast=True)
+add_timestamp(ax, ds.time.dt, y=0.02, high_contrast=True)
 
 plt.show()

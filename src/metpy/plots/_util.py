@@ -23,7 +23,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
     ----------
     ax : `matplotlib.axes.Axes`
         The `Axes` instance used for plotting
-    time : `datetime.datetime`
+    time : `datetime.datetime` (or any object with a compatible ``strftime`` method)
         Specific time to be plotted - datetime.utcnow will be use if not specified
     x : float
         Relative x position on the axes of the timestamp
@@ -53,8 +53,11 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
     text_args.update(**kwargs)
     if not time:
         time = datetime.utcnow()
-    timestr = pretext + time.strftime(time_format)
-    return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
+    timestr = time.strftime(time_format)
+    # If we don't have a time string after that, assume xarray/numpy and see if item
+    if not isinstance(timestr, str):
+        timestr = timestr.item()
+    return ax.text(x, y, pretext + timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 
 def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
