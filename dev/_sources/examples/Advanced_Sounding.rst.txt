@@ -102,7 +102,7 @@ assign units.
 
 Create a new figure. The dimensions here give a good aspect ratio.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-90
+.. GENERATED FROM PYTHON SOURCE LINES 50-94
 
 .. code-block:: default
 
@@ -118,6 +118,10 @@ Create a new figure. The dimensions here give a good aspect ratio.
     skew.plot_barbs(p, u, v)
     skew.ax.set_ylim(1000, 100)
     skew.ax.set_xlim(-40, 60)
+
+    # Set some better labels than the default
+    skew.ax.set_xlabel(f'Temperature ({T.units:~P})')
+    skew.ax.set_ylabel(f'Pressure ({p.units:~P})')
 
     # Calculate LCL height and plot as black dot. Because `p`'s first value is
     # ~1000 mb and its last value is ~250 mb, the `0` index is selected for
@@ -161,7 +165,7 @@ Create a new figure. The dimensions here give a good aspect ratio.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.255 seconds)
+   **Total running time of the script:** ( 0 minutes  0.338 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding.py:

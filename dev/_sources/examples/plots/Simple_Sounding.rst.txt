@@ -108,7 +108,7 @@ assign units.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-71
+.. GENERATED FROM PYTHON SOURCE LINES 52-75
 
 .. code-block:: default
 
@@ -120,6 +120,10 @@ assign units.
     skew.plot(p, T, 'r')
     skew.plot(p, Td, 'g')
     skew.plot_barbs(p, u, v)
+
+    # Set some better labels than the default
+    skew.ax.set_xlabel('Temperature (\N{DEGREE CELSIUS})')
+    skew.ax.set_ylabel('Pressure (mb)')
 
     # Add the relevant special lines
     skew.plot_dry_adiabats()
@@ -145,11 +149,11 @@ assign units.
  .. code-block:: none
 
 
-    <matplotlib.image.FigureImage object at 0x7fb66cb9d690>
+    <matplotlib.image.FigureImage object at 0x7f3089d86ce0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-102
+.. GENERATED FROM PYTHON SOURCE LINES 76-110
 
 .. code-block:: default
 
@@ -161,6 +165,10 @@ assign units.
     # log scaling in Y, as dictated by the typical meteorological plot
     skew.plot(p, T, 'r')
     skew.plot(p, Td, 'g')
+
+    # Set some better labels than the default
+    skew.ax.set_xlabel('Temperature (\N{DEGREE CELSIUS})')
+    skew.ax.set_ylabel('Pressure (mb)')
 
     # Set spacing interval--Every 50 mb from 1000 to 100 mb
     my_interval = np.arange(100, 1000, 50) * units('mbar')
@@ -198,7 +206,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.446 seconds)
+   **Total running time of the script:** ( 0 minutes  0.602 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:
