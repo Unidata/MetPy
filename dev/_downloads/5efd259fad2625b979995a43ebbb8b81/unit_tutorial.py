@@ -18,7 +18,7 @@ paper! This simplifies the MetPy API by eliminating the need to specify units
 various functions. Instead, only the final results need to be converted to desired units. For
 more information on unit support, see the documentation for
 `Pint <https://pint.readthedocs.io>`_. Particular attention should be paid to the support
-for `temperature units <https://pint.readthedocs.io/en/latest/nonmult.html>`_.
+for `temperature units <https://pint.readthedocs.io/en/stable/nonmult.html>`_.
 
 In this tutorial we'll show some examples of working with units and get you on your way to
 utilizing the computation functions in MetPy.
