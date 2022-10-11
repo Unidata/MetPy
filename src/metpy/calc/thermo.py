@@ -2533,14 +2533,11 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
         fp = exner * (ka * t - a)
         return iter_log_p - (f / fp)
 
-    # Get dimensions in temperature
-    ndim = temperature.ndim
-
     # Convert units
     pressure = pressure.to('hPa')
     temperature = temperature.to('kelvin')
 
-    slices = [np.newaxis] * ndim
+    slices = [np.newaxis] * temperature.ndim
     slices[vertical_dim] = slice(None)
     slices = tuple(slices)
     pressure = units.Quantity(np.broadcast_to(pressure[slices].magnitude, temperature.shape),
@@ -2550,7 +2547,7 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     sort_pressure = np.argsort(pressure.m, axis=vertical_dim)
     sort_pressure = np.swapaxes(np.swapaxes(sort_pressure, 0, vertical_dim)[::-1], 0,
                                 vertical_dim)
-    sorter = broadcast_indices(pressure, sort_pressure, ndim, vertical_dim)
+    sorter = broadcast_indices(sort_pressure, temperature.shape, vertical_dim)
     levs = pressure[sorter]
     tmpk = temperature[sorter]
 

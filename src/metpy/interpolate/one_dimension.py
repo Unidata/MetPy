@@ -110,7 +110,7 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
     sort_x = np.argsort(x)
 
     # indices for sorting
-    sorter = broadcast_indices(xp, sort_args, ndim, axis)
+    sorter = broadcast_indices(sort_args, xp.shape, axis)
 
     # sort xp
     xp = xp[sorter]
@@ -140,8 +140,8 @@ def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=F
         minv2[minv == 0] = 1
 
     # Get indices for broadcasting arrays
-    above = broadcast_indices(xp, minv2, ndim, axis)
-    below = broadcast_indices(xp, minv2 - 1, ndim, axis)
+    above = broadcast_indices(minv2, xp.shape, axis)
+    below = broadcast_indices(minv2 - 1, xp.shape, axis)
 
     if np.any(x_array < xp[below]):
         warnings.warn('Interpolation point out of data bounds encountered')

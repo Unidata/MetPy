@@ -108,19 +108,23 @@ class Registry:
         return self._registry[name]
 
 
-def broadcast_indices(x, minv, ndim, axis):
+def broadcast_indices(indices, shape, axis):
     """Calculate index values to properly broadcast index array within data array.
 
-    See usage in interp.
+    The purpose of this function is work around the challenges trying to work with arrays of
+    indices that need to be "broadcast" against full slices for other dimensions.
+
+    See usage in `interpolate_1d` or `isentropic_interpolation`.
     """
     ret = []
+    ndim = len(shape)
     for dim in range(ndim):
         if dim == axis:
-            ret.append(minv)
+            ret.append(indices)
         else:
             broadcast_slice = [np.newaxis] * ndim
             broadcast_slice[dim] = slice(None)
-            dim_inds = np.arange(x.shape[dim])
+            dim_inds = np.arange(shape[dim])
             ret.append(dim_inds[tuple(broadcast_slice)])
     return tuple(ret)
 
