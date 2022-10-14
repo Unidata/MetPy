@@ -721,8 +721,8 @@ def find_bounding_indices(arr, values, axis, from_below=True):
         good[store_slice] = good_search
 
     # Create index values for broadcasting arrays
-    above = broadcast_indices(arr, indices, arr.ndim, axis)
-    below = broadcast_indices(arr, indices - 1, arr.ndim, axis)
+    above = broadcast_indices(indices, arr.shape, axis)
+    below = broadcast_indices(indices - 1, arr.shape, axis)
 
     return above, below, good
 

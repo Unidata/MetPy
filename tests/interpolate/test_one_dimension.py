@@ -182,3 +182,13 @@ def test_interpolate_masked_units():
     y_interp_truth = np.array([65., 75.]) * units.degC
     y_interp = interpolate_1d(x_interp, x, y)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_interpolate_broadcast():
+    """Test interpolate_1d with input levels needing broadcasting."""
+    p = units.Quantity([850, 700, 500], 'hPa')
+    t = units.Quantity(np.arange(60).reshape(3, 4, 5), 'degC')
+
+    t_level = interpolate_1d(units.Quantity(700, 'hPa'), p[:, None, None], t)
+    assert_array_almost_equal(t_level,
+                              units.Quantity(np.arange(20., 40.).reshape(1, 4, 5), 'degC'), 7)
