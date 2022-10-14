@@ -33,7 +33,7 @@ jobs:
         id: get-branch
         run: |
           git fetch --no-tags --depth=100 origin 'refs/heads/*.x:refs/remotes/origin/*.x'
-          echo "::set-output name=backport-branch::$(git branch -r | grep '.*.x' | sort -V | tail -n 1 | cut -d / -f 2)"
+          echo "backport-branch=$(git branch -r | grep '.*.x' | sort -V | tail -n 1 | cut -d / -f 2)" >> $GITHUB_OUTPUT
 
       - name: Apply PR commits to ${{ steps.get-branch.outputs.backport-branch}} branch
         run: |
