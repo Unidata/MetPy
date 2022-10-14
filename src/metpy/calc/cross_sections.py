@@ -1,7 +1,7 @@
 # Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Contains calculations related to cross sections and respective vector components.
+"""Contains calculations related to cross-sections and respective vector components.
 
 Compared to the rest of the calculations which are based around pint quantities, this module
 is based around xarray DataArrays.
@@ -25,7 +25,7 @@ def distances_from_cross_section(cross):
     Parameters
     ----------
     cross : `xarray.DataArray`
-        The input DataArray of a cross-section from which to obtain geometeric distances in
+        The input DataArray of a cross-section from which to obtain geometric distances in
         the x and y directions.
 
     Returns
@@ -111,15 +111,15 @@ def unit_vectors_from_cross_section(cross, index='index'):
     cross : `xarray.DataArray`
         The input DataArray of a cross-section from which to obtain latitudes
 
-    index : `str`, optional
-        A string denoting the index coordinate of the cross section, defaults to 'index' as
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
         set by `metpy.interpolate.cross_section`
 
     Returns
     -------
     unit_tangent_vector, unit_normal_vector : tuple of `numpy.ndarray`
         Arrays describing the unit tangent and unit normal vectors (in x,y) for all points
-        along the cross section
+        along the cross-section
 
     """
     x, y = distances_from_cross_section(cross)
@@ -145,6 +145,10 @@ def cross_section_components(data_x, data_y, index='index'):
     data_y : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the vector
         field.
+
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
 
     Returns
     -------
@@ -180,9 +184,14 @@ def normal_component(data_x, data_y, index='index'):
     data_x : `xarray.DataArray`
         The input DataArray of the x-component (in terms of data projection) of the vector
         field.
+
     data_y : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the vector
         field.
+
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
 
     Returns
     -------
@@ -226,6 +235,10 @@ def tangential_component(data_x, data_y, index='index'):
         The input DataArray of the y-component (in terms of data projection) of the vector
         field
 
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
+
     Returns
     -------
     component_tangential: `xarray.DataArray`
@@ -265,8 +278,13 @@ def absolute_momentum(u, v, index='index'):
     ----------
     u : `xarray.DataArray`
         The input DataArray of the x-component (in terms of data projection) of the wind.
+
     v : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the wind.
+
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
 
     Returns
     -------
