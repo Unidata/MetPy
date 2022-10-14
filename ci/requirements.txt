@@ -7,4 +7,4 @@ pint==0.19.2
 pyproj==3.4.0
 scipy==1.9.1
 traitlets==5.4.0
-xarray==2022.9.0
+xarray==2022.10.0
