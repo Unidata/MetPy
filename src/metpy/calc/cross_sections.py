@@ -258,18 +258,8 @@ def tangential_component(data_x, data_y, index='index'):
 def absolute_momentum(u, v, index='index'):
     r"""Calculate cross-sectional absolute momentum (also called pseudoangular momentum).
 
-    As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is
-    given by:
-
-    .. math:: M = v + fx
-
-    where :math:`v` is the along-front component of the wind and :math:`x` is the cross-front
-    distance. Applied to a cross-section taken perpendicular to the front, :math:`v` becomes
-    the normal component of the wind and :math:`x` the tangential distance.
-
-    If using this calculation in assessing symmetric instability, geostrophic wind should be
-    used so that geostrophic absolute momentum :math:`\left(M_g\right)` is obtained, as
-    described in [Schultz1999]_.
+    The cross-sectional absolute momentum is calculated given u- and v-components of the wind
+    along a 2 dimensional vertical cross-section. The coordinates of `u` and `v` must match.
 
     Parameters
     ----------
@@ -283,9 +273,24 @@ def absolute_momentum(u, v, index='index'):
     absolute_momentum: `xarray.DataArray`
         Absolute momentum
 
+    See Also
+    --------
+    metpy.interpolate.cross_section, cross_section_components
+
     Notes
     -----
-    The coordinates of `u` and `v` must match.
+    As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is
+    given by:
+
+    .. math:: M = v + fx
+
+    where :math:`v` is the along-front component of the wind and :math:`x` is the cross-front
+    distance. Applied to a cross-section taken perpendicular to the front, :math:`v` becomes
+    the normal component of the wind and :math:`x` the tangential distance.
+
+    If using this calculation in assessing symmetric instability, geostrophic wind should be
+    used so that geostrophic absolute momentum :math:`\left(M_g\right)` is obtained, as
+    described in [Schultz1999]_.
 
     .. versionchanged:: 1.0
        Renamed ``u_wind``, ``v_wind`` parameters to ``u``, ``v``
