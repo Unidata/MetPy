@@ -1325,6 +1325,26 @@
 <dt class="sig sig-object py" id="metpy.calc.absolute_momentum">
 <span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">absolute_momentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'index'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.absolute_momentum" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate cross-sectional absolute momentum (also called pseudoangular momentum).</p>
+<p>The cross-sectional absolute momentum is calculated given u- and v-components of the wind
+along a 2 dimensional vertical cross-section. The coordinates of <em class="xref py py-obj">u</em> and <em class="xref py py-obj">v</em> must match.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the x-component (in terms of data projection) of the wind.</p></li>
+<li><p><strong>v</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the y-component (in terms of data projection) of the wind.</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – Denotes the index coordinate of the cross-section, defaults to ‘index’ as
+set by <a class="reference internal" href="metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>absolute_momentum</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Absolute momentum</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a>, <a class="reference internal" href="metpy.calc.cross_section_components.html#metpy.calc.cross_section_components" title="metpy.calc.cross_section_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_components</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
 <p>As given in <a class="reference internal" href="../references.html#schultz1999" id="id1"><span>[Schultz1999]</span></a>, absolute momentum (also called pseudoangular momentum) is
 given by:</p>
 <div class="math notranslate nohighlight">
@@ -1335,19 +1355,6 @@ the normal component of the wind and <span class="math notranslate nohighlight">
 <p>If using this calculation in assessing symmetric instability, geostrophic wind should be
 used so that geostrophic absolute momentum <span class="math notranslate nohighlight">\(\left(M_g\right)\)</span> is obtained, as
 described in <a class="reference internal" href="../references.html#schultz1999" id="id2"><span>[Schultz1999]</span></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the x-component (in terms of data projection) of the wind.</p></li>
-<li><p><strong>v</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the y-component (in terms of data projection) of the wind.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>absolute_momentum</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – Absolute momentum</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The coordinates of <em class="xref py py-obj">u</em> and <em class="xref py py-obj">v</em> must match.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Renamed <code class="docutils literal notranslate"><span class="pre">u_wind</span></code>, <code class="docutils literal notranslate"><span class="pre">v_wind</span></code> parameters to <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code></p>
 </div>
