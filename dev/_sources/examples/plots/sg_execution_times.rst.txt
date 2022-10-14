@@ -5,36 +5,36 @@
 
 Computation times
 =================
-**00:57.474** total execution time for **examples_plots** files:
+**01:18.110** total execution time for **examples_plots** files:
 
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)                         | 00:16.108 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)                         | 00:21.398 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)           | 00:12.122 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)           | 00:16.275 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py` (``nhc_wind_probabilities.py``)     | 00:09.580 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_nhc_wind_probabilities.py` (``nhc_wind_probabilities.py``)     | 00:13.186 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_spc_convective_outlook.py` (``spc_convective_outlook.py``)     | 00:06.684 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_spc_convective_outlook.py` (``spc_convective_outlook.py``)     | 00:09.137 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)               | 00:04.593 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)               | 00:06.937 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``) | 00:01.888 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_surface_declarative.py` (``surface_declarative.py``)           | 00:02.390 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_surface_declarative.py` (``surface_declarative.py``)           | 00:01.721 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``) | 00:02.218 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)                           | 00:01.155 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)                           | 00:01.738 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_upperair_declarative.py` (``upperair_declarative.py``)         | 00:00.909 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_upperair_declarative.py` (``upperair_declarative.py``)         | 00:01.207 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_raster_declarative.py` (``raster_declarative.py``)             | 00:00.814 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_raster_declarative.py` (``raster_declarative.py``)             | 00:01.075 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)       | 00:00.604 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)       | 00:00.780 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)                   | 00:00.440 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)                   | 00:00.585 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)                   | 00:00.304 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)                   | 00:00.421 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)                       | 00:00.287 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)                       | 00:00.410 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py` (``Sounding_LCL_Dataset.py``)         | 00:00.263 | 0.0 MB |
+| :ref:`sphx_glr_examples_plots_Sounding_LCL_Dataset.py` (``Sounding_LCL_Dataset.py``)         | 00:00.352 | 0.0 MB |
 +----------------------------------------------------------------------------------------------+-----------+--------+
