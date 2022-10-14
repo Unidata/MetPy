@@ -1,7 +1,7 @@
 # Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Contains calculations related to cross sections and respective vector components.
+"""Contains calculations related to cross-sections and respective vector components.
 
 Compared to the rest of the calculations which are based around pint quantities, this module
 is based around xarray DataArrays.
@@ -25,7 +25,7 @@ def distances_from_cross_section(cross):
     Parameters
     ----------
     cross : `xarray.DataArray`
-        The input DataArray of a cross-section from which to obtain geometeric distances in
+        The input DataArray of a cross-section from which to obtain geometric distances in
         the x and y directions.
 
     Returns
@@ -111,15 +111,15 @@ def unit_vectors_from_cross_section(cross, index='index'):
     cross : `xarray.DataArray`
         The input DataArray of a cross-section from which to obtain latitudes
 
-    index : `str`, optional
-        A string denoting the index coordinate of the cross section, defaults to 'index' as
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
         set by `metpy.interpolate.cross_section`
 
     Returns
     -------
     unit_tangent_vector, unit_normal_vector : tuple of `numpy.ndarray`
         Arrays describing the unit tangent and unit normal vectors (in x,y) for all points
-        along the cross section
+        along the cross-section
 
     """
     x, y = distances_from_cross_section(cross)
@@ -145,6 +145,10 @@ def cross_section_components(data_x, data_y, index='index'):
     data_y : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the vector
         field.
+
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
 
     Returns
     -------
@@ -180,9 +184,14 @@ def normal_component(data_x, data_y, index='index'):
     data_x : `xarray.DataArray`
         The input DataArray of the x-component (in terms of data projection) of the vector
         field.
+
     data_y : `xarray.DataArray`
         The input DataArray of the y-component (in terms of data projection) of the vector
         field.
+
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
 
     Returns
     -------
@@ -226,6 +235,10 @@ def tangential_component(data_x, data_y, index='index'):
         The input DataArray of the y-component (in terms of data projection) of the vector
         field
 
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
+
     Returns
     -------
     component_tangential: `xarray.DataArray`
@@ -258,6 +271,32 @@ def tangential_component(data_x, data_y, index='index'):
 def absolute_momentum(u, v, index='index'):
     r"""Calculate cross-sectional absolute momentum (also called pseudoangular momentum).
 
+    The cross-sectional absolute momentum is calculated given u- and v-components of the wind
+    along a 2 dimensional vertical cross-section. The coordinates of `u` and `v` must match.
+
+    Parameters
+    ----------
+    u : `xarray.DataArray`
+        The input DataArray of the x-component (in terms of data projection) of the wind.
+
+    v : `xarray.DataArray`
+        The input DataArray of the y-component (in terms of data projection) of the wind.
+
+    index : str or int, optional
+        Denotes the index coordinate of the cross-section, defaults to 'index' as
+        set by `metpy.interpolate.cross_section`
+
+    Returns
+    -------
+    absolute_momentum: `xarray.DataArray`
+        Absolute momentum
+
+    See Also
+    --------
+    metpy.interpolate.cross_section, cross_section_components
+
+    Notes
+    -----
     As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is
     given by:
 
@@ -270,22 +309,6 @@ def absolute_momentum(u, v, index='index'):
     If using this calculation in assessing symmetric instability, geostrophic wind should be
     used so that geostrophic absolute momentum :math:`\left(M_g\right)` is obtained, as
     described in [Schultz1999]_.
-
-    Parameters
-    ----------
-    u : `xarray.DataArray`
-        The input DataArray of the x-component (in terms of data projection) of the wind.
-    v : `xarray.DataArray`
-        The input DataArray of the y-component (in terms of data projection) of the wind.
-
-    Returns
-    -------
-    absolute_momentum: `xarray.DataArray`
-        Absolute momentum
-
-    Notes
-    -----
-    The coordinates of `u` and `v` must match.
 
     .. versionchanged:: 1.0
        Renamed ``u_wind``, ``v_wind`` parameters to ``u``, ``v``
