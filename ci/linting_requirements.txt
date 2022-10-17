@@ -24,4 +24,4 @@ pydocstyle==6.1.1
 doc8==1.0.0
 restructuredtext_lint==1.4.0
 
-codespell==2.2.1
+codespell==2.2.2
