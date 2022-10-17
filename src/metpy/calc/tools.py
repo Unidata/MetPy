@@ -1040,10 +1040,7 @@ def parse_grid_arguments(func):
         bound_args.apply_defaults()
 
         # Choose the first DataArray argument to act as grid prototype
-        try:
-            grid_prototype = dataarray_arguments(bound_args)[0]
-        except IndexError:
-            grid_prototype = None
+        grid_prototype = next(dataarray_arguments(bound_args), None)
 
         # Fill in x_dim/y_dim
         if (
@@ -1102,6 +1099,7 @@ def parse_grid_arguments(func):
                 and bound_args.arguments.get('latitude', None) is not None
                 and bound_args.arguments.get('crs', None) is not None
             ):
+                # TODO: de-duplicate .metpy.grid_deltas code
                 bound_args.arguments['dx'], bound_args.arguments['dy'] = (
                     nominal_lat_lon_grid_deltas(
                         bound_args.arguments['longitude'],
@@ -1162,7 +1160,7 @@ def parse_grid_arguments(func):
                     )
 
             if not cartesian:
-                if lat.ndim == 1 and lon.dim == 1:
+                if lat.ndim == 1 and lon.ndim == 1:
                     xx, yy = np.meshgrid(lon.m_as('degrees'), lat.m_as('degrees'))
                 elif lat.ndim == 2 and lon.ndim == 2:
                     xx, yy = lon.m_as('degrees'), lat.m_as('degrees')
@@ -1173,14 +1171,16 @@ def parse_grid_arguments(func):
                 bound_args.arguments['meridional_scale'] = factors.meridional_scale
 
 
-        # Fill in latitude
-        if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
-            if latitude_from_xarray is not None:
-                bound_args.arguments['latitude'] = latitude_from_xarray
-            else:
-                raise ValueError('Must provide latitude argument or input DataArray with '
-                                 'latitude/longitude coordinates.')
-        
+        # # Fill in latitude
+        # TODO: reorder and fixup latitude insertion logic
+        # if 'latitude' in bound_args.arguments and bound_args.arguments['latitude'] is None:
+        #     if latitude_from_xarray is not None:
+        #         bound_args.arguments['latitude'] = latitude_from_xarray
+        #     else:
+        #         raise ValueError('Must provide latitude argument or input DataArray with '
+        #                          'latitude/longitude coordinates.')
+
+        return func(*bound_args.args, **bound_args.kwargs)
     return wrapper
 
 
@@ -1482,15 +1482,14 @@ def laplacian(f, axes=None, coordinates=None, deltas=None):
               for ind, axis in enumerate(axes)]
     return sum(derivs)
 
-
 @exporter.export
 @parse_grid_arguments
 def vector_derivative(
     u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
-    parallel_scale=None, meridional_scale=None, return_only=None
-):
+    parallel_scale=None, meridional_scale=None, return_only=None):
+    # noinspection PyStatementEffect
     r"""Calculate the projection-correct derivative matrix of a 2D vector.
-
+    
     Parameters
     ----------
     u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
@@ -1514,6 +1513,15 @@ def vector_derivative(
     gradient
 
     """
+
+    return _vector_derivative(u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim,
+                              parallel_scale=parallel_scale, meridional_scale=meridional_scale,
+                              return_only=return_only)
+
+def _vector_derivative(
+    u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2,
+    parallel_scale=None, meridional_scale=None, return_only=None
+):
     # Determine which derivatives to calculate
     derivatives = {
         component: None 

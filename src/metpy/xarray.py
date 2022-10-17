@@ -285,7 +285,7 @@ class MetPyDataArrayAccessor:
     @property
     def pyproj_proj(self):
         """Return the Proj object cooresponding to the coordinate reference system (CRS)."""
-        return Proj(self.metpy.pyproj_crs)
+        return Proj(self.pyproj_crs)
 
     def _fixup_coordinate_map(self, coord_map):
         """Ensure sure we have coordinate variables in map, not coordinate names."""
@@ -524,21 +524,21 @@ class MetPyDataArrayAccessor:
     def grid_deltas(self):
         """Return the horizontal dimensional grid deltas suitable for vector derivatives."""
         if (
-            hasattr(self.metpy, 'crs')
-            and self.metpy.crs['grid_mapping_name'] == 'latitude_longitude'
+            hasattr(self, 'crs')
+            and self.crs._attrs['grid_mapping_name'] == 'latitude_longitude'
         ):
             # Calculate dx and dy on ellipsoid (on equator and 0 deg meridian, respectively)
             from .calc.tools import nominal_lat_lon_grid_deltas
             dx, dy = nominal_lat_lon_grid_deltas(
-                self.metpy.longitude.metpy.unit_array,
-                self.metpy.latitude.metpy.unit_array,
-                self.metpy.pyproj_crs.get_geod()
+                self.longitude.metpy.unit_array,
+                self.latitude.metpy.unit_array,
+                self.pyproj_crs.get_geod()
             )
         else:
             # Calculate dx and dy in projection space
             try:
-                dx = np.diff(self.metpy.x.metpy.unit_array)
-                dy = np.diff(self.metpy.y.metpy.unit_array)
+                dx = np.diff(self.x.metpy.unit_array)
+                dy = np.diff(self.y.metpy.unit_array)
             except AttributeError:
                 raise AttributeError(
                     'Grid deltas cannot be calculated since horizontal dimension coordinates '

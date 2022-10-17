@@ -7,7 +7,7 @@ import numpy as np
 from . import coriolis_parameter
 from .tools import (
     first_derivative, get_layer_heights, gradient,
-    horizontal_grid_parameter_description, parse_grid_arguments, vector_derivative
+    horizontal_grid_parameter_description, parse_grid_arguments, _vector_derivative
 )
 from .. import constants as mpconsts
 from ..package_tools import Exporter
@@ -58,7 +58,7 @@ def vorticity(
        Changed signature from ``(u, v, dx, dy)``
 
     """
-    dudy, dvdx = vector_derivative(
+    dudy, dvdx = _vector_derivative(
         u, v, dx=dx, dy=dy, x_dim=x_dim, y_dim=y_dim, parallel_scale=parallel_scale,
         meridional_scale=meridional_scale, return_only=('du/dy', 'dv/dx')
     )
