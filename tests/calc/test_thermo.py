@@ -2017,6 +2017,40 @@ def test_lcl_grid_surface_lcls():
     assert_array_almost_equal(lcl_temperature, temp_truth, 4)
 
 
+@pytest.fixture()
+def index_xarray_data():
+    """Create data for testing that index calculations work with xarray data."""
+    pressure = xr.DataArray([850., 700., 500.], dims=('isobaric',), attrs={'units': 'hPa'})
+    temp = xr.DataArray([[[[296., 295., 294.], [293., 292., 291.]],
+                          [[286., 285., 284.], [283., 282., 281.]],
+                          [[276., 275., 274.], [273., 272., 271.]]]] * units.K,
+                        dims=('time', 'isobaric', 'y', 'x'))
+
+    profile = xr.DataArray([[[[289., 288., 287.], [286., 285., 284.]],
+                             [[279., 278., 277.], [276., 275., 274.]],
+                             [[269., 268., 267.], [266., 265., 264.]]]] * units.K,
+                           dims=('time', 'isobaric', 'y', 'x'))
+
+    dewp = xr.DataArray([[[[294., 293., 292.], [291., 290., 289.]],
+                          [[284., 283., 282.], [281., 280., 279.]],
+                          [[274., 273., 272.], [271., 270., 269.]]]] * units.K,
+                        dims=('time', 'isobaric', 'y', 'x'))
+
+    dirw = xr.DataArray([[[[180., 180., 180.], [180., 180., 180.]],
+                          [[225., 225., 225.], [225., 225., 225.]],
+                          [[270., 270., 270.], [270., 270., 270.]]]] * units.degree,
+                        dims=('time', 'isobaric', 'y', 'x'))
+
+    speed = xr.DataArray([[[[20., 20., 20.], [20., 20., 20.]],
+                           [[25., 25., 25.], [25., 25., 25.]],
+                           [[50., 50., 50.], [50., 50., 50.]]]] * units.knots,
+                         dims=('time', 'isobaric', 'y', 'x'))
+
+    return xr.Dataset({'temperature': temp, 'profile': profile, 'dewpoint': dewp,
+                       'wind_direction': dirw, 'wind_speed': speed},
+                      coords={'isobaric': pressure, 'time': ['2020-01-01T00:00Z']})
+
+
 def test_lifted_index():
     """Test the Lifted Index calculation."""
     pressure = np.array([1014., 1000., 997., 981.2, 947.4, 925., 914.9, 911.,
@@ -2067,6 +2101,13 @@ def test_lifted_index_500hpa_missing():
     assert_almost_equal(li, -7.9176350 * units.delta_degree_Celsius, 1)
 
 
+def test_lifted_index_xarray(index_xarray_data):
+    """Test lifted index with a grid of xarray data."""
+    result = lifted_index(index_xarray_data.isobaric, index_xarray_data.temperature,
+                          index_xarray_data.profile)
+    assert_array_almost_equal(result, np.full((1, 1, 2, 3), 7) * units.delta_degC)
+
+
 def test_k_index():
     """Test the K Index calculation."""
     pressure = np.array([1014., 1000., 997., 981.2, 947.4, 925., 914.9, 911.,
@@ -2089,6 +2130,14 @@ def test_k_index():
                          -57.5]) * units.degC
     ki = k_index(pressure, temperature, dewpoint)
     assert_almost_equal(ki, 33.5 * units.degC, 2)
+
+
+def test_k_index_xarray(index_xarray_data):
+    """Test the K index calculation with a grid of xarray data."""
+    result = k_index(index_xarray_data.isobaric, index_xarray_data.temperature,
+                     index_xarray_data.dewpoint)
+    assert_array_almost_equal(result,
+                              np.array([[[312., 311., 310.], [309., 308., 307.]]]) * units.K)
 
 
 def test_gradient_richardson_number():
@@ -2173,6 +2222,13 @@ def test_total_totals_index():
     assert_almost_equal(tt, 45.10 * units.delta_degC, 2)
 
 
+def test_total_totals_index_xarray(index_xarray_data):
+    """Test the total totals index calculation with a grid of xarray data."""
+    result = total_totals_index(index_xarray_data.isobaric, index_xarray_data.temperature,
+                                index_xarray_data.dewpoint)
+    assert_array_almost_equal(result, np.full((1, 2, 3), 38.) * units.K)
+
+
 def test_vertical_totals():
     """Test the Vertical Totals calculation."""
     pressure = np.array([1008., 1000., 947., 925., 921., 896., 891., 889., 866.,
@@ -2190,6 +2246,12 @@ def test_vertical_totals():
 
     vt = vertical_totals(pressure, temperature)
     assert_almost_equal(vt, 23.70 * units.delta_degC, 2)
+
+
+def test_vertical_totals_index_xarray(index_xarray_data):
+    """Test the vertical totals index calculation with a grid of xarray data."""
+    result = vertical_totals(index_xarray_data.isobaric, index_xarray_data.temperature)
+    assert_array_almost_equal(result, np.full((1, 2, 3), 20.) * units.K)
 
 
 def test_cross_totals():
@@ -2215,6 +2277,13 @@ def test_cross_totals():
 
     ct = cross_totals(pressure, temperature, dewpoint)
     assert_almost_equal(ct, 21.40 * units.delta_degC, 2)
+
+
+def test_cross_totals_index_xarray(index_xarray_data):
+    """Test the cross totals index calculation with a grid of xarray data."""
+    result = cross_totals(index_xarray_data.isobaric, index_xarray_data.temperature,
+                          index_xarray_data.dewpoint)
+    assert_array_almost_equal(result, np.full((1, 2, 3), 18.) * units.K)
 
 
 def test_parcel_profile_drop_duplicates():
@@ -2317,3 +2386,12 @@ def test_sweat_index():
 
     sweat = sweat_index(pressure, temperature, dewpoint, speed, direction)
     assert_almost_equal(sweat, 227., 2)
+
+
+def test_sweat_index_xarray(index_xarray_data):
+    """Test the SWEAT index calculation with a grid of xarray data."""
+    result = sweat_index(index_xarray_data.isobaric, index_xarray_data.temperature,
+                         index_xarray_data.dewpoint, index_xarray_data.wind_speed,
+                         index_xarray_data.wind_direction)
+    assert_array_almost_equal(result, np.array([[[[490.2, 478.2, 466.2],
+                                                  [454.2, 442.2, 430.2]]]]))
