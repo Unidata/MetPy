@@ -3965,9 +3965,10 @@ def specific_humidity_from_dewpoint(pressure, dewpoint):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'parcel_profile'))
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def lifted_index(pressure, temperature, parcel_profile):
+def lifted_index(pressure, temperature, parcel_profile, vertical_dim=0):
     """Calculate Lifted Index from the pressure temperature and parcel profile.
 
     Lifted index formula derived from [Galway1956]_ and referenced by [DoswellSchultz2006]_:
@@ -3994,6 +3995,10 @@ def lifted_index(pressure, temperature, parcel_profile):
 
     parcel_profile : `pint.Quantity`
         Temperature profile of the parcel
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
 
     Returns
     -------
@@ -4029,16 +4034,17 @@ def lifted_index(pressure, temperature, parcel_profile):
     """
     # find the measured temperature and parcel profile temperature at 500 hPa.
     t500, tp500 = interpolate_1d(units.Quantity(500, 'hPa'),
-                                 pressure, temperature, parcel_profile)
+                                 pressure, temperature, parcel_profile, axis=vertical_dim)
 
     # calculate the lifted index.
-    return t500 - tp500.to(units.degC)
+    return t500 - tp500
 
 
 @exporter.export
-@preprocess_and_wrap()
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'dewpoint'))
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def k_index(pressure, temperature, dewpoint):
+def k_index(pressure, temperature, dewpoint, vertical_dim=0):
     """Calculate K Index from the pressure temperature and dewpoint.
 
     K Index formula derived from [George1960]_:
@@ -4067,6 +4073,10 @@ def k_index(pressure, temperature, dewpoint):
 
     dewpoint : `pint.Quantity`
         Dewpoint temperature corresponding to pressure
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
 
     Returns
     -------
@@ -4097,10 +4107,10 @@ def k_index(pressure, temperature, dewpoint):
     <Quantity(35.9395759, 'degree_Celsius')>
 
     """
-    # Find temperature and dewpoint at 850, 700 and 500 hPa
-    (t850, t700, t500), (td850, td700, _) = interpolate_1d(units.Quantity([850, 700, 500],
-                                                           'hPa'), pressure, temperature,
-                                                           dewpoint)
+    # Find temperature and dewpoint at 850, 700, and 500 hPa
+    (t850, t700, t500), (td850, td700, _) = interpolate_1d(
+        units.Quantity([850, 700, 500], 'hPa'), pressure, temperature, dewpoint,
+        axis=vertical_dim)
 
     # Calculate k index.
     return ((t850 - t500) + td850 - (t700 - td700)).to(units.degC)
@@ -4211,14 +4221,14 @@ def showalter_index(pressure, temperature, dewpoint):
 
     Parameters
     ----------
-        pressure : `pint.Quantity`
-            Atmospheric pressure, in order from highest to lowest pressure
+    pressure : `pint.Quantity`
+        Atmospheric pressure, in order from highest to lowest pressure
 
-        temperature : `pint.Quantity`
-            Ambient temperature corresponding to ``pressure``
+    temperature : `pint.Quantity`
+        Ambient temperature corresponding to ``pressure``
 
-        dewpoint : `pint.Quantity`
-            Ambient dew point temperatures corresponding to ``pressure``
+    dewpoint : `pint.Quantity`
+        Ambient dew point temperatures corresponding to ``pressure``
 
     Returns
     -------
@@ -4264,9 +4274,10 @@ def showalter_index(pressure, temperature, dewpoint):
 
 
 @exporter.export
-@preprocess_and_wrap()
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'dewpoint'))
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def total_totals_index(pressure, temperature, dewpoint):
+def total_totals_index(pressure, temperature, dewpoint, vertical_dim=0):
     """Calculate Total Totals Index from the pressure temperature and dewpoint.
 
     Total Totals Index formula derived from [Miller1972]_:
@@ -4293,6 +4304,10 @@ def total_totals_index(pressure, temperature, dewpoint):
 
     dewpoint : `pint.Quantity`
         Dewpoint temperature corresponding to pressure
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
 
     Returns
     -------
@@ -4326,16 +4341,18 @@ def total_totals_index(pressure, temperature, dewpoint):
     """
     # Find temperature and dewpoint at 850 and 500 hPa.
     (t850, t500), (td850, _) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
-                                              pressure, temperature, dewpoint)
+                                              pressure, temperature, dewpoint,
+                                              axis=vertical_dim)
 
     # Calculate total totals index.
     return (t850 - t500) + (td850 - t500)
 
 
 @exporter.export
-@preprocess_and_wrap()
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature'))
 @check_units('[pressure]', '[temperature]')
-def vertical_totals(pressure, temperature):
+def vertical_totals(pressure, temperature, vertical_dim=0):
     """Calculate Vertical Totals from the pressure and temperature.
 
     Vertical Totals formula derived from [Miller1972]_:
@@ -4357,6 +4374,10 @@ def vertical_totals(pressure, temperature):
 
     temperature : `pint.Quantity`
         Temperature corresponding to pressure
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
 
     Returns
     -------
@@ -4384,16 +4405,17 @@ def vertical_totals(pressure, temperature):
     """
     # Find temperature at 850 and 500 hPa.
     (t850, t500) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
-                                  pressure, temperature)
+                                  pressure, temperature, axis=vertical_dim)
 
     # Calculate vertical totals.
     return t850 - t500
 
 
 @exporter.export
-@preprocess_and_wrap()
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'dewpoint'))
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def cross_totals(pressure, temperature, dewpoint):
+def cross_totals(pressure, temperature, dewpoint, vertical_dim=0):
     """Calculate Cross Totals from the pressure temperature and dewpoint.
 
     Cross Totals formula derived from [Miller1972]_:
@@ -4418,6 +4440,10 @@ def cross_totals(pressure, temperature, dewpoint):
 
     dewpoint : `pint.Quantity`
         Dewpoint temperature corresponding to pressure
+
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
 
     Returns
     -------
@@ -4451,16 +4477,17 @@ def cross_totals(pressure, temperature, dewpoint):
     """
     # Find temperature and dewpoint at 850 and 500 hPa
     (_, t500), (td850, _) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
-                                           pressure, temperature, dewpoint)
+                                           pressure, temperature, dewpoint, axis=vertical_dim)
 
     # Calculate vertical totals.
     return td850 - t500
 
 
 @exporter.export
-@preprocess_and_wrap()
+@add_vertical_dim_from_xarray
+@preprocess_and_wrap(broadcast=('pressure', 'temperature', 'dewpoint', 'speed', 'direction'))
 @check_units('[pressure]', '[temperature]', '[temperature]', '[speed]')
-def sweat_index(pressure, temperature, dewpoint, speed, direction):
+def sweat_index(pressure, temperature, dewpoint, speed, direction, vertical_dim=0):
     """Calculate SWEAT Index.
 
     SWEAT Index derived from [Miller1972]_:
@@ -4505,6 +4532,10 @@ def sweat_index(pressure, temperature, dewpoint, speed, direction):
     direction : `pint.Quantity`
         Wind direction corresponding to pressure
 
+    vertical_dim : int, optional
+        The axis corresponding to vertical, defaults to 0. Automatically determined from
+        xarray DataArray arguments.
+
     Returns
     -------
     `pint.Quantity`
@@ -4512,15 +4543,15 @@ def sweat_index(pressure, temperature, dewpoint, speed, direction):
 
     """
     # Find dewpoint at 850 hPa.
-    td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, dewpoint)
+    td850 = interpolate_1d(units.Quantity(850, 'hPa'), pressure, dewpoint, axis=vertical_dim)
 
     # Find total totals index.
-    tt = total_totals_index(pressure, temperature, dewpoint)
+    tt = total_totals_index(pressure, temperature, dewpoint, vertical_dim=vertical_dim)
 
     # Find wind speed and direction at 850 and 500 hPa
-    (f850, f500), (dd850, dd500) = interpolate_1d(units.Quantity([850, 500],
-                                                  'hPa'), pressure, speed,
-                                                  direction)
+    (f850, f500), (dd850, dd500) = interpolate_1d(units.Quantity([850, 500], 'hPa'),
+                                                  pressure, speed, direction,
+                                                  axis=vertical_dim)
 
     # First term is set to zero if Td850 is negative
     first_term = 12 * np.clip(td850.m_as('degC'), 0, None)
