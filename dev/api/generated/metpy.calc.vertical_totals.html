@@ -1338,7 +1338,7 @@
 <h1>vertical_totals<a class="headerlink" href="#vertical-totals" title="Permalink to this headline">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="metpy.calc.vertical_totals">
-<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">vertical_totals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.vertical_totals" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metpy.calc.</span></span><span class="sig-name descname"><span class="pre">vertical_totals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.vertical_totals" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate Vertical Totals from the pressure and temperature.</p>
 <p>Vertical Totals formula derived from <a class="reference internal" href="../references.html#miller1972" id="id1"><span>[Miller1972]</span></a>:</p>
 <div class="math notranslate nohighlight">
@@ -1355,6 +1355,8 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pressure</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Pressure level(s), in order from highest to lowest pressure</p></li>
 <li><p><strong>temperature</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Temperature corresponding to pressure</p></li>
+<li><p><strong>vertical_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical, defaults to 0. Automatically determined from
+xarray DataArray arguments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
