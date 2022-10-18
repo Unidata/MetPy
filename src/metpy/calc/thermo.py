@@ -4211,14 +4211,14 @@ def showalter_index(pressure, temperature, dewpoint):
 
     Parameters
     ----------
-        pressure : `pint.Quantity`
-            Atmospheric pressure, in order from highest to lowest pressure
+    pressure : `pint.Quantity`
+        Atmospheric pressure, in order from highest to lowest pressure
 
-        temperature : `pint.Quantity`
-            Ambient temperature corresponding to ``pressure``
+    temperature : `pint.Quantity`
+        Ambient temperature corresponding to ``pressure``
 
-        dewpoint : `pint.Quantity`
-            Ambient dew point temperatures corresponding to ``pressure``
+    dewpoint : `pint.Quantity`
+        Ambient dew point temperatures corresponding to ``pressure``
 
     Returns
     -------
