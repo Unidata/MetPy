@@ -874,15 +874,11 @@ def nominal_lat_lon_grid_deltas(longitude, latitude, geod=None):
             'that are not one dimensional.'
         )
 
-    dx = units.Quantity(
-        geod.a * np.diff(longitude.m_as('radian')),
-        'meter'
-    )
-    lat = latitude.m_as('radian')
-    lon_meridian_diff = np.zeros(len(lat) - 1)
-    forward_az, _, dy = geod.inv(
-        lon_meridian_diff, lat[:-1], lon_meridian_diff, lat[1:], radians=True
-    )
+    dx = units.Quantity(g.a * np.diff(longitude).m_as('radian'), 'meter')
+    lat = latitude.m_as('degree')
+    lon_meridian_diff = np.zeros(len(lat) - 1, dtype=lat.dtype)
+    forward_az, _, dy = g.inv(lon_meridian_diff, lat[:-1], lon_meridian_diff, lat[1:],
+                              radians=False)
     dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
     dy = units.Quantity(dy, 'meter')
 
@@ -1028,7 +1024,7 @@ horizontal_grid_parameter_description = """dx : `pint.Quantity`, optional
 
 def parse_grid_arguments(func):
     """Parse arguments to functions involving derivatives on a grid.
-    
+
     TODO: use this to completely replace add_grid_arguments_from_xarray
     """
     # u, v, *, dx=None, dy=None, x_dim=-1, y_dim=-2, longitude=None, latitude=None, crs=None,
@@ -1148,7 +1144,7 @@ def parse_grid_arguments(func):
                 except:
                     # Fall back to cartesian calculation if CRS is not provided or invalid
                     cartesian = True
-                
+
                 lat = bound_args.arguments['latitude']
                 lon = bound_args.arguments['longitude']
 
@@ -1524,7 +1520,7 @@ def _vector_derivative(
 ):
     # Determine which derivatives to calculate
     derivatives = {
-        component: None 
+        component: None
         for component in ('du/dx', 'du/dy', 'dv/dx', 'dv/dy')
         if (return_only is None or component in return_only)
     }
