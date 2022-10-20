@@ -1661,7 +1661,7 @@ class BarbPlot(PlotVector, ValidationMixin):
         self.handle = self.parent.ax.barbs(
             x_like[wind_slice], y_like[wind_slice],
             u.values[wind_slice], v.values[wind_slice],
-            color=self.color, pivot=self.pivot, length=self.barblength, **kwargs)
+            color=self.color, pivot=self.pivot, length=self.barblength, zorder=2, **kwargs)
 
 
 @exporter.export
