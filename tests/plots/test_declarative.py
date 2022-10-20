@@ -717,7 +717,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.506)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.292)
 @needs_cartopy
 def test_declarative_barb_options():
     """Test making a contour plot."""
@@ -735,7 +735,7 @@ def test_declarative_barb_options():
     panel = MapPanel()
     panel.area = 'us'
     panel.projection = 'data'
-    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.layers = ['coastline', 'borders', 'usstates', 'land', 'ocean', 'lakes']
     panel.plots = [barb]
 
     pc = PanelContainer()
@@ -837,7 +837,7 @@ def test_declarative_arrow_changes():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.844)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.434)
 @needs_cartopy
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
