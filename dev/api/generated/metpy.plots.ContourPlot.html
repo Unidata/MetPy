@@ -1377,7 +1377,7 @@
 <td><p>A string value to set the color of plotted contours; default is black.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.linestyle" title="metpy.plots.ContourPlot.linestyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linestyle</span></code></a></p></td>
-<td><p>A string value to set the linestyle (e.g., dashed); default is solid.</p></td>
+<td><p>A string value to set the linestyle (e.g., dashed), or <em class="xref py py-obj">None</em>; default is <em class="xref py py-obj">None</em>, which, when using monochrome line colors, uses solid lines for positive values and dashed lines for negative values.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.linewidth" title="metpy.plots.ContourPlot.linewidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linewidth</span></code></a></p></td>
 <td><p>An integer value to set the width of plotted contours; default value is 2.</p></td>
@@ -1600,10 +1600,12 @@ black.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metpy.plots.ContourPlot.linestyle">
 <span class="sig-name descname"><span class="pre">linestyle</span></span><a class="headerlink" href="#metpy.plots.ContourPlot.linestyle" title="Permalink to this definition">#</a></dt>
-<dd><p>A string value to set the linestyle (e.g., dashed); default is
-solid.</p>
-<p>The valid string values are those of Matplotlib which are solid, dashed, dotted, and
-dashdot.</p>
+<dd><p>A string value to set the linestyle (e.g., dashed), or <em class="xref py py-obj">None</em>;
+default is <em class="xref py py-obj">None</em>, which, when using monochrome line colors, uses solid lines for positive
+values and dashed lines for negative values.</p>
+<p>The valid string values are those of Matplotlib which are ‘solid’, ‘dashed’, ‘dotted’, and
+‘dashdot’, as well as their short codes (‘-’, ‘–’, ‘.’, ‘-.’). The object <em class="xref py py-obj">None</em>, as
+described above, can also be used.</p>
 </dd></dl>
 
 <dl class="py attribute">

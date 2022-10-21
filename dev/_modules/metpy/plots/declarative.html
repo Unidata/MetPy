@@ -1601,12 +1601,14 @@
 <span class="s2">    line.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">linestyle</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">linestyle</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string value to set the linestyle (e.g., dashed); default is</span>
-<span class="s2">    solid.</span>
+    <span class="n">linestyle</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">linestyle</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string value to set the linestyle (e.g., dashed), or `None`;</span>
+<span class="s2">    default is `None`, which, when using monochrome line colors, uses solid lines for positive</span>
+<span class="s2">    values and dashed lines for negative values.</span>
 
-<span class="s2">    The valid string values are those of Matplotlib which are solid, dashed, dotted, and</span>
-<span class="s2">    dashdot.</span>
+<span class="s2">    The valid string values are those of Matplotlib which are &#39;solid&#39;, &#39;dashed&#39;, &#39;dotted&#39;, and</span>
+<span class="s2">    &#39;dashdot&#39;, as well as their short codes (&#39;-&#39;, &#39;--&#39;, &#39;.&#39;, &#39;-.&#39;). The object `None`, as</span>
+<span class="s2">    described above, can also be used.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;clabels&#39;</span><span class="p">,</span> <span class="s1">&#39;label_fontsize&#39;</span><span class="p">)</span>
