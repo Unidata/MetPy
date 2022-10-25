@@ -249,9 +249,9 @@ def find_natural_neighbors(tri, grid_points):
     Returns
     -------
     members: dict
-        List of simplex codes for natural neighbor triangles in 'tri' for each grid cell.
-    triangle_info: dict
-        Circumcenter and radius information for each triangle in 'tri'.
+        List of simplex codes for natural neighbor triangles in ``tri`` for each grid cell.
+    circumcenters: numpy.ndarray
+        Circumcenter for each triangle in ``tri``.
 
     """
     # Used for fast identification of points with a radius of another point
@@ -260,14 +260,14 @@ def find_natural_neighbors(tri, grid_points):
     # Mask for points that are outside the triangulation
     in_triangulation = tri.find_simplex(tree.data) >= 0
 
-    triangle_info = []
+    circumcenters = []
     members = {key: [] for key in range(len(tree.data))}
     for i, indices in enumerate(tri.simplices):
         # Find the circumcircle (center and radius) for the triangle.
         triangle = tri.points[indices]
         cc = circumcenter(*triangle)
         r = circumcircle_radius(*triangle)
-        triangle_info.append(cc)
+        circumcenters.append(cc)
 
         # Find all grid points within the circumcircle.
         for point in tree.query_ball_point(cc, r):
@@ -276,7 +276,7 @@ def find_natural_neighbors(tri, grid_points):
             if in_triangulation[point]:
                 members[point].append(i)
 
-    return members, np.array(triangle_info)
+    return members, np.array(circumcenters)
 
 
 def find_nn_triangles_point(tri, cur_tri, point):
