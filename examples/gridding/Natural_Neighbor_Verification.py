@@ -149,7 +149,7 @@ print('Triangle 8 circumradius:', r)
 ###########################################
 # Lets do a manual check of the above interpolation value for grid 0 (southernmost grid)
 # Grab the circumcenters and radii for natural neighbors
-cc = np.array(circumcenters)
+cc = np.array([circumcenters[m] for m in members[0]])
 r = np.array([geometry.circumcircle_radius(*tri.points[tri.simplices[m]]) for m in members[0]])
 
 print('circumcenters:\n', cc)
