@@ -209,7 +209,7 @@ examine the results to see if they are correct.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f22992b1540>
+    <matplotlib.legend.Legend object at 0x7f0e42674850>
 
 
 
@@ -252,7 +252,7 @@ Grab the circumcenters and radii for natural neighbors
 
 .. code-block:: default
 
-    cc = np.array(circumcenters)
+    cc = np.array([circumcenters[m] for m in members[0]])
     r = np.array([geometry.circumcircle_radius(*tri.points[tri.simplices[m]]) for m in members[0]])
 
     print('circumcenters:\n', cc)
@@ -267,18 +267,8 @@ Grab the circumcenters and radii for natural neighbors
  .. code-block:: none
 
     circumcenters:
-     [[ 32.39317507  81.37166172]
-     [ 51.78358209  81.97761194]
-     [-90.55741627  61.84449761]
-     [ 31.35173979  79.77231467]
-     [252.83333333 122.83333333]
-     [ 73.34210526  67.60526316]
-     [ 78.52118003  25.42360061]
-     [ 54.88016529  40.93801653]
-     [ 52.9137931   40.74137931]
-     [ 36.32995951  48.24358974]
-     [ 21.         -55.        ]
-     [ 21.          40.15277778]]
+     [[36.32995951 48.24358974]
+     [21.         40.15277778]]
     radii
      [24.35529419 20.73432492]
 
@@ -492,7 +482,7 @@ the above visual example to the 3rd decimal place.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.554 seconds)
+   **Total running time of the script:** ( 0 minutes  0.393 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:
