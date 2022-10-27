@@ -367,7 +367,7 @@ discussion and examples of the Scientific Python ecosystem.</p>
 <h2>Units<a class="headerlink" href="#units" title="Permalink to this headline">#</a></h2>
 <p>For the in-depth explanation of units, associated syntax, and unique features, please see
 our <a class="reference internal" href="../tutorials/unit_tutorial.html"><span class="doc">Units Tutorial</span></a> page. What follows in this section is
-a short summary of how MetPy uses units.</p>
+a short summary of how MetPy uses units, which uses extensively the <a class="reference external" href="https://pint.readthedocs.io/en/stable/">Pint</a> library.</p>
 <p>One of the most significant differences in syntax for MetPy, compared to other Python
 libraries, is the frequent requirement of units to be attached to arrays before being
 passed to MetPy functions. There are very few exceptions to this, and you’ll usually be
@@ -381,7 +381,7 @@ to worry about unit conversion for any calculation. MetPy does it for you!</p>
 <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
 </pre></div>
 </div>
-<p>Another way to attach units is do create the array directly with the <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>
+<p>Another way to attach units is do create the array directly with the <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>
 object:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;sec&#39;</span><span class="p">)</span>
 </pre></div>
@@ -633,6 +633,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 <li><p><a class="reference external" href="https://numpy.org/devdocs">NumPy</a>: numerical computations</p></li>
 <li><p><a class="reference external" href="https://matplotlib.org">Matplotlib</a>: creation of publication-quality figures</p></li>
 <li><p><a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">CartoPy</a>: publication-quality cartographic maps</p></li>
+<li><p><a class="reference external" href="https://pint.readthedocs.io/en/stable/">Pint</a>: physical units tracking and conversion</p></li>
 <li><p><a class="reference external" href="https://satpy.readthedocs.io/en/latest/">SatPy</a>: read and visualize satellite data</p></li>
 <li><p><a class="reference external" href="https://arm-doe.github.io/pyart/">PyART</a>: read and visualize radar data</p></li>
 </ul>

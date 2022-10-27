@@ -1332,9 +1332,9 @@ data sets that share a common x-value set.</p>
 <li><p><strong>x</strong> (<em>array-like</em>) – 1-dimensional array of numeric x-values</p></li>
 <li><p><strong>a</strong> (<em>array-like</em>) – 1-dimensional array of y-values for line 1</p></li>
 <li><p><strong>b</strong> (<em>array-like</em>) – 1-dimensional array of y-values for line 2</p></li>
-<li><p><strong>direction</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – specifies direction of crossing. ‘all’, ‘increasing’ (a becoming greater than b),
+<li><p><strong>direction</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – specifies direction of crossing. ‘all’, ‘increasing’ (a becoming greater than b),
 or ‘decreasing’ (b becoming greater than a). Defaults to ‘all’.</p></li>
-<li><p><strong>log_x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Use logarithmic interpolation along the <em class="xref py py-obj">x</em> axis (i.e. for finding intersections
+<li><p><strong>log_x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Use logarithmic interpolation along the <em class="xref py py-obj">x</em> axis (i.e. for finding intersections
 in pressure coordinates). Default is False.</p></li>
 </ul>
 </dd>
@@ -1347,8 +1347,8 @@ in pressure coordinates). Default is False.</p></li>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This function implicitly converts <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> to <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, with the results
-given as <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.19.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
+<p>This function implicitly converts <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> to <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>, with the results
+given as <a class="reference external" href="https://pint.readthedocs.io/en/stable/api/base.html#pint.Quantity" title="(in pint v0.20.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
 </dd></dl>
 
 <div style='clear:both'></div></section>

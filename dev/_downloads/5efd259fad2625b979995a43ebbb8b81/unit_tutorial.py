@@ -11,7 +11,7 @@ attention to units in our calculations. Unit conversions can still get the best
 of us and have caused more than one major technical disaster, including the
 crash and complete loss of the $327 million Mars Climate Orbiter.
 
-In MetPy, we use the :mod:`pint` library and a custom unit registry to help prevent
+In MetPy, we use the ``pint`` library and a custom unit registry to help prevent
 unit mistakes in calculations. That means that every quantity you pass to MetPy
 should have units attached, just like if you were doing the calculation on
 paper! This simplifies the MetPy API by eliminating the need to specify units
