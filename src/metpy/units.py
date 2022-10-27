@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Module to provide unit support.
 
-This makes use of the :mod:`pint` library and sets up the default settings
+This makes use of the ``pint`` library and sets up the default settings
 for good temperature support.
 
 See Also: :doc:`Working with Units </tutorials/unit_tutorial>`.

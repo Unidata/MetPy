@@ -15,7 +15,7 @@ Units
 
 For the in-depth explanation of units, associated syntax, and unique features, please see
 our :doc:`Units Tutorial </tutorials/unit_tutorial>` page. What follows in this section is
-a short summary of how MetPy uses units.
+a short summary of how MetPy uses units, which uses extensively the `Pint`_ library.
 
 One of the most significant differences in syntax for MetPy, compared to other Python
 libraries, is the frequent requirement of units to be attached to arrays before being
@@ -343,6 +343,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 * `NumPy`_: numerical computations
 * `Matplotlib`_: creation of publication-quality figures
 * `CartoPy`_: publication-quality cartographic maps
+* `Pint`_: physical units tracking and conversion
 * `SatPy`_: read and visualize satellite data
 * `PyART`_: read and visualize radar data
 
@@ -355,6 +356,7 @@ to use as you start using MetPy and Python for meteorology and atmospheric scien
 .. _NumPy: https://numpy.org/devdocs
 .. _Matplotlib: https://matplotlib.org
 .. _CartoPy: https://scitools.org.uk/cartopy/docs/latest/
+.. _Pint: https://pint.readthedocs.io/en/stable/
 .. _SatPy: https://satpy.readthedocs.io/en/latest/
 .. _PyART: https://arm-doe.github.io/pyart/
 
