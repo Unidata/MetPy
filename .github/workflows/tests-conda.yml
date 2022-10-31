@@ -41,6 +41,10 @@ jobs:
     - name: Get tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
+    - name: Remove Dask from deps
+      if: ${{ matrix.python-version == '3.11' }}
+      run: cat ci/test_requirements.txt | grep -v dask > temp && mv temp ci/test_requirements.txt
+
     - name: Install from Conda
       uses: ./.github/actions/install-conda
       with:
