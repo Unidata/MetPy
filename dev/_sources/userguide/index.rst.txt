@@ -114,6 +114,10 @@ Need some more direct help? Check out our :doc:`support resources<SUPPORT>`.
 
 Used MetPy in your research? We'd love for you to :doc:`cite us<citing>` in your publication.
 
+For more information about MetPy, you can also read our
+`article <https://doi.org/10.1175/BAMS-D-21-0125.1>`_ in the October 2022 edition of the
+Bulletin of the American Meteorological Society.
+
 .. plot::
     :include-source: False
     :width: 600px

@@ -8,11 +8,50 @@ your reference list using one of the options below.
 MetPy also maintains a ``CITATION.cff`` [#]_ file with human- and machine-readable
 metadata for generating up-to-date citations.
 
-DOI: `10.5065/D6WW7G29 <https://doi.org/10.5065/D6WW7G29>`_
+* Software DOI: `10.5065/D6WW7G29 <https://doi.org/10.5065/D6WW7G29>`_
+* Journal Article DOI: `10.1175/BAMS-D-21-0125.1 <https://doi.org/10.1175/BAMS-D-21-0125.1>`_
 
-************
-BibTeX entry
-************
+---------------------
+MetPy Journal Article
+---------------------
+
+A `journal article <https://doi.org/10.1175/BAMS-D-21-0125.1>`_ describing MetPy has been
+published in the Bulletin of the American Meteorological Society:
+
+.. parsed-literal::
+
+  @article{metpy,
+    author = {Ryan M. May and Kevin H. Goebbert and Jonathan E. Thielen and John R. Leeman and
+              M. Drew Camron and Zachary Bruick and Eric C. Bruning and Russell P. Manser and
+              Sean C. Arms and Patrick T. Marsh},
+    title = {MetPy: A Meteorological Python Library for Data Analysis and Visualization},
+    journal = {Bulletin of the American Meteorological Society},
+    year = {2022},
+    publisher = {American Meteorological Society},
+    address = {Boston MA, USA},
+    volume = {103},
+    number = {10},
+    doi = {10.1175/BAMS-D-21-0125.1},
+    pages = {E2273 - E2284},
+    url = {https://journals.ametsoc.org/view/journals/bams/103/10/BAMS-D-21-0125.1.xml}
+  }
+
+or in AMS format:
+
+.. parsed-literal::
+
+  May, R. M., Goebbert, K. H., Thielen, J. E., Leeman, J. R., Camron, M. D., Bruick, Z.,
+      Bruning, E. C., Manser, R. P., Arms, S. C., and Marsh, P. T., 2022: MetPy: A
+      Meteorological Python Library for Data Analysis and Visualization. *Bull. Amer. Meteor.
+      Soc.*, **103**, E2273-E2284, https://doi.org/10.1175/BAMS-D-21-0125.1.
+
+-----------------
+Software Citation
+-----------------
+
+^^^^^^^^^^^^^
+Sample BibTeX
+^^^^^^^^^^^^^
 
 Example BibTeX entry:
 
@@ -29,10 +68,9 @@ Example BibTeX entry:
     url = {https://github.com/Unidata/MetPy},
   }
 
-
-*****************
+^^^^^^^^^^^^^^^^^
 AMS Journal Style
-*****************
+^^^^^^^^^^^^^^^^^
 
 AMS suggested BibTeX entry:
 
