@@ -37,6 +37,9 @@ jobs:
           - python-version: '3.10'
             check-links: true
             dep-versions: requirements.txt
+          - python-version: 3.11
+            check-links: false
+            dep-versions: requirements.txt
     outputs:
       doc-version: ${{ steps.build-docs.outputs.doc-version }}
 
