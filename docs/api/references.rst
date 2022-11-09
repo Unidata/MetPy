@@ -198,7 +198,7 @@ References
 
 .. [WMO8] WMO, 2020: Guide to Meteorological Instruments and Methods of Observation,
            Volume 1: Measurement of Meteorological Variables.
-           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=11337>`_.
+           `WMO No.8 <https://library.wmo.int/index.php?lvl=notice_display&id=12407>`_.
 
 .. [WMO306] WMO, 2011: Manual on Codes - International Codes, Volume I.1, Annex II to the WMO
            Technical Regulations: Part A - Alphanumeric Codes. `WMO No.306
